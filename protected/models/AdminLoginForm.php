@@ -7,6 +7,7 @@
  */
 class AdminLoginForm extends CFormModel {
 
+    public $email;
     public $username;
     public $password;
     public $rememberMe = 0;
@@ -21,6 +22,8 @@ class AdminLoginForm extends CFormModel {
         return array(
             // username and password are required
             array('username, password', 'required'),
+            array('email', 'required', 'on' => 'forgotpass'),
+            array('email', 'email'),
             //array('admin_username', 'email'),
             // rememberMe needs to be a boolean
             array('rememberMe', 'boolean'),
@@ -69,7 +72,7 @@ class AdminLoginForm extends CFormModel {
             //$duration= 3600*24*30; // 30 days
             $duration = $this->rememberMe ? 3600 * 24 * 30 : 0; // 30 days
             Yii::app()->user->login($this->_identity, $duration);
-            MyClass::rememberMeAdmin($this->username, $this->rememberMe);
+            MyClass::rememberMe($this->username, $this->rememberMe);
             return true;
         else:
 

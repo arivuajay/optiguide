@@ -45,16 +45,16 @@ class DefaultController extends Controller {
         $this->layout = '//layouts/login';
 
         if (!Yii::app()->user->isGuest) {
-            $this->goHome();
+            $this->redirect(array('/admin/default/index'));
         }
 
-        $model = new LoginForm();
+        $model = new AdminLoginForm();
 
         if (isset($_POST['sign_in'])) {
-            $model->attributes = $_POST['LoginForm'];
+            $model->attributes = $_POST['AdminLoginForm'];
             if ($model->validate() && $model->login()):
                 Myclass::addAuditTrail("{$model->username} logged-in successfully.", "user");
-                $this->goHome();
+                $this->redirect(array('/admin/default/index'));
             endif;
         }
 

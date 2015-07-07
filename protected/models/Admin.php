@@ -21,7 +21,7 @@ class Admin extends CActiveRecord {
      * @return string the associated database table name
      */
     public function tableName() {
-        return '{{admin}}';
+        return '{{app_admin}}';
     }
 
     /**

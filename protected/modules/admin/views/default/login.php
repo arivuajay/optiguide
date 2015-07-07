@@ -1,37 +1,41 @@
 <?php
-$form = $this->beginWidget('CActiveForm', array(
-    'id' => 'loginform',
-    'enableAjaxValidation' => false,
-    'htmlOptions' => array('class' => 'form-signin')
-        ));
-if (isset(Yii::app()->request->cookies['admin_username']->value)) {
-    $model->username = Yii::app()->request->cookies['admin_username']->value;
-    $model->rememberMe = 1;
-}
+$this->title = 'Sign In';
+$this->breadcrumbs = array(
+    $this->title
+);
 ?>
-<h2 class="form-signin-heading">sign in now</h2>
-<?php echo $form->errorSummary($model, ''); ?>
-<?php 
-if (isset($this->flashMessages)):
-//    echo '<div class="col-lg-5 col-md-5  col-sm-5 center-block fn clearfix mt20 alert-notify">';
-    foreach ($this->flashMessages as $key => $message) {
-        echo "<div class='alert alert-$key'>$message </div>";
-    }
-//    echo '</div>';
-endif;
-?>
-<div class="login-wrap">
-    <div class="user-login-info">
-        <?php echo $form->textField($model, 'username', array('autofocus', 'class' => 'form-control', 'placeholder' => $model->getAttributeLabel('username'))); ?>
-        <?php echo $form->passwordField($model, 'password', array('class' => 'form-control', 'placeholder' => $model->getAttributeLabel('password'))); ?>
-    </div>
-    <label class="checkbox">
-        <?php echo $form->checkBox($model, 'rememberMe') . ' ' . $model->getAttributeLabel('rememberMe'); ?>
-        <span class="pull-right">
-            <a href="<?php echo $this->createUrl('/admin/default/forgotpassword'); ?>"> Forgot Password?</a>
-        </span>
-    </label>
-    <button class="btn btn-lg btn-login btn-block" type="submit">Sign in</button>
-</div>
+<div class="form-box" id="login-box">
 
-<?php $this->endWidget(); ?>
+    <div class="header"><?php echo CHtml::encode($this->title) ?></div>
+    <?php $form = $this->beginWidget('CActiveForm', array('id' => 'login-form')); ?>
+    <div class="body bg-gray">
+        <?php if (isset($this->flashMessages)): ?>
+            <?php foreach ($this->flashMessages as $key => $message) { ?>
+                <div class="alert alert-<?php echo $key; ?> fade in">
+                    <button type="button" class="close close-sm" data-dismiss="alert">
+                        <i class="fa fa-times"></i>
+                    </button>
+                    <?php echo $message; ?>
+                </div>
+            <?php } ?>
+        <?php endif ?>
+        <p>Please fill out the following fields to login:</p>
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'username') ?>
+            <?php echo $form->textField($model, 'username', array('autofocus', 'class' => 'form-control')); ?>
+            <?php echo $form->error($model, 'username') ?>
+        </div>
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'password') ?>
+            <?php echo $form->passwordField($model, 'password', array('autofocus', 'class' => 'form-control')); ?>
+            <?php echo $form->error($model, 'password') ?>
+        </div>
+        <?php echo $form->checkBox($model, 'rememberMe', array('id' => 'check', 'checked' => 'checked')); ?>
+        <?php echo ' Remember Me'; ?>
+    </div>
+    <div class="footer">
+        <?php echo CHtml::submitButton('Login', array('class' => 'btn bg-olive btn-block', 'name' => 'sign_in')) ?>
+        <p><?php echo CHtml::link('I forgot my password', array('/site/user/forgot')) ?></p>
+    </div>
+    <?php $this->endWidget(); ?>
+</div>

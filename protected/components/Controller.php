@@ -24,27 +24,16 @@ class Controller extends CController {
      */
     public $breadcrumbs = array();
     public $flashMessages = array();
-    
+    public $themeUrl = '';
+    public $title = '';
+
     public function init() {
+        parent::init();
+
         CHtml::$errorSummaryCss = 'alert alert-danger';
 
         $this->flashMessages = Yii::app()->user->getFlashes();
-        parent::init();
-    }
-    
-    public function mailsend($to,$from,$subject,$message){
-        $mail=Yii::app()->Smtpmail;
-        
-        $mail->SetFrom($from, 'From NAme');
-        $mail->Subject    = $subject;
-        $mail->MsgHTML($message);
-        $mail->AddAddress($to, "");
-        if(!$mail->Send()) {
-            echo "Mailer Error: " . $mail->ErrorInfo;
-        }else {
-            echo "Message sent!";
-        }
-        $mail->ClearAddresses(); //clear addresses for next email sending
+        $this->themeUrl = Yii::app()->theme->baseUrl;
     }
 
 }

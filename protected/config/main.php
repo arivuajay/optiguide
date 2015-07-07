@@ -6,7 +6,7 @@
 // CWebApplication properties can be configured here.
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-    'name' => 'Application Name',
+    'name' => 'OptiGuide',
     // preloading 'log' component
     'preload' => array('log'),
     // autoloading model and component classes
@@ -43,6 +43,10 @@ return array(
             'allowAutoLogin' => true,
             'loginUrl' => array('/admin/default/login'),
         ),
+        'user' => array(
+            'allowAutoLogin' => true,
+            'loginUrl' => array('/user/default/login'),
+        ),
         // uncomment the following to enable URLs in path-format
         'urlManager' => array(
             'urlFormat' => 'path',
@@ -72,5 +76,5 @@ return array(
     'timeZone' => 'Asia/Calcutta',
     'theme' => 'adminlte',
     'sourceLanguage' => '00',
-    'language' => 'fr',
+    'language' => 'en',
 );
