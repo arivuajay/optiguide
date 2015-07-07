@@ -16,7 +16,7 @@
         $cs->registerCssFile($themeUrl . '/css/custom.css');
         ?>
     </head>
-    <body class="skin-green">
+    <body class="skin-blue">
         <?php $this->renderPartial('//layouts/_headerBar'); ?>
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <?php $this->renderPartial('//layouts/_sidebarNav'); ?>

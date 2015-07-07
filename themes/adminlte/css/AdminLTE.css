@@ -1,6 +1,6 @@
 @import url(//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);
 @import url(//fonts.googleapis.com/css?family=Kaushan+Script);
-/*!
+/*! 
  *   AdminLTE v1.2
  *   Author: AlmsaeedStudio.com
  *   License: Open source - MIT
@@ -746,7 +746,7 @@ body > .header .logo .icon {
     left: 0px;
   }
 }
-/*
+/* 
     Dropdown menus
 ----------------------------
 */
@@ -767,9 +767,6 @@ body > .header .logo .icon {
 }
 /*Drodown in navbars*/
 .skin-blue .navbar .dropdown-menu > li > a {
-  color: #444444;
-}
-.skin-green .navbar .dropdown-menu > li > a {
   color: #444444;
 }
 /*
@@ -1126,7 +1123,7 @@ body > .header .logo .icon {
     left: auto;
   }
 }
-/*
+/* 
    All form elements including input, select, textarea etc.
 -----------------------------------------------------------------
 */
@@ -1176,7 +1173,7 @@ body > .header .logo .icon {
 .radio {
   padding-left: 0;
 }
-/*
+/* 
     Compenent: Progress bars
 --------------------------------
 */
@@ -2041,7 +2038,7 @@ Component: timeline
   -moz-border-radius: 50%;
   border-radius: 50%;
 }
-/*
+/* 
     Component: callout
 ------------------------
 */
@@ -2081,7 +2078,7 @@ Component: timeline
 .callout.callout-info h4 {
   color: #3A87AD;
 }
-/*
+/* 
     Component: alert
 ------------------------
 */
@@ -2393,7 +2390,7 @@ Component: timeline
   margin-top: 30px;
   text-align: center;
 }
-/*
+/* 
     Page: register and login
 */
 .form-box {
@@ -2458,7 +2455,7 @@ Component: timeline
     width: 90%;
   }
 }
-/*
+/* 
     Page: 404 and 500 error pages
 ------------------------------------
 */
@@ -2508,7 +2505,7 @@ Component: timeline
 .error-page:after {
   clear: both;
 }
-/*
+/* 
     Page: Invoice
 */
 .invoice {
@@ -2541,12 +2538,12 @@ Component: timeline
     white-space: normal!important;
   }
 }
-/*
+/* 
     Skins
     -----
 */
-/*
-    Skin Blue
+/* 
+    Skin Blue 
     ---------
 */
 /* skin-blue navbar */
@@ -2681,154 +2678,6 @@ Component: timeline
   border-left-color: #fff;
 }
 .skin-blue .sidebar-form .btn {
-  color: #999;
-  -webkit-border-top-left-radius: 0 !important;
-  -webkit-border-top-right-radius: 2px !important;
-  -webkit-border-bottom-right-radius: 2px !important;
-  -webkit-border-bottom-left-radius: 0 !important;
-  -moz-border-radius-topleft: 0 !important;
-  -moz-border-radius-topright: 2px !important;
-  -moz-border-radius-bottomright: 2px !important;
-  -moz-border-radius-bottomleft: 0 !important;
-  border-top-left-radius: 0 !important;
-  border-top-right-radius: 2px !important;
-  border-bottom-right-radius: 2px !important;
-  border-bottom-left-radius: 0 !important;
-}
-/*
-    Skin Green
-    ---------
-*/
-/* skin-green navbar */
-.skin-green .navbar {
-  background-color: #93bf02;
-}
-.skin-green .navbar .nav a {
-  color: rgba(255, 255, 255, 0.8);
-}
-.skin-green .navbar .nav > li > a:hover,
-.skin-green .navbar .nav > li > a:active,
-.skin-green .navbar .nav > li > a:focus,
-.skin-green .navbar .nav .open > a,
-.skin-green .navbar .nav .open > a:hover,
-.skin-green .navbar .nav .open > a:focus {
-  background: rgba(0, 0, 0, 0.1);
-  color: #f6f6f6;
-}
-.skin-green .navbar .navbar-right > .nav {
-  margin-right: 10px;
-}
-.skin-green .navbar .sidebar-toggle .icon-bar {
-  background: rgba(255, 255, 255, 0.8);
-}
-.skin-green .navbar .sidebar-toggle:hover .icon-bar {
-  background: #f6f6f6 !important;
-}
-/* skin-green logo */
-.skin-green .logo {
-  background-color: #698801;
-  color: #fff;
-}
-.skin-green .logo > a {
-  color: #fff;
-}
-
-/* skin-green content header */
-.skin-green .right-side > .content-header {
-  background: #fbfbfb;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-}
-/* Skin-blue user panel */
-.skin-green .user-panel > .image > img {
-  border: 1px solid #dfdfdf;
-}
-.skin-green .user-panel > .info,
-.skin-green .user-panel > .info > a {
-  color: #555555;
-}
-/* skin-green sidebar */
-.skin-green .sidebar {
-  border-bottom: 1px solid #fff;
-}
-.skin-green .sidebar > .sidebar-menu > li {
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #dbdbdb;
-}
-.skin-green .sidebar > .sidebar-menu > li:first-of-type {
-  border-top: 1px solid #dbdbdb;
-}
-.skin-green .sidebar > .sidebar-menu > li:first-of-type > a {
-  border-top: 1px solid #fff;
-}
-.skin-green .sidebar > .sidebar-menu > li > a {
-  margin-right: 1px;
-}
-.skin-green .sidebar > .sidebar-menu > li > a:hover,
-.skin-green .sidebar > .sidebar-menu > li.active > a {
-  color: #222;
-  background: #f9f9f9;
-}
-.skin-green .sidebar > .sidebar-menu > li > .treeview-menu {
-  margin: 0 1px;
-  background: #f9f9f9;
-}
-.skin-green .left-side {
-  background: #f4f4f4;
-  -webkit-box-shadow: inset -3px 0px 8px -4px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: inset -3px 0px 8px -4px rgba(0, 0, 0, 0.1);
-  box-shadow: inset -3px 0px 8px -4px rgba(0, 0, 0, 0.07);
-}
-.skin-green .sidebar a {
-  color: #555555;
-}
-.skin-green .sidebar a:hover {
-  text-decoration: none;
-}
-.skin-green .treeview-menu > li > a {
-  color: #777;
-}
-.skin-green .treeview-menu > li.active > a,
-.skin-green .treeview-menu > li > a:hover {
-  color: #111;
-}
-.skin-green .sidebar-form {
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  border: 1px solid #dbdbdb;
-  margin: 10px 10px;
-}
-.skin-green .sidebar-form input[type="text"],
-.skin-green .sidebar-form .btn {
-  box-shadow: none;
-  background-color: #fafafa;
-  border: 1px solid #fafafa;
-  height: 35px;
-}
-.skin-green .sidebar-form input[type="text"] {
-  color: #666;
-  -webkit-border-top-left-radius: 2px !important;
-  -webkit-border-top-right-radius: 0 !important;
-  -webkit-border-bottom-right-radius: 0 !important;
-  -webkit-border-bottom-left-radius: 2px !important;
-  -moz-border-radius-topleft: 2px !important;
-  -moz-border-radius-topright: 0 !important;
-  -moz-border-radius-bottomright: 0 !important;
-  -moz-border-radius-bottomleft: 2px !important;
-  border-top-left-radius: 2px !important;
-  border-top-right-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
-  border-bottom-left-radius: 2px !important;
-}
-.skin-green .sidebar-form input[type="text"]:focus,
-.skin-green .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
-  background-color: #fff;
-  color: #666;
-}
-.skin-green .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
-  border-left-color: #fff;
-}
-.skin-green .sidebar-form .btn {
   color: #999;
   -webkit-border-top-left-radius: 0 !important;
   -webkit-border-top-right-radius: 2px !important;
