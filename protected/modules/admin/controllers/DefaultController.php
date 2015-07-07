@@ -1,23 +1,34 @@
 <?php
 
+/**
+ * Site controller
+ */
 class DefaultController extends Controller {
 
-    public $pageTitle = 'Admin';
+    public $layout = '//layouts/column1';
 
+    /**
+     * @array action filters
+     */
     public function filters() {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
     }
 
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @array access control rules
+     */
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('login', 'forgotpassword'),
+                'actions' => array('login', 'error', 'request-password-reset', 'screens'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('logout', 'index', 'profile', 'changepassword'),
+                'actions' => array('logout', 'index', 'profile'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -27,237 +38,106 @@ class DefaultController extends Controller {
     }
 
     public function actionIndex() {
-        if (Yii::app()->user->isGuest):
-            $this->redirect(array('login'));
-        endif;
-
         $this->render('index');
     }
 
     public function actionLogin() {
         $this->layout = '//layouts/login';
-        $model = new AdminLoginForm;
-        // collect user input data
-        if (isset($_POST['AdminLoginForm'])) {
-            $model->attributes = $_POST['AdminLoginForm'];
+
+        if (!Yii::app()->user->isGuest) {
+            $this->goHome();
+        }
+
+        $model = new LoginForm();
+
+        if (isset($_POST['sign_in'])) {
+            $model->attributes = $_POST['LoginForm'];
             if ($model->validate() && $model->login()):
-                $this->redirect(array('index'));
+                Myclass::addAuditTrail("{$model->username} logged-in successfully.", "user");
+                $this->goHome();
             endif;
         }
-        $this->render('login', compact('model'));
+
+        $this->render('login', array('model' => $model));
     }
-    
+
+    public function actionLogout() {
+        Myclass::addAuditTrail(Yii::app()->user->name . " logged-out successfully.", "user");
+        Yii::app()->user->logout();
+        $this->redirect(array('/site/default/login'));
+    }
+
+    public function actionRequestPasswordReset() {
+        $model = new PasswordResetRequestForm();
+        if (isset($_POST['PasswordResetRequestForm'])) {
+            $model->attributes = $_POST['PasswordResetRequestForm'];
+            if ($model->validate()):
+                if ($model->sendEmail()) {
+                    Yii::app()->user->setFlash('success', 'Check your email for further instructions.');
+                    $this->goHome();
+                } else {
+                    Yii::app()->user->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+                }
+            endif;
+        }
+
+        $this->render('requestPasswordResetToken', array(
+            'model' => $model,
+        ));
+    }
+
+    public function actionResetPassword($token) {
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+
+        if (isset($_POST['ResetPasswordForm'])) {
+            $model->attributes = $_POST['ResetPasswordForm'];
+            if ($model->validate() && $model->resetPassword()):
+                Yii::app()->user->setFlash('success', 'New password was saved.');
+                $this->goHome();
+            endif;
+        }
+
+        $this->render('resetPassword', array(
+            'model' => $model,
+        ));
+    }
+
     public function actionProfile() {
         $id = Yii::app()->user->id;
-        $model = Admin::model()->findByPk($id);
+        $model = User::model()->findByPk($id);
         $model->setScenario('update');
-        $this->performAjaxValidation($model);
 
-        if (isset($_POST['Admin'])) {
-            $model->attributes = $_POST['Admin'];
+        if (isset($_POST['User'])) {
+            $model->attributes = $_POST['User'];
             if ($model->validate()):
                 $model->save(false);
+                Myclass::addAuditTrail("Updated a {$model->username} successfully.", "user");
                 Yii::app()->user->setFlash('success', 'Profile updated successfully');
-                $this->redirect(array('profile'));
+                $this->refresh();
             endif;
         }
         $this->render('profile', compact('model'));
     }
-    
-    public function actionLogout() {
-        Yii::app()->user->logout(false);
-        $this->redirect('login');
-    }
 
-    public function actionForgotpassword() {
-        $this->layout = '//layouts/login';
-        $newmodel = new Admin('forgotpassword');
-        $newmodel->setScenario('forgotpassword');
-        if (isset($_POST['Admin'])):
-            $newmodel->attributes = $_POST['Admin'];
-            if ($newmodel->validate()):
-                $admin = Admin::model()->find('admin_email ="' . $newmodel->admin_email . '"');
-                if ($admin) {
-                    $adminmodel = $this->loadModel($admin->admin_id);
-                    $fullname = $adminmodel->admin_name;
-                    $password = Myclass::getRandomString('8');
-                    $adminmodel->admin_password = Myclass::encrypt($password);
-                    $adminmodel->save(false);
-//                    Yii::app()->user->setFlash('success', 'Your account password has been reset. Please check your email');
-                    $loginlink = Yii::app()->createAbsoluteUrl('/admin/default/login');
-
-                    $mail = new Sendmail;
-                    $trans_array = array(
-                        "{NAME}" => ucfirst($fullname),
-                        "{USEREMAIL}" => $adminmodel->admin_username,
-                        "{USEREPASS}" => $password,
-                        "{NEXTSTEPURL}" => $loginlink,
-                        "{CONTACT}" => CONTACTMAIL,
-                    );
-                    $message = $mail->getMessage('adminforgotpassword', $trans_array);
-                    $Subject = $mail->translate('Reset Password From {SITENAME}');
-                    $mail->send($newmodel->admin_email, $Subject, $message);
-                    Yii::app()->user->setFlash('success', 'Your account password has been reset. Please check your email for new password');
-                    $this->redirect('login');
-                } else {
-                    Yii::app()->user->setFlash('danger', 'Email address is not valid.');
-                    $this->redirect('forgotpassword');
-                }
-            endif;
-
-        endif;
-
-        $this->render('forgotpassword', array('newmodel' => $newmodel));
-    }
-
-    public function loadModel($id) {
-        $model = Admin::model()->findByPk($id);
-        if ($model === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
-        return $model;
-    }
-
-    public function actionSettings() {
-        $model = $this->loadModel(Yii::app()->user->id);
-        $model->setScenario('update');
-        if (isset($_POST['Admin'])) {
-            $model->attributes = $_POST['Admin'];
-            if ($model->validate()) {
-                $model->save(false);
-                Yii::app()->user->setFlash('success', Yii::t('admin', 'ADMIN331'));
-                $this->redirect('index');
+    public function actionError() {
+        if ($error = Yii::app()->errorHandler->error) {
+            if (Yii::app()->request->isAjaxRequest) {
+                echo $error['message'];
+                Yii::app()->end();
+            } else {
+                $name = Yii::app()->errorHandler->error['code'] . ' Error';
+                $this->render('error', compact('error', 'name'));
             }
         }
-        $this->render('settings', array('model' => $model));
     }
 
-    public function actionChangepassword() {
-        $id = Yii::app()->user->id;
-        $model = Admin::model()->findByPk($id);
-        $model->setScenario('changepassword');
-        $model->admin_password = '';
-        if (isset($_POST['Admin'])) {
-            $model->attributes = $_POST['Admin'];
-            if ($model->validate()) {
-                $model->admin_password = Myclass::encrypt($_POST['Admin']['current_password']);
-                $model->save(false);
-                Yii::app()->user->setFlash('success', 'Password changed successfullly');
-                $this->redirect(array('changepassword'));
-            }
-        }
-        $this->render('changepassword', compact('model'));
-    }
-
-    public function actionPlan() {
-        $model = new Subscriptions;
-
-        if (isset($_POST['Subscriptions'])) {
-            $model->attributes = $_POST['Subscriptions'];
-            if ($model->validate()) {
-                $model->save(false);
-                $this->redirect(array('subscriptions'));
-            }
-        }
-        $this->render('plan', compact('model'));
-    }
-
-    public function actionSubscriptions() {
-        $subscriptions = Subscriptions::model()->findAll();
-        $this->render('subscriptions', compact('subscriptions'));
-    }
-
-    public function actionPlandelete($id) {
-        $model = Subscriptions::model()->findByPk($id);
-        $model->delete();
-        Yii::app()->user->setFlash('success', 'Plan has been deleted Successfully');
-        $this->redirect(array('subscriptions'));
-    }
-
-    public function actionPlanupdate($id) {
-        $model = Subscriptions::model()->findByPk($id);
-        if (isset($_POST['Subscriptions'])) {
-            $model->attributes = $_POST['Subscriptions'];
-            if ($model->validate()) {
-                $model->save(false);
-                Yii::app()->user->setFlash('success', 'Plan has been updated Successfully');
-                $this->redirect(array('subscriptions'));
-            }
-        }
-
-        $this->render('plan', compact('model'));
-    }
-
-    public function actionAddcity() {
-        $model = new Cities;
-        if (isset($_POST['Cities'])) {
-            $model->attributes = $_POST['Cities'];
-            if ($model->validate()) {
-                $model->save(false);
-                $this->redirect(array('index'));
-            }
-        }
-        $this->render('addcity', compact('model'));
-    }
-
-    public function actionAddlocality() {
-        $model = new Locality;
-        if (isset($_POST['Locality'])) {
-            $model->attributes = $_POST['Locality'];
-            if ($model->validate()) {
-                $model->save(false);
-                $this->redirect(array('index'));
-            }
-        }
-        $this->render('addlocality', compact('model'));
-    }
-
-    public function actionAddstate() {
-        $model = new States;
-        if (isset($_POST['States'])) {
-            $model->attributes = $_POST['States'];
-            if ($model->validate()) {
-                $model->save(false);
-                $this->redirect(array('index'));
-            }
-        }
-        $this->render('addstate', compact('model'));
-    }
-
-    // Uncomment the following methods and override them if needed
-    /*
-      public function filters()
-      {
-      // return the filter configuration for this controller, e.g.:
-      return array(
-      'inlineFilterName',
-      array(
-      'class'=>'path.to.FilterClass',
-      'propertyName'=>'propertyValue',
-      ),
-      );
-      }
-
-      public function actions()
-      {
-      // return external action classes, e.g.:
-      return array(
-      'action1'=>'path.to.ActionClass',
-      'action2'=>array(
-      'class'=>'path.to.AnotherActionClass',
-      'propertyName'=>'propertyValue',
-      ),
-      );
-      }
-     */
-    
-    /**
-     * Performs the AJAX validation.
-     * @param User $model the model to be validated
-     */
-    protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'user-form') {
-            echo CActiveForm::validate($model);
-            Yii::app()->end();
+    public function actionScreens($path) {
+        if ($path) {
+            $this->render('screens', compact('path'));
         }
     }
 
