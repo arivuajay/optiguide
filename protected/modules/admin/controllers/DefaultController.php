@@ -4,7 +4,7 @@
  * Site controller
  */
 class DefaultController extends Controller {
-
+ 
     public $layout = '//layouts/column1';
 
     /**
@@ -24,7 +24,7 @@ class DefaultController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('login', 'error', 'request-password-reset', 'screens'),
+                'actions' => array('login', 'error', 'password_reset_request', 'screens'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -53,7 +53,7 @@ class DefaultController extends Controller {
         if (isset($_POST['sign_in'])) {
             $model->attributes = $_POST['AdminLoginForm'];
             if ($model->validate() && $model->login()):
-                Myclass::addAuditTrail("{$model->username} logged-in successfully.", "user");
+                //Myclass::addAuditTrail("{$model->username} logged-in successfully.", "user");
                 $this->redirect(array('/admin/default/index'));
             endif;
         }
@@ -62,29 +62,30 @@ class DefaultController extends Controller {
     }
 
     public function actionLogout() {
-        Myclass::addAuditTrail(Yii::app()->user->name . " logged-out successfully.", "user");
+        //Myclass::addAuditTrail(Yii::app()->user->name . " logged-out successfully.", "user");
         Yii::app()->user->logout();
         $this->redirect(array('/admin/default/login'));
     }
 
-    public function actionRequestPasswordReset() {
+    public function actionPassword_Reset_Request() {
+        
+     $this->layout = '//layouts/login';
+     
         $model = new PasswordResetRequestForm();
         if (isset($_POST['PasswordResetRequestForm'])) {
             $model->attributes = $_POST['PasswordResetRequestForm'];
-            if ($model->validate()):
-                if ($model->sendEmail()) {
-                    Yii::app()->user->setFlash('success', 'Check your email for further instructions.');
-                    $this->goHome();
-                } else {
-                    Yii::app()->user->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
-                }
-            endif;
+            if ($model->validate() && $model->authenticate()):    
+                Yii::app()->user->setFlash('success', 'Check your email for further instructions.');
+                $this->redirect(array('/admin/default/login'));              
+                    //Yii::app()->user->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+                endif;
         }
 
         $this->render('requestPasswordResetToken', array(
             'model' => $model,
         ));
     }
+          
 
     public function actionResetPassword($token) {
         try {
@@ -107,15 +108,15 @@ class DefaultController extends Controller {
     }
 
     public function actionProfile() {
-        $id = Yii::app()->user->id;
-        $model = User::model()->findByPk($id);
+        $id    = Yii::app()->user->id;
+        $model = Admin::model()->findByPk($id);
         $model->setScenario('update');
-
-        if (isset($_POST['User'])) {
-            $model->attributes = $_POST['User'];
-            if ($model->validate()):
+     
+        if (isset($_POST['Admin'])) {
+            $model->attributes = $_POST['Admin'];
+            if ($model->validate()):    
                 $model->save(false);
-                Myclass::addAuditTrail("Updated a {$model->username} successfully.", "user");
+               // Myclass::addAuditTrail("Updated a {$model->username} successfully.", "user");
                 Yii::app()->user->setFlash('success', 'Profile updated successfully');
                 $this->refresh();
             endif;

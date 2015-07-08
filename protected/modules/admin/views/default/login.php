@@ -35,7 +35,7 @@ $this->breadcrumbs = array(
     </div>
     <div class="footer">
         <?php echo CHtml::submitButton('Login', array('class' => 'btn bg-olive btn-block', 'name' => 'sign_in')) ?>
-        <p><?php echo CHtml::link('I forgot my password', array('/site/user/forgot')) ?></p>
+        <p><?php echo CHtml::link('I forgot my password', array('/admin/default/password_reset_request')) ?></p>
     </div>
     <?php $this->endWidget(); ?>
 </div>

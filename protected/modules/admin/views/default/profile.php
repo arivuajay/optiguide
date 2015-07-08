@@ -12,25 +12,21 @@ $this->breadcrumbs = array(
             <?php $form = $this->beginWidget('CActiveForm', array('id' => 'profile-form', 'htmlOptions' => array('role' => 'form'))); ?>
             <div class="box-body">
                 <div class="form-group">
-                    <?php echo $form->labelEx($model, 'username') ?>
-                    <?php echo $form->textField($model, 'username', array('autofocus', 'class' => 'form-control')); ?>
-                    <?php echo $form->error($model, 'username') ?>
+                    <?php echo $form->labelEx($model, 'admin_username') ?>
+                    <?php echo $form->textField($model, 'admin_username', array('autofocus', 'class' => 'form-control')); ?>
+                    <?php echo $form->error($model, 'admin_username') ?>
                 </div>
                 <div class="form-group">
-                    <?php echo $form->labelEx($model, 'name') ?>
-                    <?php echo $form->textField($model, 'name', array('autofocus', 'class' => 'form-control')); ?>
-                    <?php echo $form->error($model, 'name') ?>
+                    <?php echo $form->labelEx($model, 'admin_name') ?>
+                    <?php echo $form->textField($model, 'admin_name', array('autofocus', 'class' => 'form-control')); ?>
+                    <?php echo $form->error($model, 'admin_name') ?>
                 </div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($model, 'new_password') ?>
-                    <?php echo $form->passwordField($model, 'new_password', array('autofocus', 'class' => 'form-control')); ?>
-                    <?php echo $form->error($model, 'new_password') ?>
+                 <div class="form-group">
+                    <?php echo $form->labelEx($model, 'admin_email') ?>
+                    <?php echo $form->textField($model, 'admin_email', array('autofocus', 'class' => 'form-control')); ?>
+                    <?php echo $form->error($model, 'admin_email') ?>
                 </div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($model, 'confirm_password') ?>
-                    <?php echo $form->passwordField($model, 'confirm_password', array('autofocus', 'class' => 'form-control')); ?>
-                    <?php echo $form->error($model, 'confirm_password') ?>
-                </div>
+                
             </div><!-- /.box-body -->
 
             <div class="box-footer">

@@ -100,13 +100,13 @@
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu">
                                 <?php
-                                $myActivities = AuditTrail::model()->mine()->orderDesc()->findAll(array('limit' => 10));
+                                /*$myActivities = AuditTrail::model()->mine()->orderDesc()->findAll(array('limit' => 10));
                                 $actColors = array('info','warning','success','primary','danger');
                                 foreach ($myActivities as $key => $act) {
                                     $col = ($key % 5);
 
                                     echo "<li><a href='#'><i class='fa fa-{$act->aud_class} {$actColors[$col]}'></i>{$act->aud_message}</a></li>";
-                                }
+                                }*/
                                 ?>
                             </ul>
                         </li>

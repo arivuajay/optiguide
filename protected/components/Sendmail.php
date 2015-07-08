@@ -5,7 +5,7 @@
  */
 
 class Sendmail {
-    function send($to, $subject, $body, $fromName = '', $from = '', $attachment = null) {
+    function send($to, $subject, $body, $fromName = '', $from = '', $attachment = null) {       
         if (MAILSENDBY == 'phpmail'):
             $this->sendPhpmail($to, $subject, $body, $attachment);
         elseif (MAILSENDBY == 'smtp'):

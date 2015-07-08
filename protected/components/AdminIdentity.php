@@ -8,6 +8,10 @@
 class AdminIdentity extends CUserIdentity {
 
     private $_id;
+    
+    public $email;
+
+	    
 
     /**
      * Authenticates a user.
@@ -37,13 +41,24 @@ class AdminIdentity extends CUserIdentity {
             $user->save(false);
             $this->_id = $user->admin_id;
             $this->setState('username', $user->admin_name);
-
+            $this->setState('v1', $user->admin_email);
             $this->setState('role', 'admin');
 
         endif;
 
         return !$this->errorCode;
     }
+    
+     public function checkadminemail() {
+         
+         $user = Admin::model()->find('admin_email = :U', array(':U' => $this->email));
+
+        if ($user === null):
+            $this->errorCode = self::ERROR_EMAIL_INVALID;     // Error Code : 1        
+        endif;
+        
+        return !$this->errorCode;
+     }
 
     /**
      * @return integer the ID of the user record
