@@ -5,10 +5,10 @@
  */
 
 /*Panel*/
-.panel-primary { border-color: #93bf02; }
-.panel-primary > .panel-heading { color: #ffffff; background-color: #93bf02; border-color: #93bf02; }
-.panel-primary > .panel-heading + .panel-collapse .panel-body { border-top-color: #93bf02; }
-.panel-primary > .panel-footer + .panel-collapse .panel-body { border-bottom-color: #93bf02; }
+.panel-primary { border-color: #3C8DBC; }
+.panel-primary > .panel-heading { color: #ffffff; background-color: #3C8DBC; border-color: #3C8DBC; }
+.panel-primary > .panel-heading + .panel-collapse .panel-body { border-top-color: #3C8DBC; }
+.panel-primary > .panel-footer + .panel-collapse .panel-body { border-bottom-color: #3C8DBC; }
 .panel-success { border-color: #5cb85c; }
 .panel-success > .panel-heading { color: #ffffff; background-color: #5cb85c; border-color: #5cb85c; }
 .panel-success > .panel-heading + .panel-collapse .panel-body { border-top-color: #5cb85c; }
@@ -30,6 +30,6 @@
 
 /*custom*/
 .bg-green {
-  background: #93bf02 !important;
+  background: #3C8DBC !important;
   color: #000 !important;
 }

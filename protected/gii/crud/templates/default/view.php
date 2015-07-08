@@ -23,9 +23,7 @@ $restrict = $this->giiGenerateHiddenFields();
 $activeFields = $this->giiGenerateActiveInActiveFields();
 ?>
 <div class="user-view">
-    <?php echo "<?php"; ?>
-    if ($export == false) {
-    ?>
+    
     <p>
         <?php echo "<?php"; ?>
         $this->widget(
@@ -60,15 +58,7 @@ $activeFields = $this->giiGenerateActiveInActiveFields();
         );
         ?>
     </p>
-    <?php echo "<?php"; ?>
-    }
-    ?>
-    <?php echo "<?php"; ?>
-    if ($export) { ?>
-        <h3 class="text-center"><?php echo  $this->modelClass.' <?php echo $this->title ?>';?></h3>
-    <?php echo "<?php"; ?>        
-    }
-    ?>
+    
     <?php echo "<?php"; ?> $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
         'htmlOptions' => array('class'=>'table table-striped table-bordered'),

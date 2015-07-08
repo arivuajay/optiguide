@@ -23,60 +23,6 @@ echo "\$cs->registerScriptFile(\$themeUrl . '/js/datatables/jquery.dataTables.js
 echo "\$cs->registerScriptFile(\$themeUrl . '/js/datatables/dataTables.bootstrap.js', \$cs_pos_end);\n";
 ?>
 ?>
-<div class="col-lg-12 col-md-12" id="advance-search-block">
-    <div class="row mb10" id="advance-search-label">
-        <?php
-        $search_icon = '<i class="fa fa-angle-right"></i>';
-        echo "<?php echo CHtml::link('{$search_icon} Show Advance Search', 'javascript:void(0);', array('class' => 'pull-right')); ?>"
-        ?>
-    </div>
-    <div class="row" id="advance-search-form">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="glyphicon glyphicon-search"></i>  Search
-                </h3>
-                <div class="clearfix"></div>
-            </div>
-            <section class="content">
-                <div class="row">
-                    <?php echo "<?php \$form=\$this->beginWidget('CActiveForm', array(
-	'id'=>'search-form',
-	'method'=>'get',
-        'action' => array('/site/" . str_replace('-', '', $this->class2id($this->modelClass)) . "/index'),
-        'htmlOptions' => array('role' => 'form')
-)); ?>\n"; ?>
-
-                     <?php
-                     $restrict = $this->giiGenerateHiddenFields();
-                foreach ($this->tableSchema->columns as $column) {
-                    if ($column->autoIncrement || in_array($column->name, $restrict))
-                        continue;
-                    ?>
-                    <div class="col-lg-4 col-md-4">
-                        <div class="form-group">
-                            <?php echo "<?php echo " . $this->generatesearchActiveLabel($this->modelClass, $column, '') . "; ?>\n"; ?>
-                            <?php echo "<?php echo " . $this->generateSearchActiveField($this->modelClass, $column) . "; ?>\n"; ?>
-                            <?php echo "<?php echo \$form->error(\$searchModel,'{$column->name}'); ?>\n"; ?>
-                        </div>
-                    </div>
-                    <?php
-                }
-                ?>
-                    <div class="col-lg-2 col-md-2">
-                        <div class="form-group">
-                            <label>&nbsp;</label>
-                            <?php echo "<?php echo CHtml::submitButton('Search', array('class' => 'btn btn-primary form-control')); ?>\n"; ?>
-                        </div>
-                    </div>
-                    <?php echo "<?php " ?> $this->endWidget(); ?>
-                </div>
-            </section>
-
-
-        </div>
-    </div>
-</div>
 
 <?php echo "<?php"; ?> if ($search) { ?>
     <div class="col-lg-12 col-md-12">
@@ -86,6 +32,7 @@ echo "\$cs->registerScriptFile(\$themeUrl . '/js/datatables/dataTables.bootstrap
 <?php
 $count=0;
 $activeFields = $this->giiGenerateActiveInActiveFields();
+$restrict = $this->giiGenerateHiddenFields();
 foreach($this->tableSchema->columns as $column)
 {
     if($column->isPrimaryKey || in_array($column->name, $restrict))

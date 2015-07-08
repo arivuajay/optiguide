@@ -57,19 +57,9 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 	 */
 	public function actionView($id)
 	{
-                $model = $this->loadModel($id);
-
-                $export = isset($_REQUEST['export']) && $_REQUEST['export'] == 'PDF';
-                $compact = compact('model', 'export');
-                if ($export) {
-                    $mPDF1 = Yii::app()->ePdf->mpdf();
-                    $stylesheet = $this->pdfStyles();
-                    $mPDF1->WriteHTML($stylesheet, 1);
-                    $mPDF1->WriteHTML($this->renderPartial('view', $compact, true));
-                    $mPDF1->Output("<?php echo $this->modelClass; ?>_view_{$id}.pdf", EYiiPdf::OUTPUT_TO_DOWNLOAD);
-                } else {
-                    $this->render('view', $compact);
-                }
+                $this->render('view',array(
+			'model'=>$this->loadModel($id),
+		));
 	}
 
 	/**
@@ -87,7 +77,6 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 		{
 			$model->attributes=$_POST['<?php echo $this->modelClass; ?>'];
 			if($model->save()){
-                                Myclass::addAuditTrail("Created <?php echo $this->modelClass; ?> successfully.", "user");
                                 Yii::app()->user->setFlash('success', '<?php echo $this->modelClass; ?> Created Successfully!!!');
                                 $this->redirect(array('index'));
                         }
@@ -114,7 +103,6 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 		{
 			$model->attributes=$_POST['<?php echo $this->modelClass; ?>'];
 			if($model->save()){
-                                Myclass::addAuditTrail("Updated <?php echo $this->modelClass; ?> successfully.", "user");
                                 Yii::app()->user->setFlash('success', '<?php echo $this->modelClass; ?> Updated Successfully!!!');
                                 $this->redirect(array('index'));
                         }
@@ -132,17 +120,7 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 	 */
 	public function actionDelete($id)
 	{
-                try {
-                    $model = $this->loadModel($id);
-                    $model->delete();
-                    Myclass::addAuditTrail("Deleted <?php echo $this->modelClass; ?> successfully.", "user");
-                } catch (CDbException $e) {
-                    if ($e->errorInfo[1] == 1451) {
-                        throw new CHttpException(400, Yii::t('err', 'Relation Restriction Error.'));
-                    } else {
-                        throw $e;
-                    }
-                }
+                $this->loadModel($id)->delete();
         
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax'])){
@@ -156,18 +134,14 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 	 */
 	public function actionIndex()
 	{
-            $search = false;
+            $model=new <?php echo $this->modelClass; ?>('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['<?php echo $this->modelClass; ?>']))
+			$model->attributes=$_GET['<?php echo $this->modelClass; ?>'];
 
-            $model = new <?php echo $this->modelClass; ?>();
-            $searchModel = new <?php echo $this->modelClass; ?>('search');
-            $searchModel->unsetAttributes();  // clear any default values
-            if (isset($_GET['<?php echo $this->modelClass; ?>'])) {
-                $search = true;
-                $searchModel->attributes = $_GET['<?php echo $this->modelClass; ?>'];
-                $searchModel->search();
-            }
-
-            $this->render('index', compact('searchModel', 'search', 'model'));
+		$this->render('index',array(
+			'model'=>$model,
+		));
 	}
 
 	/**

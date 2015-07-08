@@ -98,7 +98,7 @@ class <?php echo $modelClass; ?> extends <?php echo $this->baseClass."\n"; ?>
 	{
 		return array(
 <?php foreach($labels as $name=>$label): ?>
-			<?php echo "'$name' => '$label',\n"; ?>
+			<?php echo "'$name' => Myclass::t('$label'),\n"; ?>
 <?php endforeach; ?>
 		);
 	}
