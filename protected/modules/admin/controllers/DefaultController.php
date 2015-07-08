@@ -63,8 +63,7 @@ class DefaultController extends Controller {
     }
 
     public function actionLogout() 
-    {
-        //Myclass::addAuditTrail(Yii::app()->user->name . " logged-out successfully.", "user");
+    {       
         Yii::app()->user->logout();
         $this->redirect(array('/admin/default/login'));
     }
@@ -83,11 +82,10 @@ class DefaultController extends Controller {
         if (isset($_POST['PasswordResetRequestForm'])) 
         {
             $model->attributes = $_POST['PasswordResetRequestForm'];
-            if ($model->validate() && $model->authenticate()):    
-                Yii::app()->user->setFlash('success', 'Check your email for further instructions.');
-                $this->redirect(array('/admin/default/login'));              
-                    //Yii::app()->user->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
-                endif;
+            if ($model->validate() && $model->authenticate()):                    
+                Yii::app()->user->setFlash('success', Myclass::t('App17'));
+                $this->redirect(array('/admin/default/login'));     
+            endif;
         }
 
         $this->render('forgotpassword', array(
@@ -109,13 +107,12 @@ class DefaultController extends Controller {
                 $model->admin_password = Myclass::encrypt($_POST['Admin']['current_password']);
               if($model->save(false))
               {                  
-                Yii::app()->user->setFlash('success', 'password changed successfully.');
+                Yii::app()->user->setFlash('success', Myclass::t('App18'));
                 $this->redirect(array('/admin/default/changepassword'));    
               }else
               {  
-                Yii::app()->user->setFlash('error', 'password not changed.');
-                $this->redirect(array('/admin/default/changepassword'));   
-                 
+                Yii::app()->user->setFlash('error', Myclass::t('App19'));
+                $this->redirect(array('/admin/default/changepassword'));                   
               }   
             }
         }else
@@ -136,8 +133,7 @@ class DefaultController extends Controller {
             $model->attributes = $_POST['Admin'];
             if ($model->validate()):    
                 $model->save(false);
-               // Myclass::addAuditTrail("Updated a {$model->username} successfully.", "user");
-                Yii::app()->user->setFlash('success', 'Profile updated successfully');
+                Yii::app()->user->setFlash('success', Myclass::t('App20'));
                 $this->refresh();
             endif;
         }

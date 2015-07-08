@@ -1,8 +1,7 @@
 <?php
-$this->title = 'Forgot Password';
+$this->title = Myclass::t('App27');
 $this->breadcrumbs[] = $this->title;
 ?>
-
 <div class="form-box" id="login-box">
     <div class="header"><?php echo CHtml::encode($this->title) ?></div>
     <?php $form = $this->beginWidget('CActiveForm', array('id' => 'login-form')); ?>
@@ -24,7 +23,7 @@ $this->breadcrumbs[] = $this->title;
         </div>
     </div>
     <div class="footer">
-        <?php echo CHtml::submitButton('Send', array('class' => 'btn bg-olive btn-block', 'name' => 'forget_password')) ?>   
+        <?php echo CHtml::submitButton(Myclass::t('App28'), array('class' => 'btn bg-olive btn-block', 'name' => 'forget_password')) ?>   
     </div>
     <?php $this->endWidget(); ?>
 </div>

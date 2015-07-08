@@ -52,7 +52,7 @@ class Admin extends CActiveRecord {
     public function equalPasswords($attribute, $params) {
         $admin = Admin::model()->findByPk(Yii::app()->user->id);
         if ($this->$attribute != "" && $admin->admin_password != Myclass::encrypt($this->$attribute)) {
-            $this->addError($attribute, 'Old password is incorrect.');
+            $this->addError($attribute, Myclass::t('APP12'));
         }
     }
 
@@ -71,17 +71,17 @@ class Admin extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'admin_id' => Yii::t('admin', 'Admin Id'),
-            'admin_name' => Yii::t('admin', 'Name'),
-            'admin_username' => Yii::t('admin', 'User name'),
-            'admin_password' => Yii::t('admin', 'Password'),
-            'admin_status' => Yii::t('admin', 'Status'),
-            'admin_email' => Yii::t('admin', 'Email'),
-            'current_password' => Yii::t('admin', 'Current Password'),
-            're_password' => Yii::t('admin', 'Re-type Password'),
-            'created_date' => 'Created Date',
-            'admin_last_login' => 'Admin Last Login',
-            'admin_login_ip' => 'Admin Login Ip',
+            'admin_id' => Myclass::t('APP1'),
+            'admin_name' => Myclass::t('APP2'),
+            'admin_username' => Myclass::t('APP3'),
+            'admin_password' => Myclass::t('APP4'),
+            'admin_status' => Myclass::t('APP5'),
+            'admin_email' => Myclass::t('APP6'),
+            'current_password' => Myclass::t('APP7'),
+            're_password' => Myclass::t('APP8'),
+            'created_date' => Myclass::t('APP9'),
+            'admin_last_login' => Myclass::t('APP10'),
+            'admin_login_ip' => Myclass::t('APP11')
         );
     }
 

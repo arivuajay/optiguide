@@ -37,9 +37,9 @@ class AdminLoginForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'username' => Yii::t('admin', 'Username'),
-            'password' => Yii::t('admin', 'Password'),
-            'rememberMe' => Yii::t('admin', 'Remember me'),
+            'username' => Myclass::t('APP3'),
+            'password' => Myclass::t('APP4'),
+            'rememberMe' => Myclass::t('APP13'),
         );
     }
 
@@ -53,7 +53,7 @@ class AdminLoginForm extends CFormModel {
             $this->_identity = new AdminIdentity($this->username, $this->password);
             if (!$this->_identity->authenticate()):
                 if ($this->_identity->errorCode)
-                    $this->addError('username', Myclass::t('Incorrect User Name or Password. Please try again.'));
+                    $this->addError('username', Myclass::t('APP14'));
             endif;
         endif;
     }

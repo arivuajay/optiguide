@@ -27,7 +27,7 @@ class PasswordResetRequestForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'email' => Yii::t('email', 'Emailid'),          
+            'email' => Myclass::t('APP6'),          
         );
     }
 
@@ -40,7 +40,7 @@ class PasswordResetRequestForm extends CFormModel {
         $userinfo = Admin::model()->find('admin_email = :U', array(':U' => $this->email));
 
         if ($userinfo === null):
-            $this->addError('email', Myclass::t('Incorrect Email. Please try again.'));  // Error Code : 1               
+            $this->addError('email', Myclass::t('APP15'));  // Error Code : 1               
         else:
             $randpass   = Myclass::getRandomString(5);           
             $userinfo->admin_password = Myclass::encrypt($randpass);
@@ -55,7 +55,9 @@ class PasswordResetRequestForm extends CFormModel {
                 "{NEXTSTEPURL}" => Yii::app()->createAbsoluteUrl('/admin/default/login')   
             );
             $message = $mail->getMessage('adminforgotpassword', $trans_array);
-            $Subject = $mail->translate('{SITENAME}: Admin Reset Password');
+            
+            $reset_subject = Myclass::t('App16');
+            $Subject = $mail->translate('{SITENAME}: '.$reset_subject);
             $mail->send($toemail, $Subject, $message);
             return true;
          endif;        

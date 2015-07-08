@@ -2,9 +2,9 @@
 /* @var $this ArchiveCategoryController */
 /* @var $model ArchiveCategory */
 
-$this->title='Create Archive Categories';
+$this->title= Myclass::t('App35');
 $this->breadcrumbs=array(
-	'Archive Categories'=>array('index'),
+	Myclass::t('App40') => array('index'),
 	$this->title,
 );
 ?>

@@ -16,7 +16,7 @@
 	'enableAjaxValidation'=>true,
 )); ?>
             <div class="box-body">
-                                    <div class="form-group">
+                    <div class="form-group">
                         <?php echo $form->labelEx($model,'NOM_CATEGORIE_FR',  array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">
                         <?php echo $form->textField($model,'NOM_CATEGORIE_FR',array('class'=>'form-control','size'=>60,'maxlength'=>255)); ?>
@@ -24,7 +24,7 @@
                         </div>
                     </div>
 
-                                        <div class="form-group">
+                    <div class="form-group">
                         <?php echo $form->labelEx($model,'NOM_CATEGORIE_EN',  array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">
                         <?php echo $form->textField($model,'NOM_CATEGORIE_EN',array('class'=>'form-control','size'=>60,'maxlength'=>255)); ?>
@@ -36,7 +36,7 @@
             <div class="box-footer">
                 <div class="form-group">
                     <div class="col-sm-0 col-sm-offset-2">
-                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+                        <?php echo CHtml::submitButton($model->isNewRecord ? Myclass::t('App33') : Myclass::t('App25'), array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
                     </div>
                 </div>
             </div>

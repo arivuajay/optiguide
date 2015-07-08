@@ -2,10 +2,10 @@
 /* @var $this ArchiveCategoryController */
 /* @var $model ArchiveCategory */
 
-$this->title='Update Archive Categories: '. $model->ID_CATEGORIE;
+$this->title= Myclass::t('App34').' '. $model->ID_CATEGORIE;
 $this->breadcrumbs=array(
-	'Archive Categories'=>array('index'),
-	'Update Archive Categories',
+	Myclass::t('App40') => array('index'),
+	Myclass::t('App34'),
 );
 ?>
 

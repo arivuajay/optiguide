@@ -2,7 +2,7 @@
 /* @var $this DefaultController */
 /* @var $model Admin */
 
-$this->title = 'Change Password';
+$this->title = Myclass::t('App26');
 $this->breadcrumbs[] = $this->title;
 ?>
 
@@ -43,7 +43,7 @@ $this->breadcrumbs[] = $this->title;
                     
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">
-                            <?php echo CHtml::submitButton('Save', array('class' => 'btn btn-primary')); ?>
+                            <?php echo CHtml::submitButton(Myclass::t('App23'), array('class' => 'btn btn-primary')); ?>
                         </div>
                     </div>
 

@@ -2,9 +2,9 @@
 /* @var $this ArchiveCategoryController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title = 'Archive Categories';
+$this->title = Myclass::t('App40');
 $this->breadcrumbs = array(
-    'Archive Categories',
+    Myclass::t('App40'),
 );
 $themeUrl = $this->themeUrl;
 $cs = Yii::app()->getClientScript();
@@ -50,7 +50,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 <input type="text" class="form-control inline" name="base_table_search" id="base_table_search" />
             </div>
         </div>
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Create ArchiveCategory', array('/site/archivecategory/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Create ArchiveCategory', array('/admin/archivecategory/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 

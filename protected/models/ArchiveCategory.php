@@ -27,6 +27,7 @@ class ArchiveCategory extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
+            array('NOM_CATEGORIE_FR, NOM_CATEGORIE_EN', 'required'), 
             array('NOM_CATEGORIE_FR, NOM_CATEGORIE_EN', 'length', 'max' => 255),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
@@ -50,9 +51,9 @@ class ArchiveCategory extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'ID_CATEGORIE' => Myclass::t('Category ID'),
-            'NOM_CATEGORIE_FR' => Myclass::t('Category Name Fr'),
-            'NOM_CATEGORIE_EN' => Myclass::t('Category Name En'),
+            'ID_CATEGORIE' => Myclass::t('App30'),
+            'NOM_CATEGORIE_FR' => Myclass::t('App31'),
+            'NOM_CATEGORIE_EN' => Myclass::t('App32'),
         );
     }
 
