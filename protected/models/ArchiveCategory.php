@@ -98,9 +98,10 @@ class ArchiveCategory extends CActiveRecord {
 
     public function dataProvider() {
         return new CActiveDataProvider($this, array(
-            'pagination' => array(
-                'pageSize' => PAGE_SIZE,
-            )
+            'criteria' => array(
+                'order' => 'ID_CATEGORIE DESC',
+            ),
+//            'pagination' => false
         ));
     }
 
