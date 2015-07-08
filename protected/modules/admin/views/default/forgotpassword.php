@@ -1,34 +1,30 @@
 <?php
-$form = $this->beginWidget('CActiveForm', array(
-    'id' => 'forgotform',
-    'enableAjaxValidation' => false,
-    'htmlOptions' => array('class' => 'form-signin')
-        ));
-//echo $form->errorSummary($newmodel, '');
+$this->title = 'Forgot Password';
+$this->breadcrumbs[] = $this->title;
 ?>
-<h2 class="form-signin-heading">Forgot Password ?</h2>
-<?php echo $form->errorSummary($newmodel, ''); ?>
-<?php 
-if (isset($this->flashMessages)):
-//    echo '<div class="col-lg-5 col-md-5  col-sm-5 center-block fn clearfix mt20 alert-notify">';
-    foreach ($this->flashMessages as $key => $message) {
-        echo "<div class='alert alert-$key'>$message</div>";
-    }
-//    echo '</div>';
-endif;
-?>
-<div class="login-wrap">
-    <div class="user-login-info">
-        <?php echo $form->textField($newmodel, 'admin_email', array('placeholder' => $newmodel->getAttributeLabel('admin_email'), 'id' => 'input-email', 'class' => 'form-control')); ?>
+
+<div class="form-box" id="login-box">
+    <div class="header"><?php echo CHtml::encode($this->title) ?></div>
+    <?php $form = $this->beginWidget('CActiveForm', array('id' => 'login-form')); ?>
+    <div class="body bg-gray">
+        <?php if (isset($this->flashMessages)): ?>
+            <?php foreach ($this->flashMessages as $key => $message) { ?>
+                <div class="alert alert-<?php echo $key; ?> fade in">
+                    <button type="button" class="close close-sm" data-dismiss="alert">
+                        <i class="fa fa-times"></i>
+                    </button>
+                    <?php echo $message; ?>
+                </div>
+            <?php } ?>
+        <?php endif ?>  
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'email') ?>
+            <?php echo $form->textField($model, 'email', array('autofocus', 'class' => 'form-control')); ?>
+            <?php echo $form->error($model, 'email') ?>
+        </div>
     </div>
-
-
-    <button class="btn btn-lg btn-login btn-block" type="submit">Get Reset Link</button>
-    <label class="checkbox">
-        <span class="pull-right">
-            <a href="<?php echo $this->createUrl('/admin/default/login'); ?>"> Login >></a>
-        </span>
-    </label>
+    <div class="footer">
+        <?php echo CHtml::submitButton('Send', array('class' => 'btn bg-olive btn-block', 'name' => 'forget_password')) ?>   
+    </div>
+    <?php $this->endWidget(); ?>
 </div>
-
-<?php $this->endWidget(); ?>

@@ -1,16 +1,14 @@
 <?php
-/* @var $this UserController */
-/* @var $model User */
+/* @var $this DefaultController */
+/* @var $model Admin */
 
-$this->breadcrumbs = array(
-    'Change Password'
-);
+$this->title = 'Change Password';
+$this->breadcrumbs[] = $this->title;
 ?>
 
 <div class="row">
     <div class="col-lg-12">
-        <section class="panel">
-            <header class="panel-heading">Edit Profile</header>
+        <section class="panel">          
             <div class="panel-body">
                 <div class="position-left">
                     <?php

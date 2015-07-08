@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Site controller
  */
@@ -21,14 +20,15 @@ class DefaultController extends Controller {
      * This method is used by the 'accessControl' filter.
      * @array access control rules
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('login', 'error', 'password_reset_request', 'screens'),
+                'actions' => array('login', 'error', 'forgotpassword', 'screens'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('logout', 'index', 'profile'),
+                'actions' => array('logout', 'index', 'profile','changepassword'),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -37,14 +37,16 @@ class DefaultController extends Controller {
         );
     }
 
-    public function actionIndex() {
+    public function actionIndex() 
+    {
         $this->render('index');
     }
 
     public function actionLogin() {
         $this->layout = '//layouts/login';
 
-        if (!Yii::app()->user->isGuest) {
+        if (!Yii::app()->user->isGuest) 
+        {
             $this->redirect(array('/admin/default/index'));
         }
 
@@ -53,7 +55,6 @@ class DefaultController extends Controller {
         if (isset($_POST['sign_in'])) {
             $model->attributes = $_POST['AdminLoginForm'];
             if ($model->validate() && $model->login()):
-                //Myclass::addAuditTrail("{$model->username} logged-in successfully.", "user");
                 $this->redirect(array('/admin/default/index'));
             endif;
         }
@@ -61,18 +62,26 @@ class DefaultController extends Controller {
         $this->render('login', array('model' => $model));
     }
 
-    public function actionLogout() {
+    public function actionLogout() 
+    {
         //Myclass::addAuditTrail(Yii::app()->user->name . " logged-out successfully.", "user");
         Yii::app()->user->logout();
         $this->redirect(array('/admin/default/login'));
     }
 
-    public function actionPassword_Reset_Request() {
+    public function actionForgotpassword() 
+    {
         
-     $this->layout = '//layouts/login';
-     
+        $this->layout = '//layouts/login';
+
+        if (!Yii::app()->user->isGuest) 
+        {
+               $this->redirect(array('/admin/default/index'));
+        }
+        
         $model = new PasswordResetRequestForm();
-        if (isset($_POST['PasswordResetRequestForm'])) {
+        if (isset($_POST['PasswordResetRequestForm'])) 
+        {
             $model->attributes = $_POST['PasswordResetRequestForm'];
             if ($model->validate() && $model->authenticate()):    
                 Yii::app()->user->setFlash('success', 'Check your email for further instructions.');
@@ -81,33 +90,44 @@ class DefaultController extends Controller {
                 endif;
         }
 
-        $this->render('requestPasswordResetToken', array(
+        $this->render('forgotpassword', array(
             'model' => $model,
         ));
     }
-          
+    
+    public function actionChangepassword()
+    {      
+        $id    = Yii::app()->user->id;       
+        $model = Admin::model()->findByAttributes(array('admin_id'=>$id));
+        $model->setScenario('changepassword');
 
-    public function actionResetPassword($token) {
-        try {
-            $model = new ResetPasswordForm($token);
-        } catch (InvalidParamException $e) {
-            throw new BadRequestHttpException($e->getMessage());
+        if(isset($_POST['Admin']))
+        {
+            $model->attributes = $_POST['Admin'];              
+            if($model->validate())
+            {  
+                $model->admin_password = Myclass::encrypt($_POST['Admin']['current_password']);
+              if($model->save(false))
+              {                  
+                Yii::app()->user->setFlash('success', 'password changed successfully.');
+                $this->redirect(array('/admin/default/changepassword'));    
+              }else
+              {  
+                Yii::app()->user->setFlash('error', 'password not changed.');
+                $this->redirect(array('/admin/default/changepassword'));   
+                 
+              }   
+            }
+        }else
+        {
+             unset($model->admin_password); 
         }
 
-        if (isset($_POST['ResetPasswordForm'])) {
-            $model->attributes = $_POST['ResetPasswordForm'];
-            if ($model->validate() && $model->resetPassword()):
-                Yii::app()->user->setFlash('success', 'New password was saved.');
-                $this->goHome();
-            endif;
-        }
-
-        $this->render('resetPassword', array(
-            'model' => $model,
-        ));
+        $this->render('changepassword',array('model'=>$model)); 
     }
 
-    public function actionProfile() {
+    public function actionProfile() 
+    {
         $id    = Yii::app()->user->id;
         $model = Admin::model()->findByPk($id);
         $model->setScenario('update');

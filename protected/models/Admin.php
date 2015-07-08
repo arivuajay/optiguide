@@ -46,6 +46,7 @@ class Admin extends CActiveRecord {
             // @todo Please remove those attributes that should not be searched.
             array('admin_id, admin_name, admin_password, admin_status, admin_email, created_date, admin_last_login, admin_login_ip', 'safe', 'on' => 'search'),
         );
+ 
     }
 
     public function equalPasswords($attribute, $params) {
