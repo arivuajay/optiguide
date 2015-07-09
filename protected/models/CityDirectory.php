@@ -14,6 +14,9 @@
  */
 class CityDirectory extends CActiveRecord
 {
+    
+    public $country;
+    public $REGION;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -30,13 +33,14 @@ class CityDirectory extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('ID_REGION', 'required'),
-			array('ID_REGION', 'numerical', 'integerOnly'=>true),
+			array('REGION,NOM_VILLE,country', 'required'),
+			array('REGION,country', 'numerical', 'integerOnly'=>true),
 			array('NOM_VILLE', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('ID_VILLE, ID_REGION, NOM_VILLE', 'safe', 'on'=>'search'),
 		);
+                
 	}
 
 	/**
@@ -48,8 +52,10 @@ class CityDirectory extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'repertoireRetailers' => array(self::HAS_MANY, 'RepertoireRetailer', 'ID_VILLE'),
-			'iDREGION' => array(self::BELONGS_TO, 'RepertoireRegion', 'ID_REGION'),
+			'iDREGION' => array(self::BELONGS_TO, 'RegionDirectory', 'ID_REGION'),
+                        //'country' => array(self::BELONGS_TO, 'CountryDirectory', 'ID_PAYS')
 		);
+                
 	}
 
 	/**
@@ -59,8 +65,9 @@ class CityDirectory extends CActiveRecord
 	{
 		return array(
 			'ID_VILLE' => Myclass::t('Id Ville'),
-			'ID_REGION' => Myclass::t('Id Region'),
+			'REGION' => Myclass::t('Region'),
 			'NOM_VILLE' => Myclass::t('Nom Ville'),
+                        'country'   => Myclass::t('Country'),
 		);
 	}
 
@@ -83,7 +90,7 @@ class CityDirectory extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('ID_VILLE',$this->ID_VILLE);
-		$criteria->compare('ID_REGION',$this->ID_REGION);
+		$criteria->compare('REGION',$this->ID_REGION);
 		$criteria->compare('NOM_VILLE',$this->NOM_VILLE,true);
 
 		return new CActiveDataProvider($this, array(
