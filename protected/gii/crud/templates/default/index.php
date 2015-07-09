@@ -38,6 +38,8 @@ echo "\$cs->registerScriptFile(\$themeUrl . '/js/datatables/dataTables.bootstrap
         $gridColumns = array(
         <?php
         $count = 0;
+        $activeFields = $this->giiGenerateActiveInActiveFields();
+        $restrict = $this->giiGenerateHiddenFields();
         foreach ($this->tableSchema->columns as $column) {
             if ($column->isPrimaryKey || in_array($column->name, $restrict))
                 continue;
