@@ -41,7 +41,18 @@ return array(
     'App37'  => 'ArchiveCategory Updated Successfully!!!',
     'App38'  => 'ArchiveCategory Deleted Successfully!!!',
     'App39'  => 'The requested page does not exist.',
-    'App40'  => 'Archive Categories'
+    'App40'  => 'Archive Categories',
+    
+    'App41' => 'Countrydirectory created Successfully!!!',
+    'App42' => 'Countrydirectory updated Successfully!!!',
+    'App43' => 'Countrydirectory deleted Successfully!!!',
+    'App44' => 'Regions count',
+    'App45' => 'Country Directories',
+    'App46' => 'Create Country Directories',
+    'App47' => 'Update Country Directories',
+    'App48' => 'Id Pays',
+    'App49' => 'Nom Pays Fr',
+    'App50' => 'Nom Pays En'
     
 );
 ?>

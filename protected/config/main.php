@@ -58,6 +58,7 @@ return array(
         ),
         // database settings are configured in database.php
         'db' => require(dirname(__FILE__) . '/database.php'),
+        
         'errorHandler' => array(
             'errorAction' => 'site/error',
         ),
@@ -67,6 +68,9 @@ return array(
                 array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'error, warning',
+                ),
+                array(
+                    'class'=>'CProfileLogRoute',
                 ),
             ),
         ),
