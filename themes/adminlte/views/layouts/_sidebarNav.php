@@ -9,7 +9,10 @@
             </div>
         </div>
 
-        <?php
+        <?php  
+        // Current controller name
+        $_controller = Yii::app()->controller->id;
+        
         $this->widget('zii.widgets.CMenu', array(
             'activateParents' => true,
             'encodeLabel' => false,
@@ -22,9 +25,19 @@
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
-                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Countries</span>', 'url' => array('/admin/countrydirectory/index'), 'active' => $_controller == 'CountryDirectoryController'),
-                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Region</span>', 'url' => array('/admin/regiondirectory/index'), 'active' => $_controller == 'masterrole'),
-                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Cities</span>', 'url' => array('/admin/citydirectory/index'), 'active' => $_controller == 'user'),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Countries</span>', 'url' => array('/admin/countrydirectory/index'), 'active' => $_controller == 'countrydirectory'),
+                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Region</span>', 'url' => array('/admin/regiondirectory/index'), 'active' => $_controller == 'eventdirectory'),
+                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Cities</span>', 'url' => array('/admin/citydirectory/index'), 'active' => $_controller == 'citydirectory'),
+                    ),
+                ),
+                
+                array('label' => '<i class="fa fa-dashboard"></i> <span>Informations</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
+                    'itemOptions' => array('class' => 'treeview'),
+                    'submenuOptions' => array('class' => 'treeview-menu'),
+                    'items' => array(
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Categories</span>', 'url' => array('/admin/categoryinformation/index'), 'active' => $_controller == 'categoryinformation'),
+                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Sections</span>', 'url' => array('/admin/sectioninformation/index'), 'active' => $_controller == 'sectioninformation'),
+                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Groups</span>', 'url' => array('/admin/cityinformation/index'), 'active' => $_controller == 'cityinformation'),
                     ),
                 ),
             ),

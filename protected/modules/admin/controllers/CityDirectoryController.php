@@ -77,7 +77,7 @@ class CityDirectoryController extends Controller
             }
         }
 
-         $data['model'] = $model;
+        $data['model'] = $model;
 
         $this->render('create', $data);
     }
@@ -86,10 +86,10 @@ class CityDirectoryController extends Controller
     {          
         $options = '';
         $cid     = isset($_POST['id'])?$_POST['id']:'';
+        $options = "<option value=''>".Myclass::t('APP53')."</option>";
         if($cid!='')
         {
-            $data_regions = Myclass::getallregions($cid);    
-            $options = "<option value=''>".Myclass::t('APP53')."</option>";
+            $data_regions = Myclass::getallregions($cid);   
             foreach($data_regions as $k => $info)
             {
                 $options .= "<option value='".$k."'>".$info."</option>";  
@@ -156,6 +156,7 @@ class CityDirectoryController extends Controller
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
         }
     }
+    
 
     /**
      * Lists all models.

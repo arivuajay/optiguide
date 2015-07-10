@@ -16,13 +16,13 @@ class CityDirectory extends CActiveRecord
 {
     
     public $country;
-    public $REGION;
+    
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'repertoire_ville';
+            return 'repertoire_ville';
 	}
 
 	/**
@@ -33,13 +33,13 @@ class CityDirectory extends CActiveRecord
             // NOTE: you should only define rules for those attributes that
             // will receive user inputs.
             return array(
-                    array('ID_REGION,NOM_VILLE,country', 'required'),
-                    array('ID_REGION,country', 'numerical', 'integerOnly'=>true),
-                    array('NOM_VILLE', 'length', 'max'=>255),
-                    array('NOM_VILLE', 'my_required'),
-                    // The following rule is used by search().
-                    // @todo Please remove those attributes that should not be searched.
-                    array('ID_VILLE, ID_REGION, NOM_VILLE', 'safe', 'on'=>'search'),
+                array('ID_REGION,NOM_VILLE,country', 'required'),
+                array('ID_REGION,country', 'numerical', 'integerOnly'=>true),
+                array('NOM_VILLE', 'length', 'max'=>255),
+                array('NOM_VILLE', 'my_required'),
+                // The following rule is used by search().
+                // @todo Please remove those attributes that should not be searched.
+                array('ID_VILLE, ID_REGION, NOM_VILLE', 'safe', 'on'=>'search'),
             );
                 
 	}
@@ -63,13 +63,48 @@ class CityDirectory extends CActiveRecord
 
 	}
         
+        /**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+            // NOTE: you may need to adjust the relation name and the related
+            // class name for the relations automatically generated below.
+            return array(
+                'repertoireRetailers' => array(self::HAS_MANY, 'RepertoireRetailer', 'ID_VILLE'),
+                'regionDirectory' => array(self::BELONGS_TO, 'RegionDirectory', 'ID_REGION'),                        
+            );
+                
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+            return array(
+                'ID_VILLE' => Myclass::t('Id Ville'),
+                'ID_REGION' => Myclass::t('Region'),
+                'NOM_VILLE' => Myclass::t('Nom Ville'),
+                'country'   => Myclass::t('Country'),
+            );
+	}  
+        
         public static function get_country_info($regionid)
         {
            // countryDirectory
            $get_cntrysql   =  RegionDirectory::model()->with("countryDirectory")->findByPk($regionid);
            $cntry_res      =  $get_cntrysql->countryDirectory;      
            return $cntry_res;
-        }     
+        } 
+        
+        public static function get_region_info($cityid)
+        {
+           // regionDirectory
+           $get_regionsql   =  CityDirectory::model()->with("regionDirectory")->findByPk($cityid);
+           $region_res      =  $get_regionsql->regionDirectory;   
+           return $region_res;
+        } 
         
         public function checkregionexist($regid,$ctyname,$cityid)
         {
@@ -90,33 +125,7 @@ class CityDirectory extends CActiveRecord
           return $res;  
         }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-			'repertoireRetailers' => array(self::HAS_MANY, 'RepertoireRetailer', 'ID_VILLE'),
-			'regionDirectory' => array(self::BELONGS_TO, 'RegionDirectory', 'ID_REGION'),                        
-		);
-                
-	}
-
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'ID_VILLE' => Myclass::t('Id Ville'),
-			'ID_REGION' => Myclass::t('Region'),
-			'NOM_VILLE' => Myclass::t('Nom Ville'),
-                        'country'   => Myclass::t('Country'),
-		);
-	}
-
+	
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 *
@@ -131,20 +140,20 @@ class CityDirectory extends CActiveRecord
 	 */
 	public function search()
 	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
+            // @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria=new CDbCriteria;
+            $criteria=new CDbCriteria;
 
-		$criteria->compare('ID_VILLE',$this->ID_VILLE);
-		$criteria->compare('ID_REGION',$this->ID_REGION);
-		$criteria->compare('NOM_VILLE',$this->NOM_VILLE,true);
+            $criteria->compare('ID_VILLE',$this->ID_VILLE);
+            $criteria->compare('ID_REGION',$this->ID_REGION);
+            $criteria->compare('NOM_VILLE',$this->NOM_VILLE,true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-                        'pagination' => array(
-                            'pageSize' => PAGE_SIZE,
-                        )
-		));
+            return new CActiveDataProvider($this, array(
+                    'criteria'=>$criteria,
+                    'pagination' => array(
+                        'pageSize' => PAGE_SIZE,
+                    )
+            ));
 	}
 
 	/**
@@ -155,7 +164,7 @@ class CityDirectory extends CActiveRecord
 	 */
 	public static function model($className=__CLASS__)
 	{
-		return parent::model($className);
+            return parent::model($className);
 	}
         
         public function dataProvider() {

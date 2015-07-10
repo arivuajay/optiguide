@@ -20,11 +20,19 @@
                         <li class="user-header bg-light-blue">
                             <p><?php echo Inflector::camel2words(Yii::app()->user->name) ?> - ADMIN</p>
                         </li>
+                         <!-- Menu Body-->
+                        <li class="user-body">
+                                   <div class="col-xs-7 text-center">
+                                        <?php echo CHtml::link('Change password', array('/admin/default/changepassword'), array("class" => "")) ?>                                      
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                       <?php echo CHtml::link('Profile', array('/admin/default/profile'), array("class" => "")) ?>
+                                    </div>
+                                    
+                                    
+                                </li>
                         <!-- Menu Footer-->
-                        <li class="user-footer">
-                            <div class="pull-left">
-                                <?php echo CHtml::link('Profile', array('/admin/default/profile'), array("class" => "btn btn-default btn-flat")) ?>
-                            </div>
+                        <li class="user-footer">                           
                             <div class="pull-right">
                                 <?php echo CHtml::link('Sign out', array('/admin/default/logout'), array('class' => 'btn btn-default btn-flat')) ?>
                             </div>

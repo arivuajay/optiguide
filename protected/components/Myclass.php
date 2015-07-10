@@ -86,5 +86,19 @@ class Myclass extends CController {
         return $regions;
     }   
     
+    public static function getallcities($id = '')
+    {       
+        $criteria_reg = new CDbCriteria;
+        $criteria_reg->order = 'NOM_VILLE ASC';
+        if($id!='')
+        {    
+            $criteria_reg->condition = 'ID_REGION=:id';
+            $criteria_reg->params    = array(':id'=>$id);
+        }    
+        $cities = CityDirectory::model()->findAll($criteria_reg);
+        $cities = CHtml::listData($cities, 'ID_VILLE', 'NOM_VILLE');
+        return $cities;
+    } 
+    
       
 }
