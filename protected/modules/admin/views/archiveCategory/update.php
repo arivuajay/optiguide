@@ -2,10 +2,10 @@
 /* @var $this ArchiveCategoryController */
 /* @var $model ArchiveCategory */
 
-$this->title= Myclass::t('App34').' '. $model->ID_CATEGORIE;
+$this->title= Myclass::t('APP34').' '. $model->ID_CATEGORIE;
 $this->breadcrumbs=array(
-	Myclass::t('App40') => array('index'),
-	Myclass::t('App34'),
+	Myclass::t('APP40') => array('index'),
+	Myclass::t('APP34'),
 );
 ?>
 

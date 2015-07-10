@@ -83,7 +83,7 @@ class DefaultController extends Controller {
         {
             $model->attributes = $_POST['PasswordResetRequestForm'];
             if ($model->validate() && $model->authenticate()):                    
-                Yii::app()->user->setFlash('success', Myclass::t('App17'));
+                Yii::app()->user->setFlash('success', Myclass::t('APP17'));
                 $this->redirect(array('/admin/default/login'));     
             endif;
         }
@@ -107,11 +107,11 @@ class DefaultController extends Controller {
                 $model->admin_password = Myclass::encrypt($_POST['Admin']['current_password']);
               if($model->save(false))
               {                  
-                Yii::app()->user->setFlash('success', Myclass::t('App18'));
+                Yii::app()->user->setFlash('success', Myclass::t('APP18'));
                 $this->redirect(array('/admin/default/changepassword'));    
               }else
               {  
-                Yii::app()->user->setFlash('error', Myclass::t('App19'));
+                Yii::app()->user->setFlash('error', Myclass::t('APP19'));
                 $this->redirect(array('/admin/default/changepassword'));                   
               }   
             }
@@ -133,7 +133,7 @@ class DefaultController extends Controller {
             $model->attributes = $_POST['Admin'];
             if ($model->validate()):    
                 $model->save(false);
-                Yii::app()->user->setFlash('success', Myclass::t('App20'));
+                Yii::app()->user->setFlash('success', Myclass::t('APP20'));
                 $this->refresh();
             endif;
         }

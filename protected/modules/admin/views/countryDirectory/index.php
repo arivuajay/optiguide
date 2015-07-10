@@ -2,9 +2,9 @@
 /* @var $this CountryDirectoryController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title= Myclass::t('App45');
+$this->title= Myclass::t('APP45');
 $this->breadcrumbs=array(
-	Myclass::t('App45'),
+	Myclass::t('APP45'),
 );
 $themeUrl = $this->themeUrl;
 $cs = Yii::app()->getClientScript();
@@ -29,7 +29,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         	'NOM_PAYS_FR',
 		'NOM_PAYS_EN',
              array(   
-                'header' => Myclass::t('App44'), 
+                'header' => Myclass::t('APP44'), 
                 'name' => 'repertoireRegion_count',
                 'filter' => false,
               ),      
@@ -38,7 +38,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
        //        'value' => 'count($data->repertoireRegions)',
        // ),    
         array(
-        'header' => 'Actions',
+        'header' => Myclass::t('APP60'),
         'class' => 'booster.widgets.TbButtonColumn',
         'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
         'template' => '{update}',
@@ -53,7 +53,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         'type' => 'striped bordered datatable',
         'dataProvider' => $model->search(),
         'responsiveTable' => true,
-        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Country Directories</h3></div><div class="panel-body">{items}{pager}</div></div>',
+        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  '.Myclass::t('APP45').'</h3></div><div class="panel-body">{items}{pager}</div></div>',
         'columns' => $gridColumns
         )
         );

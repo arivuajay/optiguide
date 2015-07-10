@@ -70,7 +70,7 @@ class CountryDirectoryController extends Controller
 		{
 			$model->attributes=$_POST['CountryDirectory'];
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', Myclass::t('App41'));
+                                Yii::app()->user->setFlash('success', Myclass::t('APP41'));
                                 $this->redirect(array('index'));
                         }
 		}
@@ -96,7 +96,7 @@ class CountryDirectoryController extends Controller
 		{
 			$model->attributes=$_POST['CountryDirectory'];
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', Myclass::t('App42'));
+                                Yii::app()->user->setFlash('success', Myclass::t('APP42'));
                                 $this->redirect(array('index'));
                         }
 		}
@@ -117,7 +117,7 @@ class CountryDirectoryController extends Controller
         
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax'])){
-                    Yii::app()->user->setFlash('success', Myclass::t('App43'));
+                    Yii::app()->user->setFlash('success', Myclass::t('APP43'));
                     $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
                 }
 	}
@@ -163,7 +163,7 @@ class CountryDirectoryController extends Controller
 	{
 		$model=CountryDirectory::model()->findByPk($id);
 		if($model===null)
-			throw new CHttpException(404,Myclass::t('App39'));
+			throw new CHttpException(404,Myclass::t('APP39'));
 		return $model;
 	}
 

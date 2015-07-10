@@ -1,5 +1,5 @@
 <?php
-$this->title = Myclass::t('App21');
+$this->title = Myclass::t('APP21');
 $this->breadcrumbs = array(
     $this->title
 );
@@ -18,7 +18,7 @@ $this->breadcrumbs = array(
                 </div>
             <?php } ?>
         <?php endif ?>
-        <p><?php echo Myclass::t('App22');?></p>
+        <p><?php echo Myclass::t('APP22');?></p>
         <div class="form-group">
             <?php echo $form->labelEx($model, 'username') ?>
             <?php echo $form->textField($model, 'username', array('autofocus', 'class' => 'form-control')); ?>
@@ -33,8 +33,8 @@ $this->breadcrumbs = array(
         <?php echo ' Remember Me'; ?>
     </div>
     <div class="footer">
-        <?php echo CHtml::submitButton(Myclass::t('App24'), array('class' => 'btn bg-olive btn-block', 'name' => 'sign_in')) ?>
-        <p><?php echo CHtml::link(Myclass::t('App23'), array('/admin/default/forgotpassword')) ?></p>
+        <?php echo CHtml::submitButton(Myclass::t('APP24'), array('class' => 'btn bg-olive btn-block', 'name' => 'sign_in')) ?>
+        <p><?php echo CHtml::link(Myclass::t('APP23'), array('/admin/default/forgotpassword')) ?></p>
     </div>
     <?php $this->endWidget(); ?>
 </div>

@@ -84,5 +84,7 @@ class Myclass extends CController {
         $regions = RegionDirectory::model()->findAll($criteria_reg);
         $regions = CHtml::listData($regions, 'ID_REGION', 'NOM_REGION_EN');
         return $regions;
-    }        
+    }   
+    
+      
 }

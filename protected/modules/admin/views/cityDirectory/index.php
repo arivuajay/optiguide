@@ -2,9 +2,9 @@
 /* @var $this CityDirectoryController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title='City Directories';
+$this->title = Myclass::t('APP57');
 $this->breadcrumbs=array(
-	'City Directories',
+	Myclass::t('APP57'),
 );
 $themeUrl = $this->themeUrl;
 $cs = Yii::app()->getClientScript();
@@ -16,7 +16,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Create CityDirectory', array('/admin/citydirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;'.Myclass::t('APP58'), array('/admin/citydirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 
@@ -26,7 +26,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
     <div class="row">
         <?php
         $gridColumns = array(
-        		'ID_REGION',
+        	'ID_REGION',
 		'NOM_VILLE',
         array(
         'header' => 'Actions',
@@ -41,7 +41,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         'type' => 'striped bordered datatable',
         'dataProvider' => $model->search(),
         'responsiveTable' => true,
-        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  City Directories</h3></div><div class="panel-body">{items}{pager}</div></div>',
+        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  '.Myclass::t('APP57').'</h3></div><div class="panel-body">{items}{pager}</div></div>',
         'columns' => $gridColumns
         )
         );

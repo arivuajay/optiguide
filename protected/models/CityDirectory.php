@@ -30,18 +30,65 @@ class CityDirectory extends CActiveRecord
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('REGION,NOM_VILLE,country', 'required'),
-			array('REGION,country', 'numerical', 'integerOnly'=>true),
-			array('NOM_VILLE', 'length', 'max'=>255),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('ID_VILLE, ID_REGION, NOM_VILLE', 'safe', 'on'=>'search'),
-		);
+            // NOTE: you should only define rules for those attributes that
+            // will receive user inputs.
+            return array(
+                    array('ID_REGION,NOM_VILLE,country', 'required'),
+                    array('ID_REGION,country', 'numerical', 'integerOnly'=>true),
+                    array('NOM_VILLE', 'length', 'max'=>255),
+                    array('NOM_VILLE', 'my_required'),
+                    // The following rule is used by search().
+                    // @todo Please remove those attributes that should not be searched.
+                    array('ID_VILLE, ID_REGION, NOM_VILLE', 'safe', 'on'=>'search'),
+            );
                 
 	}
+        
+        public function my_required($attribute_name,$params)
+        {
+            
+            if(isset($this->ID_REGION) && isset($this->NOM_VILLE))
+            {
+               $cityid = ''; 
+               if(isset($this->ID_VILLE))
+               {
+                  $cityid =  $this->ID_VILLE;
+               }    
+               $res = $this->checkregionexist($this->ID_REGION,$this->NOM_VILLE,$cityid); 
+               if($res=="YES")
+               {
+                $this->addError($attribute_name,Myclass::t('APP51'));
+               } 
+	    }
+
+	}
+        
+        public static function get_country_info($regionid)
+        {
+           // countryDirectory
+           $get_cntrysql   =  RegionDirectory::model()->with("countryDirectory")->findByPk($regionid);
+           $cntry_res      =  $get_cntrysql->countryDirectory;      
+           return $cntry_res;
+        }     
+        
+        public function checkregionexist($regid,$ctyname,$cityid)
+        {
+          $res = ''  ;
+          $tblename  = $this->tableName(); 
+          if($regid!='' && $ctyname!='')
+          {    
+            if($cityid!='')
+            {
+                $qstring = " and ID_VILLE!=".$cityid;
+            }    
+            $output    = $this->model()->findAllBySql("select * from ".$tblename." where ID_REGION=".$regid." and NOM_VILLE='".$ctyname."'".$qstring);
+            $count_val = count($output);
+          
+            if($count_val>0){ $res = "YES";}else{ $res="NO";}
+          }
+          
+          return $res;  
+        }
 
 	/**
 	 * @return array relational rules.
@@ -52,8 +99,7 @@ class CityDirectory extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'repertoireRetailers' => array(self::HAS_MANY, 'RepertoireRetailer', 'ID_VILLE'),
-			'iDREGION' => array(self::BELONGS_TO, 'RegionDirectory', 'ID_REGION'),
-                        //'country' => array(self::BELONGS_TO, 'CountryDirectory', 'ID_PAYS')
+			'regionDirectory' => array(self::BELONGS_TO, 'RegionDirectory', 'ID_REGION'),                        
 		);
                 
 	}
@@ -65,7 +111,7 @@ class CityDirectory extends CActiveRecord
 	{
 		return array(
 			'ID_VILLE' => Myclass::t('Id Ville'),
-			'REGION' => Myclass::t('Region'),
+			'ID_REGION' => Myclass::t('Region'),
 			'NOM_VILLE' => Myclass::t('Nom Ville'),
                         'country'   => Myclass::t('Country'),
 		);
@@ -90,7 +136,7 @@ class CityDirectory extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('ID_VILLE',$this->ID_VILLE);
-		$criteria->compare('REGION',$this->ID_REGION);
+		$criteria->compare('ID_REGION',$this->ID_REGION);
 		$criteria->compare('NOM_VILLE',$this->NOM_VILLE,true);
 
 		return new CActiveDataProvider($this, array(

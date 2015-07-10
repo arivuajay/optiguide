@@ -56,7 +56,7 @@ class PasswordResetRequestForm extends CFormModel {
             );
             $message = $mail->getMessage('adminforgotpassword', $trans_array);
             
-            $reset_subject = Myclass::t('App16');
+            $reset_subject = Myclass::t('APP16');
             $Subject = $mail->translate('{SITENAME}: '.$reset_subject);
             $mail->send($toemail, $Subject, $message);
             return true;

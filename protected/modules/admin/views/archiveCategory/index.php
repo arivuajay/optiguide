@@ -2,9 +2,9 @@
 /* @var $this ArchiveCategoryController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title = Myclass::t('App40');
+$this->title = Myclass::t('APP40');
 $this->breadcrumbs = array(
-    Myclass::t('App40'),
+    Myclass::t('APP40'),
 );
 
 $themeUrl = $this->themeUrl;

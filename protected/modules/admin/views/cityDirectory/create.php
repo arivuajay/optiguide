@@ -2,9 +2,9 @@
 /* @var $this CityDirectoryController */
 /* @var $model CityDirectory */
 
-$this->title='Create City Directories';
+$this->title = Myclass::t('APP58');
 $this->breadcrumbs=array(
-	'City Directories'=>array('index'),
+	Myclass::t('APP57') => array('index'),
 	$this->title,
 );
 $data1['country'] = $country;

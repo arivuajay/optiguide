@@ -64,7 +64,7 @@ class ArchiveCategoryController extends Controller {
         if (isset($_POST['ArchiveCategory'])) {
             $model->attributes = $_POST['ArchiveCategory'];
             if ($model->save()) {
-                Yii::app()->user->setFlash('success', Myclass::t('App36'));
+                Yii::app()->user->setFlash('success', Myclass::t('APP36'));
                 $this->redirect(array('index'));
             }
         }
@@ -88,7 +88,7 @@ class ArchiveCategoryController extends Controller {
         if (isset($_POST['ArchiveCategory'])) {
             $model->attributes = $_POST['ArchiveCategory'];
             if ($model->save()) {
-                Yii::app()->user->setFlash('success', Myclass::t('App37'));
+                Yii::app()->user->setFlash('success', Myclass::t('APP37'));
                 $this->redirect(array('index'));
             }
         }
@@ -108,7 +108,7 @@ class ArchiveCategoryController extends Controller {
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax'])) {
-            Yii::app()->user->setFlash('success', Myclass::t('App38'));
+            Yii::app()->user->setFlash('success', Myclass::t('APP38'));
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
         }
     }
@@ -151,7 +151,7 @@ class ArchiveCategoryController extends Controller {
     public function loadModel($id) {
         $model = ArchiveCategory::model()->findByPk($id);
         if ($model === null)
-            throw new CHttpException(404, Myclass::t('App39'));
+            throw new CHttpException(404, Myclass::t('APP39'));
         return $model;
     }
 

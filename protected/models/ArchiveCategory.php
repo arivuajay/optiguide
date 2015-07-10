@@ -51,9 +51,9 @@ class ArchiveCategory extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'ID_CATEGORIE' => Myclass::t('App30'),
-            'NOM_CATEGORIE_FR' => Myclass::t('App31'),
-            'NOM_CATEGORIE_EN' => Myclass::t('App32'),
+            'ID_CATEGORIE' => Myclass::t('APP30'),
+            'NOM_CATEGORIE_FR' => Myclass::t('APP31'),
+            'NOM_CATEGORIE_EN' => Myclass::t('APP32'),
         );
     }
 

@@ -32,9 +32,11 @@ class CountryDirectory extends CActiveRecord
 		// will receive user inputs.
 		return array(
                         array('NOM_PAYS_FR, NOM_PAYS_EN', 'required'),
+                        array('NOM_PAYS_FR, NOM_PAYS_EN', 'unique'),
 			array('NOM_PAYS_FR, NOM_PAYS_EN', 'length', 'max'=>255),
+                    
 			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
+                        			// @todo Please remove those attributes that should not be searched.
 			array('ID_PAYS, NOM_PAYS_FR, NOM_PAYS_EN, repertoireRegion_count', 'safe', 'on'=>'search'),
 		);
 	}
@@ -60,7 +62,7 @@ class CountryDirectory extends CActiveRecord
 		return array(
 			'ID_PAYS' => Myclass::t('APP48'),
 			'NOM_PAYS_FR' => Myclass::t('APP49'),
-			'NOM_PAYS_EN' => Myclass::t('App50'),
+			'NOM_PAYS_EN' => Myclass::t('APP50'),
 		);
 	}
 

@@ -1,5 +1,5 @@
 <?php
-$this->title = Myclass::t('App27');
+$this->title = Myclass::t('APP27');
 $this->breadcrumbs[] = $this->title;
 ?>
 <div class="form-box" id="login-box">
@@ -23,7 +23,7 @@ $this->breadcrumbs[] = $this->title;
         </div>
     </div>
     <div class="footer">
-        <?php echo CHtml::submitButton(Myclass::t('App28'), array('class' => 'btn bg-olive btn-block', 'name' => 'forget_password')) ?>   
+        <?php echo CHtml::submitButton(Myclass::t('APP28'), array('class' => 'btn bg-olive btn-block', 'name' => 'forget_password')) ?>   
     </div>
     <?php $this->endWidget(); ?>
 </div>
