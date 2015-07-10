@@ -106,6 +106,16 @@ return array(
     'APP98' => 'Section Informations',
     'APP99' => 'Update Section Informations: ',
     
-    
+    //Region Driectory Section
+    'APP101' => 'Region ID',
+    'APP102' => 'Region Name Fr',
+    'APP103' => 'Region Name En',
+    'APP104' => 'Abbreviation Fr',
+    'APP105' => 'Abbreviation En',
+    'APP106' => 'RegionDirectory Created Successfully!!!',
+    'APP107' => 'RegionDirectory Updated Successfully!!!',
+    'APP108' => 'Region Directories',
+    'APP109' => 'Create RegionDirectory',
+    'APP110' => 'Update RegionDirectory',
 );
 ?>
