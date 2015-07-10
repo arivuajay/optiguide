@@ -33,7 +33,7 @@ class RegionDirectory extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('ID_PAYS', 'required'),
+            array('ID_PAYS, NOM_REGION_FR, NOM_REGION_EN, ABREVIATION_FR, ABREVIATION_EN', 'required'),
             array('ID_PAYS', 'numerical', 'integerOnly' => true),
             array('NOM_REGION_FR, NOM_REGION_EN', 'length', 'max' => 255),
             array('ABREVIATION_FR, ABREVIATION_EN', 'length', 'max' => 10),
@@ -41,6 +41,36 @@ class RegionDirectory extends CActiveRecord {
             // @todo Please remove those attributes that should not be searched.
             array('ID_REGION, ID_PAYS, NOM_REGION_FR, NOM_REGION_EN, ABREVIATION_FR, ABREVIATION_EN', 'safe', 'on' => 'search'),
         );
+    }
+
+    public function beforeValidate() {
+        if (parent::beforeValidate()) {
+            if ($this->isNewRecord) {
+                $criteria = array(
+                    'condition' => 'ID_PAYS=:country_id AND NOM_REGION_EN=:region_name_en',
+                    'params' => array(
+                        ':country_id' => $this->ID_PAYS,
+                        ':region_name_en' => $this->NOM_REGION_EN
+                    )
+                );
+            } else {
+                $criteria = array(
+                    'condition' => 'ID_REGION<>:region_id AND ID_PAYS=:country_id AND NOM_REGION_EN=:region_name_en',
+                    'params' => array(
+                        ':region_id' => $this->ID_REGION,
+                        ':country_id' => $this->ID_PAYS,
+                        ':region_name_en' => $this->NOM_REGION_EN
+                    )
+                );
+            }
+
+            $validator = CValidator::createValidator('unique', $this, 'NOM_REGION_FR', array(
+                        'criteria' => $criteria
+            ));
+            $this->getValidatorList()->insertAt(0, $validator);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -62,12 +92,12 @@ class RegionDirectory extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'ID_REGION' => Myclass::t('Id Region'),
-            'ID_PAYS' => Myclass::t('Id Pays'),
-            'NOM_REGION_FR' => Myclass::t('Nom Region Fr'),
-            'NOM_REGION_EN' => Myclass::t('Nom Region En'),
-            'ABREVIATION_FR' => Myclass::t('Abreviation Fr'),
-            'ABREVIATION_EN' => Myclass::t('Abreviation En'),
+            'ID_REGION' => Myclass::t('APP101'),
+            'ID_PAYS' => Myclass::t('APP48'),
+            'NOM_REGION_FR' => Myclass::t('APP102'),
+            'NOM_REGION_EN' => Myclass::t('APP103'),
+            'ABREVIATION_FR' => Myclass::t('APP104'),
+            'ABREVIATION_EN' => Myclass::t('APP105'),
         );
     }
 
