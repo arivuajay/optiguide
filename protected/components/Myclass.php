@@ -57,4 +57,32 @@ class Myclass extends CController {
             unset(Yii::app()->request->cookies['admin_username']);
         }
     }
+    
+    public static function getallcountries($id = '')
+    {       
+        $criteria = new CDbCriteria;
+        $criteria->order = 'NOM_PAYS_EN ASC';
+        if($id!='')
+        {    
+            $criteria->condition = 'ID_PAYS=:id';
+            $criteria->params = array(':id'=>$id);
+        }  
+        $country = CountryDirectory::model()->findAll($criteria);
+        $val = CHtml::listData($country, 'ID_PAYS', 'NOM_PAYS_EN');
+        return $val;
+    }   
+    
+    public static function getallregions($id = '')
+    {       
+        $criteria_reg = new CDbCriteria;
+        $criteria_reg->order = 'NOM_REGION_EN ASC';
+        if($id!='')
+        {    
+            $criteria_reg->condition = 'ID_PAYS=:id';
+            $criteria_reg->params = array(':id'=>$id);
+        }    
+        $regions = RegionDirectory::model()->findAll($criteria_reg);
+        $regions = CHtml::listData($regions, 'ID_REGION', 'NOM_REGION_EN');
+        return $regions;
+    }        
 }
