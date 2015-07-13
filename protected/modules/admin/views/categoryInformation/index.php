@@ -1,10 +1,10 @@
 <?php
-/* @var $this CityDirectoryController */
+/* @var $this CategoryInformationController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title = Myclass::t('APP42');
+$this->title = Myclass::t('APP58');
 $this->breadcrumbs=array(
-	Myclass::t('APP42'),
+	Myclass::t('APP58'),
 );
 $themeUrl = $this->themeUrl;
 $cs = Yii::app()->getClientScript();
@@ -12,11 +12,12 @@ $cs_pos_end = CClientScript::POS_END;
 
 $cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
 $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
+$btn_title = Myclass::t('APP504')." ".Myclass::t('APP58');
 ?>
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;'.Myclass::t('APP504').' '.Myclass::t('APP41'), array('/admin/citydirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;'.$btn_title, array('/admin/categoryinformation/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 
@@ -26,10 +27,28 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
     <div class="row">
         <?php
         $gridColumns = array(
-        	'ID_REGION',
-		'NOM_VILLE',
+        	'CATEGORIE_FR',
+		'CATEGORIE_EN',
+		'NOM_ASSOCIATION_FR',
+		'NOM_ASSOCIATION_EN',
+		'ADRESSE',
+		'ADRESSE2',
+		/*
+		'ID_VILLE',
+		'CODE_POSTAL',
+		'TELEPHONE',
+		'TELECOPIEUR',
+		'TEL_SANS_FRAIS',
+		'COURRIEL',
+		'SITE_WEB',
+		'PREFIXE_REPRESENTANT_FR',
+		'PREFIXE_REPRESENTANT_EN',
+		'NOM_REPRESENTANT',
+		'TITRE_REPRESENTANT_FR',
+		'TITRE_REPRESENTANT_EN',
+		*/
         array(
-        'header' => 'Actions',
+        'header' => Myclass::t('APP46'),
         'class' => 'booster.widgets.TbButtonColumn',
         'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
         'template' => '{view}{update}{delete}',
@@ -41,7 +60,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         'type' => 'striped bordered datatable',
         'dataProvider' => $model->search(),
         'responsiveTable' => true,
-        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  '.Myclass::t('APP42').'</h3></div><div class="panel-body">{items}{pager}</div></div>',
+        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>'.Myclass::t('APP58').'</h3></div><div class="panel-body">{items}{pager}</div></div>',
         'columns' => $gridColumns
         )
         );

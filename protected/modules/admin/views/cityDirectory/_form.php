@@ -17,7 +17,7 @@
 ));
             
 $drp_val['class']   = 'form-control';
-$drp_val['empty']   = Myclass::t('APP56');        
+$drp_val['empty']   = Myclass::t('APP43');        
 if(isset($cid))
 {    
     $drp_val['options'] =  array( $cid => array('selected'=>true));
@@ -51,7 +51,7 @@ if(isset($cid))
             <div class="box-footer">
                 <div class="form-group">
                     <div class="col-sm-0 col-sm-offset-2">
-                        <?php echo CHtml::submitButton($model->isNewRecord ? Myclass::t('APP33'): Myclass::t('APP25'), array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+                        <?php echo CHtml::submitButton($model->isNewRecord ? Myclass::t('APP504'): Myclass::t('APP25'), array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
                     </div>
                 </div>
             </div>

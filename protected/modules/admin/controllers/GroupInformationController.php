@@ -1,6 +1,6 @@
 <?php
 
-class CountryDirectoryController extends Controller
+class GroupInformationController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -61,25 +61,31 @@ class CountryDirectoryController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new CountryDirectory;
+            $model=new GroupInformation;
 
-		// Uncomment the following line if AJAX validation is needed
-		$this->performAjaxValidation($model);
 
-		if(isset($_POST['CountryDirectory']))
-		{
-			$model->attributes=$_POST['CountryDirectory'];
-			if($model->save()){
-                                $msg = Myclass::t('APP35')." ".Myclass::t('APP501');
-                                 Yii::app()->user->setFlash('success', $msg);
-                                $this->redirect(array('index'));
-                        }
-		}
+           $data['country'] = Myclass::getallcountries();               
+           $data['regions'] = Myclass::getallregions();
+           $data['cities']  = Myclass::getallcities();
+           
+           $data['sections']  = GroupInformation::getallsections();
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
-	}
+            // Uncomment the following line if AJAX validation is needed
+            $this->performAjaxValidation($model);
+
+            if(isset($_POST['GroupInformation']))
+            {
+                    $model->attributes=$_POST['GroupInformation'];
+                    if($model->save()){
+                            Yii::app()->user->setFlash('success', 'GroupInformation Created Successfully!!!');
+                            $this->redirect(array('index'));
+                    }
+            }
+
+            $data['model'] = $model;
+
+            $this->render('create', $data);
+        }
 
 	/**
 	 * Updates a particular model.
@@ -89,23 +95,41 @@ class CountryDirectoryController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+                
+                $cityid      = $model->ID_VILLE;
+
+                /* Get selected region for current category information */
+                $region_info = CityDirectory::get_region_info($cityid);
+                $rid         = $region_info['ID_REGION'];  
+
+                /* Get selected country for current category information */
+                $cntry_info  = CityDirectory::get_country_info($rid);
+                $cid         = $cntry_info['ID_PAYS'];
+                // $cntry_info['NOM_PAYS_EN'];
+                $data['rid'] = $rid;
+                $data['cid'] = $cid;
+                
+                $data['sections']  = GroupInformation::getallsections();                
+                
+                /* get all countries and regions */    
+                $data['country'] = Myclass::getallcountries();               
+                $data['regions'] = Myclass::getallregions($cid);
+                $data['cities']  = Myclass::getallcities($rid);
 
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
 
-		if(isset($_POST['CountryDirectory']))
+		if(isset($_POST['GroupInformation']))
 		{
-			$model->attributes=$_POST['CountryDirectory'];
+			$model->attributes=$_POST['GroupInformation'];
 			if($model->save()){
-                                $msg = Myclass::t('APP35')." ".Myclass::t('APP502');
-                                Yii::app()->user->setFlash('success', $msg);
+                                Yii::app()->user->setFlash('success', 'GroupInformation Updated Successfully!!!');
                                 $this->redirect(array('index'));
                         }
 		}
+                $data['model'] = $model;
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+		$this->render('update',$data);
 	}
 
 	/**
@@ -119,8 +143,7 @@ class CountryDirectoryController extends Controller
         
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax'])){
-                    $msg = Myclass::t('APP35')." ".Myclass::t('APP503');
-                    Yii::app()->user->setFlash('success', $msg);
+                    Yii::app()->user->setFlash('success', 'GroupInformation Deleted Successfully!!!');
                     $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
                 }
 	}
@@ -130,10 +153,10 @@ class CountryDirectoryController extends Controller
 	 */
 	public function actionIndex()
 	{
-            $model=new CountryDirectory('search');
+            $model=new GroupInformation('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['CountryDirectory']))
-			$model->attributes=$_GET['CountryDirectory'];
+		if(isset($_GET['GroupInformation']))
+			$model->attributes=$_GET['GroupInformation'];
 
 		$this->render('index',array(
 			'model'=>$model,
@@ -145,10 +168,10 @@ class CountryDirectoryController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new CountryDirectory('search');
+		$model=new GroupInformation('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['CountryDirectory']))
-			$model->attributes=$_GET['CountryDirectory'];
+		if(isset($_GET['GroupInformation']))
+			$model->attributes=$_GET['GroupInformation'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -159,24 +182,24 @@ class CountryDirectoryController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return CountryDirectory the loaded model
+	 * @return GroupInformation the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=CountryDirectory::model()->findByPk($id);
+		$model=GroupInformation::model()->findByPk($id);
 		if($model===null)
-			throw new CHttpException(404,Myclass::t('APP506'));
+			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param CountryDirectory $model the model to be validated
+	 * @param GroupInformation $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='country-directory-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='group-information-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

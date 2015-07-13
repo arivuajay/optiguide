@@ -60,9 +60,9 @@ class CountryDirectory extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'ID_PAYS' => Myclass::t('APP48'),
-			'NOM_PAYS_FR' => Myclass::t('APP49'),
-			'NOM_PAYS_EN' => Myclass::t('APP50'),
+			'ID_PAYS' => Myclass::t('APP38'),
+			'NOM_PAYS_FR' => Myclass::t('APP39'),
+			'NOM_PAYS_EN' => Myclass::t('APP40'),
 		);
 	}
 

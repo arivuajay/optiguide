@@ -1,6 +1,6 @@
 <?php
 
-class CountryDirectoryController extends Controller
+class SectionInformationController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -61,25 +61,29 @@ class CountryDirectoryController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new CountryDirectory;
+            $model=new SectionInformation;
 
-		// Uncomment the following line if AJAX validation is needed
-		$this->performAjaxValidation($model);
+            // Uncomment the following line if AJAX validation is needed
+            $this->performAjaxValidation($model);
 
-		if(isset($_POST['CountryDirectory']))
-		{
-			$model->attributes=$_POST['CountryDirectory'];
-			if($model->save()){
-                                $msg = Myclass::t('APP35')." ".Myclass::t('APP501');
-                                 Yii::app()->user->setFlash('success', $msg);
-                                $this->redirect(array('index'));
-                        }
-		}
+            $getallcat      = SectionInformation::get_allcategory();
+            $data['allcat'] = $getallcat; 
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+            if(isset($_POST['SectionInformation']))
+            {
+                    $model->attributes=$_POST['SectionInformation'];
+                    if($model->save()){
+                            $msg =   Myclass::t('APP53').' '.Myclass::t('APP501');
+                            Yii::app()->user->setFlash('success', $msg);
+                            $this->redirect(array('index'));
+                    }
+            }
+
+            $data['model'] = $model;
+
+            $this->render('create',$data );
 	}
+        
 
 	/**
 	 * Updates a particular model.
@@ -90,22 +94,26 @@ class CountryDirectoryController extends Controller
 	{
 		$model=$this->loadModel($id);
 
+                 $getallcat      = SectionInformation::get_allcategory();
+                $data['allcat'] = $getallcat; 
+            
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
 
-		if(isset($_POST['CountryDirectory']))
+		if(isset($_POST['SectionInformation']))
 		{
-			$model->attributes=$_POST['CountryDirectory'];
+			$model->attributes=$_POST['SectionInformation'];
 			if($model->save()){
-                                $msg = Myclass::t('APP35')." ".Myclass::t('APP502');
-                                Yii::app()->user->setFlash('success', $msg);
+                                $msg =   Myclass::t('APP53').' '.Myclass::t('APP502');
+                                Yii::app()->user->setFlash('success', $msg);                                
                                 $this->redirect(array('index'));
                         }
 		}
+                
+                $data['model'] = $model;
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+
+		$this->render('update',$data);
 	}
 
 	/**
@@ -119,8 +127,8 @@ class CountryDirectoryController extends Controller
         
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax'])){
-                    $msg = Myclass::t('APP35')." ".Myclass::t('APP503');
-                    Yii::app()->user->setFlash('success', $msg);
+                    $msg =   Myclass::t('APP53').' '.Myclass::t('APP503');
+                    Yii::app()->user->setFlash('success', $msg); 
                     $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
                 }
 	}
@@ -130,10 +138,10 @@ class CountryDirectoryController extends Controller
 	 */
 	public function actionIndex()
 	{
-            $model=new CountryDirectory('search');
+            $model=new SectionInformation('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['CountryDirectory']))
-			$model->attributes=$_GET['CountryDirectory'];
+		if(isset($_GET['SectionInformation']))
+			$model->attributes=$_GET['SectionInformation'];
 
 		$this->render('index',array(
 			'model'=>$model,
@@ -145,10 +153,10 @@ class CountryDirectoryController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new CountryDirectory('search');
+		$model=new SectionInformation('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['CountryDirectory']))
-			$model->attributes=$_GET['CountryDirectory'];
+		if(isset($_GET['SectionInformation']))
+			$model->attributes=$_GET['SectionInformation'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -159,12 +167,12 @@ class CountryDirectoryController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return CountryDirectory the loaded model
+	 * @return SectionInformation the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=CountryDirectory::model()->findByPk($id);
+		$model=SectionInformation::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,Myclass::t('APP506'));
 		return $model;
@@ -172,11 +180,11 @@ class CountryDirectoryController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param CountryDirectory $model the model to be validated
+	 * @param SectionInformation $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='country-directory-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='section-information-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

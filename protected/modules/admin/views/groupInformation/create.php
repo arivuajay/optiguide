@@ -1,15 +1,18 @@
 <?php
-/* @var $this CityDirectoryController */
-/* @var $model CityDirectory */
+/* @var $this GroupInformationController */
+/* @var $model GroupInformation */
 
-$this->title = Myclass::t('APP504').' '.Myclass::t('APP41');
+$this->title='Create Group Informations';
 $this->breadcrumbs=array(
-	Myclass::t('APP42') => array('index'),
+	'Group Informations'=>array('index'),
 	$this->title,
 );
+
 $data1['country'] = $country;
 $data1['regions'] = $regions;
+$data1['cities']  = $cities;
 $data1['model']   = $model;
+$data1['sections'] = $sections;
 ?>
 
 <div class="user-create">

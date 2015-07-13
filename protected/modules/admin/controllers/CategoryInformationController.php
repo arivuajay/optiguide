@@ -1,5 +1,5 @@
 <?php
-class CityDirectoryController extends Controller
+class CategoryInformationController extends Controller
 {
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -11,10 +11,10 @@ class CityDirectoryController extends Controller
      */
     public function filters()
     {
-            return array(
-                    'accessControl', // perform access control for CRUD operations
-                    //'postOnly + delete', // we only allow deletion via POST request
-            );
+        return array(
+            'accessControl', // perform access control for CRUD operations
+            //'postOnly + delete', // we only allow deletion via POST request
+        );
     }
 
     /**
@@ -22,26 +22,26 @@ class CityDirectoryController extends Controller
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules()
-    {
-        return array(
+	public function accessRules()
+	{
+            return array(
                 array('allow',  // allow all users to perform 'index' and 'view' actions
-                        'actions'=>array(''),
-                        'users'=>array('*'),
+                      'actions'=>array(''),
+                      'users'=>array('*'),
                 ),
                 array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                        'actions'=>array('index','view','create','update','admin','delete','getregions'),
-                        'users'=>array('@'),
+                      'actions'=>array('index','view','create','update','admin','delete','getcities'),
+                      'users'=>array('@'),
                 ),
                 array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                        'actions'=>array(''),
-                        'users'=>array('admin'),
+                      'actions'=>array(''),
+                      'users'=>array('admin'),
                 ),
                 array('deny',  // deny all users
-                        'users'=>array('*'),
+                      'users'=>array('*'),
                 ),
-        );
-    }
+            );
+	}
 
     /**
      * Displays a particular model.
@@ -60,38 +60,40 @@ class CityDirectoryController extends Controller
      */
     public function actionCreate()
     {
-        $model=new CityDirectory;
+        $model = new CategoryInformation;
 
         $data['country'] = Myclass::getallcountries();               
         $data['regions'] = Myclass::getallregions();
+        $data['cities']  = Myclass::getallcities();
 
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
 
-        if(isset($_POST['CityDirectory']))
+        if(isset($_POST['CategoryInformation']))
         {
-            $model->attributes=$_POST['CityDirectory'];
-            if($model->save()){
-                    $msg = Myclass::t('APP41').' '.Myclass::t('APP501');
-                    Yii::app()->user->setFlash('success',$msg );
-                    $this->redirect(array('index'));
+            $model->attributes=$_POST['CategoryInformation'];
+            if($model->save())
+            {
+                $msg = Myclass::t('APP57').' '.Myclass::t('APP501');
+                Yii::app()->user->setFlash('success',$msg );
+                $this->redirect(array('index'));
             }
         }
 
         $data['model'] = $model;
 
-        $this->render('create', $data);
+        $this->render('create',$data);
     }
-
-    public function actionGetRegions()
+        
+    public function actionGetCities()
     {          
         $options = '';
         $cid     = isset($_POST['id'])?$_POST['id']:'';
-        $options = "<option value=''>".Myclass::t('APP44')."</option>";
+        $options = "<option value=''>".Myclass::t('APP59')."</option>";
         if($cid!='')
         {
-            $data_regions = Myclass::getallregions($cid);   
-            foreach($data_regions as $k => $info)
+            $data_cities = Myclass::getallcities($cid);   
+            foreach($data_cities as $k => $info)
             {
                 $options .= "<option value='".$k."'>".$info."</option>";  
             }    
@@ -100,8 +102,6 @@ class CityDirectoryController extends Controller
         exit;
     }  
 
-
-
     /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -109,38 +109,44 @@ class CityDirectoryController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->loadModel($id);
+        $model=$this->loadModel($id);
 
-        $regionid   = $model->ID_REGION;
+        $cityid      = $model->ID_VILLE;
 
-        $cntry_info = CityDirectory::get_country_info($regionid);
+        /* Get selected region for current category information */
+        $region_info = CityDirectory::get_region_info($cityid);
+        $rid         = $region_info['ID_REGION'];  
 
-        $cid =  $cntry_info['ID_PAYS'];
+        /* Get selected country for current category information */
+        $cntry_info  = CityDirectory::get_country_info($rid);
+        $cid         = $cntry_info['ID_PAYS'];
         // $cntry_info['NOM_PAYS_EN'];
+        $data['rid'] = $rid;
         $data['cid'] = $cid;
+
 
         /* get all countries and regions */    
         $data['country'] = Myclass::getallcountries();               
         $data['regions'] = Myclass::getallregions($cid);
-        
+        $data['cities']  = Myclass::getallcities($rid);
+
 
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
 
-        if(isset($_POST['CityDirectory']))
+        if(isset($_POST['CategoryInformation']))
         {
-            $model->attributes=$_POST['CityDirectory'];
-            if($model->save())
-            {
-                $msg = Myclass::t('APP41').' '.Myclass::t('APP502');
-                Yii::app()->user->setFlash('success',$msg );
-                $this->redirect(array('index'));
+            $model->attributes=$_POST['CategoryInformation'];
+            if($model->save()){
+                    $msg = Myclass::t('APP57').' '.Myclass::t('APP502');
+                    Yii::app()->user->setFlash('success',$msg );
+                    $this->redirect(array('index'));
             }
         }
 
         $data['model'] = $model;
 
-        $this->render('update',$data);
+        $this->render('update', $data);
     }
 
     /**
@@ -155,28 +161,26 @@ class CityDirectoryController extends Controller
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if(!isset($_GET['ajax']))
         {
-            $msg = Myclass::t('APP41').' '.Myclass::t('APP503');
+            $msg = Myclass::t('APP57').' '.Myclass::t('APP503');
             Yii::app()->user->setFlash('success',$msg );
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
         }
     }
-    
 
     /**
      * Lists all models.
      */
     public function actionIndex()
     {
-        $model=new CityDirectory('search');
-
+        $model=new CategoryInformation('search');
         $model->unsetAttributes();  // clear any default values
+        
+        if(isset($_GET['CategoryInformation']))
+           $model->attributes=$_GET['CategoryInformation'];
 
-        if(isset($_GET['CityDirectory']))
-            $model->attributes=$_GET['CityDirectory'];
-
-        $data['model'] = $model;
-
-        $this->render('index', $data);
+        $this->render('index',array(
+            'model'=>$model,
+        ));
     }
 
     /**
@@ -184,10 +188,10 @@ class CityDirectoryController extends Controller
      */
     public function actionAdmin()
     {
-        $model=new CityDirectory('search');
+        $model=new CategoryInformation('search');
         $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['CityDirectory']))
-                $model->attributes=$_GET['CityDirectory'];
+        if(isset($_GET['CategoryInformation']))
+            $model->attributes=$_GET['CategoryInformation'];
 
         $this->render('admin',array(
                 'model'=>$model,
@@ -198,12 +202,12 @@ class CityDirectoryController extends Controller
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return CityDirectory the loaded model
+     * @return CategoryInformation the loaded model
      * @throws CHttpException
      */
     public function loadModel($id)
     {
-        $model=CityDirectory::model()->findByPk($id);
+        $model=CategoryInformation::model()->findByPk($id);
         if($model===null)
                 throw new CHttpException(404,Myclass::t('APP506'));
         return $model;
@@ -211,14 +215,14 @@ class CityDirectoryController extends Controller
 
     /**
      * Performs the AJAX validation.
-     * @param CityDirectory $model the model to be validated
+     * @param CategoryInformation $model the model to be validated
      */
     protected function performAjaxValidation($model)
     {
-        if(isset($_POST['ajax']) && $_POST['ajax']==='city-directory-form')
+        if(isset($_POST['ajax']) && $_POST['ajax']==='category-information-form')
         {
-                echo CActiveForm::validate($model);
-                Yii::app()->end();
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
         }
     }
 }

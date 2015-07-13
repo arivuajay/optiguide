@@ -2,9 +2,9 @@
 /* @var $this ArchiveCategoryController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title = Myclass::t('APP40');
+$this->title = Myclass::t('APP34');
 $this->breadcrumbs = array(
-    Myclass::t('APP40'),
+    Myclass::t('APP34'),
 );
 
 $themeUrl = $this->themeUrl;
@@ -13,11 +13,13 @@ $cs_pos_end = CClientScript::POS_END;
 
 $cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
 $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
+
+$createtitle= Myclass::t('APP504')." ".Myclass::t('APP33');
 ?>
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Create ArchiveCategory', array('/admin/archivecategory/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;'.$createtitle, array('/admin/archivecategory/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 
