@@ -55,7 +55,8 @@ class RegionDirectoryController extends Controller {
             $model->attributes = $_POST['RegionDirectory'];
 
             if ($model->save()) {
-                Yii::app()->user->setFlash('success', Myclass::t('APP106'));
+                $msg = Myclass::t('APP106').' '.Myclass::t('APP501');
+                Yii::app()->user->setFlash('success', $msg);
                 $this->redirect(array('index'));
             }
         }
@@ -80,7 +81,8 @@ class RegionDirectoryController extends Controller {
             $model->attributes = $_POST['RegionDirectory'];
 
             if ($model->save()) {
-                Yii::app()->user->setFlash('success', Myclass::t('APP107'));
+                $msg = Myclass::t('APP106').' '.Myclass::t('APP502');
+                Yii::app()->user->setFlash('success', $msg);
                 $this->redirect(array('index'));
             }
         }

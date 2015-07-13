@@ -2,7 +2,7 @@
 /* @var $this RegionDirectoryController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title = Myclass::t('APP108');
+$this->title = Myclass::t('APP107');
 $this->breadcrumbs = array(
     $this->title ,
 );
@@ -17,7 +17,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;' . Myclass::t('APP109'), array('/admin/regiondirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;' . Myclass::t('APP504').' '.Myclass::t('APP106'), array('/admin/regiondirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 
@@ -39,7 +39,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         endforeach;
         ?>
         <div class="panel panel-primary">
-            <div class="panel-heading"><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Region Directories </h3></div>
+            <div class="panel-heading"><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  <?php echo Myclass::t('APP107');?> </h3></div>
             <div class="panel-body">
                 <?php
                 $this->widget('CTreeView', array(

@@ -2,9 +2,9 @@
 /* @var $this RegionDirectoryController */
 /* @var $model RegionDirectory */
 
-$this->title = Myclass::t('APP109');
+$this->title = Myclass::t('APP504').' '.Myclass::t('APP106');
 $this->breadcrumbs = array(
-    Myclass::t('APP108') => array('index'),
+    Myclass::t('APP107') => array('index'),
     $this->title,
 );
 ?>
