@@ -26,7 +26,7 @@
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
                         array('label' => '<i class="fa fa-angle-double-right"></i> <span>Countries</span>', 'url' => array('/admin/countrydirectory/index'), 'active' => $_controller == 'countrydirectory'),
-                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Region</span>', 'url' => array('/admin/regiondirectory/index'), 'active' => $_controller == 'eventdirectory'),
+                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Region</span>', 'url' => array('/admin/regiondirectory/index'), 'active' => $_controller == 'regiondirectory'),
                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Cities</span>', 'url' => array('/admin/citydirectory/index'), 'active' => $_controller == 'citydirectory'),
                     ),
                 ),

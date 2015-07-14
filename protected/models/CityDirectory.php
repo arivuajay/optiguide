@@ -83,7 +83,7 @@ class CityDirectory extends CActiveRecord
 	public function attributeLabels()
 	{
             return array(
-                'ID_VILLE' => Myclass::t('APP47'),
+                'ID_VILLE'  => Myclass::t('APP47'),
                 'ID_REGION' => Myclass::t('APP48'),
                 'NOM_VILLE' => Myclass::t('APP49'),
                 'country'   => Myclass::t('APP68'),

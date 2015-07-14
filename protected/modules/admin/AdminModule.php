@@ -3,6 +3,7 @@
 class AdminModule extends CWebModule {
 
     public function init() {
+        
         $this->layoutPath = Yii::getPathOfAlias('webroot.themes.' . Yii::app()->theme->name . '.views.layouts');
         $this->layout = '//layouts/main';
         

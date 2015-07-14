@@ -33,7 +33,8 @@ $btn_title = Myclass::t('APP504')." ".Myclass::t('APP58');
 		'NOM_ASSOCIATION_EN',
 		'ADRESSE',
 		'ADRESSE2',
-		/*
+		/*'ADRESSE',
+		'ADRESSE2',
 		'ID_VILLE',
 		'CODE_POSTAL',
 		'TELEPHONE',

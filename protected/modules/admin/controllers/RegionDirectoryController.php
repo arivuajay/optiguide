@@ -55,7 +55,7 @@ class RegionDirectoryController extends Controller {
             $model->attributes = $_POST['RegionDirectory'];
 
             if ($model->save()) {
-                $msg = Myclass::t('APP106').' '.Myclass::t('APP501');
+                $msg = Myclass::t('APP106') . ' ' . Myclass::t('APP501');
                 Yii::app()->user->setFlash('success', $msg);
                 $this->redirect(array('index'));
             }
@@ -81,7 +81,7 @@ class RegionDirectoryController extends Controller {
             $model->attributes = $_POST['RegionDirectory'];
 
             if ($model->save()) {
-                $msg = Myclass::t('APP106').' '.Myclass::t('APP502');
+                $msg = Myclass::t('APP106') . ' ' . Myclass::t('APP502');
                 Yii::app()->user->setFlash('success', $msg);
                 $this->redirect(array('index'));
             }
@@ -96,18 +96,66 @@ class RegionDirectoryController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
+        $model = new RegionDirectory;
+
+        $cntryid = isset($_POST['RegionDirectory']['ID_PAYS']) ? $_POST['RegionDirectory']['ID_PAYS'] : '';
+        $regionname = isset($_POST['RegionDirectory']['NOM_REGION_FR']) ? $_POST['RegionDirectory']['NOM_REGION_FR'] : '';
+
         $criteria = new CDbCriteria();
-        $count = CountryDirectory::model()->count($criteria);
+        $criteria->order = 'NOM_PAYS_FR ASC';
+        
+        /* get the search params*/
+        $regname = Yii::app()->getRequest()->getQuery('regname');
+       
+        if ($cntryid != '')
+        {
+            $criteria->condition = "t.ID_PAYS=:col_val";
+            $criteria->params = array(':col_val' => $cntryid);
+        }
+
+        if ($regionname != '') 
+        {
+            $criteria->compare('repertoireRegions.NOM_REGION_FR', $regionname, true);
+            $criteria->together = true;
+            $data['regname'] = $regionname;
+        }elseif($regname!='')
+        {               
+            $criteria->compare('repertoireRegions.NOM_REGION_FR', $regname, true);
+            $criteria->together = true;
+            $data['regname'] = $regname;
+        }  
+        
+        $count = CountryDirectory::model()->with('repertoireRegions')->count($criteria);
         $pages = new CPagination($count);
 
         // results per page
-        $pages->pageSize = 10;
+        $pages->pageSize = 10;    
+        if ($cntryid != '') 
+        {
+               $pages->params   = array('cntryid' => $cntryid );
+        }
+        
+        if ($regionname != '' ) 
+        {
+               $pages->params   = array('regname' => $regionname );
+        }elseif($regname!='')
+        {
+               $pages->params   = array('regname' => $regname );            
+        }    
+         
+       // $pages->pageVar='page';
         $pages->applyLimit($criteria);
+        
+        //
         $models = CountryDirectory::model()->with('repertoireRegions')->findAll($criteria);
 
+        $data['cntryid'] = $cntryid;
+       
         $this->render('index', array(
             'models' => $models,
-            'pages' => $pages
+            'postinfo' => $data,
+            'pages' => $pages,
+            'Rmodel' => $model
         ));
     }
 

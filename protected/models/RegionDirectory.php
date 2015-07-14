@@ -93,7 +93,7 @@ class RegionDirectory extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'ID_REGION' => Myclass::t('APP101'),
-            'ID_PAYS' => Myclass::t('APP38'),
+            'ID_PAYS' => Myclass::t('APP68'),
             'NOM_REGION_FR' => Myclass::t('APP102'),
             'NOM_REGION_EN' => Myclass::t('APP103'),
             'ABREVIATION_FR' => Myclass::t('APP104'),

@@ -167,16 +167,69 @@ class CityDirectoryController extends Controller
      */
     public function actionIndex()
     {
-        $model=new CityDirectory('search');
+        $model = new CityDirectory;
 
-        $model->unsetAttributes();  // clear any default values
+        $regid = isset($_POST['CityDirectory']['ID_REGION']) ? $_POST['CityDirectory']['ID_REGION'] : '';
+        $cityname = isset($_POST['CityDirectory']['NOM_VILLE']) ? $_POST['CityDirectory']['NOM_VILLE'] : '';
 
-        if(isset($_GET['CityDirectory']))
-            $model->attributes=$_GET['CityDirectory'];
+        $criteria = new CDbCriteria();
+        $criteria->order = 'NOM_REGION_FR ASC';
+        
+        /* get the search params*/
+        $ctyname = Yii::app()->getRequest()->getQuery('ctyname');
+       
+        if ($regid != '')
+        {
+            $criteria->condition = "t.ID_REGION=:col_val";
+            $criteria->params = array(':col_val' => $regid);
+             $data['regid'] = $regid;
+        }
 
-        $data['model'] = $model;
+        if ($cityname != '') 
+        {
+            $criteria->compare('cityDirectory.NOM_VILLE', $cityname, true);
+            $criteria->together = true;
+            $data['ctyname'] = $cityname;
+        }elseif($ctyname!='')
+        {               
+            $criteria->compare('cityDirectory.NOM_VILLE', $ctyname, true);
+            $criteria->together = true;
+            $data['ctyname'] = $ctyname;
+        }  
+        
+       // $count = RegionDirectory::model()->with('cityDirectory')->count($criteria);
+        $rescnt =RegionDirectory::model()->with('cityDirectory')->findAll($criteria);
+        $count = count($rescnt);
+ 
+        $pages = new CPagination($count);
 
-        $this->render('index', $data);
+        // results per page
+        $pages->pageSize = 10;    
+        if ($regid != '') 
+        {
+               $pages->params   = array('regid' => $regid );
+        }
+        
+        if ($cityname != '' ) 
+        {
+               $pages->params   = array('ctyname' => $cityname );
+        }elseif($ctyname!='')
+        {
+               $pages->params   = array('ctyname' => $ctyname );            
+        }    
+         
+       // $pages->pageVar='page';
+        $pages->applyLimit($criteria);
+        
+        //
+        $models = RegionDirectory::model()->with('cityDirectory')->findAll($criteria);
+       
+        $this->render('index', array(
+            'models' => $models,
+            'postinfo' => $data,
+            'pages' => $pages,
+            'Rmodel' => $model
+        ));
     }
 
     /**

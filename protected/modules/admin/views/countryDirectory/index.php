@@ -14,6 +14,8 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_p
 $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
 
 $btntitle = Myclass::t('APP504').' '.Myclass::t('APP35');
+
+
 ?>
 
 <div class="col-lg-12 col-md-12">
@@ -29,7 +31,7 @@ $btntitle = Myclass::t('APP504').' '.Myclass::t('APP35');
         <?php
         $gridColumns = array(
         	'NOM_PAYS_FR',
-		'NOM_PAYS_EN',
+		//'NOM_PAYS_EN',
              array(   
                 'header' => Myclass::t('APP37'), 
                 'name' => 'repertoireRegion_count',
@@ -40,7 +42,7 @@ $btntitle = Myclass::t('APP504').' '.Myclass::t('APP35');
        //        'value' => 'count($data->repertoireRegions)',
        // ),    
         array(
-        'header' => Myclass::t('APP60'),
+        'header' => Myclass::t('APP46'),
         'class' => 'booster.widgets.TbButtonColumn',
         'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
         'template' => '{update}',
