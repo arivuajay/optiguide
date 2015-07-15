@@ -30,7 +30,7 @@ class CategoryInformationController extends Controller
                       'users'=>array('*'),
                 ),
                 array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                      'actions'=>array('index','view','create','update','admin','delete','getcities'),
+                      'actions'=>array('index','view','create','update','admin','delete','getcities','deleteall'),
                       'users'=>array('@'),
                 ),
                 array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -181,6 +181,27 @@ class CategoryInformationController extends Controller
         $this->render('index',array(
             'model'=>$model,
         ));
+    }
+    
+    public function actionDeleteAll() 
+    {
+    
+        if (isset($_POST['selectedIds'])) 
+        {
+            $del_item = $_POST['selectedIds'];
+            $model_item = new CategoryInformation;
+            $model_item_all = new CategoryInformation;
+            foreach ($del_item as $_id) 
+            {
+                $model_item->deleteByPk($_id);
+                $model_item_all->deleteAllByAttributes(array('ID_CATEGORIE' => $_id));
+            }
+            Yii::app()->user->setFlash('success', 'Category deleted successfully.');           
+            $this->redirect(array('index'));
+        } else {
+            Yii::app()->user->setFlash('success', 'Please select at least one record to delete.');
+           $this->redirect(array('index'));
+        }
     }
 
     /**

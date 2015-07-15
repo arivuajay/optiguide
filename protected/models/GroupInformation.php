@@ -121,8 +121,17 @@ class GroupInformation extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('ID_GROUPE',$this->ID_GROUPE);
-		$criteria->compare('ID_SECTION',$this->ID_SECTION);
+		$criteria->compare('ID_GROUPE',$this->ID_GROUPE);		
+                 /* get the search params*/
+                $secid = Yii::app()->getRequest()->getQuery('id');            
+		
+                if($secid!='')
+                {    
+                    $criteria->compare('ID_SECTION',$secid);
+                }else
+                {
+                    $criteria->compare('ID_SECTION',$this->ID_SECTION);
+                } 
 		$criteria->compare('NOM_GROUPE',$this->NOM_GROUPE,true);
 		$criteria->compare('ADRESSE',$this->ADRESSE,true);
 		$criteria->compare('ADRESSE2',$this->ADRESSE2,true);

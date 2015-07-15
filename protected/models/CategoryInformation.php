@@ -65,7 +65,7 @@ class CategoryInformation extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'repertoireRenseignementsSections' => array(self::HAS_MANY, 'RepertoireRenseignementsSection', 'ID_CATEGORIE'),
+            'sectionInformation' => array(self::HAS_MANY, 'SectionInformation', 'ID_CATEGORIE'),
         );
     }
 

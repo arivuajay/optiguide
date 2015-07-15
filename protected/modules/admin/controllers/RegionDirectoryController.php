@@ -98,59 +98,58 @@ class RegionDirectoryController extends Controller {
     public function actionIndex() {
         $model = new RegionDirectory;
 
-        $cntryid = isset($_POST['RegionDirectory']['ID_PAYS']) ? $_POST['RegionDirectory']['ID_PAYS'] : '';
+        /* POst values of search */
+        $cntryid    = isset($_POST['RegionDirectory']['ID_PAYS']) ? $_POST['RegionDirectory']['ID_PAYS'] : '';
         $regionname = isset($_POST['RegionDirectory']['NOM_REGION_FR']) ? $_POST['RegionDirectory']['NOM_REGION_FR'] : '';
 
         $criteria = new CDbCriteria();
         $criteria->order = 'NOM_PAYS_FR ASC';
         
-        /* get the search params*/
+        /* get the search params from url*/
         $regname = Yii::app()->getRequest()->getQuery('regname');
        
         if ($cntryid != '')
         {
+            $data['cntryid'] = $cntryid;
             $criteria->condition = "t.ID_PAYS=:col_val";
-            $criteria->params = array(':col_val' => $cntryid);
+            $criteria->params    = array(':col_val' => $cntryid);
         }
 
         if ($regionname != '') 
         {
+            $data['regname'] = $regionname;    
             $criteria->compare('repertoireRegions.NOM_REGION_FR', $regionname, true);
-            $criteria->together = true;
-            $data['regname'] = $regionname;
+            $criteria->together = true;            
         }elseif($regname!='')
-        {               
-            $criteria->compare('repertoireRegions.NOM_REGION_FR', $regname, true);
-            $criteria->together = true;
+        {    
             $data['regname'] = $regname;
+            $criteria->compare('repertoireRegions.NOM_REGION_FR', $regname, true);
+            $criteria->together = true;    
         }  
         
         $count = CountryDirectory::model()->with('repertoireRegions')->count($criteria);
+       
         $pages = new CPagination($count);
 
         // results per page
         $pages->pageSize = 10;    
         if ($cntryid != '') 
         {
-               $pages->params   = array('cntryid' => $cntryid );
+            $pages->params   = array('cntryid' => $cntryid );
         }
         
         if ($regionname != '' ) 
         {
-               $pages->params   = array('regname' => $regionname );
+            $pages->params   = array('regname' => $regionname );
         }elseif($regname!='')
         {
-               $pages->params   = array('regname' => $regname );            
+            $pages->params   = array('regname' => $regname );            
         }    
          
-       // $pages->pageVar='page';
         $pages->applyLimit($criteria);
-        
-        //
+  
         $models = CountryDirectory::model()->with('repertoireRegions')->findAll($criteria);
-
-        $data['cntryid'] = $cntryid;
-       
+        
         $this->render('index', array(
             'models' => $models,
             'postinfo' => $data,

@@ -139,13 +139,14 @@ class SectionInformationController extends Controller
 	public function actionIndex()
 	{
             $model=new SectionInformation('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['SectionInformation']))
-			$model->attributes=$_GET['SectionInformation'];
 
-		$this->render('index',array(
-			'model'=>$model,
-		));
+            $model->unsetAttributes();  // clear any default values
+            if(isset($_GET['SectionInformation']))
+                   $model->attributes=$_GET['SectionInformation'];
+
+            $this->render('index',array(
+                   'model'=>$model,
+            ));
 	}
 
 	/**

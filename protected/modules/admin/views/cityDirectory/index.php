@@ -18,7 +18,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
      
        // echo "<pre>"; print_r($models); exit;
         foreach ($models as $model):
-           $ctycnt = '';
+            $ctycnt = '';
             $children = array();
             if ($model->cityDirectory) {
                 foreach ($model->cityDirectory as $cities) {

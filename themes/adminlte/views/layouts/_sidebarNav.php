@@ -36,8 +36,8 @@
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
                         array('label' => '<i class="fa fa-angle-double-right"></i> <span>Categories</span>', 'url' => array('/admin/categoryinformation/index'), 'active' => $_controller == 'categoryinformation'),
-                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Sections</span>', 'url' => array('/admin/sectioninformation/index'), 'active' => $_controller == 'sectioninformation'),
-                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Groups</span>', 'url' => array('/admin/groupinformation/index'), 'active' => $_controller == 'groupinformation'),
+                      // array('label' => '<i class="fa fa-angle-double-right"></i> <span>Sections</span>', 'url' => array('/admin/sectioninformation/index'), 'active' => $_controller == 'sectioninformation'),
+                      // array('label' => '<i class="fa fa-angle-double-right"></i> <span>Groups</span>', 'url' => array('/admin/groupinformation/index'), 'active' => $_controller == 'groupinformation'),
                     ),
                 ),
             ),

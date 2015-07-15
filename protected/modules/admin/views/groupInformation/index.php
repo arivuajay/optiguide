@@ -28,7 +28,7 @@ $btntitle = Myclass::t('APP504')." ".Myclass::t('APP82');
     <div class="row">
         <?php
         $gridColumns = array(
-        	'ID_SECTION',
+        	//'ID_SECTION',
 		'NOM_GROUPE',
 		'ADRESSE',				
 		'CODE_POSTAL',

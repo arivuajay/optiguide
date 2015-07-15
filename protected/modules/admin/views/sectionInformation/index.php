@@ -27,9 +27,22 @@ $buttontitle = Myclass::t('APP504')." ".Myclass::t('APP53');
     <div class="row">
         <?php
         $gridColumns = array(
-        	'ID_CATEGORIE',
+        	//'ID_CATEGORIE',
 		'SECTION_FR',
-		'SECTION_EN',
+		//'SECTION_EN',
+        array(
+                'class' => 'booster.widgets.TbButtonColumn',
+                'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                'template' => '{view}',
+                'buttons' => array(
+                    'view' => array(
+                        // 'imageUrl'=>Yii::app()->request->baseUrl.'/css/gridViewStyle/images/gr-plus.png',
+                        'url' => 'Yii::app()->createUrl("admin/groupinformation/index", array("id"=>$data->ID_SECTION))',
+                    // 'options' => array('class' => 'editevent'),
+                    ),
+                )
+            )
+            ,    
         array(
         'header' => Myclass::t('APP46') ,
         'class' => 'booster.widgets.TbButtonColumn',

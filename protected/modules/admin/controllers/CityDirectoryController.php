@@ -198,8 +198,8 @@ class CityDirectoryController extends Controller
         }  
         
        // $count = RegionDirectory::model()->with('cityDirectory')->count($criteria);
-        $rescnt =RegionDirectory::model()->with('cityDirectory')->findAll($criteria);
-        $count = count($rescnt);
+        $rescnt = RegionDirectory::model()->with('cityDirectory')->findAll($criteria);
+        $count  = count($rescnt);
  
         $pages = new CPagination($count);
 

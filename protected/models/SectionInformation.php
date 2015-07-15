@@ -93,9 +93,19 @@ class SectionInformation extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+                
+                $criteria->compare('ID_SECTION',$this->ID_SECTION);
 
-		$criteria->compare('ID_SECTION',$this->ID_SECTION);
-		$criteria->compare('ID_CATEGORIE',$this->ID_CATEGORIE);
+                /* get the search params*/
+                $catid = Yii::app()->getRequest()->getQuery('id');            
+		
+                if($catid!='')
+                {    
+                    $criteria->compare('ID_CATEGORIE',$catid);
+                }else
+                {
+                    $criteria->compare('ID_CATEGORIE',$this->ID_CATEGORIE);
+                }    
 		$criteria->compare('SECTION_FR',$this->SECTION_FR,true);
 		$criteria->compare('SECTION_EN',$this->SECTION_EN,true);
 

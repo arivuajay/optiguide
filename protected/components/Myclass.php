@@ -81,8 +81,11 @@ class Myclass extends CController {
             $criteria_reg->condition = 'ID_PAYS=:id';
             $criteria_reg->params = array(':id'=>$id);
         }    
+      
         $regions = RegionDirectory::model()->findAll($criteria_reg);
+ 
         $regions = CHtml::listData($regions, 'ID_REGION', 'NOM_REGION_FR');
+      
         return $regions;
     }   
     
