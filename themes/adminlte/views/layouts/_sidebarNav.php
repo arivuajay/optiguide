@@ -19,6 +19,7 @@
             'activateItems' => true,
             'items' => array(
                 array('label' => '<i class="fa fa-dashboard"></i> <span>Dashboard</span>', 'url' => Yii::app()->homeUrl),
+                
                 array('label' => '<i class="fa fa-dashboard"></i> <span>Archive Categories</span>', 'url' => array('/admin/archiveCategory/index')),
                 
                 array('label' => '<i class="fa fa-dashboard"></i> <span>Directories</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
@@ -31,15 +32,10 @@
                     ),
                 ),
                 
-                array('label' => '<i class="fa fa-dashboard"></i> <span>Informations</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
-                    'itemOptions' => array('class' => 'treeview'),
-                    'submenuOptions' => array('class' => 'treeview-menu'),
-                    'items' => array(
-                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Categories</span>', 'url' => array('/admin/categoryinformation/index'), 'active' => $_controller == 'categoryinformation'),
-                      // array('label' => '<i class="fa fa-angle-double-right"></i> <span>Sections</span>', 'url' => array('/admin/sectioninformation/index'), 'active' => $_controller == 'sectioninformation'),
-                      // array('label' => '<i class="fa fa-angle-double-right"></i> <span>Groups</span>', 'url' => array('/admin/groupinformation/index'), 'active' => $_controller == 'groupinformation'),
-                    ),
-                ),
+                array('label' => '<i class="fa fa-dashboard"></i> <span>Associations</span>', 'url' => array('/admin/categoryinformation/index'), 'active' => $_controller == 'categoryinformation'),
+                
+                array('label' => '<i class="fa fa-dashboard"></i> <span>Utilisateurs</span>', 'url' => array('/admin/userdirectory/index'), 'active' => $_controller == 'userdirectory'),
+               
             ),
             'htmlOptions' => array('class' => 'sidebar-menu')
         ));
