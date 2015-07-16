@@ -15,7 +15,7 @@ return array(
         'application.components.*'
     ),
     'modules' => array(
-        'site', 'admin',
+       ENABLE_MODULES,
         // uncomment the following to enable the Gii tool
         'gii' => array(
             'class' => 'system.gii.GiiModule',
@@ -44,7 +44,7 @@ return array(
         //
         'admin' => array(
             'allowAutoLogin' => true,
-            'loginUrl' => array('/admin/default/login'),
+            'loginUrl' => array('/'.DEFAULT_MODULE.'/default/login'),
         ),
         'user' => array(
             'allowAutoLogin' => true,
@@ -60,7 +60,7 @@ return array(
         'db' => require(dirname(__FILE__) . '/database.php'),
         
         'errorHandler' => array(
-            'errorAction' => 'site/error',
+            'errorAction' => DEFAULT_MODULE.'/default/error',
         ),
         'log' => array(
             'class' => 'CLogRouter',
@@ -77,7 +77,7 @@ return array(
     ),
     // application-level parameters that can be accessed
     //setting the basic language value
-    'defaultController' => 'admin/default/index',
+    'defaultController' => DEFAULT_MODULE.'/default/index',
     // using Yii::app()->params['paramName']
     'params' => require(dirname(__FILE__) . '/params.php'),
     'timeZone' => 'Asia/Calcutta',
