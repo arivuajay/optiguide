@@ -32,6 +32,15 @@
                     ),
                 ),
                 
+                array('label' => '<i class="fa fa-dashboard"></i> <span>Professionnels</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
+                    'itemOptions' => array('class' => 'treeview'),
+                    'submenuOptions' => array('class' => 'treeview-menu'),
+                    'items' => array(
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Gestion des professionnels</span>', 'url' => array('/admin/professionaldirectory/index'), 'active' => $_controller == 'professionaldirectory'),
+                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Gestion des types de professionnels</span>', 'url' => array('/admin/professionaltype/index'), 'active' => $_controller == 'professionaltype'),
+                    ),
+                ),
+                
                 array('label' => '<i class="fa fa-dashboard"></i> <span>Associations</span>', 'url' => array('/admin/categoryinformation/index'), 'active' => $_controller == 'categoryinformation'),
                 
                 array('label' => '<i class="fa fa-dashboard"></i> <span>Utilisateurs</span>', 'url' => array('/admin/userdirectory/index'), 'active' => $_controller == 'userdirectory'),
