@@ -82,11 +82,11 @@
 
         <?php $this->renderPartial('//layouts/_footer'); ?>
 
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
         <?php
         $cs_pos_end = CClientScript::POS_END;
+        
+        $cs->registerCoreScript('jquery');
+        
         $cs->registerScriptFile($themeUrl . '/js/bootstrap.min.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-select.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/maps.js', $cs_pos_end);
