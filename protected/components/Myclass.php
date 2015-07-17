@@ -58,12 +58,11 @@ class Myclass extends CController {
         }
     }
     
-    public static function getallcountries($id = '')
+    public static function getallcountries($id = null)
     {       
         $criteria = new CDbCriteria;
         $criteria->order = 'NOM_PAYS_FR ASC';
-        if($id!='')
-        {    
+        if(!is_null($id)){    
             $criteria->condition = 'ID_PAYS=:id';
             $criteria->params = array(':id'=>$id);
         }  
@@ -72,12 +71,11 @@ class Myclass extends CController {
         return $val;
     }   
     
-    public static function getallregions($id = '')
+    public static function getallregions($id = null)
     {       
         $criteria_reg = new CDbCriteria;
         $criteria_reg->order = 'NOM_REGION_FR ASC';
-        if($id!='')
-        {    
+        if(!is_null($id)){    
             $criteria_reg->condition = 'ID_PAYS=:id';
             $criteria_reg->params = array(':id'=>$id);
         }    
@@ -89,12 +87,11 @@ class Myclass extends CController {
         return $regions;
     }   
     
-    public static function getallcities($id = '')
+    public static function getallcities($id = NULL)
     {       
         $criteria_reg = new CDbCriteria;
         $criteria_reg->order = 'NOM_VILLE ASC';
-        if($id!='')
-        {    
+        if(!is_null($id)){    
             $criteria_reg->condition = 'ID_REGION=:id';
             $criteria_reg->params    = array(':id'=>$id);
         }    

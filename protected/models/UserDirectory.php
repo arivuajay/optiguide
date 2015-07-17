@@ -27,8 +27,7 @@ class UserDirectory extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
-	{
+	public function tableName(){
 		return 'repertoire_utilisateurs';
 	}
 

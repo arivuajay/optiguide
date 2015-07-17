@@ -26,13 +26,14 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
     <div class="row">
         <?php
         $gridColumns = array(
-        		'ID_CLIENT',
-		'PREFIXE_FR',
-		'PREFIXE_EN',
+               	
 		'PRENOM',
 		'NOM',
 		'ID_TYPE_SPECIALISTE',
+                'ID_CLIENT',	
 		/*
+                 * 'PREFIXE_FR',
+		'PREFIXE_EN',
 		'TYPE_AUTRE',
 		'BUREAU',
 		'ADRESSE',
@@ -51,7 +52,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         'header' => 'Actions',
         'class' => 'booster.widgets.TbButtonColumn',
         'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-        'template' => '{view}{update}{delete}',
+        'template' => '{update}{delete}',
         )
         );
 

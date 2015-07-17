@@ -56,54 +56,32 @@ class ProfessionalDirectoryController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new ProfessionalDirectory;
-        //$criteria
-        
-        $get_types  = ProfessionalType::model()->findAll();
-        $list_types = CHtml::listData($get_types, 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_FR');
-        $data['proftypes'] = $list_types;
-        
-        $data['country']   = Myclass::getallcountries();               
-        $data['regions']   = Myclass::getallregions();
-        $data['cities']    = Myclass::getallcities();
-        
-        //$data['all_USR']    = $this->getallusr();
+        $model  = new ProfessionalDirectory;
+        $umodel = new UserDirectory();
 
-        // Uncomment the following line if AJAX validation is needed
-        $this->performAjaxValidation($model);
+        $this->performAjaxValidation(array($model,$umodel));
 
         if (isset($_POST['ProfessionalDirectory'])) {
-            $model->attributes = $_POST['ProfessionalDirectory'];
-            if ($model->save()) {
+            $model->attributes  = $_POST['ProfessionalDirectory'];
+            $model->ID_CLIENT   = $umodel->USR;
+            $umodel->attributes = $_POST['UserDirectory'];
+            $umodel->NOM_TABLE  = $model::$NOM_TABLE;
+            $umodel->NOM_UTILISATEUR = $model->PRENOM." ".$model->NOM;
+            $umodel->PWD = Myclass::getRandomString(5);
+            
+            $valid = $umodel->validate();
+            $valid = $model->validate() && $valid;
+            
+            if ($valid) {
+                $umodel->save(false);
+                $model->save(false);
                 Yii::app()->user->setFlash('success', 'ProfessionalDirectory Created Successfully!!!');
                 $this->redirect(array('index'));
             }
         }
             
-        $data['model'] = $model;
-                 
-        $this->render('create', $data);
+        $this->render('create', compact('umodel','model'));
     }
-
-    public function getallusr($id = '')
-    {       
-        $criteria_reg = new CDbCriteria;
-        $criteria_reg->order = 'USR ASC';
-       // $criteria_reg->offset = 0;      
-       // $criteria_reg->limit = 10;        
-        if($id!='')
-        {    
-            $criteria_reg->condition = 'USR=:id';
-            $criteria_reg->params    = array(':id'=>$id);
-        }    
-        $uresult = UserDirectory::model()->findAll($criteria_reg);      
-        foreach($uresult as $info) 
-        { 
-           $res[] = $info['USR'];
-        }
-       
-        return $res;
-    } 
     
     /**
      * Updates a particular model.
@@ -112,42 +90,28 @@ class ProfessionalDirectoryController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
-        
-         $cityid      = $model->ID_VILLE;
-
-        /* Get selected region for current category information */
-        $region_info = CityDirectory::get_region_info($cityid);
-        $rid         = $region_info['ID_REGION'];  
-
-        /* Get selected country for current category information */
-        $cntry_info  = CityDirectory::get_country_info($rid);
-        $cid         = $cntry_info['ID_PAYS'];
-        // $cntry_info['NOM_PAYS_EN'];
-        $data['rid'] = $rid;
-        $data['cid'] = $cid;
-
-
-        /* get all countries and regions */    
-        $data['country'] = Myclass::getallcountries();               
-        $data['regions'] = Myclass::getallregions($cid);
-        $data['cities']  = Myclass::getallcities($rid);
-
-
+        $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
         // Uncomment the following line if AJAX validation is needed
-        $this->performAjaxValidation($model);
+        $this->performAjaxValidation(array($model,$umodel));
 
         if (isset($_POST['ProfessionalDirectory'])) {
             $model->attributes = $_POST['ProfessionalDirectory'];
-            if ($model->save()) {
+            $umodel->attributes = $_POST['UserDirectory'];
+            $umodel->NOM_TABLE = $model::$NOM_TABLE;
+            $umodel->NOM_UTILISATEUR = $model->PRENOM." ".$model->NOM;
+            
+            $valid = $umodel->validate();
+            $valid = $model->validate() && $valid;
+            
+            if ($valid) {
+                $umodel->save(false);
+                $model->save(false);
                 Yii::app()->user->setFlash('success', 'ProfessionalDirectory Updated Successfully!!!');
                 $this->redirect(array('index'));
             }
         }
-        
-        $data['model'] = $model;
-        $this->render('update', array(
-            'model' => $model,
-        ));
+            
+        $this->render('create', compact('umodel','model'));
     }
 
     /**

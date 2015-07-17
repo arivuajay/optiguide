@@ -14,6 +14,8 @@
 //        $cs->registerCssFile('http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css');
         $cs->registerCssFile($themeUrl . '/css/bootstrap-theme.css');
         $cs->registerCssFile($themeUrl . '/css/custom.css');
+        
+        $cs->registerScript('initial','var basepath = "'.Yii::app()->baseUrl.'";');
         ?>
     </head>
     <body class="skin-blue">

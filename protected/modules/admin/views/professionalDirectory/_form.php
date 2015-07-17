@@ -19,43 +19,26 @@
                 'enableAjaxValidation' => true,
             ));
 
-            $drp_val['class'] = 'form-control';
-            if (isset($cid)) {
-                $drp_val['options'] = array($cid => array('selected' => true));
-            }
-
-
-            $drp_val_cntry['class']   = 'form-control';
-            $drp_val_cntry['empty']   = Myclass::t('APP43');        
-            if(isset($cid))
-            {    
-                $drp_val_cntry['options'] =  array( $cid => array('selected'=>true));
-            } 
-
-            $drp_val_region['class']   = 'form-control';
-            $drp_val_region['empty']   = Myclass::t('APP44');        
-            if(isset($rid))
-            {   
-                $drp_val_region['options'] =  array( $rid => array('selected'=>true));
-            } 
-   
-
-            ?>
+            $proftypes = CHtml::listData(ProfessionalType::model()->findAll(), 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_FR');
+            $country   = Myclass::getallcountries();               
+            $regions   = Myclass::getallregions($model->country);
+            $cities    = Myclass::getallcities($model->region);
+        ?>
 
             <div class="box-body">
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'ID_TYPE_SPECIALISTE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                       
-                        <?php echo $form->dropDownList($model, 'ID_TYPE_SPECIALISTE', $proftypes, $drp_val); ?>                          
+                        <?php echo $form->dropDownList($model, 'ID_TYPE_SPECIALISTE', $proftypes, array('class' => 'form-control')); ?>                          
                         <?php echo $form->error($model, 'ID_TYPE_SPECIALISTE'); ?>
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <?php echo $form->labelEx($model, 'ID_CLIENT', array('class' => 'col-sm-2 control-label')); ?>
+                    <?php echo $form->labelEx($umodel, 'USR', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php echo $form->textField($model, 'ID_CLIENT', array('class' => 'form-control', 'size' => 8, 'maxlength' => 8)); ?>
-                        <?php echo $form->error($model, 'ID_CLIENT'); ?>
+                        <?php echo $form->textField($umodel, 'USR', array('class' => 'form-control', 'size' => 8, 'maxlength' => 8)); ?>
+                        <?php echo $form->error($umodel, 'USR'); ?>
                     </div>
                 </div>
 
@@ -103,7 +86,7 @@
                  <div class="form-group">
                         <?php echo $form->labelEx($model,'country',  array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'country', $country, $drp_val_cntry); ?>                          
+                            <?php echo $form->dropDownList($model, 'country', $country, array('class' => 'form-control','empty'=>Myclass::t('APP43'))); ?>                          
                         <?php echo $form->error($model,'country'); ?>
                         </div>
                     </div>
@@ -111,7 +94,7 @@
                      <div class="form-group">
                         <?php echo $form->labelEx($model,'region',  array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'region', $regions , $drp_val_region); ?>                          
+                            <?php echo $form->dropDownList($model, 'region', $regions , array('class' => 'form-control','empty'=>Myclass::t('APP44'))); ?>                          
                         <?php echo $form->error($model,'region'); ?>
                         </div>
                     </div>
@@ -202,53 +185,42 @@
         </div>
     </div><!-- ./col -->
 </div>
-   <script type="text/javascript">
-$(document).ready(function()
-{
-   
-    //var availableTags = <?php //echo json_encode($all_USR); ?>;
-   // $( "#ProfessionalDirectory_ID_CLIENT" ).autocomplete({
-   //   source: availableTags
-   // });
-    
-    var basepath = "<?php echo Yii::app()->baseUrl;?>";
-    
-    $("#ProfessionalDirectory_country").change(function()
-    {
+<?php
+$ajaxRegionUrl = Yii::app()->createUrl('/admin/citydirectory/getregions');
+$ajaxCityUrl = Yii::app()->createUrl('/admin/categoryinformation/getcities');
+$js = <<< EOD
+    $(document).ready(function(){
+    $("#ProfessionalDirectory_country").change(function(){
         var id=$(this).val();
         var dataString = 'id='+ id;
             
-        $.ajax
-        ({
+        $.ajax({
             type: "POST",
-            url: basepath+"/admin/citydirectory/getregions",
+            url: '{$ajaxRegionUrl}',
             data: dataString,
             cache: false,
-            success: function(html)
-            {             
+            success: function(html){             
                 $("#ProfessionalDirectory_region").html(html);
             }
          });
-
     });
    
-   $("#ProfessionalDirectory_region").change(function()
-    {
+   $("#ProfessionalDirectory_region").change(function(){
         var id=$(this).val();
         var dataString = 'id='+ id;
             
-        $.ajax
-        ({
+        $.ajax({
             type: "POST",
-            url: basepath+"/admin/categoryinformation/getcities",
+            url: '{$ajaxCityUrl}',
             data: dataString,
             cache: false,
-            success: function(html)
-            {             
+            success: function(html){             
                 $("#ProfessionalDirectory_ID_VILLE").html(html);
             }
          });
 
     });
 });
-</script>
+EOD;
+Yii::app()->clientScript->registerScript('_form', $js);
+?>
