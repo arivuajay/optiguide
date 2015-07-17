@@ -62,10 +62,6 @@ class CategoryInformationController extends Controller
     {
         $model = new CategoryInformation;
 
-        $data['country'] = Myclass::getallcountries();               
-        $data['regions'] = Myclass::getallregions();
-        $data['cities']  = Myclass::getallcities();
-
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
 
@@ -80,9 +76,7 @@ class CategoryInformationController extends Controller
             }
         }
 
-        $data['model'] = $model;
-
-        $this->render('create',$data);
+        $this->render('create',compact('model'));
     }
         
     public function actionGetCities()
@@ -110,27 +104,7 @@ class CategoryInformationController extends Controller
     public function actionUpdate($id)
     {
         $model=$this->loadModel($id);
-
-        $cityid      = $model->ID_VILLE;
-
-        /* Get selected region for current category information */
-        $region_info = CityDirectory::get_region_info($cityid);
-        $rid         = $region_info['ID_REGION'];  
-
-        /* Get selected country for current category information */
-        $cntry_info  = CityDirectory::get_country_info($rid);
-        $cid         = $cntry_info['ID_PAYS'];
-        // $cntry_info['NOM_PAYS_EN'];
-        $data['rid'] = $rid;
-        $data['cid'] = $cid;
-
-
-        /* get all countries and regions */    
-        $data['country'] = Myclass::getallcountries();               
-        $data['regions'] = Myclass::getallregions($cid);
-        $data['cities']  = Myclass::getallcities($rid);
-
-
+        
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
 
@@ -144,9 +118,7 @@ class CategoryInformationController extends Controller
             }
         }
 
-        $data['model'] = $model;
-
-        $this->render('update', $data);
+        $this->render('update', compact('model'));
     }
 
     /**

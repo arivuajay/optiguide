@@ -51,6 +51,7 @@ class GroupInformation extends CActiveRecord
 			array('CODE_POSTAL, TELEPHONE, TELECOPIEUR', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
+                        array('country,region', 'safe'),
 			array('ID_GROUPE, ID_SECTION, NOM_GROUPE, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELECOPIEUR, COURRIEL, SITE_WEB, PREFIXE_REPRESENTANT_FR, PREFIXE_REPRESENTANT_EN, NOM_REPRESENTANT, TITRE_REPRESENTANT_FR, TITRE_REPRESENTANT_EN', 'safe', 'on'=>'search'),
 		);
 	}
@@ -173,4 +174,12 @@ class GroupInformation extends CActiveRecord
                 )
             ));
         }
+        
+       protected function afterFind() {
+            /* Get selected region for current category information */
+            $this->region = CityDirectory::model()->findByPk($this->ID_VILLE)->ID_REGION;
+            $this->country = RegionDirectory::model()->findByPk($this->region)->ID_PAYS;
+            return parent::afterFind();
+         }
+
 }

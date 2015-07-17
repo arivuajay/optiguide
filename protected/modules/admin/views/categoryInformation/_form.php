@@ -14,21 +14,11 @@
             'validateOnSubmit'=>true,
         ),
 	'enableAjaxValidation'=>true,
-));          
+));        
 
-$drp_val_cntry['class']   = 'form-control';
-$drp_val_cntry['empty']   = Myclass::t('APP43');        
-if(isset($cid))
-{    
-    $drp_val_cntry['options'] =  array( $cid => array('selected'=>true));
-} 
-
-$drp_val_region['class']   = 'form-control';
-$drp_val_region['empty']   = Myclass::t('APP44');        
-if(isset($rid))
-{   
-    $drp_val_region['options'] =  array( $rid => array('selected'=>true));
-} 
+        $country = Myclass::getallcountries();               
+        $regions = Myclass::getallregions($model->country);
+        $cities  = Myclass::getallcities($model->region);
 
 ?>
             <div class="box-body">
@@ -83,7 +73,7 @@ if(isset($rid))
                     <div class="form-group">
                         <?php echo $form->labelEx($model,'country',  array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'country', $country, $drp_val_cntry); ?>                          
+                            <?php echo $form->dropDownList($model, 'country', $country, array('class' => 'form-control','empty'=>Myclass::t('APP43'))); ?>                          
                         <?php echo $form->error($model,'country'); ?>
                         </div>
                     </div>
@@ -91,7 +81,7 @@ if(isset($rid))
                      <div class="form-group">
                         <?php echo $form->labelEx($model,'region',  array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'region', $regions , $drp_val_region); ?>                          
+                            <?php echo $form->dropDownList($model, 'region', $regions , array('class' => 'form-control','empty'=>Myclass::t('APP44'))); ?>                          
                         <?php echo $form->error($model,'region'); ?>
                         </div>
                     </div>
@@ -204,11 +194,13 @@ if(isset($rid))
         </div>
     </div><!-- ./col -->
 </div>
-<script type="text/javascript">
+<?php
+$ajaxRegionUrl = Yii::app()->createUrl('/admin/citydirectory/getregions');
+$ajaxCityUrl = Yii::app()->createUrl('/admin/categoryinformation/getcities');
+
+$js = <<< EOD
 $(document).ready(function()
 {
-    var basepath = "<?php echo Yii::app()->baseUrl;?>";
-    
     $("#CategoryInformation_country").change(function()
     {
         var id=$(this).val();
@@ -217,7 +209,7 @@ $(document).ready(function()
         $.ajax
         ({
             type: "POST",
-            url: basepath+"/admin/citydirectory/getregions",
+            url: '{$ajaxRegionUrl}',
             data: dataString,
             cache: false,
             success: function(html)
@@ -236,7 +228,7 @@ $(document).ready(function()
         $.ajax
         ({
             type: "POST",
-            url: basepath+"/admin/categoryinformation/getcities",
+            url: '{$ajaxCityUrl}',
             data: dataString,
             cache: false,
             success: function(html)
@@ -246,5 +238,8 @@ $(document).ready(function()
          });
 
     });
-});
-</script>
+});     
+        
+EOD;
+Yii::app()->clientScript->registerScript('_form', $js);
+?>

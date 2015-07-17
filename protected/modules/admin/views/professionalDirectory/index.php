@@ -12,6 +12,8 @@ $cs_pos_end = CClientScript::POS_END;
 
 $cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
 $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
+
+
 ?>
 
 <div class="col-lg-12 col-md-12">
@@ -25,40 +27,31 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 <div class="col-lg-12 col-md-12">
     <div class="row">
         <?php
+         $gettypes =  ProfessionalType::model()->findAll(array('group'=>'t.TYPE_SPECIALISTE_FR'));
+         
         $gridColumns = array(
                	
 		'PRENOM',
 		'NOM',
-		'ID_TYPE_SPECIALISTE',
-                'ID_CLIENT',	
-		/*
-                 * 'PREFIXE_FR',
-		'PREFIXE_EN',
-		'TYPE_AUTRE',
-		'BUREAU',
-		'ADRESSE',
-		'ADRESSE2',
-		'ID_VILLE',
-		'CODE_POSTAL',
-		'TELEPHONE',
-		'TELEPHONE2',
-		'TELECOPIEUR',
-		'TELECOPIEUR2',
-		'SITE_WEB',
-		'COURRIEL',
-		'DATE_MODIFICATION',
-		*/
-        array(
-        'header' => 'Actions',
-        'class' => 'booster.widgets.TbButtonColumn',
-        'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-        'template' => '{update}{delete}',
-        )
+                 array(
+                //'header'  =>  'ID_TYPE_SPECIALISTE',    
+                'name'    => 'professionalType.TYPE_SPECIALISTE_FR',
+                'value'   => $data->professionalType->TYPE_SPECIALISTE_FR,
+                'filter'  => CHtml::activeDropDownList($model, 'ID_TYPE_SPECIALISTE', CHtml::listData($gettypes , 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_FR'), array('class'=>'form-control','prompt'=>'All')),
+                ),            
+                'ID_CLIENT',			
+                array(
+                'header' => 'Actions',
+                'class' => 'booster.widgets.TbButtonColumn',
+                'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                'template' => '{update}{delete}',
+                )
         );
 
         $this->widget('booster.widgets.TbExtendedGridView', array(
         'filter' => $model,
         'type' => 'striped bordered datatable',
+        'ajaxUrl' => $this->createUrl('professionaldirectory/index'),
         'dataProvider' => $model->search(),
         'responsiveTable' => true,
         'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Gestion des professionnels</h3></div><div class="panel-body">{items}{pager}</div></div>',

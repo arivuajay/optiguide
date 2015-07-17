@@ -49,7 +49,7 @@ class ProfessionalType extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'lienMailingSpecialistetypes' => array(self::HAS_MANY, 'LienMailingSpecialistetype', 'id_specialialistetype'),
-                        'professionalDirectory' => array(self::BELONGS_TO, 'ProfessionalDirectory', 'ID_TYPE_SPECIALISTE'),  
+                        'professionalDirectory' => array(self::HAS_MANY, 'ProfessionalDirectory', 'ID_TYPE_SPECIALISTE'),  
                         'professionalCount' => array(self::STAT, 'ProfessionalDirectory', 'ID_TYPE_SPECIALISTE'),
                     
 		);
@@ -63,7 +63,7 @@ class ProfessionalType extends CActiveRecord
 	{
 		return array(
 			'ID_TYPE_SPECIALISTE' => Myclass::t('Id Type Specialiste'),
-			'TYPE_SPECIALISTE_FR' => Myclass::t('Type en français'),
+			'TYPE_SPECIALISTE_FR' => Myclass::t('Typefranais'),
 			'TYPE_SPECIALISTE_EN' => Myclass::t('Type en anglais'),
 			'iOrder' => Myclass::t('I Order'),
 		);

@@ -28,8 +28,10 @@
 class ProfessionalDirectory extends CActiveRecord {
 
     public $country;
+    public $TYPESPECIALISTEFR;
     public $region;
     static $NOM_TABLE = 'Professionnels';
+    
 
     /**
      * @return string the associated database table name
@@ -53,7 +55,7 @@ class ProfessionalDirectory extends CActiveRecord {
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('country,region', 'safe'),
-            array('ID_SPECIALISTE, ID_CLIENT, PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, ID_TYPE_SPECIALISTE, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, SITE_WEB, COURRIEL, DATE_MODIFICATION', 'safe', 'on' => 'search'),
+            array('ID_SPECIALISTE, TYPESPECIALISTEFR , ID_CLIENT, PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, ID_TYPE_SPECIALISTE, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, SITE_WEB, COURRIEL, DATE_MODIFICATION', 'safe', 'on' => 'search'),
         );
     }
 
@@ -64,7 +66,7 @@ class ProfessionalDirectory extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'professionalType' => array(self::HAS_MANY, 'ProfessionalType', 'ID_TYPE_SPECIALISTE'),
+            'professionalType' => array(self::BELONGS_TO, 'ProfessionalType', 'ID_TYPE_SPECIALISTE'),
         );
     }
 
@@ -111,14 +113,15 @@ class ProfessionalDirectory extends CActiveRecord {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
-
+        
+        
         $criteria->compare('ID_SPECIALISTE', $this->ID_SPECIALISTE);
         $criteria->compare('ID_CLIENT', $this->ID_CLIENT, true);
         $criteria->compare('PREFIXE_FR', $this->PREFIXE_FR, true);
         $criteria->compare('PREFIXE_EN', $this->PREFIXE_EN, true);
         $criteria->compare('PRENOM', $this->PRENOM, true);
         $criteria->compare('NOM', $this->NOM, true);
-        $criteria->compare('ID_TYPE_SPECIALISTE', $this->ID_TYPE_SPECIALISTE);
+        $criteria->compare('ID_TYPE_SPECIALISTE', $this->ID_TYPE_SPECIALISTE, true);
         $criteria->compare('TYPE_AUTRE', $this->TYPE_AUTRE, true);
         $criteria->compare('BUREAU', $this->BUREAU, true);
         $criteria->compare('ADRESSE', $this->ADRESSE, true);
@@ -132,6 +135,7 @@ class ProfessionalDirectory extends CActiveRecord {
         $criteria->compare('SITE_WEB', $this->SITE_WEB, true);
         $criteria->compare('COURRIEL', $this->COURRIEL, true);
         $criteria->compare('DATE_MODIFICATION', $this->DATE_MODIFICATION, true);
+     
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
