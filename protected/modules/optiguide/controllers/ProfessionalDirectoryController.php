@@ -22,7 +22,8 @@ class ProfessionalDirectoryController extends OGController {
      * @return array access control rules
      */
     public function accessRules() {
-        return array(
+        return array_merge(
+                parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
                 'actions' => array('create'),
                 'users' => array('*'),
@@ -38,6 +39,7 @@ class ProfessionalDirectoryController extends OGController {
             array('deny', // deny all users
                 'users' => array('*'),
             ),
+                )
         );
     }
 
@@ -58,6 +60,8 @@ class ProfessionalDirectoryController extends OGController {
             $model->ID_CLIENT = $umodel->USR;
             $umodel->NOM_TABLE = $model::$NOM_TABLE;
             $umodel->NOM_UTILISATEUR = $model->PRENOM . " " . $model->NOM;
+            $umodel->sGuid = Myclass::getGuid();
+            $umodel->LANGUE = 'EN';
 
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
@@ -65,8 +69,8 @@ class ProfessionalDirectoryController extends OGController {
             if ($valid) {
                 $umodel->save(false);
                 $model->save(false);
-                Yii::app()->user->setFlash('success', 'ProfessionalDirectory Created Successfully!!!');
-                $this->redirect(array('index'));
+                Yii::app()->user->setFlash('success', 'Professional Created Successfully!!!');
+                $this->redirect(array('create'));
             }
         }
 

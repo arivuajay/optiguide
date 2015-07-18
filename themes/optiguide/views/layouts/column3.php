@@ -1,4 +1,17 @@
 <?php $this->beginContent('//layouts/main'); ?>
+<?php if (isset($this->flashMessages)): ?>
+    <?php foreach ($this->flashMessages as $key => $message) { ?>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
+            <div class="alert alert-<?php echo $key; ?> fade in">
+                <button type="button" class="close close-sm" data-dismiss="alert">
+                    <i class="fa fa-times"></i>
+                </button>
+                <?php echo $message; ?>
+            </div>
+        </div>
+    <?php } ?>
+<?php endif ?>
+
 <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">  
     <div class="pro-login"> 
         <div class="login-heading"> <i class="fa fa-lock"></i>  

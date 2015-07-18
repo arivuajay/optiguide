@@ -57,67 +57,68 @@ class Myclass extends CController {
             unset(Yii::app()->request->cookies['admin_username']);
         }
     }
-    
-    public static function getallcountries($id = null)
-    {       
+
+    public static function getallcountries($id = null) {
         $criteria = new CDbCriteria;
         $criteria->order = 'NOM_PAYS_FR ASC';
-        if(!is_null($id)){    
+        if (!is_null($id)) {
             $criteria->condition = 'ID_PAYS=:id';
-            $criteria->params = array(':id'=>$id);
-        }  
+            $criteria->params = array(':id' => $id);
+        }
         $country = CountryDirectory::model()->findAll($criteria);
         $val = CHtml::listData($country, 'ID_PAYS', 'NOM_PAYS_FR');
         return $val;
-    }   
-    
-    public static function getallregions($id = null)
-    {       
+    }
+
+    public static function getallregions($id = null) {
         $criteria_reg = new CDbCriteria;
         $criteria_reg->order = 'NOM_REGION_FR ASC';
-        if(!is_null($id)){    
+        if (!is_null($id)) {
             $criteria_reg->condition = 'ID_PAYS=:id';
-            $criteria_reg->params = array(':id'=>$id);
-        }    
-      
+            $criteria_reg->params = array(':id' => $id);
+        }
+
         $regions = RegionDirectory::model()->findAll($criteria_reg);
- 
+
         $regions = CHtml::listData($regions, 'ID_REGION', 'NOM_REGION_FR');
-      
+
         return $regions;
-    }   
-    
-    public static function getallcities($id = NULL)
-    {       
+    }
+
+    public static function getallcities($id = NULL) {
         $criteria_reg = new CDbCriteria;
         $criteria_reg->order = 'NOM_VILLE ASC';
-        if(!is_null($id)){    
+        if (!is_null($id)) {
             $criteria_reg->condition = 'ID_REGION=:id';
-            $criteria_reg->params    = array(':id'=>$id);
-        }    
+            $criteria_reg->params = array(':id' => $id);
+        }
         $cities = CityDirectory::model()->findAll($criteria_reg);
         $cities = CHtml::listData($cities, 'ID_VILLE', 'NOM_VILLE');
         return $cities;
-    } 
-    
-    public static function getGuid(){
-    if (function_exists('com_create_guid'))
-    {
-        return  com_create_guid();
-    }else{
-        mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
-        $charid = strtoupper(md5(uniqid(rand(), true)));
-        $hyphen = chr(45);// "-"
-        $uuid = chr(123)// "{"
-            .substr($charid, 0, 8).$hyphen
-            .substr($charid, 8, 4).$hyphen
-            .substr($charid,12, 4).$hyphen
-            .substr($charid,16, 4).$hyphen
-            .substr($charid,20,12)
-            .chr(125);// "}"
-        return $uuid;
     }
-}
-    
-      
+
+    public static function getGuid($opt = false) {
+        if (function_exists('com_create_guid')) {
+            if ($opt) {
+                return com_create_guid();
+            } else {
+                return trim(com_create_guid(), '{}');
+            }
+        } else {
+            mt_srand((double) microtime() * 10000);    // optional for php 4.2.0 and up.
+            $charid = strtoupper(md5(uniqid(rand(), true)));
+            $hyphen = chr(45);    // "-"
+            $left_curly = $opt ? chr(123) : "";     //  "{"
+            $right_curly = $opt ? chr(125) : "";    //  "}"
+            $uuid = $left_curly
+                    . substr($charid, 0, 8) . $hyphen
+                    . substr($charid, 8, 4) . $hyphen
+                    . substr($charid, 12, 4) . $hyphen
+                    . substr($charid, 16, 4) . $hyphen
+                    . substr($charid, 20, 12)
+                    . $right_curly;
+            return $uuid;
+        }
+    }
+
 }

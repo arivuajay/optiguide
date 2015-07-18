@@ -36,4 +36,41 @@ class Controller extends CController {
         $this->themeUrl = Yii::app()->theme->baseUrl;
     }
 
+    public function accessRules() {
+        return array(
+            array('allow', // allow all users to perform 'index' and 'view' actions
+                'actions' => array('getregions', 'getcities'),
+                'users' => array('*'),
+            ),
+        );
+    }
+
+    public function actionGetRegions() {
+        $options = '';
+        $cid = isset($_POST['id']) ? $_POST['id'] : '';
+        $options = "<option value=''>" . Myclass::t('APP44') . "</option>";
+        if ($cid != '') {
+            $data_regions = Myclass::getallregions($cid);
+            foreach ($data_regions as $k => $info) {
+                $options .= "<option value='" . $k . "'>" . $info . "</option>";
+            }
+        }
+        echo $options;
+        exit;
+    }
+
+    public function actionGetCities() {
+        $options = '';
+        $cid = isset($_POST['id']) ? $_POST['id'] : '';
+        $options = "<option value=''>" . Myclass::t('APP59') . "</option>";
+        if ($cid != '') {
+            $data_cities = Myclass::getallcities($cid);
+            foreach ($data_cities as $k => $info) {
+                $options .= "<option value='" . $k . "'>" . $info . "</option>";
+            }
+        }
+        echo $options;
+        exit;
+    }
+
 }
