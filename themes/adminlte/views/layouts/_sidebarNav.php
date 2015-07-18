@@ -20,17 +20,10 @@
             'items' => array(
                 array('label' => '<i class="fa fa-dashboard"></i> <span>Dashboard</span>', 'url' => Yii::app()->homeUrl),
                 
-                array('label' => '<i class="fa fa-dashboard"></i> <span>Archive Categories</span>', 'url' => array('/admin/archiveCategory/index')),
+                array('label' => '<i class="fa fa-dashboard"></i> <span>Détaillants</span>', 'url' => array('/admin/retailerdirectory/index'), 'active' => $_controller == 'retailerdirectory'),
                 
-                array('label' => '<i class="fa fa-dashboard"></i> <span>Directories</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
-                    'itemOptions' => array('class' => 'treeview'),
-                    'submenuOptions' => array('class' => 'treeview-menu'),
-                    'items' => array(
-                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Countries</span>', 'url' => array('/admin/countrydirectory/index'), 'active' => $_controller == 'countrydirectory'),
-                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Region</span>', 'url' => array('/admin/regiondirectory/index'), 'active' => $_controller == 'regiondirectory'),
-                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Cities</span>', 'url' => array('/admin/citydirectory/index'), 'active' => $_controller == 'citydirectory'),
-                    ),
-                ),
+                array('label' => '<i class="fa fa-dashboard"></i> <span>Fournisseurs</span>', 'url' => array('/admin/suppliersdirectory/index'), 'active' => $_controller == 'suppliersdirectory'),
+                
                 
                 array('label' => '<i class="fa fa-dashboard"></i> <span>Professionnels</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
                     'itemOptions' => array('class' => 'treeview'),
@@ -43,7 +36,19 @@
                 
                 array('label' => '<i class="fa fa-dashboard"></i> <span>Associations</span>', 'url' => array('/admin/categoryinformation/index'), 'active' => $_controller == 'categoryinformation'),
                 
-                array('label' => '<i class="fa fa-dashboard"></i> <span>Utilisateurs</span>', 'url' => array('/admin/userdirectory/index'), 'active' => $_controller == 'userdirectory'),
+                  array('label' => '<i class="fa fa-dashboard"></i> <span> Régions</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
+                    'itemOptions' => array('class' => 'treeview'),
+                    'submenuOptions' => array('class' => 'treeview-menu'),
+                    'items' => array(
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Countries</span>', 'url' => array('/admin/countrydirectory/index'), 'active' => $_controller == 'countrydirectory'),
+                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Region</span>', 'url' => array('/admin/regiondirectory/index'), 'active' => $_controller == 'regiondirectory'),
+                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Cities</span>', 'url' => array('/admin/citydirectory/index'), 'active' => $_controller == 'citydirectory'),
+                    ),
+                ),
+                
+                array('label' => '<i class="fa fa-dashboard"></i> <span>Archivage</span>', 'url' => array('/admin/archiveCategory/index')),
+                
+               // array('label' => '<i class="fa fa-dashboard"></i> <span>Utilisateurs</span>', 'url' => array('/admin/userdirectory/index'), 'active' => $_controller == 'userdirectory'),
                
             ),
             'htmlOptions' => array('class' => 'sidebar-menu')
