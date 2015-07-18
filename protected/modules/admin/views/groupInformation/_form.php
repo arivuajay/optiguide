@@ -8,12 +8,12 @@
     <div class="col-lg-12 col-xs-12">
         <div class="box box-primary">
             <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'group-information-form',
-        'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal'),
-        'clientOptions'=>array(
+            'id'=>'group-information-form',
+            'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal'),
+            'clientOptions'=>array(
             'validateOnSubmit'=>true,
         ),
-	'enableAjaxValidation'=>true,
+            'enableAjaxValidation'=>true,
 )); 
   
 
@@ -174,8 +174,8 @@
     </div><!-- ./col -->
 </div>
 <?php
-$ajaxRegionUrl = Yii::app()->createUrl('/admin/citydirectory/getregions');
-$ajaxCityUrl = Yii::app()->createUrl('/admin/categoryinformation/getcities');
+$ajaxRegionUrl = Yii::app()->createUrl('/admin/cityDirectory/getregions');
+$ajaxCityUrl = Yii::app()->createUrl('/admin/categoryInformation/getcities');
 
 $js = <<< EOD
 $(document).ready(function()

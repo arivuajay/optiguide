@@ -18,7 +18,7 @@ $btntitle = Myclass::t('APP504')." ".Myclass::t('APP82');
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;'.$btntitle, array('/admin/groupinformation/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;'.$btntitle, array('/admin/groupInformation/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 

@@ -16,7 +16,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;'.Myclass::t('APP504').' '.Myclass::t('APP41'), array('/admin/citydirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;'.Myclass::t('APP504').' '.Myclass::t('APP41'), array('/admin/cityDirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 
@@ -44,7 +44,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
            
         $this->widget('booster.widgets.TbExtendedGridView', array(
             'filter' => $model,
-            'ajaxUrl' => $this->createUrl('citydirectory/index'),
+            'ajaxUrl' => $this->createUrl('cityDirectory/index'),
             'type' => 'striped bordered datatable',
             'dataProvider' => $model->search(),
             'responsiveTable' => true,

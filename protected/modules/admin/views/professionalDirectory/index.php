@@ -18,7 +18,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter un professionnel', array('/admin/professionaldirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter un professionnel', array('/admin/professionalDirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 
@@ -51,7 +51,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         $this->widget('booster.widgets.TbExtendedGridView', array(
         'filter' => $model,
         'type' => 'striped bordered datatable',
-        'ajaxUrl' => $this->createUrl('professionaldirectory/index'),
+        'ajaxUrl' => $this->createUrl('professionalDirectory/index'),
         'dataProvider' => $model->search(),
         'responsiveTable' => true,
         'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Gestion des professionnels</h3></div><div class="panel-body">{items}{pager}</div></div>',

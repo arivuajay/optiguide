@@ -68,7 +68,7 @@ $(document).ready(function()
         $.ajax
         ({
             type: "POST",
-            url: basepath+"/admin/citydirectory/getregions",
+            url: basepath+"/admin/cityDirectory/getregions",
             data: dataString,
             cache: false,
             success: function(html)

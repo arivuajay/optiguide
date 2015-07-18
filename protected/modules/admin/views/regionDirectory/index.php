@@ -18,7 +18,7 @@ $countries = Myclass::getallcountries();
 ?> 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;' . Myclass::t('APP504') . ' ' . Myclass::t('APP106'), array('/admin/regiondirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;' . Myclass::t('APP504') . ' ' . Myclass::t('APP106'), array('/admin/regionDirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 
@@ -30,7 +30,7 @@ $countries = Myclass::getallcountries();
         $gridColumns = array(
             'NOM_REGION_FR',
             array(
-                'name' => 'countryDirectory.NOM_PAYS_FR',
+                'name' => 'countryDirectory.NOM_PAYS_FR',              
                 'filter' => CHtml::activeDropDownList($model, 'ID_REGION', $countries, array('class' => 'form-control', 'prompt' => 'All'))
             ),
             array(
@@ -44,7 +44,7 @@ $countries = Myclass::getallcountries();
 
         $this->widget('booster.widgets.TbExtendedGridView', array(
             'filter' => $model,
-            'ajaxUrl' => $this->createUrl('regiondirectory/index'),
+            'ajaxUrl' => $this->createUrl('regionDirectory/index'),
             'type' => 'striped bordered datatable',
             'dataProvider' => $model->search(),
             'responsiveTable' => true,

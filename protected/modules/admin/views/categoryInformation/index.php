@@ -18,7 +18,7 @@ $btn_title = Myclass::t('APP504') . " " . Myclass::t('APP58');
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;' . $btn_title, array('/admin/categoryinformation/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;' . $btn_title, array('/admin/categoryInformation/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 
@@ -46,7 +46,7 @@ $btn_title = Myclass::t('APP504') . " " . Myclass::t('APP58');
                 'buttons' => array(
                     'view' => array(
                         // 'imageUrl'=>Yii::app()->request->baseUrl.'/css/gridViewStyle/images/gr-plus.png',
-                        'url' => 'Yii::app()->createUrl("admin/sectioninformation/index", array("id"=>$data->ID_CATEGORIE))',
+                        'url' => 'Yii::app()->createUrl("admin/sectionInformation/index", array("id"=>$data->ID_CATEGORIE))',
                     // 'options' => array('class' => 'editevent'),
                     ),
                 )
