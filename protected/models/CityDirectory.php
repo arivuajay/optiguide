@@ -39,6 +39,7 @@ class CityDirectory extends CActiveRecord
                 array('NOM_VILLE', 'my_required'),
                 // The following rule is used by search().
                 // @todo Please remove those attributes that should not be searched.
+                array('NOM_REGION_FR', 'safe'),
                 array('ID_VILLE, ID_REGION, NOM_VILLE', 'safe', 'on'=>'search'),
             );
                 
@@ -174,4 +175,10 @@ class CityDirectory extends CActiveRecord
                 )
             ));
         }
+        
+        protected function afterFind() {
+        /* Get selected region for current category information */
+        $this->country = RegionDirectory::model()->findByPk($this->ID_REGION)->ID_PAYS;
+        return parent::afterFind();
+    }
 }

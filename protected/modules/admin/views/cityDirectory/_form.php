@@ -16,25 +16,21 @@
 	'enableAjaxValidation'=>true,
 ));
             
-$drp_val['class']   = 'form-control';
-$drp_val['empty']   = Myclass::t('APP43');        
-if(isset($cid))
-{    
-    $drp_val['options'] =  array( $cid => array('selected'=>true));
-} 
+$country = Myclass::getallcountries();               
+$regions = Myclass::getallregions();
  ?>
             <div class="box-body">
                     <div class="form-group">
                         <?php echo $form->labelEx($model,'country',  array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'country', $country, $drp_val); ?>                          
+                            <?php echo $form->dropDownList($model, 'country', $country ,array('class'=>'form-control','empty'=>Myclass::t('APP43'))); ?>                          
                         <?php echo $form->error($model,'country'); ?>
                         </div>
                     </div>
                      <div class="form-group">
                         <?php echo $form->labelEx($model,'ID_REGION',  array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'ID_REGION', $regions ,array('class'=>'form-control','empty'=>'Select Region')); ?>                          
+                            <?php echo $form->dropDownList($model, 'ID_REGION', $regions ,array('class'=>'form-control','empty'=>Myclass::t('APP44'))); ?>                          
                         <?php echo $form->error($model,'ID_REGION'); ?>
                         </div>
                     </div>

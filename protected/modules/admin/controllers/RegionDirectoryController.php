@@ -96,66 +96,14 @@ class RegionDirectoryController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $model = new RegionDirectory;
 
-        /* POst values of search */
-        $cntryid    = isset($_POST['RegionDirectory']['ID_PAYS']) ? $_POST['RegionDirectory']['ID_PAYS'] : '';
-        $regionname = isset($_POST['RegionDirectory']['NOM_REGION_FR']) ? $_POST['RegionDirectory']['NOM_REGION_FR'] : '';
+        $model = new RegionDirectory('search');
 
-        $criteria = new CDbCriteria();
-        $criteria->order = 'NOM_PAYS_FR ASC';
-        
-        /* get the search params from url*/
-        $regname = Yii::app()->getRequest()->getQuery('regname');
-       
-        if ($cntryid != '')
-        {
-            $data['cntryid'] = $cntryid;
-            $criteria->condition = "t.ID_PAYS=:col_val";
-            $criteria->params    = array(':col_val' => $cntryid);
-        }
+        $model->unsetAttributes();  // clear any default values
+        if (isset($_GET['RegionDirectory']))
+            $model->attributes = $_GET['RegionDirectory'];
 
-        if ($regionname != '') 
-        {
-            $data['regname'] = $regionname;    
-            $criteria->compare('repertoireRegions.NOM_REGION_FR', $regionname, true);
-            $criteria->together = true;            
-        }elseif($regname!='')
-        {    
-            $data['regname'] = $regname;
-            $criteria->compare('repertoireRegions.NOM_REGION_FR', $regname, true);
-            $criteria->together = true;    
-        }  
-        
-        $count = CountryDirectory::model()->with('repertoireRegions')->count($criteria);
-       
-        $pages = new CPagination($count);
-
-        // results per page
-        $pages->pageSize = 10;    
-        if ($cntryid != '') 
-        {
-            $pages->params   = array('cntryid' => $cntryid );
-        }
-        
-        if ($regionname != '' ) 
-        {
-            $pages->params   = array('regname' => $regionname );
-        }elseif($regname!='')
-        {
-            $pages->params   = array('regname' => $regname );            
-        }    
-         
-        $pages->applyLimit($criteria);
-  
-        $models = CountryDirectory::model()->with('repertoireRegions')->findAll($criteria);
-        
-        $this->render('index', array(
-            'models' => $models,
-            'postinfo' => $data,
-            'pages' => $pages,
-            'Rmodel' => $model
-        ));
+        $this->render('index', compact('model'));
     }
 
     /**
