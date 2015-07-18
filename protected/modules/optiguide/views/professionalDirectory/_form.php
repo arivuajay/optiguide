@@ -25,7 +25,7 @@
             ?>
 
             <div class="forms-cont"> 
-                <div class="forms-heading"><i class="fa fa-building"></i>   Subscription of a professional  </div>
+                <div class="forms-heading"><i class="fa fa-briefcase"></i>   Subscription of a professional  </div>
                 <div class="row"> 
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
@@ -116,7 +116,7 @@
                             <?php echo $form->error($model, 'country'); ?>
                         </div>
                     </div>
-                    
+
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
                             <?php echo $form->labelEx($model, 'region'); ?>
@@ -126,7 +126,7 @@
                             <?php echo $form->error($model, 'region'); ?>
                         </div>
                     </div>
-                    
+
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
                             <?php echo $form->labelEx($model, 'ID_VILLE'); ?>
@@ -206,7 +206,7 @@
                             <?php echo $form->error($model, 'COURRIEL'); ?>
                         </div>
                     </div>
-                    
+
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                             <?php echo $form->labelEx($model, 'TYPE_AUTRE'); ?>
@@ -222,35 +222,40 @@
                             <label>Yes, I wish to receive the free English digital magazine ENVISION: </label>  
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                            <?php echo $form->radioButtonList($umodel, 'bSubscription_envision', array('0' => 'No', '1' => 'Yes'),array('separator'=>'&nbsp;&nbsp;&nbsp;')); ?>
+                            <?php echo $form->radioButtonList($umodel, 'bSubscription_envision', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                         </div>
                     </div>
-                    
+
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label>Yes, I wish to receive the free French digital magazine ENVUE: </label>  </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                            <?php echo $form->radioButtonList($umodel, 'bSubscription_envue', array('0' => 'No', '1' => 'Yes'),array('separator'=>'&nbsp;&nbsp;&nbsp;')); ?>
+                            <?php echo $form->radioButtonList($umodel, 'bSubscription_envue', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                         </div>
                     </div>
-                    
+
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label>Yes, I wish to receive the OPTI-NEWS by e-mail :  </label>  </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                            <?php echo $form->radioButtonList($umodel, 'ABONNE_MAILING', array('0' => 'No', '1' => 'Yes'),array('separator'=>'&nbsp;&nbsp;&nbsp;')); ?>
+                            <?php echo $form->radioButtonList($umodel, 'ABONNE_MAILING', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                         </div>
                     </div>
-                    
+
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label>Yes, I wish to receive OPTI-PROMOS by e-mail :   </label>  </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                            <?php echo $form->radioButtonList($umodel, 'ABONNE_PROMOTION', array('0' => 'No', '1' => 'Yes'),array('separator'=>'&nbsp;&nbsp;&nbsp;')); ?>
+                            <?php echo $form->radioButtonList($umodel, 'ABONNE_PROMOTION', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                         </div>
                     </div>
 
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 pull-right"> 
-                            <!--<button type="button" class="submit-btn"><i class="fa fa-check-circle"></i> Submit</button>--> 
-                            <?php echo CHtml::submitButton('Submit', array('class' => 'submit-btn')); ?>
+                            <?php
+                            echo CHtml::tag('button', array(
+                                'name' => 'btnSubmit',
+                                'type' => 'submit',
+                                'class' => 'submit-btn'
+                                    ), '<i class="fa fa-check-circle"></i> Submit');
+                            ?>
                         </div>
                     </div>
 
