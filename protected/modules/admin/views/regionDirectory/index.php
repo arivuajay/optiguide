@@ -31,7 +31,7 @@ $countries = Myclass::getallcountries();
             'NOM_REGION_FR',
             array(
                 'name' => 'countryDirectory.NOM_PAYS_FR',              
-                'filter' => CHtml::activeDropDownList($model, 'ID_REGION', $countries, array('class' => 'form-control', 'prompt' => 'All'))
+                'filter' => CHtml::activeDropDownList($model, 'ID_PAYS', $countries, array('class' => 'form-control', 'prompt' => 'All'))
             ),
             array(
                 'header' => Myclass::t('APP46'),
