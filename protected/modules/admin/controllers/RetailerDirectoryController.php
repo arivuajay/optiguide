@@ -1,6 +1,6 @@
 <?php
 
-class ProfessionalDirectoryController extends Controller {
+class RetailerDirectoryController extends Controller {
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -28,7 +28,7 @@ class ProfessionalDirectoryController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete'),
+                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getgroups'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -56,38 +56,40 @@ class ProfessionalDirectoryController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model  = new ProfessionalDirectory;
+        $model = new RetailerDirectory;
         $umodel = new UserDirectory();
 
-        $this->performAjaxValidation(array($model,$umodel));
+        $this->performAjaxValidation(array($model, $umodel));
 
-        if (isset($_POST['ProfessionalDirectory'])) {
-            $model->attributes  = $_POST['ProfessionalDirectory'];
+        if (isset($_POST['RetailerDirectory'])) {
+            $model->attributes = $_POST['RetailerDirectory'];
             $umodel->attributes = $_POST['UserDirectory'];
-            
-            $model->ID_CLIENT   = $umodel->USR;
-          
-            $umodel->NOM_TABLE  = $model::$NOM_TABLE;
-            $umodel->NOM_UTILISATEUR = $model->PRENOM." ".$model->NOM;
+
+            $model->ID_CLIENT = $umodel->USR;
+
+            $umodel->NOM_TABLE = $model::$NOM_TABLE;
+            $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
             $umodel->PWD = Myclass::getRandomString(5);
             $umodel->sGuid = Myclass::getGuid();
-            
+
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
-            
+
             if ($valid) {
                 $model->save(false);
-                $umodel->ID_RELATION = $model->ID_SPECIALISTE;
+                $umodel->ID_RELATION = $model->ID_RETAILER;
                 $umodel->save(false);
-               
-                Yii::app()->user->setFlash('success', 'ProfessionalDirectory Created Successfully!!!');
+
+                Yii::app()->user->setFlash('success', 'RetailerDirectory Created Successfully!!!');
                 $this->redirect(array('index'));
+            } else {
+                var_dump($model->errors);
             }
         }
-            
-        $this->render('create', compact('umodel','model'));
+
+        $this->render('create', compact('umodel', 'model'));
     }
-    
+
     /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -97,26 +99,26 @@ class ProfessionalDirectoryController extends Controller {
         $model = $this->loadModel($id);
         $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
         // Uncomment the following line if AJAX validation is needed
-        $this->performAjaxValidation(array($model,$umodel));
+        $this->performAjaxValidation(array($model, $umodel));
 
-        if (isset($_POST['ProfessionalDirectory'])) {
-            $model->attributes = $_POST['ProfessionalDirectory'];
+        if (isset($_POST['RetailerDirectory'])) {
+            $model->attributes = $_POST['RetailerDirectory'];
             $umodel->attributes = $_POST['UserDirectory'];
             $umodel->NOM_TABLE = $model::$NOM_TABLE;
-            $umodel->NOM_UTILISATEUR = $model->PRENOM." ".$model->NOM;
-            
+            $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
+
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
-            
+
             if ($valid) {
                 $umodel->save(false);
                 $model->save(false);
-                Yii::app()->user->setFlash('success', 'ProfessionalDirectory Updated Successfully!!!');
+                Yii::app()->user->setFlash('success', 'RetailerDirectory Updated Successfully!!!');
                 $this->redirect(array('index'));
             }
         }
-            
-        $this->render('update', compact('umodel','model'));
+
+        $this->render('update', compact('umodel', 'model'));
     }
 
     /**
@@ -129,7 +131,7 @@ class ProfessionalDirectoryController extends Controller {
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax'])) {
-            Yii::app()->user->setFlash('success', 'ProfessionalDirectory Deleted Successfully!!!');
+            Yii::app()->user->setFlash('success', 'RetailerDirectory Deleted Successfully!!!');
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
         }
     }
@@ -138,25 +140,42 @@ class ProfessionalDirectoryController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-
-        $model = new ProfessionalDirectory('search');
+        $model = new RetailerDirectory('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['ProfessionalDirectory']))
-            $model->attributes = $_GET['ProfessionalDirectory'];
+        if (isset($_GET['RetailerDirectory']))
+            $model->attributes = $_GET['RetailerDirectory'];
 
         $this->render('index', array(
             'model' => $model,
         ));
     }
 
+    public function actionGetGroups() {
+        $options = '';
+        $cid = isset($_POST['id']) ? $_POST['id'] : '';
+        $options = "<option value=''>Select group</option>";
+        if ($cid != '') {
+            $criteria = new CDbCriteria;
+            $criteria->order = 'NOM_GROUPE ASC';
+            $criteria->condition = 'ID_RETAILER_TYPE=:id';
+            $criteria->params = array(':id' => $cid);
+            $data_groups = CHtml::listData(RetailerGroup::model()->findAll($criteria), 'ID_GROUPE', 'NOM_GROUPE');
+            foreach ($data_groups as $k => $info) {
+                $options .= "<option value='" . $k . "'>" . $info . "</option>";
+            }
+        }
+        echo $options;
+        exit;
+    }
+
     /**
      * Manages all models.
      */
     public function actionAdmin() {
-        $model = new ProfessionalDirectory('search');
+        $model = new RetailerDirectory('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['ProfessionalDirectory']))
-            $model->attributes = $_GET['ProfessionalDirectory'];
+        if (isset($_GET['RetailerDirectory']))
+            $model->attributes = $_GET['RetailerDirectory'];
 
         $this->render('admin', array(
             'model' => $model,
@@ -167,11 +186,11 @@ class ProfessionalDirectoryController extends Controller {
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return ProfessionalDirectory the loaded model
+     * @return RetailerDirectory the loaded model
      * @throws CHttpException
      */
     public function loadModel($id) {
-        $model = ProfessionalDirectory::model()->findByPk($id);
+        $model = RetailerDirectory::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -179,10 +198,10 @@ class ProfessionalDirectoryController extends Controller {
 
     /**
      * Performs the AJAX validation.
-     * @param ProfessionalDirectory $model the model to be validated
+     * @param RetailerDirectory $model the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'professional-directory-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'retailer-directory-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

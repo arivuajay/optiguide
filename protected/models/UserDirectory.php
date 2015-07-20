@@ -46,6 +46,7 @@ class UserDirectory extends CActiveRecord
                     array('NOM_UTILISATEUR, USR, PWD, COURRIEL, sGuid', 'length', 'max'=>255),
                     // The following rule is used by search().
                     // @todo Please remove those attributes that should not be searched.
+                   // array('USR', 'safe', 'readOnly'=>true , 'on'=>'update'),
                     array('ID_UTILISATEUR, LANGUE, PREFIXE, NOM_UTILISATEUR, USR, PWD, COURRIEL, ABONNE_MAILING, ABONNE_PROMOTION, ABONNE_TRANSITION, IS_FIRST_LOG, NOM_TABLE, ID_RELATION, MUST_VALIDATE, sGuid, bSubscription_envision, bSubscription_envue', 'safe', 'on'=>'search'),
             );
 	}
@@ -58,6 +59,7 @@ class UserDirectory extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    
 		);
 	}
 

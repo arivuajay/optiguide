@@ -37,7 +37,7 @@
                 <div class="form-group">
                     <?php echo $form->labelEx($umodel, 'USR', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php echo $form->textField($umodel, 'USR', array('class' => 'form-control', 'size' => 8, 'maxlength' => 8)); ?>
+                        <?php echo $form->textField($umodel, 'USR', array('class' => 'form-control', 'size' => 8, 'maxlength' => 8,'readonly'=>($model->scenario == 'update')? true : false)); ?>
                         <?php echo $form->error($umodel, 'USR'); ?>
                     </div>
                 </div>
