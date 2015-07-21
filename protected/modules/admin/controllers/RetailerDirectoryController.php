@@ -64,14 +64,15 @@ class RetailerDirectoryController extends Controller {
         if (isset($_POST['RetailerDirectory'])) {
             $model->attributes = $_POST['RetailerDirectory'];
             $umodel->attributes = $_POST['UserDirectory'];
-
+     
             $model->ID_CLIENT = $umodel->USR;
 
             $umodel->NOM_TABLE = $model::$NOM_TABLE;
             $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
-            $umodel->PWD = Myclass::getRandomString(5);
-            $umodel->sGuid = Myclass::getGuid();
-
+            $umodel->PWD     = Myclass::getRandomString(5);
+            $umodel->sGuid   = Myclass::getGuid();
+            $umodel->LANGUE  = "FR";
+            
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
 
@@ -84,6 +85,7 @@ class RetailerDirectoryController extends Controller {
                 $this->redirect(array('index'));
             } else {
                 var_dump($model->errors);
+                 var_dump($umodel->errors);
             }
         }
 
