@@ -1,27 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "repertoire_produit".
+ * This is the model class for table "repertoire_produit_marque".
  *
- * The followings are the available columns in table 'repertoire_produit':
+ * The followings are the available columns in table 'repertoire_produit_marque':
+ * @property integer $ID_LIEN_MARQUE
  * @property integer $ID_PRODUIT
- * @property integer $ID_SECTION
- * @property string $NOM_PRODUIT_FR
- * @property string $NOM_PRODUIT_EN
+ * @property integer $ID_MARQUE
  *
  * The followings are the available model relations:
- * @property RepertoireSection $iDSECTION
- * @property RepertoireProduitMarque[] $repertoireProduitMarques
+ * @property RepertoireFournisseurProduit[] $repertoireFournisseurProduits
+ * @property RepertoireMarque $iDMARQUE
+ * @property RepertoireProduit $iDPRODUIT
  */
-class ProductDirectory extends CActiveRecord
+class ProductMarqueDirectory extends CActiveRecord
 {
-        public $Marques1,$Marques2;
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'repertoire_produit';
+		return 'repertoire_produit_marque';
 	}
 
 	/**
@@ -32,23 +31,13 @@ class ProductDirectory extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('ID_SECTION,NOM_PRODUIT_FR, NOM_PRODUIT_EN, Marques2', 'required'),
-			array('ID_SECTION', 'numerical', 'integerOnly'=>true),
-                       array('Marques2', 'limitSelect','min'=>1 ,'allowEmpty'=>false, 'message' => 'You should select at least one'),
-			array('NOM_PRODUIT_FR, NOM_PRODUIT_EN', 'length', 'max'=>70),
+			array('ID_PRODUIT, ID_MARQUE', 'required'),
+			array('ID_PRODUIT, ID_MARQUE', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-                        array('Marques1,Marques2','safe'),
-			array('ID_PRODUIT, ID_SECTION, NOM_PRODUIT_FR, NOM_PRODUIT_EN', 'safe', 'on'=>'search'),
+			array('ID_LIEN_MARQUE, ID_PRODUIT, ID_MARQUE', 'safe', 'on'=>'search'),
 		);
 	}
-        
-        public function limitSelect($attribute,$params)
-        {
-                 //and here your code to get the count of selection of cars for a user             
-                if($count<=$params['min'])
-                   $this->addError('Marques1','at least one car should be selected');              
-        }
 
 	/**
 	 * @return array relational rules.
@@ -58,8 +47,9 @@ class ProductDirectory extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'Sectiontbl' => array(self::BELONGS_TO, 'RepertoireSection', 'ID_SECTION'),
-			'ProduitMarquestbl' => array(self::HAS_MANY, 'RepertoireProduitMarque', 'ID_PRODUIT'),
+			'repertoireFournisseurProduits' => array(self::HAS_MANY, 'RepertoireFournisseurProduit', 'ID_LIEN_PRODUIT_MARQUE'),
+			'iDMARQUE' => array(self::BELONGS_TO, 'RepertoireMarque', 'ID_MARQUE'),
+			'iDPRODUIT' => array(self::BELONGS_TO, 'RepertoireProduit', 'ID_PRODUIT'),
 		);
 	}
 
@@ -69,11 +59,9 @@ class ProductDirectory extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
+			'ID_LIEN_MARQUE' => Myclass::t('Id Lien Marque'),
 			'ID_PRODUIT' => Myclass::t('Id Produit'),
-			'ID_SECTION' => Myclass::t('Section'),
-			'NOM_PRODUIT_FR' => Myclass::t('Nom Produit Fr'),
-			'NOM_PRODUIT_EN' => Myclass::t('Nom Produit En'),
-                        'Marques2' =>  Myclass::t('Marques disponibles'), 
+			'ID_MARQUE' => Myclass::t('Id Marque'),
 		);
 	}
 
@@ -95,10 +83,9 @@ class ProductDirectory extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
+		$criteria->compare('ID_LIEN_MARQUE',$this->ID_LIEN_MARQUE);
 		$criteria->compare('ID_PRODUIT',$this->ID_PRODUIT);
-		$criteria->compare('ID_SECTION',$this->ID_SECTION);
-		$criteria->compare('NOM_PRODUIT_FR',$this->NOM_PRODUIT_FR,true);
-		$criteria->compare('NOM_PRODUIT_EN',$this->NOM_PRODUIT_EN,true);
+		$criteria->compare('ID_MARQUE',$this->ID_MARQUE);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -112,7 +99,7 @@ class ProductDirectory extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return ProductDirectory the static model class
+	 * @return ProductMarqueDirectory the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
