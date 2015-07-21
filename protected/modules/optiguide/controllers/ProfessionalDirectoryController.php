@@ -61,7 +61,7 @@ class ProfessionalDirectoryController extends OGController {
             $umodel->NOM_TABLE = $model::$NOM_TABLE;
             $umodel->NOM_UTILISATEUR = $model->PRENOM . " " . $model->NOM;
             $umodel->sGuid = Myclass::getGuid();
-            $umodel->LANGUE = 'EN';
+            $umodel->LANGUE = Yii::app()->session['language'];
 
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;

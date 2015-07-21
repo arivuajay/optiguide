@@ -4,7 +4,9 @@
             <ul class="orion-menu red">
                 <li><a href="#"> Home</a></li>  
                 <li><a href="#"> Advertise with us  </a></li>     
-                <li><a href="#"> Subscribe    </a></li>    
+                <li>
+                    <?php echo CHtml::link('Subscribe', array('/optiguide/default/subscribe')); ?>
+                </li>    
                 <li><a href="#"> Contact us   </a></li>     
                 <li><a href="#">Français  </a></li> 
                 <li><a href="#" class="loginbg"> <i class="fa fa-lock"></i> Login  </a></li> 

@@ -13,15 +13,20 @@
 <?php endif ?>
 
 <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">  
-    <div class="pro-login"> 
-        <div class="login-heading"> <i class="fa fa-lock"></i>  
-            Secure Area For Professionals
+    <?php
+    if (Yii::app()->user->isGuest) {
+        $this->widget('OgLoginFormWidget');
+    } else {
+        ?>
+        <div class="pro-login">
+            <p>
+                Welcome <?php echo Yii::app()->user->name?>
+            </p>
+            <p>
+                <?php echo CHtml::link("Logout", array('/optiguide/default/logout'))?>
+            </p>
         </div>
-        <input name="" type="text" class="login-field" value="User Name">
-        <input name="" type="text" class="login-field" value="Password">
-        <span> <a href="#">Forgot your password? </a> </span> <br/>
-        <div class="signin-btn-cont"> <input name="" type="button" class="signin-btn" value="Sign in"> </div>
-    </div>
+    <?php } ?>
     <div class="ad2"> 
         <?php echo CHtml::image("{$this->themeUrl}/images/ad3.jpg", 'Ad') ?>
     </div>
