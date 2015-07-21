@@ -18,7 +18,25 @@
             ));
 
             $sectiontypes = CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_FR")), 'ID_SECTION', 'NOM_SECTION_FR');
-            $marque_datas = CHtml::listData(MarqueDirectory::model()->findAll(array("order" => "NOM_MARQUE")), 'ID_MARQUE', 'NOM_MARQUE');
+           
+            $criteria1 = new CDbCriteria();         
+            $criteria1->order = "NOM_MARQUE";
+            $criteria1->condition = 'ID_PRODUIT=:id';
+            $criteria1->params = array(':id'=>$model->ID_PRODUIT);
+            $get_selected_marques = CHtml::listData(MarqueDirectory::model()->with("productMarqueDirectory")->isActive()->findAll($criteria1), 'ID_MARQUE', 'NOM_MARQUE');
+         
+            $selected = array();
+            $marid    = array();
+            foreach ($get_selected_marques as $k => $item) {
+                $selected[$k]=array('selected' => 'selected');
+                $marid[] = $k;
+            }
+            $imp_marque = implode(',',$marid);
+        
+            $criteria2  = new CDbCriteria();         
+            $criteria2->order     = "NOM_MARQUE";         
+            $marque_datas = CHtml::listData(MarqueDirectory::model()->isActive()->findAll($criteria2), 'ID_MARQUE', 'NOM_MARQUE');
+
             ?>
             <div class="box-body">
                 <div class="form-group">
@@ -47,27 +65,21 @@
 
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'Marques2', array('class' => 'col-sm-2 control-label')); ?>
-                     <div class="col-sm-5">
-                    <?php
-                    //$data = array('101' => 'Faraz Khan', '102' => 'Depesh Saini', '103' => 'Nalin Gehlot', '104' => 'Hari Maliya');
-                    //  $selected   = array(
-                    //    '102' => array('selected' => 'selected'),
-                    //    '103' => array('selected' => 'selected'),
-                    //  );
-                    //, 'options' => $selected
-                    $htmlOptions = array('size' => '5', 'multiple' => 'true' , 'id' => 'MasterSelectBox','class' => 'form-control' );
-                    echo $form->listBox($model, 'Marques1', $marque_datas, $htmlOptions);
-                    ?>                      
-                    <br>    
-                    <button class="btn btn-info btn-sm" id="btnAdd">Add</button>
-                    <button class="btn btn-info btn-sm" id="btnRemove">Remove</button>          
-                    <br>
-                    <?php
-                    $data = array();                  
-                    $htmlOptions = array('size' => '5', 'multiple' => 'true' , 'id' => 'PairedSelectBox','class' => 'form-control');
-                    echo $form->listBox($model, 'Marques2', $data, $htmlOptions);
-                    ?>
-                    <?php echo $form->error($model, 'Marques2'); ?>
+                    <div class="col-sm-5">
+                        <?php                       
+                        $htmlOptions = array('size' => '5', 'multiple' => 'true', 'id' => 'MasterSelectBox', 'class' => 'form-control');
+                        echo $form->listBox($model, 'Marques1', $marque_datas, $htmlOptions);
+                        ?>                      
+                        <br>    
+                        <a href='javascript:void(0);' class="btn btn-info btn-sm" id="Addmarque">Add</a>
+                        <a href='javascript:void(0);' class="btn btn-info btn-sm" id="Removemarque">Remove</a>          
+                        <br>
+                        <?php
+                        $data = $get_selected_marques;
+                        $htmlOptions = array('size' => '5', 'multiple' => 'true', 'class' => 'form-control','options' => $selected);
+                        echo $form->listBox($model, 'Marques2', $data, $htmlOptions);
+                        ?>
+                        <?php echo $form->error($model, 'Marques2'); ?>
                     </div>
                 </div>
 
@@ -85,25 +97,29 @@
     </div><!-- ./col -->
 </div>
 <?php
-
- $cs_pos_end = CClientScript::POS_END;
- $themeUrl   = $this->themeUrl;
- $cs         = Yii::app()->getClientScript();
- $cs->registerScriptFile($themeUrl . '/js/pair-select.min.js', $cs_pos_end);
- 
+$cs_pos_end = CClientScript::POS_END;
+$themeUrl = $this->themeUrl;
+$cs = Yii::app()->getClientScript();
+$cs->registerScriptFile($themeUrl . '/js/pair-select.min.js', $cs_pos_end);
+$jsoncde = json_encode($marid);
 $js = <<< EOD
 $(document).ready(function()
-{
-        
+{        
+     var varray = {$jsoncde}; 
      $('#MasterSelectBox').pairMaster();
+      
+    for (var i = 0; i < varray.length; i++) {
+       var mval = varray[i];
+       $("#MasterSelectBox option[value="+mval+"]").remove();
+    }
+    
+    $('#Addmarque').click(function(){
+            $('#MasterSelectBox').addSelected('#ProductDirectory_Marques2');
+    });
 
-	$('#btnAdd').click(function(){
-		$('#MasterSelectBox').addSelected('#PairedSelectBox');
-	});
-
-	$('#btnRemove').click(function(){
-		$('#PairedSelectBox').removeSelected('#MasterSelectBox'); 
-	});   
+    $('#Removemarque').click(function(){
+            $('#ProductDirectory_Marques2').removeSelected('#MasterSelectBox'); 
+    });   
 });     
 EOD;
 Yii::app()->clientScript->registerScript('_form', $js);

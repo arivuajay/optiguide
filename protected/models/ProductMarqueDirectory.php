@@ -48,8 +48,8 @@ class ProductMarqueDirectory extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'repertoireFournisseurProduits' => array(self::HAS_MANY, 'RepertoireFournisseurProduit', 'ID_LIEN_PRODUIT_MARQUE'),
-			'iDMARQUE' => array(self::BELONGS_TO, 'RepertoireMarque', 'ID_MARQUE'),
-			'iDPRODUIT' => array(self::BELONGS_TO, 'RepertoireProduit', 'ID_PRODUIT'),
+			'marqueDirectory' => array(self::BELONGS_TO, 'MarqueDirectory', 'ID_MARQUE'),
+			'productDirectory' => array(self::BELONGS_TO, 'ProductDirectory', 'ID_PRODUIT'),
 		);
 	}
 

@@ -25,10 +25,14 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 <div class="col-lg-12 col-md-12">
     <div class="row">
         <?php
-        $gridColumns = array(
-        	'ID_SECTION',
-		'NOM_PRODUIT_FR',
-		'NOM_PRODUIT_EN',
+        $gridColumns = array(        	
+        array(
+           'header'  =>  'Section',    
+           'name'    => 'sectionDirectory.NOM_SECTION_FR',          
+           'filter'  => CHtml::activeDropDownList($model, 'ID_SECTION', CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_FR")), 'ID_SECTION', 'NOM_SECTION_FR'), array('class'=>'form-control','prompt'=>'All')),
+           ),
+        'NOM_PRODUIT_FR',
+        'NOM_PRODUIT_EN',
         array(
         'header' => 'Actions',
         'class' => 'booster.widgets.TbButtonColumn',
@@ -39,6 +43,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
         $this->widget('booster.widgets.TbExtendedGridView', array(
         'filter' => $model,
+        'ajaxUrl' => $this->createUrl('productDirectory/index'),
         'type' => 'striped bordered datatable',
         'dataProvider' => $model->search(),
         'responsiveTable' => true,
@@ -49,3 +54,4 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         ?>
     </div>
 </div>
+

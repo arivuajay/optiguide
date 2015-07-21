@@ -13,6 +13,8 @@
  */
 class MarqueDirectory extends CActiveRecord
 {
+    
+        public $products;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -35,6 +37,7 @@ class MarqueDirectory extends CActiveRecord
 			array('NOM_MARQUE', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
+                        array('products','safe'),
 			array('ID_MARQUE, NOM_MARQUE, AFFICHAGE', 'safe', 'on'=>'search'),
 		);
 	}
@@ -46,10 +49,17 @@ class MarqueDirectory extends CActiveRecord
 	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
-		return array(
-			'repertoireProduitMarques' => array(self::HAS_MANY, 'RepertoireProduitMarque', 'ID_MARQUE'),
+		return array(			
+                        'productMarqueDirectory'    => array(self::HAS_MANY, 'ProductMarqueDirectory', 'ID_MARQUE'),
 		);
 	}
+        
+        public function scopes() {
+            $alias = $this->getTableAlias(false, false);
+            return array(
+                'isActive' => array('condition' => "$alias.AFFICHAGE = '1'"),
+            );
+        }
 
 	/**
 	 * @return array customized attribute labels (name=>label)
@@ -87,6 +97,9 @@ class MarqueDirectory extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+                        'sort'=>array(
+                            'defaultOrder'=>'NOM_MARQUE ASC',
+                          ),
                         'pagination' => array(
                             'pageSize' => PAGE_SIZE,
                         )

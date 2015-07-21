@@ -34,7 +34,7 @@ class ProductDirectory extends CActiveRecord
 		return array(
 			array('ID_SECTION,NOM_PRODUIT_FR, NOM_PRODUIT_EN, Marques2', 'required'),
 			array('ID_SECTION', 'numerical', 'integerOnly'=>true),
-                       array('Marques2', 'limitSelect','min'=>1 ,'allowEmpty'=>false, 'message' => 'You should select at least one'),
+                     // array('Marques2','ext.validators.P3ArrayValidator', 'min'=>4 ,'allowEmpty'=>false, 'message' => 'You should select at least one'),
 			array('NOM_PRODUIT_FR, NOM_PRODUIT_EN', 'length', 'max'=>70),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -42,14 +42,7 @@ class ProductDirectory extends CActiveRecord
 			array('ID_PRODUIT, ID_SECTION, NOM_PRODUIT_FR, NOM_PRODUIT_EN', 'safe', 'on'=>'search'),
 		);
 	}
-        
-        public function limitSelect($attribute,$params)
-        {
-                 //and here your code to get the count of selection of cars for a user             
-                if($count<=$params['min'])
-                   $this->addError('Marques1','at least one car should be selected');              
-        }
-
+     
 	/**
 	 * @return array relational rules.
 	 */
@@ -58,8 +51,8 @@ class ProductDirectory extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'Sectiontbl' => array(self::BELONGS_TO, 'RepertoireSection', 'ID_SECTION'),
-			'ProduitMarquestbl' => array(self::HAS_MANY, 'RepertoireProduitMarque', 'ID_PRODUIT'),
+			'sectionDirectory' => array(self::BELONGS_TO, 'SectionDirectory', 'ID_SECTION'),
+			'productMarqueDirectory' => array(self::HAS_MANY, 'ProductMarqueDirectory', 'ID_PRODUIT'),                    
 		);
 	}
 
@@ -76,7 +69,6 @@ class ProductDirectory extends CActiveRecord
                         'Marques2' =>  Myclass::t('Marques disponibles'), 
 		);
 	}
-
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 *

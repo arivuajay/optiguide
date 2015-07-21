@@ -29,12 +29,11 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         <?php
          $gettypes =  ProfessionalType::model()->findAll(array('group'=>'t.TYPE_SPECIALISTE_FR'));
          
-        $gridColumns = array(
-               	
+        $gridColumns = array(               	
 		'PRENOM',
 		'NOM',
                  array(
-                'header'  =>  'Type de professionnel',    
+                'header'  => 'Type de professionnel',    
                 'name'    => 'professionalType.TYPE_SPECIALISTE_FR',
                 'value'   => $data->professionalType->TYPE_SPECIALISTE_FR,
                 'filter'  => CHtml::activeDropDownList($model, 'ID_TYPE_SPECIALISTE', CHtml::listData($gettypes , 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_FR'), array('class'=>'form-control','prompt'=>'All')),
