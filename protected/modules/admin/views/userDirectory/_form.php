@@ -21,10 +21,7 @@
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'LANGUE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php
-                        //echo $form->textField($model, 'LANGUE', array('class' => 'form-control', 'size' => 2, 'maxlength' => 2));
-                        echo $form->dropDownList($model, 'LANGUE', array("FR" => 'Français', "EN" => 'Anglais'),array('class'=>'form-control'));
-                        ?>
+                        <?php echo $form->dropDownList($model, 'LANGUE', array("FR" => 'Français', "EN" => 'Anglais'),array('class'=>'form-control'));?>
                         <?php echo $form->error($model, 'LANGUE'); ?>
                     </div>
                 </div>
@@ -81,7 +78,7 @@
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'ABONNE_MAILING', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                       
-                        <?php echo $form->radioButtonList($model, 'ABONNE_MAILING', array('1' => 'Oui', '0' => 'Non')); ?>
+                        <?php echo $form->radioButtonList($model, 'ABONNE_MAILING', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?>
 
                     </div>
                 </div>
@@ -89,7 +86,7 @@
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'ABONNE_PROMOTION', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                     
-                        <?php echo $form->radioButtonList($model, 'ABONNE_PROMOTION', array('1' => 'Oui', '0' => 'Non')); ?>
+                        <?php echo $form->radioButtonList($model, 'ABONNE_PROMOTION', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?>
 
                     </div>
                 </div>
@@ -98,7 +95,7 @@
                     <?php echo $form->labelEx($model, 'ABONNE_TRANSITION', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
 
-                        <?php echo $form->radioButtonList($model, 'ABONNE_TRANSITION', array('1' => 'Oui', '0' => 'Non')); ?> 
+                        <?php echo $form->radioButtonList($model, 'ABONNE_TRANSITION', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?> 
 
                     </div>
                 </div>
@@ -106,14 +103,14 @@
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'bSubscription_envision', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                       
-                        <?php echo $form->radioButtonList($model, 'bSubscription_envision', array('1' => 'Oui', '0' => 'Non')); ?> 
+                        <?php echo $form->radioButtonList($model, 'bSubscription_envision', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?> 
                     </div>
                 </div>
 
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'bSubscription_envue', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                       
-                        <?php echo $form->radioButtonList($model, 'bSubscription_envue', array('1' => 'Oui', '0' => 'Non')); ?> 
+                        <?php echo $form->radioButtonList($model, 'bSubscription_envue', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?> 
 
                     </div>
                 </div>
@@ -123,7 +120,7 @@
                     <div class="col-sm-5">
                         <?php echo "<p>Cet utilisateur a la responsabilité de valider les données :</p>"; ?>
                         <?php //echo $form->textField($model, 'MUST_VALIDATE', array('class' => 'form-control'));  ?>
-                        <?php echo $form->radioButtonList($model, 'MUST_VALIDATE', array('1' => 'Oui', '0' => 'Non')); ?>                      
+                        <?php echo $form->radioButtonList($model, 'MUST_VALIDATE', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?>                      
                     </div>
                 </div>
 

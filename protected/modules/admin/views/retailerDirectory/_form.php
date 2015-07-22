@@ -20,8 +20,8 @@
             $retailertypes = CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR');
             $groupetypes   = CHtml::listData(RetailerGroup::model()->findAll(), 'ID_GROUPE', 'NOM_GROUPE');
             $country       = Myclass::getallcountries();
-            $regions       = Myclass::getallregions($model->country);
-            $cities        = Myclass::getallcities($model->region);
+            $regions       = Myclass::getallregions(@$model->country);         
+            $cities        = Myclass::getallcities(@$model->region);
             ?>
             <div class="box-body">
 
