@@ -2,14 +2,24 @@
     <div class="header-row1"> 
         <div class="container"> 
             <ul class="orion-menu red">
-                <li><a href="#"> Home</a></li>  
-                <li><a href="#"> Advertise with us  </a></li>     
                 <li>
-                    <?php echo CHtml::link('Subscribe', array('/optiguide/default/subscribe')); ?>
+                    <?php echo CHtml::link(Myclass::t('OG001', '', 'og'), '#'); ?>
+                </li>  
+                <li>
+                    <?php echo CHtml::link(Myclass::t('OG002', '', 'og'), '#'); ?>
+                </li>     
+                <li>
+                    <?php echo CHtml::link(Myclass::t('OG003', '', 'og'), array('/optiguide/default/subscribe')); ?>
                 </li>    
-                <li><a href="#"> Contact us   </a></li>     
-                <li><a href="#">Français  </a></li> 
-                <li><a href="#" class="loginbg"> <i class="fa fa-lock"></i> Login  </a></li> 
+                <li>
+                    <?php echo CHtml::link(Myclass::t('OG004', '', 'og'), '#'); ?>
+                </li>     
+                <li>
+                    <?php echo CHtml::link(Myclass::t('OG005', '', 'og'), '#'); ?>
+                </li> 
+                <li>
+                    <?php echo CHtml::link('<i class="fa fa-lock"></i> ' . Myclass::t('OG006', '', 'og'), '#', array('class' => 'loginbg')); ?>
+                </li> 
             </ul>
         </div>
     </div>
@@ -18,9 +28,10 @@
         <div class="container"> 
             <div class="row">  
                 <div class="col-xs-12 col-sm-3 col-md-3  col-lg-3 logo"> 
-                    <a href="#">
-                        <?php echo CHtml::image("{$this->themeUrl}/images/logo.jpg", 'Logo') ?>
-                    </a>
+                    <?php
+                    $logo = CHtml::image("{$this->themeUrl}/images/logo.jpg", 'Logo');
+                    echo CHtml::link($logo, array('/'));
+                    ?>
                 </div>
                 <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 ad1"> 
                     <a href="#">
