@@ -1,0 +1,330 @@
+<?php
+/* @var $this SuppliersDirectoryController */
+/* @var $model SuppliersDirectory */
+/* @var $form CActiveForm */
+?>
+
+<div class="row">
+    <div class="col-lg-12 col-xs-12">
+        <?php
+        $suppliertypes = CHtml::listData(SupplierType::model()->findAll(), 'ID_TYPE_FOURNISSEUR', 'TYPE_FOURNISSEUR_FR');
+        $country = Myclass::getallcountries();
+        $regions = Myclass::getallregions($model->country);
+        $cities = Myclass::getallcities($model->region);
+        $archivecats = CHtml::listData(ArchiveCategory::model()->findAll(), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
+
+        $other_tab_validation = $doc_tab_validation = true;
+        if (!$model->isNewRecord) {
+            
+        } else {
+            $other_tab_validation = $doc_tab_validation = true;
+        }
+        ?>
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a id="a_tab_1" href="#tab_1" data-toggle="tab">Renseignements généraux</a></li>
+                <li><a id="a_tab_2" href="#tab_2" <?php if ($other_tab_validation) echo 'data-toggle="tab"'; ?>>Sélection des produits</a></li>
+                <li><a id="a_tab_3" href="#tab_3" <?php if ($other_tab_validation) echo 'data-toggle="tab"'; ?>>Sélection des marques</a></li>
+            </ul>
+            <?php
+            $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'suppliers-directory-form',
+                'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal'),
+                'clientOptions' => array(
+                    'validateOnSubmit' => true,
+                ),
+                'enableAjaxValidation' => true,
+            ));
+            ?>
+            <div class="tab-content">
+                
+                <div class="tab-pane active" id="tab_1">
+                    <div class="box box-primary">                        
+                        <div class="col-lg-5">
+                            <div class="box-header">
+                                <h3 class="box-title">Général</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'ID_TYPE_FOURNISSEUR', array()); ?>                                                        
+                                    <?php echo $form->dropDownList($model, 'ID_TYPE_FOURNISSEUR', $suppliertypes, array('class' => 'form-control')); ?>                          
+                                    <?php echo $form->error($model, 'ID_TYPE_FOURNISSEUR'); ?>                                   
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'COMPAGNIE', array()); ?>
+                                    <?php echo $form->textField($model, 'COMPAGNIE', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
+                                    <?php echo $form->error($model, 'COMPAGNIE'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($umodel, 'USR', array()); ?>                                 
+                                    <?php echo $form->textField($umodel, 'USR', array('class' => 'form-control', 'size' => 8, 'maxlength' => 8)); ?>
+                                    <?php echo $form->error($umodel, 'USR'); ?>                                  
+                                </div>
+
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'country', array()); ?>                                                         
+                                    <?php echo $form->dropDownList($model, 'country', $country, array('class' => 'form-control', 'empty' => Myclass::t('APP43'))); ?>                          
+                                    <?php echo $form->error($model, 'country'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'region', array()); ?>
+                                    <?php echo $form->dropDownList($model, 'region', $regions, array('class' => 'form-control', 'empty' => Myclass::t('APP44'))); ?>                          
+                                    <?php echo $form->error($model, 'region'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'ID_VILLE', array()); ?>
+                                    <?php echo $form->dropDownList($model, 'ID_VILLE', $cities, array('class' => 'form-control', 'empty' => Myclass::t('APP59'))); ?>   
+                                    <?php echo $form->error($model, 'ID_VILLE'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'ADRESSE', array()); ?>
+                                    <?php echo $form->textField($model, 'ADRESSE', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
+                                    <?php echo $form->error($model, 'ADRESSE'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'ADRESSE2', array()); ?>
+                                    <?php echo $form->textField($model, 'ADRESSE2', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
+                                    <?php echo $form->error($model, 'ADRESSE2'); ?>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'CODE_POSTAL', array()); ?>
+                                    <?php echo $form->textField($model, 'CODE_POSTAL', array('class' => 'form-control', 'size' => 20, 'maxlength' => 20)); ?>
+                                    <?php echo $form->error($model, 'CODE_POSTAL'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'TELEPHONE', array()); ?>
+                                    <?php echo $form->textField($model, 'TELEPHONE', array('class' => 'form-control', 'size' => 20, 'maxlength' => 20)); ?>
+                                    <?php echo $form->error($model, 'TELEPHONE'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'TELECOPIEUR', array()); ?>
+                                    <?php echo $form->textField($model, 'TELECOPIEUR', array('class' => 'form-control', 'size' => 20, 'maxlength' => 20)); ?>
+                                    <?php echo $form->error($model, 'TELECOPIEUR'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'COURRIEL', array()); ?>
+                                    <?php echo $form->textField($model, 'COURRIEL', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
+                                    <?php echo $form->error($model, 'COURRIEL'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'SITE_WEB', array()); ?>
+                                    <?php echo $form->textField($model, 'SITE_WEB', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
+                                    <?php echo $form->error($model, 'SITE_WEB'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'archivecat', array()); ?>
+                                    <?php echo $form->dropDownList($model, 'archivecat', $archivecats, array('class' => 'form-control')); ?>                          
+                                    <?php echo $form->error($model, 'archivecat'); ?>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'iId_fichier', array()); ?>
+                                    <?php echo $form->textField($model, 'iId_fichier', array('class' => 'form-control')); ?>
+                                    <?php echo $form->error($model, 'iId_fichier'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'TEL_SANS_FRAIS', array()); ?>
+                                    <?php echo $form->textField($model, 'TEL_SANS_FRAIS', array('class' => 'form-control', 'size' => 20, 'maxlength' => 20)); ?>
+                                    <?php echo $form->error($model, 'TEL_SANS_FRAIS'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'TEL_SECONDAIRE', array()); ?>
+                                    <?php echo $form->textField($model, 'TEL_SECONDAIRE', array('class' => 'form-control', 'size' => 20, 'maxlength' => 20)); ?>
+                                    <?php echo $form->error($model, 'TEL_SECONDAIRE'); ?>
+                                </div>
+                                <div class="box-header">
+                                    <h3 class="box-title">Visualisation</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <?php echo $form->labelEx($model, 'bAfficher_site', array()); ?>                                    
+                                        <?php echo $form->radioButtonList($model, 'bAfficher_site', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-5">
+                            <div class="box-header">
+                                <h3 class="box-title">Information</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'SUCCURSALES', array()); ?>                                    
+                                    <?php echo $form->textField($model, 'SUCCURSALES', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
+                                    <?php echo $form->error($model, 'SUCCURSALES'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'ETABLI_DEPUIS', array()); ?>                                   
+                                    <?php echo $form->textField($model, 'ETABLI_DEPUIS', array('class' => 'form-control', 'size' => 20, 'maxlength' => 20)); ?>
+                                    <?php echo $form->error($model, 'ETABLI_DEPUIS'); ?>                                   
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'NB_EMPLOYES', array()); ?>                                  
+                                    <?php echo $form->textField($model, 'NB_EMPLOYES', array('class' => 'form-control', 'size' => 10, 'maxlength' => 10)); ?>
+                                    <?php echo $form->error($model, 'NB_EMPLOYES'); ?>                                    
+                                </div>
+                            </div>
+                            <div class="box-header">
+                                <h3 class="box-title">Personnel</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'PERSONNEL_NOM1', array()); ?>                                    
+                                    <?php echo $form->textField($model, 'PERSONNEL_NOM1', array('class' => 'form-control', 'size' => 60)); ?>
+                                    <?php echo $form->error($model, 'PERSONNEL_NOM1'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'PERSONNEL_TITRE1', array()); ?>                                   
+                                    <?php echo $form->textField($model, 'PERSONNEL_TITRE1', array('class' => 'form-control', 'size' => 60)); ?>
+                                    <?php echo $form->error($model, 'PERSONNEL_TITRE1'); ?>                                   
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'PERSONNEL_TITRE1_EN', array()); ?>                                  
+                                    <?php echo $form->textField($model, 'PERSONNEL_TITRE1_EN', array('class' => 'form-control', 'size' => 60)); ?>
+                                    <?php echo $form->error($model, 'PERSONNEL_TITRE1_EN'); ?>                                    
+                                </div>
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'PERSONNEL_NOM2', array()); ?>                                    
+                                    <?php echo $form->textField($model, 'PERSONNEL_NOM2', array('class' => 'form-control', 'size' => 60)); ?>
+                                    <?php echo $form->error($model, 'PERSONNEL_NOM2'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'PERSONNEL_TITRE2', array()); ?>                                   
+                                    <?php echo $form->textField($model, 'PERSONNEL_TITRE2', array('class' => 'form-control', 'size' => 60)); ?>
+                                    <?php echo $form->error($model, 'PERSONNEL_TITRE2'); ?>                                   
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'PERSONNEL_TITRE2_EN', array()); ?>                                  
+                                    <?php echo $form->textField($model, 'PERSONNEL_TITRE2_EN', array('class' => 'form-control', 'size' => 60)); ?>
+                                    <?php echo $form->error($model, 'PERSONNEL_TITRE2_EN'); ?>                                    
+                                </div>
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'PERSONNEL_NOM3', array()); ?>                                    
+                                    <?php echo $form->textField($model, 'PERSONNEL_NOM3', array('class' => 'form-control', 'size' => 60)); ?>
+                                    <?php echo $form->error($model, 'PERSONNEL_NOM3'); ?>
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'PERSONNEL_TITRE3', array()); ?>                                   
+                                    <?php echo $form->textField($model, 'PERSONNEL_TITRE3', array('class' => 'form-control', 'size' => 60)); ?>
+                                    <?php echo $form->error($model, 'PERSONNEL_TITRE3'); ?>                                   
+                                </div>
+
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'PERSONNEL_TITRE3_EN', array()); ?>                                  
+                                    <?php echo $form->textField($model, 'PERSONNEL_TITRE3_EN', array('class' => 'form-control', 'size' => 60)); ?>
+                                    <?php echo $form->error($model, 'PERSONNEL_TITRE3_EN'); ?>                                    
+                                </div>
+                            </div>
+                            <div class="box-header">
+                                <h3 class="box-title">Régions dans lesquelles ce fournisseur offre ses services</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'REGIONS_FR', array()); ?>                                    
+                                    <?php echo $form->textArea($model, 'REGIONS_FR', array('class' => 'form-control', 'maxlength' => 1000, 'rows' => 5, 'cols' => 50)); ?>
+                                    <?php echo $form->error($model, 'REGIONS_FR'); ?>
+                                </div>
+                                <div class="form-group">
+                                    <?php echo $form->labelEx($model, 'REGIONS_EN', array()); ?>                                    
+                                    <?php echo $form->textArea($model, 'REGIONS_EN', array('class' => 'form-control', 'maxlength' => 1000, 'rows' => 5, 'cols' => 50)); ?>
+                                    <?php echo $form->error($model, 'REGIONS_EN'); ?>
+                                </div>
+                            </div>    
+                        </div>                        
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab_2">
+                    <?php
+                    if ($other_tab_validation) {
+                        $this->renderPartial('_section_products_form', array('model' => $model, 'form' => $form));
+                    }
+                    ?>
+                </div>
+                <div class="tab-pane" id="tab_3">
+                    <?php
+                    if ($other_tab_validation) {
+                        // $this->renderPartial('_payment_form', array('model' => $payment_model, 'author_model' => $model));
+                    }
+                    ?>
+                </div>  
+               
+            </div>
+             <div class="box-footer">
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+                    </div>
+                </div>
+            </div>
+            <?php $this->endWidget(); ?>
+           
+        </div>
+    </div>
+</div>
+<?php
+$ajaxRegionUrl = Yii::app()->createUrl('/admin/cityDirectory/getregions');
+$ajaxCityUrl = Yii::app()->createUrl('/admin/categoryInformation/getcities');
+$js = <<< EOD
+    $(document).ready(function(){
+        
+     $("#a_tab_{$tab}").trigger('click');
+     
+    $("#SuppliersDirectory_country").change(function(){
+        var id=$(this).val();
+        var dataString = 'id='+ id;
+            
+        $.ajax({
+            type: "POST",
+            url: '{$ajaxRegionUrl}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#SuppliersDirectory_region").html(html);
+            }
+         });
+    });
+   
+   $("#SuppliersDirectory_region").change(function(){
+        var id=$(this).val();
+        var dataString = 'id='+ id;
+            
+        $.ajax({
+            type: "POST",
+            url: '{$ajaxCityUrl}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#SuppliersDirectory_ID_VILLE").html(html);
+            }
+         });
+
+    });
+});
+EOD;
+Yii::app()->clientScript->registerScript('_form', $js);
+?>

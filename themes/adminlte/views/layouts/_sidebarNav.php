@@ -34,7 +34,7 @@
                 ),
                 array('label' => '<i class="fa fa-dashboard"></i> <span>Détaillants</span>', 'url' => array('/admin/retailerDirectory/index'), 'active' => $_controller == 'retailerdirectory'),
                 
-                // array('label' => '<i class="fa fa-dashboard"></i> <span>Fournisseurs</span>', 'url' => array('/admin/suppliersDirectory/index'), 'active' => $_controller == 'suppliersdirectory'),
+                 array('label' => '<i class="fa fa-dashboard"></i> <span>Fournisseurs</span>', 'url' => array('/admin/suppliersDirectory/index'), 'active' => $_controller == 'suppliersdirectory'),
                 
                 array('label' => '<i class="fa fa-dashboard"></i> <span>Professionnels</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
                     'itemOptions' => array('class' => 'treeview'),
