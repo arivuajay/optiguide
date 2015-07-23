@@ -24,4 +24,9 @@ return array(
     
     //
     'OG016' => 'Back',
+    
+    //CalenderEvent/index.php
+    'OG017' => 'Calendar of events',
+    'OG018' => 'From',
+    'OG019' => 'To',
 );
