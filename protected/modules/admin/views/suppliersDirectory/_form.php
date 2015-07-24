@@ -29,12 +29,7 @@
         $cities = Myclass::getallcities($model->region);
         $archivecats = CHtml::listData(ArchiveCategory::model()->findAll(), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
 
-        $other_tab_validation = $doc_tab_validation = true;
-        if (!$model->isNewRecord) {            
-        } else {
-            $other_tab_validation = $doc_tab_validation = true;
-        }
-        
+       
         ?>
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
@@ -284,17 +279,13 @@
                     <?php $this->endWidget(); ?>
                 </div>
                 <div class="tab-pane" id="tab_2">
-                    <?php
-                    if ($other_tab_validation) {
-                        $this->renderPartial('_section_products_form', array('model' => $model, 'form' => $form));
-                    }
+                    <?php                  
+                        $this->renderPartial('_section_products_form', array('model' => $model, 'form' => $form));                   
                     ?>
                 </div>
                 <div class="tab-pane" id="tab_3">
-                    <?php                    
-                    if ($other_tab_validation) {
-                        $this->renderPartial('_products_marques_form', array('model' => $model, 'form' => $form , 'data_products'=>$data_products));
-                    }
+                    <?php   
+                        $this->renderPartial('_products_marques_form', array('model' => $model, 'form' => $form , 'data_products'=>$data_products));                    
                     ?>
                 </div>  
 

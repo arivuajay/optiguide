@@ -43,6 +43,7 @@ class UserDirectory extends CActiveRecord
                     array('USR', 'unique', 'message'=>'This Nom d\'usager is already in use'),                  
                     array('ABONNE_MAILING, ABONNE_PROMOTION, ABONNE_TRANSITION, IS_FIRST_LOG, ID_RELATION, MUST_VALIDATE, bSubscription_envision, bSubscription_envue', 'numerical', 'integerOnly'=>true),
                     array('PREFIXE, NOM_TABLE', 'length', 'max'=>50),
+                    array('USR', 'length', 'max'=>8),
                     array('NOM_UTILISATEUR, USR, PWD, COURRIEL, sGuid', 'length', 'max'=>255),
                     // The following rule is used by search().
                     // @todo Please remove those attributes that should not be searched.
