@@ -7,6 +7,14 @@
 <div class="row">
     <div class="col-lg-12 col-xs-12">
         <?php
+        //check if session exists
+        if (Yii::app()->user->hasState("scountry")) {
+            //get session variable
+            $scountry = Yii::app()->user->getState("scountry");
+            $model->country = $scountry;
+            $sregion = Yii::app()->user->getState("sregion");
+            $model->region = $sregion;
+        }
         $suppliertypes = CHtml::listData(SupplierType::model()->findAll(), 'ID_TYPE_FOURNISSEUR', 'TYPE_FOURNISSEUR_FR');
         $country = Myclass::getallcountries();
         $regions = Myclass::getallregions($model->country);
@@ -26,19 +34,20 @@
                 <li><a id="a_tab_2" href="#tab_2" <?php if ($other_tab_validation) echo 'data-toggle="tab"'; ?>>Sélection des produits</a></li>
                 <li><a id="a_tab_3" href="#tab_3" <?php if ($other_tab_validation) echo 'data-toggle="tab"'; ?>>Sélection des marques</a></li>
             </ul>
-            <?php
-            $form = $this->beginWidget('CActiveForm', array(
-                'id' => 'suppliers-directory-form',
-                'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal'),
-                'clientOptions' => array(
-                    'validateOnSubmit' => true,
-                ),
-                'enableAjaxValidation' => true,
-            ));
-            ?>
-            <div class="tab-content">
-                
+
+            <div class="tab-content">                
                 <div class="tab-pane active" id="tab_1">
+                    <?php
+                    $form = $this->beginWidget('CActiveForm', array(
+                        'id' => 'suppliers-directory-form',
+                        'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal'),
+                        'action' => Yii::app()->createUrl('/admin/suppliersDirectory/create/'),
+                        'clientOptions' => array(
+                            'validateOnSubmit' => true,
+                        ),
+                        'enableAjaxValidation' => true,
+                    ));
+                    ?>
                     <div class="box box-primary">                        
                         <div class="col-lg-5">
                             <div class="box-header">
@@ -257,6 +266,14 @@
                             </div>    
                         </div>                        
                     </div>
+                    <div class="box-footer">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <?php $this->endWidget(); ?>
                 </div>
                 <div class="tab-pane" id="tab_2">
                     <?php
@@ -266,33 +283,78 @@
                     ?>
                 </div>
                 <div class="tab-pane" id="tab_3">
-                    <?php
+                    <?php                    
                     if ($other_tab_validation) {
-                        // $this->renderPartial('_payment_form', array('model' => $payment_model, 'author_model' => $model));
+                        $this->renderPartial('_products_marques_form', array('model' => $model, 'form' => $form , 'data_products'=>$data_products));
                     }
                     ?>
                 </div>  
-               
+
             </div>
-             <div class="box-footer">
-                <div class="form-group">
-                    <div class="col-lg-12">
-                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
-                    </div>
-                </div>
-            </div>
-            <?php $this->endWidget(); ?>
-           
+
+
         </div>
     </div>
 </div>
 <?php
+$cs_pos_end = CClientScript::POS_END;
+$themeUrl = $this->themeUrl;
+$cs = Yii::app()->getClientScript();
+$cs->registerScriptFile($themeUrl . '/js/pair-select.min.js', $cs_pos_end);
 $ajaxRegionUrl = Yii::app()->createUrl('/admin/cityDirectory/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/admin/categoryInformation/getcities');
+$jsoncde = '';
+ if (Yii::app()->user->hasState("product_ids")) 
+ {     
+      $sess_product_ids = Yii::app()->user->getState("product_ids");     
+      $jsoncde = json_encode($sess_product_ids);
+ }                
+
+$ajaxproducts = Yii::app()->createUrl('/admin/suppliersDirectory/getproducts');
 $js = <<< EOD
     $(document).ready(function(){
         
-     $("#a_tab_{$tab}").trigger('click');
+    $("#a_tab_{$tab}").trigger('click');     
+   
+    var varray = {$jsoncde}; 
+    
+    $("#SuppliersDirectory_IDSECTION").change(function(){
+        var id=$(this).val();
+        var dataString = 'id='+ id;
+    
+        $.ajax({
+            type: "POST",
+            url: '{$ajaxproducts}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#MasterSelectBox").html(html);
+                $('#MasterSelectBox').pairMaster();
+              
+                if(varray.length>0)
+                {
+                    for (var i = 0; i < varray.length; i++) {
+                        var mval = varray[i];                      
+                        $("#MasterSelectBox option[value="+mval+"]").remove();
+                     }
+                }
+            
+               // Hide the selected values from MasterSelectBox box
+                $("#SuppliersDirectory_Products2 option").map(function () {
+                     var sval = this.value;
+                    $("#MasterSelectBox option[value="+sval+"]").remove();
+                });
+            }
+         });
+    }); 
+   
+    $('#Addmarque').click(function(){
+            $('#MasterSelectBox').addSelected('#SuppliersDirectory_Products2');
+    });
+
+    $('#Removemarque').click(function(){
+            $('#SuppliersDirectory_Products2').removeSelected('#MasterSelectBox'); 
+    });   
      
     $("#SuppliersDirectory_country").change(function(){
         var id=$(this).val();
@@ -323,7 +385,20 @@ $js = <<< EOD
             }
          });
 
-    });
+    });  
+        
+    $('#selecctall').click(function(event) {  //on click        
+        if(this.checked) { // check select status
+            $('.checkbox1').each(function() { //loop through each checkbox
+                this.checked = true;  //select all checkboxes with class "checkbox1"              
+            });
+        }else{
+            $('.checkbox1').each(function() { //loop through each checkbox
+                this.checked = false; //deselect all checkboxes with class "checkbox1"                      
+            });        
+        }
+    });         
+            
 });
 EOD;
 Yii::app()->clientScript->registerScript('_form', $js);

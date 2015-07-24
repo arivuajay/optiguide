@@ -47,7 +47,7 @@
  */
 class SuppliersDirectory extends CActiveRecord {
 
-    public $country, $region, $archivecat,$IDSECTION;
+    public $country, $region, $archivecat,$IDSECTION,$Products1,$Products2;
     static $NOM_TABLE = 'Fournisseurs';
 
     /**
@@ -64,7 +64,7 @@ class SuppliersDirectory extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('ID_TYPE_FOURNISSEUR,COMPAGNIE, ID_CLIENT,ADRESSE,ID_VILLE,CODE_POSTAL,TELEPHONE, DATE_MODIFICATION, country,region', 'required'),
+            array('ID_TYPE_FOURNISSEUR,COMPAGNIE, ID_CLIENT,ADRESSE,ID_VILLE,CODE_POSTAL,TELEPHONE,country,region', 'required'),
             array('ID_TYPE_FOURNISSEUR, ID_VILLE, bAfficher_site, iId_fichier,country,region', 'numerical', 'integerOnly' => true),
             array('COMPAGNIE, ADRESSE, ADRESSE2, TITRE_TEL_SANS_FRAIS, TITRE_TEL_SANS_FRAIS_EN, TITRE_TEL_SECONDAIRE, TITRE_TEL_SECONDAIRE_EN, COURRIEL, SITE_WEB, SUCCURSALES, PERSONNEL_NOM1, PERSONNEL_TITRE1, PERSONNEL_TITRE1_EN, PERSONNEL_NOM2, PERSONNEL_TITRE2, PERSONNEL_TITRE2_EN, PERSONNEL_NOM3, PERSONNEL_TITRE3, PERSONNEL_TITRE3_EN', 'length', 'max' => 255),
             array('ID_CLIENT', 'length', 'max' => 8),
@@ -73,7 +73,7 @@ class SuppliersDirectory extends CActiveRecord {
             array('REGIONS_FR, REGIONS_EN', 'length', 'max' => 1000),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('country,region,archivecat,IDSECTION', 'safe'),
+            array('country,region,archivecat,IDSECTION,Products1,Products2', 'safe'),
             array('ID_FOURNISSEUR, COMPAGNIE, ID_CLIENT, ID_TYPE_FOURNISSEUR, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELECOPIEUR, TITRE_TEL_SANS_FRAIS, TITRE_TEL_SANS_FRAIS_EN, TEL_SANS_FRAIS, TITRE_TEL_SECONDAIRE, TITRE_TEL_SECONDAIRE_EN, TEL_SECONDAIRE, COURRIEL, SITE_WEB, SUCCURSALES, ETABLI_DEPUIS, NB_EMPLOYES, PERSONNEL_NOM1, PERSONNEL_TITRE1, PERSONNEL_TITRE1_EN, PERSONNEL_NOM2, PERSONNEL_TITRE2, PERSONNEL_TITRE2_EN, PERSONNEL_NOM3, PERSONNEL_TITRE3, PERSONNEL_TITRE3_EN, DATE_MODIFICATION, REGIONS_FR, REGIONS_EN, bAfficher_site, iId_fichier', 'safe', 'on' => 'search'),
         );
     }
@@ -133,7 +133,8 @@ class SuppliersDirectory extends CActiveRecord {
             'iId_fichier' => Myclass::t('Fichier'),
             'archivecat'  => Myclass::t('Archive category'),
             'country'     => Myclass::t('Pays'),
-            'IDSECTION'  => Myclass::t('Section')
+            'IDSECTION'  => Myclass::t('Section'),
+            'Products'   => Myclass::t('Products')
         );
     }
 
