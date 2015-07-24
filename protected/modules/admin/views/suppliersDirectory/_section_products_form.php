@@ -42,7 +42,7 @@
                 ?>                       
             </div>
         </div>
-        <?php echo CHtml::submitButton('Save', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton('Next', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
     </div><!-- /.box-body -->    
     
 </div> 

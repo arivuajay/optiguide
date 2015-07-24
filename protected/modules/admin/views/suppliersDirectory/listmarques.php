@@ -14,12 +14,12 @@ $form = $this->beginWidget('CActiveForm', array(
     'id' => 'list-marques-form',
     'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal'),
         ));
+
 $pid = Yii::app()->getRequest()->getQuery('id');
-if (Yii::app()->user->hasState("product_ids")) {
+
+if (Yii::app()->user->hasState("product_ids")) 
+{
     $marque_ids = Yii::app()->user->getState("marque_ids");
- //   echo "<pre>";
- //   print_r($marque_ids );
-//    exit;
     if (!empty($marque_ids)) 
     {
         $mval = $marque_ids[$pid];       

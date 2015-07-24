@@ -2,12 +2,12 @@
 /* @var $this SuppliersDirectoryController */
 /* @var $model SuppliersDirectory */
 
-$this->title='Update Suppliers Directories: '. $model->ID_FOURNISSEUR;
+$this->title='Update Supplier Directories: ';
 $this->breadcrumbs=array(
-	'Suppliers Directories'=>array('index'),
-	'Update Suppliers Directories',
+	'Supplier Directories'=>array('index'),
+	'Update Supplier Directories',
 );
 ?>
 
 <div class="user-create">
-    <?php $this->renderPartial('_form', array('model'=>$model)); ?></div>
+    <?php $this->renderPartial('_form', compact('umodel','model','tab', 'data_products')); ?></div>

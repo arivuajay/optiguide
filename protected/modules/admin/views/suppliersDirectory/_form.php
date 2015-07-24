@@ -7,6 +7,14 @@
 <div class="row">
     <div class="col-lg-12 col-xs-12">
         <?php
+      
+        if($model->ID_FOURNISSEUR)
+        {    
+            $actn_url =  Yii::app()->createUrl('/admin/suppliersDirectory/update',array('id'=>$model->ID_FOURNISSEUR));
+        }else
+        {    
+            $actn_url =  Yii::app()->createUrl('/admin/suppliersDirectory/create/');
+        }
         //check if session exists
         if (Yii::app()->user->hasState("scountry")) {
             //get session variable
@@ -22,17 +30,17 @@
         $archivecats = CHtml::listData(ArchiveCategory::model()->findAll(), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
 
         $other_tab_validation = $doc_tab_validation = true;
-        if (!$model->isNewRecord) {
-            
+        if (!$model->isNewRecord) {            
         } else {
             $other_tab_validation = $doc_tab_validation = true;
         }
+        
         ?>
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active"><a id="a_tab_1" href="#tab_1" data-toggle="tab">Renseignements généraux</a></li>
-                <li><a id="a_tab_2" href="#tab_2" <?php if ($other_tab_validation) echo 'data-toggle="tab"'; ?>>Sélection des produits</a></li>
-                <li><a id="a_tab_3" href="#tab_3" <?php if ($other_tab_validation) echo 'data-toggle="tab"'; ?>>Sélection des marques</a></li>
+                <li><a id="a_tab_2" href="#tab_2" <?php if(Yii::app()->user->hasState("secondtab")){ echo 'data-toggle="tab"';}elseif($model->ID_FOURNISSEUR){ echo 'data-toggle="tab"';} ?>>Sélection des produits</a></li>
+                <li><a id="a_tab_3" href="#tab_3" <?php if(Yii::app()->user->hasState("thirdtab")){ echo 'data-toggle="tab"';}elseif($model->ID_FOURNISSEUR){ echo 'data-toggle="tab"';} ?>>Sélection des marques</a></li>
             </ul>
 
             <div class="tab-content">                
@@ -41,11 +49,11 @@
                     $form = $this->beginWidget('CActiveForm', array(
                         'id' => 'suppliers-directory-form',
                         'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal'),
-                        'action' => Yii::app()->createUrl('/admin/suppliersDirectory/create/'),
+                        'action' => $actn_url ,
                         'clientOptions' => array(
                             'validateOnSubmit' => true,
                         ),
-                        'enableAjaxValidation' => true,
+                       'enableAjaxValidation' => true,
                     ));
                     ?>
                     <div class="box box-primary">                        
@@ -66,10 +74,10 @@
                                     <?php echo $form->error($model, 'COMPAGNIE'); ?>
                                 </div>
 
-                                <div class="form-group">
-                                    <?php echo $form->labelEx($umodel, 'USR', array()); ?>                                 
-                                    <?php echo $form->textField($umodel, 'USR', array('class' => 'form-control', 'size' => 8, 'maxlength' => 8)); ?>
-                                    <?php echo $form->error($umodel, 'USR'); ?>                                  
+                                <div class="form-group">                                   
+                                    <?php echo $form->labelEx($umodel, 'USR', array()); ?>                                                            
+                                    <?php echo $form->textField($umodel, 'USR', array('class' => 'form-control', 'size' => 10, 'maxlength' => 10,'readonly'=>($model->ID_FOURNISSEUR != '')? true : false )); ?>
+                                    <?php echo $form->error($umodel, 'USR'); ?>                                   
                                 </div>
 
 
@@ -303,7 +311,7 @@ $cs = Yii::app()->getClientScript();
 $cs->registerScriptFile($themeUrl . '/js/pair-select.min.js', $cs_pos_end);
 $ajaxRegionUrl = Yii::app()->createUrl('/admin/cityDirectory/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/admin/categoryInformation/getcities');
-$jsoncde = '';
+$jsoncde = array();
  if (Yii::app()->user->hasState("product_ids")) 
  {     
       $sess_product_ids = Yii::app()->user->getState("product_ids");     
@@ -359,7 +367,7 @@ $js = <<< EOD
     $("#SuppliersDirectory_country").change(function(){
         var id=$(this).val();
         var dataString = 'id='+ id;
-            
+         
         $.ajax({
             type: "POST",
             url: '{$ajaxRegionUrl}',

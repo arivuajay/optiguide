@@ -56,6 +56,16 @@ class SuppliersDirectory extends CActiveRecord {
     public function tableName() {
         return 'repertoire_fournisseurs';
     }
+    
+    public static function getproducts($sess_product_ids)
+    {        
+        $criteria = new CDbCriteria;
+        $criteria->addInCondition("ID_PRODUIT", $sess_product_ids);
+        $criteria->order = 'NOM_PRODUIT_FR ASC';
+        $data_products = ProductDirectory::model()->with("sectionDirectory")->findAll($criteria);
+
+        return $data_products;
+    }        
 
     /**
      * @return array validation rules for model attributes.
@@ -64,10 +74,10 @@ class SuppliersDirectory extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('ID_TYPE_FOURNISSEUR,COMPAGNIE, ID_CLIENT,ADRESSE,ID_VILLE,CODE_POSTAL,TELEPHONE,country,region', 'required'),
+            array('ID_TYPE_FOURNISSEUR,COMPAGNIE, ADRESSE,ID_VILLE,CODE_POSTAL,TELEPHONE,country,region', 'required'),
             array('ID_TYPE_FOURNISSEUR, ID_VILLE, bAfficher_site, iId_fichier,country,region', 'numerical', 'integerOnly' => true),
             array('COMPAGNIE, ADRESSE, ADRESSE2, TITRE_TEL_SANS_FRAIS, TITRE_TEL_SANS_FRAIS_EN, TITRE_TEL_SECONDAIRE, TITRE_TEL_SECONDAIRE_EN, COURRIEL, SITE_WEB, SUCCURSALES, PERSONNEL_NOM1, PERSONNEL_TITRE1, PERSONNEL_TITRE1_EN, PERSONNEL_NOM2, PERSONNEL_TITRE2, PERSONNEL_TITRE2_EN, PERSONNEL_NOM3, PERSONNEL_TITRE3, PERSONNEL_TITRE3_EN', 'length', 'max' => 255),
-            array('ID_CLIENT', 'length', 'max' => 8),
+            //array('ID_CLIENT', 'length', 'max' => 8),
             array('CODE_POSTAL, TELEPHONE, TELECOPIEUR, TEL_SANS_FRAIS, TEL_SECONDAIRE, ETABLI_DEPUIS', 'length', 'max' => 20),
             array('NB_EMPLOYES', 'length', 'max' => 10),
             array('REGIONS_FR, REGIONS_EN', 'length', 'max' => 1000),
@@ -88,6 +98,7 @@ class SuppliersDirectory extends CActiveRecord {
             'repertoireFournisseurProduits' => array(self::HAS_MANY, 'RepertoireFournisseurProduit', 'ID_FOURNISSEUR'),
             'fournisseurType' => array(self::BELONGS_TO, 'RepertoireFournisseurType', 'ID_TYPE_FOURNISSEUR'),
             'archiveFichier' => array(self::BELONGS_TO, 'ArchiveFichier', 'iId_fichier'),
+            'userDirectory' => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION'),
         );
     }
 
@@ -134,7 +145,8 @@ class SuppliersDirectory extends CActiveRecord {
             'archivecat'  => Myclass::t('Archive category'),
             'country'     => Myclass::t('Pays'),
             'IDSECTION'  => Myclass::t('Section'),
-            'Products'   => Myclass::t('Products')
+            'Products'   => Myclass::t('Products'),
+            'USR'       => Myclass::t('ID')
         );
     }
 
@@ -215,6 +227,13 @@ class SuppliersDirectory extends CActiveRecord {
                 'pageSize' => PAGE_SIZE,
             )
         ));
+    }
+    
+      protected function afterFind() {
+        /* Get selected region for current category information */
+        $this->region = CityDirectory::model()->findByPk($this->ID_VILLE)->ID_REGION;
+        $this->country = RegionDirectory::model()->findByPk($this->region)->ID_PAYS;
+        return parent::afterFind();
     }
 
 }

@@ -12,9 +12,11 @@ $form = $this->beginWidget('CActiveForm', array(
         ));
 
  $marids = Yii::app()->user->getState("marque_ids");
+ $proids = Yii::app()->user->getState("product_ids");
 //echo "<pre>";
+// print_r($proids );
 // print_r($marids );
-//echo "<pre>"; 
+//echo "</pre>"; 
  ?> 
 <div class="box box-primary">    
     <div class="box-body">
