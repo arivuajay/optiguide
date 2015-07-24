@@ -44,7 +44,7 @@ class SupplierType extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'repertoireFournisseurs' => array(self::HAS_MANY, 'RepertoireFournisseurs', 'ID_TYPE_FOURNISSEUR'),
+			'suppliersDirectory' => array(self::HAS_MANY, 'SuppliersDirectory', 'ID_TYPE_FOURNISSEUR'),
 		);
 	}
 

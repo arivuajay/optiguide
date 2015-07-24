@@ -25,54 +25,27 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 <div class="col-lg-12 col-md-12">
     <div class="row">
         <?php
+        $gettypes = CHtml::listData(SupplierType::model()->findAll() , 'ID_TYPE_FOURNISSEUR', 'TYPE_FOURNISSEUR_FR');
+      
         $gridColumns = array(
                 'COMPAGNIE',
-		
-		/*
-                'ID_CLIENT',
-		'ID_TYPE_FOURNISSEUR', 
-                'ADRESSE',
-		'ADRESSE2',
-		'ID_VILLE',
-		'CODE_POSTAL',
-		'TELEPHONE',
-		'TELECOPIEUR',
-		'TITRE_TEL_SANS_FRAIS',
-		'TITRE_TEL_SANS_FRAIS_EN',
-		'TEL_SANS_FRAIS',
-		'TITRE_TEL_SECONDAIRE',
-		'TITRE_TEL_SECONDAIRE_EN',
-		'TEL_SECONDAIRE',
-		'COURRIEL',
-		'SITE_WEB',
-		'SUCCURSALES',
-		'ETABLI_DEPUIS',
-		'NB_EMPLOYES',
-		'PERSONNEL_NOM1',
-		'PERSONNEL_TITRE1',
-		'PERSONNEL_TITRE1_EN',
-		'PERSONNEL_NOM2',
-		'PERSONNEL_TITRE2',
-		'PERSONNEL_TITRE2_EN',
-		'PERSONNEL_NOM3',
-		'PERSONNEL_TITRE3',
-		'PERSONNEL_TITRE3_EN',
-		'DATE_MODIFICATION',
-		'REGIONS_FR',
-		'REGIONS_EN',
-		'bAfficher_site',
-		'iId_fichier',
-		*/
-        array(
-        'header' => 'Actions',
-        'class' => 'booster.widgets.TbButtonColumn',
-        'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-        'template' => '{update}{delete}',
-        )
+		 array(
+                'header'  => 'Type de fournisseurs',    
+                'name'    => 'supplierType.TYPE_FOURNISSEUR_FR',
+                'value'   => $data->supplierType->TYPE_FOURNISSEUR_FR,
+                'filter'  => CHtml::activeDropDownList($model, 'ID_TYPE_FOURNISSEUR', $gettypes  , array('class'=>'form-control','prompt'=>'All')),
+                ),   
+                array(
+                'header' => 'Actions',
+                'class' => 'booster.widgets.TbButtonColumn',
+                'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                'template' => '{update}{delete}',
+                )
         );
 
         $this->widget('booster.widgets.TbExtendedGridView', array(
         'filter' => $model,
+        'ajaxUrl' => $this->createUrl('suppliersDirectory/index'),
         'type' => 'striped bordered datatable',
         'dataProvider' => $model->search(),
         'responsiveTable' => true,

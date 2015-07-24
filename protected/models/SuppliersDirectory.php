@@ -96,7 +96,7 @@ class SuppliersDirectory extends CActiveRecord {
         // class name for the relations automatically generated below.
         return array(
             'repertoireFournisseurProduits' => array(self::HAS_MANY, 'RepertoireFournisseurProduit', 'ID_FOURNISSEUR'),
-            'fournisseurType' => array(self::BELONGS_TO, 'RepertoireFournisseurType', 'ID_TYPE_FOURNISSEUR'),
+            'supplierType' => array(self::BELONGS_TO, 'SupplierType', 'ID_TYPE_FOURNISSEUR'),
             'archiveFichier' => array(self::BELONGS_TO, 'ArchiveFichier', 'iId_fichier'),
             'userDirectory' => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION'),
         );
