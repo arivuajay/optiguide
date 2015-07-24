@@ -139,6 +139,9 @@ class SuppliersDirectoryController extends Controller {
 
                 $mattributes = $model->attributes;
                 $uattributes = $umodel->attributes;
+               
+                $model->save(false);  
+                $umodel->save(false);
 
                 Yii::app()->user->setState("mattributes", $mattributes);
                 Yii::app()->user->setState("uattributes", $uattributes);
