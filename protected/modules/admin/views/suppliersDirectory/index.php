@@ -38,8 +38,11 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 array(
                 'header'  => 'État',    
                 'name'    => 'bAfficher_site',
-                //'value'   => ($data->bAfficher_site=="0") ? "Désactivés" : "Activés" ,
-                'value'   => $data->bAfficher_site,
+                //'value'   => ($data->bAfficher_site=="0") ? "Désactivés" : "Activés" ,               
+                'type' => 'raw',
+                'value' => function($data) {
+                echo ($data->bAfficher_site == 1) ? "<i class='fa fa-circle text-green'></i>" : "<i class='fa fa-circle text-red'></i>";
+                 },
                 'filter'  => CHtml::activeDropDownList($model, 'bAfficher_site',  array("1"=>"Activés" ,"0"=>"Désactivés" ) , array('class'=>'form-control','prompt'=>'Tous')),
                 ), 
                 array(
