@@ -320,6 +320,7 @@ $ajaxCityUrl = Yii::app()->createUrl('/admin/categoryInformation/getcities');
 $ajaxFicherUrl = Yii::app()->createUrl('/admin/suppliersDirectory/getfichers');
 $ajaxFetchimage = Yii::app()->createUrl('/admin/suppliersDirectory/getficherimage');
 $jsoncde = array();
+
  if (Yii::app()->user->hasState("product_ids")) 
  {     
       $sess_product_ids = Yii::app()->user->getState("product_ids");     
