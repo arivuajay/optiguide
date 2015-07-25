@@ -2,9 +2,9 @@
 /* @var $this SuppliersDirectoryController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title='Suppliers Directories';
+$this->title='Gestion des fournisseurs';
 $this->breadcrumbs=array(
-	'Suppliers Directories',
+	'Gestion des fournisseurs',
 );
 $themeUrl = $this->themeUrl;
 $cs = Yii::app()->getClientScript();
@@ -16,7 +16,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Create SuppliersDirectory', array('/admin/suppliersDirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp; Ajouter un fournisseur ', array('/admin/suppliersDirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 
@@ -26,15 +26,22 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
     <div class="row">
         <?php
         $gettypes = CHtml::listData(SupplierType::model()->findAll() , 'ID_TYPE_FOURNISSEUR', 'TYPE_FOURNISSEUR_FR');
-      
+    
         $gridColumns = array(
                 'COMPAGNIE',
 		 array(
                 'header'  => 'Type de fournisseurs',    
                 'name'    => 'supplierType.TYPE_FOURNISSEUR_FR',
                 'value'   => $data->supplierType->TYPE_FOURNISSEUR_FR,
-                'filter'  => CHtml::activeDropDownList($model, 'ID_TYPE_FOURNISSEUR', $gettypes  , array('class'=>'form-control','prompt'=>'All')),
-                ),   
+                'filter'  => CHtml::activeDropDownList($model, 'ID_TYPE_FOURNISSEUR', $gettypes  , array('class'=>'form-control','prompt'=>'Tous')),
+                ), 
+                array(
+                'header'  => 'État',    
+                'name'    => 'bAfficher_site',
+                //'value'   => ($data->bAfficher_site=="0") ? "Désactivés" : "Activés" ,
+                'value'   => $data->bAfficher_site,
+                'filter'  => CHtml::activeDropDownList($model, 'bAfficher_site',  array("1"=>"Activés" ,"0"=>"Désactivés" ) , array('class'=>'form-control','prompt'=>'Tous')),
+                ), 
                 array(
                 'header' => 'Actions',
                 'class' => 'booster.widgets.TbButtonColumn',
@@ -49,7 +56,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         'type' => 'striped bordered datatable',
         'dataProvider' => $model->search(),
         'responsiveTable' => true,
-        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Suppliers Directories</h3></div><div class="panel-body">{items}{pager}</div></div>',
+        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Gestion des fournisseurs</h3></div><div class="panel-body">{items}{pager}</div></div>',
         'columns' => $gridColumns
         )
         );

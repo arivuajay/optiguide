@@ -2,10 +2,10 @@
 /* @var $this SuppliersDirectoryController */
 /* @var $model SuppliersDirectory */
 
-$this->title='Update Supplier Directories: ';
+$this->title='Modifier ce fournisseur ';
 $this->breadcrumbs=array(
-	'Supplier Directories'=>array('index'),
-	'Update Supplier Directories',
+	'Gestion des fournisseurs'=>array('index'),
+	'Modifier ce fournisseur',
 );
 ?>
 

@@ -2,9 +2,9 @@
 /* @var $this SuppliersDirectoryController */
 /* @var $model SuppliersDirectory */
 
-$this->title='Create Suppliers Directories';
+$this->title='Ajouter un fournisseur';
 $this->breadcrumbs=array(
-	'Suppliers Directories'=>array('index'),
+	'Gestion des fournisseurs'=>array('index'),
 	$this->title,
 );
 ?>

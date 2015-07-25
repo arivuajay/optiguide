@@ -28,7 +28,7 @@ class SuppliersDirectoryController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getproducts', 'addproducts', 'addmarques', 'listmarques'),
+                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getproducts', 'addproducts', 'addmarques', 'listmarques', 'getfichers','getficherimage'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -49,6 +49,45 @@ class SuppliersDirectoryController extends Controller {
         $this->render('view', array(
             'model' => $this->loadModel($id),
         ));
+    }
+        
+    public function actionGetfichers()
+    {
+        $options = '';
+        //fetch category id based fichers
+        $cid     = isset($_POST['id'])?$_POST['id']:'';
+        $options = "<option value='0'>Aucune</option>";
+        if($cid!='')
+        {     
+            $criteria = new CDbCriteria;
+            $criteria->condition = 'ID_CATEGORIE=:id and DISPONIBLE=1';
+            $criteria->params    = array(':id' => $cid);      
+            $data_fichers        = CHtml::listData(ArchiveFichier::model()->findAll($criteria), 'ID_FICHIER', 'TITRE_FICHIER_FR');   
+            foreach($data_fichers as $k => $info)
+            {
+                $options .= "<option value='".$k."'>".$info."</option>";  
+            }    
+        }        
+        echo $options;
+        exit;
+        
+    }    
+    
+    function actionGetficherimage()
+    {
+        $themeurl = $this->themeUrl;        
+        $options = '';      
+        $cid     = isset($_POST['id'])?$_POST['id']:'';
+        $fileurl = "javascript:void(0);";
+        if($cid!='')
+        { 
+           $fichres = ArchiveFichier::model()->find("ID_FICHIER=$cid"); 
+           $categoryid  = $fichres->ID_CATEGORIE;     
+           $ficherfile  = $fichres->FICHIER; 
+           $fileurl     =  $themeurl.'/img/archivage/'.$categoryid.'/'.$ficherfile;
+        }        
+        echo $fileurl;
+        exit;
     }
 
     /**

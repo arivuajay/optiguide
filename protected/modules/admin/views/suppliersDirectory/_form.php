@@ -7,6 +7,9 @@
 <div class="row">
     <div class="col-lg-12 col-xs-12">
         <?php
+        
+        $cs_pos_end = CClientScript::POS_END;
+        $themeUrl = $this->themeUrl;
       
         if($model->ID_FOURNISSEUR)
         {    
@@ -26,10 +29,22 @@
         $suppliertypes = CHtml::listData(SupplierType::model()->findAll(), 'ID_TYPE_FOURNISSEUR', 'TYPE_FOURNISSEUR_FR');
         $country = Myclass::getallcountries();
         $regions = Myclass::getallregions($model->country);
-        $cities = Myclass::getallcities($model->region);
+        $cities = Myclass::getallcities($model->region);        
         $archivecats = CHtml::listData(ArchiveCategory::model()->findAll(), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
-
        
+        $ficherid    = $model->iId_fichier;
+        $categoryid  = 0;     
+        $ficherimage = '';
+        if($ficherid>0)
+        {
+           $fichres = ArchiveFichier::model()->find("ID_FICHIER=$ficherid"); 
+           $categoryid  = $fichres->ID_CATEGORIE;     
+           $ficherfile = $fichres->FICHIER;    
+           $fileurl     =  $themeUrl.'/img/archivage/'.$categoryid.'/'.$ficherfile; 
+        }else
+        {
+            $fileurl     = "javascript:void(0);";
+        }    
         ?>
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
@@ -139,14 +154,16 @@
 
                                 <div class="form-group">
                                     <?php echo $form->labelEx($model, 'archivecat', array()); ?>
-                                    <?php echo $form->dropDownList($model, 'archivecat', $archivecats, array('class' => 'form-control')); ?>                          
+                                    <?php echo $form->dropDownList($model, 'archivecat', $archivecats, array('class' => 'form-control','options' => array($categoryid => array('selected'=>true)))); ?>                          
                                     <?php echo $form->error($model, 'archivecat'); ?>
 
                                 </div>
 
                                 <div class="form-group">
-                                    <?php echo $form->labelEx($model, 'iId_fichier', array()); ?>
-                                    <?php echo $form->textField($model, 'iId_fichier', array('class' => 'form-control')); ?>
+                                    <?php $fichercats = array("0"=> "Aucune");?>
+                                    <?php echo $form->labelEx($model, 'iId_fichier', array()); ?>                                   
+                                    <?php echo $form->dropDownList($model, 'iId_fichier', $fichercats, array('class' => 'form-control','options' => array($ficherid => array('selected'=>true)))); ?>    
+                                    <a href="<?php echo $fileurl;?>" class="viewficherfile"><img src="<?php echo $themeUrl.'/img/preview.gif'; ?>"></a>
                                     <?php echo $form->error($model, 'iId_fichier'); ?>
                                 </div>
 
@@ -296,12 +313,12 @@
     </div>
 </div>
 <?php
-$cs_pos_end = CClientScript::POS_END;
-$themeUrl = $this->themeUrl;
 $cs = Yii::app()->getClientScript();
 $cs->registerScriptFile($themeUrl . '/js/pair-select.min.js', $cs_pos_end);
 $ajaxRegionUrl = Yii::app()->createUrl('/admin/cityDirectory/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/admin/categoryInformation/getcities');
+$ajaxFicherUrl = Yii::app()->createUrl('/admin/suppliersDirectory/getfichers');
+$ajaxFetchimage = Yii::app()->createUrl('/admin/suppliersDirectory/getficherimage');
 $jsoncde = array();
  if (Yii::app()->user->hasState("product_ids")) 
  {     
@@ -312,9 +329,11 @@ $jsoncde = array();
 $ajaxproducts = Yii::app()->createUrl('/admin/suppliersDirectory/getproducts');
 $js = <<< EOD
     $(document).ready(function(){
-        
+   
+// Tabs display    
     $("#a_tab_{$tab}").trigger('click');     
    
+// Display the products in multiselect box based on slected category     
     var varray = {$jsoncde}; 
     
     $("#SuppliersDirectory_IDSECTION").change(function(){
@@ -346,15 +365,18 @@ $js = <<< EOD
             }
          });
     }); 
-   
+ 
+// Add the products from multislect box            
     $('#Addmarque').click(function(){
             $('#MasterSelectBox').addSelected('#SuppliersDirectory_Products2');
     });
 
+// Remove the products from multislect box   
     $('#Removemarque').click(function(){
             $('#SuppliersDirectory_Products2').removeSelected('#MasterSelectBox'); 
     });   
-     
+ 
+// Get region for seleted country   
     $("#SuppliersDirectory_country").change(function(){
         var id=$(this).val();
         var dataString = 'id='+ id;
@@ -370,6 +392,7 @@ $js = <<< EOD
          });
     });
    
+// Get cities for seleted region
    $("#SuppliersDirectory_region").change(function(){
         var id=$(this).val();
         var dataString = 'id='+ id;
@@ -385,7 +408,55 @@ $js = <<< EOD
          });
 
     });  
-        
+
+// Get the fichers list based on selected ficher category
+   var vficherid = {$ficherid};
+   var vcatid = {$categoryid}; 
+   
+     $("#SuppliersDirectory_archivecat").change(function(e){
+        var id=$(this).val();
+        var dataString = 'id='+ id;
+        $.ajax({
+            type: "POST",
+            url: '{$ajaxFicherUrl}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#SuppliersDirectory_iId_fichier").html(html);
+                if(e.isTrigger)
+                $("#SuppliersDirectory_iId_fichier").val(vficherid);                
+            }
+         });
+    }); 
+
+// Trigger the dropdown event on form load if the catid value exist   
+    if(vcatid > 0)
+    {
+        $('#SuppliersDirectory_archivecat').trigger('change');           
+    }
+
+// Get the ficher file on select the ficher dropdown.
+    $("#SuppliersDirectory_iId_fichier").change(function(e){
+        var id=$(this).val();
+        var dataString = 'id='+ id;
+        $.ajax({
+            type: "POST",
+            url: '{$ajaxFetchimage}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $(".viewficherfile").attr("href", html);                         
+            }
+         });
+    }); 
+ 
+// Click to preview the ficher file in popup window   
+ $('.viewficherfile').click(function(event) {
+        event.preventDefault();           
+        window.open($(this).attr("href"), "popupWindow", "width=600,height=600,scrollbars=yes");
+    });              
+ 
+// Select all checkboxes for delete products.   
     $('#selecctall').click(function(event) {  //on click        
         if(this.checked) { // check select status
             $('.checkbox1').each(function() { //loop through each checkbox
