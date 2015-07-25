@@ -55,6 +55,7 @@ class CalenderEventController extends OGController {
      * Lists all models.
      */
     public function actionIndex() {
+        //Index function
         $search = false;
         $current_date = date("Y-m-d");
         
@@ -130,5 +131,6 @@ class CalenderEventController extends OGController {
             Yii::app()->end();
         }
     }
+    
 
 }
