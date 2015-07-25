@@ -38,7 +38,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 array(
                 'header'  => 'État',    
                 'name'    => 'bAfficher_site',
-                //'value'   => ($data->bAfficher_site=="0") ? "Désactivés" : "Activés" ,               
+                'htmlOptions' => array('style' => 'width: 180px;text-align:center', 'vAlign' => 'middle'),             
                 'type' => 'raw',
                 'value' => function($data) {
                 echo ($data->bAfficher_site == 1) ? "<i class='fa fa-circle text-green'></i>" : "<i class='fa fa-circle text-red'></i>";
