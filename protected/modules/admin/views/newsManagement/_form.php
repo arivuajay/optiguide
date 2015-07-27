@@ -10,7 +10,8 @@ $cs_pos_end = CClientScript::POS_END;
 $cs->registerCssFile($themeUrl . '/css/datepicker/datepicker3.css');
 $cs->registerScriptFile($themeUrl . '/js/datepicker/bootstrap-datepicker.js', $cs_pos_end);
 
-$archivecats = CHtml::listData(ArchiveCategory::model()->findAll(), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
+$archivecats = CHtml::listData(ArchiveCategory::model()->findAll(array('order'=>'NOM_CATEGORIE_FR ASC')), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
+
 
 $ficherid = $model->ID_FICHIER;
 $categoryid = 0;
@@ -211,11 +212,11 @@ if(firstradio==0)
 $('input[name="NewsManagement\\[AFFICHER_SITE\\]"]').on('ifChecked', function(event){
     var chkval = $('input[name="NewsManagement\\[AFFICHER_SITE\\]"]:checked').val();
         
-   if(chkval)
+   if(chkval=="1")
    {
         $('input[name="NewsManagement\\[AFFICHER_SECTION\\]"]').attr('disabled',false);       
         $('input[name="NewsManagement\\[AFFICHER_ACCUEIL\\]"]').attr('disabled',false);      
-   }else
+   }else  if(chkval=="0")
    {
         $('input[name="NewsManagement\\[AFFICHER_SECTION\\]"]').attr('disabled',true);       
         $('input[name="NewsManagement\\[AFFICHER_ACCUEIL\\]"]').attr('disabled',true);      

@@ -23,6 +23,7 @@ class CalenderEvent extends CActiveRecord {
     
     public $EVENT_MONTH;
     public $EVENT_YEAR;
+    public $Year,$Emplacement,$keyword;
 
     /**
      * @return string the associated database table name
@@ -38,7 +39,8 @@ class CalenderEvent extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('DATE_AJOUT1, DATE_AJOUT2, TITRE, AFFICHER_ACCUEIL, AFFICHER_ARCHIVE', 'required'),
+          //  array('DATE_AJOUT1, DATE_AJOUT2, TITRE, AFFICHER_ACCUEIL, AFFICHER_ARCHIVE', 'required'),
+             array('DATE_AJOUT1, DATE_AJOUT2, TITRE, TEXTE', 'required'),
             array('AFFICHER_SITE, AFFICHER_ACCUEIL, AFFICHER_ARCHIVE, ID_PAYS, ID_REGION, ID_VILLE', 'numerical', 'integerOnly' => true),
             array('LANGUE', 'length', 'max' => 2),
             array('TITRE, LIEN_URL, LIEN_TITRE', 'length', 'max' => 255),
@@ -46,6 +48,7 @@ class CalenderEvent extends CActiveRecord {
             array('EVENT_MONTH, EVENT_YEAR', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
+            array('Year,Emplacement,keyword', 'safe'),
             array('ID_EVENEMENT, LANGUE, DATE_AJOUT1, DATE_AJOUT2, TITRE, TEXTE, LIEN_URL, LIEN_TITRE, AFFICHER_SITE, AFFICHER_ACCUEIL, AFFICHER_ARCHIVE, ID_PAYS, ID_REGION, ID_VILLE, EVENT_MONTH, EVENT_YEAR', 'safe', 'on' => 'search'),
         );
     }
@@ -67,12 +70,12 @@ class CalenderEvent extends CActiveRecord {
         return array(
             'ID_EVENEMENT' => Myclass::t('Id Evenement'),
             'LANGUE' => Myclass::t('Langue'),
-            'DATE_AJOUT1' => Myclass::t('Date Ajout1'),
-            'DATE_AJOUT2' => Myclass::t('Date Ajout2'),
+            'DATE_AJOUT1' => Myclass::t('Date de début'),
+            'DATE_AJOUT2' => Myclass::t('Date de fin'),
             'TITRE' => Myclass::t('Titre'),
             'TEXTE' => Myclass::t('Texte'),
-            'LIEN_URL' => Myclass::t('Lien Url'),
-            'LIEN_TITRE' => Myclass::t('Lien Titre'),
+            'LIEN_URL' => Myclass::t('Adresse web'),
+            'LIEN_TITRE' => Myclass::t('Titre de l\'adresse web'),
             'AFFICHER_SITE' => Myclass::t('Afficher Site'),
             'AFFICHER_ACCUEIL' => Myclass::t('Afficher Accueil'),
             'AFFICHER_ARCHIVE' => Myclass::t('Afficher Archive'),
@@ -98,12 +101,16 @@ class CalenderEvent extends CActiveRecord {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
+        
+      // search year and keyword 
+      // echo $this->Year;
+      // echo $this->keyword;  
 
         $criteria->compare('ID_EVENEMENT', $this->ID_EVENEMENT);
         $criteria->compare('LANGUE', $this->LANGUE, true);
-        $criteria->compare('DATE_AJOUT1', $this->DATE_AJOUT1, true);
+        $criteria->compare('DATE_AJOUT1',$this->Year, true);
         $criteria->compare('DATE_AJOUT2', $this->DATE_AJOUT2, true);
-        $criteria->compare('TITRE', $this->TITRE, true);
+        $criteria->compare('TITRE', $this->keyword, true);
         $criteria->compare('TEXTE', $this->TEXTE, true);
         $criteria->compare('LIEN_URL', $this->LIEN_URL, true);
         $criteria->compare('LIEN_TITRE', $this->LIEN_TITRE, true);
@@ -116,6 +123,9 @@ class CalenderEvent extends CActiveRecord {
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+            'sort'=>array(
+             'defaultOrder'=>'DATE_AJOUT1 DESC',
+             ),
             'pagination' => array(
                 'pageSize' => PAGE_SIZE,
             )

@@ -59,18 +59,21 @@ class SuppliersDirectoryController extends Controller {
         $options = "<option value='0'>Aucune</option>";
         if($cid!='')
         {     
+            $exts = array('jpg','png','gif');
             $criteria = new CDbCriteria;
             $criteria->condition = 'ID_CATEGORIE=:id and DISPONIBLE=1';
-            $criteria->params    = array(':id' => $cid);      
-            $data_fichers        = CHtml::listData(ArchiveFichier::model()->findAll($criteria), 'ID_FICHIER', 'TITRE_FICHIER_FR');   
+            $criteria->params    = array(':id' => $cid); 
+            $criteria->addInCondition('EXTENSION',$exts);
+            $criteria->order = 'TITRE_FICHIER_FR';
+            $data_fichers        = CHtml::listData(ArchiveFichier::model()->findAll($criteria), 'ID_FICHIER', 'TITRE_FICHIER_FR');  
+             $options = "<option value='0'>Aucune</option>";  
             foreach($data_fichers as $k => $info)
             {
                 $options .= "<option value='".$k."'>".$info."</option>";  
             }    
         }        
-        echo $options;
+        echo  $options;
         exit;
-        
     }    
     
     function actionGetficherimage()

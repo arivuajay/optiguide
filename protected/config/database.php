@@ -6,4 +6,5 @@ return array(
     'password' => '',
     'charset' => 'utf8',
     'tablePrefix' => '',
+     'enableProfiling'=>true,
 );
