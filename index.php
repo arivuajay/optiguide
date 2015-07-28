@@ -13,10 +13,10 @@ defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL', 3);
 
 require_once($yii);
 
-if (strpos($_SERVER['HTTP_HOST'], 'localhost:7000') !== false) {
+if (strpos($_SERVER['HTTP_HOST'], 'local.optiguide') !== false) {
     $modules = array('optiguide');
     $def_mod = 'optiguide';
-} elseif (strpos($_SERVER['HTTP_HOST'], 'localhost:7001') !== false) {
+} elseif (strpos($_SERVER['HTTP_HOST'], 'local.optirep') !== false) {
     $modules = array('optirep');
     $def_mod = 'optirep';
 } else {
