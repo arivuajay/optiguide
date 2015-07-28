@@ -2,7 +2,7 @@
 /* @var $this ArchiveCategoryController */
 /* @var $model ArchiveCategory */
 
-$this->title= Myclass::t('APP504').Myclass::t('APP33');
+$this->title= 'Ajouter une catégorie';
 $this->breadcrumbs=array(
 	Myclass::t('APP34') => array('index'),
 	$this->title,

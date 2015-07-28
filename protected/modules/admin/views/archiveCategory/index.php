@@ -14,7 +14,7 @@ $cs_pos_end = CClientScript::POS_END;
 $cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
 $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
 
-$createtitle= Myclass::t('APP504')." ".Myclass::t('APP33');
+$createtitle= 'Ajouter une catégorie';
 ?>
 
 <div class="col-lg-12 col-md-12">
@@ -55,7 +55,7 @@ $createtitle= Myclass::t('APP504')." ".Myclass::t('APP33');
             'type' => 'striped bordered datatable',
             'dataProvider' => $model->search(),
             'responsiveTable' => true,
-            'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Archive Categories</h3></div><div class="panel-body">{items}{pager}</div></div>',
+            'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Catégorie</h3></div><div class="panel-body">{items}{pager}</div></div>',
             'columns' => $gridColumns
                 )
         );

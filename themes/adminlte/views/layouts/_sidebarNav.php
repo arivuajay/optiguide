@@ -54,9 +54,9 @@
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
-                        array('label' => '<i class="fa fa-globe"></i> <span>Countries</span>', 'url' => array('/admin/countryDirectory/index'), 'active' => $_controller == 'countryDirectory'),
-                        array('label' => '<i class="fa fa-building-o"></i> <span>Region</span>', 'url' => array('/admin/regionDirectory/index'), 'active' => $_controller == 'regionDirectory'),
-                        array('label' => '<i class="fa fa-building"></i> <span>Cities</span>', 'url' => array('/admin/cityDirectory/index'), 'active' => $_controller == 'cityDirectory'),
+                        array('label' => '<i class="fa fa-globe"></i> <span>Pays</span>', 'url' => array('/admin/countryDirectory/index'), 'active' => $_controller == 'countryDirectory'),
+                        array('label' => '<i class="fa fa-building-o"></i> <span>Régions</span>', 'url' => array('/admin/regionDirectory/index'), 'active' => $_controller == 'regionDirectory'),
+                        array('label' => '<i class="fa fa-building"></i> <span>Villes</span>', 'url' => array('/admin/cityDirectory/index'), 'active' => $_controller == 'cityDirectory'),
                     ),
                 ),
                 array('label' => '<i class="fa fa-gear"></i> <span>Archivage</span>', 'url' => array('/admin/archiveCategory/index')),

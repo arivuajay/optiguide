@@ -83,5 +83,5 @@ return array(
     'timeZone' => 'Asia/Calcutta',
     'theme' => 'adminlte',
     'sourceLanguage' => '00',
-    'language' => 'en',
+    'language' => 'fr',
 );
