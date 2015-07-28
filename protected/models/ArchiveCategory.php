@@ -80,6 +80,9 @@ class ArchiveCategory extends CActiveRecord {
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+             'sort'=>array(
+                'defaultOrder'=>'NOM_CATEGORIE_FR ASC',
+              ),
             'pagination' => array(
                 'pageSize' => PAGE_SIZE,
             )

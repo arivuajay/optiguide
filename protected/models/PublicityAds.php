@@ -34,6 +34,7 @@
  */
 class PublicityAds extends CActiveRecord
 {
+    public $archivecat;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -50,12 +51,11 @@ class PublicityAds extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('DATE_DEBUT, DATE_FIN', 'required'),
-			array('NO_PUB, ID_FICHIER, NB_IMPRESSIONS_FAITES, NB_IMPRESSIONS, PRIORITE, PAYE, ZONE_AFFICHAGE, ID_POSITION, AFFICHER_ACCUEIL, ACCUEIL_SECTION', 'numerical', 'integerOnly'=>true),
-			array('LANGUE', 'length', 'max'=>2),
-			array('TITRE, LIEN_URL, MOTS_CLES_RECHERCHE, CLIENT', 'length', 'max'=>255),
+			array('DATE_DEBUT, DATE_FIN,archivecat,ID_FICHIER', 'required'),
+			array('NO_PUB, archivecat,ID_FICHIER, NB_IMPRESSIONS_FAITES, NB_IMPRESSIONS, PRIORITE, PAYE, ZONE_AFFICHAGE, ID_POSITION, AFFICHER_ACCUEIL, ACCUEIL_SECTION', 'numerical', 'integerOnly'=>true),
+                        array('TITRE, LIEN_URL, MOTS_CLES_RECHERCHE, CLIENT', 'length', 'max'=>255),
 			array('PRIX', 'length', 'max'=>50),
-			array('DATE_AJOUT', 'safe'),
+			array('DATE_AJOUT,archivecat', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('ID_PUBLICITE, NO_PUB, LANGUE, TITRE, DATE_DEBUT, DATE_FIN, ID_FICHIER, LIEN_URL, MOTS_CLES_RECHERCHE, NB_IMPRESSIONS_FAITES, NB_IMPRESSIONS, PRIORITE, PRIX, PAYE, CLIENT, ZONE_AFFICHAGE, ID_POSITION, AFFICHER_ACCUEIL, DATE_AJOUT, ACCUEIL_SECTION', 'safe', 'on'=>'search'),
@@ -86,7 +86,7 @@ class PublicityAds extends CActiveRecord
 		return array(
 			'ID_PUBLICITE' => Myclass::t('Id Publicite'),
 			'NO_PUB' => Myclass::t('No. de publicité '),
-			'LANGUE' => Myclass::t('Langue'),
+			'LANGUE' => Myclass::t('Afficher sur le site en'),
 			'TITRE' => Myclass::t('Titre'),
 			'DATE_DEBUT' => Myclass::t('du'),
 			'DATE_FIN' => Myclass::t('au'),
@@ -94,16 +94,17 @@ class PublicityAds extends CActiveRecord
 			'LIEN_URL' => Myclass::t('Lien Url'),
 			'MOTS_CLES_RECHERCHE' => Myclass::t('Mots Cles Recherche'),
 			'NB_IMPRESSIONS_FAITES' => Myclass::t('Nb Impressions Faites'),
-			'NB_IMPRESSIONS' => Myclass::t('Nb Impressions'),
-			'PRIORITE' => Myclass::t('Priorite'),
+			'NB_IMPRESSIONS' => Myclass::t('maximum impressions'),
+			'PRIORITE' => Myclass::t('Type'),
 			'PRIX' => Myclass::t('Prix'),
 			'PAYE' => Myclass::t('Est-ce payé ?'),
 			'CLIENT' => Myclass::t('Client'),
-			'ZONE_AFFICHAGE' => Myclass::t('Zone Affichage'),
+			'ZONE_AFFICHAGE' => Myclass::t('dans la'),
 			'ID_POSITION' => Myclass::t('Id Position'),
 			'AFFICHER_ACCUEIL' => Myclass::t('Afficher Accueil'),
 			'DATE_AJOUT' => Myclass::t('Date Ajout'),
-			'ACCUEIL_SECTION' => Myclass::t('Accueil Section'),
+			'ACCUEIL_SECTION' => Myclass::t('En page d\'accueil '),
+                        'archivecat'        => Myclass::t('Bannière')    
 		);
 	}
 

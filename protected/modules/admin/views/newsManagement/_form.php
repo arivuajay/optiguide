@@ -20,7 +20,8 @@ if ($ficherid > 0) {
     $fichres = ArchiveFichier::model()->find("ID_FICHIER=$ficherid");
     $categoryid = $fichres->ID_CATEGORIE;
     $ficherfile = $fichres->FICHIER;
-    $fileurl = $themeUrl . '/img/archivage/' . $categoryid . '/' . $ficherfile;
+   // $fileurl = $themeUrl . '/img/archivage/' . $categoryid . '/' . $ficherfile;
+    $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$categoryid."/".$ficherfile);
 } else {
     $fileurl = "javascript:void(0);";
 }

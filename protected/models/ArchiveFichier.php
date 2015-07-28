@@ -33,6 +33,11 @@
  */
 class ArchiveFichier extends CActiveRecord
 {
+        const IMAGE_SIZE = 2;
+        const ACCESS_TYPES = 'jpg,png,jpeg,gif,pdf,html,bmp';
+        const ACCESS_TYPES_WID = 'jpeg|jpg|gif|png|pdf|html|bmp';
+         public $image;
+    
 	/**
 	 * @return string the associated database table name
 	 */
@@ -49,14 +54,17 @@ class ArchiveFichier extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('DATE_DEPOT', 'required'),
+			array('ID_CATEGORIE,TITRE_FICHIER_FR,TITRE_FICHIER_EN', 'required'),
 			array('ID_CATEGORIE, DISPONIBLE', 'numerical', 'integerOnly'=>true),
-			array('FICHIER, TITRE_FICHIER_FR, TITRE_FICHIER_EN', 'length', 'max'=>255),
+			array('TITRE_FICHIER_FR, TITRE_FICHIER_EN', 'length', 'max'=>255),
 			array('MOTS_CLE', 'length', 'max'=>500),
 			array('EXTENSION', 'length', 'max'=>5),
+                       // array('FICHIER', 'file', 'allowEmpty'=>false , 'types'=>  self::ACCESS_TYPES, 'maxSize' => 1024 * 1024 * self::IMAGE_SIZE, 'tooLarge' => 'File should be smaller than ' . self::IMAGE_SIZE . 'MB'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('ID_FICHIER, ID_CATEGORIE, FICHIER, TITRE_FICHIER_FR, TITRE_FICHIER_EN, MOTS_CLE, EXTENSION, DATE_DEPOT, DISPONIBLE', 'safe', 'on'=>'search'),
+                        array('image', 'file','allowEmpty'=>true, 'types'=>self::ACCESS_TYPES ,'safe' => false),
+                        array('image', 'file','allowEmpty'=>false, 'types'=>self::ACCESS_TYPES ,'safe' => false , 'on'=>'create'),
 		);
 	}
 
@@ -93,14 +101,14 @@ class ArchiveFichier extends CActiveRecord
 	{
 		return array(
 			'ID_FICHIER' => Myclass::t('Id Fichier'),
-			'ID_CATEGORIE' => Myclass::t('Id Categorie'),
-			'FICHIER' => Myclass::t('Fichier'),
+			'ID_CATEGORIE' => Myclass::t('Categorie'),
+			'image' => Myclass::t('Fichier'),
 			'TITRE_FICHIER_FR' => Myclass::t('Titre Fichier Fr'),
 			'TITRE_FICHIER_EN' => Myclass::t('Titre Fichier En'),
 			'MOTS_CLE' => Myclass::t('Mots Cle'),
 			'EXTENSION' => Myclass::t('Extension'),
 			'DATE_DEPOT' => Myclass::t('Date Depot'),
-			'DISPONIBLE' => Myclass::t('Disponible'),
+			'DISPONIBLE' => Myclass::t('Mettre l\'archive active'),
 		);
 	}
 
@@ -116,14 +124,27 @@ class ArchiveFichier extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
+        
+        
 	public function search()
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('ID_FICHIER',$this->ID_FICHIER);
-		$criteria->compare('ID_CATEGORIE',$this->ID_CATEGORIE);
+		$criteria->compare('ID_FICHIER',$this->ID_FICHIER);		
+                /* get the search params*/
+                $catid = Yii::app()->getRequest()->getQuery('id');    
+                if($catid!='')
+                {                      
+                    $criteria->addCondition('archiveCategory.ID_CATEGORIE = :catid');
+                    $criteria->params = array(':catid' => (int)$catid);
+                }else
+                {                   
+                    $criteria->addCondition('archiveCategory.ID_CATEGORIE = :catid');
+                    $criteria->params = array(':catid' => (int)$this->ID_CATEGORIE);
+                }   
+
 		$criteria->compare('FICHIER',$this->FICHIER,true);
 		$criteria->compare('TITRE_FICHIER_FR',$this->TITRE_FICHIER_FR,true);
 		$criteria->compare('TITRE_FICHIER_EN',$this->TITRE_FICHIER_EN,true);
@@ -131,14 +152,49 @@ class ArchiveFichier extends CActiveRecord
 		$criteria->compare('EXTENSION',$this->EXTENSION,true);
 		$criteria->compare('DATE_DEPOT',$this->DATE_DEPOT,true);
 		$criteria->compare('DISPONIBLE',$this->DISPONIBLE);
+                
+                $criteria->with = array(
+                  "archiveCategory" => array(
+                    'alias' => 'archiveCategory', 
+                    'select' => 'archiveCategory.NOM_CATEGORIE_FR'
+                  )
+                );
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+                        'sort'=>array(
+                            'defaultOrder'=>'TITRE_FICHIER_FR ASC',
+                          ),
                         'pagination' => array(
                             'pageSize' => PAGE_SIZE,
                         )
 		));
 	}
+        
+         public static function get_allcategory()
+        {
+           
+           // countryDirectory
+           $get_catsql   =  ArchiveCategory::model()->findAll(array("order"=>"NOM_CATEGORIE_FR"));
+           $cat_res      = CHtml::listData($get_catsql, 'ID_CATEGORIE', 'NOM_CATEGORIE_FR'); 
+           return $cat_res;
+        } 
+        
+        public function getcategoryname()
+        {
+            $catid = Yii::app()->getRequest()->getQuery('id');   
+            $catname = '';
+            
+            $criteria=new CDbCriteria;
+            $criteria->addCondition('ID_CATEGORIE = :catid');
+            $criteria->params = array(':catid' => (int)$catid);
+            if($catid!='')
+            {    
+                $catinfos = ArchiveCategory::model()->find($criteria);
+                $catname = $catinfos->NOM_CATEGORIE_FR;
+            } 
+            return $catname;
+        }       
 
 	/**
 	 * Returns the static model of the specified AR class.

@@ -71,13 +71,26 @@ $btn_title = Myclass::t('APP504') . " " . Myclass::t('APP58');
             'type' => 'striped bordered datatable',
             'dataProvider' => $model->search(),
             'responsiveTable' => true,
-            'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>' . Myclass::t('APP58') . '</h3></div><div class="panel-body">{items}{pager}</div></div>',
+            'template' => '<div class="panel panel-primary">'
+            . '                <div class="panel-heading">'
+            . '                       <div class="pull-right">{summary}</div>'
+            . '                           <h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>' . Myclass::t('APP58') . '</h3>
+                               </div>
+                               <div class="panel-body">{items}{pager}</div> 
+                               <div class="form-group">
+                                  <div class="col-lg-12 col-md-12">'.CHtml::SubmitButton('Delete All', array('name' => 'btndeleteall', 'class' => 'btn btn-primary deleteall-button')).''
+            . '                    </div>'
+            . '                </div>'
+            . '            </div>',
             'columns' => $gridColumns
                 )
         );
-
-        echo CHtml::SubmitButton('Delete All', array('name' => 'btndeleteall', 'class' => 'deleteall-button'));
-
+        
+        ?>
+        
+           
+        
+<?php
         $this->endWidget();
         ?>        
     </div>

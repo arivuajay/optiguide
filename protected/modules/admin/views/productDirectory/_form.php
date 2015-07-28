@@ -18,25 +18,24 @@
             ));
 
             $sectiontypes = CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_FR")), 'ID_SECTION', 'NOM_SECTION_FR');
-           
-            $criteria1 = new CDbCriteria();         
+
+            $criteria1 = new CDbCriteria();
             $criteria1->order = "NOM_MARQUE";
             $criteria1->condition = 'ID_PRODUIT=:id';
-            $criteria1->params = array(':id'=>$model->ID_PRODUIT);
+            $criteria1->params = array(':id' => $model->ID_PRODUIT);
             $get_selected_marques = CHtml::listData(MarqueDirectory::model()->with("productMarqueDirectory")->isActive()->findAll($criteria1), 'ID_MARQUE', 'NOM_MARQUE');
-         
+
             $selected = array();
-            $marid    = array();
+            $marid = array();
             foreach ($get_selected_marques as $k => $item) {
-                $selected[$k]=array('selected' => 'selected');
+                $selected[$k] = array('selected' => 'selected');
                 $marid[] = $k;
             }
-            $imp_marque = implode(',',$marid);
-        
-            $criteria2  = new CDbCriteria();         
-            $criteria2->order     = "NOM_MARQUE";         
-            $marque_datas = CHtml::listData(MarqueDirectory::model()->isActive()->findAll($criteria2), 'ID_MARQUE', 'NOM_MARQUE');
+            $imp_marque = implode(',', $marid);
 
+            $criteria2 = new CDbCriteria();
+            $criteria2->order = "NOM_MARQUE";
+            $marque_datas = CHtml::listData(MarqueDirectory::model()->isActive()->findAll($criteria2), 'ID_MARQUE', 'NOM_MARQUE');
             ?>
             <div class="box-body">
                 <div class="form-group">
@@ -66,21 +65,29 @@
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'Marques2', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php                       
+                        <?php
                         $htmlOptions = array('size' => '5', 'multiple' => 'true', 'id' => 'MasterSelectBox', 'class' => 'form-control');
                         echo $form->listBox($model, 'Marques1', $marque_datas, $htmlOptions);
-                        ?>                      
-                        <br>    
-                        <a href='javascript:void(0);' class="btn btn-info btn-sm" id="Addmarque">Add</a>
-                        <a href='javascript:void(0);' class="btn btn-info btn-sm" id="Removemarque">Remove</a>          
-                        <br>
-                        <?php
-                        $data = $get_selected_marques;
-                        $htmlOptions = array('size' => '5', 'multiple' => 'true', 'class' => 'form-control','options' => $selected);
-                        echo $form->listBox($model, 'Marques2', $data, $htmlOptions);
-                        ?>
-                        <?php echo $form->error($model, 'Marques2'); ?>
-                    </div>
+                        ?> 
+                    </div>  
+                </div>    
+                <div class="form-group">
+                    <label class="col-sm-2 control-label required" for="ProductDirectory_buttons">&nbsp;</label>
+                        <div class="col-sm-5">  
+                            <a href='javascript:void(0);' class="btn btn-info btn-sm" id="Addmarque">Add</a>
+                            <a href='javascript:void(0);' class="btn btn-info btn-sm" id="Removemarque">Remove</a>          
+                        </div>  
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label required" for="ProductDirectory_Marques2">&nbsp;</label>
+                        <div class="col-sm-5">    
+                            <?php
+                            $data = $get_selected_marques;
+                            $htmlOptions = array('size' => '5', 'multiple' => 'true', 'class' => 'form-control', 'options' => $selected);
+                            echo $form->listBox($model, 'Marques2', $data, $htmlOptions);
+                            ?>
+                            <?php echo $form->error($model, 'Marques2'); ?>
+                        </div>
                 </div>
 
 

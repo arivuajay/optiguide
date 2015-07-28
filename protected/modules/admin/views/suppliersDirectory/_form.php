@@ -30,7 +30,7 @@
         $country = Myclass::getallcountries();
         $regions = Myclass::getallregions($model->country);
         $cities = Myclass::getallcities($model->region);        
-        $archivecats = CHtml::listData(ArchiveCategory::model()->findAll(), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
+        $archivecats = CHtml::listData(ArchiveCategory::model()->findAll(array("order"=>'NOM_CATEGORIE_FR')), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
        
         $ficherid    = $model->iId_fichier;
         $categoryid  = 0;     
@@ -40,7 +40,8 @@
            $fichres = ArchiveFichier::model()->find("ID_FICHIER=$ficherid"); 
            $categoryid  = $fichres->ID_CATEGORIE;     
            $ficherfile = $fichres->FICHIER;    
-           $fileurl     =  $themeUrl.'/img/archivage/'.$categoryid.'/'.$ficherfile; 
+          // $fileurl     =  $themeUrl.'/img/archivage/'.$categoryid.'/'.$ficherfile; 
+           $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$categoryid."/".$ficherfile);
         }else
         {
             $fileurl     = "javascript:void(0);";

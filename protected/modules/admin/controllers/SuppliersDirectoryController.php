@@ -87,7 +87,8 @@ class SuppliersDirectoryController extends Controller {
            $fichres = ArchiveFichier::model()->find("ID_FICHIER=$cid"); 
            $categoryid  = $fichres->ID_CATEGORIE;     
            $ficherfile  = $fichres->FICHIER; 
-           $fileurl     =  $themeurl.'/img/archivage/'.$categoryid.'/'.$ficherfile;
+          // $fileurl     =  $themeurl.'/img/archivage/'.$categoryid.'/'.$ficherfile;
+           $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$categoryid."/".$ficherfile);
         }        
         echo $fileurl;
         exit;

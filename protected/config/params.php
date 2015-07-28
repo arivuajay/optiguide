@@ -44,6 +44,7 @@ return array(
     'GOOGLE_SECRET_ID' => $google_sec_id,
     //
     //Product Settings
+    'ARCHIVE_IMG_PATH' => 'uploads/archivage/',
     'JOURNAL_IMG_PATH' => 'uploads/journal/',
     'COPYRIGHT' => '&copy; 2014 Express2Help.',
     'EMAILHEADERIMAGE' => '/themes/site/css/frontend/img/logos/header-logo.png',

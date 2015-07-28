@@ -30,7 +30,18 @@ $createtitle= Myclass::t('APP504')." ".Myclass::t('APP33');
         <?php
         $gridColumns = array(
             'NOM_CATEGORIE_FR',
-            'NOM_CATEGORIE_EN',
+             array(
+                'class' => 'booster.widgets.TbButtonColumn',
+                'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                'template' => '{view}',
+                'buttons' => array(
+                    'view' => array(
+                        // 'imageUrl'=>Yii::app()->request->baseUrl.'/css/gridViewStyle/images/gr-plus.png',
+                        'url' => 'Yii::app()->createUrl("admin/archiveFichier/index", array("id"=>$data->ID_CATEGORIE))',
+                    // 'options' => array('class' => 'editevent'),
+                    ),
+                )
+            ),
             array(
                 'header' => 'Actions',
                 'class' => 'booster.widgets.TbButtonColumn',
@@ -40,7 +51,7 @@ $createtitle= Myclass::t('APP504')." ".Myclass::t('APP33');
         );
 
         $this->widget('booster.widgets.TbExtendedGridView', array(
-            'filter' => $model,
+          //  'filter' => $model,
             'type' => 'striped bordered datatable',
             'dataProvider' => $model->search(),
             'responsiveTable' => true,
