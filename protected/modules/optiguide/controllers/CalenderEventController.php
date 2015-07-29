@@ -22,7 +22,8 @@ class CalenderEventController extends OGController {
      * @return array access control rules
      */
     public function accessRules() {
-        return array(
+        return array_merge(
+                parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
                 'actions' => array(''),
                 'users' => array('*'),
@@ -33,11 +34,12 @@ class CalenderEventController extends OGController {
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions' => array(''),
-                'users' => array('admin'),
+                'users' => array(''),
             ),
             array('deny', // deny all users
                 'users' => array('*'),
             ),
+                )
         );
     }
 
@@ -46,8 +48,11 @@ class CalenderEventController extends OGController {
      * @param integer $id the ID of the model to be displayed
      */
     public function actionView($id) {
+        $searchModel = new CalenderEvent('search');
+        $searchModel->unsetAttributes();
         $this->render('view', array(
             'model' => $this->loadModel($id),
+            'searchModel' => $searchModel,
         ));
     }
 
@@ -56,9 +61,8 @@ class CalenderEventController extends OGController {
      */
     public function actionIndex() {
         //Index function
-        $search = false;
         $current_date = date("Y-m-d");
-        
+
         $searchModel = new CalenderEvent('search');
         $searchModel->unsetAttributes();
         if (isset($_REQUEST['CalenderEvent'])) {
@@ -76,7 +80,7 @@ class CalenderEventController extends OGController {
                 $criteria->addCondition('MONTH(DATE_AJOUT1) = ' . $searchModel->EVENT_MONTH);
             if ($searchModel->EVENT_YEAR)
                 $criteria->addCondition('YEAR(DATE_AJOUT1) = ' . $searchModel->EVENT_YEAR);
-            $criteria->order = 'DATE_AJOUT1';
+            $criteria->order = 'DATE_AJOUT1 DESC';
         } else {
             $criteria = new CDbCriteria();
             $criteria->addCondition('DATE_AJOUT1 >= "' . $current_date . '"');
@@ -131,6 +135,5 @@ class CalenderEventController extends OGController {
             Yii::app()->end();
         }
     }
-    
 
 }

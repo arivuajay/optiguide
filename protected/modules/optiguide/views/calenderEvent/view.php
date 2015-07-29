@@ -1,70 +1,28 @@
-<?php
-/* @var $this CalenderEventController */
-/* @var $model CalenderEvent */
+<?php $this->renderPartial('_search', array('searchModel' => $searchModel)); ?>
 
-$this->title='View #'.$model->ID_EVENEMENT;
-$this->breadcrumbs=array(
-	'Calender Events'=>array('index'),
-	'View '.'CalenderEvent',
-);
-?>
-<div class="user-view">
-    
-    <p>
-        <?php        $this->widget(
-                'booster.widgets.TbButton', array(
-                    'label' => 'Update',
-                    'url' => array('update', 'id' =>  $model->ID_EVENEMENT ),
-                    'buttonType' => 'link',
-                    'context' => 'primary',
-//                    'visible' => UserIdentity::checkAccess(Yii::app()->user->name)
-                )
-        );
-        echo "&nbsp;&nbsp;";
-        $this->widget(
-                'application.components.MyTbButton', array(
-                    'label' => 'Delete',
-                    'url' => array('delete', 'id' =>  $model->ID_EVENEMENT ),
-                    'buttonType' => 'link',
-                    'context' => 'danger',
-                    'htmlOptions' => array('confirm' => 'Are you sure you want to delete this item?'),
-                    'visible' => UserIdentity::checkAccess(Yii::app()->user->name)
-                )
-        );
-        echo "&nbsp;&nbsp;";
-        $this->widget(
-                'booster.widgets.TbButton', array(
-            'label' => 'Download',
-            'url' => array('view', 'id' =>  $model->ID_EVENEMENT , 'export' => 'PDF'),
-            'buttonType' => 'link',
-            'context' => 'warning',
-//                    'visible' => UserIdentity::checkAccess(Yii::app()->user->name)
-                )
-        );
-        ?>
-    </p>
-    
-    <?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-        'htmlOptions' => array('class'=>'table table-striped table-bordered'),
-	'attributes'=>array(
-		'ID_EVENEMENT',
-		'LANGUE',
-		'DATE_AJOUT1',
-		'DATE_AJOUT2',
-		'TITRE',
-		'TEXTE',
-		'LIEN_URL',
-		'LIEN_TITRE',
-		'AFFICHER_SITE',
-		'AFFICHER_ACCUEIL',
-		'AFFICHER_ARCHIVE',
-		'ID_PAYS',
-		'ID_REGION',
-		'ID_VILLE',
-	),
-)); ?>
+<div class="row"> 
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
+        <div class="inner-container eventslist-cont"> 
+            <h2> <?php echo $model['TITRE'] ?></h2>
+            <div class="search-list">
+                <h2> 
+                    <?php
+                    echo Myclass::t('OG018', '', 'og') . ' ';
+                    echo date("Y-m-d", strtotime($model['DATE_AJOUT1'])) . ' ';
+                    echo Myclass::t('OG019', '', 'og') . ' ';
+                    echo date("Y-m-d", strtotime($model['DATE_AJOUT2']))
+                    ?>
+                </h2>
+                <div class="clearfix"></div>
+                <div class="event-details-txt"> 
+                    <?php echo $model['TEXTE']; ?>
+                    <p>
+                        <a target="_blank" href="<?php echo $model['LIEN_URL']; ?>"><?php echo $model['LIEN_TITRE']; ?></a>
+                    </p>
+                    
+                    <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/calenderEvent')); ?>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-
-

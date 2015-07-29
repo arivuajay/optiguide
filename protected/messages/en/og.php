@@ -29,4 +29,9 @@ return array(
     'OG017' => 'Calendar of events',
     'OG018' => 'From',
     'OG019' => 'To',
+    'OG020' => 'Find an event',
+    'OG021' => 'All',
+    'OG022' => 'Month',
+    'OG023' => 'Year',
+    'OG024' => 'Find',
 );

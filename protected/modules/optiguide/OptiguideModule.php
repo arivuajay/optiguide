@@ -4,6 +4,7 @@ class OptiguideModule extends CWebModule {
 
     public function init() {
         Yii::app()->theme = 'optiguide';
+        Yii::app()->language = 'en';
         $this->layoutPath = Yii::getPathOfAlias('webroot.themes.' . Yii::app()->theme->name . '.views.layouts');
         $this->layout = '//layouts/main';
         // this method is called when the module is being created

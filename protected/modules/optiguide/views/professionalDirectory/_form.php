@@ -112,7 +112,7 @@
                             <?php echo $form->labelEx($model, 'country'); ?>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-                            <?php echo $form->dropDownList($model, 'country', $country, array('empty' => Myclass::t('APP43'))); ?> 
+                            <?php echo $form->dropDownList($model, 'country', $country, array('class' => 'selectpicker', 'empty' => Myclass::t('APP43'))); ?> 
                             <?php echo $form->error($model, 'country'); ?>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
                             <?php echo $form->labelEx($model, 'region'); ?>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-                            <?php echo $form->dropDownList($model, 'region', $regions, array('empty' => Myclass::t('APP44'))); ?> 
+                            <?php echo $form->dropDownList($model, 'region', $regions, array('class' => 'selectpicker','empty' => Myclass::t('APP44'))); ?> 
                             <?php echo $form->error($model, 'region'); ?>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                             <?php echo $form->labelEx($model, 'ID_VILLE'); ?>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-                            <?php echo $form->dropDownList($model, 'ID_VILLE', $cities, array('empty' => Myclass::t('APP59'))); ?> 
+                            <?php echo $form->dropDownList($model, 'ID_VILLE', $cities, array('class' => 'selectpicker','empty' => Myclass::t('APP59'))); ?> 
                             <?php echo $form->error($model, 'ID_VILLE'); ?>
                         </div>
                     </div>
@@ -268,8 +268,8 @@
 </div>
 
 <?php
-$ajaxRegionUrl = Yii::app()->createUrl('/optiguide/professionaldirectory/getregions');
-$ajaxCityUrl = Yii::app()->createUrl('/optiguide/professionaldirectory/getcities');
+$ajaxRegionUrl = Yii::app()->createUrl('/optiguide/professionalDirectory/getregions');
+$ajaxCityUrl = Yii::app()->createUrl('/optiguide/professionalDirectory/getcities');
 $js = <<< EOD
     $(document).ready(function(){
     $("#ProfessionalDirectory_country").change(function(){
@@ -282,7 +282,7 @@ $js = <<< EOD
             data: dataString,
             cache: false,
             success: function(html){             
-                $("#ProfessionalDirectory_region").html(html);
+                $("#ProfessionalDirectory_region").html(html).selectpicker('refresh');
             }
          });
     });
@@ -297,7 +297,7 @@ $js = <<< EOD
             data: dataString,
             cache: false,
             success: function(html){             
-                $("#ProfessionalDirectory_ID_VILLE").html(html);
+                $("#ProfessionalDirectory_ID_VILLE").html(html).selectpicker('refresh');
             }
          });
 
