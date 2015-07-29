@@ -70,7 +70,7 @@ class ManagementAdviceController extends Controller
 		{
 			$model->attributes=$_POST['ManagementAdvice'];
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'Conseils Created Successfully!!!');
+                                Yii::app()->user->setFlash('success', 'Conseils créé avec succès!!!');
                                 $this->redirect(array('index'));
                         }
 		}
@@ -96,7 +96,7 @@ class ManagementAdviceController extends Controller
 		{
 			$model->attributes=$_POST['ManagementAdvice'];
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'Conseils Updated Successfully!!!');
+                                Yii::app()->user->setFlash('success', 'Conseils à jour avec succès!!!');
                                 $this->redirect(array('index'));
                         }
 		}

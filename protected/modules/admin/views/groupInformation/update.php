@@ -2,10 +2,10 @@
 /* @var $this GroupInformationController */
 /* @var $model GroupInformation */
 
-$this->title='Update Group Informations: '. $model->ID_GROUPE;
+$this->title='Modifier cette association';
 $this->breadcrumbs=array(
-	'Group Informations'=>array('index'),
-	'Update Group Informations',
+	'Gestion des associations'=>array('index'),
+	'Modifier cette association',
 );
 
 ?>

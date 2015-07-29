@@ -2,9 +2,9 @@
 /* @var $this CalenderEventsController */
 /* @var $model CalenderEvents */
 
-$this->title='Create Calender Events';
+$this->title='Ajouter un événement';
 $this->breadcrumbs=array(
-	'Calender Events'=>array('index'),
+	'Gestion des événements'=>array('index'),
 	$this->title,
 );
 ?>

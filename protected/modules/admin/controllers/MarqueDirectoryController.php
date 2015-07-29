@@ -95,7 +95,7 @@ class MarqueDirectoryController extends Controller {
         if (isset($_POST['MarqueDirectory'])) {
             $model->attributes = $_POST['MarqueDirectory'];
             if ($model->save()) {
-                Yii::app()->user->setFlash('success', 'Marque Created Successfully!!!');
+                Yii::app()->user->setFlash('success', 'Marque créée avec succès!!!');
                 $this->redirect(array('index'));
             }
         }
@@ -119,7 +119,7 @@ class MarqueDirectoryController extends Controller {
         if (isset($_POST['MarqueDirectory'])) {
             $model->attributes = $_POST['MarqueDirectory'];
             if ($model->save()) {
-                Yii::app()->user->setFlash('success', 'Marque Updated Successfully!!!');
+                Yii::app()->user->setFlash('success', 'Marque mis à jour avec succès!!!');
                 $this->redirect(array('index'));
             }
         }

@@ -2,10 +2,10 @@
 /* @var $this ArchiveFichierController */
 /* @var $model ArchiveFichier */
 
-$this->title='Update Archive Fichiers: '. $model->ID_FICHIER;
+$this->title='MODIFIER UNE ARCHIVE';
 $this->breadcrumbs=array(
 	'Archive Fichiers'=>array('index'),
-	'Update Archive Fichiers',
+	'MODIFIER UNE ARCHIVE',
 );
 ?>
 

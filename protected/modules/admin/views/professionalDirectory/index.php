@@ -36,11 +36,11 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'header'  => 'Type de professionnel',    
                 'name'    => 'professionalType.TYPE_SPECIALISTE_FR',
                 'value'   => $data->professionalType->TYPE_SPECIALISTE_FR,
-                'filter'  => CHtml::activeDropDownList($model, 'ID_TYPE_SPECIALISTE', CHtml::listData($gettypes , 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_FR'), array('class'=>'form-control','prompt'=>'All')),
+                'filter'  => CHtml::activeDropDownList($model, 'ID_TYPE_SPECIALISTE', CHtml::listData($gettypes , 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_FR'), array('class'=>'form-control','prompt'=>'Tous')),
                 ),            
                 'ID_CLIENT',			
                 array(
-                'header' => 'Actions',
+                'header' => 'actes',
                 'class' => 'booster.widgets.TbButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
                 'template' => '{update}{delete}',

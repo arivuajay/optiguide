@@ -70,8 +70,9 @@ class GroupInformationController extends Controller
             {
                     $model->attributes=$_POST['GroupInformation'];
                     if($model->save()){
-                            Yii::app()->user->setFlash('success', 'GroupInformation Created Successfully!!!');
-                            $this->redirect(array('index'));
+                            $secid = $model->ID_SECTION;
+                            Yii::app()->user->setFlash('success', 'Informations sur le groupe crée avec succès!!!');
+                            $this->redirect(array('index', 'id'=>$secid));
                     }
             }
 
@@ -94,8 +95,9 @@ class GroupInformationController extends Controller
 		{
 			$model->attributes=$_POST['GroupInformation'];
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'GroupInformation Updated Successfully!!!');
-                                $this->redirect(array('index'));
+                                 $secid = $model->ID_SECTION;
+                                Yii::app()->user->setFlash('success', 'Informations du groupe correctement mis à jour');
+                                $this->redirect(array('index', 'id'=>$secid));
                         }
 		}
 

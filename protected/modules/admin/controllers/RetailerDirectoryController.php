@@ -81,7 +81,7 @@ class RetailerDirectoryController extends Controller {
                 $umodel->ID_RELATION = $model->ID_RETAILER;
                 $umodel->save(false);
 
-                Yii::app()->user->setFlash('success', 'RetailerDirectory Created Successfully!!!');
+                Yii::app()->user->setFlash('success', 'Détaillant créé avec succès!!!');
                 $this->redirect(array('index'));
             } else {
                 var_dump($model->errors);
@@ -115,7 +115,7 @@ class RetailerDirectoryController extends Controller {
             if ($valid) {
                 $umodel->save(false);
                 $model->save(false);
-                Yii::app()->user->setFlash('success', 'RetailerDirectory Updated Successfully!!!');
+                Yii::app()->user->setFlash('success', 'Détaillant correctement mis à jour!!!');
                 $this->redirect(array('index'));
             }
         }
@@ -155,7 +155,7 @@ class RetailerDirectoryController extends Controller {
     public function actionGetGroups() {
         $options = '';
         $cid = isset($_POST['id']) ? $_POST['id'] : '';
-        $options = "<option value=''>Select group</option>";
+        $options = "<option value=''>Sélectionnez le groupe</option>";
         if ($cid != '') {
             $criteria = new CDbCriteria;
             $criteria->order = 'NOM_GROUPE ASC';

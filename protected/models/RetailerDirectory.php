@@ -109,7 +109,7 @@ class RetailerDirectory extends CActiveRecord
 			'COURRIEL' => Myclass::t('Courriel'),
 			'TEL_1800' => Myclass::t('Téléphone sans frais'),
 			'DATE_MODIFICATION' => Myclass::t('Date Modification'),
-			'ID_RETAILER_TYPE' => Myclass::t('Retailer Type'),
+			'ID_RETAILER_TYPE' => Myclass::t('Détaillant Type'),
 			'ID_GROUPE' => Myclass::t('Regroupement'),
 			'GROUPE' => Myclass::t('Groupe'),
 			'HEAD_OFFICE_NAME' => Myclass::t('Nom du siège social'),

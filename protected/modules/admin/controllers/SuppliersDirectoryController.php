@@ -496,12 +496,13 @@ class SuppliersDirectoryController extends Controller {
             // unset Session sregion  
             Yii::app()->user->setState("sregion", null);
 
-            Yii::app()->user->setFlash('success', 'Supplier Created Successfully!!!');
+            Yii::app()->user->setFlash('success', 'Informations fournisseur ajouter / jour avec succès!!!');
             $this->redirect(array('index'));
         }
 
         // Delete products from session
         if (isset($_POST['yt3'])) {
+            
             $sess_product_ids = Yii::app()->user->getState("product_ids");
            
             $pids = isset($_POST['productid']) ? $_POST['productid'] : '';
@@ -524,7 +525,7 @@ class SuppliersDirectoryController extends Controller {
                 Yii::app()->user->setState("product_ids", $sess_product_ids);
                 Yii::app()->user->setState("marque_ids", $sess_marque_ids);
             } else {
-                Yii::app()->user->setFlash('danger', 'Please select any products to delete!!!');
+                Yii::app()->user->setFlash('danger', 'S\'il vous plaît sélectionner tous les produits à supprimer!!!');
             }
         }
         
@@ -563,7 +564,7 @@ class SuppliersDirectoryController extends Controller {
             $criteria1->params = array(':id' => $pid);
             $get_selected_marques = CHtml::listData(MarqueDirectory::model()->with("productMarqueDirectory")->isActive()->findAll($criteria1), 'ID_MARQUE', 'NOM_MARQUE');
 
-            if (isset($_POST) && $_POST['yt0'] == "Save") {
+            if (isset($_POST) && $_POST['yt0'] == "Associer ces marques") {
                 $marque_ids = array();
                 if (isset($_POST['marqueid'])) {
                     $imp_vals = implode(',', $_POST['marqueid']);

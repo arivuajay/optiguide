@@ -71,10 +71,27 @@ class SectionInformation extends CActiveRecord
         {
            
            // countryDirectory
-           $get_catsql   =  CategoryInformation::model()->findAll();
-           $cat_res      = CHtml::listData($get_catsql, 'ID_CATEGORIE', 'CATEGORIE_EN'); 
+           $get_catsql   =  CategoryInformation::model()->findAll(array("order"=>"CATEGORIE_FR"));
+           $cat_res      = CHtml::listData($get_catsql, 'ID_CATEGORIE', 'CATEGORIE_FR'); 
            return $cat_res;
         } 
+        
+        public function getcategoryname()
+        {
+            $catid = Yii::app()->getRequest()->getQuery('id');   
+            $catname = '';
+            
+            $criteria=new CDbCriteria;
+            $criteria->addCondition('ID_CATEGORIE = :catid');
+            $criteria->params = array(':catid' => (int)$catid);
+            if($catid!='')
+            {    
+                $catinfos = CategoryInformation::model()->find($criteria);
+                $catname = $catinfos->CATEGORIE_FR;
+            } 
+            return $catname;
+        }       
+
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.

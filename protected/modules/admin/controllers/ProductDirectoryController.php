@@ -78,7 +78,7 @@ class ProductDirectoryController extends Controller {
                         $marqueproduct->save();
                     }
                 }
-                Yii::app()->user->setFlash('success', 'ProductDirectory Created Successfully!!!');
+                Yii::app()->user->setFlash('success', 'Produit créé avec succès avec des marques!!!');
                 $this->redirect(array('index'));
             }
         }
@@ -116,7 +116,7 @@ class ProductDirectoryController extends Controller {
                     }
                 }
                 
-                Yii::app()->user->setFlash('success', 'ProductDirectory Updated Successfully!!!');
+                Yii::app()->user->setFlash('success', 'Produit à jour avec succès!!!');
                 $this->redirect(array('index'));
             }
         }

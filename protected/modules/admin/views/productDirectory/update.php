@@ -2,10 +2,10 @@
 /* @var $this ProductDirectoryController */
 /* @var $model ProductDirectory */
 
-$this->title='Update Product Directories: '. $model->ID_PRODUIT;
+$this->title='Modifier ce produit / service';
 $this->breadcrumbs=array(
-	'Product Directories'=>array('index'),
-	'Update Product Directories',
+	'Gestion des produits & services'=>array('index'),
+	'Modifier ce produit / service',
 );
 ?>
 

@@ -2,10 +2,10 @@
 /* @var $this CalenderEventsController */
 /* @var $model CalenderEvents */
 
-$this->title='Update Calender Events: '. $model->ID_EVENEMENT;
+$this->title='Modifier cet événement';
 $this->breadcrumbs=array(
-	'Calender Events'=>array('index'),
-	'Update Calender Events',
+	'Gestion des événements'=>array('index'),
+	'Modifier cet événement',
 );
 ?>
 

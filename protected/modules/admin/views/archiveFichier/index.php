@@ -17,7 +17,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Create ArchiveFichier', array('/admin/archiveFichier/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter un nouveau fichier', array('/admin/archiveFichier/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 

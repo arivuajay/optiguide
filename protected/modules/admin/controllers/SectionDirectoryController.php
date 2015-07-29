@@ -70,7 +70,7 @@ class SectionDirectoryController extends Controller
 		{
 			$model->attributes=$_POST['SectionDirectory'];
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'Section Created Successfully!!!');
+                                Yii::app()->user->setFlash('success', 'Section créé avec succès!!!');
                                 $this->redirect(array('index'));
                         }
 		}
@@ -96,7 +96,7 @@ class SectionDirectoryController extends Controller
 		{
 			$model->attributes=$_POST['SectionDirectory'];
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'Section Updated Successfully!!!');
+                                Yii::app()->user->setFlash('success', 'Section modifié avec succès!!!');
                                 $this->redirect(array('index'));
                         }
 		}

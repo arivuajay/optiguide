@@ -28,17 +28,9 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         $gridColumns = array(
                 
 		'TITRE',
-                'LANGUE',
-				/*
-      		'LANGUE',
-                'SYNOPSYS',
-		'TEXTE',
-		'LIEN_URL',
-		'LIEN_TITRE',
-		'AFFICHER_SITE',
-		*/
+                'LANGUE',		
         array(
-        'header' => 'Actions',
+        'header' => 'Actes',
         'class' => 'booster.widgets.TbButtonColumn',
         'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
         'template' => '{update}{delete}',

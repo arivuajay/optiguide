@@ -2,10 +2,10 @@
 /* @var $this ProfessionalDirectoryController */
 /* @var $model ProfessionalDirectory */
 
-$this->title='Update Professional Directories: '. $model->ID_SPECIALISTE;
+$this->title='Modifier ce professionnel';
 $this->breadcrumbs=array(
-	'Professional Directories'=>array('index'),
-	'Update Professional Directories',
+	'Gestion des professionnels'=>array('index'),
+	'Modifier ce professionnel',
 );
 ?>
 

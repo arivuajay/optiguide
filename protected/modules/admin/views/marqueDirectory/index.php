@@ -28,14 +28,14 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         $gridColumns = array(
             'NOM_MARQUE',
             array(
-                'name' => 'products',              
+                'name' => 'Produits',              
                 'type' => 'raw',
                 'filter' => false,
                   //call the method 'gridDataColumn' from the controller
                 'value' => array($this, 'gridDataColumn'),
             ),
             array(
-                'header' => 'Actions',
+                'header' => 'Actes',
                 'class' => 'booster.widgets.TbButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
                 'template' => '{update}{delete}',

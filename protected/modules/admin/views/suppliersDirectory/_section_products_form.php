@@ -23,8 +23,10 @@ $form = $this->beginWidget('CActiveForm', array(
             </div>
         </div>
         <div class="form-group">
-            <?php echo $form->labelEx($model, 'Products', array('class' => 'col-sm-2 control-label')); ?>
+            <?php //echo $form->labelEx($model, 'Products', array('class' => 'col-sm-2 control-label')); ?>
+             <label for="add_remove_buttons" class="col-sm-2 control-label">&nbsp;</label>
             <div class="col-sm-5">
+                Produits et services [disponibles dans cette section]
                 <?php
                 $marque_datas = array();
                 $data = array();
@@ -36,13 +38,14 @@ $form = $this->beginWidget('CActiveForm', array(
         <div class="form-group">
             <label for="add_remove_buttons" class="col-sm-2 control-label">&nbsp;</label>
             <div class="col-sm-5">
-                <a href='javascript:void(0);' class="btn btn-info btn-sm" id="Addmarque">Add</a>
-                <a href='javascript:void(0);' class="btn btn-info btn-sm" id="Removemarque">Remove</a>          
+                <a href='javascript:void(0);' class="btn btn-info btn-sm" id="Addmarque">ajouter</a>
+                <a href='javascript:void(0);' class="btn btn-danger btn-sm" id="Removemarque">supprimer</a>          
             </div>
         </div>  
         <div class="form-group">
              <label for="products2" class="col-sm-2 control-label">&nbsp;</label>
             <div class="col-sm-5">
+            Produits et services [à associer au fournisseur]
                 <?php
                 // $data = $get_selected_marques;
                 $htmlOptions = array('size' => '5', 'multiple' => 'true', 'class' => 'form-control', 'options' => $selected);
@@ -50,7 +53,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 ?>
             </div>
         </div>          
-        <?php echo CHtml::submitButton('Next', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+        <?php echo CHtml::submitButton('Ajouter ces produits et passer à l\'étape finale', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
     </div><!-- /.box-body -->    
 
 </div> 

@@ -70,7 +70,7 @@ class NewsManagementController extends Controller
 		{
 			$model->attributes=$_POST['NewsManagement'];
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'NewsManagement Created Successfully!!!');
+                                Yii::app()->user->setFlash('success', 'Nouvelles créé avec succès!!!');
                                 $this->redirect(array('index'));
                         }
 		}
@@ -96,7 +96,7 @@ class NewsManagementController extends Controller
 		{
 			$model->attributes=$_POST['NewsManagement'];
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'NewsManagement Updated Successfully!!!');
+                                Yii::app()->user->setFlash('success', 'Nouvelles mises à jour avec succès!!!');
                                 $this->redirect(array('index'));
                         }
 		}

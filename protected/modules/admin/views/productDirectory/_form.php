@@ -61,10 +61,15 @@
                         <?php echo $form->error($model, 'NOM_PRODUIT_EN'); ?>
                     </div>
                 </div>
+                
+                 <div class="box-header">
+                    <h3 class="box-title">Sélection des marques</h3>
+                </div>
 
                 <div class="form-group">
-                    <?php echo $form->labelEx($model, 'Marques2', array('class' => 'col-sm-2 control-label')); ?>
+                    <?php echo $form->labelEx($model, 'Marques1', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
+                        
                         <?php
                         $htmlOptions = array('size' => '5', 'multiple' => 'true', 'id' => 'MasterSelectBox', 'class' => 'form-control');
                         echo $form->listBox($model, 'Marques1', $marque_datas, $htmlOptions);
@@ -73,21 +78,21 @@
                 </div>    
                 <div class="form-group">
                     <label class="col-sm-2 control-label required" for="ProductDirectory_buttons">&nbsp;</label>
-                        <div class="col-sm-5">  
-                            <a href='javascript:void(0);' class="btn btn-info btn-sm" id="Addmarque">Add</a>
-                            <a href='javascript:void(0);' class="btn btn-info btn-sm" id="Removemarque">Remove</a>          
-                        </div>  
+                    <div class="col-sm-5">  
+                        <a href='javascript:void(0);' class="btn btn-info btn-sm" id="Addmarque">ajouter</a>
+                        <a href='javascript:void(0);' class="btn btn-danger btn-sm" id="Removemarque">supprimer</a>     
+                    </div>  
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label required" for="ProductDirectory_Marques2">&nbsp;</label>
-                        <div class="col-sm-5">    
-                            <?php
-                            $data = $get_selected_marques;
-                            $htmlOptions = array('size' => '5', 'multiple' => 'true', 'class' => 'form-control', 'options' => $selected);
-                            echo $form->listBox($model, 'Marques2', $data, $htmlOptions);
-                            ?>
-                            <?php echo $form->error($model, 'Marques2'); ?>
-                        </div>
+                <div class="form-group">                
+                     <?php echo $form->labelEx($model, 'Marques2', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">    
+                        <?php
+                        $data = $get_selected_marques;
+                        $htmlOptions = array('size' => '5', 'multiple' => 'true', 'class' => 'form-control', 'options' => $selected);
+                        echo $form->listBox($model, 'Marques2', $data, $htmlOptions);
+                        ?>
+                        <?php echo $form->error($model, 'Marques2'); ?>
+                    </div>
                 </div>
 
 
@@ -95,7 +100,7 @@
             <div class="box-footer">
                 <div class="form-group">
                     <div class="col-sm-0 col-sm-offset-2">
-                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Ajouter ce produit / service' : 'Modifier ce produit / service', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
                     </div>
                 </div>
             </div>

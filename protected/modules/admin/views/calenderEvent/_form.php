@@ -9,11 +9,10 @@ $cs = Yii::app()->getClientScript();
 $cs_pos_end = CClientScript::POS_END;
 
 $cs->registerCssFile($themeUrl . '/css/datepicker/datepicker3.css');
-$cs->registerScriptFile(Yii::app()->baseUrl.'/ckeditor/ckeditor.js');
-$cs->registerScriptFile(Yii::app()->baseUrl.'/ckeditor/adapters/jquery.js');
+$cs->registerScriptFile(Yii::app()->baseUrl . '/ckeditor/ckeditor.js');
+$cs->registerScriptFile(Yii::app()->baseUrl . '/ckeditor/adapters/jquery.js');
 $cs->registerScript(
-  'js2',
-  '
+        'js2', '
     var config = {
     toolbar:
     [
@@ -26,18 +25,17 @@ $cs->registerScript(
     width:510
     };
     $("#CalenderEvent_TEXTE").ckeditor(config);
-  ',
-  CClientScript::POS_LOAD
+  ', CClientScript::POS_LOAD
 );
 $cs->registerScriptFile($themeUrl . '/js/datepicker/bootstrap-datepicker.js', $cs_pos_end);
 
 
 $startdate = $model->DATE_AJOUT1;
-$enddate   = $model->DATE_AJOUT2;
+$enddate = $model->DATE_AJOUT2;
 
-$country   = Myclass::getallcountries();               
-$regions   = Myclass::getallregions($model->ID_PAYS);
-$cities    = Myclass::getallcities($model->ID_REGION);
+$country = Myclass::getallcountries();
+$regions = Myclass::getallregions($model->ID_PAYS);
+$cities = Myclass::getallcities($model->ID_REGION);
 ?>
 
 <div class="row">
@@ -47,13 +45,16 @@ $cities    = Myclass::getallcities($model->ID_REGION);
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'calender-events-form',
                 'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal'),
-                'enableAjaxValidation' => true,  
+                'enableAjaxValidation' => true,
                 'clientOptions' => array(
-                    'validateOnSubmit' => true,                   
-                ),               
+                    'validateOnSubmit' => true,
+                ),
             ));
             ?>
             <div class="box-body">
+                <div class="box-header">
+                    <h3 class="box-title">Général</h3>
+                </div>
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'LANGUE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
@@ -111,6 +112,10 @@ $cities    = Myclass::getallcities($model->ID_REGION);
                     </div>
                 </div>
 
+                <div class="box-header">
+                    <h3 class="box-title">Recherche par emplacement</h3>
+                </div>
+
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'ID_PAYS', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                       
@@ -134,7 +139,9 @@ $cities    = Myclass::getallcities($model->ID_REGION);
                         <?php echo $form->error($model, 'ID_VILLE'); ?>
                     </div>
                 </div>
-
+                <div class="box-header">
+                    <h3 class="box-title">Visualisation</h3>
+                </div>
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'AFFICHER_SITE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                       
@@ -142,10 +149,9 @@ $cities    = Myclass::getallcities($model->ID_REGION);
                         <?php echo $form->error($model, 'AFFICHER_SITE'); ?>
                     </div>
                 </div>
-                
+
                 <div id="AFFICHER_OPTIONS" style="display: none;">
-                    <div class="form-group">
-                        <?php echo $model->AFFICHER_ACCUEIL;?>
+                    <div class="form-group">                       
                         <?php echo $form->labelEx($model, 'AFFICHER_ACCUEIL', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">
                             <?php echo $form->radioButtonList($model, 'AFFICHER_ACCUEIL', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
@@ -168,7 +174,7 @@ $cities    = Myclass::getallcities($model->ID_REGION);
             <div class="box-footer">
                 <div class="form-group">
                     <div class="col-sm-0 col-sm-offset-2">
-                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Ajouter cet événement' : 'Modifier cet événement', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
                     </div>
                 </div>
             </div>
@@ -178,7 +184,7 @@ $cities    = Myclass::getallcities($model->ID_REGION);
 </div>
 <?php
 $ajaxRegionUrl = Yii::app()->createUrl('/admin/cityDirectory/getregions');
-$ajaxCityUrl   = Yii::app()->createUrl('/admin/categoryInformation/getcities');
+$ajaxCityUrl = Yii::app()->createUrl('/admin/categoryInformation/getcities');
 $js = <<< EOD
 $(document).ready(function(){
         

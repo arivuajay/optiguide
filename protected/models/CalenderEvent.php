@@ -82,6 +82,8 @@ class CalenderEvent extends CActiveRecord {
             'ID_PAYS' => Myclass::t('Id Pays'),
             'ID_REGION' => Myclass::t('Id Region'),
             'ID_VILLE' => Myclass::t('Id Ville'),
+            'Year'      => Myclass::t('Année'),
+            'Keyword'   =>  Myclass::t('Mot clé')
         );
     }
 

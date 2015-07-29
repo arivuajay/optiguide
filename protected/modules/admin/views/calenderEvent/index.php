@@ -78,7 +78,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                     <div class="col-lg-2 col-md-2">
                         <div class="form-group">
                             <label>&nbsp;</label>
-                            <?php echo CHtml::submitButton('Search', array('class' => 'btn btn-primary form-control')); ?>
+                            <?php echo CHtml::submitButton('Filtrer', array('class' => 'btn btn-primary form-control')); ?>
                         </div>
                     </div>
                     <?php $this->endWidget(); ?>
@@ -99,7 +99,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 		'DATE_AJOUT1',
 		'DATE_AJOUT2',		
                 array(
-                'header' => 'Actions',
+                'header' => 'Actes',
                 'class' => 'booster.widgets.TbButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
                 'template' => '{update}{delete}',

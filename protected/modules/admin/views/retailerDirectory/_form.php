@@ -28,7 +28,7 @@
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'ID_RETAILER_TYPE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                       
-                        <?php echo $form->dropDownList($model, 'ID_RETAILER_TYPE', $retailertypes, array('class' => 'form-control','empty'=>'Select Type')); ?>                          
+                        <?php echo $form->dropDownList($model, 'ID_RETAILER_TYPE', $retailertypes, array('class' => 'form-control','empty'=>'Choisir le type')); ?>                          
                         <?php echo $form->error($model, 'ID_RETAILER_TYPE'); ?>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                     
                       <?php echo $form->labelEx($model, 'ID_GROUPE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                       
-                        <?php echo $form->dropDownList($model, 'ID_GROUPE', $groupetypes, array('class' => 'form-control','empty'=>'Select group')); ?>                          
+                        <?php echo $form->dropDownList($model, 'ID_GROUPE', $groupetypes, array('class' => 'form-control','empty'=>'Sélectionnez le groupe')); ?>                          
                         <?php echo $form->error($model, 'ID_GROUPE'); ?>
                     </div>
                 </div>
@@ -204,7 +204,7 @@
             <div class="box-footer">
                 <div class="form-group">
                     <div class="col-sm-0 col-sm-offset-2">
-                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Ajouter ce détaillant' : 'Modifier ce détaillant', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
                     </div>
                 </div>
             </div>

@@ -70,7 +70,7 @@ class CalenderEventController extends Controller
 		{
 			$model->attributes=$_POST['CalenderEvent'];
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'CalenderEvent Created Successfully!!!');
+                                Yii::app()->user->setFlash('success', 'Événement créé avec succès!!!');
                                 $this->redirect(array('index'));
                         }
 		}
@@ -96,7 +96,7 @@ class CalenderEventController extends Controller
 		{
 			$model->attributes=$_POST['CalenderEvent'];
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'CalenderEvent Updated Successfully!!!');
+                                Yii::app()->user->setFlash('success', 'Événement correctement mis à jour!!!');
                                 $this->redirect(array('index'));
                         }
 		}

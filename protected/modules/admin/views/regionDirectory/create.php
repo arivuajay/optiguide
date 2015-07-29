@@ -2,9 +2,9 @@
 /* @var $this RegionDirectoryController */
 /* @var $model RegionDirectory */
 
-$this->title = Myclass::t('APP504').' '.Myclass::t('APP106');
+$this->title = 'Ajouter une région';
 $this->breadcrumbs = array(
-    Myclass::t('APP107') => array('index'),
+    'Gestion des régions',
     $this->title,
 );
 ?>

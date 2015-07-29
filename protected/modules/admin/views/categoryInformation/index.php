@@ -2,9 +2,9 @@
 /* @var $this CategoryInformationController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title = Myclass::t('APP58');
+$this->title = 'Gestion des catégories d\'associations';
 $this->breadcrumbs = array(
-    Myclass::t('APP58'),
+  'Gestion des catégories d\'associations',
 );
 $themeUrl = $this->themeUrl;
 $cs = Yii::app()->getClientScript();
@@ -12,13 +12,13 @@ $cs_pos_end = CClientScript::POS_END;
 
 $cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
 $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
-$btn_title = Myclass::t('APP504') . " " . Myclass::t('APP58');
+$btn_title = 'Ajouter une catégorie d\'association';
 
 ?>
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;' . $btn_title, array('/admin/categoryInformation/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;'.$btn_title, array('/admin/categoryInformation/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 
@@ -74,11 +74,11 @@ $btn_title = Myclass::t('APP504') . " " . Myclass::t('APP58');
             'template' => '<div class="panel panel-primary">'
             . '                <div class="panel-heading">'
             . '                       <div class="pull-right">{summary}</div>'
-            . '                           <h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>' . Myclass::t('APP58') . '</h3>
+            . '                           <h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Catégories d\'associations</h3>
                                </div>
                                <div class="panel-body">{items}{pager}</div> 
                                <div class="form-group">
-                                  <div class="col-lg-12 col-md-12">'.CHtml::SubmitButton('Delete All', array('name' => 'btndeleteall', 'class' => 'btn btn-primary deleteall-button')).''
+                                  <div class="col-lg-12 col-md-12">'.CHtml::SubmitButton('supprimer tous', array('name' => 'btndeleteall', 'class' => 'btn btn-primary deleteall-button')).''
             . '                    </div>'
             . '                </div>'
             . '            </div>',

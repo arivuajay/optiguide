@@ -2,7 +2,7 @@
 /* @var $this ArchiveFichierController */
 /* @var $model ArchiveFichier */
 
-$this->title='Create Archive Fichiers';
+$this->title='Ajouter un nouveau fichier';
 $this->breadcrumbs=array(
 	'Archive Fichiers'=>array('index'),
 	$this->title,

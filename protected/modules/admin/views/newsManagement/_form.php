@@ -10,7 +10,7 @@ $cs_pos_end = CClientScript::POS_END;
 $cs->registerCssFile($themeUrl . '/css/datepicker/datepicker3.css');
 $cs->registerScriptFile($themeUrl . '/js/datepicker/bootstrap-datepicker.js', $cs_pos_end);
 
-$archivecats = CHtml::listData(ArchiveCategory::model()->findAll(array('order'=>'NOM_CATEGORIE_FR ASC')), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
+$archivecats = CHtml::listData(ArchiveCategory::model()->findAll(array('order' => 'NOM_CATEGORIE_FR ASC')), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
 
 
 $ficherid = $model->ID_FICHIER;
@@ -20,20 +20,19 @@ if ($ficherid > 0) {
     $fichres = ArchiveFichier::model()->find("ID_FICHIER=$ficherid");
     $categoryid = $fichres->ID_CATEGORIE;
     $ficherfile = $fichres->FICHIER;
-   // $fileurl = $themeUrl . '/img/archivage/' . $categoryid . '/' . $ficherfile;
-    $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$categoryid."/".$ficherfile);
+    // $fileurl = $themeUrl . '/img/archivage/' . $categoryid . '/' . $ficherfile;
+    $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/" . $categoryid . "/" . $ficherfile);
 } else {
     $fileurl = "javascript:void(0);";
 }
 
-for($i=1; $i<100; $i++)
-{
-    
+for ($i = 1; $i < 100; $i++) {
+
     $hierarchie[$i] = $i;
 }
 
 $startdate = $model->DATE_AJOUT1;
-$enddate   = $model->DATE_AJOUT2;
+$enddate = $model->DATE_AJOUT2;
 ?>
 
 <div class="row">
@@ -50,11 +49,13 @@ $enddate   = $model->DATE_AJOUT2;
             ));
             ?>
             <div class="box-body">              
-                
-                  <div class="form-group">
+                <div class="box-header">
+                    <h3 class="box-title">Général</h3>
+                </div>
+                <div class="form-group">
                     <?php echo $form->labelEx($model, 'LANGUE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                      
-                        <?php echo $form->dropDownList($model, 'LANGUE', array("FR" => 'Français', "EN" => 'Anglais'),array('class'=>'form-control'));?>
+                        <?php echo $form->dropDownList($model, 'LANGUE', array("FR" => 'Français', "EN" => 'Anglais'), array('class' => 'form-control')); ?>
                         <?php echo $form->error($model, 'LANGUE'); ?>
                     </div>
                 </div>
@@ -116,8 +117,8 @@ $enddate   = $model->DATE_AJOUT2;
                     </div>
                     <?php echo $form->error($model, 'ID_FICHIER'); ?>
                 </div>
-                
-                
+
+
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'LIEN_TITRE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
@@ -133,12 +134,15 @@ $enddate   = $model->DATE_AJOUT2;
                         <?php echo $form->error($model, 'LIEN_URL'); ?>
                     </div>
                 </div>
-
+                
+                <div class="box-header">
+                    <h3 class="box-title">Visualisation</h3>
+                </div>
 
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'HIERARCHIE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                       
-                         <?php echo $form->dropDownList($model, 'HIERARCHIE', $hierarchie, array('class' => 'form-control')); ?>  
+                        <?php echo $form->dropDownList($model, 'HIERARCHIE', $hierarchie, array('class' => 'form-control')); ?>  
                         <?php echo $form->error($model, 'HIERARCHIE'); ?>
                     </div>
                 </div>
@@ -147,7 +151,7 @@ $enddate   = $model->DATE_AJOUT2;
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'AFFICHER_SITE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                       
-                        <?php echo $form->radioButtonList($model, 'AFFICHER_SITE', array('1' => 'Oui', '0' => 'Non'),array('class'=>'myclassv','separator'=>' ')); ?> 
+                        <?php echo $form->radioButtonList($model, 'AFFICHER_SITE', array('1' => 'Oui', '0' => 'Non'), array('class' => 'myclassv', 'separator' => ' ')); ?> 
                         <?php echo $form->error($model, 'AFFICHER_SITE'); ?>
                     </div>
                 </div>
@@ -155,7 +159,7 @@ $enddate   = $model->DATE_AJOUT2;
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'AFFICHER_SECTION', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                      
-                        <?php echo $form->radioButtonList($model, 'AFFICHER_SECTION', array('1' => 'Dans sa section', '0' => 'Archives'),array('separator'=>' ')); ?> 
+                        <?php echo $form->radioButtonList($model, 'AFFICHER_SECTION', array('1' => 'Dans sa section', '0' => 'Archives'), array('separator' => ' ')); ?> 
                         <?php echo $form->error($model, 'AFFICHER_SECTION'); ?>
                     </div>
                 </div>
@@ -163,7 +167,7 @@ $enddate   = $model->DATE_AJOUT2;
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'AFFICHER_ACCUEIL', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php echo $form->radioButtonList($model, 'AFFICHER_ACCUEIL', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?> 
+                        <?php echo $form->radioButtonList($model, 'AFFICHER_ACCUEIL', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
                         <?php echo $form->error($model, 'AFFICHER_ACCUEIL'); ?>
                     </div>
                 </div>
@@ -174,7 +178,7 @@ $enddate   = $model->DATE_AJOUT2;
             <div class="box-footer">
                 <div class="form-group">
                     <div class="col-sm-0 col-sm-offset-2">
-                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Ajouter cette nouvelle' : 'Modifier cette nouvelle', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
                     </div>
                 </div>
             </div>

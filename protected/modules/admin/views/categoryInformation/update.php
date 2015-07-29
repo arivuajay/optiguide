@@ -2,9 +2,9 @@
 /* @var $this CategoryInformationController */
 /* @var $model CategoryInformation */
 
-$this->title= Myclass::t('APP505')." ".Myclass::t('APP57');
+$this->title= 'Modifier une catégorie d\'association';
 $this->breadcrumbs=array(
-	Myclass::t('APP58') => array('index'),
+	'Gestion des catégories d\'associations' => array('index'),
 	$this->title,
 );
 

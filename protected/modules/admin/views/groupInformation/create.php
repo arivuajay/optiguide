@@ -2,9 +2,9 @@
 /* @var $this GroupInformationController */
 /* @var $model GroupInformation */
 
-$this->title='Create Group Informations';
+$this->title='Ajouter une association';
 $this->breadcrumbs=array(
-	'Group Informations'=>array('index'),
+	'Gestion des associations' => array('index'),
 	$this->title,
 );
 ?>

@@ -2,9 +2,9 @@
 /* @var $this SectionInformationController */
 /* @var $model SectionInformation */
 
-$this->title = Myclass::t('APP505')." ".Myclass::t('APP53');
+$this->title = 'Modifier une section';
 $this->breadcrumbs=array(
-	Myclass::t('APP54') =>array('index'),
+	'Gestion des sections' =>array('index'),
 	$this->title,
 );
 

@@ -34,7 +34,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'header' => 'Type de retailer',
                 'name' => 'retailerType.NOM_TYPE_FR',
                 'value' => $data->retailerType->NOM_TYPE_FR,
-                'filter' => CHtml::activeDropDownList($model, 'ID_RETAILER_TYPE', CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR'), array('class' => 'form-control', 'prompt' => 'All')),
+                'filter' => CHtml::activeDropDownList($model, 'ID_RETAILER_TYPE', CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR'), array('class' => 'form-control', 'prompt' => 'Tous')),
             ),       
             'ID_CLIENT',
             array(
@@ -46,7 +46,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 },
             ),          
             array(
-                'header' => 'Actions',
+                'header' => 'Actes',
                 'class' => 'booster.widgets.TbButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
                 'template' => '{update}{delete}',
@@ -59,7 +59,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             'type' => 'striped bordered datatable',
             'dataProvider' => $model->search(),
             'responsiveTable' => true,
-            'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Gestion des détaillants</h3></div><div class="panel-body">{items}{pager}</div></div>',
+            'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Détaillant</h3></div><div class="panel-body">{items}{pager}</div></div>',
             'columns' => $gridColumns
                 )
         );

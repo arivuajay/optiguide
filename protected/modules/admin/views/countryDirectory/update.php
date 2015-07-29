@@ -2,9 +2,9 @@
 /* @var $this CountryDirectoryController */
 /* @var $model CountryDirectory */
 
-$this->title= Myclass::t('APP505').' '.Myclass::t('APP35');
+$this->title= 'Modifier ce pays';
 $this->breadcrumbs=array(
-	Myclass::t('APP36') => array('index'),
+	 'Gestion des pays' => array('index'),
 	$this->title,
 );
 ?>

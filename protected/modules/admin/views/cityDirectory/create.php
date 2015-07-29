@@ -2,9 +2,9 @@
 /* @var $this CityDirectoryController */
 /* @var $model CityDirectory */
 
-$this->title = Myclass::t('APP504').' '.Myclass::t('APP41');
+$this->title = 'Ajouter une ville';
 $this->breadcrumbs=array(
-	Myclass::t('APP42') => array('index'),
+	'Gestion des villes',
 	$this->title,
 );
 ?>

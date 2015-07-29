@@ -64,9 +64,11 @@ class ProductDirectory extends CActiveRecord
 		return array(
 			'ID_PRODUIT' => Myclass::t('Id Produit'),
 			'ID_SECTION' => Myclass::t('Section'),
-			'NOM_PRODUIT_FR' => Myclass::t('Nom Produit Fr'),
-			'NOM_PRODUIT_EN' => Myclass::t('Nom Produit En'),
-                        'Marques2' =>  Myclass::t('Marques disponibles'), 
+			'NOM_PRODUIT_FR' => Myclass::t('Nom en français '),
+			'NOM_PRODUIT_EN' => Myclass::t('Nom en anglais'),
+                        'Marques1' =>  Myclass::t('Marques disponibles'), 
+                        'Marques2' =>  Myclass::t('Marques reliées'), 
+                        
 		);
 	}
 	/**

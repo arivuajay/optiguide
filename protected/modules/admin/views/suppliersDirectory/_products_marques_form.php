@@ -57,11 +57,11 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div><!-- /.box -->
             </div><!-- /.col -->                       
         </div><!-- /.row -->
-         <?php echo CHtml::submitButton('Save', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+         <?php echo CHtml::submitButton('Terminé', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
         <?php
         if(!empty($data_products))
         {
-         echo CHtml::submitButton('Delete', array('class' => 'btn btn-primary')); 
+         echo CHtml::submitButton('effacer', array('class' => 'btn btn-danger')); 
         }
          ?>
     </div>

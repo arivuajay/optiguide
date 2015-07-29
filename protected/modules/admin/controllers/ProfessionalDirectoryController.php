@@ -81,7 +81,7 @@ class ProfessionalDirectoryController extends Controller {
                 $umodel->ID_RELATION = $model->ID_SPECIALISTE;
                 $umodel->save(false);
                
-                Yii::app()->user->setFlash('success', 'ProfessionalDirectory Created Successfully!!!');
+                Yii::app()->user->setFlash('success', 'professionnel créé avec succès!!!');
                 $this->redirect(array('index'));
             }
         }
@@ -112,7 +112,7 @@ class ProfessionalDirectoryController extends Controller {
             if ($valid) {
                 $umodel->save(false);
                 $model->save(false);
-                Yii::app()->user->setFlash('success', 'ProfessionalDirectory Updated Successfully!!!');
+                Yii::app()->user->setFlash('success', 'professionnelle mis à jour avec succès!!!');
                 $this->redirect(array('index'));
             }
         }

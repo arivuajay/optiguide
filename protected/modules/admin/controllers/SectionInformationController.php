@@ -61,7 +61,7 @@ class SectionInformationController extends Controller
 	 */
 	public function actionCreate()
 	{
-            $model=new SectionInformation;
+            $model=new SectionInformation();
 
             // Uncomment the following line if AJAX validation is needed
             $this->performAjaxValidation($model);
@@ -73,9 +73,12 @@ class SectionInformationController extends Controller
             {
                     $model->attributes=$_POST['SectionInformation'];
                     if($model->save()){
+                            $catid = $model->ID_CATEGORIE;
+                            
+                            
                             $msg =   Myclass::t('APP53').' '.Myclass::t('APP501');
                             Yii::app()->user->setFlash('success', $msg);
-                            $this->redirect(array('index'));
+                            $this->redirect(array('index', 'id'=>$catid));
                     }
             }
 
@@ -104,9 +107,11 @@ class SectionInformationController extends Controller
 		{
 			$model->attributes=$_POST['SectionInformation'];
 			if($model->save()){
+                             $catid = $model->ID_CATEGORIE;
+                            
                                 $msg =   Myclass::t('APP53').' '.Myclass::t('APP502');
                                 Yii::app()->user->setFlash('success', $msg);                                
-                                $this->redirect(array('index'));
+                                $this->redirect(array('index', 'id'=>$catid));
                         }
 		}
                 

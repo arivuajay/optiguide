@@ -29,12 +29,12 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         array(
            'header'  =>  'Section',    
            'name'    => 'sectionDirectory.NOM_SECTION_FR',          
-           'filter'  => CHtml::activeDropDownList($model, 'ID_SECTION', CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_FR")), 'ID_SECTION', 'NOM_SECTION_FR'), array('class'=>'form-control','prompt'=>'All')),
+           'filter'  => CHtml::activeDropDownList($model, 'ID_SECTION', CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_FR")), 'ID_SECTION', 'NOM_SECTION_FR'), array('class'=>'form-control','prompt'=>'Tous')),
            ),
         'NOM_PRODUIT_FR',
         'NOM_PRODUIT_EN',
         array(
-        'header' => 'Actions',
+        'header' => 'Actes',
         'class' => 'booster.widgets.TbButtonColumn',
         'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
         'template' => '{update}{delete}',

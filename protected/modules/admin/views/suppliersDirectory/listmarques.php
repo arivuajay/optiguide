@@ -74,7 +74,7 @@ if (Yii::app()->user->hasState("product_ids"))
                 </div><!-- /.box -->
             </div><!-- /.col -->                       
         </div><!-- /.row -->
-        <?php echo CHtml::submitButton('Save', array('class' => 'btn btn-primary')); ?>       
+        <?php echo CHtml::submitButton('Associer ces marques', array('class' => 'btn btn-primary')); ?>       
     </div>
     <!-- /.box-body -->     
 </div>  

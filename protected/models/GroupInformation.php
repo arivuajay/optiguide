@@ -98,10 +98,26 @@ class GroupInformation extends CActiveRecord
         public static function getallsections()
         {
             $criteria_reg = new CDbCriteria;
-            $criteria_reg->order = 'SECTION_EN ASC';    
+            $criteria_reg->order = 'SECTION_FR ASC';    
              $get_sectnsql   =  SectionInformation::model()->findAll($criteria_reg);
-             $sections       = CHtml::listData($get_sectnsql, 'ID_SECTION', 'SECTION_EN'); 
+             $sections       = CHtml::listData($get_sectnsql, 'ID_SECTION', 'SECTION_FR'); 
              return $sections;
+        }
+        
+        public function getsectionname()
+        {
+            $secid = Yii::app()->getRequest()->getQuery('id');   
+            $secname = '';
+            
+            $criteria=new CDbCriteria;
+            $criteria->addCondition('ID_SECTION = :secid');
+            $criteria->params = array(':secid' => (int)$secid);
+            if($secid!='')
+            {    
+                $secinfos = SectionInformation::model()->find($criteria);
+                $secname = $secinfos->SECTION_FR;
+            } 
+            return $secname;
         }
 
 	/**

@@ -2,7 +2,7 @@
 /* @var $this RegionDirectoryController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title = Myclass::t('APP107');
+$this->title = 'Gestion des régions';
 $this->breadcrumbs = array(
     $this->title,
 );
@@ -18,7 +18,7 @@ $countries = Myclass::getallcountries();
 ?> 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;' . Myclass::t('APP504') . ' ' . Myclass::t('APP106'), array('/admin/regionDirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter une région' , array('/admin/regionDirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 
@@ -31,7 +31,7 @@ $countries = Myclass::getallcountries();
             'NOM_REGION_FR',
             array(
                 'name' => 'countryDirectory.NOM_PAYS_FR',              
-                'filter' => CHtml::activeDropDownList($model, 'ID_PAYS', $countries, array('class' => 'form-control', 'prompt' => 'All'))
+                'filter' => CHtml::activeDropDownList($model, 'ID_PAYS', $countries, array('class' => 'form-control', 'prompt' => 'Tous'))
             ),
             array(
                 'header' => Myclass::t('APP46'),
@@ -48,7 +48,7 @@ $countries = Myclass::getallcountries();
             'type' => 'striped bordered datatable',
             'dataProvider' => $model->search(),
             'responsiveTable' => true,
-            'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  ' . Myclass::t('APP106') . '</h3></div><div class="panel-body">{items}{pager}</div></div>',
+            'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Régions </h3></div><div class="panel-body">{items}{pager}</div></div>',
             'columns' => $gridColumns
                 )
         );
