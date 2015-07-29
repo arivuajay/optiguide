@@ -73,8 +73,8 @@ $ajax_getproducts = Yii::app()->createUrl('/admin/marqueDirectory/getproducts');
 $js = <<< EOD
 $(document).ready(function()
 {   
-    $('.popupmarque').live('click',function(){
-        
+    $('.popupmarque').live('click',function(event){
+        event.preventDefault();
         var marque_id = $(this).attr("id");      
         var dataString = 'id='+marque_id;
             
