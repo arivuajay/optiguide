@@ -18,7 +18,12 @@
                     <?php echo CHtml::link(Myclass::t('OG005', '', 'og'), '#'); ?>
                 </li> 
                 <li>
-                    <?php echo CHtml::link('<i class="fa fa-lock"></i> ' . Myclass::t('OG006', '', 'og'), '#', array('class' => 'loginbg')); ?>
+                    <?php 
+                    if(Yii::app()->user->isGuest)
+                        echo CHtml::link('<i class="fa fa-lock"></i> ' . Myclass::t('OG006', '', 'og'), '#', array('class' => 'loginbg'));
+                    else
+                        echo CHtml::link('<i class="fa fa-lock"></i> ' . Myclass::t('OG025', '', 'og'), array('/optiguide/default/logout'), array('class' => 'loginbg'));
+                    ?>
                 </li> 
             </ul>
         </div>

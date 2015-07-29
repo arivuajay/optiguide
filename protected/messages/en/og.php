@@ -34,4 +34,6 @@ return array(
     'OG022' => 'Month',
     'OG023' => 'Year',
     'OG024' => 'Find',
+    
+    'OG025' => 'Logout',
 );
