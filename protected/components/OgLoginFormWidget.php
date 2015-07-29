@@ -18,7 +18,7 @@ class OgLoginFormWidget extends CWidget {
         if (isset($_POST['sign_in'])) {
             $model->attributes = $_POST['OgLoginForm'];
             if ($model->validate() && $model->login()) {
-                $this->owner->redirect(array("default/index"));
+                $this->owner->redirect(array("/optiguide/default/index"));
             } else {
                 Yii::app()->session->open();
                 Yii::app()->user->setFlash('danger', 'Can not login');
