@@ -77,26 +77,7 @@ class CityDirectoryController extends Controller
         
         $this->render('create', compact('model'));
     }
-
-    public function actionGetRegions()
-    {          
-        $options = '';
-        $cid     = isset($_POST['id'])?$_POST['id']:'';
-        $options = "<option value=''>".Myclass::t('APP44')."</option>";
-        if($cid!='')
-        {
-            $data_regions = Myclass::getallregions($cid);   
-            foreach($data_regions as $k => $info)
-            {
-                $options .= "<option value='".$k."'>".$info."</option>";  
-            }    
-        }        
-        echo $options;
-        exit;
-    }  
-
-
-
+    
     /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.

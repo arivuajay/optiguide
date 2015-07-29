@@ -24,7 +24,10 @@ class CategoryInformationController extends Controller
      */
 	public function accessRules()
 	{
-            return array(
+            return array_merge(
+                
+            parent::accessRules(), 
+            array(
                 array('allow',  // allow all users to perform 'index' and 'view' actions
                       'actions'=>array(''),
                       'users'=>array('*'),
@@ -40,6 +43,7 @@ class CategoryInformationController extends Controller
                 array('deny',  // deny all users
                       'users'=>array('*'),
                 ),
+              )
             );
 	}
 
@@ -78,24 +82,7 @@ class CategoryInformationController extends Controller
 
         $this->render('create',compact('model'));
     }
-        
-    public function actionGetCities()
-    {          
-        $options = '';
-        $cid     = isset($_POST['id'])?$_POST['id']:'';
-        $options = "<option value=''>".Myclass::t('APP59')."</option>";
-        if($cid!='')
-        {
-            $data_cities = Myclass::getallcities($cid);   
-            foreach($data_cities as $k => $info)
-            {
-                $options .= "<option value='".$k."'>".$info."</option>";  
-            }    
-        }        
-        echo $options;
-        exit;
-    }  
-
+  
     /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.

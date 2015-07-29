@@ -213,9 +213,9 @@
     </div><!-- ./col -->
 </div>
 <?php
-$ajaxRegionUrl = Yii::app()->createUrl('/admin/cityDirectory/getregions');
-$ajaxCityUrl   = Yii::app()->createUrl('/admin/categoryInformation/getcities');
-$ajaxGroupUrl  = Yii::app()->createUrl('/admin/RetailerDirectory/getgroups');
+$ajaxRegionUrl = Yii::app()->createUrl('/admin/retailerDirectory/getregions');
+$ajaxCityUrl   = Yii::app()->createUrl('/admin/retailerDirectory/getcities');
+$ajaxGroupUrl  = Yii::app()->createUrl('/admin/retailerDirectory/getgroups');
 $js = <<< EOD
     $(document).ready(function(){
     $("#RetailerDirectory_country").change(function(){

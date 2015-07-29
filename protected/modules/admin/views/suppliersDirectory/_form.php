@@ -316,8 +316,8 @@
 <?php
 $cs = Yii::app()->getClientScript();
 $cs->registerScriptFile($themeUrl . '/js/pair-select.min.js', $cs_pos_end);
-$ajaxRegionUrl = Yii::app()->createUrl('/admin/cityDirectory/getregions');
-$ajaxCityUrl = Yii::app()->createUrl('/admin/categoryInformation/getcities');
+$ajaxRegionUrl = Yii::app()->createUrl('/admin/suppliersDirectory/getregions');
+$ajaxCityUrl = Yii::app()->createUrl('/admin/suppliersDirectory/getcities');
 $ajaxFicherUrl = Yii::app()->createUrl('/admin/suppliersDirectory/getfichers');
 $ajaxFetchimage = Yii::app()->createUrl('/admin/suppliersDirectory/getficherimage');
 $jsoncde = array();

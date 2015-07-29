@@ -206,7 +206,7 @@
     </div><!-- ./col -->
 </div>
 <?php
-$ajaxRegionUrl = Yii::app()->createUrl('/admin/cityDirectory/getregions');
+$ajaxRegionUrl = Yii::app()->createUrl('/admin/categoryInformation/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/admin/categoryInformation/getcities');
 
 $js = <<< EOD

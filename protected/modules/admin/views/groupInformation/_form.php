@@ -182,8 +182,8 @@
     </div><!-- ./col -->
 </div>
 <?php
-$ajaxRegionUrl = Yii::app()->createUrl('/admin/cityDirectory/getregions');
-$ajaxCityUrl = Yii::app()->createUrl('/admin/categoryInformation/getcities');
+$ajaxRegionUrl = Yii::app()->createUrl('/admin/groupInformation/getregions');
+$ajaxCityUrl = Yii::app()->createUrl('/admin/groupInformation/getcities');
 
 $js = <<< EOD
 $(document).ready(function()

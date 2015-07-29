@@ -183,8 +183,8 @@ $cities = Myclass::getallcities($model->ID_REGION);
     </div><!-- ./col -->
 </div>
 <?php
-$ajaxRegionUrl = Yii::app()->createUrl('/admin/cityDirectory/getregions');
-$ajaxCityUrl = Yii::app()->createUrl('/admin/categoryInformation/getcities');
+$ajaxRegionUrl  = Yii::app()->createUrl('/admin/calenderEvent/getregions');
+$ajaxCityUrl    = Yii::app()->createUrl('/admin/calenderEvent/getcities');
 $js = <<< EOD
 $(document).ready(function(){
         

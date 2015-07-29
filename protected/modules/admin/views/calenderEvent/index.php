@@ -103,28 +103,35 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'class' => 'booster.widgets.TbButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
                 'template' => '{update}{delete}',
-                )
-        );
+                ),
+            array(
+                'name'  => 'datedisplay',
+                'value' => 'substr($data->DATE_AJOUT1,0,7)',
+                'headerHtmlOptions' => array('style'=>'display:none'),
+                'htmlOptions' =>array('style'=>'display:none')
+            )
+        );         
+//
+//        $this->widget('booster.widgets.TbGroupGridView', array(
+//        //'filter' => $model,
+//        'type' => 'striped bordered datatable',
+//        'dataProvider' => $model->search(),        
+//        'responsiveTable' => true,
+//        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>   Événement</h3></div><div class="panel-body">{items}{pager}</div></div>',
+//        'extraRowColumns'=> array('datedisplay'),
+//        'extraRowExpression' => '"<b style=\"font-size: 20px; color: #333;\">".date("F",strtotime($data->DATE_AJOUT1))." ".date("Y",strtotime($data->DATE_AJOUT1))."</b>"',
+//        'extraRowHtmlOptions' => array('style'=>'padding:10px'),            
+//        'columns' => $gridColumns
+//          )
+//        );
         
-        $groupGridColumns   = $gridColumns;   
-        $groupGridColumns[] = array(
-            'name'  => 'datedisplay',
-            'value' => 'substr($data->DATE_AJOUT1,0,7)',
-            'headerHtmlOptions' => array('style'=>'display:none'),
-            'htmlOptions' =>array('style'=>'display:none')
-        );
-
-        $this->widget('booster.widgets.TbGroupGridView', array(
-        //'filter' => $model,
-        'type' => 'striped bordered datatable',
-        'dataProvider' => $model->search(),        
-        'responsiveTable' => true,
+        $this->widget('ext.groupgridview.GroupGridView', array(      
+        'dataProvider' => $model->search(),   
         'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>   Événement</h3></div><div class="panel-body">{items}{pager}</div></div>',
         'extraRowColumns'=> array('datedisplay'),
         'extraRowExpression' => '"<b style=\"font-size: 20px; color: #333;\">".date("F",strtotime($data->DATE_AJOUT1))." ".date("Y",strtotime($data->DATE_AJOUT1))."</b>"',
-        'extraRowHtmlOptions' => array('style'=>'padding:10px'),
-        'columns' => $groupGridColumns
-        )
+        'columns' => $gridColumns
+          )
         );
         ?>
     </div>
