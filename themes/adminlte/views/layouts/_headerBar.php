@@ -43,3 +43,11 @@
         </div>
     </nav>
 </header>
+<?php
+$headermenus = <<< EOD
+    $(document).ready(function () {
+        $('.dropdown-toggle').dropdown();
+    });
+EOD;
+Yii::app()->clientScript->registerScript('_form55', $headermenus);
+?>
