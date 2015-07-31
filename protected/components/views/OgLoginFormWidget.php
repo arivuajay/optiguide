@@ -2,7 +2,7 @@
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'login-form',
-        'enableAjaxValidation' => true,
+        'enableAjaxValidation' => false,
         'clientOptions' => array('validateOnSubmit' => true),
         'htmlOptions' => array('class' => 'customClass'),
 //        'action' => array('/optiguide/default/login'), // this is is the action that's going to process the data
