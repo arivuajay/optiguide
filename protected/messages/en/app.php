@@ -80,9 +80,9 @@ return array(
     'APP70' => 'City',
     'APP71' => 'Postal code',
     'APP72' => 'Telephone',
-    'APP73' => 'Fax machine',
+    'APP73' => 'Fax',
     'APP74' => 'Tel Sans Frais',
-    'APP75' => 'Email',
+    'APP75' => 'Store Email',
     'APP76' => 'Website',
     'APP77' => 'Representative Prefix Fr',
     'APP78' => 'Representative Prefix En',
@@ -110,6 +110,30 @@ return array(
     'APP504' => 'Create',
     'APP505' => 'Update',
     'APP506' => 'The requested page does not exist.',      
+    
+     // Retailer form
+    'OG101' => 'Store name',
+    'OG102' => 'Type',
+    'OG103' => 'Store Web site',  
+    'OG104' => 'Establishment\'s primary profession or activity : <br/> <span> (Choose one or more options)</span> ',
+    'OG105' => 'Opticians',
+    'OG106' => 'Optometrists',
+    'OG107' => 'Ophthalmologists',
+    'OG108' => 'Sunglasses only',
+    'OG109' => 'Boutique',
+    'OG110' => 'To subscribe',
+    'OG111' => 'Optical Retailer subscription form',
+    'OG112' => 'Corporate Profile',
+    'OG113' => 'Personal Profile',
+    'OG114' => 'Yes, I wish to receive the free English digital magazine ENVISION:',
+    'OG115' => 'Yes, I wish to receive the free French digital magazine ENVUE:',
+    'OG116' => 'Yes, I wish to receive the OPTI-NEWS by e-mail :',
+    'OG117' => 'Yes, I wish to receive OPTI-PROMOS by e-mail :',
+    'OG118' => 'Select the type',
+    'OG119' => 'Select the group',
+    'OG120' => 'Submit',
+    'OG121' => 'Grouping'
+    
     
 );
 ?>

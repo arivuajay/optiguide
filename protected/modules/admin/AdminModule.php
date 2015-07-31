@@ -7,6 +7,9 @@ class AdminModule extends CWebModule {
         $this->layoutPath = Yii::getPathOfAlias('webroot.themes.' . Yii::app()->theme->name . '.views.layouts');
         $this->layout = '//layouts/main';
         
+          if(!isset(Yii::app()->session['language']))
+            Yii::app()->session['language'] = 'FR'; 
+        
         Yii::app()->getComponent("booster");
     }
 

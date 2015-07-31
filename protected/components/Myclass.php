@@ -59,20 +59,26 @@ class Myclass extends CController {
     }
 
     public static function getallcountries($id = null) {
-        $criteria = new CDbCriteria;
-        $criteria->order = 'NOM_PAYS_FR ASC';
+        $criteria = new CDbCriteria;     
+        
+        $countryname = 'NOM_PAYS_'.Yii::app()->session['language'];           
+        
+        $criteria->order = $countryname.' ASC';
         if (!is_null($id)) {
             $criteria->condition = 'ID_PAYS=:id';
             $criteria->params = array(':id' => $id);
         }
         $country = CountryDirectory::model()->findAll($criteria);
-        $val = CHtml::listData($country, 'ID_PAYS', 'NOM_PAYS_FR');
+        $val = CHtml::listData($country, 'ID_PAYS', $countryname);
         return $val;
     }
 
     public static function getallregions($id = null) {
         $criteria_reg = new CDbCriteria;
-        $criteria_reg->order = 'NOM_REGION_FR ASC';
+        
+        $regionname = 'NOM_REGION_'.Yii::app()->session['language']; 
+        
+        $criteria_reg->order = $regionname.' ASC';
         if (!is_null($id)) {
             $criteria_reg->condition = 'ID_PAYS=:id';
             $criteria_reg->params = array(':id' => $id);
@@ -80,7 +86,7 @@ class Myclass extends CController {
 
         $regions = RegionDirectory::model()->findAll($criteria_reg);
 
-        $regions = CHtml::listData($regions, 'ID_REGION', 'NOM_REGION_FR');
+        $regions = CHtml::listData($regions, 'ID_REGION', $regionname);
 
         return $regions;
     }

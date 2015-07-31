@@ -111,5 +111,31 @@ return array(
     'APP505' => 'Mise À Jour',
     'APP506' => 'La page demandée ne existe pas.',      
     
+     // Retailer form
+    'OG101' => 'nom de magasin',
+    'OG102' => 'Type',
+    'OG103' => 'Magasin site Web',  
+    'OG104' => 'Profession ou activité principale de l’établissement :<br/> <span> (Cochez une ou plusieurs options)</span> ',
+    'OG105' => 'Opticiens',
+    'OG106' => 'Optométristes',
+    'OG107' => 'Ophtalmologistes',
+    'OG108' => 'Lunettes solaires seulement',
+    'OG109' => 'Boutique',
+    'OG110' => 'Vous inscrire',
+    'OG111' => 'Demande d\'inscription d\'un détaillant optique',
+    'OG112' => 'Profil corporatif',
+    'OG113' => 'Profil personnel',
+    'OG114' => 'Oui, je désire recevoir gratuitement le magazine numérique anglais ENVISION :',
+    'OG115' => 'Oui, je désire recevoir gratuitement le magazine numérique français ENVUE :',
+    'OG116' => 'Oui, je désire recevoir l\'OPTI-NEWS par courriel : ',
+    'OG117' => 'Oui, je désire recevoir l\'OPTI-PROMOS par courriel : ',
+    'OG118' => 'Sélectionnez le type',
+    'OG119' => 'Sélectionnez le groupe',
+    'OG120' => 'Soumettre',
+    'OG121' => 'Regroupement'
+    
+    
+    
+ 
 );
 ?>

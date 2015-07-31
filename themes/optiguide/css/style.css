@@ -1417,3 +1417,5 @@ width:100%;
 	 border-bottom:#e5e5e5 solid 1px;
 	 padding-bottom:10px;
 }
+
+.errorMessage{ color: #d9534f;}

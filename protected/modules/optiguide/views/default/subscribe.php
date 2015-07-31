@@ -12,8 +12,8 @@
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">  
                     <a href="#" class="subscribe-btn"> <i class="fa fa-users"></i> Supplier </a>
                 </div> 
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">  
-                    <a href="#" class="subscribe-btn"> <i class="fa fa-user"></i> Optical Retailer </a>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">                    
+                   <?php echo CHtml::link('<i class="fa fa-user"></i> Optical Retailer', array('/optiguide/retailerDirectory/create'), array('class' => 'subscribe-btn'))?>
                 </div> 
             </div>
         </div>
