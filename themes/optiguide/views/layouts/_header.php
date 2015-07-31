@@ -18,8 +18,8 @@
                     <?php echo CHtml::link(Myclass::t('OG005', '', 'og'), '#'); ?>
                 </li> 
                 <li>
-                    <?php 
-                    if(Yii::app()->user->isGuest)
+                    <?php
+                    if (Yii::app()->user->isGuest)
                         echo CHtml::link('<i class="fa fa-lock"></i> ' . Myclass::t('OG006', '', 'og'), '#', array('class' => 'loginbg'));
                     else
                         echo CHtml::link('<i class="fa fa-lock"></i> ' . Myclass::t('OG025', '', 'og'), array('/optiguide/default/logout'), array('class' => 'loginbg'));
@@ -35,7 +35,7 @@
                 <div class="col-xs-12 col-sm-3 col-md-3  col-lg-3 logo"> 
                     <?php
                     $logo = CHtml::image("{$this->themeUrl}/images/logo.jpg", 'Logo');
-                    echo CHtml::link($logo, array('/'));
+                    echo CHtml::link($logo, array('/optiguide/default'));
                     ?>
                 </div>
                 <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 ad1"> 

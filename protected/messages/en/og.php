@@ -36,4 +36,8 @@ return array(
     'OG024' => 'Find',
     
     'OG025' => 'Logout',
+    
+    //newsManagement/_search.php
+    'OG026' => 'Find a News',
+    'OG027' => 'Keyword',
 );
