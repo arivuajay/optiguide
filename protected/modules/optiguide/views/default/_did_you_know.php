@@ -1,0 +1,13 @@
+<?php $did_you_know = ManagementAdvice::model()->random()->find(); ?>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
+    <div class="inner-container"> 
+        <h2> <?php echo Myclass::t('OG014', '', 'og'); ?>  </h2>
+        <p>
+            <?php echo CHtml::link($did_you_know['TITRE'], array('/optiguide/managementAdvice/view', 'id' => $did_you_know['ID_CONSEIL'])); ?>
+        </p>
+        <p>
+            <?php echo $did_you_know['SYNOPSYS'] ?>
+            <?php echo CHtml::link(Myclass::t('OG015', '', 'og'), array('/optiguide/managementAdvice/view', 'id' => $did_you_know['ID_CONSEIL'])); ?>
+        </p>
+    </div>
+</div>

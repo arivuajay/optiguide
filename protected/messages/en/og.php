@@ -40,4 +40,8 @@ return array(
     //newsManagement/_search.php
     'OG026' => 'Find a News',
     'OG027' => 'Keyword',
+    
+    //default/index.php
+    'OG028' => 'Latest News',
+    'OG029' => 'View All',
 );
