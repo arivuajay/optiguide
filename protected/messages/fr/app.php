@@ -132,10 +132,8 @@ return array(
     'OG118' => 'Sélectionnez le type',
     'OG119' => 'Sélectionnez le groupe',
     'OG120' => 'Soumettre',
-    'OG121' => 'Regroupement'
-    
-    
-    
- 
+    'OG121' => 'Regroupement',
+    'OG122' => 'Vous devez sélectionner une ou plusieurs catégories.',
+    'OG123' => 'Email est requis pour vous abonner.'
 );
 ?>

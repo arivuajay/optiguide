@@ -59,12 +59,27 @@ class RetailerDirectory extends CActiveRecord
 			array('COMPAGNIE, ADRESSE, ADRESSE2, URL, COURRIEL, GROUPE, HEAD_OFFICE_NAME', 'length', 'max'=>255),
 			array('CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, TEL_1800', 'length', 'max'=>20),
 			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.                      
+			// @todo Please remove those attributes that should not be searched.    
+                        array('CATEGORY_1,CATEGORY_2,CATEGORY_3,CATEGORY_4,CATEGORY_5','Checkatleast'),                     
                         array('Categories','safe'),
 			array('ID_RETAILER, ID_CLIENT, COMPAGNIE, ID_VILLE, ADRESSE, ADRESSE2, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, URL, COURRIEL, TEL_1800, DATE_MODIFICATION, ID_RETAILER_TYPE, ID_GROUPE, GROUPE, HEAD_OFFICE_NAME, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5', 'safe', 'on'=>'search'),
 		);
 	}
         
+        public function Checkatleast($attribute_name, $params)
+        {
+          
+            if ($this->CATEGORY_1==0 && $this->CATEGORY_2==0 && $this->CATEGORY_3==0 && $this->CATEGORY_4==0 && $this->CATEGORY_5==0)
+            {
+               $this->addError('CATEGORY_5',Myclass::t('OG122'));
+               return false;
+            }
+
+            return true;
+        }
+       
+                
+                
         public static function getcounts($id)
         {
             

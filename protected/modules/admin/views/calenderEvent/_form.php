@@ -9,8 +9,9 @@ $cs = Yii::app()->getClientScript();
 $cs_pos_end = CClientScript::POS_END;
 
 $cs->registerCssFile($themeUrl . '/css/datepicker/datepicker3.css');
-$cs->registerScriptFile(Yii::app()->baseUrl . '/ckeditor/ckeditor.js');
-$cs->registerScriptFile(Yii::app()->baseUrl . '/ckeditor/adapters/jquery.js');
+
+$cs->registerScriptFile(Yii::app()->baseUrl . '/protected/extensions/yiibooster/assets/ckeditor/ckeditor.js');
+$cs->registerScriptFile(Yii::app()->baseUrl . '/protected/extensions/yiibooster/assets/ckeditor/adapters/jquery.js');
 $cs->registerScript(
         'js2', '
     var config = {

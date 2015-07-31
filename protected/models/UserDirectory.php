@@ -48,9 +48,25 @@ class UserDirectory extends CActiveRecord
                     // The following rule is used by search().
                     // @todo Please remove those attributes that should not be searched.
                    // array('USR', 'safe', 'readOnly'=>true , 'on'=>'update'),
+                    array('COURRIEL','email'),
+                    array('bSubscription_envision,bSubscription_envue,ABONNE_MAILING,ABONNE_PROMOTION,COURRIEL','Checksubscriptionmail'),        
                     array('ID_UTILISATEUR, LANGUE, PREFIXE, NOM_UTILISATEUR, USR, PWD, COURRIEL, ABONNE_MAILING, ABONNE_PROMOTION, ABONNE_TRANSITION, IS_FIRST_LOG, NOM_TABLE, ID_RELATION, MUST_VALIDATE, sGuid, bSubscription_envision, bSubscription_envue', 'safe', 'on'=>'search'),
             );
 	}
+        
+        public function Checksubscriptionmail()
+        {
+            if($this->bSubscription_envision==1 || $this->bSubscription_envue==1 || $this->ABONNE_MAILING==1 || $this->ABONNE_PROMOTION==1)
+            { 
+                if($this->COURRIEL=='')
+                {    
+                    $this->addError('COURRIEL',Myclass::t('OG123'));
+                    return false;
+                }    
+            }
+            
+            return true;
+        }        
 
 	/**
 	 * @return array relational rules.

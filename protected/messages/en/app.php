@@ -132,7 +132,9 @@ return array(
     'OG118' => 'Select the type',
     'OG119' => 'Select the group',
     'OG120' => 'Submit',
-    'OG121' => 'Grouping'
+    'OG121' => 'Grouping',
+    'OG122' => 'You must select one or more categories.',
+    'OG123' => 'Email is required to subscribe.'
     
     
 );
