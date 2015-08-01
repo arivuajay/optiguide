@@ -66,6 +66,8 @@ class ProfessionalDirectory extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'cityDirectory'       => array(self::BELONGS_TO, 'CityDirectory', 'ID_VILLE'),
+            
             'professionalType' => array(self::BELONGS_TO, 'ProfessionalType', 'ID_TYPE_SPECIALISTE'),
             'userDirectory'    => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION'),
             'cntUsr'           => array(self::STAT, 'UserDirectory',  'ID_RELATION', 'condition' => 'NOM_TABLE = "Professionnels"'),

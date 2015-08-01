@@ -68,6 +68,7 @@ class Myclass extends CController {
             $criteria->condition = 'ID_PAYS=:id';
             $criteria->params = array(':id' => $id);
         }
+        
         $country = CountryDirectory::model()->findAll($criteria);
         $val = CHtml::listData($country, 'ID_PAYS', $countryname);
         return $val;

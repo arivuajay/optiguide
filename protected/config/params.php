@@ -48,5 +48,8 @@ return array(
     'JOURNAL_IMG_PATH' => 'uploads/journal/',
     'COPYRIGHT' => '&copy; 2014 Express2Help.',
     'EMAILHEADERIMAGE' => '/themes/site/css/frontend/img/logos/header-logo.png',
+    
+    'LISTPERPAGE' => 15,
+    'DEFAULTPAYS' => 1,
 );
 

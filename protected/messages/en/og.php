@@ -40,8 +40,29 @@ return array(
     //newsManagement/_search.php
     'OG026' => 'Find a News',
     'OG027' => 'Keyword',
+
+            
+    //subscription page
+    'OG028' => 'To subscribe',
+    'OG029' => '<p>New digital magazines! Register and get your FREE digital subcription to ENVISION and ENVUE.</p>
+                <p>Plus, receive your OPTI-NEWS subscription and your access codes to OPTI-GUIDE.</p>
+                <p>Please complete one of the following forms. It should only take you a few minutes.</p>',
+    'OG030' => 'Professional',
+    'OG031' => 'Supplier',
+    'OG032' => 'Optical Retailer',
+    
+    //My profile
+    'OG033' => 'My Profile',
+    'OG034'=>  'Update my profile',
+    'OG035'=>  'You wish to modify your Opti-News subscription or update your e-mail address?',
+    'OG036'=>  'Profile Updated Successfully!!!',
     
     //default/index.php
-    'OG028' => 'Latest News',
-    'OG029' => 'View All',
+    'OG037' => 'Latest News',
+    'OG038' => 'View All',
+    
+    //professional listing page
+    'OG039' => 'Find a Professional',
+    'OG040' => 'Results'
+
 );
