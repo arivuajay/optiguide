@@ -59,11 +59,11 @@ class Myclass extends CController {
     }
 
     public static function getallcountries($id = null) {
-        $criteria = new CDbCriteria;     
-        
-        $countryname = 'NOM_PAYS_'.Yii::app()->session['language'];           
-        
-        $criteria->order = $countryname.' ASC';
+        $criteria = new CDbCriteria;
+
+        $countryname = 'NOM_PAYS_' . Yii::app()->session['language'];
+
+        $criteria->order = $countryname . ' ASC';
         if (!is_null($id)) {
             $criteria->condition = 'ID_PAYS=:id';
             $criteria->params = array(':id' => $id);
@@ -76,10 +76,10 @@ class Myclass extends CController {
 
     public static function getallregions($id = null) {
         $criteria_reg = new CDbCriteria;
-        
-        $regionname = 'NOM_REGION_'.Yii::app()->session['language']; 
-        
-        $criteria_reg->order = $regionname.' ASC';
+
+        $regionname = 'NOM_REGION_' . Yii::app()->session['language'];
+
+        $criteria_reg->order = $regionname . ' ASC';
         if (!is_null($id)) {
             $criteria_reg->condition = 'ID_PAYS=:id';
             $criteria_reg->params = array(':id' => $id);
@@ -127,8 +127,8 @@ class Myclass extends CController {
             return $uuid;
         }
     }
-    
-    public static function getMonths(){
+
+    public static function getMonths() {
         $months = array(
             1 => 'January',
             2 => 'February',
@@ -144,6 +144,19 @@ class Myclass extends CController {
             12 => 'December',
         );
         return $months;
+    }
+
+    public static function getBetweenDates($date_from, $date_to) {
+        // Specify the start date. This date can be any English textual format  
+        $date_from = strtotime($date_from); // Convert date to a UNIX timestamp  
+        // Specify the end date. This date can be any English textual format  
+        $date_to = strtotime($date_to); // Convert date to a UNIX timestamp  
+        // Loop from the start date to end date and output all dates inbetween  
+        $result = array();
+        for ($i = $date_from; $i <= $date_to; $i+=86400) {
+            $result[] = date("Y-m-d", $i);
+        }
+        return $result;
     }
 
 }

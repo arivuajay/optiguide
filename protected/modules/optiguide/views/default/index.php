@@ -56,7 +56,7 @@
 </div>
 
 <div class="row"> 
-    
+
     <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7"> 
         <div class="welcome-cont"> 
             <h2> welcome Opti-guide.com </h2>
@@ -65,7 +65,7 @@
             <p>Need an access code? Click here to   <a href="#">Register</a></p>
         </div>
     </div>
-    
+
     <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5"> 
         <div class="opti-rep-cont">
             <div class="opti-rep-logo"> 
@@ -75,16 +75,11 @@
             <p>Need an access code? Click here to   <a href="#">Register</a></p>
         </div>
     </div>
-    
-    <?php $this->renderPartial('_latest_news'); ?>
 
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">   
-        <div class="calendar-bg"> 
-            <h2> Calendar </h2>
-            <?php echo CHtml::image("{$this->themeUrl}/images/calendar-img.jpg", 'Logo', array('width' => 337, 'height' => 256)) ?>
-        </div>
-    </div>
+    <?php $this->renderPartial('_latest_news'); ?>
     
+    <?php $this->renderPartial('_calender'); ?>
+
     <?php $this->renderPartial('_did_you_know'); ?>
 
 </div>

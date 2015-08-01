@@ -65,11 +65,12 @@ class CalenderEventController extends OGController {
 
         $searchModel = new CalenderEvent('search');
         $searchModel->unsetAttributes();
+        
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('LANGUE = "' . Yii::app()->session['language'] . '"');
         if (isset($_REQUEST['CalenderEvent'])) {
             $searchModel->attributes = $_REQUEST['CalenderEvent'];
-            $criteria = new CDbCriteria();
             $criteria->compare('TITRE', $searchModel->TITRE, true);
-            $criteria->addCondition('LANGUE = "' . Yii::app()->session['language'] . '"');
             if ($searchModel->ID_PAYS)
                 $criteria->addCondition('ID_PAYS = ' . $searchModel->ID_PAYS);
             if ($searchModel->ID_REGION)
@@ -80,13 +81,12 @@ class CalenderEventController extends OGController {
                 $criteria->addCondition('MONTH(DATE_AJOUT1) = ' . $searchModel->EVENT_MONTH);
             if ($searchModel->EVENT_YEAR)
                 $criteria->addCondition('YEAR(DATE_AJOUT1) = ' . $searchModel->EVENT_YEAR);
-            $criteria->order = 'DATE_AJOUT1 DESC';
+        } elseif (isset($_REQUEST['date'])) {
+            $criteria->addCondition('DATE_AJOUT1 <= "' . $_REQUEST['date'] . '" AND DATE_AJOUT2 >= "' . $_REQUEST['date'] . '"');
         } else {
-            $criteria = new CDbCriteria();
             $criteria->addCondition('DATE_AJOUT1 >= "' . $current_date . '"');
-            $criteria->addCondition('LANGUE = "' . Yii::app()->session['language'] . '"');
-            $criteria->order = 'DATE_AJOUT1';
         }
+        $criteria->order = 'DATE_AJOUT1 DESC';
 
         $count = CalenderEvent::model()->count($criteria);
         $pages = new CPagination($count);
