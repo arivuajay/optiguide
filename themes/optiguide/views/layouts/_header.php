@@ -3,25 +3,28 @@
         <div class="container"> 
             <ul class="orion-menu red">
                 <li>
-                    <?php echo CHtml::link(Myclass::t('OG001', '', 'og'), '#'); ?>
+                    <?php echo CHtml::link(Myclass::t('OG001', '', 'og'), array('/optiguide/')); ?>
                 </li>  
                 <li>
-                    <?php echo CHtml::link(Myclass::t('OG002', '', 'og'), '#'); ?>
-                </li>     
+                    <?php echo CHtml::link(Myclass::t('OG002', '', 'og'), array('/optiguide/default/advertise')); ?>
+                </li>                
                 <li>
-                    <?php echo CHtml::link(Myclass::t('OG003', '', 'og'), array('/optiguide/default/subscribe')); ?>
+                      <?php   if (Yii::app()->user->isGuest){
+                          echo CHtml::link(Myclass::t('OG003', '', 'og'), array('/optiguide/default/subscribe'));
+                      }else
+                      {
+                          echo CHtml::link(Myclass::t('OG033', '', 'og'), array('/optiguide/userDirectory/update'));
+                      }    ?>
                 </li>    
                 <li>
-                    <?php echo CHtml::link(Myclass::t('OG004', '', 'og'), '#'); ?>
+                    <?php echo CHtml::link(Myclass::t('OG004', '', 'og'), array('/optiguide/default/contactus')); ?>
                 </li>     
                 <li>
                     <?php echo CHtml::link(Myclass::t('OG005', '', 'og'), '#'); ?>
                 </li> 
                 <li>
                     <?php
-                    if (Yii::app()->user->isGuest)
-                        echo CHtml::link('<i class="fa fa-lock"></i> ' . Myclass::t('OG006', '', 'og'), '#', array('class' => 'loginbg'));
-                    else
+                    if (!Yii::app()->user->isGuest)                       
                         echo CHtml::link('<i class="fa fa-lock"></i> ' . Myclass::t('OG025', '', 'og'), array('/optiguide/default/logout'), array('class' => 'loginbg'));
                     ?>
                 </li> 
