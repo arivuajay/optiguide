@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : ARK-9
 */
 
-.errorMessage{ 
+.errorMessage { 
     color: #d9534f;
 }
 
@@ -19,7 +19,8 @@ and open the template in the editor.
 }
 
 .pro-login .errorMessage { 
-    color: #000;
+    color: #000000;
+    font-size: 11px;
 }    
 
 .flashmessage { 
@@ -38,5 +39,38 @@ and open the template in the editor.
 
 .ui-datepicker td span, .ui-datepicker td a {
     padding: 0.2em;
+    text-align: center;
+}
+
+.ui-datepicker-prev, .ui-datepicker-next
+{
+    display: none;
+}
+
+.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+    border-radius:0px;
+}
+
+.ui-widget-content {
+    border:none;
+}
+
+#datepicker-Inline-sidebar_container
+{
+    padding: 0.2em;
+    text-align: center;
+}
+
+#datepicker-Inline-sidebar_container .ui-datepicker table {
+    border-collapse: collapse;
+    font-size: 10px;
+}
+
+#datepicker-Inline-sidebar_container .ui-datepicker .ui-datepicker-title {
+    font-size: 10px;
+}
+
+#datepicker-Inline-sidebar_container ui-datepicker td span, .ui-datepicker td a {
+    padding: 0;
     text-align: center;
 }

@@ -24,7 +24,7 @@
                 Welcome <b><?php echo Yii::app()->user->name ?></b>
             </p>
             <p>
-                <?php echo CHtml::link("Logout", array('/optiguide/default/logout')) ?>
+                <?php echo CHtml::link("<i class='fa fa-sign-out'></i> Logout", array('/optiguide/default/logout')) ?>
             </p>
         </div>
     <?php } ?>

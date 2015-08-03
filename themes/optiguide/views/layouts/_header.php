@@ -25,7 +25,7 @@
                 <li>
                     <?php
                     if (!Yii::app()->user->isGuest)                       
-                        echo CHtml::link('<i class="fa fa-lock"></i> ' . Myclass::t('OG025', '', 'og'), array('/optiguide/default/logout'), array('class' => 'loginbg'));
+                        echo CHtml::link('<i class="fa fa-sign-out"></i> ' . Myclass::t('OG025', '', 'og'), array('/optiguide/default/logout'), array('class' => 'loginbg'));
                     ?>
                 </li> 
             </ul>
