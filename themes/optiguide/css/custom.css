@@ -8,14 +8,35 @@ and open the template in the editor.
     Author     : ARK-9
 */
 
-.errorMessage{ color: #d9534f;}
+.errorMessage{ 
+    color: #d9534f;
+}
 
 .event a {
-        background-color: #42B373 !important;
-        background-image :none !important;
-        color: #ffffff !important;
-    }
-    
-.pro-login .errorMessage { color: #000;}    
+    background-color: #42B373 !important;
+    background-image :none !important;
+    color: #ffffff !important;
+}
 
-.flashmessage { margin-top: 10px;}
+.pro-login .errorMessage { 
+    color: #000;
+}    
+
+.flashmessage { 
+    margin-top: 25px;
+}
+
+.ui-datepicker {
+    width:100%;
+}
+
+.ui-widget-header {
+    background:#268BB9;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.ui-datepicker td span, .ui-datepicker td a {
+    padding: 0.2em;
+    text-align: center;
+}
