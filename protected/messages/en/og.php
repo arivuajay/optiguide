@@ -70,9 +70,16 @@ return array(
     
     
     'OG044' => 'Thanks for your subscription! Once admin will verify your informations and activate your account soon. Later you will get confirmation mail with login access.',
+
     'OG045' => 'Register',
-    
-    'OG046' => 'Welcome',
-    
+    'OG046' => 'Toll Free',
+
+    'OG047' => 'Find an Optical Retailer',
+    'OG048' => 'All categories',
+    'OG049' => '(enter last name only)',
+    'OG050' => 'Categories',
+
+    'OG051' => 'Welcome',
+
 
 );
