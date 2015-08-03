@@ -38,6 +38,7 @@
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
                             <?php echo $form->textField($umodel, 'USR', array('class' => 'form-txtfield')); ?>
                             <?php echo $form->error($umodel, 'USR'); ?>
+                             <?php echo $form->error($model, 'ID_CLIENT'); ?>
                         </div>
                     </div>
 
