@@ -56,7 +56,6 @@
 </div>
 
 <div class="row"> 
-
     <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7"> 
         <div class="welcome-cont"> 
             <h2> welcome Opti-guide.com </h2>
@@ -65,7 +64,6 @@
             <?php if (Yii::app()->user->isGuest) { ?>
                 <p>Need an access code? Click here to  <?php echo CHtml::link(Myclass::t('OG045', '', 'og'), array('/optiguide/default/subscribe')); ?></p>
             <?php } ?>
-
         </div>
     </div>
 
@@ -87,5 +85,4 @@
 
     $this->renderPartial('_did_you_know');
     ?>
-
 </div>
