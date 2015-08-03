@@ -92,7 +92,8 @@ class Myclass extends CController {
         return $regions;
     }
 
-    public static function getallcities($id = NULL) {
+    public static function getallcities($id = null) {
+       
         $criteria_reg = new CDbCriteria;
         $criteria_reg->order = 'NOM_VILLE ASC';
         if (!is_null($id)) {

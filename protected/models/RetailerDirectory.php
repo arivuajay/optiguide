@@ -35,7 +35,7 @@
 class RetailerDirectory extends CActiveRecord
 {
     
-        public $country,$region,$uaccess_search;
+        public $country,$region,$uaccess_search,$searchcat;
         static $NOM_TABLE = 'Detaillants';
         
 	/**
@@ -62,7 +62,7 @@ class RetailerDirectory extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.    
                         array('CATEGORY_1,CATEGORY_2,CATEGORY_3,CATEGORY_4,CATEGORY_5','Checkatleast'),                     
-                        array('Categories,uaccess_search','safe'),
+                        array('Categories,uaccess_search,searchcat','safe'),
 			array('uaccess_search,ID_RETAILER, ID_CLIENT, COMPAGNIE, ID_VILLE, ADRESSE, ADRESSE2, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, URL, COURRIEL, TEL_1800, DATE_MODIFICATION, ID_RETAILER_TYPE, ID_GROUPE, GROUPE, HEAD_OFFICE_NAME, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5', 'safe', 'on'=>'search'),
 		);
 	}

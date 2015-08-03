@@ -68,7 +68,13 @@ return array(
     
     '0G044' => 'Merci pour votre abonnement ! Une fois admin vérifier vos informations et activer votre compte bientôt. Plus tard, vous recevrez une confirmation mail avec un accès de connexion.',
     'OG045' => 'Inscription',
+    'OG046' => 'Sans frais',
     
-    'OG046' => 'Bienvenue',
+    'OG047' => 'Trouver un détaillant',
+    'OG048' => 'Toutes les catégories',
+    'OG049' => '(entrez nom de famille seulement )',
+    'OG050' => 'Catégories',
+    
+    'OG051' => 'Bienvenue',
     
 );

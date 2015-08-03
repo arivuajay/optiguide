@@ -21,7 +21,7 @@
                     <li><?php echo CHtml::link(Myclass::t('OG009', '', 'og'), '#'); ?></li>          
                     <li><?php echo CHtml::link(Myclass::t('OG010', '', 'og'), '#'); ?></li>     
                     <li><?php echo CHtml::link(Myclass::t('OG030', '', 'og'), array('/optiguide/professionalDirectory')); ?></li>     
-                    <li><?php echo CHtml::link(Myclass::t('OG032', '', 'og'), '#'); ?></li>     
+                    <li><?php echo CHtml::link(Myclass::t('OG032', '', 'og'), array('/optiguide/retailerDirectory')); ?></li>     
                     <li><?php echo CHtml::link(Myclass::t('OG011', '', 'og'), array('/optiguide/newsManagement')); ?></li>        
                     <li><?php echo CHtml::link(Myclass::t('OG012', '', 'og'), array('/optiguide/calenderEvent')); ?></li>          
                     <li><?php echo CHtml::link(Myclass::t('OG013', '', 'og'), '#'); ?></li>
