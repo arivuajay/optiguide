@@ -16,14 +16,15 @@ class OgLoginFormWidget extends CWidget {
         $model = new OgLoginForm;
 //        $this->performAjaxValidation($model);
         if (isset($_POST['sign_in'])) {
-            
+
             $model->attributes = $_POST['OgLoginForm'];
-            
-            if ($model->validate() && $model->login()) {                 
-                $this->owner->redirect(array("/optiguide/default/index"));            
+
+            if ($model->validate() && $model->login()) {
+                $this->owner->redirect(array("/optiguide/default/index"));
             } else {
                 Yii::app()->session->open();
                 Yii::app()->user->setFlash('danger', 'Can not login');
+                $this->owner->redirect(array("/optiguide/default/index"));
             }
         }
         $this->render('OgLoginFormWidget', array('model' => $model));

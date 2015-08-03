@@ -13,10 +13,13 @@ defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL', 3);
 
 require_once($yii);
 
-if (strpos($_SERVER['HTTP_HOST'], 'local.optiguide') !== false) {
+$optiguide_array = array('local.optiguide', 'optiguide.arkinfotec.in');
+$optirep_array = array('local.optirep', 'optirep.arkinfotec.in');
+
+if (in_array($_SERVER['HTTP_HOST'], $optiguide_array)) {
     $modules = array('optiguide');
     $def_mod = 'optiguide';
-} elseif (strpos($_SERVER['HTTP_HOST'], 'local.optirep') !== false) {
+} elseif (in_array($_SERVER['HTTP_HOST'], $optirep_array)) {
     $modules = array('optirep');
     $def_mod = 'optirep';
 } else {

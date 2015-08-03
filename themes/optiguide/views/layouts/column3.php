@@ -36,7 +36,10 @@
         <?php echo CHtml::image("{$this->themeUrl}/images/ad4.jpg", 'Ad') ?>
     </div>
 
-    <?php $this->widget('OgCalenderWidget'); ?>
+    <?php 
+    if (!Yii::app()->user->isGuest)
+        $this->widget('OgCalenderWidget'); 
+    ?>
 
     <div class="ad2"> 
         <?php echo CHtml::image("{$this->themeUrl}/images/ad5.jpg", 'Ad') ?>
