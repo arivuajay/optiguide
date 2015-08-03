@@ -1,7 +1,9 @@
 <?php $this->beginContent('//layouts/main'); ?>
-<?php if (isset($this->flashMessages)): ?>
+<?php
+if (isset($this->flashMessages)): ?>
     <?php foreach ($this->flashMessages as $key => $message) { ?>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
+    
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 flashmessage"> 
             <div class="alert alert-<?php echo $key; ?> fade in">
                 <button type="button" class="close close-sm" data-dismiss="alert">
                     <i class="fa fa-times"></i>

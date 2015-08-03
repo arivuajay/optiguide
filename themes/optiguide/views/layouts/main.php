@@ -12,6 +12,7 @@
         $themeUrl = $this->themeUrl;
         $cs = Yii::app()->getClientScript();
         $cs->registerCssFile($themeUrl . '/css/bootstrap.min.css');
+        $cs->registerCssFile($themeUrl . '/css/custom.css');
         ?>
 
         <link href='http://fonts.googleapis.com/css?family=Raleway:400,500,600,700,800' rel='stylesheet' type='text/css'>

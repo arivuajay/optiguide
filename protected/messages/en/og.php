@@ -63,6 +63,13 @@ return array(
     
     //professional listing page
     'OG039' => 'Find a Professional',
-    'OG040' => 'Results'
+    'OG040' => 'Results',
+    'OG041' => 'Telephone',
+    'OG042' => 'Fax',
+    'OG043' => 'No results found',
+    
+    
+    'OG044' => 'Thank you for your subscription! Once admin will verify your informations and activate your account soon. Later you will get confirmation mail with login access.',
+    
 
 );

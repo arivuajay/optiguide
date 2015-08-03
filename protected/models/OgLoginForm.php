@@ -49,8 +49,12 @@ class OgLoginForm extends CFormModel {
         if (!$this->hasErrors()):
             $this->_identity = new OgIdentity($this->username, $this->password);
             if (!$this->_identity->authenticate()):
-                if ($this->_identity->errorCode)
-                    $this->addError('username', 'Username/Password Combination is wrong');
+               if(($this->_identity->errorCode == 1) or ($this->_identity->errorCode == 2))
+                    $this->addError('password','Incorrect username or password.');
+                elseif($this->_identity->errorCode == 3)
+                    $this->addError('username','Username is currently not active');
+                else
+                    $this->addError('username','Invalid Exception');
             endif;
         endif;
     }

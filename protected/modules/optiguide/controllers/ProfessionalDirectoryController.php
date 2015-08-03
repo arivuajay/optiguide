@@ -5,6 +5,22 @@ class ProfessionalDirectoryController extends OGController {
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
+     public $lang;
+    
+    public function __construct($id, $module = null) {     
+        
+         if(Yii::app()->session['language'])
+        {
+            $lang = Yii::app()->session['language'];
+        }else
+        {
+            $lang = "EN";
+        }
+        
+        $this->lang = $lang;
+      
+        parent::__construct($id, $module);
+    }
 
     /**
      * @return array action filters
@@ -54,7 +70,7 @@ class ProfessionalDirectoryController extends OGController {
         
          // Get all records list  with limit
         $prof_query = Yii::app()->db->createCommand() //this query contains all the data
-        ->select('rs.* , TYPE_SPECIALISTE_EN ,  NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
+        ->select('rs.* , TYPE_SPECIALISTE_'.$this->lang.' ,  NOM_VILLE ,  NOM_REGION_'.$this->lang.' , ABREVIATION_'.$this->lang.' ,  NOM_PAYS_'.$this->lang.'')
         ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp'))
         ->where("rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ID_SPECIALISTE=$id")
         ->queryRow();
@@ -71,8 +87,8 @@ class ProfessionalDirectoryController extends OGController {
      */
     public function actionIndex() {
 
-        $searchModel = new ProfessionalDirectory();  
-       
+        $searchModel = new ProfessionalDirectory();                 
+    
         $searchModel->country = isset($searchModel->country)?$searchModel->country: DEFAULTPAYS;
         
         //$page = (isset($_GET['page']) ? $_GET['page'] : 1);  // define the variable to “LIMIT” the query        
@@ -128,10 +144,10 @@ class ProfessionalDirectoryController extends OGController {
        
        // Get all records list  with limit
         $prof_query = Yii::app()->db->createCommand() //this query contains all the data
-        ->select('ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_EN ,  NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
+        ->select('ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_'.$this->lang.' ,  NOM_VILLE ,  NOM_REGION_'.$this->lang.' , ABREVIATION_'.$this->lang.' ,  NOM_PAYS_'.$this->lang.'')
         ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp'))
         ->where("rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry)
-        ->order('rst.TYPE_SPECIALISTE_EN,NOM')
+        ->order('rst.TYPE_SPECIALISTE_'.$this->lang.',NOM')
         ->limit( LISTPERPAGE , $limit) // the trick is here!
         ->queryAll();
       
@@ -148,7 +164,7 @@ class ProfessionalDirectoryController extends OGController {
         
         $result = array();
         foreach ($prof_query as $users) {
-             $proftype = $users['TYPE_SPECIALISTE_EN'];            
+             $proftype = $users['TYPE_SPECIALISTE_'.$this->lang.''];            
              $result[$proftype][] = $users;
        }   
        
@@ -182,6 +198,7 @@ class ProfessionalDirectoryController extends OGController {
             $umodel->NOM_UTILISATEUR = $model->PRENOM . " " . $model->NOM;
             $umodel->sGuid = Myclass::getGuid();
             $umodel->LANGUE = Yii::app()->session['language'];
+            $umodel->MUST_VALIDATE = 0;
 
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
@@ -190,7 +207,7 @@ class ProfessionalDirectoryController extends OGController {
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_SPECIALISTE;
                 $umodel->save(false);
-                Yii::app()->user->setFlash('success', 'Professional Created Successfully!!!');
+                Yii::app()->user->setFlash('success', Myclass::t('OG044', '', 'og'));
                 $this->redirect(array('create'));
             }
         }

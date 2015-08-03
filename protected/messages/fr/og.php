@@ -53,6 +53,20 @@ return array(
     'OG033' => 'Mon Profil',
     'OG034'=>  'Mettre à jour mon profil',
     'OG035'=>  'Vous voulez modifier votre abonnement Opti- Nouvelles ou mettre à jour votre adresse e-mail?',
-    'OG036'=>  'Profil correctement mis à jour !!!'
+    'OG036'=>  'Profil correctement mis à jour !!!',
+    
+    //default/index.php
+    'OG037' => 'Dernières Nouvelles',
+    'OG038' => 'Tout Voir',
+    
+    //professional listing page
+    'OG039' => 'Trouver un professionnel',
+    'OG040' => 'Résultats',
+    'OG041' => 'Téléphone',
+    'OG042' => 'Télécopieur',
+    'OG043' => 'Aucun résultat trouvé',
+    
+    '0G044' => 'Merci pour votre abonnement ! Une fois admin vérifier vos informations et activer votre compte bientôt. Plus tard, vous recevrez une confirmation mail avec un accès de connexion.',
+    
     
 );

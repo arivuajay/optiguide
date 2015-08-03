@@ -62,6 +62,7 @@ class RetailerDirectoryController extends OGController {
             $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
             $umodel->sGuid = Myclass::getGuid();
             $umodel->LANGUE = Yii::app()->session['language'];
+            $umodel->MUST_VALIDATE = 0;
 
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
@@ -71,7 +72,7 @@ class RetailerDirectoryController extends OGController {
                 $umodel->ID_RELATION = $model->ID_RETAILER;
                 $umodel->save(false);
 
-                Yii::app()->user->setFlash('success', 'Retailer Created Successfully!!!');
+                Yii::app()->user->setFlash('success', Myclass::t('OG044', '', 'og'));
                 $this->redirect(array('create'));
             } 
         }

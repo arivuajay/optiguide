@@ -17,23 +17,30 @@ class OgIdentity extends CUserIdentity {
 
         $user = UserDirectory::model()->find('USR = :U', array(':U' => $this->username));
         
-        if ($user === null):
+        if ($user === null)
+        {    
             $this->errorCode = self::ERROR_USERNAME_INVALID;     // Error Code : 1
-        else:
-            $is_correct_password = ($user->PWD !== $this->password) ? false : true;
-
-            if ($is_correct_password):
-                $this->errorCode = self::ERROR_NONE;
-            else:
-                $this->errorCode = self::ERROR_USERNAME_INVALID;   // Error Code : 1
-            endif;
-        endif;
-
-        if ($this->errorCode == self::ERROR_NONE):
+        }
+        else if ($user->PWD !== $this->password){
+          
+            $this->errorCode = self::ERROR_PASSWORD_INVALID;   // Error Code : 1
+                
+        }
+        else if ($user->MUST_VALIDATE == 0) {        
+            
+            //Add new condition to finding the status of user.
+            $this->errorCode = self::ERROR_USERNAME_NOT_ACTIVE;
+            
+       }else {
+           
             $this->_id = $user->ID_UTILISATEUR;
             $this->setState('name', $user->NOM_UTILISATEUR);
             $this->setState('role', $user->NOM_TABLE);
-        endif;
+            $this->setState('userstatus', $user->MUST_VALIDATE);
+            
+            $this->errorCode = self::ERROR_NONE;
+        
+       } 
 
         return !$this->errorCode;
     }
