@@ -21,10 +21,10 @@
         ?>
         <div class="pro-login">
             <p>
-                Welcome <b><?php echo Yii::app()->user->name ?></b>
+                <?php echo Myclass::t('OG046', '', 'og'); ?> <b><?php echo Yii::app()->user->name ?></b>
             </p>
             <p>
-                <?php echo CHtml::link("<i class='fa fa-sign-out'></i> Logout", array('/optiguide/default/logout')) ?>
+                <?php echo CHtml::link("<i class='fa fa-sign-out'></i> " . Myclass::t('OG025', '', 'og'), array('/optiguide/default/logout')) ?>
             </p>
         </div>
     <?php } ?>

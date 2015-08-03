@@ -9,12 +9,13 @@
                     <?php echo CHtml::link(Myclass::t('OG002', '', 'og'), array('/optiguide/default/advertise')); ?>
                 </li>                
                 <li>
-                      <?php   if (Yii::app()->user->isGuest){
-                          echo CHtml::link(Myclass::t('OG003', '', 'og'), array('/optiguide/default/subscribe'));
-                      }else
-                      {
-                          echo CHtml::link(Myclass::t('OG033', '', 'og'), array('/optiguide/userDirectory/update'));
-                      }    ?>
+                    <?php
+                    if (Yii::app()->user->isGuest) {
+                        echo CHtml::link(Myclass::t('OG003', '', 'og'), array('/optiguide/default/subscribe'));
+                    } else {
+                        echo CHtml::link(Myclass::t('OG033', '', 'og'), array('/optiguide/userDirectory/update'));
+                    }
+                    ?>
                 </li>    
                 <li>
                     <?php echo CHtml::link(Myclass::t('OG004', '', 'og'), array('/optiguide/default/contactus')); ?>
@@ -24,7 +25,7 @@
                 </li> 
                 <li>
                     <?php
-                    if (!Yii::app()->user->isGuest)                       
+                    if (!Yii::app()->user->isGuest)
                         echo CHtml::link('<i class="fa fa-sign-out"></i> ' . Myclass::t('OG025', '', 'og'), array('/optiguide/default/logout'), array('class' => 'loginbg'));
                     ?>
                 </li> 

@@ -70,7 +70,9 @@ return array(
     
     
     'OG044' => 'Thanks for your subscription! Once admin will verify your informations and activate your account soon. Later you will get confirmation mail with login access.',
-    'OG045' => 'Register'
+    'OG045' => 'Register',
+    
+    'OG046' => 'Welcome',
     
 
 );

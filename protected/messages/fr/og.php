@@ -67,6 +67,8 @@ return array(
     'OG043' => 'Aucun résultat trouvé',
     
     '0G044' => 'Merci pour votre abonnement ! Une fois admin vérifier vos informations et activer votre compte bientôt. Plus tard, vous recevrez une confirmation mail avec un accès de connexion.',
-    'OG045' => 'Inscription'   
+    'OG045' => 'Inscription',
+    
+    'OG046' => 'Bienvenue',
     
 );
