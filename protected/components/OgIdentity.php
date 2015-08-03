@@ -8,6 +8,7 @@
 class OgIdentity extends CUserIdentity {
 
     private $_id;
+    const ERROR_USERNAME_NOT_ACTIVE  = 3;
     
     /**
      * Authenticates a user.
