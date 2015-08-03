@@ -76,7 +76,7 @@ class UserDirectory extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-                    
+                    'retailerDirectory'  => array(self::HAS_ONE, 'RetailerDirectory', 'ID_RETAILER'  , 'condition' => 'NOM_TABLE = "Detaillants"'), 
 		);
 	}
 

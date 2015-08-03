@@ -35,8 +35,9 @@
 class RetailerDirectory extends CActiveRecord
 {
     
-        public $country,$region;
+        public $country,$region,$uaccess_search;
         static $NOM_TABLE = 'Detaillants';
+        
 	/**
 	 * @return string the associated database table name
 	 */
@@ -61,8 +62,8 @@ class RetailerDirectory extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.    
                         array('CATEGORY_1,CATEGORY_2,CATEGORY_3,CATEGORY_4,CATEGORY_5','Checkatleast'),                     
-                        array('Categories','safe'),
-			array('ID_RETAILER, ID_CLIENT, COMPAGNIE, ID_VILLE, ADRESSE, ADRESSE2, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, URL, COURRIEL, TEL_1800, DATE_MODIFICATION, ID_RETAILER_TYPE, ID_GROUPE, GROUPE, HEAD_OFFICE_NAME, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5', 'safe', 'on'=>'search'),
+                        array('Categories,uaccess_search','safe'),
+			array('uaccess_search,ID_RETAILER, ID_CLIENT, COMPAGNIE, ID_VILLE, ADRESSE, ADRESSE2, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, URL, COURRIEL, TEL_1800, DATE_MODIFICATION, ID_RETAILER_TYPE, ID_GROUPE, GROUPE, HEAD_OFFICE_NAME, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5', 'safe', 'on'=>'search'),
 		);
 	}
         
@@ -78,7 +79,8 @@ class RetailerDirectory extends CActiveRecord
             return true;
         }
        
-                
+        
+      
                 
         public static function getcounts($id)
         {
@@ -97,8 +99,8 @@ class RetailerDirectory extends CActiveRecord
 		return array(
 			'iDVILLE'       => array(self::BELONGS_TO, 'RepertoireVille', 'ID_VILLE'),
                         'retailerType'  => array(self::BELONGS_TO, 'RetailerType', 'ID_RETAILER_TYPE'),                 
-                        'retailerGroup' => array(self::BELONGS_TO, 'RetailerGroup', 'ID_GROUPE'), 
-                        'userDirectory' => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION'),
+                        'retailerGroup' => array(self::BELONGS_TO, 'RetailerGroup', 'ID_GROUPE'),                     
+                        'userDirectory' => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION' , 'condition' => 'NOM_TABLE = "Detaillants"'),
                         'cntUsr'        => array(self::STAT, 'UserDirectory',  'ID_RELATION', 'condition' => 'NOM_TABLE = "Detaillants"'),
 		);
 	}
@@ -159,7 +161,7 @@ class RetailerDirectory extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
+              
 		$criteria->compare('ID_RETAILER',$this->ID_RETAILER);
 		$criteria->compare('ID_CLIENT',$this->ID_CLIENT,true);
 		$criteria->compare('COMPAGNIE',$this->COMPAGNIE,true);
@@ -184,7 +186,10 @@ class RetailerDirectory extends CActiveRecord
 		$criteria->compare('CATEGORY_3',$this->CATEGORY_3);
 		$criteria->compare('CATEGORY_4',$this->CATEGORY_4);
 		$criteria->compare('CATEGORY_5',$this->CATEGORY_5);
-
+                
+              //  $criteria->with = array( 'userDirectory' );
+              //  $criteria->compare('userDirectory.MUST_VALIDATE',$this->uaccess_search,true);
+                               
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
                         'pagination' => array(

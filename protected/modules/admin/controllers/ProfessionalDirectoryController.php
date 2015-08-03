@@ -75,7 +75,7 @@ class ProfessionalDirectoryController extends Controller {
             $umodel->NOM_UTILISATEUR = $model->PRENOM." ".$model->NOM;
             $umodel->PWD = Myclass::getRandomString(5);
             $umodel->sGuid = Myclass::getGuid();
-            $umodel->LANGUE  = "FR";
+            $umodel->LANGUE  = "FR";         
             
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;

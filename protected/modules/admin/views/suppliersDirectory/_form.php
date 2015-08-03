@@ -187,6 +187,10 @@
                                         <?php echo $form->labelEx($model, 'bAfficher_site', array()); ?>                                    
                                         <?php echo $form->radioButtonList($model, 'bAfficher_site', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
                                     </div>
+                                      <div class="form-group">
+                                        <?php echo $form->labelEx($umodel, 'MUST_VALIDATE', array()); ?>      
+                                        <?php echo $form->radioButtonList($umodel, 'MUST_VALIDATE', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
+                                    </div>
                                 </div>    
                             </div>
                         </div>

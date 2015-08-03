@@ -60,7 +60,7 @@ class RetailerDirectoryController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new RetailerDirectory;
+        $model  = new RetailerDirectory;
         $umodel = new UserDirectory();
 
         $this->performAjaxValidation(array($model, $umodel));
@@ -75,7 +75,7 @@ class RetailerDirectoryController extends Controller {
             $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
             $umodel->PWD     = Myclass::getRandomString(5);
             $umodel->sGuid   = Myclass::getGuid();
-            $umodel->LANGUE  = "FR";
+            $umodel->LANGUE  = "FR";          
             
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
@@ -146,13 +146,17 @@ class RetailerDirectoryController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $model = new RetailerDirectory('search');
+        $model  = new RetailerDirectory('search');
+      //  $umodel = new UserDirectory();
+        
         $model->unsetAttributes();  // clear any default values
         if (isset($_GET['RetailerDirectory']))
-            $model->attributes = $_GET['RetailerDirectory'];
+            $model->attributes  = $_GET['RetailerDirectory'];
+         //   $umodel->attributes = $_GET['UserDirectory'];
 
         $this->render('index', array(
             'model' => $model,
+          //  'umodel' => $umodel,
         ));
     }
 

@@ -44,7 +44,18 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                    //return "{$data->cntUsr} X " . CHtml::link("<i class='fa fa-lock'></i>", array("/admin/userDirectory/create/", "id" => $data->ID_RETAILER));
                       return "{$data->cntUsr} X " . CHtml::link("<i class='fa fa-lock'></i>");
                 },
-            ),          
+            ),
+//            array(
+//                'header'  => 'User status',    
+//                'name'    => 'uaccess_search',
+//                'htmlOptions' => array('style' => 'width: 180px;text-align:center', 'vAlign' => 'middle'),             
+//                'type' => 'raw',              
+//                'value' => function($data) {
+//                     echo ($data->userDirectory->MUST_VALIDATE == "1") ? "<i class='fa fa-circle text-green'></i>" : "<i class='fa fa-circle text-red'></i>";
+//                },
+//             //   'filter'  => CHtml::activeDropDownList($umodel, 'MUST_VALIDATE',  array("1"=>"Activés" ,"0"=>"Désactivés" ) , array('class'=>'form-control','prompt'=>'Tous')),
+//               'filter' => ''
+//            ), 
             array(
                 'header' => 'Actes',
                 'class' => 'booster.widgets.TbButtonColumn',
