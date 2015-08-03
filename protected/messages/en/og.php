@@ -69,7 +69,8 @@ return array(
     'OG043' => 'No results found',
     
     
-    'OG044' => 'Thank you for your subscription! Once admin will verify your informations and activate your account soon. Later you will get confirmation mail with login access.',
+    'OG044' => 'Thanks for your subscription! Once admin will verify your informations and activate your account soon. Later you will get confirmation mail with login access.',
+    'OG045' => 'Register'
     
 
 );
