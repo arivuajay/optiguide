@@ -2,23 +2,20 @@
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
         <div class="inner-container eventslist-cont">         
-                <h2> <?php echo $model['PRENOM']; ?>  <?php echo $model['NOM']; ?>  , <?php echo $model['TYPE_SPECIALISTE_'.$this->lang]; ?></h2>
-                <div class="search-list">                   
-                    <p><strong><?php echo $model['BUREAU']; ?></strong><br>
-                         <?php echo $model['ADRESSE']; ?>. <br/> 
-                         <?php echo $model['NOM_VILLE']; ?>,  <?php echo $model['NOM_REGION_'.$this->lang]; ?><br/> 
-                         <?php echo $model['NOM_PAYS_'.$this->lang]; ?><br/> 
-                         <?php echo $model['CODE_POSTAL']; ?>
-                   </p>
-                    <p> <?php echo Myclass::t('OG041', '', 'og');?> : <?php echo $model['TELEPHONE']; ?><br>                       
-                        <?php echo Myclass::t('OG042', '', 'og');?> : <?php echo $model['TELECOPIEUR']; ?><br>                      
-                   </p>
-                </div>
-                <div class="clearfix"></div>
-                <div class="event-details-txt"> 
-                    <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/professionalDirectory')); ?>
-                </div>
+            <h2> <?php echo $model['PRENOM']; ?>  <?php echo $model['NOM']; ?>  , <?php echo $model['TYPE_SPECIALISTE_' . $this->lang]; ?></h2>
+            <div class="search-list">                   
+                <p><strong><?php echo $model['BUREAU']; ?></strong><br>
+                    <?php echo $model['ADRESSE']; ?>. <br/> 
+                    <?php echo $model['NOM_VILLE']; ?>,  <?php echo $model['NOM_REGION_' . $this->lang]; ?><br/> 
+                    <?php echo $model['NOM_PAYS_' . $this->lang]; ?><br/> 
+                    <?php echo $model['CODE_POSTAL']; ?>
+                </p>
+                <p> <?php echo Myclass::t('OG041', '', 'og'); ?> : <?php echo $model['TELEPHONE']; ?><br>                       
+                    <?php echo Myclass::t('OG042', '', 'og'); ?> : <?php echo $model['TELECOPIEUR']; ?><br>                      
+                </p>
             </div>
+            <div class="clearfix"></div>               
+            <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/professionalDirectory'), array('class' => 'basic-btn')); ?>
         </div>
     </div>
 </div>

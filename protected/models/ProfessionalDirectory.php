@@ -49,7 +49,7 @@ class ProfessionalDirectory extends CActiveRecord {
         return array(
             array('ID_TYPE_SPECIALISTE, PRENOM, ID_CLIENT, NOM ,country, region, ID_VILLE', 'required'),
             array('ID_TYPE_SPECIALISTE, country, region, ID_VILLE', 'numerical', 'integerOnly' => true),
-            array('ID_CLIENT', 'length', 'max' => 8),
+            array('ID_CLIENT', 'length', 'max' => 8 ),
             array('PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, SITE_WEB, COURRIEL', 'length', 'max' => 255),
             array('CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2', 'length', 'max' => 20),
             // The following rule is used by search().

@@ -36,11 +36,8 @@
                     }
                    ?></p>
                 </div>
-                <div class="clearfix"></div>
-                <div class="event-details-txt"> 
-                    <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/retailerDirectory')); ?>
-                </div>
+                <div class="clearfix"></div>               
+                    <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/retailerDirectory'),array('class'=>'basic-btn')); ?>                
             </div>
         </div>
     </div>
-</div>

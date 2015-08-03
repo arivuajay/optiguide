@@ -194,6 +194,7 @@ class ProfessionalDirectoryController extends OGController {
             $model->attributes = $_POST['ProfessionalDirectory'];
             $umodel->attributes = $_POST['UserDirectory'];
             $model->ID_CLIENT = $umodel->USR;
+            $model->COURRIEL  = $umodel->COURRIEL;
             $umodel->NOM_TABLE = $model::$NOM_TABLE;
             $umodel->NOM_UTILISATEUR = $model->PRENOM . " " . $model->NOM;
             $umodel->sGuid = Myclass::getGuid();
@@ -209,7 +210,13 @@ class ProfessionalDirectoryController extends OGController {
                 $umodel->save(false);
                 Yii::app()->user->setFlash('success', Myclass::t('OG044', '', 'og'));
                 $this->redirect(array('create'));
-            }
+            }else
+            {
+//                echo "<pre>";
+//               print_r($model->getErrors());
+//                print_r($umodel->getErrors());
+//               exit;
+            }    
         }
 
         $this->render('create', compact('umodel', 'model'));
