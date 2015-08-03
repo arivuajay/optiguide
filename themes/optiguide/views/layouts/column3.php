@@ -1,8 +1,7 @@
 <?php $this->beginContent('//layouts/main'); ?>
-<?php
-if (isset($this->flashMessages)): ?>
+<?php if (isset($this->flashMessages)): ?>
     <?php foreach ($this->flashMessages as $key => $message) { ?>
-    
+
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 flashmessage"> 
             <div class="alert alert-<?php echo $key; ?> fade in">
                 <button type="button" class="close close-sm" data-dismiss="alert">
@@ -22,10 +21,10 @@ if (isset($this->flashMessages)): ?>
         ?>
         <div class="pro-login">
             <p>
-                Welcome <?php echo Yii::app()->user->name?>
+                Welcome <b><?php echo Yii::app()->user->name ?></b>
             </p>
             <p>
-                <?php echo CHtml::link("Logout", array('/optiguide/default/logout'))?>
+                <?php echo CHtml::link("Logout", array('/optiguide/default/logout')) ?>
             </p>
         </div>
     <?php } ?>
@@ -35,6 +34,9 @@ if (isset($this->flashMessages)): ?>
     <div class="ad2"> 
         <?php echo CHtml::image("{$this->themeUrl}/images/ad4.jpg", 'Ad') ?>
     </div>
+    
+    <?php $this->widget('OgCalenderWidget'); ?>
+    
     <div class="ad2"> 
         <?php echo CHtml::image("{$this->themeUrl}/images/ad5.jpg", 'Ad') ?>
     </div>

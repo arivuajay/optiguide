@@ -62,10 +62,10 @@
             <h2> welcome Opti-guide.com </h2>
             <p>You are looking for an optical dispensary? Search through the engine and find what you need!</p>
             <p>You are a professionnal in this industry? Use your access codes and visit the secured zone to find more about canadian suppliers, products and brand names, calendar of upcoming events and to read fresh news from the industry through the Opti-News e-mail newsletter.</p>
-         <?php   if (Yii::app()->user->isGuest){?>
-            <p>Need an access code? Click here to  <?php echo CHtml::link(Myclass::t('OG045', '', 'og'), array('/optiguide/default/subscribe')); ?></p>
-         <?php }?>
-       
+            <?php if (Yii::app()->user->isGuest) { ?>
+                <p>Need an access code? Click here to  <?php echo CHtml::link(Myclass::t('OG045', '', 'og'), array('/optiguide/default/subscribe')); ?></p>
+            <?php } ?>
+
         </div>
     </div>
 
@@ -79,10 +79,13 @@
         </div>
     </div>
 
-    <?php $this->renderPartial('_latest_news'); ?>
-    
-    <?php $this->renderPartial('_calender'); ?>
+    <?php
+    if (!Yii::app()->user->isGuest) {
+        $this->renderPartial('_latest_news');
+        $this->renderPartial('_calender');
+    }
 
-    <?php $this->renderPartial('_did_you_know'); ?>
+    $this->renderPartial('_did_you_know');
+    ?>
 
 </div>

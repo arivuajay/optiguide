@@ -1,6 +1,6 @@
-<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">   
-    <div class="calendar-bg"> 
-        <h2> Calendar </h2>
+<div class="optinews-left"> 
+    <div class="optinews-left-heading"> Calendar Of Events </div>
+    <div class="optinews-left-bg"> 
         <?php
         $events = CalenderEvent::model()->currentMonthYear()->findAll();
         $events_list = array();
@@ -52,12 +52,12 @@
                 }
             }
 EOD;
-        Yii::app()->clientScript->registerScript('_calender', $js);
+        Yii::app()->clientScript->registerScript('_ogCalenderWidget', $js);
         ?>
-        
+
         <?php
         $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-            'name' => 'datepicker-Inline',
+            'name' => 'datepicker-Inline-sidebar',
             'flat' => true, //remove to hide the datepicker
             'options' => array(
                 'showAnim' => 'slide', //'slide','fold','slideDown','fadeIn','blind','bounce','clip','drop'
