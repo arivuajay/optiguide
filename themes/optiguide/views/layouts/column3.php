@@ -21,7 +21,7 @@
         ?>
         <div class="pro-login">
             <p>
-                <?php echo Myclass::t('OG046', '', 'og'); ?> <b><?php echo Yii::app()->user->name ?></b>
+                <?php echo Myclass::t('OG051', '', 'og'); ?> <b><?php echo Yii::app()->user->name ?></b>
             </p>
             <p>
                 <?php echo CHtml::link("<i class='fa fa-sign-out'></i> " . Myclass::t('OG025', '', 'og'), array('/optiguide/default/logout')) ?>
