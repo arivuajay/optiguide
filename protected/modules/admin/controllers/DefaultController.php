@@ -41,21 +41,34 @@ class DefaultController extends Controller {
     {
         $this->render('index');
     }
+    
 
     public function actionLogin() {
         $this->layout = '//layouts/login';
+        
+        //$baseurl =  Yii::app()->baseUrl; 
+       // 'admin/retailerDirectory/update/id/4';
 
         if (!Yii::app()->user->isGuest) 
         {
-            $this->redirect(array('/admin/default/index'));
-        }
-
+            //$this->redirect(array('/admin/default/index'));           
+              $this->redirect(array('/admin/default/index'));
+               
+        }  
+        
         $model = new AdminLoginForm();
-
+ //
         if (isset($_POST['sign_in'])) {
             $model->attributes = $_POST['AdminLoginForm'];
             if ($model->validate() && $model->login()):
-                $this->redirect(array('/admin/default/index'));
+                
+               $param_str = Yii::app()->getRequest()->getQuery('str');
+                if ($param_str!='')
+                {  
+                    $decodeurl = Myclass::refdecryption($param_str); 
+                    $this->redirect($decodeurl);  
+                }    
+                 $this->redirect(array('/admin/default/index'));              
             endif;
         }
 

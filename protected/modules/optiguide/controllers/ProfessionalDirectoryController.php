@@ -208,6 +208,21 @@ class ProfessionalDirectoryController extends OGController {
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_SPECIALISTE;
                 $umodel->save(false);
+                
+                /* Send mail to admin for confirmation */
+                $mail    = new Sendmail();
+                $professional_url = ADMIN_URL.'/admin/professionalDirectory/update/id/'.$umodel->ID_RELATION;
+                $enc_url          = Myclass::refencryption($professional_url);              
+                $nextstep_url     = ADMIN_URL.'admin/default/login/str/'.$enc_url;
+                $subject          = SITENAME."- New professional registration notification - ".$model->NOM." ".$model->PRENOM;
+                $trans_array = array(
+                    "{NAME}"    => $model->NOM,                   
+                    "{UTYPE}"   => 'professional',
+                    "{NEXTSTEPURL}" => $nextstep_url,
+                );
+                $message = $mail->getMessage('registration', $trans_array);
+                $mail->send(ADMIN_EMAIL, $subject, $message);
+                
                 Yii::app()->user->setFlash('success', Myclass::t('OG044', '', 'og'));
                 $this->redirect(array('create'));
             }else

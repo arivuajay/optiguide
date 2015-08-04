@@ -34,7 +34,7 @@ $this->breadcrumbs = array(
     </div>
     <div class="footer">
         <?php echo CHtml::submitButton(Myclass::t('APP24'), array('class' => 'btn bg-olive btn-block', 'name' => 'sign_in')) ?>
-        <p><?php echo CHtml::link(Myclass::t('APP23'), array('/admin/default/forgotpassword')) ?></p>
+        <p><?php echo CHtml::link(Myclass::t('APP23'), array('/admin/default/forgotpassword')) ?></p>        
     </div>
     <?php $this->endWidget(); ?>
 </div>

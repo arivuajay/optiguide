@@ -221,6 +221,20 @@ class RetailerDirectoryController extends OGController {
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_RETAILER;
                 $umodel->save(false);
+                
+                 /* Send mail to admin for confirmation */
+                $mail    = new Sendmail();
+                $retailer_url = ADMIN_URL.'/admin/retailerDirectory/update/id/'.$umodel->ID_RELATION;
+                $enc_url      = Myclass::refencryption($retailer_url);              
+                $nextstep_url = ADMIN_URL.'admin/default/login/str/'.$enc_url;
+                $subject      =  SITENAME."- New optical retailer registration notification - ".$model->COMPAGNIE;
+                $trans_array  = array(
+                    "{NAME}"    => $model->COMPAGNIE,                    
+                    "{UTYPE}"   => 'optical retailer',
+                    "{NEXTSTEPURL}" => $nextstep_url,
+                );
+                $message = $mail->getMessage('registration', $trans_array);
+                $mail->send(ADMIN_EMAIL, $subject, $message);
 
                 Yii::app()->user->setFlash('success', Myclass::t('OG044', '', 'og'));
                 $this->redirect(array('create'));
