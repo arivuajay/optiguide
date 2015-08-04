@@ -134,7 +134,12 @@ return array(
     'OG120' => 'Submit',
     'OG121' => 'Grouping',
     'OG122' => 'You must select one or more categories.',
-    'OG123' => 'Email is required to subscribe.'
+    'OG123' => 'Email is required to subscribe.',
+    
+    'OG124' => 'Incorrect username or password.',
+    'OG125' => 'Username is currently not active',
+    'OG126' => 'Invalid Exception'
+    
     
     
 );

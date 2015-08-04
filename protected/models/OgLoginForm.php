@@ -35,8 +35,8 @@ class OgLoginForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'username' => 'Username',
-            'password' => 'Password',
+            'username' => Myclass::t('APP3'),
+            'password' => Myclass::t('APP4'),
             'rememberMe' => 'Remember Me',
         );
     }
@@ -50,11 +50,11 @@ class OgLoginForm extends CFormModel {
             $this->_identity = new OgIdentity($this->username, $this->password);
             if (!$this->_identity->authenticate()):
                if(($this->_identity->errorCode == 1) or ($this->_identity->errorCode == 2))
-                    $this->addError('password','Incorrect username or password.');
+                    $this->addError('password',Myclass::t('OG124'));
                 elseif($this->_identity->errorCode == 3)
-                    $this->addError('username','Username is currently not active');
+                    $this->addError('username',Myclass::t('OG125'));
                 else
-                    $this->addError('username','Invalid Exception');
+                    $this->addError('username',Myclass::t('OG126'));
             endif;
         endif;
     }

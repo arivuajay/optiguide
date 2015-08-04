@@ -134,6 +134,10 @@ return array(
     'OG120' => 'Soumettre',
     'OG121' => 'Regroupement',
     'OG122' => 'Vous devez sélectionner une ou plusieurs catégories.',
-    'OG123' => 'Email est requis pour vous abonner.'
+    'OG123' => 'Email est requis pour vous abonner.',
+    
+    'OG124' => 'Identifiant ou mot de passe incorrect.',
+    'OG125' => 'Nom d\'utilisateur est actuellement inactive',
+    'OG126' => 'Exception non valide'
 );
 ?>
