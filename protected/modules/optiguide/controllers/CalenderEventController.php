@@ -86,6 +86,7 @@ class CalenderEventController extends OGController {
         } else {
             $criteria->addCondition('DATE_AJOUT1 >= "' . $current_date . '"');
         }
+        $criteria->addCondition('AFFICHER_SITE = 1');
         $criteria->order = 'DATE_AJOUT1 DESC';
 
         $count = CalenderEvent::model()->count($criteria);
@@ -119,7 +120,7 @@ class CalenderEventController extends OGController {
      * @throws CHttpException
      */
     public function loadModel($id) {
-        $model = CalenderEvent::model()->findByPk($id);
+        $model = CalenderEvent::model()->findByPk($id, 'AFFICHER_SITE = :ENABLE', array(':ENABLE' => 1));
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
