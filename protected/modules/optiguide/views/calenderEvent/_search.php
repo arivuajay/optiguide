@@ -16,7 +16,7 @@
     $cities = Myclass::getallcities($searchModel['ID_REGION']);
     $months = Myclass::getMonths();
     $connection = Yii::app()->db;
-    $year_command = $connection->createCommand('SELECT ID_EVENEMENT, YEAR(DATE_AJOUT1) AS event_year FROM `optiguide`.`calendrier_calendrier` GROUP BY YEAR(`DATE_AJOUT1`)');
+    $year_command = $connection->createCommand('SELECT ID_EVENEMENT, YEAR(DATE_AJOUT1) AS event_year FROM calendrier_calendrier GROUP BY YEAR(`DATE_AJOUT1`)');
     $years = $year_command->queryAll();
     $list_year = CHtml::listData($years, 'event_year', 'event_year');
     ?>
