@@ -51,7 +51,7 @@ $createtitle= 'Ajouter une catégorie';
         );
 
         $this->widget('booster.widgets.TbExtendedGridView', array(
-          //  'filter' => $model,
+            'filter' => $model,
             'type' => 'striped bordered datatable',
             'dataProvider' => $model->search(),
             'responsiveTable' => true,

@@ -27,7 +27,7 @@ class OgLoginFormWidget extends CWidget {
                 if($umodel->IS_FIRST_LOG==0)
                 {    
                     $umodel->IS_FIRST_LOG = 1;
-                    $model->save(false);
+                    $umodel->save(false);
                 }    
                  
                 $this->owner->redirect(array("/optiguide/default/index"));

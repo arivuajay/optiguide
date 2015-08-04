@@ -75,6 +75,7 @@ class Myclass extends CController {
     }
 
     public static function getallregions($id = null) {
+        $regions = array();
         $criteria_reg = new CDbCriteria;
 
         $regionname = 'NOM_REGION_' . Yii::app()->session['language'];
@@ -83,25 +84,24 @@ class Myclass extends CController {
         if (!is_null($id)) {
             $criteria_reg->condition = 'ID_PAYS=:id';
             $criteria_reg->params = array(':id' => $id);
+            $regions = RegionDirectory::model()->findAll($criteria_reg);
+            $regions = CHtml::listData($regions, 'ID_REGION', $regionname);
         }
-
-        $regions = RegionDirectory::model()->findAll($criteria_reg);
-
-        $regions = CHtml::listData($regions, 'ID_REGION', $regionname);
 
         return $regions;
     }
 
     public static function getallcities($id = null) {
-       
+        $cities = array();
         $criteria_reg = new CDbCriteria;
         $criteria_reg->order = 'NOM_VILLE ASC';
         if (!is_null($id)) {
             $criteria_reg->condition = 'ID_REGION=:id';
             $criteria_reg->params = array(':id' => $id);
+            $cities = CityDirectory::model()->findAll($criteria_reg);
+            $cities = CHtml::listData($cities, 'ID_VILLE', 'NOM_VILLE');
         }
-        $cities = CityDirectory::model()->findAll($criteria_reg);
-        $cities = CHtml::listData($cities, 'ID_VILLE', 'NOM_VILLE');
+       
         return $cities;
     }
 

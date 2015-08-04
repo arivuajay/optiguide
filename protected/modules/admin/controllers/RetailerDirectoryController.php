@@ -88,8 +88,8 @@ class RetailerDirectoryController extends Controller {
                 Yii::app()->user->setFlash('success', 'Détaillant créé avec succès!!!');
                 $this->redirect(array('index'));
             } else {
-                var_dump($model->errors);
-                 var_dump($umodel->errors);
+               // var_dump($model->errors);
+               //  var_dump($umodel->errors);
             }
         }
 

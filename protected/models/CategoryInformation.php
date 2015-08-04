@@ -54,6 +54,7 @@ class CategoryInformation extends CActiveRecord
                 // The following rule is used by search().
                 // @todo Please remove those attributes that should not be searched.
                 array('country,region', 'safe'),
+                array('COURRIEL','email'),
                 array('ID_CATEGORIE, CATEGORIE_FR, CATEGORIE_EN, NOM_ASSOCIATION_FR, NOM_ASSOCIATION_EN, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELECOPIEUR, TEL_SANS_FRAIS, COURRIEL, SITE_WEB, PREFIXE_REPRESENTANT_FR, PREFIXE_REPRESENTANT_EN, NOM_REPRESENTANT, TITRE_REPRESENTANT_FR, TITRE_REPRESENTANT_EN', 'safe', 'on'=>'search'),
         );
     }
