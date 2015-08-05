@@ -56,6 +56,7 @@ class ProfessionalDirectory extends CActiveRecord {
             // @todo Please remove those attributes that should not be searched.
             array('country,region', 'safe'),
             array('ID_SPECIALISTE, TYPESPECIALISTEFR , ID_CLIENT, PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, ID_TYPE_SPECIALISTE, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, SITE_WEB, COURRIEL, DATE_MODIFICATION', 'safe', 'on' => 'search'),
+            array('TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2', 'phoneNumber'),
         );
     }
 
@@ -66,12 +67,24 @@ class ProfessionalDirectory extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'cityDirectory'       => array(self::BELONGS_TO, 'CityDirectory', 'ID_VILLE'),
-            
+            'cityDirectory'       => array(self::BELONGS_TO, 'CityDirectory', 'ID_VILLE'),            
             'professionalType' => array(self::BELONGS_TO, 'ProfessionalType', 'ID_TYPE_SPECIALISTE'),
             'userDirectory'    => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION'),
             'cntUsr'           => array(self::STAT, 'UserDirectory',  'ID_RELATION', 'condition' => 'NOM_TABLE = "Professionnels"'),
         );
+    }
+    
+    /** 
+    * check the format of the phone number entered
+    * @param string $attribute the name of the attribute to be validated
+    * @param array $params options specified in the validation rule
+    */
+    public function phoneNumber($attribute,$params='')
+    {
+      if($this->$attribute!='' && preg_match("/[A-Za-z]+/",$this->$attribute)==1)
+      {            
+              $this->addError($attribute,'Invalid Format.' );
+      }        
     }
 
     /**

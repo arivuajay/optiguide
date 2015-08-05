@@ -56,8 +56,23 @@ class CategoryInformation extends CActiveRecord
                 array('country,region', 'safe'),
                 array('COURRIEL','email'),
                 array('ID_CATEGORIE, CATEGORIE_FR, CATEGORIE_EN, NOM_ASSOCIATION_FR, NOM_ASSOCIATION_EN, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELECOPIEUR, TEL_SANS_FRAIS, COURRIEL, SITE_WEB, PREFIXE_REPRESENTANT_FR, PREFIXE_REPRESENTANT_EN, NOM_REPRESENTANT, TITRE_REPRESENTANT_FR, TITRE_REPRESENTANT_EN', 'safe', 'on'=>'search'),
+                array('TELEPHONE, TELECOPIEUR, TEL_SANS_FRAIS', 'phoneNumber'),
         );
     }
+    
+    /** 
+        * check the format of the phone number entered
+        * @param string $attribute the name of the attribute to be validated
+        * @param array $params options specified in the validation rule
+        */
+        public function phoneNumber($attribute,$params='')
+        {
+          if($this->$attribute!='' && preg_match("/[A-Za-z]+/",$this->$attribute)==1)
+          {            
+                $this->addError($attribute,'Invalid Format.' );          
+          }        
+        }
+
 
     /**
      * @return array relational rules.

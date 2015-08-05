@@ -136,3 +136,8 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         ?>
     </div>
 </div>
+ <script>
+$(document).ready(function(){
+    $.fn.dataTableExt.sErrMode = 'throw';
+    });
+</script>

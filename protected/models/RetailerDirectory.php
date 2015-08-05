@@ -65,6 +65,7 @@ class RetailerDirectory extends CActiveRecord
                         array('Categories,uaccess_search,searchcat','safe'),
                         array('COURRIEL','email'),
 			array('uaccess_search,ID_RETAILER, ID_CLIENT, COMPAGNIE, ID_VILLE, ADRESSE, ADRESSE2, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, URL, COURRIEL, TEL_1800, DATE_MODIFICATION, ID_RETAILER_TYPE, ID_GROUPE, GROUPE, HEAD_OFFICE_NAME, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5', 'safe', 'on'=>'search'),
+                        array('TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2,TEL_1800', 'phoneNumber'),
 		);
 	}
         
@@ -79,7 +80,20 @@ class RetailerDirectory extends CActiveRecord
 
             return true;
         }
-       
+        
+        /** 
+        * check the format of the phone number entered
+        * @param string $attribute the name of the attribute to be validated
+        * @param array $params options specified in the validation rule
+        */
+        public function phoneNumber($attribute,$params='')
+        {
+          if($this->$attribute!='' && preg_match("/[A-Za-z]+/",$this->$attribute)==1)
+          {            
+                $this->addError($attribute,'Invalid Format.' );          
+          }        
+        }
+
         
       
                 

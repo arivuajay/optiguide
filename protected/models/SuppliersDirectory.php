@@ -86,6 +86,7 @@ class SuppliersDirectory extends CActiveRecord {
             // @todo Please remove those attributes that should not be searched.
             array('country,region,archivecat,IDSECTION,Products1,Products2', 'safe'),
             array('ID_FOURNISSEUR, COMPAGNIE, ID_CLIENT, ID_TYPE_FOURNISSEUR, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELECOPIEUR, TITRE_TEL_SANS_FRAIS, TITRE_TEL_SANS_FRAIS_EN, TEL_SANS_FRAIS, TITRE_TEL_SECONDAIRE, TITRE_TEL_SECONDAIRE_EN, TEL_SECONDAIRE, COURRIEL, SITE_WEB, SUCCURSALES, ETABLI_DEPUIS, NB_EMPLOYES, PERSONNEL_NOM1, PERSONNEL_TITRE1, PERSONNEL_TITRE1_EN, PERSONNEL_NOM2, PERSONNEL_TITRE2, PERSONNEL_TITRE2_EN, PERSONNEL_NOM3, PERSONNEL_TITRE3, PERSONNEL_TITRE3_EN, DATE_MODIFICATION, REGIONS_FR, REGIONS_EN, bAfficher_site, iId_fichier', 'safe', 'on' => 'search'),
+            array('TELEPHONE, TELECOPIEUR, TEL_SANS_FRAIS, TEL_SECONDAIRE', 'phoneNumber'),
         );
     }
 
@@ -102,6 +103,19 @@ class SuppliersDirectory extends CActiveRecord {
             'userDirectory' => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION'),
         );
     }
+    
+     /** 
+        * check the format of the phone number entered
+        * @param string $attribute the name of the attribute to be validated
+        * @param array $params options specified in the validation rule
+        */
+        public function phoneNumber($attribute,$params='')
+        {
+          if($this->$attribute!='' && preg_match("/[A-Za-z]+/",$this->$attribute)==1)
+          {            
+                $this->addError($attribute,'Invalid Format.' );          
+          }        
+        }
 
     /**
      * @return array customized attribute labels (name=>label)
