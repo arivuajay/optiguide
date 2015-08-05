@@ -28,15 +28,15 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         //$createurl = Yii::app()->createUrl('/admin/userDirectory/create',$params);
         $gridColumns = array(         
             'COMPAGNIE',
-            'ADRESSE',
-            'CODE_POSTAL',
+            'ID_CLIENT',
+          //  'ADRESSE',
+         //   'CODE_POSTAL',
             array(
                 'header' => 'Type de retailer',
                 'name' => 'retailerType.NOM_TYPE_FR',
                 'value' => $data->retailerType->NOM_TYPE_FR,
                 'filter' => CHtml::activeDropDownList($model, 'ID_RETAILER_TYPE', CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR'), array('class' => 'form-control', 'prompt' => 'Tous')),
-            ),       
-            'ID_CLIENT',
+            ),   
             array(
                 'header' => "Accès",
                 'type' => 'raw',
