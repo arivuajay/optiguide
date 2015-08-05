@@ -138,7 +138,9 @@ return array(
     
     'OG124' => 'Incorrect username or password.',
     'OG125' => 'Username is currently not active',
-    'OG126' => 'Invalid Exception'
+    'OG126' => 'Invalid Exception',
+    
+    'OG127' => 'Head Office Name',
     
     
     

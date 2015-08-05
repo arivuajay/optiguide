@@ -42,9 +42,9 @@ return array(
     'OG027' => 'Mot-clé',
     
      'OG028' => 's\'inscrire',
-    'OG029' => '<p > Nouveaux magazines numériques ! Inscrivez-vous et obtenir votre Souscription numérique GRATUIT pour ENVISION et Envue . < / P>
-                <p > De plus, recevez votre abonnement OPTI- NOUVELLES et vos codes d\'accès à l\'OPTI - GUIDE . < / p>
-                <p > S\'il vous plaît remplir l\'une des formes suivantes . Il ne devrait vous prendre quelques minutes . < / P>',
+    'OG029' => '<p> Nouveaux magazines numériques ! Inscrivez-vous et obtenir votre Souscription numérique GRATUIT pour ENVISION et Envue . </p>
+                <p> De plus, recevez votre abonnement OPTI- NOUVELLES et vos codes d\'accès à l\'OPTI - GUIDE . </p>
+                <p> S\'il vous plaît remplir l\'une des formes suivantes . Il ne devrait vous prendre quelques minutes . </p>',
     'OG030' => 'Professionnal',
     'OG031' => 'Fournisseur',
     'OG032' => 'Détaillant optique',
@@ -76,5 +76,22 @@ return array(
     'OG050' => 'Catégories',
     
     'OG051' => 'Bienvenue',
+    
+    'OG052'=> 'Trouver un Fournisseur optique',
+    'OG053'=> 'Toutes Fournisseur Optique',
+    'OG054'=> 'Zone professionnelle',
+    'OG055'=> 'Se connecter!',
+    'OG056'=> 'Mot de passe oublié?',
+    
+     'OG057'=> '<p>Vous cherchez un bureau d\'optique ? Rechercher dans le moteur et de trouver ce dont vous avez besoin!</p>
+     <p>Vous êtes un professionnel dans cette industrie? Utilisez vos codes d\'accès et visitez la zone sécurisée pour trouver les fournisseurs canadiens , les produits et les noms de marque , un calendrier des événements à venir et à lire des nouvelles fraîches de l\'industrie grâce à la newsletter e -mail Opti- Nouvelles.</p>',
+     'OG058'=> 'Besoin d\'un code d\'accès ? Cliquez ici pour',
+     'OG059'=> 'Produits et services',
+    
+     'OG060'=> 'Prénom',
+     'OG061'=> 'Nom',
+     'OG062'=> 'Type de professionnel',
+     'OG063'=> 'Bureau / Nom de compagnie'
+
     
 );

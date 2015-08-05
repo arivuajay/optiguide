@@ -15,8 +15,6 @@ class OptiguideModule extends CWebModule {
             'optiguide.components.*',
         ));
         
-        if(!isset(Yii::app()->session['language']))
-            Yii::app()->session['language'] = 'EN'; 
     }
 
     public function beforeControllerAction($controller, $action) {

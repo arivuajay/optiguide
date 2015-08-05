@@ -255,7 +255,7 @@
                                 'name' => 'btnSubmit',
                                 'type' => 'submit',
                                 'class' => 'submit-btn'
-                                    ), '<i class="fa fa-check-circle"></i> Submit');
+                                    ), '<i class="fa fa-check-circle"></i> '. Myclass::t('OG120'));
                             ?>
                         </div>
                     </div>

@@ -80,24 +80,28 @@ class ProfessionalDirectory extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'ID_SPECIALISTE' => Myclass::t('Id Specialiste'),
-            'ID_TYPE_SPECIALISTE' => Myclass::t('Type de professionnel'),
+            'ID_TYPE_SPECIALISTE' => Myclass::t('OG062','','og'),
             'ID_CLIENT' => Myclass::t('ID'),
             'PREFIXE_FR' => Myclass::t('Préfixe en français'),
             'PREFIXE_EN' => Myclass::t('Préfixe en anglais'),
-            'PRENOM' => Myclass::t('Prénom'),
-            'NOM' => Myclass::t('Nom'),
-            'BUREAU' => Myclass::t('Bureau '),
-            'ID_VILLE' => Myclass::t('Ville'),
-            'ADRESSE' => Myclass::t('Adresse'),
-            'ADRESSE2' => Myclass::t('Adresse (suite)'),
-            'CODE_POSTAL' => Myclass::t('Code Postal'),
-            'TELEPHONE' => Myclass::t('Téléphone #1'),
-            'TELEPHONE2' => Myclass::t('Téléphone #2'),
-            'TELECOPIEUR' => Myclass::t('Télécopieur #1'),
-            'TELECOPIEUR2' => Myclass::t('Telecopieur2'),
-            'SITE_WEB' => Myclass::t('Site Web'),
-            'COURRIEL' => Myclass::t('Courriel'),
+            'PRENOM' => Myclass::t('OG060','','og'),
+            'NOM' => Myclass::t('OG061','','og'),
+            'BUREAU' => Myclass::t('OG063','','og'),
+            'ID_VILLE' =>  Myclass::t('APP70'),
+            'ADRESSE' => Myclass::t('APP66'),
+	    'ADRESSE2' => Myclass::t('APP67'),
+            'CODE_POSTAL' => Myclass::t('APP71'),           
+            'TELEPHONE' => Myclass::t('APP72'),
+            'TELEPHONE2' => Myclass::t('APP72')." #2",
+            'TELECOPIEUR' => Myclass::t('APP73')." #1",
+            'TELECOPIEUR2' => Myclass::t('APP73')." #2",
+            'SITE_WEB' => Myclass::t('OG103'),
+            'COURRIEL' => Myclass::t('APP75'),
             'DATE_MODIFICATION' => Myclass::t('Date Modification'),
+            'region'     => Myclass::t('APP48'),
+            'country'    => Myclass::t('APP68'),
+            'TYPE_AUTRE'  => 'Note'  
+            
         );
     }
 

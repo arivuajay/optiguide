@@ -1,68 +1,47 @@
 <div class="search-bg"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "> 
-        <div class="search-heading">  <i class="fa fa-search"></i> Find an optical Supplier </div>
+        <div class="search-heading">  <i class="fa fa-search"></i> <?php echo Myclass::t('OG052', '', 'og'); ?> </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 "> 
-        <button class="all-suppliers-btn" type="button"><i class="fa fa-group"></i> All Optical Supplier</button>
+        <button class="all-suppliers-btn" type="button"><i class="fa fa-group"></i> <?php echo Myclass::t('OG053', '', 'og'); ?></button>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
         <select class="selectpicker">
-            <option>Name</option>
-            <option>Name 1</option>
-            <option>Name 2</option>
-            <option>Name 3</option>
-            <option>Name 4</option>
+            <option><?php echo Myclass::t('APP2'); ?></option>          
         </select>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
         <select class="selectpicker">
-            <option>Type</option>
-            <option>Type 1</option>
-            <option>Type 2</option>
-            <option>Type 3</option>
-            <option>Type 4</option>
+            <option><?php echo Myclass::t('OG102'); ?></option>           
         </select>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
         <select class="selectpicker">
-            <option>Category</option>
-            <option>Category1</option>
-            <option>Category 2</option>
-            <option>Category 3</option>
-            <option>Category 4</option>
+            <option><?php echo Myclass::t('APP69'); ?></option>          
         </select>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
         <select class="selectpicker">
-            <option>Products & Services </option>
-            <option>Products & Services  1</option>
-            <option>Products & Services 2</option>
-            <option>Products & Services  3</option>
-            <option>Products & Services  4</option>
+            <option><?php echo Myclass::t('OG059', '', 'og'); ?> </option>          
         </select>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 "> 
         <select class="selectpicker">
-            <option>Brand</option>
-            <option>Brand 1</option>
-            <option>Brand 2</option>
-            <option>Type 3</option>
-            <option>Brand 4</option>
+            <option><?php echo Myclass::t('OG010', '', 'og'); ?></option>         
         </select>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 "> 
-        <button class="find-btn" type="button">Find</button>
+        <button class="find-btn" type="button"> <?php echo Myclass::t('OG024', '', 'og'); ?></button>
     </div>
 </div>
 
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7"> 
         <div class="welcome-cont"> 
-            <h2> welcome Opti-guide.com </h2>
-            <p>You are looking for an optical dispensary? Search through the engine and find what you need!</p>
-            <p>You are a professionnal in this industry? Use your access codes and visit the secured zone to find more about canadian suppliers, products and brand names, calendar of upcoming events and to read fresh news from the industry through the Opti-News e-mail newsletter.</p>
+            <h2>  <?php echo Myclass::t('OG051', '', 'og'); ?> <?php echo SITENAME; ?> </h2>
+            <?php echo Myclass::t('OG057', '', 'og'); ?>
             <?php if (Yii::app()->user->isGuest) { ?>
-                <p>Need an access code? Click here to  <?php echo CHtml::link(Myclass::t('OG045', '', 'og'), array('/optiguide/default/subscribe')); ?></p>
+                <p><?php echo Myclass::t('OG058', '', 'og'); ?>  <?php echo CHtml::link(Myclass::t('OG045', '', 'og'), array('/optiguide/default/subscribe')); ?></p>
             <?php } ?>
         </div>
     </div>
@@ -73,7 +52,7 @@
                 <?php echo CHtml::image("{$this->themeUrl}/images/opti-rep-logo.png", 'Logo') ?>
             </div>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas congue nibh ipsum, rhoncus. Suspendisse eget purus tellus fermentum.</p>
-            <p>Need an access code? Click here to   <a href="#">Register</a></p>
+            <p> <p><?php echo Myclass::t('OG058', '', 'og'); ?>   <?php echo CHtml::link(Myclass::t('OG045', '', 'og'), array('#')); ?></p>
         </div>
     </div>
 

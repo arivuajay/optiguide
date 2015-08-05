@@ -63,6 +63,7 @@ class RetailerDirectory extends CActiveRecord
 			// @todo Please remove those attributes that should not be searched.    
                         array('CATEGORY_1,CATEGORY_2,CATEGORY_3,CATEGORY_4,CATEGORY_5','Checkatleast'),                     
                         array('Categories,uaccess_search,searchcat','safe'),
+                        array('COURRIEL','email'),
 			array('uaccess_search,ID_RETAILER, ID_CLIENT, COMPAGNIE, ID_VILLE, ADRESSE, ADRESSE2, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, URL, COURRIEL, TEL_1800, DATE_MODIFICATION, ID_RETAILER_TYPE, ID_GROUPE, GROUPE, HEAD_OFFICE_NAME, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5', 'safe', 'on'=>'search'),
 		);
 	}
@@ -129,7 +130,7 @@ class RetailerDirectory extends CActiveRecord
 			'ID_RETAILER_TYPE' => Myclass::t('OG102'),
 			'ID_GROUPE' => Myclass::t('OG121'),
 			'GROUPE' => Myclass::t('Groupe'),
-			'HEAD_OFFICE_NAME' => Myclass::t('Nom du siège social'),
+			'HEAD_OFFICE_NAME' => Myclass::t('OG127'),
 			'CATEGORY_1' => Myclass::t('OG105'),
 			'CATEGORY_2' => Myclass::t('OG106'),
 			'CATEGORY_3' => Myclass::t('OG107'),

@@ -4,16 +4,16 @@ return array(
     'APP1'   => "Admin Id",
     'APP2'   => "Nom",
     'APP3'   => "Nom d'utilisateur",
-    'APP4'   => "mot de passe",
+    'APP4'   => "Mot de passe",
     'APP5'   => "statut",
-    'APP6'   => "Email",
-    'APP7'   => "mot de passe actuel",
+    'APP6'   => "Courriel",
+    'APP7'   => "Mot de passe actuel",
     'APP8'   => "Retaper le mot de passe",
-    'APP9'   => "date de création",
+    'APP9'   => "Date de création",
     'APP10'  => "Administrateur dernière connexion",
     'APP11'  => "Admin login Ip",
     'APP12'  => "Ancien mot de passe est incorrect.",
-    'APP13'  => "souviens-toi de moi",
+    'APP13'  => "Souviens-toi de moi",
     'APP14'  => "Nom d'utilisateur ou mot de passe incorrect . S'il vous plaît essayer à nouveau.",
     'APP15'  => "Adresse Email Incorrecte. S'il vous plaît essayer à nouveau.",
     'APP16'  => "Mot de passe Admin de réinitialisation",
@@ -28,7 +28,7 @@ return array(
     'APP25'  => 'Sauvegarder',
     'APP26'  => 'Changer Le Mot De Passe',
     'APP27'  => 'Mot De Passe Oublié',
-    'APP28'  => 'envoyer',
+    'APP28'  => 'Envoyer',
     'APP29'  => 'Mon Profil',
     
     'APP30'  => 'catégorie ID',
@@ -51,7 +51,7 @@ return array(
     'APP45' => 'Ce nom de la ville existent déjà pour cette région.',
     'APP46' => 'actes',
     'APP47' => 'Ville Id',
-    'APP48' => 'région',
+    'APP48' => 'Région',
     'APP49' => 'Ville Nom',
     
     'APP50' => 'Section Id',
@@ -78,11 +78,11 @@ return array(
     'APP68' => 'Pays',   
     'APP69' => 'Catégorie',   
     'APP70' => 'Ville',
-    'APP71' => 'code postal',
-    'APP72' => 'téléphone',
+    'APP71' => 'Code postal',
+    'APP72' => 'Téléphone',
     'APP73' => 'Télécopieur',
     'APP74' => 'Tel Sans Frais',
-    'APP75' => 'Email',
+    'APP75' => 'Courriel du magasin',
     'APP76' => 'site Internet',
     'APP77' => 'Prefix Représentant Fr',
     'APP78' => 'Prefix Représentant En',
@@ -112,9 +112,9 @@ return array(
     'APP506' => 'La page demandée ne existe pas.',      
     
      // Retailer form
-    'OG101' => 'nom de magasin',
+    'OG101' => 'Nom de magasin',
     'OG102' => 'Type',
-    'OG103' => 'Magasin site Web',  
+    'OG103' => 'Site Web du magasin',  
     'OG104' => 'Profession ou activité principale de l’établissement :<br/> <span> (Cochez une ou plusieurs options)</span> ',
     'OG105' => 'Opticiens',
     'OG106' => 'Optométristes',
@@ -138,6 +138,8 @@ return array(
     
     'OG124' => 'Identifiant ou mot de passe incorrect.',
     'OG125' => 'Nom d\'utilisateur est actuellement inactive',
-    'OG126' => 'Exception non valide'
+    'OG126' => 'Exception non valide',
+    
+    'OG127' => 'Nom du siège social',
 );
 ?>

@@ -19,7 +19,7 @@
             ));
 
             $retailertypes = CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR');
-            $groupetypes = CHtml::listData(RetailerGroup::model()->findAll(), 'ID_GROUPE', 'NOM_GROUPE');
+            $groupetypes = array();
             $country = Myclass::getallcountries();
             $regions = Myclass::getallregions();
             $cities = Myclass::getallcities();
@@ -85,7 +85,7 @@
 
                     <div class="form-row1">                        
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                            <?php echo $form->labelEx($umodel, 'HEAD_OFFICE_NAME'); ?>
+                            <?php echo $form->labelEx($model, 'HEAD_OFFICE_NAME'); ?>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
                             <?php echo $form->textField($model, 'HEAD_OFFICE_NAME', array('class' => 'form-txtfield')); ?>

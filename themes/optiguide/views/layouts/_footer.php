@@ -4,7 +4,7 @@
             <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">  
                 <div class="footer-menu">
                     <ul> 
-                        <li><a href="#"> Home </a></li> 
+                        <li> <?php echo CHtml::link(Myclass::t('OG001', '', 'og'), array('/optiguide/')); ?></li> 
                         <li><a href="#">Terms and conditions  </a></li> 
                         <li><a href="#">  Envision  </a></li> 
                         <li><a href="#">   EnVue </a></li> 
@@ -12,8 +12,7 @@
                         <li><a href="#"> Opti-Promo </a></li> 
                         <li><a href="#">    Opti-Mail </a></li> 
                         <li><a href="#"> Classified </a></li>  
-                        <li><a href="#">  Contact </a></li> 
-                        <li><a href="#"> Français</a></li> 
+                        <li><?php echo CHtml::link(Myclass::t('OG004', '', 'og'), array('/optiguide/default/contactus')); ?></li>                      
                     </ul>
                     Copyright 2015 © Breton Communications Inc. All rights reserved.
                 </div>

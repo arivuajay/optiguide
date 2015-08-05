@@ -1417,3 +1417,17 @@ width:100%;
 	 border-bottom:#e5e5e5 solid 1px;
 	 padding-bottom:10px;
 }
+
+/* For French lang changes */
+.fr .all-suppliers-btn {
+  font-size: 14px;
+
+}
+
+.fr .find-btn {
+    font-size: 22px;  
+}
+
+.fr .signin-btn {
+    font-size: 15px; 
+}

@@ -81,5 +81,20 @@ return array(
 
     'OG051' => 'Welcome',
 
+    'OG052'=> 'Find an optical Supplier',
+    'OG053'=> 'All Optical Supplier',
+    'OG054'=> 'Secure Area For Professionals',
+    'OG055'=> 'Log in!',
+    'OG056'=> 'Forgot your password?',
+    
+    'OG057'=> '<p>You are looking for an optical dispensary? Search through the engine and find what you need!</p>
+     <p>You are a professionnal in this industry? Use your access codes and visit the secured zone to find more about canadian suppliers, products and brand names, calendar of upcoming events and to read fresh news from the industry through the Opti-News e-mail newsletter.</p>',
+    
+    'OG058'=> 'Need an access code? Click here to',
+    'OG059'=> 'Products & Services',
+    'OG060'=> 'Last Name',
+    'OG061'=> 'First Name',
+    'OG062' => 'Type',
+    'OG063' => 'Office / Company name'
 
 );

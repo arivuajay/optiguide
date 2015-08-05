@@ -1,7 +1,7 @@
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
         <div class="inner-container"> 
-         <?php if(Yii::app()->session['language']=="EN")
+         <?php if( Yii::app()->language == "EN")
                {?>   
                 <h2>Advertise with us </h2>
                 <p>Please contact Martine Breton or Isabelle Groulx at the following :</p>           

@@ -26,7 +26,7 @@ return array(
     'SMTPAUTH' => true, // Auth : true or false
     'SMTPSECURE' => 'ssl', // Secure :tls or ssl
     'NOREPLYMAIL' => 'noreply@express2help.com',
-    'SITENAME' => 'Optiguide',
+    'SITENAME' => 'Optiguide.com',
     'JS_SHORT_DATE_FORMAT' => 'yy-mm-dd',
     'PHP_SHORT_DATE_FORMAT' => 'Y-m-d',
     'FB_APP_ID' => $fb_app_id,

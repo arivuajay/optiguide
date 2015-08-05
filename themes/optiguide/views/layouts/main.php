@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo Yii::app()->language;?>">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,7 +31,7 @@
         $cs->registerCssFile($themeUrl . '/css/responsive.css');
         ?>
     </head>
-    <body>
+    <body class="<?php echo Yii::app()->language;?>">
         <?php $this->renderPartial('//layouts/_header'); ?>
 
         <div class="body-cont"> 

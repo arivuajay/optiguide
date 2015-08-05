@@ -9,8 +9,8 @@
     ));
     ?>
 
-    <div class="login-heading"> <i class="fa fa-lock"></i>  
-        Secure Area For Professionals
+    <div class="login-heading"> <i class="fa fa-lock"></i>          
+      <?php echo  Myclass::t('OG054', '', 'og');?>
     </div>
     <?php echo $form->textField($model, 'username', array('class' => 'login-field','placeholder'=> Myclass::t('APP3'))); ?>
     <?php echo $form->error($model, 'username'); ?>
@@ -18,9 +18,9 @@
     <?php echo $form->passwordField($model, 'password', array('class' => 'login-field','placeholder'=> Myclass::t('APP4'))); ?>
     <?php echo $form->error($model, 'password'); ?>
     
-    <span> <a href="#">Forgot your password? </a> </span> <br/>
+    <span> <a href="#"> <?php echo  Myclass::t('OG056', '', 'og');?></a> </span> <br/>
     <div class="signin-btn-cont"> 
-        <?php echo CHtml::submitButton('Log in!', array('name' => 'sign_in', 'class' => 'signin-btn')); ?>
+        <?php echo CHtml::submitButton( Myclass::t('OG055', '', 'og') , array('name' => 'sign_in', 'class' => 'signin-btn')); ?>
     </div>
 
     <?php $this->endWidget(); ?>
