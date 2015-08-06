@@ -49,7 +49,7 @@ class UserDirectory extends CActiveRecord
                     // @todo Please remove those attributes that should not be searched.
                    // array('USR', 'safe', 'readOnly'=>true , 'on'=>'update'),
                     array('COURRIEL','email'),
-                    array('bSubscription_envision,bSubscription_envue,ABONNE_MAILING,ABONNE_PROMOTION,COURRIEL','Checksubscriptionmail'),        
+                    array('bSubscription_envision,bSubscription_envue,ABONNE_MAILING,ABONNE_PROMOTION,COURRIEL','Checksubscriptionmail' , 'on'=>'frontend'),        
                     array('ID_UTILISATEUR, LANGUE, PREFIXE, NOM_UTILISATEUR, USR, PWD, COURRIEL, ABONNE_MAILING, ABONNE_PROMOTION, ABONNE_TRANSITION, IS_FIRST_LOG, NOM_TABLE, ID_RELATION, MUST_VALIDATE, sGuid, bSubscription_envision, bSubscription_envue', 'safe', 'on'=>'search'),
             );
 	}

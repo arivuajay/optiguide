@@ -219,30 +219,28 @@
                     </div>
 
                     <div class="form-row1"> 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> 
-                            <label>Yes, I wish to receive the free English digital magazine ENVISION: </label>  
-                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label> <?php echo  Myclass::t('OG114');?></label></div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                             <?php echo $form->radioButtonList($umodel, 'bSubscription_envision', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                         </div>
                     </div>
 
                     <div class="form-row1"> 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label>Yes, I wish to receive the free French digital magazine ENVUE: </label>  </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo  Myclass::t('OG115');?> </label>  </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                             <?php echo $form->radioButtonList($umodel, 'bSubscription_envue', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                         </div>
                     </div>
 
                     <div class="form-row1"> 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label>Yes, I wish to receive the OPTI-NEWS by e-mail :  </label>  </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo  Myclass::t('OG116');?>  </label>  </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                             <?php echo $form->radioButtonList($umodel, 'ABONNE_MAILING', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                         </div>
                     </div>
 
                     <div class="form-row1"> 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label>Yes, I wish to receive OPTI-PROMOS by e-mail :   </label>  </div>
+                       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo  Myclass::t('OG117');?>  </label>  </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                             <?php echo $form->radioButtonList($umodel, 'ABONNE_PROMOTION', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                         </div>

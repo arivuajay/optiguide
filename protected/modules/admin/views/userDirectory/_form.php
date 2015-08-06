@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'LANGUE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php echo $form->dropDownList($model, 'LANGUE', array("FR" => 'Français', "EN" => 'Anglais'),array('class'=>'form-control'));?>
+                        <?php echo $form->dropDownList($model, 'LANGUE', array("FR" => 'Français', "EN" => 'Anglais'), array('class' => 'form-control')); ?>
                         <?php echo $form->error($model, 'LANGUE'); ?>
                     </div>
                 </div>
@@ -46,9 +46,8 @@
                     <?php echo $form->labelEx($model, 'USR', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
                         <?php
-                        if ($model->isNewRecord)
-                        {
-                        ?>  
+                        if ($model->isNewRecord) {
+                            ?>  
                             <?php echo $form->textField($model, 'USR', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
                             <?php echo $form->error($model, 'USR'); ?>
                             <?php
@@ -56,6 +55,7 @@
                             echo $model->USR;
                         }
                         ?>
+                        <p>*doit être unique</p>
                     </div>
                 </div>
 
@@ -78,7 +78,7 @@
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'ABONNE_MAILING', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                       
-                        <?php echo $form->radioButtonList($model, 'ABONNE_MAILING', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?>
+                        <?php echo $form->radioButtonList($model, 'ABONNE_MAILING', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?>
 
                     </div>
                 </div>
@@ -86,7 +86,7 @@
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'ABONNE_PROMOTION', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                     
-                        <?php echo $form->radioButtonList($model, 'ABONNE_PROMOTION', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?>
+                        <?php echo $form->radioButtonList($model, 'ABONNE_PROMOTION', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?>
 
                     </div>
                 </div>
@@ -95,23 +95,24 @@
                     <?php echo $form->labelEx($model, 'ABONNE_TRANSITION', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
 
-                        <?php echo $form->radioButtonList($model, 'ABONNE_TRANSITION', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?> 
+                        <?php echo $form->radioButtonList($model, 'ABONNE_TRANSITION', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
 
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <?php echo $form->labelEx($model, 'bSubscription_envision', array('class' => 'col-sm-2 control-label')); ?>
+                    <?php //echo $form->labelEx($model, 'bSubscription_envision', array('class' => 'col-sm-2 control-label'));  ?>
+                    <label for="UserDirectory_bSubscription_envision" class="col-sm-2 control-label">Abonné à Envision</label>
                     <div class="col-sm-5">                       
-                        <?php echo $form->radioButtonList($model, 'bSubscription_envision', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?> 
+                        <?php echo $form->radioButtonList($model, 'bSubscription_envision', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <?php echo $form->labelEx($model, 'bSubscription_envue', array('class' => 'col-sm-2 control-label')); ?>
+                    <?php //echo $form->labelEx($model, 'bSubscription_envue', array('class' => 'col-sm-2 control-label'));  ?>                    
+                    <label for="UserDirectory_bSubscription_envision" class="col-sm-2 control-label">Abonné à Envue</label>
                     <div class="col-sm-5">                       
-                        <?php echo $form->radioButtonList($model, 'bSubscription_envue', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?> 
-
+                        <?php echo $form->radioButtonList($model, 'bSubscription_envue', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
                     </div>
                 </div>
 
@@ -120,28 +121,32 @@
                     <div class="col-sm-5">
                         <?php echo "<p>Cet utilisateur a la responsabilité de valider les données :</p>"; ?>
                         <?php //echo $form->textField($model, 'MUST_VALIDATE', array('class' => 'form-control'));  ?>
-                        <?php echo $form->radioButtonList($model, 'MUST_VALIDATE', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?>                      
+                        <?php echo $form->radioButtonList($model, 'MUST_VALIDATE', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?>                      
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <?php echo $form->labelEx($model, 'NOTE', array('class' => 'col-sm-2 control-label')); ?>
-                    <div class="col-sm-5">
-                        <?php
-                        echo "<p>Cet utilisateur ne sera pas associé à une compagnie mais le compte sera valide.</p>"
-                        . "Pour créer une association de compagnie ou de professionnel, utilisez les interfaces respectifs des modules Associations, Détaillants, Fournisseurs et Professionnels en cliquant sur l'icône 'cadenas'.";
-                        ?>
-
-                    </div>
-                </div>   
-
-
-
+                <!--                <div class="form-group">
+                <?php //echo $form->labelEx($model, 'NOTE', array('class' => 'col-sm-2 control-label'));  ?>
+                                    <div class="col-sm-5">
+                <?php
+                //  echo "<p>Cet utilisateur ne sera pas associé à une compagnie mais le compte sera valide.</p>"
+                //   . "Pour créer une association de compagnie ou de professionnel, utilisez les interfaces respectifs des modules Associations, Détaillants, Fournisseurs et Professionnels en cliquant sur l'icône 'cadenas'.";
+                ?>
+                
+                                    </div>
+                                </div>   -->
             </div><!-- /.box-body -->
+            
+            <?php 
+            if($model->isNewRecord)
+            {
+                echo $form->hiddenField($model,'ID_RELATION',array('value'=>$relid));
+                echo $form->hiddenField($model,'NOM_TABLE',array('value'=>$nomtable));
+            }?>
             <div class="box-footer">
                 <div class="form-group">
                     <div class="col-sm-0 col-sm-offset-2">
-                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Add this user' : 'Update', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Ajouter cet utilisateur' : 'Modifier cet utilisateur', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
                     </div>
                 </div>
             </div>
@@ -149,3 +154,37 @@
         </div>
     </div><!-- ./col -->
 </div>
+<?php
+if(!empty($userslist_query))
+{    
+?>
+<div class="row">
+    <div class="col-md-6">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Liste des accès  associés à <?php echo $namestr;?></h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tr>                      
+                        <th>Nom</th>
+                        <th>Nom d'usager</th>                      
+                    </tr>
+                    <?php 
+                    foreach($userslist_query as $info)
+                    {?>    
+                    <tr>                        
+                        <td>
+                         <?php echo CHtml::link("- ".$info['NOM_UTILISATEUR'] , array("/admin/userDirectory/update/", "id" => $info['ID_UTILISATEUR']));?>
+                        </td>     
+                        <td><?php echo $info['USR'];?></td>
+                    </tr>                   
+                  <?php 
+                    }?>
+                </table>
+            </div><!-- /.box-body -->                               
+        </div><!-- /.box -->                         
+    </div><!-- /.col -->                 
+</div><!-- /.row -->
+<?php
+}?>

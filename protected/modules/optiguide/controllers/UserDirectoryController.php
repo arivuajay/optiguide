@@ -50,6 +50,7 @@ class UserDirectoryController extends OGController {
      * @param integer $id the ID of the model to be updated
      */
     public function actionUpdate() {
+         //umodel = UserDirectory('frontend');
         $id=Yii::app()->user->id;
         $model = $this->loadModel($id);
 
@@ -75,8 +76,10 @@ class UserDirectoryController extends OGController {
      * @throws CHttpException
      */
     public function loadModel() {
+        
          $id=Yii::app()->user->id;
         $model = UserDirectory::model()->findByPk($id);
+        $model->scenario = 'frontend';
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;

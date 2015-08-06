@@ -199,7 +199,7 @@ class RetailerDirectoryController extends OGController {
      */
     public function actionCreate() {
         $model = new RetailerDirectory;
-        $umodel = new UserDirectory();
+        $umodel = new UserDirectory('frontend');
 
         $this->performAjaxValidation(array($model, $umodel));
 

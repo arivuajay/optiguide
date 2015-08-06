@@ -15,10 +15,10 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 ?>
 
 <div class="col-lg-12 col-md-12">
-    <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter un utilisateur', array('/admin/userDirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
+<!--    <div class="row">
+        <?php //echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter un utilisateur', array('/admin/userDirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
-</div>
+</div>-->
 
 <div class="col-lg-12 col-md-12">&nbsp;</div>
 
@@ -64,7 +64,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
         $this->widget('booster.widgets.TbExtendedGridView', array(
         'filter' => $model,
-        'ajaxUrl' => $this->createUrl('userdirectory/index'),
+        'ajaxUrl' => $this->createUrl('userDirectory/index'),
         'type' => 'striped bordered datatable',
         'dataProvider' => $model->search(),
         'responsiveTable' => true,

@@ -46,6 +46,13 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'filter'  => CHtml::activeDropDownList($model, 'bAfficher_site',  array("1"=>"Activés" ,"0"=>"Désactivés" ) , array('class'=>'form-control','prompt'=>'Tous')),
                 ), 
                 array(
+                'header' => "Accès",
+                'type' => 'raw',
+                'value' => function($data) {                   
+                      return CHtml::link("<i class='fa fa-lock'></i>", array("/admin/userDirectory/create/", "relid" => $data->ID_FOURNISSEUR,"nomtable"=>"Fournisseurs"));                       
+                    },
+                ),          
+                array(
                 'header' => 'actes',
                 'class' => 'booster.widgets.TbButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),

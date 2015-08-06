@@ -185,7 +185,7 @@ class ProfessionalDirectoryController extends OGController {
      */
     public function actionCreate() {
         $model = new ProfessionalDirectory;
-        $umodel = new UserDirectory();
+        $umodel = new UserDirectory('frontend');
 
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation(array($model, $umodel));

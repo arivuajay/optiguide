@@ -60,27 +60,62 @@ class UserDirectoryController extends Controller {
 
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
-
-
-
+        
+        $relid    = Yii::app()->getRequest()->getQuery('relid');
+        $nomtable = Yii::app()->getRequest()->getQuery('nomtable');
+        
+        $userslist_query = array();
+        $namestr         = '';
+       
+    
         if (isset($_POST['UserDirectory'])) {
 
             $GUID = Myclass::getGuid();
             $guid_val = trim($GUID, "{}");
 
             $model->attributes  = $_POST['UserDirectory'];
-            $model->NOM_TABLE   = "NA";
-            $model->ID_RELATION = 0;
+            if($model->NOM_TABLE=='')
+            {    
+             $model->NOM_TABLE   = "NA";
+             $model->ID_RELATION = 0;
+            }            
             $model->sGuid       = $guid_val;
             if ($model->save()) {
                 Yii::app()->user->setFlash('success', 'UserDirectory Created Successfully!!!');
                 $this->redirect(array('index'));
             }
         }
+        
+        if(is_numeric($relid) &&  $nomtable!='')
+        {    
+         // Get all user records list to the realtions
+            $userslist_query = Yii::app()->db->createCommand() //this query contains all the data
+            ->select('ID_UTILISATEUR , NOM_UTILISATEUR , USR')
+            ->from(array('repertoire_utilisateurs'))
+            ->where("ID_RELATION='$relid' AND NOM_TABLE='$nomtable'")
+            ->order('NOM_UTILISATEUR')
+            ->queryAll();     
+       
+            if($nomtable=="Professionnels")
+            {                
+                  $result = ProfessionalDirectory::model()->findByPk($relid);      
+                  $namestr     = $result->PRENOM.' '.$result->NOM;                  
+            }else if($nomtable=="Detaillants"){
+                
+                  $result = RetailerDirectory::model()->findByPk($relid);                     
+                  $namestr = $result->COMPAGNIE;               
+            }else if($nomtable=="Fournisseurs"){
+                
+                  $result = SuppliersDirectory::model()->findByPk($relid);                     
+                  $namestr = $result->COMPAGNIE;               
+            }     
+            
+                  $model->USR   = $result->ID_CLIENT;
+                  $model->PWD  = $result->CODE_POSTAL;
+            
+        } 
 
-        $this->render('create', array(
-            'model' => $model,
-        ));
+        $this->render('create',  compact('userslist_query','model','relid','namestr','nomtable'));
     }
 
     /**
@@ -93,6 +128,42 @@ class UserDirectoryController extends Controller {
 
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
+        
+        //$relid    = Yii::app()->getRequest()->getQuery('relid');
+        //$nomtable = Yii::app()->getRequest()->getQuery('nomtable');
+        
+        $nomtable = $model->NOM_TABLE;
+        $relid    = $model->ID_RELATION;
+       
+        
+        $userslist_query = array();
+         $namestr        = '';
+         
+        if(is_numeric($relid) &&  $nomtable!='')
+        {    
+         // Get all user records list to the realtions
+            $userslist_query = Yii::app()->db->createCommand() //this query contains all the data
+            ->select('ID_UTILISATEUR , NOM_UTILISATEUR , USR')
+            ->from(array('repertoire_utilisateurs'))
+            ->where("ID_RELATION='$relid' AND NOM_TABLE='$nomtable'")
+            ->order('NOM_UTILISATEUR')
+            ->queryAll(); 
+            
+             if($nomtable=="Professionnels")
+            {                
+                  $prof_result = ProfessionalDirectory::model()->findByPk($relid);      
+                  $namestr = $prof_result->PRENOM.' '.$prof_result->NOM;     
+                  
+            }else if($nomtable=="Detaillants"){
+                
+                  $retail_result = RetailerDirectory::model()->findByPk($relid);                     
+                  $namestr = $retail_result->COMPAGNIE;  
+            }else if($nomtable=="Fournisseurs"){
+                
+                  $result = SuppliersDirectory::model()->findByPk($relid);                     
+                  $namestr = $result->COMPAGNIE;               
+            }    
+        } 
 
         if (isset($_POST['UserDirectory'])) {
             $model->attributes = $_POST['UserDirectory'];
@@ -102,9 +173,7 @@ class UserDirectoryController extends Controller {
             }
         }
 
-        $this->render('update', array(
-            'model' => $model,
-        ));
+        $this->render('update', compact('userslist_query','model','relid','namestr'));
     }
 
     /**
