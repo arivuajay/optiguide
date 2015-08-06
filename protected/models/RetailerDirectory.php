@@ -54,7 +54,7 @@ class RetailerDirectory extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('COMPAGNIE,ID_CLIENT, ID_RETAILER_TYPE, ID_GROUPE, country, region, ID_VILLE,CODE_POSTAL, TELEPHONE', 'required'),
+			array('COMPAGNIE, ID_RETAILER_TYPE, ID_GROUPE, country, region, ID_VILLE,CODE_POSTAL, TELEPHONE', 'required'),
 			array('ID_VILLE, ID_RETAILER_TYPE, ID_GROUPE, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5', 'numerical', 'integerOnly'=>true),
 			array('ID_CLIENT', 'length', 'max'=>10),
 			array('COMPAGNIE, ADRESSE, ADRESSE2, URL, COURRIEL, GROUPE, HEAD_OFFICE_NAME', 'length', 'max'=>255),

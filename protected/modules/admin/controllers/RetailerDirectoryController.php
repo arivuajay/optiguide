@@ -61,29 +61,29 @@ class RetailerDirectoryController extends Controller {
      */
     public function actionCreate() {
         $model  = new RetailerDirectory;
-        $umodel = new UserDirectory();
+       // $umodel = new UserDirectory();
 
-        $this->performAjaxValidation(array($model, $umodel));
+        $this->performAjaxValidation(array($model));
 
         if (isset($_POST['RetailerDirectory'])) {
             $model->attributes = $_POST['RetailerDirectory'];
-            $umodel->attributes = $_POST['UserDirectory'];
+           // $umodel->attributes = $_POST['UserDirectory'];
      
-            $model->ID_CLIENT = $umodel->USR;
+          //  $model->ID_CLIENT = $umodel->USR;
 
-            $umodel->NOM_TABLE = $model::$NOM_TABLE;
-            $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
-            $umodel->PWD     = Myclass::getRandomString(5);
-            $umodel->sGuid   = Myclass::getGuid();
-            $umodel->LANGUE  = "FR";          
+          //  $umodel->NOM_TABLE = $model::$NOM_TABLE;
+         //   $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
+         //   $umodel->PWD     = Myclass::getRandomString(5);
+        //    $umodel->sGuid   = Myclass::getGuid();
+        //    $umodel->LANGUE  = "FR";          
             
-            $valid = $umodel->validate();
-            $valid = $model->validate() && $valid;
+        //    $valid = $umodel->validate();
+        //    $valid = $model->validate() && $valid;
 
-            if ($valid) {
+            if ($model->validate()) {
                 $model->save(false);
-                $umodel->ID_RELATION = $model->ID_RETAILER;
-                $umodel->save(false);
+               // $umodel->ID_RELATION = $model->ID_RETAILER;
+              //  $umodel->save(false);
 
                 Yii::app()->user->setFlash('success', 'Détaillant créé avec succès!!!');
                 $this->redirect(array('index'));
@@ -93,7 +93,7 @@ class RetailerDirectoryController extends Controller {
             }
         }
 
-        $this->render('create', compact('umodel', 'model'));
+        $this->render('create', compact('model'));
     }
 
     /**
@@ -103,28 +103,28 @@ class RetailerDirectoryController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
-        $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
+      //  $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
         // Uncomment the following line if AJAX validation is needed
-        $this->performAjaxValidation(array($model, $umodel));
+        $this->performAjaxValidation(array($model));
 
         if (isset($_POST['RetailerDirectory'])) {
             $model->attributes = $_POST['RetailerDirectory'];
-            $umodel->attributes = $_POST['UserDirectory'];
-            $umodel->NOM_TABLE = $model::$NOM_TABLE;
-            $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
+         //   $umodel->attributes = $_POST['UserDirectory'];
+        //    $umodel->NOM_TABLE = $model::$NOM_TABLE;
+       //     $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
 
-            $valid = $umodel->validate();
-            $valid = $model->validate() && $valid;
+       //     $valid = $umodel->validate();
+       //     $valid = $model->validate() && $valid;
 
-            if ($valid) {
-                $umodel->save(false);
+            if ($model->validate()) {
+             //   $umodel->save(false);
                 $model->save(false);
                 Yii::app()->user->setFlash('success', 'Détaillant correctement mis à jour!!!');
                 $this->redirect(array('index'));
             }
         }
 
-        $this->render('update', compact('umodel', 'model'));
+        $this->render('update', compact( 'model'));
     }
 
     /**

@@ -47,7 +47,7 @@ class ProfessionalDirectory extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('ID_TYPE_SPECIALISTE, PRENOM, ID_CLIENT, NOM ,country, region, ID_VILLE', 'required'),
+            array('ID_TYPE_SPECIALISTE, PRENOM, NOM ,country, region, ID_VILLE', 'required'),
             array('ID_TYPE_SPECIALISTE, country, region, ID_VILLE', 'numerical', 'integerOnly' => true),
             array('ID_CLIENT', 'length', 'max' => 8 ),
             array('PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, SITE_WEB, COURRIEL', 'length', 'max' => 255),
@@ -55,6 +55,7 @@ class ProfessionalDirectory extends CActiveRecord {
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('country,region', 'safe'),
+            array('COURRIEL','email'),
             array('ID_SPECIALISTE, TYPESPECIALISTEFR , ID_CLIENT, PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, ID_TYPE_SPECIALISTE, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, SITE_WEB, COURRIEL, DATE_MODIFICATION', 'safe', 'on' => 'search'),
             array('TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2', 'phoneNumber'),
         );

@@ -86,9 +86,9 @@
                                 </div>
 
                                 <div class="form-group">                                   
-                                    <?php echo $form->labelEx($umodel, 'USR', array()); ?>                                                            
-                                    <?php echo $form->textField($umodel, 'USR', array('class' => 'form-control', 'size' => 10, 'maxlength' => 10,'readonly'=>($model->ID_FOURNISSEUR != '')? true : false )); ?>
-                                    <?php echo $form->error($umodel, 'USR'); ?>      
+                                    <?php echo $form->labelEx($model, 'ID_CLIENT', array()); ?>                                                            
+                                    <?php echo $form->textField($model, 'ID_CLIENT', array('class' => 'form-control', 'size' => 10, 'maxlength' => 10)); ?>
+                                    <?php //echo $form->error($umodel, 'USR'); ?>      
                                     <?php echo $form->error($model, 'ID_CLIENT'); ?>
                                 </div>
 
@@ -143,9 +143,9 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <?php echo $form->labelEx($umodel, 'COURRIEL', array()); ?>
-                                    <?php echo $form->textField($umodel, 'COURRIEL', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
-                                    <?php echo $form->error($umodel, 'COURRIEL'); ?>
+                                    <?php echo $form->labelEx($model, 'COURRIEL', array()); ?>
+                                    <?php echo $form->textField($model, 'COURRIEL', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
+                                    <?php echo $form->error($model, 'COURRIEL'); ?>
                                 </div>
 
                                 <div class="form-group">
@@ -188,14 +188,14 @@
                                         <?php echo $form->labelEx($model, 'bAfficher_site', array()); ?>                                    
                                         <?php echo $form->radioButtonList($model, 'bAfficher_site', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
                                     </div>
-                                      <div class="form-group">
-                                        <?php echo $form->labelEx($umodel, 'MUST_VALIDATE', array()); ?>      
-                                        <?php echo $form->radioButtonList($umodel, 'MUST_VALIDATE', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
-                                    </div>
-                                    <?php  echo $form->hiddenField($umodel,'bSubscription_envision');?>
-                                    <?php  echo $form->hiddenField($umodel,'bSubscription_envue');?>
-                                    <?php  echo $form->hiddenField($umodel,'ABONNE_MAILING');?>
-                                    <?php  echo $form->hiddenField($umodel,'ABONNE_PROMOTION');?>
+<!--                                      <div class="form-group">
+                                        <?php //echo $form->labelEx($umodel, 'MUST_VALIDATE', array()); ?>      
+                                        <?php //echo $form->radioButtonList($umodel, 'MUST_VALIDATE', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
+                                    </div>-->
+                                    <?php  //echo $form->hiddenField($umodel,'bSubscription_envision');?>
+                                    <?php  //echo $form->hiddenField($umodel,'bSubscription_envue');?>
+                                    <?php  //echo $form->hiddenField($umodel,'ABONNE_MAILING');?>
+                                    <?php  //echo $form->hiddenField($umodel,'ABONNE_PROMOTION');?>
                                 </div>    
                             </div>
                         </div>

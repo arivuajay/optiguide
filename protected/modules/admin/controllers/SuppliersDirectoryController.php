@@ -107,16 +107,16 @@ class SuppliersDirectoryController extends Controller {
         $data_products = array();
 
         $model = $this->loadModel($id);
-        $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
+       // $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
 
         // Uncomment the following line if AJAX validation is needed
-        $this->performAjaxValidation(array($model, $umodel));        
+        $this->performAjaxValidation(array($model));        
         
         $mattributes = $model->attributes;
-        $uattributes = $umodel->attributes;
+      //  $uattributes = $umodel->attributes;
 
         Yii::app()->user->setState("mattributes", $mattributes);
-        Yii::app()->user->setState("uattributes", $uattributes);
+     //   Yii::app()->user->setState("uattributes", $uattributes);
 
         // Set and intialize session from existing database records.         
         if (Yii::app()->user->hasState("product_ids") == FALSE) 
@@ -168,14 +168,14 @@ class SuppliersDirectoryController extends Controller {
         if (isset($_POST['SuppliersDirectory'])) 
         {
             $model->attributes = $_POST['SuppliersDirectory'];
-            $umodel->attributes = $_POST['UserDirectory'];
-            $umodel->NOM_TABLE = $model::$NOM_TABLE;
-            $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
+         //   $umodel->attributes = $_POST['UserDirectory'];
+         //   $umodel->NOM_TABLE = $model::$NOM_TABLE;
+         //   $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
 
-            $valid = $umodel->validate();
-            $valid = $model->validate() && $valid;
+        //    $valid = $umodel->validate();
+        //    $valid = $model->validate() && $valid;
 
-            if ($valid) {
+            if ($model->validate()) {
 
                 //set session variable
                 $scountry = $_POST['SuppliersDirectory']['country'];
@@ -184,13 +184,13 @@ class SuppliersDirectoryController extends Controller {
                 Yii::app()->user->setState("sregion", $sregion);
 
                 $mattributes = $model->attributes;
-                $uattributes = $umodel->attributes;
+              //  $uattributes = $umodel->attributes;
                
                 $model->save(false);  
-                $umodel->save(false);
+             //   $umodel->save(false);
 
                 Yii::app()->user->setState("mattributes", $mattributes);
-                Yii::app()->user->setState("uattributes", $uattributes);
+             //   Yii::app()->user->setState("uattributes", $uattributes);
                 Yii::app()->user->setState("secondtab", "2");
 
                 $this->redirect(array('addproducts'));
@@ -204,7 +204,7 @@ class SuppliersDirectoryController extends Controller {
         }   
 
         $tab = 1;
-        $this->render('update', compact('umodel', 'model', 'tab','data_products'));
+        $this->render('update', compact('model', 'tab','data_products'));
     }
 
     /**
@@ -235,7 +235,7 @@ class SuppliersDirectoryController extends Controller {
         
 
         $model = new SuppliersDirectory;
-        $umodel = new UserDirectory();
+   //     $umodel = new UserDirectory();
 
         if(Yii::app()->user->hasState("secondtab") || Yii::app()->user->hasState("thirdtab"))
         {    
@@ -244,14 +244,14 @@ class SuppliersDirectoryController extends Controller {
                 //get session variable
                 $sess_attr_m = Yii::app()->user->getState("mattributes");
                 $model->attributes = $sess_attr_m;
-                $sess_attr_u = Yii::app()->user->getState("uattributes");
-                $umodel->attributes = $sess_attr_u;
+             //   $sess_attr_u = Yii::app()->user->getState("uattributes");
+              //  $umodel->attributes = $sess_attr_u;
             }
         } else {
               // unset Session supplier model attribute    
             Yii::app()->user->setState("mattributes", null);
             // unset Session user model attribute
-            Yii::app()->user->setState("uattributes", null);
+           // Yii::app()->user->setState("uattributes", null);
             // unset Session productids 
             Yii::app()->user->setState("product_ids", null);
             // unset Session marqueids 
@@ -268,36 +268,37 @@ class SuppliersDirectoryController extends Controller {
         
 
         // Uncomment the following line if AJAX validation is needed
-        $this->performAjaxValidation(array($model, $umodel));
+        $this->performAjaxValidation(array($model));
 
         if (isset($_POST['SuppliersDirectory'])) {
 
             $model->attributes = $_POST['SuppliersDirectory'];
-            $umodel->attributes = $_POST['UserDirectory'];
+          //  $umodel->attributes = $_POST['UserDirectory'];
 
-            $model->ID_CLIENT = $umodel->USR;
+          //  $model->ID_CLIENT = $umodel->USR;
 
-            $umodel->NOM_TABLE = $model::$NOM_TABLE;
-            $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
-            $umodel->PWD = Myclass::getRandomString(5);
-            $umodel->sGuid = Myclass::getGuid();
-            $umodel->LANGUE  = "FR";
+         //   $umodel->NOM_TABLE = $model::$NOM_TABLE;
+//            $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
+//            $umodel->PWD = Myclass::getRandomString(5);
+//            $umodel->sGuid = Myclass::getGuid();
+//            $umodel->LANGUE  = "FR";
 
-            $valid = $umodel->validate();
-            $valid = $model->validate() && $valid;
+          //  $valid = $umodel->validate();
+          //  $valid = $model->validate() && $valid;
 
-            if ($valid) {
+            if ( $model->validate()) {
                 //set session variable
                 $scountry = $_POST['SuppliersDirectory']['country'];
-                $sregion = $_POST['SuppliersDirectory']['region'];
+                $sregion  = $_POST['SuppliersDirectory']['region'];
                 Yii::app()->user->setState("scountry", $scountry);
                 Yii::app()->user->setState("sregion", $sregion);
 
                 $mattributes = $model->attributes;
-                $uattributes = $umodel->attributes;
+              //  $uattributes = $umodel->attributes;
 
                 Yii::app()->user->setState("mattributes", $mattributes);
-                Yii::app()->user->setState("uattributes", $uattributes);
+
+             //   Yii::app()->user->setState("uattributes", $uattributes);
                 Yii::app()->user->setState("secondtab", "2");
 
                 $this->redirect(array('addproducts'));
@@ -309,7 +310,7 @@ class SuppliersDirectoryController extends Controller {
             }    
         }
         $tab = 1;
-        $this->render('create', compact('umodel', 'model', 'tab'));
+        $this->render('create', compact('model', 'tab'));
     }
 
     //TAB 2
@@ -330,11 +331,11 @@ class SuppliersDirectoryController extends Controller {
                 $result = array();
                 $fid = $sess_attr_m['ID_FOURNISSEUR'];
                 $model = $this->loadModel($fid);
-                $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");               
+              //  $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");               
             } else {
                 // For create form
                 $model  = new SuppliersDirectory;
-                $umodel = new UserDirectory();
+             //   $umodel = new UserDirectory();
             }
         }
         //check if session exists
@@ -342,8 +343,8 @@ class SuppliersDirectoryController extends Controller {
         {
             //get session variable
             $model->attributes = $sess_attr_m;
-            $sess_attr_u = Yii::app()->user->getState("uattributes");
-            $umodel->attributes = $sess_attr_u;
+           // $sess_attr_u = Yii::app()->user->getState("uattributes");
+           // $umodel->attributes = $sess_attr_u;
         }
 
         if ($_POST['SuppliersDirectory']) {
@@ -395,7 +396,7 @@ class SuppliersDirectoryController extends Controller {
         } else {
             $viewpage = 'create';
         }
-        $this->render($viewpage, compact('umodel', 'model', 'tab','data_products'));
+        $this->render($viewpage, compact('model', 'tab','data_products'));
     }
 
     public function actionAddmarques() {
@@ -416,10 +417,10 @@ class SuppliersDirectoryController extends Controller {
             {
                 $fid = $sess_attr_m['ID_FOURNISSEUR'];
                 $model = $this->loadModel($fid);
-                $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
+              //  $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
             } else {
                 $model = new SuppliersDirectory;
-                $umodel = new UserDirectory();
+              //  $umodel = new UserDirectory();
             }
         }       
         
@@ -427,8 +428,8 @@ class SuppliersDirectoryController extends Controller {
         if (Yii::app()->user->hasState("mattributes")) {
             //get session variable         
             $model->attributes = $sess_attr_m;
-            $sess_attr_u = Yii::app()->user->getState("uattributes");
-            $umodel->attributes = $sess_attr_u;
+          //  $sess_attr_u = Yii::app()->user->getState("uattributes");
+          //  $umodel->attributes = $sess_attr_u;
         }
         
         // Save products in to database        
@@ -437,19 +438,19 @@ class SuppliersDirectoryController extends Controller {
             // Session supplier model attribute    
             $sess_attr_m = Yii::app()->user->getState("mattributes");
             // Session user model attribute
-            $sess_attr_u = Yii::app()->user->getState("uattributes");
+          //  $sess_attr_u = Yii::app()->user->getState("uattributes");
             // Session productids 
             $sess_productids = Yii::app()->user->getState("product_ids");
             // Session marqueids 
             $sess_marqueids = Yii::app()->user->getState("marque_ids");
 
-            if (Yii::app()->user->hasState("mattributes") && Yii::app()->user->hasState("uattributes")) {
+            if (Yii::app()->user->hasState("mattributes")) {
                 $model->attributes = $sess_attr_m;    
-                $model->ID_CLIENT  = $sess_attr_m['ID_CLIENT'];
+              //  $model->ID_CLIENT  = $sess_attr_m['ID_CLIENT'];
                 $model->save(false);              
-                $umodel->attributes  = $sess_attr_u;
-                $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
-                $umodel->save(false);                
+             //   $umodel->attributes  = $sess_attr_u;
+             //   $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
+             //   $umodel->save(false);                
                 $supplierid = $model->ID_FOURNISSEUR;
              
                 SupplierProducts::model()->deleteAll("ID_FOURNISSEUR ='" . $supplierid . "'");
@@ -485,7 +486,7 @@ class SuppliersDirectoryController extends Controller {
             // unset Session supplier model attribute    
             Yii::app()->user->setState("mattributes", null);
             // unset Session user model attribute
-            Yii::app()->user->setState("uattributes", null);
+          //  Yii::app()->user->setState("uattributes", null);
             // unset Session productids 
             Yii::app()->user->setState("product_ids", null);
             // unset Session marqueids 
@@ -552,7 +553,7 @@ class SuppliersDirectoryController extends Controller {
             $viewpage = 'create';
         }
        
-        $this->render($viewpage, compact('umodel', 'model', 'tab', 'data_products'));
+        $this->render($viewpage, compact('model', 'tab', 'data_products'));
     }
 
     public function actionListmarques() {
@@ -649,7 +650,7 @@ class SuppliersDirectoryController extends Controller {
            // unset Session supplier model attribute    
             Yii::app()->user->setState("mattributes", null);
             // unset Session user model attribute
-            Yii::app()->user->setState("uattributes", null);
+          //  Yii::app()->user->setState("uattributes", null);
             // unset Session productids 
             Yii::app()->user->setState("product_ids", null);
             // unset Session marqueids 

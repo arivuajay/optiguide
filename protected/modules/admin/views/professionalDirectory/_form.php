@@ -35,10 +35,9 @@
                 </div>
                 
                 <div class="form-group">
-                    <?php echo $form->labelEx($umodel, 'USR', array('class' => 'col-sm-2 control-label')); ?>
+                    <?php echo $form->labelEx($model, 'ID_CLIENT', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php echo $form->textField($umodel, 'USR', array('class' => 'form-control', 'size' => 8, 'maxlength' => 8,'readonly'=>($model->scenario == 'update')? true : false)); ?>
-                        <?php echo $form->error($umodel, 'USR'); ?>
+                        <?php echo $form->textField($model, 'ID_CLIENT', array('class' => 'form-control', 'size' => 8, 'maxlength' => 8)); ?>                       
                         <?php echo $form->error($model, 'ID_CLIENT'); ?>
                     </div>
                 </div>
@@ -166,24 +165,24 @@
                 </div>
 
                 <div class="form-group">
-                    <?php echo $form->labelEx($umodel, 'COURRIEL', array('class' => 'col-sm-2 control-label')); ?>
+                    <?php echo $form->labelEx($model, 'COURRIEL', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php echo $form->textField($umodel, 'COURRIEL', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
-                        <?php echo $form->error($umodel, 'COURRIEL'); ?>
+                        <?php echo $form->textField($model, 'COURRIEL', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
+                        <?php echo $form->error($model, 'COURRIEL'); ?>
                     </div>
                 </div>
                 
-                   <div class="form-group">
-                    <?php echo $form->labelEx($umodel, 'MUST_VALIDATE', array('class' => 'col-sm-2 control-label')); ?>       
+<!--                <div class="form-group">
+                    <?php //echo $form->labelEx($umodel, 'MUST_VALIDATE', array('class' => 'col-sm-2 control-label')); ?>       
                     <div class="col-sm-5">
-                    <?php echo $form->radioButtonList($umodel, 'MUST_VALIDATE', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
+                    <?php //echo $form->radioButtonList($umodel, 'MUST_VALIDATE', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
                     </div>
-                </div>
+                </div>-->
                 
-                <?php  echo $form->hiddenField($umodel,'bSubscription_envision');?>
-                <?php  echo $form->hiddenField($umodel,'bSubscription_envue');?>
-                <?php  echo $form->hiddenField($umodel,'ABONNE_MAILING');?>
-                <?php  echo $form->hiddenField($umodel,'ABONNE_PROMOTION');?>
+                <?php // echo $form->hiddenField($umodel,'bSubscription_envision');?>
+                <?php // echo $form->hiddenField($umodel,'bSubscription_envue');?>
+                <?php // echo $form->hiddenField($umodel,'ABONNE_MAILING');?>
+                <?php // echo $form->hiddenField($umodel,'ABONNE_PROMOTION');?>
 
 
             </div><!-- /.box-body -->

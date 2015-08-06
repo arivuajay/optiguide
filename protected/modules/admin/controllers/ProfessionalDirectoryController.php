@@ -61,36 +61,35 @@ class ProfessionalDirectoryController extends Controller {
      */
     public function actionCreate() {
         $model  = new ProfessionalDirectory;
-        $umodel = new UserDirectory();
+       // $umodel = new UserDirectory();
 
-        $this->performAjaxValidation(array($model,$umodel));
+        $this->performAjaxValidation(array($model));
 
         if (isset($_POST['ProfessionalDirectory'])) {
             $model->attributes  = $_POST['ProfessionalDirectory'];
-            $umodel->attributes = $_POST['UserDirectory'];
+         //   $umodel->attributes = $_POST['UserDirectory'];
             
-            $model->ID_CLIENT   = $umodel->USR;
-          
-            $umodel->NOM_TABLE  = $model::$NOM_TABLE;
-            $umodel->NOM_UTILISATEUR = $model->PRENOM." ".$model->NOM;
-            $umodel->PWD = Myclass::getRandomString(5);
-            $umodel->sGuid = Myclass::getGuid();
-            $umodel->LANGUE  = "FR";         
+        //    $model->ID_CLIENT   = $umodel->USR;          
+         //   $umodel->NOM_TABLE  = $model::$NOM_TABLE;
+         //   $umodel->NOM_UTILISATEUR = $model->PRENOM." ".$model->NOM;
+         //   $umodel->PWD = Myclass::getRandomString(5);
+         //   $umodel->sGuid = Myclass::getGuid();
+         //   $umodel->LANGUE  = "FR";         
             
-            $valid = $umodel->validate();
-            $valid = $model->validate() && $valid;
+    //        $valid = $umodel->validate();
+    //        $valid = $model->validate() && $valid;
             
-            if ($valid) {
+            if ($model->validate()) {
                 $model->save(false);
-                $umodel->ID_RELATION = $model->ID_SPECIALISTE;
-                $umodel->save(false);
+             //   $umodel->ID_RELATION = $model->ID_SPECIALISTE;
+             //   $umodel->save(false);
                
                 Yii::app()->user->setFlash('success', 'professionnel créé avec succès!!!');
                 $this->redirect(array('index'));
             }
         }
             
-        $this->render('create', compact('umodel','model'));
+        $this->render('create', compact('model'));
     }
     
     /**
@@ -100,28 +99,28 @@ class ProfessionalDirectoryController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
-        $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
+       // $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
         // Uncomment the following line if AJAX validation is needed
-        $this->performAjaxValidation(array($model,$umodel));
+        $this->performAjaxValidation(array($model));
 
         if (isset($_POST['ProfessionalDirectory'])) {
             $model->attributes = $_POST['ProfessionalDirectory'];
-            $umodel->attributes = $_POST['UserDirectory'];
-            $umodel->NOM_TABLE = $model::$NOM_TABLE;
-            $umodel->NOM_UTILISATEUR = $model->PRENOM." ".$model->NOM;
+          //  $umodel->attributes = $_POST['UserDirectory'];
+          //  $umodel->NOM_TABLE = $model::$NOM_TABLE;
+          //  $umodel->NOM_UTILISATEUR = $model->PRENOM." ".$model->NOM;
             
-            $valid = $umodel->validate();
-            $valid = $model->validate() && $valid;
+          //  $valid = $umodel->validate();
+          //  $valid = $model->validate() && $valid;
             
-            if ($valid) {
-                $umodel->save(false);
+            if ($model->validate()) {
+           //   $umodel->save(false);
                 $model->save(false);
                 Yii::app()->user->setFlash('success', 'professionnelle mis à jour avec succès!!!');
                 $this->redirect(array('index'));
             }
         }
             
-        $this->render('update', compact('umodel','model'));
+        $this->render('update', compact('model'));
     }
 
     /**

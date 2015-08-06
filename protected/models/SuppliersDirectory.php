@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -77,7 +78,7 @@ class SuppliersDirectory extends CActiveRecord {
             array('ID_TYPE_FOURNISSEUR,COMPAGNIE, ADRESSE,ID_VILLE,CODE_POSTAL,TELEPHONE,country,region', 'required'),
             array('ID_TYPE_FOURNISSEUR, ID_VILLE, bAfficher_site, iId_fichier,country,region', 'numerical', 'integerOnly' => true),
             array('COMPAGNIE, ADRESSE, ADRESSE2, TITRE_TEL_SANS_FRAIS, TITRE_TEL_SANS_FRAIS_EN, TITRE_TEL_SECONDAIRE, TITRE_TEL_SECONDAIRE_EN, COURRIEL, SITE_WEB, SUCCURSALES, PERSONNEL_NOM1, PERSONNEL_TITRE1, PERSONNEL_TITRE1_EN, PERSONNEL_NOM2, PERSONNEL_TITRE2, PERSONNEL_TITRE2_EN, PERSONNEL_NOM3, PERSONNEL_TITRE3, PERSONNEL_TITRE3_EN', 'length', 'max' => 255),
-            //array('ID_CLIENT', 'length', 'max' => 8),
+            array('ID_CLIENT', 'length', 'max' => 8),
             array('CODE_POSTAL, TELEPHONE, TELECOPIEUR, TEL_SANS_FRAIS, TEL_SECONDAIRE, ETABLI_DEPUIS', 'length', 'max' => 20),
             array('NB_EMPLOYES', 'length', 'max' => 10),
             array('REGIONS_FR, REGIONS_EN', 'length', 'max' => 1000),
@@ -124,7 +125,7 @@ class SuppliersDirectory extends CActiveRecord {
         return array(
             'ID_FOURNISSEUR' => Myclass::t('Id Fournisseur'),
             'COMPAGNIE' => Myclass::t('Compagnie'),
-            'ID_CLIENT' => Myclass::t('Id Client'),
+            'ID_CLIENT' => Myclass::t('ID'),
             'ID_TYPE_FOURNISSEUR' => Myclass::t('Type de fournisseur'),
             'ADRESSE' => Myclass::t('Adresse'),
             'ADRESSE2' => Myclass::t('Adresse (suite)'),
