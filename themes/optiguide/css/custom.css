@@ -78,3 +78,23 @@ and open the template in the editor.
 .ad2{
     text-align: center;
 }
+
+.search-list{
+    float: none !important;
+}
+
+.search-list h4 {
+    border-bottom: 1px solid #f0f0f0;
+    float: left;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 15px 0;
+    padding-bottom: 10px;
+    width: 100%;
+    margin-bottom: 0px;
+}
+
+.pagination-cont{
+    width: 100%;
+    float: left;
+}
