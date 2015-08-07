@@ -98,3 +98,19 @@ and open the template in the editor.
     width: 100%;
     float: left;
 }
+
+.search-list ul
+{
+    float: none !important;
+}
+
+.company-infom ul{
+    padding: 0px;
+    margin: 15px 0px;
+    margin-top: 0px;
+}
+
+.company-infom ul li
+{
+    padding: 0px 0px;
+}

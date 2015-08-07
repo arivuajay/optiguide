@@ -12,7 +12,6 @@
         $themeUrl = $this->themeUrl;
         $cs = Yii::app()->getClientScript();
         $cs->registerCssFile($themeUrl . '/css/bootstrap.min.css');
-        $cs->registerCssFile($themeUrl . '/css/custom.css');
         ?>
 
         <link href='http://fonts.googleapis.com/css?family=Raleway:400,500,600,700,800' rel='stylesheet' type='text/css'>
@@ -29,6 +28,8 @@
         $cs->registerCssFile($themeUrl . '/css/font-awesome.css');
         $cs->registerCssFile($themeUrl . '/css/style.css');
         $cs->registerCssFile($themeUrl . '/css/responsive.css');
+        $cs->registerCssFile($themeUrl . '/css/custom.css');
+
         ?>
     </head>
     <body class="<?php echo Yii::app()->language;?>">
@@ -66,6 +67,7 @@
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-select.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/maps.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/icheck.min.js', $cs_pos_end);
+        $cs->registerScriptFile($themeUrl . '/js/jquery.lionbars.0.3.js', $cs_pos_end);
         ?>
 
         <?php
@@ -84,6 +86,7 @@
                     checkboxClass: 'icheckbox_flat-blue',
                     radioClass: 'iradio_flat-blue'
                 });
+                $('.box').lionbars();
             });
 EOD;
         Yii::app()->clientScript->registerScript('_main', $js);

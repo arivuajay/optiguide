@@ -141,5 +141,9 @@ return array(
     'OG126' => 'Exception non valide',
     
     'OG127' => 'Nom du siège social',
+    'OG128' => 'Établi depuis',
+    'OG129' => 'Nombre d\'employés',
+    'OG130' => 'Succursales',
+    'OG131' => 'Personnel'
 );
 ?>

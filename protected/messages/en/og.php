@@ -95,6 +95,17 @@ return array(
     'OG060'=> 'Last Name',
     'OG061'=> 'First Name',
     'OG062' => 'Type',
-    'OG063' => 'Office / Company name'
-
+    'OG063' => 'Office / Company name',
+    
+    'OG064'=> 'All Types',
+    'OG065'=> 'All Sections',
+    'OG066'=> 'All Products and services',
+    'OG067'=> 'Find a Supplier',
+    'OG068'=> 'Toll Free Phone Number',
+    'OG069'=> 'Toll Free Fax Number',
+    'OG070'=> 'Regions in which these products and services are offered :',
+    'OG071' => 'Contact information',
+    'OG072' => 'Company information',
+    'OG073' => 'Brand names / Products / Services',
+   
 );

@@ -4,7 +4,7 @@
 body
 {
 	font-family: 'Raleway', sans-serif;
-	font-size:15px;
+	font-size:14px;
 	color:#2e2e2e;
 	line-height:22px;
 }
@@ -1238,7 +1238,7 @@ height:100px;
 
 .search-list h2
 {
-	margin:0px 0px 0px 0px;
+	margin:0px 0px 10px 0px;
 	font-size:18px;
 	border:none;
 	background:#f0f0f0;
@@ -1260,7 +1260,7 @@ height:100px;
 .search-list ul li
 {
 	list-style:none;
-	padding:0px 0px 15px 0px;
+	padding:10px 0px 10px 0px;
 }
 
 .search-list ul li a
@@ -1418,16 +1418,70 @@ width:100%;
 	 padding-bottom:10px;
 }
 
-/* For French lang changes */
-.fr .all-suppliers-btn {
-  font-size: 14px;
-
+.scroll-cont
+{
+	margin-top:45px;
 }
 
-.fr .find-btn {
-    font-size: 22px;  
+.brands ul 
+{
+	padding:0px;
+}
+.brands ul li {
+  background: url(../images/icon.png) 0px 11px no-repeat;
+  border-top: 1px dotted #ccc;
+  color: #4e4e4e;
+  list-style-type: none;
+  margin-right: 10px;
+  padding: 10px 0 10px 22px;
+  font-weight:500;
 }
 
-.fr .signin-btn {
-    font-size: 15px; 
+
+
+.brands ul li li
+{
+	background:none;
+	font-weight:300;
+	 background: url(../images/icon2.png) 0px 12px no-repeat;
+	
 }
+
+.brand-logo
+{
+	margin:0px 0px 25px 0px;
+}
+
+
+/*scroll*/
+
+
+		#wrap { width: 980px; margin: 80px auto 80px; text-align: center; }
+		.box { color: #222; background: white; padding: 0px; width: 100%; height: 350px; overflow: auto; float: left; }
+		#box1 { margin-right: 0px; }
+		#box2 p { width: 2000px; }
+		#box3 { width: 900px; margin-top: 40px; }
+		#box3 p { width: 1200px; }
+		
+		#wrap > p { font-size: 10px; text-align: center; margin: 40px 0 20px 0; }
+		
+		.clear { clear: both; }
+
+.lb-v-dummy { width: 100%; display: block; height: 1px; }
+.lb-h-dummy { height: 100%; display: block; width: 1px; }
+.lb-clear { clear: both; }
+.lb-wrap { z-index: 0; overflow: auto; position: relative; }
+/*.lb-scrollbar-wrap { position: absolute; left: 0; top: 0; }*/
+.lb-v-scrollbar { z-index: 1; position: absolute; right: 2px; top: 2px; width: 7px; height: 100%; background: #cfcfcf; opacity: 0.9; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)"; border-radius: 7px; -webkit-border-radius: 7px; -moz-border-radius: 7px; }
+.lb-h-scrollbar { z-index: 1; position: absolute; bottom: 2px; left: 2px; width: 100%; height: 7px; background: #cfcfcf; opacity: 0.3; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)"; border-radius: 7px; -webkit-border-radius: 7px; -moz-border-radius: 7px; }
+.lb-v-scrollbar-slider { position: absolute; width: 7px; height: 50px; left: 0; top: 0; background: #0b7ecf; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; border-radius: 7px; -webkit-border-radius: 7px; -moz-border-radius: 7px; }
+.lb-h-scrollbar-slider { position: absolute; height: 7px; width: 50px; left: 0; top: 0; background: #0b7ecf; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; border-radius: 7px; -webkit-border-radius: 7px; -moz-border-radius: 7px; }
+
+<!--[if IE 8]>
+<style>
+.lb-v-scrollbar { background: red; }
+</style>
+<![endif]-->
+
+
+#box1 { margin-right: 0px; width:100% !important; }

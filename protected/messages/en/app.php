@@ -141,6 +141,10 @@ return array(
     'OG126' => 'Invalid Exception',
     
     'OG127' => 'Head Office Name',
+    'OG128'=> 'Established since',
+    'OG129'=> 'Number of employees',
+    'OG130'=> 'Branches',
+    'OG131'=> 'Staff'
     
     
     

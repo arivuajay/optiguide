@@ -83,15 +83,26 @@ return array(
     'OG055'=> 'Se connecter!',
     'OG056'=> 'Mot de passe oublié?',
     
-     'OG057'=> '<p>Vous cherchez un bureau d\'optique ? Rechercher dans le moteur et de trouver ce dont vous avez besoin!</p>
-     <p>Vous êtes un professionnel dans cette industrie? Utilisez vos codes d\'accès et visitez la zone sécurisée pour trouver les fournisseurs canadiens , les produits et les noms de marque , un calendrier des événements à venir et à lire des nouvelles fraîches de l\'industrie grâce à la newsletter e -mail Opti- Nouvelles.</p>',
-     'OG058'=> 'Besoin d\'un code d\'accès ? Cliquez ici pour',
-     'OG059'=> 'Produits et services',
-    
-     'OG060'=> 'Prénom',
-     'OG061'=> 'Nom',
-     'OG062'=> 'Type de professionnel',
-     'OG063'=> 'Bureau / Nom de compagnie'
+    'OG057'=> '<p>Vous cherchez un bureau d\'optique ? Rechercher dans le moteur et de trouver ce dont vous avez besoin!</p>
+    <p>Vous êtes un professionnel dans cette industrie? Utilisez vos codes d\'accès et visitez la zone sécurisée pour trouver les fournisseurs canadiens , les produits et les noms de marque , un calendrier des événements à venir et à lire des nouvelles fraîches de l\'industrie grâce à la newsletter e -mail Opti- Nouvelles.</p>',
+    'OG058'=> 'Besoin d\'un code d\'accès ? Cliquez ici pour',
+    'OG059'=> 'Produits et services',
+
+    'OG060'=> 'Prénom',
+    'OG061'=> 'Nom',
+    'OG062'=> 'Type de professionnel',
+    'OG063'=> 'Bureau / Nom de compagnie',
+
+    'OG064'=> 'Tous les types',
+    'OG065'=> 'Toutes les sections',
+    'OG066'=> 'Toutes Produits et services',
+    'OG067'=> 'Trouver un fournisseur',
+    'OG068'=> 'Téléphone sans frais',
+    'OG069'=> 'Télécopieur sans frais',
+    'OG070'=> 'Produits & services offerts dans les régions suivantes :',
+    'OG071' => 'Information de contact',
+    'OG072' => 'Information sur la compagnie',
+    'OG073' => 'Marques / Produits / Services',
 
     
 );
