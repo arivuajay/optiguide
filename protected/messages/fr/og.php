@@ -103,6 +103,11 @@ return array(
     'OG071' => 'Information de contact',
     'OG072' => 'Information sur la compagnie',
     'OG073' => 'Marques / Produits / Services',
+    
+    //Miscellaneous section
+    'OG074' => 'Divers',
+    'OG075' => 'Courriel',
+    'OG076' => 'Site Web',
 
     
 );
