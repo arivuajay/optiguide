@@ -36,12 +36,12 @@
                 </p>
                 <p>
                     <?php if ($model['COURRIEL']) { ?>
-                        <?php echo Myclass::t('Email', '', 'og') . ' : '; ?>
+                        <?php echo Myclass::t('OG075', '', 'og') . ' : '; ?>
                         <a href="mailto:<?php echo $model['COURRIEL'] ?>"><?php echo $model['COURRIEL']; ?></a><br>
                     <?php } ?>
 
                     <?php if ($model['SITE_WEB']) { ?>
-                        <?php echo Myclass::t('Website', '', 'og') . ' : '; ?>
+                        <?php echo Myclass::t('OG076', '', 'og') . ' : '; ?>
                         <a href="<?php echo $model['SITE_WEB'] ?>" target="_blank"><?php echo $model['SITE_WEB']; ?></a>
                     <?php } ?>
                 </p>

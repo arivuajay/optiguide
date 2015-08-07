@@ -1,6 +1,6 @@
 <div class="search-bg"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "> 
-        <div class="search-heading">  <i class="fa fa-users"></i> <?php echo Myclass::t('Miscellaneous', '', 'og'); ?>  </div>
+        <div class="search-heading">  <i class="fa fa-users"></i> <?php echo Myclass::t('OG074', '', 'og'); ?>  </div>
     </div>
     <?php
     $form = $this->beginWidget('CActiveForm', array(
