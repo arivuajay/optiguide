@@ -10,7 +10,9 @@
             <p>Tel. : 450 629-6005<br>
                 Toll Free : 1 888 462-2112<br>
                 Fax : 450 629-6044<br>
-                Email : <a href="mailto:info@bretoncom.com">info@bretoncom.com</a></p>
+                Email : <a href="mailto:info@bretoncom.com">info@bretoncom.com</a><br>
+                Website : <a href="http://bretoncommunications.com" target="_blank">bretoncommunications.com</a>
+            </p>
 
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6"> 
