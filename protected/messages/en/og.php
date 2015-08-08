@@ -113,6 +113,7 @@ return array(
     'OG075' => 'E-mail',
     'OG076' => 'Web site',
     
-    'OG077' => 'Find a supplier by category'
+    'OG077' => 'Find a supplier by category',
+    'OGO78' => 'Find a brand',
    
 );

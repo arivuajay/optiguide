@@ -109,7 +109,8 @@ return array(
     'OG075' => 'Courriel',
     'OG076' => 'Site Web',
     
-    'OG077' => 'Trouver un fournisseur par catégorie'
+    'OG077' => 'Trouver un fournisseur par catégorie',
+    'OGO78' => 'Trouver une marque',
 
     
 );
