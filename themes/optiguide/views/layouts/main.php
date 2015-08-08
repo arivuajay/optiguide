@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?php echo Yii::app()->language;?>">
+<html lang="<?php echo Yii::app()->language; ?>">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,19 +29,15 @@
         $cs->registerCssFile($themeUrl . '/css/style.css');
         $cs->registerCssFile($themeUrl . '/css/responsive.css');
         $cs->registerCssFile($themeUrl . '/css/custom.css');
-
         ?>
     </head>
-    <body class="<?php echo Yii::app()->language;?>">
+    <body class="<?php echo Yii::app()->language; ?>">
         <?php $this->renderPartial('//layouts/_header'); ?>
 
         <div class="body-cont"> 
             <div class="container">
                 <div class="row"> 
-                    <?php
-                    if (!Yii::app()->user->isGuest)
-                        $this->renderPartial('//layouts/_submenu');
-                    ?>
+                    <?php $this->renderPartial('//layouts/_submenu'); ?>
 
                     <?php echo $content; ?>
 
