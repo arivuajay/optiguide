@@ -17,13 +17,15 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><?php echo CHtml::link(Myclass::t('OG008', '', 'og'), array('/optiguide/suppliersDirectory')); ?></li>        
-                    <li><?php echo CHtml::link(Myclass::t('OG009', '', 'og'), array('/optiguide/suppliersDirectory/category')); ?></li>    
+                    <li><?php echo CHtml::link(Myclass::t('OG008', '', 'og'), array('/optiguide/suppliersDirectory')); ?></li>      
                     <li><?php echo CHtml::link(Myclass::t('OG010', '', 'og'), array('/optiguide/marqueDirectory')); ?></li>  
+                    <li><?php echo CHtml::link(Myclass::t('OG009', '', 'og'), array('/optiguide/suppliersDirectory/category')); ?></li>   
+                    
                     <?php if (!Yii::app()->user->isGuest) { ?>
                     <li><?php echo CHtml::link(Myclass::t('OG030', '', 'og'), array('/optiguide/professionalDirectory')); ?></li>  
                     <li><?php echo CHtml::link(Myclass::t('OG032', '', 'og'), array('/optiguide/retailerDirectory')); ?></li>  
                     <?php } ?>
+                    
                     <li><?php echo CHtml::link(Myclass::t('OG011', '', 'og'), array('/optiguide/newsManagement')); ?></li>        
                     <li><?php echo CHtml::link(Myclass::t('OG012', '', 'og'), array('/optiguide/calenderEvent')); ?></li>          
                     <li><?php echo CHtml::link(Myclass::t('OG013', '', 'og'), array('/optiguide/groupInformation')); ?></li>

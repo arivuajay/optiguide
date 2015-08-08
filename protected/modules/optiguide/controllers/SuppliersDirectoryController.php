@@ -34,7 +34,7 @@ class SuppliersDirectoryController extends OGController {
                parent::accessRules(), 
                 array(
                     array('allow', // allow all users to perform 'index' and 'view' actions
-                        'actions' => array('create'),
+                        'actions' => array('create','index','view','category'),
                         'users' => array('*'),
                     ),
                     array('allow', // allow authenticated user to perform 'create' and 'update' actions
