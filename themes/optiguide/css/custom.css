@@ -12,6 +12,18 @@ and open the template in the editor.
     color: #d9534f;
 }
 
+.fr .signin-btn {
+    font-size: 15px;
+}
+
+.fr .all-suppliers-btn {
+    font-size: 14px;
+}
+
+.fr .find-btn {
+    font-size: 21px;
+}
+
 .event a {
     background-color: #42B373 !important;
     background-image :none !important;

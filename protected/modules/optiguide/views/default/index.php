@@ -1,39 +1,4 @@
-<div class="search-bg"> 
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "> 
-        <div class="search-heading">  <i class="fa fa-search"></i> <?php echo Myclass::t('OG052', '', 'og'); ?> </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 "> 
-        <button class="all-suppliers-btn" type="button"><i class="fa fa-group"></i> <?php echo Myclass::t('OG053', '', 'og'); ?></button>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <select class="selectpicker">
-            <option><?php echo Myclass::t('APP2'); ?></option>          
-        </select>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <select class="selectpicker">
-            <option><?php echo Myclass::t('OG102'); ?></option>           
-        </select>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <select class="selectpicker">
-            <option><?php echo Myclass::t('APP69'); ?></option>          
-        </select>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <select class="selectpicker">
-            <option><?php echo Myclass::t('OG059', '', 'og'); ?> </option>          
-        </select>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 "> 
-        <select class="selectpicker">
-            <option><?php echo Myclass::t('OG010', '', 'og'); ?></option>         
-        </select>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 "> 
-        <button class="find-btn" type="button"> <?php echo Myclass::t('OG024', '', 'og'); ?></button>
-    </div>
-</div>
+<?php echo  $this->renderPartial('/suppliersDirectory/_search', array('searchModel' => $searchModel)); ?>
 
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7"> 

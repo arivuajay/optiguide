@@ -3,7 +3,8 @@
 class DefaultController extends OGController {
 
     public function actionIndex() {
-        $this->render('index');
+        $searchModel = new SuppliersDirectory();    
+        $this->render('index', array('searchModel' => $searchModel));
     }
 
     public function actionSubscribe() {
