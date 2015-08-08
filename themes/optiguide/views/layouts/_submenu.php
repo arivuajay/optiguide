@@ -18,7 +18,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><?php echo CHtml::link(Myclass::t('OG008', '', 'og'), array('/optiguide/suppliersDirectory')); ?></li>        
-                    <li><?php echo CHtml::link(Myclass::t('OG009', '', 'og'), '#'); ?></li>          
+                    <li><?php echo CHtml::link(Myclass::t('OG009', '', 'og'), array('/optiguide/suppliersDirectory/category')); ?></li>          
                     <li><?php echo CHtml::link(Myclass::t('OG010', '', 'og'), '#'); ?></li>     
                     <li><?php echo CHtml::link(Myclass::t('OG030', '', 'og'), array('/optiguide/professionalDirectory')); ?></li>     
                     <li><?php echo CHtml::link(Myclass::t('OG032', '', 'og'), array('/optiguide/retailerDirectory')); ?></li>     

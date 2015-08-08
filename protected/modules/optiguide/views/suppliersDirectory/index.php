@@ -1,4 +1,15 @@
-<?php $this->renderPartial('_search', array('searchModel' => $searchModel)); ?>
+<?php 
+$actionpage = Yii::app()->controller->action->id;
+if($actionpage == "index")
+{    
+    $this->renderPartial('_search', array('searchModel' => $searchModel));
+    $parampage = "home";
+}elseif($actionpage == "category")
+{
+    $this->renderPartial('_search_cat', array('searchModel' => $searchModel)); 
+     $parampage = "category";
+}
+    ?>
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
         <div class="inner-container eventslist-cont"> 
@@ -20,6 +31,7 @@
                             $param_array['id']  = $info['ID_FOURNISSEUR'];
                             if($searchModel->ID_SECTION!=''){   $param_array['sectionid'] = $searchModel->ID_SECTION;   }                         
                             if($searchModel->PROD_SERVICE!=''){   $param_array['productid'] = $searchModel->PROD_SERVICE;}
+                            if($parampage!=''){   $param_array['disppage'] = $parampage;}
                                      
                             echo CHtml::link($dispname,$param_array) . ' ';   
                             echo $info['NOM_VILLE'].",".$info['ABREVIATION_'.$this->lang].",".$info['NOM_PAYS_'.$this->lang];

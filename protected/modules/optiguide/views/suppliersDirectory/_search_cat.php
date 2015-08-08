@@ -1,37 +1,27 @@
 <div class="search-bg"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "> 
-        <div class="search-heading">  <i class="fa fa-users"></i>  <?php echo Myclass::t('OG067', '', 'og') ?> </div>
+        <div class="search-heading">  <i class="fa fa-users"></i>  <?php echo Myclass::t('OG077', '', 'og') ?> </div>
     </div>
     <?php
      $form = $this->beginWidget('CActiveForm', array(
         'id' => 'search-form',
         'method' => 'get',
-        'action' => array('/optiguide/suppliersDirectory/index'),
+        'action' => array('/optiguide/suppliersDirectory/category'),
         'htmlOptions' => array('role' => 'form')
     ));
     $prod_services = array();  
     $lang =  Yii::app()->session['language'];  
-    $suppliertypes = CHtml::listData(SupplierType::model()->findAll(), 'ID_TYPE_FOURNISSEUR', 'TYPE_FOURNISSEUR_'.$lang);
     $sectiontypes  = CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_".$lang)), 'ID_SECTION', 'NOM_SECTION_'.$lang); 
     if($searchModel->ID_SECTION!='')
     {    
         $prod_services = CHtml::listData(ProductDirectory::model()->findAll(array("order" => "NOM_PRODUIT_".$lang , "condition" => "ID_SECTION = ".$searchModel->ID_SECTION)) , 'ID_PRODUIT', 'NOM_PRODUIT_'.$lang);
     }    
     ?>
-
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 "> 
-        <?php echo $form->textField($searchModel, 'COMPAGNIE', array('class' => 'txtfield','placeholder'=>Myclass::t('APP2'))); ?>
-    </div>
-
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'ID_TYPE_FOURNISSEUR', $suppliertypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG064', '', 'og'))); ?> 
-    </div>
-
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
         <?php echo $form->dropDownList($searchModel, 'ID_SECTION', $sectiontypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG065', '', 'og'))); ?> 
     </div>
 
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8 "> 
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
         <?php echo $form->dropDownList($searchModel, 'PROD_SERVICE', $prod_services, array('class' => 'selectpicker', 'empty' => Myclass::t('OG066', '', 'og'))); ?> 
     </div>
    

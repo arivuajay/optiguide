@@ -108,6 +108,8 @@ return array(
     'OG074' => 'Divers',
     'OG075' => 'Courriel',
     'OG076' => 'Site Web',
+    
+    'OG077' => 'Trouver un fournisseur par catégorie'
 
     
 );

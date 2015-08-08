@@ -112,5 +112,7 @@ return array(
     'OG074' => 'Miscellaneous',
     'OG075' => 'E-mail',
     'OG076' => 'Web site',
+    
+    'OG077' => 'Find a supplier by category'
    
 );

@@ -1,4 +1,12 @@
-<?php $this->renderPartial('_search', array('searchModel' => $searchModel)); 
+<?php 
+ $disppage  = Yii::app()->request->getParam('disppage');
+ if($disppage == "home")
+ {    
+    $this->renderPartial('_search', array('searchModel' => $searchModel)); 
+ }else if($disppage == "category")
+ {
+     $this->renderPartial('_search_cat', array('searchModel' => $searchModel));
+ }    
  $lang =  Yii::app()->session['language'];
 ?>
 <div class="row"> 
@@ -16,7 +24,7 @@
                    {        
                        $img_url  = Yii::app()->getBaseUrl(true).'/uploads/archivage/'.$model['ID_CATEGORIE'].'/'.$model['FICHIER']; 
                     ?>
-                    <img src="<?php echo $img_url;?>"  alt="">
+                      <img src="<?php echo $img_url;?>"  alt="">
                 <?php
                    }
                 }
@@ -26,24 +34,24 @@
                     <div class="search-list ">
                         <h2><?php echo Myclass::t('OG071', '', 'og');?> </h2>
                         <div class="clearfix"></div>                     
-                         <p> <?php echo $model['ADRESSE']; ?>. <br/> 
-                         <?php echo $model['NOM_VILLE']; ?>,  <?php echo $model['NOM_REGION_'.$lang]; ?><br/> 
-                         <?php echo $model['NOM_PAYS_'.$this->lang]; ?><br/> 
-                         <?php echo $model['CODE_POSTAL']; ?>
-                         </p>
+                        <p> 
+                            <?php echo $model['ADRESSE']; ?>. <br/> 
+                            <?php echo $model['NOM_VILLE']; ?>,  <?php echo $model['NOM_REGION_'.$lang]; ?><br/> 
+                            <?php echo $model['NOM_PAYS_'.$this->lang]; ?><br/> 
+                            <?php echo $model['CODE_POSTAL']; ?>
+                        </p>
                         <p>
-                           <?php echo Myclass::t('OG041', '', 'og');?> : <?php echo $model['TELEPHONE']; ?><br>                       
-                           <?php echo Myclass::t('OG042', '', 'og');?> : <?php echo $model['TELECOPIEUR']; ?><br>  
-                           
-                          <?php if($model['TEL_SANS_FRAIS']!='') { echo   Myclass::t('OG068', '', 'og').' : '.$model['TEL_SANS_FRAIS']; } ?><br>
-                          <?php if($model['TEL_SECONDAIRE']!='') { echo   Myclass::t('OG069', '', 'og').' : '.$model['TEL_SECONDAIRE']; } ?>                          
+                            <?php echo Myclass::t('OG041', '', 'og');?> : <?php echo $model['TELEPHONE']; ?><br>                       
+                            <?php if($model['TELECOPIEUR']!='')    { echo   Myclass::t('OG042', '', 'og').' : '.$model['TELECOPIEUR']; } ?><br>                            
+                            <?php if($model['TEL_SANS_FRAIS']!='') { echo   Myclass::t('OG068', '', 'og').' : '.$model['TEL_SANS_FRAIS']; } ?><br>
+                            <?php if($model['TEL_SECONDAIRE']!='') { echo   Myclass::t('OG069', '', 'og').' : '.$model['TEL_SECONDAIRE']; } ?>                          
                         </p>                                                   
                         <p>
                             <?php if($model['COURRIEL']!=''){
-                              echo Myclass::t('APP6');?> : <a href="mailto:<?php echo $model['COURRIEL']; ?>"><?php echo $model['COURRIEL']; ?></a><br/>
+                            echo Myclass::t('APP6');?> : <a href="mailto:<?php echo $model['COURRIEL']; ?>"><?php echo $model['COURRIEL']; ?></a><br/>
                             <?php } ?>
                             <?php if($model['SITE_WEB']!=''){
-                             echo Myclass::t('APP76');?> : <a href="<?php echo $model['SITE_WEB']; ?>" target="_blank"><?php echo $model['SITE_WEB']; ?></a>
+                            echo Myclass::t('APP76');?> : <a href="<?php echo $model['SITE_WEB']; ?>" target="_blank"><?php echo $model['SITE_WEB']; ?></a>
                             <?php } ?>  
                         </p>                                                 
                     </div>
@@ -57,32 +65,35 @@
                                                              echo "<b>".Myclass::t('OG102')."</b> : ".$model['TYPE_FOURNISSEUR_'.$lang]."<br/>";
                             if($model['ETABLI_DEPUIS']!=''){ echo "<b>".Myclass::t('OG128')."</b> : ".$model['ETABLI_DEPUIS']."<br/>";}
                             if($model['NB_EMPLOYES']!='')  { echo "<b>".Myclass::t('OG129')."</b> : ".$model['NB_EMPLOYES']."<br/>";}?>                            
-                        </p>    
-                      <b><?php echo Myclass::t('OG131');?></b> 
-                        <ul>
-                        <?php
-                            $firstname  = "";
-                            $secondname = "";
-                            $thirdname  = "";
-                            $name1      = $model['PERSONNEL_NOM1'];
-                            $title1_fr  = $model['PERSONNEL_TITRE1'];
-                            $title1_en  = $model['PERSONNEL_TITRE1_EN'];
-                            $name2      = $model['PERSONNEL_NOM2'];
-                            $title2_fr  = $model['PERSONNEL_TITRE2'];
-                            $title2_en  = $model['PERSONNEL_TITRE2_EN'];
-                            $name3      = $model['PERSONNEL_NOM3'];
-                            $title3_fr  = $model['PERSONNEL_TITRE3'];
-                            $title3_en  = $model['PERSONNEL_TITRE3_EN'];
-
-                            if($name1!=''){ $information1 = ($lang=="EN")? $title1_en:$title1_fr; echo  $firstname  = "<li>".$name1." , ".$information1."</li>"; }
-                            if($name2!=''){ $information2 = ($lang=="EN")? $title2_en:$title2_fr; echo  $secondname = "<li>".$name2." , ".$information2."</li>"; }
-                            if($name3!=''){ $information3 = ($lang=="EN")? $title3_en:$title3_fr; echo  $thirdname  = "<li>".$name3." , ".$information3."</li>"; }
+                        </p> 
+                    <?php
+                    $firstname  = "";
+                    $secondname = "";
+                    $thirdname  = "";
+                    $name1      = $model['PERSONNEL_NOM1'];
+                    $title1_fr  = $model['PERSONNEL_TITRE1'];
+                    $title1_en  = $model['PERSONNEL_TITRE1_EN'];
+                    $name2      = $model['PERSONNEL_NOM2'];
+                    $title2_fr  = $model['PERSONNEL_TITRE2'];
+                    $title2_en  = $model['PERSONNEL_TITRE2_EN'];
+                    $name3      = $model['PERSONNEL_NOM3'];
+                    $title3_fr  = $model['PERSONNEL_TITRE3'];
+                    $title3_en  = $model['PERSONNEL_TITRE3_EN'];
+                      
+                    if($name1!='' || $name2!='' || $name3!='')
+                    {?>    
+                        <b><?php echo Myclass::t('OG131');?></b> 
+                        <ul>                        
+                        <?php    
+                        if($name1!=''){ $information1 = ($lang=="EN")? $title1_en:$title1_fr; echo  $firstname  = "<li>".$name1." , ".$information1."</li>"; }
+                        if($name2!=''){ $information2 = ($lang=="EN")? $title2_en:$title2_fr; echo  $secondname = "<li>".$name2." , ".$information2."</li>"; }
+                        if($name3!=''){ $information3 = ($lang=="EN")? $title3_en:$title3_fr; echo  $thirdname  = "<li>".$name3." , ".$information3."</li>"; }
                         ?>
                         </ul>
-                        
-                     
-                        
-                        
+                <?php 
+                    }
+                    ?>
+                      
                   <?php if($model['REGIONS_'.$lang]!='') {echo "<p><b>".Myclass::t('OG070','','og')."</b> <br/>".$model['REGIONS_'.$lang]."</p>"; }?>
                     </div>
                 </div>
