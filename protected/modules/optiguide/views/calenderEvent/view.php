@@ -14,13 +14,13 @@
                     ?>
                 </h2>
                 <div class="clearfix"></div>
-                <div class="event-details-txt"> 
+                <div> 
                     <?php echo $model['TEXTE']; ?>
                     <p>
                         <a target="_blank" href="<?php echo $model['LIEN_URL']; ?>"><?php echo $model['LIEN_TITRE']; ?></a>
                     </p>
-                    
-                    <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/calenderEvent')); ?>
+                    <div class="clearfix"></div>               
+                    <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/calenderEvent'), array('class' => 'basic-btn')); ?>
                 </div>
             </div>
         </div>
