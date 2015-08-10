@@ -2,12 +2,12 @@
 /* @var $this PublicityAdsController */
 /* @var $model PublicityAds */
 
-$this->title='Update Publicity Ads: '. $model->ID_PUBLICITE;
+$this->title='Modifier cette publicité';
 $this->breadcrumbs=array(
-	'Publicity Ads'=>array('index'),
-	'Update Publicity Ads',
+	'Gestion des publicités'=>array('index'),
+	'Modifier cette publicité',
 );
 ?>
 
 <div class="user-create">
-    <?php $this->renderPartial('_form', array('model'=>$model)); ?></div>
+    <?php $this->renderPartial('_form',  compact('model','selected_regions','selected_modules','selected_sections')); ?></div>

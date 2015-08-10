@@ -2,9 +2,9 @@
 /* @var $this PublicityAdsController */
 /* @var $model PublicityAds */
 
-$this->title='Create Publicity Ads';
+$this->title=' Ajouter une publicité';
 $this->breadcrumbs=array(
-	'Publicity Ads'=>array('index'),
+	'Gestion des publicités'=>array('index'),
 	$this->title,
 );
 ?>

@@ -59,7 +59,7 @@ class SuppliersDirectoryController extends Controller {
         $options = '';
         //fetch category id based fichers
         $cid     = isset($_POST['id'])?$_POST['id']:'';
-        $options = "<option value='0'>Aucune</option>";
+        $options = "<option value=''>Aucune</option>";
         if($cid!='')
         {     
             $exts = array('jpg','png','gif');
@@ -69,7 +69,7 @@ class SuppliersDirectoryController extends Controller {
             $criteria->addInCondition('EXTENSION',$exts);
             $criteria->order = 'TITRE_FICHIER_FR';
             $data_fichers        = CHtml::listData(ArchiveFichier::model()->findAll($criteria), 'ID_FICHIER', 'TITRE_FICHIER_FR');  
-             $options = "<option value='0'>Aucune</option>";  
+             $options = "<option value=''>Aucune</option>";  
             foreach($data_fichers as $k => $info)
             {
                 $options .= "<option value='".$k."'>".$info."</option>";  

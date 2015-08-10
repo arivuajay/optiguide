@@ -28,9 +28,8 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         $gridColumns = array(
       
 		'TITRE',
-                'LANGUE',
-		'DATE_DEBUT',
-		'DATE_FIN',		
+                'NB_IMPRESSIONS_FAITES',
+				
         array(
         'header' => 'Actions',
         'class' => 'booster.widgets.TbButtonColumn',
@@ -40,7 +39,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         );
 
         $this->widget('booster.widgets.TbExtendedGridView', array(
-        //'filter' => $model,
+        'filter' => $model,
         'type' => 'striped bordered datatable',
         'dataProvider' => $model->search(),
         'responsiveTable' => true,
