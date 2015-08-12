@@ -138,7 +138,7 @@ class Poll extends CActiveRecord
       'title' => 'Title',
       'description' => 'Description',
       'status' => 'Status',
-      'polldate' => "Month", 
+      'polldate' => "Poll Date", 
       'usertype' => 'User Type'  
     );
   }
