@@ -45,6 +45,11 @@ class Myclass extends CController {
 
         return $text;
     }
+    
+    public static function is_home_page() {
+        $app = Yii::app();
+        return $app->controller->route == $app->defaultController;
+    }
 
     public static function rememberMeAdmin($username, $check) {
         if ($check > 0) {

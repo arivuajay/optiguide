@@ -64,9 +64,8 @@
     <div class="ad3">
         <?php echo CHtml::image("{$this->themeUrl}/images/ad6.jpg", 'Logo') ?>
     </div>
-      <?php 
-    // POLL widget display
-     if (!Yii::app()->user->isGuest)
+      <?php    
+     if (!Yii::app()->user->isGuest && Myclass::is_home_page())
     {    
         $pdate = date("Y-m",time());  
         $usertype = Yii::app()->user->getState('role');
