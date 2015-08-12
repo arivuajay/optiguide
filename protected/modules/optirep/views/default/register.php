@@ -1,84 +1,81 @@
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 landing-left">  
     <h2> Registration</h2>
+    <?php
+    $form = $this->beginWidget('CActiveForm', array(
+        'id' => 'sales-rep-form',
+        'htmlOptions' => array('role' => 'form'),
+        'clientOptions' => array(
+            'validateOnSubmit' => true,
+            'hideErrorMessage' => true,
+        ),
+        'enableAjaxValidation' => true,
+    ));
+
+    $subscription_types = SalesRepSubscriptionTypes::model()->findAll();
+    ?>
     <div class="form-group"> 
         <div class="row">
+            <?php echo $form->errorSummary(array($model, $profile)); ?>
+
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                <label> First Name </label>
-                <input name="" type="text" class="form-field">  
+                <?php echo $form->labelEx($model, 'rep_username'); ?>
+                <?php echo $form->textField($model, 'rep_username', array('class' => 'form-field')); ?>
+                <?php echo $form->error($model, 'rep_username'); ?>
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                <label> Last Name </label>
-                <input name="" type="text" class="form-field">  
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 register-select">    
-                <label> Category</label>
-                <select class="selectpicker">
-                    <option>Category 1</option>
-                    <option>Category 2 </option>
-                    <option>Category 3 </option>
-                </select>
+                <?php echo $form->labelEx($model, 'rep_password'); ?>
+                <?php echo $form->passwordField($model, 'rep_password', array('class' => 'form-field')); ?>
+                <?php echo $form->error($model, 'rep_password'); ?>
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                <label> Phone</label>
-                <input name="" type="text" class="form-field">  
+                <?php echo $form->labelEx($profile, 'rep_profile_firstname'); ?>
+                <?php echo $form->textField($profile, 'rep_profile_firstname', array('class' => 'form-field')); ?>
+                <?php echo $form->error($profile, 'rep_profile_firstname'); ?>
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                <label> Email</label>
-                <input name="" type="text" class="form-field">  
+                <?php echo $form->labelEx($profile, 'rep_profile_lastname'); ?>
+                <?php echo $form->textField($profile, 'rep_profile_lastname', array('class' => 'form-field')); ?>
+                <?php echo $form->error($profile, 'rep_profile_lastname'); ?>
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                <label> City</label>
-                <input name="" type="text" class="form-field">  
+                <?php echo $form->labelEx($profile, 'rep_profile_email'); ?>
+                <?php echo $form->textField($profile, 'rep_profile_email', array('class' => 'form-field')); ?>
+                <?php echo $form->error($profile, 'rep_profile_email'); ?> 
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                <label> Zip Code</label>
-                <input name="" type="text" class="form-field">  
+                <?php echo $form->labelEx($profile, 'rep_profile_phone'); ?>
+                <?php echo $form->textField($profile, 'rep_profile_phone', array('class' => 'form-field')); ?>
+                <?php echo $form->error($profile, 'rep_profile_phone'); ?> 
             </div>
-            
-            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 register-select">    
-                <label> Country</label>
-                <select class="selectpicker">
-                    <option>Country</option>
-                    <option>Country 1 </option>
-                    <option>Country 2 </option>
-                </select></div>
+
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <h4> Price and subscription  </h4>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 subscribtion-txt" >  
-                <input type="radio" name="iCheck">  <b>  Single Account </b>
-                19.95 CAD<br/><span> Per month + applicable taxes in accordance with the province  </span>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 subscribtion-txt" >  
-                <input type="radio" name="iCheck">  <b>  2 to 5 Accounts</b>
-                17.95 CAD <br/><span> Per month + applicable taxes in accordance with the province  </span>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 subscribtion-txt" >  
-                <input type="radio" name="iCheck">  <b>  11 + Accounts  </b>
-                15.95 CAD <br/><span> Per month + applicable taxes in accordance with the province  </span>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 subscribtion-txt" >  
-                <input type="radio" name="iCheck">  <b>  11 + Accounts </b>
-                12.95 CAD<br/><span> Per month + applicable taxes in accordance with the province  </span>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <?php foreach ($subscription_types as $subscription_type) { ?>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 subscribtion-txt" >
+                        <?php echo $form->radioButton($model, 'rep_subscription_type_id', array('value' => $subscription_type['rep_subscription_type_id'], 'uncheckValue' => null)); ?>
+                        <b> <?php echo $subscription_type['rep_subscription_type_name']; ?> </b>
+                        <?php echo $subscription_type['rep_subscription_type_amount']; ?> CAD <br/>
+                        <span> <?php echo $subscription_type['rep_subscription_type_description']; ?>  </span>
+                    </div>
+                <?php } ?>
+                <?php echo $form->error($model, 'rep_subscription_type_id'); ?> 
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> 
-                <button class="register-btn"> 
-                    Register !
-                </button>
+                <?php echo CHtml::submitButton('Register !', array('class' => 'register-btn')); ?>
             </div>
         </div>
     </div>
+
+    <?php $this->endWidget(); ?>
     <div class="clearfix"> </div>
     <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4 col-sm-offset-2 col-md-offset-3 col-lg-offset-4"></div>
 </div>

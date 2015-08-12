@@ -5,22 +5,30 @@
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 landing-left">
-    <?php echo CHtml::image("{$this->themeUrl}/images/site-screen.jpg", 'Site screen', array('width' => 673, 'height' => 434));?>
+    <?php echo CHtml::image("{$this->themeUrl}/images/site-screen.jpg", 'Site screen', array('width' => 673, 'height' => 434)); ?>
 </div>
 <div class="clearfix"> </div>
 <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4 col-sm-offset-2 col-md-offset-3 col-lg-offset-4"> 
+    <?php $form = $this->beginWidget('CActiveForm', array('id' => 'login-form')); ?>
     <div class="rep-login">
         <h2> Opti-rep Login </h2>
-        <input name="" type="text" class="rep-loginfield" value="User Name">
-        <input name="" type="text" class="rep-loginfield" value="Password">
+        <?php echo $form->textField($model, 'rep_username', array('class' => 'rep-loginfield', 'placeholder' => 'Username')); ?>
+        <?php echo $form->error($model, 'rep_username') ?>
+        <?php echo $form->textField($model, 'rep_password', array('class' => 'rep-loginfield', 'placeholder' => 'Password')); ?>
+        <?php echo $form->error($model, 'rep_password') ?> 
         <div class="row"> 
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"><a href="#"> Forgot Password?</a></div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> <input name="" type="button" value="Login" class="rep-login-btn"></div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <a href="#"> Forgot Password?</a>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
+                <?php echo CHtml::submitButton('Login', array('class' => 'rep-login-btn', 'name' => 'sign_in')) ?>
+            </div>
         </div>
     </div>
+    <?php $this->endWidget(); ?>
     <div class="signup-cont"> 
         <p>  Dont have account ? Signup ! <br/> 
-            <?php echo CHtml::link('Register', '/optirep/default/register')?>
+            <?php echo CHtml::link('Register', '/optirep/default/register') ?>
         </p>
     </div>
 </div>
