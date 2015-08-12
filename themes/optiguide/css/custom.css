@@ -139,7 +139,9 @@ and open the template in the editor.
   visibility: hidden;
 }
 
-
+.poll-results .result {
+    font-size: 12px!important;
+}
 .poll-results {
   margin-bottom: .5em;
   overflow: hidden;
@@ -150,7 +152,7 @@ and open the template in the editor.
 .poll-results .bar {
   background-color: #FFF;
   height: 1em;
-  margin: .5em 0;
+/*  margin: .5em 0;*/
 }
 .poll-results .bar .fill {
   background-color: #298DCD;
@@ -171,4 +173,14 @@ and open the template in the editor.
   position: absolute;
  // right: 5px;
  // top: 5px;
+}
+
+.optinews-left-bg.polls-bg {
+  padding: 10px;
+}
+
+#portlet-poll-form label {
+    font-size : 13px;
+    font-weight: 400;
+        
 }

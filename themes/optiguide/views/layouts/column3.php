@@ -40,7 +40,31 @@
     if (!Yii::app()->user->isGuest)
         $this->widget('OgCalenderWidget'); 
     ?>
-    <?php 
+  
+    <div class="ad2"> 
+        <?php 
+        echo CHtml::image("{$this->themeUrl}/images/bretonJOBS_logo_noslogan.jpg", 'Ad'); 
+        $find_job = CHtml::image("{$this->themeUrl}/images/boutons-find.png", 'Ad');
+        echo CHtml::link($find_job, 'http://bretonjobs.com/jobs/', array('target' => '_blank'));
+        
+        $post_job = CHtml::image("{$this->themeUrl}/images/boutons-post.png", 'Ad');
+        echo CHtml::link($post_job, 'http://bretonjobs.com/pricing/', array('target' => '_blank'));
+        ?>
+    </div>
+</div>
+
+<div class="col-xs-12 col-sm-6 col-md-7 col-lg-8">
+    <?php echo $content; ?>
+</div>
+
+<div class="col-xs-12 col-sm-3 col-md-2  col-lg-2"> 
+    <div class="ad3">
+        <?php echo CHtml::image("{$this->themeUrl}/images/ad2.jpg", 'Logo') ?>
+    </div>
+    <div class="ad3">
+        <?php echo CHtml::image("{$this->themeUrl}/images/ad6.jpg", 'Logo') ?>
+    </div>
+      <?php 
     // POLL widget display
      if (!Yii::app()->user->isGuest)
     {    
@@ -72,28 +96,5 @@
         }         
     }   
      ?>
-    <div class="ad2"> 
-        <?php 
-        echo CHtml::image("{$this->themeUrl}/images/bretonJOBS_logo_noslogan.jpg", 'Ad'); 
-        $find_job = CHtml::image("{$this->themeUrl}/images/boutons-find.png", 'Ad');
-        echo CHtml::link($find_job, 'http://bretonjobs.com/jobs/', array('target' => '_blank'));
-        
-        $post_job = CHtml::image("{$this->themeUrl}/images/boutons-post.png", 'Ad');
-        echo CHtml::link($post_job, 'http://bretonjobs.com/pricing/', array('target' => '_blank'));
-        ?>
-    </div>
-</div>
-
-<div class="col-xs-12 col-sm-6 col-md-7 col-lg-8">
-    <?php echo $content; ?>
-</div>
-
-<div class="col-xs-12 col-sm-3 col-md-2  col-lg-2"> 
-    <div class="ad3">
-        <?php echo CHtml::image("{$this->themeUrl}/images/ad2.jpg", 'Logo') ?>
-    </div>
-    <div class="ad3">
-        <?php echo CHtml::image("{$this->themeUrl}/images/ad6.jpg", 'Logo') ?>
-    </div>
 </div>
 <?php $this->endContent(); ?>
