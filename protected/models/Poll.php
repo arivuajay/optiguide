@@ -15,7 +15,7 @@
  */
 class Poll extends CActiveRecord
 {
-  public $labelerror;
+  public $labelerror,$Year;
   /**
    * @var integer representing a closed poll status
    */
@@ -52,7 +52,7 @@ class Poll extends CActiveRecord
       array('title,polldate,usertype', 'required'),
       array('status', 'numerical', 'integerOnly'=>true),
       array('title', 'length', 'max'=>255),
-      array('description,labelerror', 'safe'),    
+      array('description,labelerror,Year', 'safe'),    
       array('polldate', 'checkpollexist' ) ,
       array('title, description, status', 'safe', 'on'=>'search'),
     );
@@ -179,6 +179,8 @@ class Poll extends CActiveRecord
     $criteria->compare('title',$this->title,true);
     $criteria->compare('description',$this->description,true);
     $criteria->compare('status',$this->status);
+    $criteria->compare('usertype',$this->usertype,true);
+    $criteria->compare('polldate',$this->polldate,true);
 
     return new CActiveDataProvider($this, array(
       'criteria'=>$criteria,

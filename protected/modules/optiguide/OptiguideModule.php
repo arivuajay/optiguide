@@ -1,6 +1,23 @@
 <?php
 
 class OptiguideModule extends CWebModule {
+    
+    /**
+     * @property boolean Force users to vote before seeing results.
+     */
+    public $forceVote = TRUE;
+
+    /**
+     * @property boolean Restrict anonymous votes by IP address,
+     * otherwise it's tied only to the user's ID.
+     */
+    public $ipRestrict = TRUE;
+
+    /**
+     * @property boolean Allow guests to cancel their votes
+     * if $ipRestrict is enabled.
+     */
+    public $allowGuestCancel = FALSE;
 
     public function init() {
         Yii::app()->theme = 'optiguide';
