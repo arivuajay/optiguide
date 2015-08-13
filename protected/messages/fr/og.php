@@ -111,6 +111,8 @@ return array(
     
     'OG077' => 'Trouver un fournisseur par catégorie',
     'OGO78' => 'Trouver une marque',
+    
+    'OGO79' => 'Votre demande envoyé avec succès . Admin vous contacter bientôt !!!'
 
     
 );

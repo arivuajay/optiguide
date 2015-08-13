@@ -116,4 +116,5 @@ return array(
     'OG077' => 'Find a supplier by category',
     'OGO78' => 'Find a brand',
    
+    'OGO79' => 'Your request sent succesfully. Admin will contact you soon!!!',
 );
