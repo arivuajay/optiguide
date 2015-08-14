@@ -72,13 +72,17 @@ class ClientProfilesController extends Controller
                    $mail    = new Sendmail();
                    $subject = SITENAME."- Reminder client profile - ".$info->client;
                    $trans_array  = array(
-                       "{NAME}"    => $info->client,                    
-                       "{MESSAGE}" => $info->message, 
+                       "{NAME}"    => $info->client,  
+                       "{FNAME}" => $info->first_name, 
+                       "{LNAME}" => $info->lastname, 
+                       "{COUNTRY}" => $info->country, 
+                       "{REGION}" => $info->region, 
+                       "{CITY}" => $info->ville,                       
                        "{MDATE}"   => $info->meeting_date,   
                    );
                    $message = $mail->getMessage('meetingalert', $trans_array);
                    $mail->send(ADMIN_EMAIL, $subject, $message);
-                   
+                                      
                    $model=$this->loadModel($meetid);
                    $model->status=1;
                    $model->save();
@@ -102,6 +106,9 @@ class ClientProfilesController extends Controller
 		if(isset($_POST['ClientProfiles']))
 		{
 			$model->attributes=$_POST['ClientProfiles'];
+                        echo "<pre>";
+                        print_r($model->attributes);
+                        exit;
 			if($model->save()){
                                 Yii::app()->user->setFlash('success', 'Rappel créé avec succès !!!');
                                 $this->redirect(array('index'));
@@ -128,7 +135,7 @@ class ClientProfilesController extends Controller
 
 		if(isset($_POST['ClientProfiles']))
 		{
-			$model->attributes=$_POST['ClientProfiles'];
+			$model->attributes=$_POST['ClientProfiles'];                     
 			if($model->save()){
                                 Yii::app()->user->setFlash('success', 'Rappel correctement mis à jour !!!');
                                 $this->redirect(array('index'));

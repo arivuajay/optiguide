@@ -189,7 +189,7 @@
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'URL', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php echo $form->textField($model, 'URL', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
+                        <?php echo $form->textField($model, 'URL', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>(http://www.monsite.com )
                         <?php echo $form->error($model, 'URL'); ?>
                     </div>
                 </div>

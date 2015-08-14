@@ -83,6 +83,7 @@ class SuppliersDirectory extends CActiveRecord {
             array('NB_EMPLOYES', 'length', 'max' => 10),
             array('REGIONS_FR, REGIONS_EN', 'length', 'max' => 1000),
             array('COURRIEL','email'),
+            array('SITE_WEB','url'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('country,region,archivecat,IDSECTION,Products1,Products2,ID_SECTION,PROD_SERVICE', 'safe'),

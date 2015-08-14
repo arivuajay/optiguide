@@ -29,15 +29,32 @@ class ClientProfiles extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                        array('client,message,meeting_date','required'),
+                        array('client,message,meeting_date,first_name, lastname ,country ,region ,ville','required'),
 			array('status', 'numerical', 'integerOnly'=>true),
 			array('client', 'length', 'max'=>255),
+                        array('address', 'length', 'max'=>255),
+                        array('first_name, lastname ,country ,region ,ville ,pincode , mail ,phonenumber', 'length', 'max'=>55),                    
 			array('message, meeting_date, created', 'safe'),
+                        array('mail','email'),
+                        array('phonenumber','phoneNumber'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, client, message, meeting_date, created, status', 'safe', 'on'=>'search'),
+			array('id, client, message, meeting_date, created, status , first_name, lastname ,address ,country ,region ,ville ,pincode , mail ,phonenumber', 'safe', 'on'=>'search'),
 		);
 	}
+        
+         /** 
+            * check the format of the phone number entered
+            * @param string $attribute the name of the attribute to be validated
+            * @param array $params options specified in the validation rule
+            */
+            public function phoneNumber($attribute,$params='')
+            {
+              if($this->$attribute!='' && preg_match("/[A-Za-z]+/",$this->$attribute)==1)
+              {            
+                      $this->addError($attribute,'Invalid Format.' );
+              }        
+            }
 
 	/**
 	 * @return array relational rules.
@@ -62,6 +79,15 @@ class ClientProfiles extends CActiveRecord
                     'meeting_date' => Myclass::t('Rappel date de'),
                     'created' => Myclass::t('Created'),
                     'status' => Myclass::t('Status'),
+                    'first_name' => Myclass::t('First Name'),
+                    'lastname' => Myclass::t('Last Name'),
+                    'address' => Myclass::t('Address'),
+                    'country' => Myclass::t('Country'),
+                    'region' => Myclass::t('Region'),
+                    'ville' => Myclass::t('City'),
+                    'pincode' => Myclass::t('Pincode'),
+                    'mail' => Myclass::t('Email'),
+                    'phonenumber' => Myclass::t('Phonenumber'),
 		);
 	}
 

@@ -150,7 +150,7 @@
 
                                 <div class="form-group">
                                     <?php echo $form->labelEx($model, 'SITE_WEB', array()); ?>
-                                    <?php echo $form->textField($model, 'SITE_WEB', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
+                                    <?php echo $form->textField($model, 'SITE_WEB', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>(http://www.monsite.com )
                                     <?php echo $form->error($model, 'SITE_WEB'); ?>
                                 </div>
 

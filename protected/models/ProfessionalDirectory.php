@@ -56,6 +56,7 @@ class ProfessionalDirectory extends CActiveRecord {
             // @todo Please remove those attributes that should not be searched.
             array('country,region', 'safe'),
             array('COURRIEL','email'),
+            array('SITE_WEB','url'),
             array('ID_SPECIALISTE, TYPESPECIALISTEFR , ID_CLIENT, PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, ID_TYPE_SPECIALISTE, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, SITE_WEB, COURRIEL, DATE_MODIFICATION', 'safe', 'on' => 'search'),
             array('TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2', 'phoneNumber'),
         );

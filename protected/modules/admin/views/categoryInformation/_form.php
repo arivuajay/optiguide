@@ -143,7 +143,7 @@
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'SITE_WEB', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php echo $form->textField($model, 'SITE_WEB', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
+                        <?php echo $form->textField($model, 'SITE_WEB', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>(http://www.monsite.com )
                         <?php echo $form->error($model, 'SITE_WEB'); ?>
                     </div>
                 </div>
