@@ -54,6 +54,15 @@ class PublicityAds extends CActiveRecord {
             array('NO_PUB, archivecat,ID_FICHIER, NB_IMPRESSIONS_FAITES, NB_IMPRESSIONS, PRIORITE, PAYE, ZONE_AFFICHAGE, ID_POSITION, AFFICHER_ACCUEIL, ACCUEIL_SECTION', 'numerical', 'integerOnly' => true),
             array('TITRE, LIEN_URL, MOTS_CLES_RECHERCHE, CLIENT', 'length', 'max' => 255),
             array('PRIX', 'length', 'max' => 50),
+            array('LIEN_URL', 'url'),
+            array('PRIX', 'type', 'type'=>'float'),
+//                
+//            array(
+//                'LIEN_URL',
+//                'match', 'pattern' => '/(?:https?:\/\/)?(?:[\w]+\.)([a-zA-Z\.]{2,6})([\/\w\.-]*)*\/?/',
+//              //  'match', 'pattern' => '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.\-&\?=]*)*\/?$/',
+//                'message' => 'Please give valid url.',
+//            ),
             array('DATE_AJOUT,archivecat,publicityModules,regions,section', 'safe'),
             array('NB_IMPRESSIONS', 'checknotempty'),
             // The following rule is used by search().
@@ -154,6 +163,11 @@ class PublicityAds extends CActiveRecord {
         $criteria->compare('ACCUEIL_SECTION', $this->ACCUEIL_SECTION);
 
         return new CActiveDataProvider($this, array(
+            'sort' => array(
+               'defaultOrder' => array(
+                  'DATE_DEBUT' => CSort::SORT_DESC
+               ),
+            ),
             'criteria' => $criteria,
             'pagination' => array(
                 'pageSize' => PAGE_SIZE,
