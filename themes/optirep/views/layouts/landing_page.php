@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title>Opti-rep</title>
+        <title><?php echo Yii::app()->name; ?></title>
         <?php
         $themeUrl = $this->themeUrl;
         $cs = Yii::app()->getClientScript();
@@ -42,9 +42,7 @@
 
         <?php
         $cs_pos_end = CClientScript::POS_END;
-
         $cs->registerCoreScript('jquery');
-
         $cs->registerScriptFile($themeUrl . '/js/bootstrap.min.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-select.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/icheck.min.js', $cs_pos_end);

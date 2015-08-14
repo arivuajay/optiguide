@@ -21,6 +21,9 @@
  * @property SalesRepProfile[] $salesRepProfiles
  */
 class SalesRep extends CActiveRecord {
+    
+    const ROLE_SINGLE = 'single';
+    const ROLE_COMPANY = 'company';
 
     /**
      * @return string the associated database table name

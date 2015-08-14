@@ -16,5 +16,4 @@ class ORController extends Controller {
         parent::init();
     }
 
-
 }

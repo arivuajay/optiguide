@@ -1,5 +1,5 @@
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 landing-left">  
-    <h2> Registration</h2>
+    <h2> Registration </h2>
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'sales-rep-form',

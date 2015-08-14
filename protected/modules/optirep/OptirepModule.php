@@ -3,6 +3,7 @@
 class OptirepModule extends CWebModule {
 
     public function init() {
+        Yii::app()->name = 'Opti-Rep';
         Yii::app()->theme = 'optirep';
         Yii::app()->language = 'en';
         $this->layoutPath = Yii::getPathOfAlias('webroot.themes.' . Yii::app()->theme->name . '.views.layouts');
