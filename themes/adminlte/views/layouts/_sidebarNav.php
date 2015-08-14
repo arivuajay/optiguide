@@ -64,7 +64,7 @@
                 array('label' => '<i class="fa fa-gear"></i> <span>Archivage</span>', 'url' => array('/admin/archiveCategory/index')),
             // array('label' => '<i class="fa fa-dashboard"></i> <span>Utilisateurs</span>', 'url' => array('/admin/userdirectory/index'), 'active' => $_controller == 'userdirectory'),
                 
-                 array('label' => '<i class="fa fa-list"></i> <span>Sondages</span>', 'url' => array('/admin/poll/index'), 'active' => $_controller == 'poll'),
+                 array('label' => '<i class="fa fa-line-chart"></i> <span>Sondages</span>', 'url' => array('/admin/poll/index'), 'active' => $_controller == 'poll'),
                 
                   array('label' => '<i class="fa fa-bell"></i> <span>Client Profiles</span>', 'url' => array('/admin/clientProfiles/index'), 'active' => $_controller == 'clientProfiles'),
             ),

@@ -1,11 +1,10 @@
 <tr id="pollchoice-<?php echo $id ?>">
-  <td class="col-sm-2">&nbsp;</td>
-  <td class="labeltxt col-sm-5"">
-    <?php echo CHtml::activeTextField($choice,"[$id]label",array('class' => 'form-control','size'=>60,'maxlength'=>255)); ?>
+  <td class="labeltxt col-sm-5" style="padding-top: .5em; padding-bottom: .5em;">
+    <?php echo CHtml::activeTextField($choice,"[$id]label",array('class' => 'form-control','size'=>60)); ?>
     <?php echo CHtml::error($choice,"[$id]label"); ?>
     <div class="errorMessage" style="display:none">You must enter a label.</div>
   </td>
-  <td class="actions">
+  <td class="actions col-sm-2">
   <?php
     $deleteJs = 'jQuery("#pollchoice-'. $id .'").find("td").fadeOut(1000,function(){jQuery(this).parent().remove();});return false;';
 

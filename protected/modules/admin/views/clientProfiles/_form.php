@@ -11,7 +11,6 @@ $cs_pos_end = CClientScript::POS_END;
 $cs->registerCssFile($themeUrl . '/css/datepicker/datepicker3.css');
 $cs->registerScriptFile($themeUrl . '/js/datepicker/bootstrap-datepicker.js', $cs_pos_end);
 
-$meeting_date = $model->meeting_date;
 ?>
 
 <div class="row">
@@ -69,15 +68,13 @@ $meeting_date = $model->meeting_date;
 $js = <<< EOD
 $(document).ready(function(){
         
-$('.year').datepicker({ dateFormat: 'yyyy' });
-$('.date').datepicker({ format: 'yyyy-mm-dd' });     
-    
-        
-var meeting_date = '{$meeting_date}';
-if(meeting_date=='')
-{
-   $( "#ClientProfiles_meeting_date" ).datepicker( "setDate" , new Date()) 
-}
+    var date = new Date();
+    date.setDate(date.getDate()-1);    
+    $('.year').datepicker({ dateFormat: 'yyyy' });
+    $('.date').datepicker({ 
+        format: 'yyyy-mm-dd',
+        startDate: new Date()
+     }); 
                 
 });
 EOD;

@@ -25,8 +25,8 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php
-        $regions = Myclass::getallregions();  
+        <?php        
+        $regions = CHtml::listData(RegionDirectory::model()->findAll(), 'ID_REGION', 'NOM_REGION_FR');
         $gridColumns = array(
         	'NOM_VILLE',
              array(              

@@ -34,6 +34,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             <section class="content">
                 <div class="row">
                     <?php
+                    $years = array();
                     $criteria = new CDbCriteria();
                     $criteria->select = 'YEAR(polldate) as Year';
                     $criteria->group  = 'YEAR(polldate)'; 
@@ -57,13 +58,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                             <?php echo $form->labelEx($model, 'Year', array('class' => ' control-label')); ?>
                             <?php echo $form->dropDownList($model, 'Year', $years, array('class' => 'form-control', 'prompt' => 'Toutes')); ?>                          
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-3">
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model, 'status', array('class' => ' control-label')); ?>
-                            <?php echo $form->dropDownList($model, 'status', $model->statusLabels(), array('class' => 'form-control', 'prompt' => 'Toutes')); ?>                          
-                        </div>
-                    </div>                   
+                    </div>                                 
                     <div class="col-lg-3 col-md-3">
                         <div class="form-group">
                             <?php echo $form->labelEx($model, 'title', array('class' => ' control-label')); ?>
@@ -112,12 +107,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                         return $utype; // $data['name'] for array data, e.g. using SqlDataProvider.
                     },
                    'filter' => CHtml::activeDropDownList($model, 'usertype', array("1" => 'Professionals', "2" => 'Suppliers', "3" => 'Optical Retailers', "4" => 'Representatives' , '5' =>'others'), array('class' => 'form-control', 'prompt' => 'Tous')),
-                ),  
-                array(
-                  'name' => 'status',
-                  'value' => 'CHtml::encode($data->getStatusLabel($data->status))',
-                  'filter' => CHtml::activeDropDownList($model, 'status', $model->statusLabels(), array('class'=>'form-control','prompt'=>'Tous')),
-                ),
+                ),                
                 array(
                 'header' => 'actes',
                 'class' => 'booster.widgets.TbButtonColumn',
@@ -134,14 +124,14 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         
 
         $this->widget('booster.widgets.TbGroupGridView', array(      
-        'type' => 'striped bordered datatable',
-        'dataProvider' => $model->search(),        
-        'responsiveTable' => true,
-        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>   Sondages</h3></div><div class="panel-body">{items}{pager}</div></div>',
-        'extraRowColumns'=> array('datedisplay'),
-        'extraRowExpression' => '"<b style=\"font-size: 20px; color: #333;\">".date("F",strtotime($data->polldate))." ".date("Y",strtotime($data->polldate))."</b>"',
-        'extraRowHtmlOptions' => array('style'=>'padding:10px'),            
-        'columns' => $gridColumns
+            'type' => 'striped bordered datatable',
+            'dataProvider' => $model->search(),        
+            'responsiveTable' => true,
+            'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>   Sondages</h3></div><div class="panel-body">{items}{pager}</div></div>',
+            'extraRowColumns'=> array('datedisplay'),
+            'extraRowExpression' => '"<b style=\"font-size: 20px; color: #333;\">".date("F",strtotime($data->polldate))." ".date("Y",strtotime($data->polldate))."</b>"',
+            'extraRowHtmlOptions' => array('style'=>'padding:10px'),            
+            'columns' => $gridColumns
           )
         );
         ?>

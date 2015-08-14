@@ -60,7 +60,7 @@
                 </div>                  
             </div> 
             
-            <div class="form-group">
+            <div class="form-group" style="display:none;">
                 <?php echo $form->labelEx($model, 'status', array('class' => 'col-sm-2 control-label')); ?>
                 <div class="col-sm-5">
                     <?php echo $form->dropDownList($model, 'status', $model->statusLabels(), array('class' => 'form-control')); ?>
@@ -68,41 +68,40 @@
                 </div>    
             </div>
 
-            <div class="box-header">
-                <h3 class="box-title">Choices</h3>
-            </div>
-
-            <table id="poll-choices" >
-                <thead>   
-                <th>&nbsp;</th>
-                <th align="middle">Label</th>
-                <th>Actions</th>
-                </thead>
-                <tbody>
-                    <?php
-                    $newChoiceCount = 0;
-                    foreach ($choices as $choice) {
-                        $this->renderPartial('/pollchoice/_formChoice', array(
-                            'id' => isset($choice->id) ? $choice->id : 'new' . ++$newChoiceCount,
-                            'choice' => $choice,
-                        ));
-                    }
-                    ++$newChoiceCount; // Increase once more for Ajax additions
-                    ?>
-                    <tr id="add-pollchoice-row">   
-                        <td class="labeltxt col-sm-2">&nbsp;</td>
-                        <td class="labeltxt col-sm-5">
-                            <?php echo CHtml::textField('add_choice', '', array('class' => 'form-control', 'size' => 60, 'id' => 'add_choice')); ?>
-                            <div class="errorMessage" id="labelerror" style="display:none;">You must enter a label.</div>  
-                             <?php echo $form->error($model, 'labelerror'); ?>
-                        </td>
-                        <td class="actions">
-                            <a href="#" id="add-pollchoice"><i class="glyphicon glyphicon-pencil"></i></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-           
+            <div class="form-group">
+                <label for="Poll_usertype" class="col-sm-2 control-label required">Choices<span class="required">*</span></label>
+                <div class="col-sm-5">   
+                    <div class="row">
+                    <table id="poll-choices" >      
+                        <tbody>
+                            <?php
+                            $newChoiceCount = 0;
+                            foreach ($choices as $choice) {
+                                $this->renderPartial('/pollchoice/_formChoice', array(
+                                    'id' => isset($choice->id) ? $choice->id : 'new' . ++$newChoiceCount,
+                                    'choice' => $choice,
+                                ));
+                            }
+                            ++$newChoiceCount; // Increase once more for Ajax additions
+                            ?>
+                            <tr id="add-pollchoice-row">                              
+                                <td class="labeltxt col-sm-5" style="padding-top: .5em; padding-bottom: .5em;">
+                                    <?php echo CHtml::textField('add_choice', '', array('class' => 'form-control', 'size' => 60, 'id' => 'add_choice')); ?>
+                                    <div class="errorMessage" id="labelerror" style="display:none;">You must enter a choice.</div>  
+                                     <?php echo $form->error($model, 'labelerror'); ?>
+                                </td>                      
+                            </tr>
+                            <tr>                           
+                                <td class="labeltxt col-sm-5">
+                                    <a href="#" id="add-pollchoice"><i class="glyphicon glyphicon-plus-sign"></i> Add choice</a>
+                                </td>       
+                            </tr>
+                        </tbody>    
+                    </table>
+                    </div>
+                </div>
+            </div>   
+            <br>
             <div class="box-footer">
                 <div class="form-group">
                     <div class="col-sm-0 col-sm-offset-2">
@@ -117,11 +116,12 @@
 <?php
 $callback = Yii::app()->createUrl('/admin/pollchoice/ajaxcreate');
 $js = <<<JS
-        
+            
 jQuery('.date').datepicker({     
     format: 'MM yyyy',
     viewMode: "months", 
-    minViewMode: "months"
+    minViewMode: "months",
+    startDate: '+0m',
 });             
         
 var PollChoice = function(o) {

@@ -195,17 +195,14 @@ class PollController extends Controller
    */
   public function actionDelete($id)
   {
-    if(Yii::app()->request->isPostRequest)
-    {
-      // we only allow deletion via POST request
-      $this->loadModel($id)->delete();
-
-      // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-      if(!isset($_GET['ajax']))
-        $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+    // we only allow deletion via POST request
+    $this->loadModel($id)->delete();
+    
+    // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+    if(!isset($_GET['ajax'])){
+        Yii::app()->user->setFlash('success', 'Sondage Supprimé avec succès!!');
+        $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
     }
-    else
-      throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
   }
 
   /**

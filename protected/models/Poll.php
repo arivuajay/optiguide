@@ -84,13 +84,13 @@ class Poll extends CActiveRecord
      {       
         if(!isset($_POST['PollChoice']))
         {    
-         $this->addError('labelerror', 'S\'il vous plaît ajouter quelques lables');
+         $this->addError('labelerror', 'S\'il vous plaît ajouter quelques choices');
          
         } 
         
         if(count($_POST['PollChoice']) < 2)
         {
-          $this->addError('labelerror', 'S\'il vous plaît ajouter atleast deux lables');           
+          $this->addError('labelerror', 'S\'il vous plaît ajouter atleast deux choices');           
         }    
             
         
@@ -183,7 +183,13 @@ class Poll extends CActiveRecord
     $criteria->compare('polldate',$this->polldate,true);
 
     return new CActiveDataProvider($this, array(
-      'criteria'=>$criteria,
+       'criteria'=>$criteria,
+       'sort'=>array(
+            'defaultOrder'=>'polldate DESC',
+        ),
+        'pagination' => array(
+               'pageSize' => PAGE_SIZE,
+           )
     ));
   }
 

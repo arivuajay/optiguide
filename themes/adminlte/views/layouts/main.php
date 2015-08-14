@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US" class="bg-black">
+<html lang="en-US" class="">
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
