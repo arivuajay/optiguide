@@ -7,6 +7,7 @@ body
 	font-weight:400;
 	font-size:14px;
 	color:#2e2e2e;
+	background:#f0f0f0;
 }
 
 a:focus
@@ -54,6 +55,7 @@ img {
 {
 	width:100%;
 	float:left;
+	
 }
 
 .logo
@@ -98,7 +100,7 @@ img {
 
 /*search tabs*/
 
-ul.resp-tabs-list, p {
+ul.resp-tabs-list, {
     margin: 0px;
     padding: 0px;
 }
@@ -685,7 +687,7 @@ a {
 {
 	width:100%;
 	float:left;
-	background:#f0f0f0;
+	background:#ffffff;
 	border:none;
 	height:40px;
 	padding:10px;
@@ -693,7 +695,6 @@ a {
 
 .register-select .dropdown-toggle
 {
-		background:#f0f0f0;
 	border:none;
 	height:40px;
 	padding:10px;
@@ -737,4 +738,128 @@ a {
   padding: 0 25px;
   color:#ffffff;
   
+}
+
+
+.repadmincont
+{
+	border-top:#398aca solid 6px;
+	width:100%;
+	float:left;
+}
+
+.user-left
+{
+	background:#ffffff;
+	width:100%;
+	float:left;
+	padding:15px;
+	margin:25px 0px 0px 0px;
+}
+
+.user-deatils
+{
+	text-align:center;
+	padding:0px 0px;
+	font-size:15px;
+	border-bottom:#f0f0f0 solid 1px;
+	margin-bottom:15px;
+}
+
+.user-deatils img
+{
+	-webkit-border-radius: 50%;
+-moz-border-radius:50%;
+border-radius: 50%;
+border:#f0f0f0 solid 5px;
+}
+
+
+.user-left ul
+{
+	margin:0px;
+	padding:0px;
+}
+
+.user-left ul li
+{
+	font-weight:bold;
+	list-style:none;
+	padding:2px 0px 0px 0px;
+}
+
+.user-left ul li a
+{
+	color:#2e2e2e;
+	display:block;
+	padding:8px 15px;
+}
+
+.user-right
+{
+	margin-top:25px;
+}
+
+
+.user-left ul li a:hover
+{
+	text-decoration:none;
+	background:#f0f0f0;
+}
+
+.active2
+{
+	background:#f0f0f0;
+}
+
+.user-right h2
+{
+	margin-top:0px;
+	border-bottom:#f0f0f0 solid 1px;
+	padding-bottom:5px;
+	margin-bottom:25px;
+}
+
+
+.user-right .register-btn {
+  font-size: 20px;
+}
+
+
+.user-right .form-field
+{
+	background:#f0f0f0;
+	  margin-bottom: 15px;
+}
+
+.user-right th
+{
+	text-transform:uppercase;
+	font-size:16px;
+}
+
+.user-right tr:hover
+{
+	font-weight:bold;
+	background:#f0f0f0;
+
+}
+
+.submenu
+{
+	background:#231f20;
+	-webkit-border-radius: 0px;
+-moz-border-radius: 0px;
+border-radius: 0px;
+}
+
+.submenu ul
+{
+	text-align:center !important
+}
+
+.submenu ul li
+{
+	float:none;
+	display:inline-block
 }

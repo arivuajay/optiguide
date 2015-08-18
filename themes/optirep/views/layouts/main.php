@@ -7,51 +7,34 @@
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <title><?php echo Yii::app()->name; ?></title>
 
-        <!-- Bootstrap -->
         <?php
         $themeUrl = $this->themeUrl;
         $cs = Yii::app()->getClientScript();
         $cs->registerCssFile($themeUrl . '/css/bootstrap.min.css');
         ?>
 
-        <link href='http://fonts.googleapis.com/css?family=Raleway:400,500,600,700,800' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
           <![endif]-->
-
+        <link href='http://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
         <?php
-        $cs->registerCssFile($themeUrl . '/css/blue.css');
-        $cs->registerCssFile($themeUrl . '/css/font-awesome.css');
         $cs->registerCssFile($themeUrl . '/css/style.css');
         $cs->registerCssFile($themeUrl . '/css/responsive.css');
-        $cs->registerCssFile($themeUrl . '/css/custom.css');
+        $cs->registerCssFile($themeUrl . '/css/font-awesome.css');
+        $cs->registerCssFile($themeUrl . '/css/bootstrap-select.min.css');
         ?>
     </head>
-    <body class="<?php echo Yii::app()->language; ?>">
+    <body>
+        <!-- Header section -->
         <?php $this->renderPartial('//layouts/_header'); ?>
 
-        <div class="body-cont"> 
-            <div class="container">
-                <div class="row"> 
-                    <?php $this->renderPartial('//layouts/_submenu'); ?>
+        <!-- Content section -->
+        <?php echo $content; ?>
 
-                    <?php echo $content; ?>
-
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
-                        <div class="center-ad"> 
-                            <a href="#">
-                                <?php echo CHtml::image("{$this->themeUrl}/images/center-ad.jpg", 'Logo') ?>
-                            </a>
-                        </div>  
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <!-- Footer section -->
         <?php $this->renderPartial('//layouts/_footer'); ?>
 
         <?php
@@ -61,28 +44,28 @@
 
         $cs->registerScriptFile($themeUrl . '/js/bootstrap.min.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-select.js', $cs_pos_end);
-        $cs->registerScriptFile($themeUrl . '/js/maps.js', $cs_pos_end);
-        $cs->registerScriptFile($themeUrl . '/js/icheck.min.js', $cs_pos_end);
-        $cs->registerScriptFile($themeUrl . '/js/jquery.lionbars.0.3.js', $cs_pos_end);
-        ?>
-
-        <?php
+        $cs->registerScriptFile($themeUrl . '/js/easyResponsiveTabs.js', $cs_pos_end);
+        
         $js = <<< EOD
     $(document).ready(function() {
-                $(window).orion({speed: 500});
-                $('.indicator').click(function(e) {
-                    $(this).parent('li').children('ul:not(.fading)').slideToggle();
-                    e.preventDefault();
+                //Horizontal Tab
+                $('#parentHorizontalTab').easyResponsiveTabs({
+                    type: 'default', //Types: default, vertical, accordion
+                    width: 'auto', //auto or any width like 600px
+                    fit: true, // 100% fit in a container
+                    tabidentify: 'hor_1', // The tab groups identifier
+                    activate: function (event) { // Callback function if tab is switched
+                        var $tab = $(this);
+                        var $info = $('#nested-tabInfo');
+                        var $name = $('span', $info);
+                        $name.text($tab.text());
+                        $info.show();
+                    }
+
+
                 });
 
-                $('.selectpicker').selectpicker({
-                });
-
-                $('input:checkbox:not(.simple),input:radio').iCheck({
-                    checkboxClass: 'icheckbox_flat-blue',
-                    radioClass: 'iradio_flat-blue'
-                });
-                $('.box').lionbars();
+                $('.selectpicker').selectpicker();
             });
 EOD;
         Yii::app()->clientScript->registerScript('_main', $js);

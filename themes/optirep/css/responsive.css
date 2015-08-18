@@ -56,6 +56,10 @@ h2.resp-accordion {
   font-size: 20px;
 }
 
+#navbar {
+  margin-top: 0px;
+}
+
 }
 @media (min-width:768px) and (max-width:991px) {
 .hidden-sm {

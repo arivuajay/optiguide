@@ -9,7 +9,7 @@ class DefaultController extends ORController {
         if (isset($_POST['sign_in'])) {
             $model->attributes = $_POST['OrLoginForm'];
             if ($model->validate() && $model->login()) {
-                $this->redirect(array('index'));
+                $this->redirect(array('/optirep/salesRep/dashboard'));
             }
         }
         $this->render('index', compact('model'));
