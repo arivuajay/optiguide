@@ -8,8 +8,8 @@
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                     <?php echo CHtml::link('<i class="fa fa-briefcase"></i> '.Myclass::t('OG030', '', 'og'), array('/optiguide/professionalDirectory/create'), array('class' => 'subscribe-btn'))?>
                 </div> 
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">  
-                    <a href="#" class="subscribe-btn"> <i class="fa fa-users"></i> <?php echo Myclass::t('OG031', '', 'og');?> </a>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">                     
+                     <?php echo CHtml::link('<i class="fa fa-users"></i> '.Myclass::t('OG031', '', 'og'), array('/optiguide/suppliersDirectory/create'), array('class' => 'subscribe-btn'))?>
                 </div> 
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">                    
                    <?php echo CHtml::link('<i class="fa fa-user"></i> '.Myclass::t('OG032', '', 'og'), array('/optiguide/retailerDirectory/create'), array('class' => 'subscribe-btn'))?>

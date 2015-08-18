@@ -1485,3 +1485,54 @@ width:100%;
 
 
 #box1 { margin-right: 0px; width:100% !important; }
+
+
+
+
+
+/*steps*/
+
+.steps-cont
+{
+	border:#f0f0f0  solid 1px;
+	padding:5px;
+	font-size:15px;
+	margin-bottom:25px;
+	font-size:16px;
+	text-transform:uppercase;
+	font-weight:600;
+	text-align:left;
+}
+
+.steps-cont h4
+{
+	margin:0px;
+}
+
+.steps-cont a
+{
+	text-align:left;
+	outline:none;
+}
+
+.steps-cont span
+{
+	font-size:13px;
+	color:#afb6b8;
+}
+
+.steps-cont a:hover
+{
+	text-decoration:none;
+	background:none;
+}
+
+.active-stpe
+{
+	background:#3b4552;
+}
+
+.active-stpe a
+{
+	color:#FFFFFF;
+}

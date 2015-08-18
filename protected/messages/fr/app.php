@@ -144,6 +144,12 @@ return array(
     'OG128' => 'Établi depuis',
     'OG129' => 'Nombre d\'employés',
     'OG130' => 'Succursales',
-    'OG131' => 'Personnel'
+    'OG131' => 'Personnel',
+    'OG132' => 'Titre (français)',
+    'OG133' => 'Titre (anglais)',
+    
+    'OG134' => 'Indiquer les régions dans lesquelles vos produits et services sont offerts',
+    'OG135' => 'Sélection marques',
+    'OG136' => 'Paiement'
 );
 ?>

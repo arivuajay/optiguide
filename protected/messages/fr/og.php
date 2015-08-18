@@ -112,7 +112,22 @@ return array(
     'OG077' => 'Trouver un fournisseur par catégorie',
     'OGO78' => 'Trouver une marque',
     
-    'OGO79' => 'Votre demande envoyé avec succès . Admin vous contacter bientôt !!!'
+    'OGO79' => 'Votre demande envoyé avec succès . Admin vous contacter bientôt !!!',
+    
+    'OGO80' => 'Suivant',
+    'OGO81' => 'Abonnement d\'un fournisseur',
+    'OGO82' => 'Étape',
+    'OGO83' => 'Sélectionnez la section',
+    'OGO84' => 'Produits et services [ disponibles dans cette section ]',
+    'OGO85' => 'Produits et services [ à associer avec le fournisseur ]',
+    'OGO86' => 'Ajouter',
+    'OGO87' => 'Supprimer',
+    'OGO88' => 'Produits et services disponibles',
+    'OGO89' => 'Produits',
+    'OGO9O' => 'Aucun produit n\'a été sélectionné',
+    'OGO100' => 'Effacer',
+    'OGO101' => 'Cochez les marques distribuées ',
+    'OGO102' => 'Associer ces marques',
 
     
 );

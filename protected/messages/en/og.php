@@ -117,4 +117,21 @@ return array(
     'OGO78' => 'Find a brand',
    
     'OGO79' => 'Your request sent succesfully. Admin will contact you soon!!!',
+    
+    'OGO80' => 'Next',
+    'OGO81' => 'Subscription of a supplier',
+    'OGO82' => 'Step',
+    'OGO83' => 'Select the section',
+    'OGO84' => 'Products and services [ available in this section ]',
+    'OGO85' => 'Products and services [ to associate with the supplier ]',
+    'OGO86' => 'Add',
+    'OGO87' => 'Remove',
+    'OGO88' => 'Available products and services',
+    'OGO89' => 'Products',
+    'OGO9O' => 'No product selected',
+    'OGO100' => 'Delete',
+    'OGO101' => 'Check distributed brands',
+    'OGO102' => 'Associate these brands',
+    
+    
 );

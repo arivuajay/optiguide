@@ -81,7 +81,7 @@ return array(
     'APP71' => 'Postal code',
     'APP72' => 'Telephone',
     'APP73' => 'Fax',
-    'APP74' => 'Tel Sans Frais',
+    'APP74' => 'Toll Free',
     'APP75' => 'Store Email',
     'APP76' => 'Website',
     'APP77' => 'Representative Prefix Fr',
@@ -144,9 +144,13 @@ return array(
     'OG128'=> 'Established since',
     'OG129'=> 'Number of employees',
     'OG130'=> 'Branches',
-    'OG131'=> 'Staff'
+    'OG131'=> 'Staff',
+    'OG132' => 'Title (french)',
+    'OG133' => 'Title (english)',  
     
-    
+    'OG134' => 'Indicate the regions in which your products and services are offered',
+    'OG135' => 'Brands selection',
+    'OG136' => 'Payment'
     
 );
 ?>

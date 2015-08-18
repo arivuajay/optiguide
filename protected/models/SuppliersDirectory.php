@@ -48,7 +48,7 @@
  */
 class SuppliersDirectory extends CActiveRecord {
 
-    public $country, $region, $archivecat,$IDSECTION,$Products1,$Products2,$ID_SECTION,$PROD_SERVICE;
+    public $country, $region, $archivecat,$IDSECTION,$Products1,$Products2,$ID_SECTION,$PROD_SERVICE,$paymenttype,$profiletype;
     static $NOM_TABLE = 'Fournisseurs';
 
     /**
@@ -60,9 +60,17 @@ class SuppliersDirectory extends CActiveRecord {
     
     public static function getproducts($sess_product_ids)
     {        
+        $lang = Yii::app()->session['language'];
+        if($lang=="EN")
+        {
+            $lstr = "EN";
+        }else
+        {
+            $lstr = "FR";
+        }    
         $criteria = new CDbCriteria;
         $criteria->addInCondition("ID_PRODUIT", $sess_product_ids);
-        $criteria->order = 'NOM_PRODUIT_FR ASC';
+        $criteria->order = "NOM_PRODUIT_".$lstr." ASC";
         $data_products = ProductDirectory::model()->with("sectionDirectory")->findAll($criteria);
 
         return $data_products;
@@ -86,7 +94,7 @@ class SuppliersDirectory extends CActiveRecord {
             array('SITE_WEB','url'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('country,region,archivecat,IDSECTION,Products1,Products2,ID_SECTION,PROD_SERVICE', 'safe'),
+            array('country,region,archivecat,IDSECTION,Products1,Products2,ID_SECTION,PROD_SERVICE,paymenttype,profiletype', 'safe'),
             array('ID_FOURNISSEUR, COMPAGNIE, ID_CLIENT, ID_TYPE_FOURNISSEUR, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELECOPIEUR, TITRE_TEL_SANS_FRAIS, TITRE_TEL_SANS_FRAIS_EN, TEL_SANS_FRAIS, TITRE_TEL_SECONDAIRE, TITRE_TEL_SECONDAIRE_EN, TEL_SECONDAIRE, COURRIEL, SITE_WEB, SUCCURSALES, ETABLI_DEPUIS, NB_EMPLOYES, PERSONNEL_NOM1, PERSONNEL_TITRE1, PERSONNEL_TITRE1_EN, PERSONNEL_NOM2, PERSONNEL_TITRE2, PERSONNEL_TITRE2_EN, PERSONNEL_NOM3, PERSONNEL_TITRE3, PERSONNEL_TITRE3_EN, DATE_MODIFICATION, REGIONS_FR, REGIONS_EN, bAfficher_site, iId_fichier', 'safe', 'on' => 'search'),
             array('TELEPHONE, TELECOPIEUR, TEL_SANS_FRAIS, TEL_SECONDAIRE', 'phoneNumber'),
         );
@@ -125,43 +133,44 @@ class SuppliersDirectory extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'ID_FOURNISSEUR' => Myclass::t('Id Fournisseur'),
-            'COMPAGNIE' => Myclass::t('Compagnie'),
+            'COMPAGNIE' => Myclass::t('OG063','','og'),
             'ID_CLIENT' => Myclass::t('ID'),
-            'ID_TYPE_FOURNISSEUR' => Myclass::t('Type de fournisseur'),
-            'ADRESSE' => Myclass::t('Adresse'),
-            'ADRESSE2' => Myclass::t('Adresse (suite)'),
-            'ID_VILLE' => Myclass::t('Ville'),
-            'CODE_POSTAL' => Myclass::t('Code Postal'),
-            'TELEPHONE' => Myclass::t('Téléphone'),
-            'TELECOPIEUR' => Myclass::t('Télécopieur'),
+            'ID_TYPE_FOURNISSEUR' => Myclass::t('OG102'),
+            'ADRESSE' => Myclass::t('APP66'),
+            'ADRESSE2' => Myclass::t('APP67'),
+            'ID_VILLE' => Myclass::t('APP70'),
+            'CODE_POSTAL' => Myclass::t('APP71'),
+            'TELEPHONE' => Myclass::t('APP72'),
+            'TELECOPIEUR' => Myclass::t('APP73'),
             'TITRE_TEL_SANS_FRAIS' => Myclass::t('Titre Tel Sans Frais'),
             'TITRE_TEL_SANS_FRAIS_EN' => Myclass::t('Titre Tel Sans Frais En'),
-            'TEL_SANS_FRAIS' => Myclass::t('Téléphone sans frais'),
+            'TEL_SANS_FRAIS' => Myclass::t('OG068','','og'),
             'TITRE_TEL_SECONDAIRE' => Myclass::t('Titre Tel Secondaire'),
             'TITRE_TEL_SECONDAIRE_EN' => Myclass::t('Titre Tel Secondaire En'),
-            'TEL_SECONDAIRE' => Myclass::t('Télécopieur sans frais'),
-            'COURRIEL' => Myclass::t('Courriel'),
-            'SITE_WEB' => Myclass::t('Site Web'),
-            'SUCCURSALES' => Myclass::t('Succursales'),
-            'ETABLI_DEPUIS' => Myclass::t('Etabli Depuis'),
-            'NB_EMPLOYES' => Myclass::t('Nb Employes'),
-            'PERSONNEL_NOM1' => Myclass::t('Nom'),
-            'PERSONNEL_TITRE1' => Myclass::t('Titre français'),
-            'PERSONNEL_TITRE1_EN' => Myclass::t('Titre anglais'),
-            'PERSONNEL_NOM2' => Myclass::t('Nom'),
-            'PERSONNEL_TITRE2' => Myclass::t('Titre français'),
-            'PERSONNEL_TITRE2_EN' => Myclass::t('Titre anglais'),
-            'PERSONNEL_NOM3' => Myclass::t('Nom'),
-            'PERSONNEL_TITRE3' => Myclass::t('Titre français'),
-            'PERSONNEL_TITRE3_EN' => Myclass::t('Titre anglais'),
+            'TEL_SECONDAIRE' => Myclass::t('OG069','','og'),
+            'COURRIEL' => Myclass::t('APP75'),
+            'SITE_WEB' => Myclass::t('APP76'),
+            'SUCCURSALES' => Myclass::t('OG130'),
+            'ETABLI_DEPUIS' => Myclass::t('OG128'),
+            'NB_EMPLOYES' => Myclass::t('OG129'),
+            'PERSONNEL_NOM1' => Myclass::t('APP2'),
+            'PERSONNEL_TITRE1' => Myclass::t('OG132'),
+            'PERSONNEL_TITRE1_EN' => Myclass::t('OG133'),
+            'PERSONNEL_NOM2' => Myclass::t('APP2'),
+            'PERSONNEL_TITRE2' => Myclass::t('OG132'),
+            'PERSONNEL_TITRE2_EN' => Myclass::t('OG133'),
+            'PERSONNEL_NOM3' => Myclass::t('APP2'),
+            'PERSONNEL_TITRE3' => Myclass::t('OG132'),
+            'PERSONNEL_TITRE3_EN' => Myclass::t('OG133'),
             'DATE_MODIFICATION' => Myclass::t('Date Modification'),
             'REGIONS_FR' => Myclass::t('En français'),
             'REGIONS_EN' => Myclass::t('En anglais'),
             'bAfficher_site' => Myclass::t('Afficher sur le site'),
             'iId_fichier' => Myclass::t('Fichier'),
             'archivecat'  => Myclass::t('Archive category'),
-            'country'     => Myclass::t('Pays'),
-            'IDSECTION'  => Myclass::t('Section'),
+            'country'     => Myclass::t('APP68'),
+            'region'      => Myclass::t('APP48'),
+            'IDSECTION'  => Myclass::t('APP84'),
             'Products'   => Myclass::t('Products'),
             'USR'       => Myclass::t('ID')
         );

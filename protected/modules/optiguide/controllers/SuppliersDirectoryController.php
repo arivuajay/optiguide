@@ -34,7 +34,7 @@ class SuppliersDirectoryController extends OGController {
                parent::accessRules(), 
                 array(
                     array('allow', // allow all users to perform 'index' and 'view' actions
-                        'actions' => array('create','index','view','category'),
+                        'actions' => array('create','index','view','category','addproducts', 'addmarques', 'getproducts' , 'listmarques' , 'payment'),
                         'users' => array('*'),
                     ),
                     array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -115,6 +115,10 @@ class SuppliersDirectoryController extends OGController {
         ));
        
     }
+    
+     /**
+     * Lists all products based on the section
+     */
     
     public function actionGetproducts() {
         $options = '';
@@ -376,6 +380,351 @@ class SuppliersDirectoryController extends OGController {
         'pages'=> $pages,         
        ));    
     
+    }
+    
+     public function actionCreate() {
+        
+        
+
+        $model = new SuppliersDirectory; 
+        $umodel = new UserDirectory('frontend');
+
+        if(Yii::app()->user->hasState("secondtab") || Yii::app()->user->hasState("thirdtab"))
+        {    
+            //check if session exists
+            if (Yii::app()->user->hasState("mattributes") && Yii::app()->user->hasState("uattributes")) {
+                //get session variable
+                $sess_attr_m = Yii::app()->user->getState("mattributes");
+                $model->attributes = $sess_attr_m;
+                $sess_attr_u = Yii::app()->user->getState("uattributes");
+               $umodel->attributes = $sess_attr_u;
+            }
+        } else {
+              // unset Session supplier model attribute    
+            Yii::app()->user->setState("mattributes", null);
+            // unset Session user model attribute
+            Yii::app()->user->setState("uattributes", null);
+            // unset Session productids 
+            Yii::app()->user->setState("product_ids", null);
+            // unset Session marqueids 
+            Yii::app()->user->setState("marque_ids", null);
+            // unset Session marqueids 
+            Yii::app()->user->setState("thirdtab", null);
+            // unset Session marqueids  
+            Yii::app()->user->setState("secondtab", null);
+            // unset Session scountry  
+            Yii::app()->user->setState("scountry", null);
+            // unset Session sregion  
+            Yii::app()->user->setState("sregion", null);
+        }   
+        
+
+        // Uncomment the following line if AJAX validation is needed
+        $this->performAjaxValidation(array($model,$umodel));
+
+        if (isset($_POST['SuppliersDirectory'])) {
+
+            $model->attributes  = $_POST['SuppliersDirectory'];                     
+            $umodel->attributes = $_POST['UserDirectory'];
+            $model->ID_CLIENT    = $umodel->USR;
+            $model->COURRIEL    = $umodel->COURRIEL;
+            $umodel->NOM_TABLE  = $model::$NOM_TABLE;
+            $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
+            $umodel->sGuid  = Myclass::getGuid();
+            $umodel->LANGUE = Yii::app()->session['language'];
+            $umodel->MUST_VALIDATE = 0;
+
+            $valid = $umodel->validate();
+            $valid = $model->validate() && $valid;
+
+            if ($valid) {
+                //set session variable
+                $scountry = $_POST['SuppliersDirectory']['country'];
+                $sregion  = $_POST['SuppliersDirectory']['region'];
+                Yii::app()->user->setState("scountry", $scountry);
+                Yii::app()->user->setState("sregion", $sregion);
+
+                $mattributes = $model->attributes;
+                $uattributes = $umodel->attributes;
+
+                Yii::app()->user->setState("mattributes", $mattributes);
+                Yii::app()->user->setState("uattributes", $uattributes);
+                Yii::app()->user->setState("secondtab", "2");
+
+                $this->redirect(array('addproducts'));
+            }  
+        }
+        $tab = 1;
+        $this->render('create', compact('umodel','model', 'tab'));
+    }
+
+    //TAB 2
+    public function actionAddproducts() {
+
+        $data_products = array();
+            
+        // For create form
+        $model  = new SuppliersDirectory;
+        $umodel = new UserDirectory('frontend');
+        
+        if ($_POST['SuppliersDirectory']) {
+            $product_ids = $_POST['SuppliersDirectory']['Products2'];
+
+            if (!empty($product_ids)) {
+                $result = $product_ids;
+
+                if (Yii::app()->user->hasState("product_ids")) {
+                    $sess_product_ids = Yii::app()->user->getState("product_ids");
+                    $result = array_merge($product_ids, $sess_product_ids);
+                    array_unique($result);
+                }
+
+                // Set default 0 (All brands) value to marques for newly added products only
+                foreach ($product_ids as $key => $info) {
+                    $marque_ids[$info] = 0;
+                }
+
+                $marque_result = $marque_ids;
+
+                if (Yii::app()->user->hasState("marque_ids")) 
+                {
+                    $sess_marque_ids = Yii::app()->user->getState("marque_ids");
+                    $marque_result = $marque_ids + $sess_marque_ids;
+                    array_unique($marque_result);
+                }
+
+                Yii::app()->user->setState("marque_ids", $marque_result);
+                Yii::app()->user->setState("product_ids", $result);
+                Yii::app()->user->setState("thirdtab", "3");
+            }else
+            {
+                 Yii::app()->user->setState("thirdtab", "3");
+            }    
+
+            $this->redirect(array('addmarques'));
+        }
+        
+        if(Yii::app()->user->hasState("product_ids"))
+        {    
+            $proids        = Yii::app()->user->getState("product_ids");
+            $data_products = SuppliersDirectory::getproducts($proids);
+        }   
+        
+        $tab = 2;
+        $viewpage = '_section_products_form';
+        
+        $this->render($viewpage, compact('model', 'tab','data_products'));
+    }
+
+    public function actionAddmarques() {
+        // Yii::app()->user->setState("marque_ids", null);
+        
+        
+        $sess_product_ids = array();
+        $data_products = array();
+        
+        if (Yii::app()->user->hasState("mattributes")) {
+            $sess_attr_m = Yii::app()->user->getState("mattributes");
+        }
+     
+     
+        $model = new SuppliersDirectory;
+        $umodel = new UserDirectory('frontend');
+              
+        
+        //check if session exists
+        if (Yii::app()->user->hasState("mattributes")) {
+            //get session variable         
+            $model->attributes = $sess_attr_m;
+            $sess_attr_u = Yii::app()->user->getState("uattributes");
+            $umodel->attributes = $sess_attr_u;
+        }
+        
+       
+
+        // Delete products from session
+        if (isset($_POST['yt0'])) {
+            
+            $sess_product_ids = Yii::app()->user->getState("product_ids");
+           
+            $pids = isset($_POST['productid']) ? $_POST['productid'] : '';
+            if ($pids != '') {          
+                foreach ($pids as $pid) {
+                    if (($key = array_search($pid, $sess_product_ids)) !== FALSE) {
+                        // Remove from array
+                        unset($sess_product_ids[$key]);
+                    }
+
+                    if (Yii::app()->user->hasState("marque_ids")) {
+                        // UNset marque ids for the product                   
+                        $sess_marque_ids = Yii::app()->user->getState("marque_ids");
+                        if (array_key_exists($pid, $sess_marque_ids)) {
+                            // Remove from array                      
+                            unset($sess_marque_ids[$pid]);
+                        }
+                    }
+                }
+                Yii::app()->user->setState("product_ids", $sess_product_ids);
+                Yii::app()->user->setState("marque_ids", $sess_marque_ids);
+            } else {
+                Yii::app()->user->setFlash('danger', 'S\'il vous plaît sélectionner tous les produits à supprimer!!!');
+            }
+        }
+        
+       
+        if (Yii::app()->user->hasState("product_ids")) 
+        {
+            $sess_product_ids = Yii::app()->user->getState("product_ids");
+            $data_products   = SuppliersDirectory::getproducts($sess_product_ids);
+            
+            if(empty($sess_product_ids))
+            {
+                Yii::app()->user->setState("marque_ids", null); 
+            }    
+        }
+
+       $tab = 3;
+      
+       $viewpage = '_products_marques_form';
+       
+       $this->render($viewpage, compact('model', 'tab', 'data_products'));
+    }
+    
+    public function actionPayment()
+    {
+        $model  = new SuppliersDirectory;
+        $umodel = new UserDirectory('frontend');
+        
+         // Save products in to database        
+        if (isset($_POST['yt2'])) 
+        {          
+            // Session supplier model attribute    
+            $sess_attr_m = Yii::app()->user->getState("mattributes");
+            // Session user model attribute
+            $sess_attr_u = Yii::app()->user->getState("uattributes");
+           // Session productids 
+            $sess_productids = Yii::app()->user->getState("product_ids");
+            // Session marqueids 
+            $sess_marqueids = Yii::app()->user->getState("marque_ids");
+
+            if (Yii::app()->user->hasState("mattributes")) {
+                $model->attributes = $sess_attr_m;    
+                $model->ID_CLIENT  = $sess_attr_m['ID_CLIENT'];
+                $model->save(false);              
+                $umodel->attributes  = $sess_attr_u;
+                $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
+                $umodel->save(false);                
+                $supplierid = $model->ID_FOURNISSEUR;
+             
+                SupplierProducts::model()->deleteAll("ID_FOURNISSEUR ='" . $supplierid . "'");
+
+                if (Yii::app()->user->hasState("product_ids")) {
+                    foreach ($sess_productids as $pids) {
+                        $productid = $pids;
+                        if (array_key_exists($productid, $sess_marqueids)) {
+                            $allmarqid = $sess_marqueids[$productid];
+                            $exp_marid = explode(',', $allmarqid);
+
+                            foreach ($exp_marid as $mid) {
+                                $marqid = $mid;
+
+                                $criteria1 = new CDbCriteria();
+                                $criteria1->condition = 'ID_PRODUIT=:pid and ID_MARQUE=:mid';
+                                $criteria1->params = array(':pid' => $productid, ':mid' => $marqid);
+                                $get_product_marques = ProductMarqueDirectory::model()->find($criteria1);
+
+                                if ($get_product_marques->ID_LIEN_MARQUE) {
+                                    $prd_mar_id = $get_product_marques->ID_LIEN_MARQUE;
+                                    $spmodel = new SupplierProducts();
+                                    $spmodel->ID_FOURNISSEUR = $supplierid;
+                                    $spmodel->ID_LIEN_PRODUIT_MARQUE = $prd_mar_id;
+                                    $spmodel->save(false);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // unset Session supplier model attribute    
+            Yii::app()->user->setState("mattributes", null);
+            // unset Session user model attribute
+          //  Yii::app()->user->setState("uattributes", null);
+            // unset Session productids 
+            Yii::app()->user->setState("product_ids", null);
+            // unset Session marqueids 
+            Yii::app()->user->setState("marque_ids", null);
+            // unset Session marqueids 
+            Yii::app()->user->setState("thirdtab", null);
+            // unset Session marqueids  
+            Yii::app()->user->setState("secondtab", null);
+            // unset Session scountry  
+            Yii::app()->user->setState("scountry", null);
+            // unset Session sregion  
+            Yii::app()->user->setState("sregion", null);
+
+            Yii::app()->user->setFlash('success', 'Informations fournisseur ajouter / jour avec succès!!!');
+            $this->redirect(array('index'));
+        }
+        $tab = 4;
+              
+       $viewpage = '_payment_form';
+       
+       $this->render($viewpage, compact('model', 'tab'));
+    }        
+
+    public function actionListmarques() {
+        $pid = Yii::app()->getRequest()->getQuery('id');
+        $get_selected_marques = '';
+        if (is_numeric($pid) && $pid != '') {
+
+            /* Get the marques of the product */
+            $criteria1 = new CDbCriteria();
+            $criteria1->order = "NOM_MARQUE";
+            $criteria1->condition = 'ID_PRODUIT=:id';
+            $criteria1->params = array(':id' => $pid);
+            $get_selected_marques = CHtml::listData(MarqueDirectory::model()->with("productMarqueDirectory")->isActive()->findAll($criteria1), 'ID_MARQUE', 'NOM_MARQUE');
+
+            if (isset($_POST['yt0'])) {
+                $marque_ids = array();
+                if (isset($_POST['marqueid'])) {
+                    $imp_vals = implode(',', $_POST['marqueid']);
+                    $marque_ids[$pid] = $imp_vals;
+                    $result = $marque_ids;
+
+                    // Check the exist session marque products and append it
+                    if (Yii::app()->user->hasState("marque_ids")) {
+                        $sess_marque_ids = Yii::app()->user->getState("marque_ids");
+                        $result = $marque_ids + $sess_marque_ids;
+                        array_unique($result);
+                    }
+                    Yii::app()->user->setState("marque_ids", $result);
+                } else {
+                    // unset product id
+                    if (Yii::app()->user->hasState("product_ids")) {
+                        $sess_product_ids = Yii::app()->user->getState("product_ids");
+                        if (($key = array_search($pid, $sess_product_ids)) !== FALSE) {
+                            // Remove from array
+                            unset($sess_product_ids[$key]);
+                        }
+                        Yii::app()->user->setState("product_ids", $sess_product_ids);
+
+                        // UNset marque ids for the product                   
+                        $sess_marque_ids = Yii::app()->user->getState("marque_ids");
+                        if (array_key_exists($pid, $sess_marque_ids)) {
+                            // Remove from array                      
+                            unset($sess_marque_ids[$pid]);
+                        }
+                        Yii::app()->user->setState("marque_ids", $sess_marque_ids);
+                    }
+                }
+                $this->redirect(array('addmarques'));
+            }
+        } else {
+            $this->redirect(array('addmarques'));
+        }
+
+        $this->render('listmarques', compact('get_selected_marques'));
     }
 
     /**

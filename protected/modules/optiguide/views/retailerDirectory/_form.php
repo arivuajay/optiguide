@@ -298,7 +298,7 @@ $js = <<< EOD
             data: dataString,
             cache: false,
             success: function(html){             
-                $("#RetailerDirectory_region").html(html).selectpicker('refresh');;
+                $("#RetailerDirectory_region").html(html).selectpicker('refresh');
             }
          });
     });
@@ -313,7 +313,7 @@ $js = <<< EOD
             data: dataString,
             cache: false,
             success: function(html){             
-                $("#RetailerDirectory_ID_VILLE").html(html).selectpicker('refresh');;
+                $("#RetailerDirectory_ID_VILLE").html(html).selectpicker('refresh');
             }
          });
 
@@ -329,7 +329,7 @@ $js = <<< EOD
             data: dataString,
             cache: false,
             success: function(html){             
-                $("#RetailerDirectory_ID_GROUPE").html(html).selectpicker('refresh');;
+                $("#RetailerDirectory_ID_GROUPE").html(html).selectpicker('refresh');
             }
          });
     });         
