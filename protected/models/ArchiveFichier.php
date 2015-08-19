@@ -173,10 +173,13 @@ class ArchiveFichier extends CActiveRecord
         
          public static function get_allcategory()
         {
-           
-           // countryDirectory
-           $get_catsql   =  ArchiveCategory::model()->findAll(array("order"=>"NOM_CATEGORIE_FR"));
-           $cat_res      = CHtml::listData($get_catsql, 'ID_CATEGORIE', 'NOM_CATEGORIE_FR'); 
+           $lang = "FR";
+           if (Yii::app()->session['language'] == "EN") 
+           {
+               $lang = "EN";
+           }      
+           $get_catsql   =  ArchiveCategory::model()->findAll(array("order"=>"NOM_CATEGORIE_".$lang));
+           $cat_res      = CHtml::listData($get_catsql, 'ID_CATEGORIE', 'NOM_CATEGORIE_'.$lang); 
            return $cat_res;
         } 
         

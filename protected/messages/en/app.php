@@ -150,7 +150,8 @@ return array(
     
     'OG134' => 'Indicate the regions in which your products and services are offered',
     'OG135' => 'Brands selection',
-    'OG136' => 'Payment'
+    'OG136' => 'Payment',
+    'OG137' => 'Payment Type',
     
 );
 ?>

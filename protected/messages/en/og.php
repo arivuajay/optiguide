@@ -118,20 +118,31 @@ return array(
    
     'OGO79' => 'Your request sent succesfully. Admin will contact you soon!!!',
     
-    'OGO80' => 'Next',
-    'OGO81' => 'Subscription of a supplier',
-    'OGO82' => 'Step',
-    'OGO83' => 'Select the section',
-    'OGO84' => 'Products and services [ available in this section ]',
-    'OGO85' => 'Products and services [ to associate with the supplier ]',
-    'OGO86' => 'Add',
-    'OGO87' => 'Remove',
-    'OGO88' => 'Available products and services',
-    'OGO89' => 'Products',
-    'OGO9O' => 'No product selected',
+    'OGO80'  => 'Next',
+    'OGO81'  => 'Subscription of a supplier',
+    'OGO82'  => 'Step',
+    'OGO83'  => 'Select the section',
+    'OGO84'  => 'Products and services [ available in this section ]',
+    'OGO85'  => 'Products and services [ to associate with the supplier ]',
+    'OGO86'  => 'Add',
+    'OGO87'  => 'Remove',
+    'OGO88'  => 'Available products and services',
+    'OGO89'  => 'Products',
+    'OGO9O'  => 'No product selected',
     'OGO100' => 'Delete',
     'OGO101' => 'Check distributed brands',
     'OGO102' => 'Associate these brands',
+    'OGO103' => 'Pay Now',
+    'OGO104' => 'Pay your subscription',
+    
+    'OGO105' => 'Payment Type',
+    'OGO106' => 'Subscription Type',
+    'OGO107' => 'Subscription price',
+    'OGO108' => 'Title',
+    'OGO109' => 'Logo',
+    'OGO110' => 'Profile only',
+    'OGO111' => 'Profile + logo'
+    
     
     
 );

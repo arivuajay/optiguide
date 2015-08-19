@@ -48,7 +48,7 @@
  */
 class SuppliersDirectory extends CActiveRecord {
 
-    public $country, $region, $archivecat,$IDSECTION,$Products1,$Products2,$ID_SECTION,$PROD_SERVICE,$paymenttype,$profiletype;
+    public $country, $region, $archivecat,$IDSECTION,$Products1,$Products2,$ID_SECTION,$PROD_SERVICE;
     static $NOM_TABLE = 'Fournisseurs';
 
     /**
@@ -94,7 +94,7 @@ class SuppliersDirectory extends CActiveRecord {
             array('SITE_WEB','url'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('country,region,archivecat,IDSECTION,Products1,Products2,ID_SECTION,PROD_SERVICE,paymenttype,profiletype', 'safe'),
+            array('country,region,archivecat,IDSECTION,Products1,Products2,ID_SECTION,PROD_SERVICE', 'safe'),
             array('ID_FOURNISSEUR, COMPAGNIE, ID_CLIENT, ID_TYPE_FOURNISSEUR, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELECOPIEUR, TITRE_TEL_SANS_FRAIS, TITRE_TEL_SANS_FRAIS_EN, TEL_SANS_FRAIS, TITRE_TEL_SECONDAIRE, TITRE_TEL_SECONDAIRE_EN, TEL_SECONDAIRE, COURRIEL, SITE_WEB, SUCCURSALES, ETABLI_DEPUIS, NB_EMPLOYES, PERSONNEL_NOM1, PERSONNEL_TITRE1, PERSONNEL_TITRE1_EN, PERSONNEL_NOM2, PERSONNEL_TITRE2, PERSONNEL_TITRE2_EN, PERSONNEL_NOM3, PERSONNEL_TITRE3, PERSONNEL_TITRE3_EN, DATE_MODIFICATION, REGIONS_FR, REGIONS_EN, bAfficher_site, iId_fichier', 'safe', 'on' => 'search'),
             array('TELEPHONE, TELECOPIEUR, TEL_SANS_FRAIS, TEL_SECONDAIRE', 'phoneNumber'),
         );
@@ -172,7 +172,8 @@ class SuppliersDirectory extends CActiveRecord {
             'region'      => Myclass::t('APP48'),
             'IDSECTION'  => Myclass::t('APP84'),
             'Products'   => Myclass::t('Products'),
-            'USR'       => Myclass::t('ID')
+            'USR'       => Myclass::t('ID'),
+           // 'paymenttype' => Myclass::t('OG137'),
         );
     }
 

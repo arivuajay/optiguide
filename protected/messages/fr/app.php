@@ -150,6 +150,7 @@ return array(
     
     'OG134' => 'Indiquer les régions dans lesquelles vos produits et services sont offerts',
     'OG135' => 'Sélection marques',
-    'OG136' => 'Paiement'
+    'OG136' => 'Paiement',
+    'OG137' => 'Type de paiement',
 );
 ?>

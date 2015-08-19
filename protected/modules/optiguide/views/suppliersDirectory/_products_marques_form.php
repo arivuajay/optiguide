@@ -14,21 +14,8 @@ $proids = Yii::app()->user->getState("product_ids");
         <div class="inner-container"> 
             <h2> <?php echo Myclass::t('OGO81', '', 'og'); ?> </h2>
 
-            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 steps-cont">  
-                <a href="<?php echo Yii::app()->createUrl('/optiguide/suppliersDirectory/create/'); ?>"> <h4> <?php echo Myclass::t('OGO82', '', 'og'); ?> 1 </h4> <span> <?php echo Myclass::t('OG112'); ?>  </span> </a>
-            </div>
-
-            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 steps-cont">  
-                <a href="<?php echo Yii::app()->createUrl('/optiguide/suppliersDirectory/addproducts/'); ?>"> <h4> <?php echo Myclass::t('OGO82', '', 'og'); ?> 2 </h4> <span> <?php echo Myclass::t('OG059', '', 'og'); ?></span> </a>
-            </div>
-
-            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 steps-cont active-stpe">  
-                <a href="<?php echo Yii::app()->createUrl('/optiguide/suppliersDirectory/addmarques/'); ?>"> <h4> <?php echo Myclass::t('OGO82', '', 'og'); ?> 3 </h4> <span> <?php echo Myclass::t('OG135'); ?></span> </a>
-            </div>
-
-            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 steps-cont ">  
-                <a href="#"> <h4> <?php echo Myclass::t('OGO82', '', 'og'); ?> 4 </h4> <span> <?php echo Myclass::t('OG136'); ?> </span> </a>
-            </div>
+            <?php  $this->renderPartial('_menu_steps', array());?>
+            
             <?php
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'suppliers-directory-form',
@@ -73,7 +60,8 @@ $proids = Yii::app()->user->getState("product_ids");
                         echo CHtml::tag('button', array(
                             'name' => 'btnSubmit',
                             'type' => 'submit',
-                            'class' => 'submit-btn'
+                            'class' => 'submit-btn',
+                            'value' => 'marquesubmit'
                                 ), '<i class="fa fa-arrow-circle-right"></i> ' . Myclass::t('OGO80', '', 'og'));
                         ?>
                     </div>   

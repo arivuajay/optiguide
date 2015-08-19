@@ -128,6 +128,16 @@ return array(
     'OGO100' => 'Effacer',
     'OGO101' => 'Cochez les marques distribuées ',
     'OGO102' => 'Associer ces marques',
+    'OGO103' => 'Payez Maintenant',
+    'OGO104' => 'Payez votre abonnement',
+    
+    'OGO105' => 'Type de paiement',
+    'OGO106' => 'Type d\'abonnement',
+    'OGO107' => 'Prix ​​de souscription',
+    'OGO108' => 'Titre',
+    'OGO109' => 'Logo',
+    'OGO110' => 'Profil seulement',
+    'OGO111' => 'Profil + logo'
 
     
 );
