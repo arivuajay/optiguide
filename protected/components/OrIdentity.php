@@ -26,6 +26,7 @@ class OrIdentity extends CUserIdentity {
         } else {
             $this->_id = $user->rep_id;
             $this->setState('role', $user->rep_role);
+            $this->setState('username', $user->rep_username);
             $this->errorCode = self::ERROR_NONE;
         }
         return !$this->errorCode;

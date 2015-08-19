@@ -9,6 +9,7 @@
     echo CHtml::image("{$this->themeUrl}/images/site-screen.jpg", 'Site screen', array('width' => 673, 'height' => 434));
     ?>
 </div>
+
 <div class="clearfix"> </div>
 
 <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4 col-sm-offset-2 col-md-offset-3 col-lg-offset-4"> 

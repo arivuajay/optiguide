@@ -1,7 +1,7 @@
 <div class="user-left cate-bg"> 
     <div class="user-deatils"> 
         <p> <?php echo CHtml::image("{$this->themeUrl}/images/user-img.jpg", 'Profile Image'); ?></p>
-        <p> <?php echo CHtml::link('User Name', '/optirep/salesRep/dashboard')?> <a href="#"></a></p>
+        <p> <?php echo CHtml::link(Yii::app()->user->username, '/optirep/salesRep/dashboard')?> <a href="#"></a></p>
         <p> <i class="fa fa-sign-out"></i> 
             <?php echo CHtml::link('Logout', '/optirep/default/logout')?>
         </p>

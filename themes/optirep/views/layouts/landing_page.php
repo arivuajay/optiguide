@@ -33,6 +33,18 @@
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ad1"> 
                         <?php echo CHtml::image("{$this->themeUrl}/images/logo2.png", 'Logo'); ?>
                     </div>
+                    <?php if (isset($this->flashMessages)): ?>
+                        <?php foreach ($this->flashMessages as $key => $message) { ?>
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 flashmessage"> 
+                                <div class="alert alert-<?php echo $key; ?> fade in">
+                                    <button type="button" class="close close-sm" data-dismiss="alert">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                    <?php echo $message; ?>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    <?php endif ?>
                     <?php echo $content ?>
                 </div>
             </div>
@@ -59,7 +71,7 @@
                 });
             });
 EOD;
-        Yii::app()->clientScript->registerScript('_before_login', $js);
+        Yii::app()->clientScript->registerScript('_landing_page', $js);
         ?>
     </body>
 </html>
