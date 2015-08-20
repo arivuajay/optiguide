@@ -41,11 +41,10 @@
                     $logo = CHtml::image("{$this->themeUrl}/images/logo.jpg", 'Logo');
                     echo CHtml::link($logo, array('/optiguide/default'));
                     ?>
-                </div>
+                </div>                
                 <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 ad1"> 
-                    <a href="#">
-                        <?php echo CHtml::image("{$this->themeUrl}/images/ad1.jpg", 'Ad') ?>
-                    </a>
+                 <!--  Supper Banner (Top) - position 1 -->
+                 <?php echo Myclass::banner_display(1);?>
                 </div>
             </div>
         </div>

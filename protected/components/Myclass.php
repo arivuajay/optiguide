@@ -164,5 +164,58 @@ class Myclass extends CController {
         }
         return $result;
     }
+    
+    public static function banner_display($positionid)
+    {
+        
+        $module_controller = Yii::app()->controller->id;
+        $module_action     = Yii::app()->controller->action->id;
+        
+        /*
+          Module ids
+            calenderEvent                 - 1
+            newsManagement                - 2
+            suppliersDirectory            - 3
+            professionalDirectory         - 4
+            groupInformation              - 5
+            retailerDirectory             - 6 
+            marqueDirectory               - 7
+            suppliersDirectory - category - 8
+        */ 
+        
+        $criteria = new CDbCriteria();
+        $criteria->select    = "LIEN_URL,ID_PUBLICITE,TITRE";
+        $criteria->condition = "AFFICHER_ACCUEIL = 1";
+        $criteria->condition = "ZONE_AFFICHAGE = 1";
+        $criteria->condition = "PRIORITE = 0";
+        $criteria->condition = "ID_POSITION = ".$positionid;
+        $criteria->order     = 'RAND()';
+        $criteria->limit     = 1;
+        
+        $criteria->with = array(
+                        "ArchiveFichier"=>array("select"=>"ID_CATEGORIE,FICHIER")
+                        );
+        
+        $results = PublicityAds::model()->findAll($criteria);
+        
+        $fileurl = '';
+        $title   = '';
+        foreach($results as $info) 
+        { 
+            $title   =  $info->TITRE;
+            $linkurl =  $info->LIEN_URL;
+            $ads_id  =  $info->ID_PUBLICITE;
+            $catid   =  $info->ArchiveFichier->ID_CATEGORIE;
+            $img     =  $info->ArchiveFichier->FICHIER;
+            
+            $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$catid."/".$img);
+        }
+       
+        
+        $themeurl = Yii::app()->theme->baseUrl; 
+        $html = '<a href="'.$linkurl.'">'.CHtml::image($fileurl, $title).'</a>';
+        return $html;
+        
+    }        
 
 }

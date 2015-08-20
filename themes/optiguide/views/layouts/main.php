@@ -43,9 +43,8 @@
 
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
                         <div class="center-ad"> 
-                            <a href="#">
-                                <?php echo CHtml::image("{$this->themeUrl}/images/center-ad.jpg", 'Logo') ?>
-                            </a>
+                            <!--  Supper Banner (Bottom) - position - 2 -->
+                            <?php echo Myclass::banner_display(2);?>
                         </div>  
                     </div>
                 </div>

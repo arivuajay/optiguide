@@ -30,10 +30,14 @@
     <?php } ?>
     
     <div class="ad2"> 
-        <?php echo CHtml::image("{$this->themeUrl}/images/ad3.jpg", 'Ad') ?>
+        <!--  Menu - position - 3 -->
+        <?php echo Myclass::banner_display(3);?>
     </div>
+    
+    
     <div class="ad2"> 
-        <?php echo CHtml::image("{$this->themeUrl}/images/ad4.jpg", 'Ad') ?>
+        <!--  Island- position - 4 -->
+        <?php echo Myclass::banner_display(4);?>
     </div>
 
     <?php 
@@ -58,12 +62,18 @@
 </div>
 
 <div class="col-xs-12 col-sm-3 col-md-2  col-lg-2"> 
+    
     <div class="ad3">
-        <?php echo CHtml::image("{$this->themeUrl}/images/ad2.jpg", 'Logo') ?>
+        <!--  Sky Scraper - position - 5 -->
+        <?php echo Myclass::banner_display(5);?>
     </div>
-    <div class="ad3">
-        <?php echo CHtml::image("{$this->themeUrl}/images/ad6.jpg", 'Logo') ?>
+    
+    
+    <div class="ad3">   
+        <!--  Parking - position - 6 -->
+        <?php echo Myclass::banner_display(6);?>
     </div>
+    
       <?php    
      if (!Yii::app()->user->isGuest && Myclass::is_home_page())
     {    

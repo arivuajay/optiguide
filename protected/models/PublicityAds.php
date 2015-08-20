@@ -90,7 +90,7 @@ class PublicityAds extends CActiveRecord {
             'publiciteLienCategories' => array(self::HAS_MANY, 'PubliciteLienCategorie', 'ID_PUBLICITE'),
             'publiciteLienModules' => array(self::HAS_MANY, 'PubliciteLienModule', 'ID_PUBLICITE'),
             'publiciteLienRegions' => array(self::HAS_MANY, 'PubliciteLienRegion', 'ID_PUBLICITE'),
-            'iDFICHIER' => array(self::BELONGS_TO, 'ArchiveFichier', 'ID_FICHIER'),
+            'ArchiveFichier' => array(self::BELONGS_TO, 'ArchiveFichier', 'ID_FICHIER'),
             'zONEAFFICHAGE' => array(self::BELONGS_TO, 'PubliciteZones', 'ZONE_AFFICHAGE'),
         );
     }
@@ -147,7 +147,7 @@ class PublicityAds extends CActiveRecord {
         $criteria->compare('TITRE', $this->TITRE, true);
         $criteria->compare('DATE_DEBUT', $this->DATE_DEBUT, true);
         $criteria->compare('DATE_FIN', $this->DATE_FIN, true);
-        $criteria->compare('ID_FICHIER', $this->ID_FICHIER);
+        $criteria->compare('t.ID_FICHIER', $this->ID_FICHIER);
         $criteria->compare('LIEN_URL', $this->LIEN_URL, true);
         $criteria->compare('MOTS_CLES_RECHERCHE', $this->MOTS_CLES_RECHERCHE, true);
         $criteria->compare('NB_IMPRESSIONS_FAITES', $this->NB_IMPRESSIONS_FAITES);
