@@ -21,12 +21,7 @@
                     <?php echo CHtml::link(Myclass::t('OG004', '', 'og'), array('/optiguide/default/contactus')); ?>
                 </li>     
                 <li>
-                    <?php echo CHtml::form(); ?>
-                    <?php 
-                     $currentLang = Yii::app()->language;
-                     echo CHtml::dropDownList('_lang', $currentLang, array('en' => 'English', 'fr' => 'Français'), array('submit' => ''));
-                    ?>
-                    <?php echo CHtml::endForm(); ?>
+                     <?php $this->renderPartial('//layouts/_langmenu'); ?>
                 </li> 
                 <li>
                     <?php
@@ -56,3 +51,11 @@
         </div>
     </div>
 </div>
+<?php
+$js = <<< EOD
+$(document).ready(function(){
+  
+});
+EOD;
+Yii::app()->clientScript->registerScript('_form', $js);
+?>
