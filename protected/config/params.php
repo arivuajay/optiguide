@@ -4,10 +4,12 @@ $whitelist = array('127.0.0.1', '::1');
 if (in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
     $mailsendby = 'smtp';
     $adminurl   = 'http://localhost/optiguide/branches/dev/';
+    $repurl = 'http://local.optirep'; 
     
 } else {
     $mailsendby = 'phpmail';
      $adminurl   = 'http://demo.arkinfotec.in/optiguide/';
+     $repurl =  'http://optirep.arkinfotec.in'; 
 }
 
 
@@ -45,6 +47,7 @@ return array(
     'EMAILHEADERIMAGE' => '/themes/site/css/frontend/img/logos/header-logo.png',
     
     'LISTPERPAGE' => 15,
-    'DEFAULTPAYS' => 1,
+    'DEFAULTPAYS' => 1,    
+    'REPURL' => $repurl,
 );
 

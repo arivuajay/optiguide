@@ -207,6 +207,11 @@ class RetailerDirectory extends CActiveRecord
               //  $criteria->compare('userDirectory.MUST_VALIDATE',$this->uaccess_search,true);
                                
 		return new CActiveDataProvider($this, array(
+                        'sort' => array(
+                            'defaultOrder' => array(
+                               'COMPAGNIE' => CSort::SORT_ASC
+                            ),
+                         ),
 			'criteria'=>$criteria,
                         'pagination' => array(
                             'pageSize' => PAGE_SIZE,

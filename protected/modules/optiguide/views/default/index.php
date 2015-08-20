@@ -17,15 +17,15 @@
                 <?php echo CHtml::image("{$this->themeUrl}/images/opti-rep-logo.png", 'Logo') ?>
             </div>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas congue nibh ipsum, rhoncus. Suspendisse eget purus tellus fermentum.</p>
-            <p> <p><?php echo Myclass::t('OG058', '', 'og'); ?>   <?php echo CHtml::link(Myclass::t('OG045', '', 'og'), array('#')); ?></p>
+            <p> <p><?php echo Myclass::t('OG058', '', 'og'); ?>   <?php echo CHtml::link(Myclass::t('OG045', '', 'og'), REPURL); ?></p>
         </div>
     </div>
 
     <?php
-    if (!Yii::app()->user->isGuest) {
+   // if (!Yii::app()->user->isGuest) {
         $this->renderPartial('_latest_news');
         $this->renderPartial('_calender');
-    }
+  //  }
 
     $this->renderPartial('_did_you_know');
     ?>

@@ -1,4 +1,3 @@
-
 <?php
 
 /**
@@ -197,7 +196,7 @@ class SuppliersDirectory extends CActiveRecord {
         $criteria->compare('ID_FOURNISSEUR', $this->ID_FOURNISSEUR);
         $criteria->compare('COMPAGNIE', $this->COMPAGNIE, true);
         $criteria->compare('ID_CLIENT', $this->ID_CLIENT, true);
-        $criteria->compare('ID_TYPE_FOURNISSEUR', $this->ID_TYPE_FOURNISSEUR);
+        $criteria->compare('t.ID_TYPE_FOURNISSEUR', $this->ID_TYPE_FOURNISSEUR);
         $criteria->compare('ADRESSE', $this->ADRESSE, true);
         $criteria->compare('ADRESSE2', $this->ADRESSE2, true);
         $criteria->compare('ID_VILLE', $this->ID_VILLE);
@@ -229,8 +228,11 @@ class SuppliersDirectory extends CActiveRecord {
         $criteria->compare('REGIONS_EN', $this->REGIONS_EN, true);
         $criteria->compare('bAfficher_site', $this->bAfficher_site);
         $criteria->compare('iId_fichier', $this->iId_fichier);
+        
+        $criteria->with  = 'supplierType';
+        $criteria->order = 'supplierType.TYPE_FOURNISSEUR_FR ASC, t.COMPAGNIE ASC';
 
-        return new CActiveDataProvider($this, array(
+        return new CActiveDataProvider($this, array(           
             'criteria' => $criteria,
             'pagination' => array(
                 'pageSize' => PAGE_SIZE,

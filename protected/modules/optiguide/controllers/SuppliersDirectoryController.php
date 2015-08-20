@@ -351,6 +351,11 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function actionCreate() {
+        
+        if (!Yii::app()->user->isGuest)
+        {
+            $this->redirect(array('index')); 
+        }   
 
         $model = new SuppliersDirectory;
         $umodel = new UserDirectory('frontend');
@@ -430,6 +435,11 @@ class SuppliersDirectoryController extends OGController {
 
     //TAB 2
     public function actionAddproducts() {
+        
+        if (!Yii::app()->user->isGuest)
+        {
+            $this->redirect(array('index')); 
+        }   
 
         $data_products = array();
 
@@ -484,7 +494,11 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function actionAddmarques() {
-        // Yii::app()->user->setState("marque_ids", null);
+        
+        if (!Yii::app()->user->isGuest)
+        {
+            $this->redirect(array('index')); 
+        }   
 
 
         $sess_product_ids = array();
@@ -560,6 +574,11 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function actionPayment() {
+        
+        if (!Yii::app()->user->isGuest)
+        {
+            $this->redirect(array('index')); 
+        }   
 
         $pmodel = new SuppliersSubscription;
 
@@ -791,6 +810,12 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function actionListmarques() {
+        
+        if (!Yii::app()->user->isGuest)
+        {
+            $this->redirect(array('index')); 
+        }   
+        
         $pid = Yii::app()->getRequest()->getQuery('id');
         $get_selected_marques = '';
         if (is_numeric($pid) && $pid != '') {

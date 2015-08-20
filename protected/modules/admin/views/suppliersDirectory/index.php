@@ -48,6 +48,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 array(
                 'header' => "Accès",
                 'type' => 'raw',
+                'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle'),
                 'value' => function($data) {                   
                       return CHtml::link("<i class='fa fa-lock'></i>", array("/admin/userDirectory/create/", "relid" => $data->ID_FOURNISSEUR,"nomtable"=>"Fournisseurs"));                       
                     },

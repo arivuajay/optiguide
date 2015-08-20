@@ -8,6 +8,12 @@ class DefaultController extends OGController {
     }
 
     public function actionSubscribe() {
+        
+        if (!Yii::app()->user->isGuest)
+        {
+            $this->redirect(array('index')); 
+        }   
+        
         $this->render('subscribe');
     }
     

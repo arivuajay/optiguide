@@ -198,6 +198,13 @@ class RetailerDirectoryController extends OGController {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
+        
+        if (!Yii::app()->user->isGuest)
+        {
+            $this->redirect(array('index')); 
+        }   
+        
+        
         $model = new RetailerDirectory;
         $umodel = new UserDirectory('frontend');
 

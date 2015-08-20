@@ -28,7 +28,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         //$createurl = Yii::app()->createUrl('/admin/userDirectory/create',$params);
         $gridColumns = array(         
             'COMPAGNIE',
-            'ID_CLIENT',
+          //  'ID_CLIENT',
           //  'ADRESSE',
          //   'CODE_POSTAL',
             array(
@@ -40,6 +40,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             array(
                 'header' => "Accès",
                 'type' => 'raw',
+                'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle'),
                 'value' => function($data) {
                    //return "{$data->cntUsr} X " . CHtml::link("<i class='fa fa-lock'></i>", array("/admin/userDirectory/create/", "id" => $data->ID_RETAILER));
                       return "{$data->cntUsr} X " . CHtml::link("<i class='fa fa-lock'></i>", array("/admin/userDirectory/create/", "relid" => $data->ID_RETAILER,"nomtable"=>"Detaillants"));

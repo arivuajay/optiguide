@@ -144,7 +144,7 @@ class ProfessionalDirectory extends CActiveRecord {
         $criteria->compare('PREFIXE_EN', $this->PREFIXE_EN, true);
         $criteria->compare('PRENOM', $this->PRENOM, true);
         $criteria->compare('NOM', $this->NOM, true);
-        $criteria->compare('ID_TYPE_SPECIALISTE', $this->ID_TYPE_SPECIALISTE, true);
+        $criteria->compare('t.ID_TYPE_SPECIALISTE', $this->ID_TYPE_SPECIALISTE, true);
         $criteria->compare('TYPE_AUTRE', $this->TYPE_AUTRE, true);
         $criteria->compare('BUREAU', $this->BUREAU, true);
         $criteria->compare('ADRESSE', $this->ADRESSE, true);
@@ -159,8 +159,15 @@ class ProfessionalDirectory extends CActiveRecord {
         $criteria->compare('COURRIEL', $this->COURRIEL, true);
         $criteria->compare('DATE_MODIFICATION', $this->DATE_MODIFICATION, true);
      
+        $criteria->with  = 'professionalType';
+        $criteria->order = 'professionalType.TYPE_SPECIALISTE_FR ASC, t.NOM ASC';
 
-        return new CActiveDataProvider($this, array(
+        return new CActiveDataProvider($this, array(  
+            'sort' => array(
+                            'defaultOrder' => array(
+                            'NOM' => CSort::SORT_ASC
+                            ),
+                         ),
             'criteria' => $criteria,
             'pagination' => array(
                 'pageSize' => PAGE_SIZE,

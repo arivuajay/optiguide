@@ -37,7 +37,7 @@
     </div>
 
     <?php 
-    if (!Yii::app()->user->isGuest)
+   // if (!Yii::app()->user->isGuest)
         $this->widget('OgCalenderWidget'); 
     ?>
   

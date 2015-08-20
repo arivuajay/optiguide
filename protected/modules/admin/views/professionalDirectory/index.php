@@ -29,9 +29,9 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         <?php
          $gettypes =  ProfessionalType::model()->findAll(array('group'=>'t.TYPE_SPECIALISTE_FR'));
          
-        $gridColumns = array(               	
-		'PRENOM',
-		'NOM',
+        $gridColumns = array(      
+                'NOM',            
+		'PRENOM',		
                  array(
                 'header'  => 'Type de professionnel',    
                 'name'    => 'professionalType.TYPE_SPECIALISTE_FR',
