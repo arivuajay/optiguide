@@ -170,9 +170,12 @@ class Myclass extends CController {
         
         $module_controller = Yii::app()->controller->id;
         $module_action     = Yii::app()->controller->action->id;
-        
+        $sectionid         = '';
+                
         /*
           Module ids
+           
+            default ( Home or any other ) - 0           
             calenderEvent                 - 1
             newsManagement                - 2
             suppliersDirectory            - 3
@@ -183,39 +186,191 @@ class Myclass extends CController {
             suppliersDirectory - category - 8
         */ 
         
-        $criteria = new CDbCriteria();
-        $criteria->select    = "LIEN_URL,ID_PUBLICITE,TITRE";
-        $criteria->condition = "AFFICHER_ACCUEIL = 1";
-        $criteria->condition = "ZONE_AFFICHAGE = 1";
-        $criteria->condition = "PRIORITE = 0";
-        $criteria->condition = "ID_POSITION = ".$positionid;
-        $criteria->order     = 'RAND()';
-        $criteria->limit     = 1;
-        
-        $criteria->with = array(
-                        "ArchiveFichier"=>array("select"=>"ID_CATEGORIE,FICHIER")
-                        );
-        
-        $results = PublicityAds::model()->findAll($criteria);
-        
-        $fileurl = '';
-        $title   = '';
-        foreach($results as $info) 
-        { 
-            $title   =  $info->TITRE;
-            $linkurl =  $info->LIEN_URL;
-            $ads_id  =  $info->ID_PUBLICITE;
-            $catid   =  $info->ArchiveFichier->ID_CATEGORIE;
-            $img     =  $info->ArchiveFichier->FICHIER;
+        if($module_controller == "calenderEvent")
+        {
+            $current_moduleid = 1;
             
-            $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$catid."/".$img);
+        }else if($module_controller == "newsManagement")
+        {
+            $current_moduleid = 2;
+            
+        }else if($module_controller == "suppliersDirectory")
+        {
+            $sectionid =  isset($_GET['SuppliersDirectory']['ID_SECTION'])?$_GET['SuppliersDirectory']['ID_SECTION']:''; 
+            
+            if($module_action == "category")
+            {
+              $current_moduleid = 8;
+            }else
+            {        
+              $current_moduleid = 3;
+            }
+            
+        }else if($module_controller == "professionalDirectory")
+        {
+            $current_moduleid = 4;
+            
+        }else if($module_controller == "groupInformation")
+        {
+            $current_moduleid = 5;
+            
+        }else if($module_controller == "retailerDirectory")
+        {
+            $current_moduleid = 6;
+            
+        } else if($module_controller == "marqueDirectory")
+        {
+            $sectionid =  isset($_GET['MarqueDirectory']['ID_SECTION'])?$_GET['MarqueDirectory']['ID_SECTION']:''; 
+            
+            $current_moduleid = 7;      
+            
+        } else {
+            $current_moduleid = 0;
+        }        
+        
+        $result  = Myclass::get_banner_result($positionid,$current_moduleid,$sectionid);
+     
+        $html    = '';
+        if(!empty($result))
+        { 
+            $title    =  $result->TITRE;
+            $linkurl  =  $result->LIEN_URL;
+            $ads_id   =  $result->ID_PUBLICITE;
+            $position =  $result->ID_POSITION;
+            $catid    =  $result->ArchiveFichier->ID_CATEGORIE;
+            $img      =  $result->ArchiveFichier->FICHIER;
+            
+            $fileurl  = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$catid."/".$img);          
+            $html     = '<a href="'.$linkurl.'" id="'.$ads_id.'" postionid="'.$positionid.'">'.CHtml::image($fileurl, $title).'</a>';            
+            
         }
        
-        
-        $themeurl = Yii::app()->theme->baseUrl; 
-        $html = '<a href="'.$linkurl.'">'.CHtml::image($fileurl, $title).'</a>';
         return $html;
         
+    }  
+    
+    public static function get_banner_result($positionid,$current_moduleid,$sectionid)
+    {
+        $lang = strtoupper(Yii::app()->session['language']);
+        $now  = date('Y-m-d',time());
+        
+        
+        // For module / sections / default / datewise filters
+        $criteria = new CDbCriteria();   
+        
+        $criteria->select    = "LIEN_URL,ID_PUBLICITE,TITRE";
+        $criteria->addCondition("LANGUE = '".$lang."'");   
+        $criteria->addCondition("ID_POSITION = ".$positionid);
+        $criteria->addCondition("DATE_DEBUT <= '".$now."'");
+        $criteria->addCondition("DATE_FIN >= '".$now."'");
+        
+        if( $current_moduleid > 0 )
+        {              
+            $criteria->addCondition("adm.ID_MODULE = ".$current_moduleid);
+            $criteria->addCondition("AFFICHER_ACCUEIL = 0");
+            $criteria->addCondition("ZONE_AFFICHAGE = 2"); 
+            $criteria->addCondition("PRIORITE = 0");
+            
+            if($sectionid!='' && is_numeric($sectionid))
+            {
+                $criteria->addCondition("adc.ID_SECTION = ".$sectionid);
+            }
+                 
+        }else
+        {
+            $criteria->addCondition("AFFICHER_ACCUEIL = 1");   
+            $criteria->addCondition("ZONE_AFFICHAGE = 1");
+            $criteria->addCondition("PRIORITE = 0");
+        }    
+        
+        $criteria->order     = "RAND()";        
+        $criteria->limit     = 1;
+        
+        if($current_moduleid>0)
+        {    
+            $with_array["AdsLInkModule"]   = array('alias'=> 'adm', 'together' => true,  'select' => false);
+        }   
+        
+        if($sectionid!='' && is_numeric($sectionid))
+        {
+            $with_array["AdsLInkCategory"] = array('alias'=> 'adc', 'together' => true,  'select' => false);
+        }    
+             
+        $with_array["ArchiveFichier"]      = array('alias'=> 'af', 'together' => true, 'select' => 'af.ID_CATEGORIE,af.FICHIER');
+             
+        $criteria->with = $with_array;
+        
+        $result = PublicityAds::model()->find($criteria);
+      
+       // For section based filters result only         
+        if(empty($result))
+        {
+              
+            $criteria = new CDbCriteria();           
+           
+            $criteria->select    = "LIEN_URL,ID_PUBLICITE,TITRE";
+            $criteria->addCondition("LANGUE = '".$lang."'");
+            $criteria->addCondition("AFFICHER_ACCUEIL = 1");
+            $criteria->addCondition("ZONE_AFFICHAGE = 2"); 
+            $criteria->addCondition("PRIORITE = 0");
+            if($sectionid!='' && is_numeric($sectionid))
+            {
+                $criteria->addCondition("adc.ID_SECTION = ".$sectionid);
+            }
+            $criteria->addCondition("ID_POSITION = ".$positionid);
+            $criteria->addCondition("DATE_DEBUT <= '".$now."'");
+            $criteria->addCondition("DATE_FIN >= '".$now."'");
+            $criteria->order     = "RAND()";        
+            $criteria->limit     = 1;        
+           
+            if($sectionid!='' && is_numeric($sectionid))
+            {
+                 $with_array["AdsLInkCategory"] = array('alias'=> 'adc', 'together' => true,  'select' => false);
+            }  
+            
+            $with_array["ArchiveFichier"]   = array('alias'=> 'af', 'together' => true, 'select' => 'af.ID_CATEGORIE,af.FICHIER');
+            
+            $criteria->with = $with_array;
+            
+            $result = PublicityAds::model()->find($criteria);
+            
+        }   
+        
+        
+        
+      
+        
+         // If no record exists for previous conditions , get any one banner default for that postions
+        
+         if(empty($result))
+        {           
+          
+         // If the condition gets empty result means , get any one banner without restrictions   
+            $criteria = new CDbCriteria();   
+        
+            $criteria->select    = "LIEN_URL,ID_PUBLICITE,TITRE";
+            $criteria->addCondition("LANGUE = '".$lang."'");
+            // home section
+            $criteria->addCondition("AFFICHER_ACCUEIL = 1");
+            //public
+            $criteria->addCondition("ZONE_AFFICHAGE = 1");
+            // date between
+            $criteria->addCondition("PRIORITE = 0");
+            $criteria->addCondition("ID_POSITION = ".$positionid);
+            $criteria->addCondition("DATE_DEBUT <= '".$now."'");
+            $criteria->addCondition("DATE_FIN >= '".$now."'");
+            $criteria->order     = "RAND()";        
+            $criteria->limit     = 1;        
+            
+            $with_array["ArchiveFichier"]   = array('alias'=> 'af', 'together' => true, 'select' => 'af.ID_CATEGORIE,af.FICHIER');            
+            
+            $criteria->with = $with_array;
+            
+            $result = PublicityAds::model()->find($criteria);
+            
+        } 
+        
+        return $result;
     }        
 
 }

@@ -63,7 +63,7 @@ class PublicityAds extends CActiveRecord {
 //              //  'match', 'pattern' => '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.\-&\?=]*)*\/?$/',
 //                'message' => 'Please give valid url.',
 //            ),
-            array('DATE_AJOUT,archivecat,publicityModules,regions,section', 'safe'),
+            array('DATE_AJOUT,archivecat,publicityModules,regions,section,LANGUE', 'safe'),
             array('NB_IMPRESSIONS', 'checknotempty'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
@@ -87,10 +87,10 @@ class PublicityAds extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'publiciteLienCategories' => array(self::HAS_MANY, 'PubliciteLienCategorie', 'ID_PUBLICITE'),
-            'publiciteLienModules' => array(self::HAS_MANY, 'PubliciteLienModule', 'ID_PUBLICITE'),
-            'publiciteLienRegions' => array(self::HAS_MANY, 'PubliciteLienRegion', 'ID_PUBLICITE'),
+            'AdsLInkCategory' => array(self::HAS_MANY, 'AdsLInkCategory', 'ID_PUBLICITE'),
+            'AdsLInkModule' => array(self::HAS_MANY, 'AdsLInkModule', 'ID_PUBLICITE'),
             'ArchiveFichier' => array(self::BELONGS_TO, 'ArchiveFichier', 'ID_FICHIER'),
+            'publiciteLienRegions' => array(self::HAS_MANY, 'PubliciteLienRegion', 'ID_PUBLICITE'),            
             'zONEAFFICHAGE' => array(self::BELONGS_TO, 'PubliciteZones', 'ZONE_AFFICHAGE'),
         );
     }

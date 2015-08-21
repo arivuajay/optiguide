@@ -131,6 +131,7 @@ class PublicityAdsController extends Controller {
         $this->performAjaxValidation($model);
 
         if (isset($_POST['PublicityAds'])) {
+          
             $model->attributes = $_POST['PublicityAds'];
 
             if ($model->PRIORITE == "0") {
@@ -144,6 +145,7 @@ class PublicityAdsController extends Controller {
             $regions = isset($_POST['PublicityAds']['regions']) ? $_POST['PublicityAds']['regions'] : array();
             $section = isset($_POST['PublicityAds']['section']) ? $_POST['PublicityAds']['section'] : array();
 
+                    
             if ($model->save()) {
 
                 $publicite_id = $model->ID_PUBLICITE;
