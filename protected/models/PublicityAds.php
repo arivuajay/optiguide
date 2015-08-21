@@ -63,7 +63,7 @@ class PublicityAds extends CActiveRecord {
 //              //  'match', 'pattern' => '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.\-&\?=]*)*\/?$/',
 //                'message' => 'Please give valid url.',
 //            ),
-            array('DATE_AJOUT,archivecat,publicityModules,regions,section,LANGUE', 'safe'),
+            array('DATE_AJOUT,archivecat,publicityModules,regions,section,LANGUE,CLICK_RATE', 'safe'),
             array('NB_IMPRESSIONS', 'checknotempty'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
@@ -120,7 +120,8 @@ class PublicityAds extends CActiveRecord {
             'AFFICHER_ACCUEIL' => Myclass::t('En page d\'accueil'),
             'DATE_AJOUT' => Myclass::t('Date Ajout'),
             'ACCUEIL_SECTION' => Myclass::t('Accueil de section'),
-            'archivecat' => Myclass::t('Bannière')
+            'archivecat' => Myclass::t('Bannière'),
+            'CLICK_RATE' => Myclass::t('CLICK RATE')    
         );
     }
 

@@ -241,8 +241,13 @@ class Myclass extends CController {
             $img      =  $result->ArchiveFichier->FICHIER;
             
             $fileurl  = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$catid."/".$img);          
-            $html     = '<a href="'.$linkurl.'" id="'.$ads_id.'" postionid="'.$positionid.'">'.CHtml::image($fileurl, $title).'</a>';            
+            $html     = '<a target="_blank" href="'.$linkurl.'" class="adsclick" id="'.$ads_id.'" postionid="'.$positionid.'">'.CHtml::image($fileurl, $title).'</a>';     
             
+            // Add one count for the loading banner.
+            Yii::app()->db
+            ->createCommand("UPDATE publicite_publicite SET NB_IMPRESSIONS_FAITES = NB_IMPRESSIONS_FAITES + 1 WHERE ID_PUBLICITE=:adsId")
+            ->bindValues(array(':adsId' => $ads_id))
+            ->execute();
         }
        
         return $html;

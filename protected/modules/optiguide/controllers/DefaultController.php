@@ -56,7 +56,24 @@ class DefaultController extends OGController {
         $this->redirect('index');
     }
     
-     /**
+    public function actionupdateadsclick()
+    {
+        $ads_id = isset($_POST['id']) ? $_POST['id'] : '';
+        
+        if($ads_id!='' && is_numeric($ads_id))
+        {    
+            // Add one count for the loading banner.
+            Yii::app()->db
+            ->createCommand("UPDATE publicite_publicite SET CLICK_RATE = CLICK_RATE + 1 WHERE ID_PUBLICITE=:adsId")
+            ->bindValues(array(':adsId' => $ads_id))
+            ->execute();
+            echo "success";
+            exit;
+        }    
+    }        
+
+
+    /**
      * Performs the AJAX validation.
      * @param RetailerDirectory $model the model to be validated
      */

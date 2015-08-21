@@ -66,8 +66,9 @@
         ?>
 
         <?php
+        $adsclick_update = Yii::app()->createUrl('/optiguide/default/updateadsclick');
         $js = <<< EOD
-    $(document).ready(function() {
+        $(document).ready(function() {
                 $(window).orion({speed: 500});
                 $('.indicator').click(function(e) {
                     $(this).parent('li').children('ul:not(.fading)').slideToggle();
@@ -82,6 +83,24 @@
                     radioClass: 'iradio_flat-blue'
                 });
                 $('.box').lionbars();
+                
+                
+                $('a.adsclick').click(function() 
+                { 
+                    var adsID   = $(this).attr('id');
+                    var adsLINK = $(this).attr('href');
+                    var dataString = 'id='+ adsID;
+                    $.ajax({
+                        type  : "POST",
+                        url   : '{$adsclick_update}',
+                        data  : dataString,
+                        cache : false,
+                        success: function(html){             
+                            return true;
+                        }
+                     });
+               });
+                
             });
 EOD;
         Yii::app()->clientScript->registerScript('_main', $js);

@@ -376,7 +376,7 @@ padding-bottom:5px;
 	margin-top:10px;
 	margin-bottom:5px;
 	color:#2e2e2e;
-	padding:10px;
+	padding:5px 10px;
 }
 
 
@@ -1535,4 +1535,62 @@ width:100%;
 .active-stpe a
 {
 	color:#FFFFFF;
+}
+
+/*myaccount*/
+
+.pro-login ul
+{
+	margin:10px 0px;
+	padding:10px 0px;
+	border-top:#1086d9 solid 1px;
+	border-bottom:#1086d9 solid 1px;
+	float:left;
+	width:100%;
+}
+
+.pro-login ul li
+{
+	list-style:none;
+	padding:5px 0px;
+}
+
+.active2
+{
+	display:block;
+	background:#f0f0f0 !important;
+	padding:2px 5px;
+	color:#000000 !important;
+
+}
+
+tr:hover
+{
+	background:#f0f0f0;
+}
+
+.user-thumb
+{
+	width:100%;
+	float:left;
+	text-align:center;
+}
+
+.user-thumb img
+{
+	width:100px;
+	border:#1893e9 solid 5px;
+	-webkit-border-radius: 50%;
+-moz-border-radius: 50%;
+border-radius: 50%;
+}
+
+.navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
+  background-color: #0b7ecf;
+  color: #ffffff;
+}
+
+a:focus
+{
+	outline:none;
 }
