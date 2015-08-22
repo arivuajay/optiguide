@@ -5,6 +5,8 @@ class UserDirectoryController extends OGController {
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
+    
+   
 
     /**
      * @return array action filters
@@ -30,7 +32,7 @@ class UserDirectoryController extends OGController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('update'),
+                'actions' => array('update','changepassword'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -66,6 +68,38 @@ class UserDirectoryController extends OGController {
         }
 
         $this->render('update', compact('model','id'));
+    }
+    
+    public function actionchangepassword()
+    {
+        $id=Yii::app()->user->id;
+        $model = UserDirectory::model()->findByPk($id);
+        $model->scenario = 'changePwd';       
+
+         // Uncomment the following line if AJAX validation is needed
+        $this->performAjaxValidation($model);
+
+        if (isset($_POST['UserDirectory'])) 
+        {
+            
+            $model->attributes = $_POST['UserDirectory'];
+            $valid = $model->validate();
+
+            if($valid)
+            {
+
+              $model->PWD = $model->new_password;
+              if($model->save())
+              {
+                 Yii::app()->user->setFlash('success', Myclass::t('OGO113', '', 'og'));    
+                 $this->redirect(array('changepassword'));       
+              }
+                
+            }           
+            
+        }
+        
+        $this->render('changepassword', compact('model','id'));
     }
 
     /**

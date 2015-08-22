@@ -18,39 +18,57 @@
     if (Yii::app()->user->isGuest) {
         $this->widget('OgLoginFormWidget');
     } else {
+        $activeclass1 = array();
+        $activeclass2 = array();
+        $module_controller = Yii::app()->controller->id;
+        $module_action     = Yii::app()->controller->action->id;
+        
+        if($module_controller == "userDirectory" && $module_action=="update")
+        {
+            $activeclass1['class'] = 'active2';
+        }
+        if($module_controller == "userDirectory" && $module_action=="changepassword")
+        {
+            $activeclass2['class'] = 'active2';            
+        }    
+        
         ?>
         <div class="pro-login">
-            <p>
-                <?php echo Myclass::t('OG051', '', 'og'); ?> <b><?php echo Yii::app()->user->name ?></b>
-            </p>
-            <p>
-                <?php echo CHtml::link("<i class='fa fa-sign-out'></i> " . Myclass::t('OG025', '', 'og'), array('/optiguide/default/logout')) ?>
-            </p>
+
+            <div class="user-thumb"> <?php echo CHtml::image("{$this->themeUrl}/images/user-img.jpg", 'Ad');?> 
+                 <?php echo Myclass::t('OG051', '', 'og'); ?><br/> 
+                <b><?php echo Yii::app()->user->name ?></b>
+            </div>
+            <ul>
+                <li> <?php echo CHtml::link(Myclass::t('OG033', '', 'og'), array('/optiguide/userDirectory/update'), $activeclass1);?> </li>
+                <li> <?php echo CHtml::link(Myclass::t('OGO112', '', 'og'), array('/optiguide/userDirectory/changepassword'), $activeclass2);?> </li>
+                <li> <?php echo CHtml::link("<i class='fa fa-sign-out'></i> " . Myclass::t('OG025', '', 'og'), array('/optiguide/default/logout')) ?></li>
+            </ul>
         </div>
     <?php } ?>
-    
+
     <div class="ad2"> 
         <!--  Menu - position - 3 -->
-        <?php echo Myclass::banner_display(3);?>
-    </div>
-    
-    
-    <div class="ad2"> 
-        <!--  Island- position - 4 -->
-        <?php echo Myclass::banner_display(4);?>
+        <?php echo Myclass::banner_display(3); ?>
     </div>
 
-    <?php 
-   // if (!Yii::app()->user->isGuest)
-        $this->widget('OgCalenderWidget'); 
-    ?>
-  
+
     <div class="ad2"> 
-        <?php 
-        echo CHtml::image("{$this->themeUrl}/images/bretonJOBS_logo_noslogan.jpg", 'Ad'); 
+        <!--  Island- position - 4 -->
+        <?php echo Myclass::banner_display(4); ?>
+    </div>
+
+    <?php
+    // if (!Yii::app()->user->isGuest)
+    $this->widget('OgCalenderWidget');
+    ?>
+
+    <div class="ad2"> 
+        <?php
+        echo CHtml::image("{$this->themeUrl}/images/bretonJOBS_logo_noslogan.jpg", 'Ad');
         $find_job = CHtml::image("{$this->themeUrl}/images/boutons-find.png", 'Ad');
         echo CHtml::link($find_job, 'http://bretonjobs.com/jobs/', array('target' => '_blank'));
-        
+
         $post_job = CHtml::image("{$this->themeUrl}/images/boutons-post.png", 'Ad');
         echo CHtml::link($post_job, 'http://bretonjobs.com/pricing/', array('target' => '_blank'));
         ?>
@@ -62,48 +80,41 @@
 </div>
 
 <div class="col-xs-12 col-sm-3 col-md-2  col-lg-2"> 
-    
+
     <div class="ad3">
         <!--  Sky Scraper - position - 5 -->
-        <?php echo Myclass::banner_display(5);?>
+        <?php echo Myclass::banner_display(5); ?>
     </div>
-    
-    
+
+
     <div class="ad3">   
         <!--  Parking - position - 6 -->
-        <?php echo Myclass::banner_display(6);?>
+        <?php echo Myclass::banner_display(6); ?>
     </div>
-    
-      <?php    
-     if (!Yii::app()->user->isGuest && Myclass::is_home_page())
-    {    
-        $pdate = date("Y-m",time());  
+
+    <?php
+    if (!Yii::app()->user->isGuest && Myclass::is_home_page()) {
+        $pdate = date("Y-m", time());
         $usertype = Yii::app()->user->getState('role');
-        if($usertype=="Professionnels")
-        {
+        if ($usertype == "Professionnels") {
             $utype = 1;
-        }else if($usertype=="Fournisseurs")
-        {
+        } else if ($usertype == "Fournisseurs") {
             $utype = 2;
-        }else if($usertype=="Detaillants")
-        {
+        } else if ($usertype == "Detaillants") {
             $utype = 3;
-        } 
+        }
         $criteria = new CDbCriteria;
         $criteria->condition = "polldate like '%$pdate%' and usertype=$utype";
-        $poll_rslt = Poll::model()->findAll( $criteria);           
-        if(count($poll_rslt)>0)
-        {  
-           foreach($poll_rslt as $rid)
-           {
-               $polid = $rid['id'];
-           }   
-           if($polid!='')
-           {    
+        $poll_rslt = Poll::model()->findAll($criteria);
+        if (count($poll_rslt) > 0) {
+            foreach ($poll_rslt as $rid) {
+                $polid = $rid['id'];
+            }
+            if ($polid != '') {
                 $this->widget('EPoll', array('poll_id' => $polid));
-           }     
-        }         
-    }   
-     ?>
+            }
+        }
+    }
+    ?>
 </div>
 <?php $this->endContent(); ?>

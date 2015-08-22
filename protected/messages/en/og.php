@@ -141,8 +141,14 @@ return array(
     'OGO108' => 'Title',
     'OGO109' => 'Logo',
     'OGO110' => 'Profile only',
-    'OGO111' => 'Profile + logo'
+    'OGO111' => 'Profile + logo',
     
+    'OGO112' => 'Change Password',
+    'OGO113' => 'Password changed successfully.',
+    'OGO114' => 'Old password', 
+    'OGO115' => 'New password',
+    'OGO116' => 'Repeat password',
+    'OGO117' => 'Old password is incorrect.'
     
     
 );

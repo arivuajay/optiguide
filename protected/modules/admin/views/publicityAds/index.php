@@ -32,12 +32,28 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         $gridColumns = array(
          array('header' => 'SN.',
                 'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
-            ), 
-        'TITRE',    
-        'DATE_DEBUT',
-        'DATE_FIN',
-        'NB_IMPRESSIONS_FAITES',
-        'CLICK_RATE',    
+            ),             
+        'TITRE',
+        array(
+            'name'=>'DATE_DEBUT',
+            'value'=>'$data->DATE_DEBUT',
+            'filter'=>false,
+        ) ,
+        array(
+            'name'=>'DATE_FIN',
+            'value'=>'$data->DATE_FIN',
+            'filter'=>false,
+        ),
+        array(
+            'name'=>'NB_IMPRESSIONS_FAITES',
+            'value'=>'$data->NB_IMPRESSIONS_FAITES',
+            'filter'=>false,
+        ),
+        array(
+            'name'=>'CLICK_RATE',
+            'value'=>'$data->CLICK_RATE',
+            'filter'=>false,
+        ),          
         array(
             'header' => 'Actions',
             'class' => 'booster.widgets.TbButtonColumn',

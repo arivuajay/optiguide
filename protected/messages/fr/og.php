@@ -137,7 +137,14 @@ return array(
     'OGO108' => 'Titre',
     'OGO109' => 'Logo',
     'OGO110' => 'Profil seulement',
-    'OGO111' => 'Profil + logo'
+    'OGO111' => 'Profil + logo',
+    
+    'OGO112' => 'Changer le mot de passe',
+    'OGO113' => 'Le mot de passe a été changé avec succès.',
+    'OGO114' => 'Ancien mot de passe',
+    'OGO115' => 'Nouveau mot de passe',
+    'OGO116' => 'Répéter mot de passe',
+    'OGO117' => 'Ancien mot de passe est incorrect.'
 
     
 );

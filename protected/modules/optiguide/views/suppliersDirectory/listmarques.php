@@ -93,5 +93,5 @@ function enable_cb() {
   }      
 }
 EOD;
-Yii::app()->clientScript->registerScript('_form', $js);
+Yii::app()->clientScript->registerScript('_form_marqueslist', $js);
 ?>

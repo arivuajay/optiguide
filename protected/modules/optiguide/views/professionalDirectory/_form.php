@@ -303,5 +303,5 @@ $js = <<< EOD
     });
 });
 EOD;
-Yii::app()->clientScript->registerScript('_form', $js);
+Yii::app()->clientScript->registerScript('_form_prof', $js);
 ?>

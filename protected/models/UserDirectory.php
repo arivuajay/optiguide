@@ -24,6 +24,10 @@
  */
 class UserDirectory extends CActiveRecord
 {
+         public $old_password;
+         public $new_password;
+         public $repeat_password;
+    
 	/**
 	 * @return string the associated database table name
 	 */
@@ -51,8 +55,20 @@ class UserDirectory extends CActiveRecord
                     array('COURRIEL','email'),
                     array('bSubscription_envision,bSubscription_envue,ABONNE_MAILING,ABONNE_PROMOTION,COURRIEL','Checksubscriptionmail' , 'on'=>'frontend'),        
                     array('ID_UTILISATEUR, LANGUE, PREFIXE, NOM_UTILISATEUR, USR, PWD, COURRIEL, ABONNE_MAILING, ABONNE_PROMOTION, ABONNE_TRANSITION, IS_FIRST_LOG, NOM_TABLE, ID_RELATION, MUST_VALIDATE, sGuid, bSubscription_envision, bSubscription_envue', 'safe', 'on'=>'search'),
+                
+                    array('old_password, new_password, repeat_password', 'required', 'on' => 'changePwd'),
+                    array('old_password', 'findPasswords', 'on' => 'changePwd'),
+                    array('repeat_password', 'compare', 'compareAttribute'=>'new_password', 'on'=>'changePwd'),
             );
 	}
+        
+        //matching the old password with your existing password.
+        public function findPasswords($attribute, $params)
+        {
+            $user = UserDirectory::model()->findByPk(Yii::app()->user->id);
+            if ($user->PWD != $this->old_password)
+                $this->addError($attribute, Myclass::t('OGO117','','og') );
+        }
         
         public function Checksubscriptionmail()
         {
@@ -103,6 +119,9 @@ class UserDirectory extends CActiveRecord
 			'NOM_TABLE' => Myclass::t('Nom Table'),
 			'ID_RELATION' => Myclass::t('Id Relation'),
 			'sGuid' => Myclass::t('S Guid'),
+                        'old_password' => Myclass::t('OGO114', '', 'og'),
+                        'new_password' => Myclass::t('OGO115', '', 'og'),
+                        'repeat_password' => Myclass::t('OGO116', '', 'og'),
 			
 		);
 	}
