@@ -37,6 +37,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         'DATE_DEBUT',
         'DATE_FIN',
         'NB_IMPRESSIONS_FAITES',
+        'CLICK_RATE',    
         array(
             'header' => 'Actions',
             'class' => 'booster.widgets.TbButtonColumn',

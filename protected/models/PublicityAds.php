@@ -121,7 +121,7 @@ class PublicityAds extends CActiveRecord {
             'DATE_AJOUT' => Myclass::t('Date Ajout'),
             'ACCUEIL_SECTION' => Myclass::t('Accueil de section'),
             'archivecat' => Myclass::t('Bannière'),
-            'CLICK_RATE' => Myclass::t('CLICK RATE')    
+            'CLICK_RATE' => Myclass::t('User Clicks')    
         );
     }
 
