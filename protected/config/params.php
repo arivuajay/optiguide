@@ -49,5 +49,10 @@ return array(
     'LISTPERPAGE' => 15,
     'DEFAULTPAYS' => 1,    
     'REPURL' => $repurl,
+    
+    //Paypal values
+    'SANDBOXVALUE'  => TRUE,
+    'CURRENCY'      => 'CAD',
+    'BUSINESSEMAIL' => 'vasanth@arkinfotec.com', 
 );
 

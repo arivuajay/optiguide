@@ -33,7 +33,7 @@ class SuppliersDirectoryController extends OGController {
         return array_merge(
                 parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment'),
+                'actions' => array('create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -351,19 +351,17 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function actionCreate() {
-        
-        if (!Yii::app()->user->isGuest)
-        {
-            $this->redirect(array('index')); 
-        }   
+
+        if (!Yii::app()->user->isGuest) {
+            $this->redirect(array('index'));
+        }
 
         $model = new SuppliersDirectory;
         $umodel = new UserDirectory('frontend');
 
         if (Yii::app()->user->hasState("secondtab") || Yii::app()->user->hasState("thirdtab") || Yii::app()->user->hasState("fourthtab")) {
             //check if session exists
-            if (Yii::app()->user->hasState("mattributes") && Yii::app()->user->hasState("uattributes")) 
-            {
+            if (Yii::app()->user->hasState("mattributes") && Yii::app()->user->hasState("uattributes")) {
                 //get session variable
                 $sess_attr_m = Yii::app()->user->getState("mattributes");
                 $model->attributes = $sess_attr_m;
@@ -387,7 +385,7 @@ class SuppliersDirectoryController extends OGController {
             Yii::app()->user->setState("scountry", null);
             // unset Session sregion  
             Yii::app()->user->setState("sregion", null);
-            
+
             Yii::app()->user->setState("secondtab", null);
             Yii::app()->user->setState("thirdtab", null);
             Yii::app()->user->setState("fourthtab", null);
@@ -435,16 +433,15 @@ class SuppliersDirectoryController extends OGController {
 
     //TAB 2
     public function actionAddproducts() {
-        
-        if (!Yii::app()->user->isGuest)
-        {
-            $this->redirect(array('index')); 
-        }   
+
+        if (!Yii::app()->user->isGuest) {
+            $this->redirect(array('index'));
+        }
 
         $data_products = array();
 
         // For create form
-        $model  = new SuppliersDirectory;
+        $model = new SuppliersDirectory;
         $umodel = new UserDirectory('frontend');
 
         if ($_POST['SuppliersDirectory']) {
@@ -494,11 +491,10 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function actionAddmarques() {
-        
-        if (!Yii::app()->user->isGuest)
-        {
-            $this->redirect(array('index')); 
-        }   
+
+        if (!Yii::app()->user->isGuest) {
+            $this->redirect(array('index'));
+        }
 
 
         $sess_product_ids = array();
@@ -533,18 +529,14 @@ class SuppliersDirectoryController extends OGController {
             $sess_product_ids = Yii::app()->user->getState("product_ids");
 
             $pids = isset($_POST['productid']) ? $_POST['productid'] : '';
-            if ($pids != '') 
-            {
-                foreach ($pids as $pid)
-                {
-                    if (($key = array_search($pid, $sess_product_ids)) !== FALSE) 
-                    {
+            if ($pids != '') {
+                foreach ($pids as $pid) {
+                    if (($key = array_search($pid, $sess_product_ids)) !== FALSE) {
                         // Remove from array
                         unset($sess_product_ids[$key]);
                     }
 
-                    if (Yii::app()->user->hasState("marque_ids")) 
-                    {
+                    if (Yii::app()->user->hasState("marque_ids")) {
                         // UNset marque ids for the product                   
                         $sess_marque_ids = Yii::app()->user->getState("marque_ids");
                         if (array_key_exists($pid, $sess_marque_ids)) {
@@ -574,18 +566,16 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function actionPayment() {
-        
-        if (!Yii::app()->user->isGuest)
-        {
-            $this->redirect(array('index')); 
-        }   
+
+        if (!Yii::app()->user->isGuest) {
+            $this->redirect(array('index'));
+        }
 
         $pmodel = new SuppliersSubscription;
 
         $this->performAjaxValidation(array($pmodel));
 
-        if (isset($_POST['SuppliersSubscription'])) 
-        {
+        if (isset($_POST['SuppliersSubscription'])) {
             $pmodel->attributes = $_POST['SuppliersSubscription'];
 
             $pmodel->scenario = ($_POST['SuppliersSubscription']['subscription_type'] == 2) ? "type2" : "";
@@ -594,51 +584,48 @@ class SuppliersDirectoryController extends OGController {
             $pmodel->TITRE_FICHIER = $_POST['SuppliersSubscription']['TITRE_FICHIER'];
             $pmodel->image = CUploadedFile::getInstance($pmodel, 'image');
 
-            if ($pmodel->validate()) 
-            {
-                
+            if ($pmodel->validate()) {
+
                 $invoice_number = rand();
-                
+
                 $payment_details = array();
-                
-                
-                if($pmodel->scenario == "type2")
-                {    
+
+
+                if ($pmodel->scenario == "type2") {
                     //Upload image and get the name
-                    $path = Yii::getPathOfAlias('webroot').'/'. ARCHIVE_IMG_PATH;
-                    
+                    $path = Yii::getPathOfAlias('webroot') . '/' . ARCHIVE_IMG_PATH;
+
                     $fmodel = new ArchiveFichier('create');
-                    
-                    $fmodel->image     = $pmodel->image;                    
-                    $imgname = time().'_'.$fmodel->image->name;
-                    
-                    $fmodel->FICHIER   = $imgname;
-                    $fmodel->EXTENSION = $fmodel->image->extensionName;  
-                    
+
+                    $fmodel->image = $pmodel->image;
+                    $imgname = time() . '_' . $fmodel->image->name;
+
+                    $fmodel->FICHIER = $imgname;
+                    $fmodel->EXTENSION = $fmodel->image->extensionName;
+
                     $fmodel->ID_CATEGORIE = $pmodel->ID_CATEGORIE;
                     $fmodel->TITRE_FICHIER_FR = $pmodel->TITRE_FICHIER;
                     $fmodel->TITRE_FICHIER_EN = $pmodel->TITRE_FICHIER;
-                    
-                    $catid =  $pmodel->ID_CATEGORIE;                    
-                    $cat_img_path =  $path.$catid.'/';
-                    if (!is_dir($cat_img_path)) 
-                    {
-                        mkdir($cat_img_path,0777, true);        
-                    }                
-                    
-                    $fmodel->image->saveAs($cat_img_path .$imgname);
-                    
+
+                    $catid = $pmodel->ID_CATEGORIE;
+                    $cat_img_path = $path . $catid . '/';
+                    if (!is_dir($cat_img_path)) {
+                        mkdir($cat_img_path, 0777, true);
+                    }
+
+                    $fmodel->image->saveAs($cat_img_path . $imgname);
+
                     $payment_details['ID_CATEGORIE'] = $pmodel->ID_CATEGORIE;
                     $payment_details['TITRE_FICHIER'] = $pmodel->TITRE_FICHIER;
-                    $payment_details['FICHIER']   = $imgname;
-                    $payment_details['EXTENSION'] = $fmodel->EXTENSION;                    
-                }  
-                
-              
-                $payment_details['pmodel'] = $pmodel->attributes;              
+                    $payment_details['FICHIER'] = $imgname;
+                    $payment_details['EXTENSION'] = $fmodel->EXTENSION;
+                }
+
+
+                $payment_details['pmodel'] = $pmodel->attributes;
                 $payment_details['invoice_number'] = $invoice_number;
-                
-                
+
+
                 // Session supplier model attribute    
                 $sess_attr_m = Yii::app()->user->getState("mattributes");
                 // Session user model attribute
@@ -652,20 +639,20 @@ class SuppliersDirectoryController extends OGController {
                 $serial_attr_m = serialize($sess_attr_m);
                 $serial_attr_u = serialize($sess_attr_u);
                 $serial_pids = serialize($sess_productids);
-                $serial_mids = serialize($sess_marqueids);                
-                $pdetails    = serialize($payment_details);
-             
+                $serial_mids = serialize($sess_marqueids);
+                $pdetails = serialize($payment_details);
+
 
                 $stmodel = new SupplierTemp;
-                $stmodel->umodel         = $serial_attr_u;
-                $stmodel->smodel         = $serial_attr_m;
-                $stmodel->product_ids    = $serial_pids;
-                $stmodel->marque_ids     = $serial_mids;
+                $stmodel->umodel = $serial_attr_u;
+                $stmodel->smodel = $serial_attr_m;
+                $stmodel->product_ids = $serial_pids;
+                $stmodel->marque_ids = $serial_mids;
                 $stmodel->paymentdetails = $pdetails;
                 $stmodel->invoice_number = $invoice_number;
 
                 $stmodel->save(false);
-                
+
                 // unset Session supplier model attribute    
                 Yii::app()->user->setState("mattributes", null);
                 // unset Session user model attribute
@@ -686,10 +673,8 @@ class SuppliersDirectoryController extends OGController {
                 Yii::app()->user->setState("sregion", null);
 
                 // Save products in to database        
-                $this->paypal_ipn($invoice_number);
-
-                Yii::app()->user->setFlash('success', Myclass::t('OG044', '', 'og'));
-                $this->redirect(array('create'));
+                // $this->paypal_ipn($invoice_number);                
+                $this->paypaltest($payment_details['pmodel']['amount'], $invoice_number);
             }
         }
 
@@ -698,124 +683,161 @@ class SuppliersDirectoryController extends OGController {
         $this->render($viewpage, compact('pmodel', 'tab'));
     }
 
-    public function Paypal_ipn($invoice_number) {
-       
-        
-       $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");
-       
-       if(!empty($result))
-       {    
-           
-            $serial_attr_u = $result->umodel; 
-            $serial_attr_m = $result->smodel;
-            $serial_pids   = $result->product_ids;
-            $serial_mids   = $result->marque_ids;
-            $pdetails      = $result->paymentdetails;
+    public function paypaltest($price = '', $invoice = '') {
+        $paypalManager = new Paypal;
+
+        $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optiguide/suppliersDirectory/paypalreturn'));
+        $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optiguide/suppliersDirectory/paypalcancel'));
+        $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optiguide/suppliersDirectory/paypalnotify'));
+        //$price = 10;
+       // $invoice = rand();
+
+        $paypalManager->addField('item_name', 'Suppliers Subscription');
+        $paypalManager->addField('amount', $price);
+        $paypalManager->addField('custom', $invoice);
+        $paypalManager->addField('return', $returnUrl);
+        $paypalManager->addField('cancel_return', $cancelUrl);
+        $paypalManager->addField('notify_url', $notifyUrl);
+
+        //$paypalManager->dumpFields();   // for printing paypal form fields
+        $paypalManager->submitPaypalPost();
+    }
+
+    public function actionPaypalreturn() {
+     
+        $pstatus = $_POST["payment_status"];
+        if (isset($_POST["txn_id"]) && isset($_POST["payment_status"])) {
+            if ($pstatus == "Pending") {
+                Yii::app()->user->setFlash('info', "Your subscription payment not yet complete successfully.Please contact admin.");
+            } else {
+                Yii::app()->user->setFlash('success', Myclass::t('OG044', '', 'og'));
+            }
+        } else {
+            Yii::app()->user->setFlash('danger', "Your subscription payment is failed.Please try again later or contact admin.");
+        }
+        $this->redirect(array('create'));
+    }
+
+    public function actionPaypalcancel() {
+        Yii::app()->user->setFlash('warning', 'Your payment is cancelled.please try again later or contact admin.');
+        $this->redirect(array('create'));
+    }
+
+    public function actionPaypalnotify() {
+        $paypalManager = new Paypal;
+
+        if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
             
-            
-            $sess_attr_u     = unserialize($serial_attr_u);
-            $sess_attr_m     = unserialize($serial_attr_m);
-            $sess_productids = unserialize($serial_pids);
-            $sess_marqueids  = unserialize($serial_mids);
-            $pdetails        = unserialize($pdetails);       
-           
+            $invoice_number = $_POST['custom'];
+            $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");
 
-            if (!empty($sess_attr_m)) 
-            {                
-                $ficherid = 0;
-                
-                //Save the  supplier ficher (logo)
-                if(!empty($pdetails))
-                {
-                    if($pdetails['pmodel']['subscription_type']==2)
-                    {   
-                        $afmodel = new ArchiveFichier('create');
-                        $afmodel->ID_CATEGORIE     = $pdetails['ID_CATEGORIE'];
-                        $afmodel->TITRE_FICHIER_FR = $pdetails['TITRE_FICHIER'];
-                        $afmodel->TITRE_FICHIER_EN = $pdetails['TITRE_FICHIER'];
-                        $afmodel->FICHIER          = $pdetails['FICHIER'];
-                        $afmodel->EXTENSION        = $pdetails['EXTENSION'];                       
+            if (!empty($result)) {
 
-                        $afmodel->save(false); 
-                        
-                        $ficherid = $afmodel->ID_FICHIER;
-                    }     
-                     
-                } 
-                
-                $model  = new SuppliersDirectory;
-                $umodel = new UserDirectory('frontend');
-                 
-                // Save supplier in user and supplier table
-                $model->attributes  = $sess_attr_m;
-                $model->ID_CLIENT   = $sess_attr_m['ID_CLIENT'];
-                $model->iId_fichier = $ficherid; 
-                $model->save(false);
-                
-                $umodel->attributes  = $sess_attr_u;
-                $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
-                $umodel->save(false);
-                
-                $supplierid = $model->ID_FOURNISSEUR;
-                
-                // Save products and brands for the supplier
-                if (!empty($sess_productids)) 
-                {
-                    foreach ($sess_productids as $pids) 
-                    {
-                        $productid = $pids;
-                        if (array_key_exists($productid, $sess_marqueids))
-                        {
-                            $allmarqid = $sess_marqueids[$productid];
-                            $exp_marid = explode(',', $allmarqid);
+                $serial_attr_u = $result->umodel;
+                $serial_attr_m = $result->smodel;
+                $serial_pids   = $result->product_ids;
+                $serial_mids   = $result->marque_ids;
+                $pdetails      = $result->paymentdetails;
 
-                            foreach ($exp_marid as $mid) 
-                            {
-                                $marqid = $mid;
 
-                                $criteria1 = new CDbCriteria();
-                                $criteria1->condition = 'ID_PRODUIT=:pid and ID_MARQUE=:mid';
-                                $criteria1->params = array(':pid' => $productid, ':mid' => $marqid);
-                                $get_product_marques = ProductMarqueDirectory::model()->find($criteria1);
+                $sess_attr_u = unserialize($serial_attr_u);
+                $sess_attr_m = unserialize($serial_attr_m);
+                $sess_productids = unserialize($serial_pids);
+                $sess_marqueids = unserialize($serial_mids);
+                $pdetails = unserialize($pdetails);
 
-                                if ($get_product_marques->ID_LIEN_MARQUE) 
-                                {
-                                    $prd_mar_id = $get_product_marques->ID_LIEN_MARQUE;
-                                    $spmodel = new SupplierProducts();
-                                    $spmodel->ID_FOURNISSEUR = $supplierid;
-                                    $spmodel->ID_LIEN_PRODUIT_MARQUE = $prd_mar_id;
-                                    $spmodel->save(false);
+
+                if (!empty($sess_attr_m)) {
+                    $ficherid = 0;
+
+                    //Save the  supplier ficher (logo)
+                    if (!empty($pdetails)) {
+                        if ($pdetails['pmodel']['subscription_type'] == 2) {
+                            $afmodel = new ArchiveFichier('create');
+                            $afmodel->ID_CATEGORIE = $pdetails['ID_CATEGORIE'];
+                            $afmodel->TITRE_FICHIER_FR = $pdetails['TITRE_FICHIER'];
+                            $afmodel->TITRE_FICHIER_EN = $pdetails['TITRE_FICHIER'];
+                            $afmodel->FICHIER = $pdetails['FICHIER'];
+                            $afmodel->EXTENSION = $pdetails['EXTENSION'];
+
+                            $afmodel->save(false);
+
+                            $ficherid = $afmodel->ID_FICHIER;
+                        }
+                    }
+
+                    $model  = new SuppliersDirectory;
+                    $umodel = new UserDirectory('frontend');
+
+                    // Save supplier in user and supplier table
+                    $model->attributes = $sess_attr_m;
+                    $model->ID_CLIENT = $sess_attr_m['ID_CLIENT'];
+                    $model->iId_fichier = $ficherid;
+                    $model->save(false);
+
+                    $umodel->attributes = $sess_attr_u;
+                    $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
+                    $umodel->save(false);
+
+                    $supplierid = $model->ID_FOURNISSEUR;
+
+                    // Save products and brands for the supplier
+                    if (!empty($sess_productids)) {
+                        foreach ($sess_productids as $pids) {
+                            $productid = $pids;
+                            if (array_key_exists($productid, $sess_marqueids)) {
+                                $allmarqid = $sess_marqueids[$productid];
+                                $exp_marid = explode(',', $allmarqid);
+
+                                foreach ($exp_marid as $mid) {
+                                    $marqid = $mid;
+
+                                    $criteria1 = new CDbCriteria();
+                                    $criteria1->condition = 'ID_PRODUIT=:pid and ID_MARQUE=:mid';
+                                    $criteria1->params = array(':pid' => $productid, ':mid' => $marqid);
+                                    $get_product_marques = ProductMarqueDirectory::model()->find($criteria1);
+
+                                    if ($get_product_marques->ID_LIEN_MARQUE) {
+                                        $prd_mar_id = $get_product_marques->ID_LIEN_MARQUE;
+                                        $spmodel = new SupplierProducts();
+                                        $spmodel->ID_FOURNISSEUR = $supplierid;
+                                        $spmodel->ID_LIEN_PRODUIT_MARQUE = $prd_mar_id;
+                                        $spmodel->save(false);
+                                    }
                                 }
                             }
                         }
                     }
+
+                    // Save the payment details                                   
+                    $ptmodel = new PaymentTransaction;
+                    $ptmodel->user_id = $supplierid;    // need to assign acutal user id
+                    $ptmodel->mc_gross = $_POST['mc_gross'];
+                    $ptmodel->payment_status = $_POST['payment_status'];
+                    $ptmodel->payer_email = $_POST['payer_email'];
+                    $ptmodel->verify_sign = $_POST['verify_sign'];
+                    $ptmodel->txn_id = $_POST['txn_id'];
+                    $ptmodel->payment_type = $_POST['payment_type'];
+                    $ptmodel->receiver_email = $_POST['receiver_email'];
+                    $ptmodel->txn_type = $_POST['txn_type'];
+                    $ptmodel->item_name = $_POST['item_name'];
+                    $ptmodel->NOMTABLE = 'suppliers';
+                    $ptmodel->expirydate = date("Y-m-d", strtotime('+1 year'));
+                    $ptmodel->invoice_number = $_POST['custom'];
+                    $ptmodel->save();
+
+                    SupplierTemp::model()->deleteAll("invoice_number = '" .$_POST['custom']. "'");
                 }
-                
-                // Save the payment details
-                if(!empty($pdetails))
-                {
-                    $pmodel = new SuppliersSubscription;
-                    $pmodel->attributes =  $pdetails['pmodel'];
-                    $pmodel->ID_FOURNISSEUR = $supplierid;
-                    $pmodel->txnid = rand();
-                    $pmodel->expirydate     = date("Y-m-d",strtotime('+1 year'));
-                    $pmodel->invoice_number = $pdetails['invoice_number'];
-                    $pmodel->save(false);    
-                    
-                    SupplierTemp::model()->deleteAll("invoice_number = '".$pdetails['invoice_number']."'");
-                } 
-                
             }
-        }    
+        }
     }
 
     public function actionListmarques() {
-        
-        if (!Yii::app()->user->isGuest)
-        {
-            $this->redirect(array('index')); 
-        }   
-        
+
+        if (!Yii::app()->user->isGuest) {
+            $this->redirect(array('index'));
+        }
+
         $pid = Yii::app()->getRequest()->getQuery('id');
         $get_selected_marques = '';
         if (is_numeric($pid) && $pid != '') {

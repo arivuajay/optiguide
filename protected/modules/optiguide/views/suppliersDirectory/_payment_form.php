@@ -38,7 +38,7 @@ $sectiontypes = CHtml::listData(SectionDirectory::model()->findAll(array("order"
                             <?php echo $form->labelEx($pmodel, 'payment_type', array()); ?> 
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">                                                                                     
-                            <?php echo $form->dropDownList($pmodel, 'payment_type', array('1' => 'Paypal', '2' => 'Stripe'), array('class' => 'selectpicker', "empty" => Myclass::t('OG118'))); ?>                          
+                            <?php echo $form->dropDownList($pmodel, 'payment_type', array('1' => 'Paypal'), array('class' => 'selectpicker', "empty" => Myclass::t('OG118'))); ?>                          
                             <?php echo $form->error($pmodel, 'payment_type'); ?>
                         </div>
                     </div>    
