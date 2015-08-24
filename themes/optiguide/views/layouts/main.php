@@ -31,9 +31,23 @@
         $cs->registerCssFile($themeUrl . '/css/custom.css');
         ?>
     </head>
+    <?php
+    $currentLang = Yii::app()->language;
+    if ($currentLang == 'en') {
+        $displang = 'Français';
+        $changelang = 'fr';
+    } else {
+        $displang = 'English';
+        $changelang = 'en';
+    }
+    ?>
     <body class="<?php echo Yii::app()->language; ?>">
-        <?php $this->renderPartial('//layouts/_header'); ?>
-
+        <?php $this->renderPartial('//layouts/_header',array('displang'=>$displang)); ?>
+         <?php
+            echo CHtml::beginForm('', 'post', array('id' => 'langform'));
+            echo CHtml::hiddenField('_lang', $changelang, array());
+            echo CHtml::endForm();
+        ?>
         <div class="body-cont"> 
             <div class="container">
                 <div class="row"> 
@@ -51,7 +65,7 @@
             </div>
         </div>
 
-        <?php $this->renderPartial('//layouts/_footer'); ?>
+        <?php $this->renderPartial('//layouts/_footer',array('displang'=>$displang)); ?>
 
         <?php
         $cs_pos_end = CClientScript::POS_END;

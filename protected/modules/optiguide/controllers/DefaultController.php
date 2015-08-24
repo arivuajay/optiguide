@@ -21,6 +21,10 @@ class DefaultController extends OGController {
         $this->render('contactus');
     }
     
+    public function actionTermsandconditions() {
+        $this->render('terms');
+    }
+    
     public function actionAdvertise(){
         
         $model = new Advertise;

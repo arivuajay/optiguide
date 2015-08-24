@@ -21,7 +21,7 @@
                     <?php echo CHtml::link(Myclass::t('OG004', '', 'og'), array('/optiguide/default/contactus')); ?>
                 </li>     
                 <li>
-                     <?php $this->renderPartial('//layouts/_langmenu'); ?>
+                     <?php echo CHtml::link($displang, 'javascript:void(0);', array('onclick' => "document.getElementById('langform').submit();")); ?>
                 </li> 
                 <li>
                     <?php
@@ -31,16 +31,13 @@
                 </li> 
             </ul>
         </div>
-    </div>
+    </div>  
 
     <div class="header-row2">
         <div class="container"> 
             <div class="row">  
                 <div class="col-xs-12 col-sm-3 col-md-3  col-lg-3 logo"> 
-                    <?php
-                    $logo = CHtml::image("{$this->themeUrl}/images/logo.jpg", 'Logo');
-                    echo CHtml::link($logo, array('/optiguide/default'));
-                    ?>
+                    <?php echo CHtml::link(CHtml::image("{$this->themeUrl}/images/logo.jpg", 'Logo'), array('/optiguide/default')); ?>
                 </div>                
                 <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 ad1"> 
                  <!--  Supper Banner (Top) - position 1 -->
@@ -50,11 +47,3 @@
         </div>
     </div>
 </div>
-<?php
-$js = <<< EOD
-$(document).ready(function(){
-  
-});
-EOD;
-Yii::app()->clientScript->registerScript('_form', $js);
-?>

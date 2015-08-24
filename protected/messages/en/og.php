@@ -148,7 +148,24 @@ return array(
     'OGO114' => 'Old password', 
     'OGO115' => 'New password',
     'OGO116' => 'Repeat password',
-    'OGO117' => 'Old password is incorrect.'
+    'OGO117' => 'Old password is incorrect.',
     
+     //Footer
+    'OGO118' => 'Envision',
+    'OGO119' => 'EnVue',
+    'OGO120' => 'Opti-News',
+    'OGO121' => 'Opti-Promo',
+    'OGO122' => 'Opti-Mail',
+    'OGO123' => 'Classified',
+    'OGO124' => 'Terms and conditions',
+    'OGO125' => 'All rights reserved',
+    
+    // contactus
+    'OGO126' => 'President and Publisher',
+    'OGO127' => 'Assistant Publisher and Marketing Manager',
+    'OGO128' => 'Advertising Sales',
+    'OGO129' => 'Media and Web Production Coordinator',
+    'OGO130' => 'Circulation Assistant',
+    'OGO131' => 'Please feel free to contact us should you need additional information or simply to give us your feedback.'
     
 );

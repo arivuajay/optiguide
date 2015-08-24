@@ -144,7 +144,25 @@ return array(
     'OGO114' => 'Ancien mot de passe',
     'OGO115' => 'Nouveau mot de passe',
     'OGO116' => 'Répéter mot de passe',
-    'OGO117' => 'Ancien mot de passe est incorrect.'
+    'OGO117' => 'Ancien mot de passe est incorrect.',
+    
+    //Footer
+    'OGO118' => 'Envision',
+    'OGO119' => 'EnVue',
+    'OGO120' => 'Opti-News',
+    'OGO121' => 'Opti-Promo',
+    'OGO122' => 'Opti-Mail',
+    'OGO123' => 'Annonces classées',   
+    'OGO124' => 'Termes et conditions',
+    'OGO125' => 'Tous droits réservés',
+    
+    // contactus 
+    'OGO126' => 'Présidente et éditrice',
+    'OGO127' => 'Éditrice adjointe et directrice de marketing',
+    'OGO128' => 'Ventes publicitaires',
+    'OGO129' => 'Coordonatrice Production Médias et Web',
+    'OGO130' => 'Assistante au tirage',
+    'OGO131' => 'Nous vous invitons à prendre contact avec nous pour de plus amples renseignements ou pour nous faire part de vos commentaires :'
 
     
 );
