@@ -15,7 +15,7 @@
  */
 class SuppliersSubscription extends CFormModel
 {
-        public $payment_type,$subscription_type,$TITRE_FICHIER,$image,$ID_CATEGORIE,$txnid,$invoice_number,$expirydate,$status,$createddate;
+        public $payment_type,$subscription_type,$TITRE_FICHIER,$image,$ID_CATEGORIE,$txnid,$invoice_number,$expirydate,$status,$createddate,$amount;
         const IMAGE_SIZE = 2;
         const ACCESS_TYPES = 'jpg,png,jpeg,gif';
         const ACCESS_TYPES_WID = 'jpeg|jpg|gif|png';

@@ -577,12 +577,13 @@ class SuppliersDirectoryController extends OGController {
 
         if (isset($_POST['SuppliersSubscription'])) {
             $pmodel->attributes = $_POST['SuppliersSubscription'];
-
+            
             $pmodel->scenario = ($_POST['SuppliersSubscription']['subscription_type'] == 2) ? "type2" : "";
 
             $pmodel->ID_CATEGORIE = $_POST['SuppliersSubscription']['ID_CATEGORIE'];
             $pmodel->TITRE_FICHIER = $_POST['SuppliersSubscription']['TITRE_FICHIER'];
             $pmodel->image = CUploadedFile::getInstance($pmodel, 'image');
+            $pmodel->amount = $_POST['SuppliersSubscription']['amount'];
 
             if ($pmodel->validate()) {
 
@@ -620,11 +621,6 @@ class SuppliersDirectoryController extends OGController {
                     $payment_details['FICHIER'] = $imgname;
                     $payment_details['EXTENSION'] = $fmodel->EXTENSION;
                 }
-
-
-                $payment_details['pmodel'] = $pmodel->attributes;
-                $payment_details['invoice_number'] = $invoice_number;
-
 
                 // Session supplier model attribute    
                 $sess_attr_m = Yii::app()->user->getState("mattributes");
@@ -674,7 +670,7 @@ class SuppliersDirectoryController extends OGController {
 
                 // Save products in to database        
                 // $this->paypal_ipn($invoice_number);                
-                $this->paypaltest($payment_details['pmodel']['amount'], $invoice_number);
+                $this->paypaltest($pmodel->amount, $invoice_number);
             }
         }
 
