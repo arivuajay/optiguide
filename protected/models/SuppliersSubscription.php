@@ -15,7 +15,7 @@
  */
 class SuppliersSubscription extends CFormModel
 {
-        public $TITRE_FICHIER,$image,$ID_CATEGORIE;
+        public $payment_type,$subscription_type,$TITRE_FICHIER,$image,$ID_CATEGORIE,$txnid,$invoice_number,$expirydate,$status,$createddate;
         const IMAGE_SIZE = 2;
         const ACCESS_TYPES = 'jpg,png,jpeg,gif';
         const ACCESS_TYPES_WID = 'jpeg|jpg|gif|png';
@@ -31,11 +31,8 @@ class SuppliersSubscription extends CFormModel
             return array(
                     array('payment_type, subscription_type', 'required'),
                     array('TITRE_FICHIER,ID_CATEGORIE', 'required' , 'on'=>'type2'),
-                    array('ID_FOURNISSEUR, payment_type, subscription_type', 'numerical', 'integerOnly'=>true),
-                    array('amount', 'numerical'),
-                    array('txnid', 'length', 'max'=>255),
-                    // The following rule is used by search().
-                    // @todo Please remove those attributes that should not be searched.
+                   //array('ID_FOURNISSEUR, payment_type, subscription_type', 'numerical', 'integerOnly'=>true),
+                   // array('amount', 'numerical'),                   
                     array('id, ID_FOURNISSEUR, payment_type, subscription_type, txnid, invoice_number, amount,expirydate,status,createddate,TITRE_FICHIER,ID_CATEGORIE,image', 'safe', 'on'=>'search'),
                     array('image', 'file','allowEmpty'=>false, 'types'=>self::ACCESS_TYPES ,'safe' => false, 'on'=>'type2'),
             );
