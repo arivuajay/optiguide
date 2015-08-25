@@ -28,6 +28,8 @@
  */
 class PaymentTransaction extends CActiveRecord {
 
+    public $COMPAGNIE;
+    
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -53,7 +55,8 @@ class PaymentTransaction extends CActiveRecord {
         return array(  
             array('user_id,total_price,tax,subscription_price,payment_status,payer_email,verify_sign','safe'),
             array('txn_type,item_name,ipn_track_id,created_at,updated_at','safe'),
-            array('txn_id,payment_type,receiver_email,NOMTABLE,expirydate,invoice_number,total,pay_type,subscription_type' , 'safe'),            
+            array('txn_id,payment_type,receiver_email,NOMTABLE,expirydate,invoice_number,total,pay_type,subscription_type' , 'safe'),      
+            array('COMPAGNIE', 'safe', 'on'=>'search')
         );
     }
 
@@ -64,6 +67,7 @@ class PaymentTransaction extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+             'suppliersDirectory' => array(self::BELONGS_TO, 'SuppliersDirectory', 'user_id'),
         );
     }
 
@@ -73,21 +77,21 @@ class PaymentTransaction extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'user_id' => 'User',
-            'total_price' => 'Mc Gross',
-            'payment_status' => 'Payment Status',
-            'payer_email' => 'Payer Email',
-            'verify_sign' => 'Verify Sign',
-            'txn_id' => 'Txn',
-            'payment_type' => 'Payment Type',
-            'receiver_email' => 'Receiver Email',
-            'txn_type' => 'Txn Type',
-            'item_name' => 'Item Name',           
-            'created_at' => 'Created At',
+            'user_id' => Myclass::t('APP2'),
+            'total_price' => Myclass::t('OG138'),
+            'payment_status' =>  Myclass::t('OG140'),
+            'payer_email' => Myclass::t('OG141'),
+            'verify_sign' => 'Vérifiez Connexion',
+            'txn_id' => 'Txn Id',
+            'payment_type' => Myclass::t('OG142'),
+            'receiver_email' => 'Récepteur Email',
+            'txn_type' => 'Type de Txn',
+            'item_name' => 'Nom de l\'abonnement',           
+            'created_at' => 'Reçu le',
             'updated_at' => 'Updated At',
-            'NOMTABLE'  => 'NOMTABLE',
-            'expirydate' => 'expirydate',
-            'invoice_number' => 'invoice_number'
+            'NOMTABLE'  => 'Type d\'utilisateur',
+            'expirydate' => Myclass::t('OG143'),
+            'invoice_number' => Myclass::t('OG144'),
         );
     }
 
@@ -101,9 +105,8 @@ class PaymentTransaction extends CActiveRecord {
 
         $criteria = new CDbCriteria;
 
-        $criteria->compare('id', $this->id);
-        $criteria->compare('user_id', $this->user_id);
-        $criteria->compare('total_price', $this->mc_gross, true);
+        $criteria->compare('id', $this->id);        
+        $criteria->compare('total_price', $this->total_price, true);
         $criteria->compare('payment_status', $this->payment_status, true);
         $criteria->compare('payer_email', $this->payer_email, true);
         $criteria->compare('verify_sign', $this->verify_sign, true);
@@ -114,8 +117,12 @@ class PaymentTransaction extends CActiveRecord {
         $criteria->compare('item_name', $this->item_name, true);        
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->compare('updated_at', $this->updated_at, true);
-
-        return new CActiveDataProvider($this, array(
+        $criteria->compare('suppliersDirectory.COMPAGNIE', $this->COMPAGNIE, true);
+        $criteria->addCondition("NOMTABLE = 'suppliers'");
+        $criteria->with = "suppliersDirectory";        
+        $criteria->together = true;
+        $criteria->order ='id DESC';
+        return new CActiveDataProvider($this, array(            
             'criteria' => $criteria,
         ));
     }

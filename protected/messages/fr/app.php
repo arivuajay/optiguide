@@ -152,5 +152,12 @@ return array(
     'OG135' => 'Sélection marques',
     'OG136' => 'Paiement',
     'OG137' => 'Type de paiement',
+    
+    'OG138' => 'Prix ​​de souscription',
+    'OG140' => 'Statut de paiement',
+    'OG141' => 'Payer Email',
+    'OG142' => 'Type de paiement',
+    'OG143' => 'Date d\'expiration',
+    'OG144' => 'Numéro de facture'
 );
 ?>

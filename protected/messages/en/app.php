@@ -153,5 +153,12 @@ return array(
     'OG136' => 'Payment',
     'OG137' => 'Payment Type',
     
+    'OG138' => 'Subscription price',
+    'OG140' => 'Payment Status',
+    'OG141' => 'Payer Email',
+    'OG142' => 'Payment Type',
+    'OG143' => 'Expiry date',
+    'OG144' => 'Invoice number'
+    
 );
 ?>

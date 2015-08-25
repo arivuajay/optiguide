@@ -110,6 +110,8 @@ class SuppliersDirectory extends CActiveRecord {
             'supplierType' => array(self::BELONGS_TO, 'SupplierType', 'ID_TYPE_FOURNISSEUR'),
             'archiveFichier' => array(self::BELONGS_TO, 'ArchiveFichier', 'iId_fichier'),
             'userDirectory' => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION'),
+            'paymentTransaction' => array(self::HAS_MANY, 'PaymentTransaction', 'user_id'),
+            
         );
     }
     
