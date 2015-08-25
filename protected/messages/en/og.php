@@ -166,6 +166,12 @@ return array(
     'OGO128' => 'Advertising Sales',
     'OGO129' => 'Media and Web Production Coordinator',
     'OGO130' => 'Circulation Assistant',
-    'OGO131' => 'Please feel free to contact us should you need additional information or simply to give us your feedback.'
+    'OGO131' => 'Please feel free to contact us should you need additional information or simply to give us your feedback.',
+    
+    'OGO132' => "Your subscription payment status is pending.Admin will verify your payment details and send activation email to you soon.",
+    'OGO133' => "Your subscription payment is failed.Please try again later or contact admin.",
+    'OGO134' => "Your subscription payment is cancelled.please try again later.",
+    'OGO135' => 'Processing Payment...',
+    'OGO136' => 'Please wait, your subscription is being processed...',
     
 );

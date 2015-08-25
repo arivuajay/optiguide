@@ -104,12 +104,12 @@ class Paypal extends CComponent {
         // The user will briefly see a message on the screen that reads:
         // "Please wait, your order is being processed..." and then immediately
         // is redirected to paypal.
-
+        
         echo "<html>\n";
-        echo "<head><title>Processing Payment...</title></head>\n";
+        echo "<head><title>".Myclass::t('OGO135', '', 'og')."</title></head>\n";
        // echo "<body>";
         echo "<body onLoad=\"document.form.submit();\">\n";
-        echo "<center><h3>Please wait, your subscription is being processed...</h3></center>\n";
+        echo "<center><h3>".Myclass::t('OGO136', '', 'og')."</h3></center>\n";
         echo "<form method=\"post\" name=\"form\" action=\"" . $this->paypalUrl . "\">\n";
 
         foreach ($this->fields as $name => $value) {

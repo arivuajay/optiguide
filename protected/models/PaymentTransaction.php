@@ -6,7 +6,9 @@
  * The followings are the available columns in table 'payment_transaction':
  * @property integer $id
  * @property integer $user_id
- * @property string $mc_gross
+ * @property string $total_price
+ * @property string $tax
+ * @property string $subscription_price
  * @property string $payment_status
  * @property string $payer_email
  * @property string $verify_sign
@@ -18,6 +20,11 @@
  * @property string $ipn_track_id
  * @property string $created_at
  * @property string $updated_at
+ * @property string $NOMTABLE
+ * @property string $expirydate
+ * @property string $invoice_number
+ * @property string $pay_type
+ * @property string $subscription_type
  */
 class PaymentTransaction extends CActiveRecord {
 
@@ -43,15 +50,10 @@ class PaymentTransaction extends CActiveRecord {
     public function rules() {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
-            array('user_id', 'required'),
-            array('user_id', 'numerical', 'integerOnly' => true),
-            array('mc_gross, payment_status, payer_email, verify_sign, txn_id, payment_type, receiver_email, txn_type, item_name', 'length', 'max' => 256),
-            array('created_at, updated_at', 'length', 'max' => 128),
-            array('NOMTABLE,expirydate,invoice_number' , 'safe'),
-            // The following rule is used by search().
-            // Please remove those attributes that should not be searched.
-            array('id, user_id, mc_gross, payment_status, payer_email, verify_sign, txn_id, payment_type, receiver_email, txn_type, item_name, created_at, updated_at,NOMTABLE,expirydate,invoice_number', 'safe', 'on' => 'search'),
+        return array(  
+            array('user_id,total_price,tax,subscription_price,payment_status,payer_email,verify_sign','safe'),
+            array('txn_type,item_name,ipn_track_id,created_at,updated_at','safe'),
+            array('txn_id,payment_type,receiver_email,NOMTABLE,expirydate,invoice_number,total,pay_type,subscription_type' , 'safe'),            
         );
     }
 
@@ -72,7 +74,7 @@ class PaymentTransaction extends CActiveRecord {
         return array(
             'id' => 'ID',
             'user_id' => 'User',
-            'mc_gross' => 'Mc Gross',
+            'total_price' => 'Mc Gross',
             'payment_status' => 'Payment Status',
             'payer_email' => 'Payer Email',
             'verify_sign' => 'Verify Sign',
@@ -101,7 +103,7 @@ class PaymentTransaction extends CActiveRecord {
 
         $criteria->compare('id', $this->id);
         $criteria->compare('user_id', $this->user_id);
-        $criteria->compare('mc_gross', $this->mc_gross, true);
+        $criteria->compare('total_price', $this->mc_gross, true);
         $criteria->compare('payment_status', $this->payment_status, true);
         $criteria->compare('payer_email', $this->payer_email, true);
         $criteria->compare('verify_sign', $this->verify_sign, true);

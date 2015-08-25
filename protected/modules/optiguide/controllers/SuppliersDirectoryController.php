@@ -397,13 +397,12 @@ class SuppliersDirectoryController extends OGController {
 
         if (isset($_POST['SuppliersDirectory'])) {
 
-            $model->attributes = $_POST['SuppliersDirectory'];
+            $model->attributes  = $_POST['SuppliersDirectory'];
             $umodel->attributes = $_POST['UserDirectory'];
-            $model->ID_CLIENT = $umodel->USR;
-            $model->COURRIEL = $umodel->COURRIEL;
-            $umodel->NOM_TABLE = $model::$NOM_TABLE;
+            $model->ID_CLIENT   = $umodel->USR;
+            $umodel->NOM_TABLE  = $model::$NOM_TABLE;
             $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
-            $umodel->sGuid = Myclass::getGuid();
+            $umodel->sGuid  = Myclass::getGuid();
             $umodel->LANGUE = Yii::app()->session['language'];
             $umodel->MUST_VALIDATE = 0;
 
@@ -700,23 +699,26 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function actionPaypalreturn() {
-     
+       
         $pstatus = $_POST["payment_status"];
+        
         if (isset($_POST["txn_id"]) && isset($_POST["payment_status"])) {
             if ($pstatus == "Pending") {
-                Yii::app()->user->setFlash('info', "Your subscription payment not yet complete successfully.Please contact admin.");
+                Yii::app()->user->setFlash('info',  Myclass::t('OGO132', '', 'og'));
             } else {
                 Yii::app()->user->setFlash('success', Myclass::t('OG044', '', 'og'));
             }
         } else {
-            Yii::app()->user->setFlash('danger', "Your subscription payment is failed.Please try again later or contact admin.");
+            Yii::app()->user->setFlash('danger',Myclass::t('OGO133', '', 'og') );
         }
         $this->redirect(array('create'));
     }
 
     public function actionPaypalcancel() {
-        Yii::app()->user->setFlash('warning', 'Your payment is cancelled.please try again later or contact admin.');
+        
+        Yii::app()->user->setFlash('warning', Myclass::t('OGO134', '', 'og') );
         $this->redirect(array('create'));
+        
     }
 
     public function actionPaypalnotify() {
@@ -739,8 +741,8 @@ class SuppliersDirectoryController extends OGController {
                 $sess_attr_u = unserialize($serial_attr_u);
                 $sess_attr_m = unserialize($serial_attr_m);
                 $sess_productids = unserialize($serial_pids);
-                $sess_marqueids = unserialize($serial_mids);
-                $pdetails = unserialize($pdetails);
+                $sess_marqueids  = unserialize($serial_mids);
+                $pdetails        = unserialize($pdetails);
 
 
                 if (!empty($sess_attr_m)) {
@@ -808,7 +810,8 @@ class SuppliersDirectoryController extends OGController {
                     // Save the payment details                                   
                     $ptmodel = new PaymentTransaction;
                     $ptmodel->user_id = $supplierid;    // need to assign acutal user id
-                    $ptmodel->mc_gross = $_POST['mc_gross'];
+                    $ptmodel->total_price = $_POST['mc_gross'];
+                    $ptmodel->subscription_price = $_POST['mc_gross'];
                     $ptmodel->payment_status = $_POST['payment_status'];
                     $ptmodel->payer_email = $_POST['payer_email'];
                     $ptmodel->verify_sign = $_POST['verify_sign'];
@@ -820,6 +823,8 @@ class SuppliersDirectoryController extends OGController {
                     $ptmodel->NOMTABLE = 'suppliers';
                     $ptmodel->expirydate = date("Y-m-d", strtotime('+1 year'));
                     $ptmodel->invoice_number = $_POST['custom'];
+                    $ptmodel->pay_type = $pdetails['pmodel']['payment_type'];
+                    $ptmodel->subscription_type = $pdetails['pmodel']['subscription_type'];
                     $ptmodel->save();
 
                     SupplierTemp::model()->deleteAll("invoice_number = '" .$_POST['custom']. "'");

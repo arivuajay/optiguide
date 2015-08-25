@@ -162,7 +162,13 @@ return array(
     'OGO128' => 'Ventes publicitaires',
     'OGO129' => 'Coordonatrice Production Médias et Web',
     'OGO130' => 'Assistante au tirage',
-    'OGO131' => 'Nous vous invitons à prendre contact avec nous pour de plus amples renseignements ou pour nous faire part de vos commentaires :'
+    'OGO131' => 'Nous vous invitons à prendre contact avec nous pour de plus amples renseignements ou pour nous faire part de vos commentaires :',
+    
+    'OGO132' => "Votre statut de paiement de l'abonnement est pending.Admin va vérifier vos informations de paiement et envoyer email d'activation de vous bientôt.",
+    'OGO133' => "Votre paiement de l'abonnement est failed.Please réessayer ultérieurement ou Contact admin.",
+    'OGO134' => "Votre paiement de l'abonnement est cancelled.please réessayer plus tard.",
+    'OGO135' => 'le traitement des paiements...',
+    'OGO136' => 'S\'il vous plaît patienter , votre abonnement est en cours de traitement...',
 
     
 );
