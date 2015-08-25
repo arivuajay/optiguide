@@ -589,8 +589,10 @@ class SuppliersDirectoryController extends OGController {
                 $invoice_number = rand();
 
                 $payment_details = array();
-
-
+                
+                $payment_details['payment_type']      = $pmodel->payment_type;
+                $payment_details['subscription_type'] = $pmodel->subscription_type;
+           
                 if ($pmodel->scenario == "type2") {
                     //Upload image and get the name
                     $path = Yii::getPathOfAlias('webroot') . '/' . ARCHIVE_IMG_PATH;
@@ -630,7 +632,7 @@ class SuppliersDirectoryController extends OGController {
                 // Session marqueids 
                 $sess_marqueids = Yii::app()->user->getState("marque_ids");
 
-
+              
                 $serial_attr_m = serialize($sess_attr_m);
                 $serial_attr_u = serialize($sess_attr_u);
                 $serial_pids = serialize($sess_productids);
@@ -750,7 +752,7 @@ class SuppliersDirectoryController extends OGController {
 
                     //Save the  supplier ficher (logo)
                     if (!empty($pdetails)) {
-                        if ($pdetails['pmodel']['subscription_type'] == 2) {
+                        if ($pdetails['subscription_type'] == 2) {
                             $afmodel = new ArchiveFichier('create');
                             $afmodel->ID_CATEGORIE = $pdetails['ID_CATEGORIE'];
                             $afmodel->TITRE_FICHIER_FR = $pdetails['TITRE_FICHIER'];
@@ -823,8 +825,8 @@ class SuppliersDirectoryController extends OGController {
                     $ptmodel->NOMTABLE = 'suppliers';
                     $ptmodel->expirydate = date("Y-m-d", strtotime('+1 year'));
                     $ptmodel->invoice_number = $_POST['custom'];
-                    $ptmodel->pay_type = $pdetails['pmodel']['payment_type'];
-                    $ptmodel->subscription_type = $pdetails['pmodel']['subscription_type'];
+                    $ptmodel->pay_type = $pdetails['payment_type'];
+                    $ptmodel->subscription_type = $pdetails['subscription_type'];
                     $ptmodel->save();
 
                     SupplierTemp::model()->deleteAll("invoice_number = '" .$_POST['custom']. "'");
