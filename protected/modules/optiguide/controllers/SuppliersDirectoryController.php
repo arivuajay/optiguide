@@ -582,9 +582,21 @@ class SuppliersDirectoryController extends OGController {
             $pmodel->ID_CATEGORIE = $_POST['SuppliersSubscription']['ID_CATEGORIE'];
             $pmodel->TITRE_FICHIER = $_POST['SuppliersSubscription']['TITRE_FICHIER'];
             $pmodel->image = CUploadedFile::getInstance($pmodel, 'image');
-            $pmodel->amount = $_POST['SuppliersSubscription']['amount'];
 
             if ($pmodel->validate()) {
+                
+                // Set subscriptino price
+                $subprices     = SupplierSubscriptionPrice::model()->findByPk(1);
+                $profile_price = $subprices->profile_price;
+                $profile_logo_price = $subprices->profile_logo_price;
+                
+                if($_POST['SuppliersSubscription']['subscription_type'] == 2)
+                {    
+                 $pmodel->amount = $profile_logo_price;
+                }else
+                {
+                 $pmodel->amount = $profile_price;
+                }    
 
                 $invoice_number = rand();
 
@@ -639,7 +651,6 @@ class SuppliersDirectoryController extends OGController {
                 $serial_mids = serialize($sess_marqueids);
                 $pdetails = serialize($payment_details);
 
-
                 $stmodel = new SupplierTemp;
                 $stmodel->umodel = $serial_attr_u;
                 $stmodel->smodel = $serial_attr_m;
@@ -671,7 +682,7 @@ class SuppliersDirectoryController extends OGController {
 
                 // Save products in to database        
                 // $this->paypal_ipn($invoice_number);                
-                $this->paypaltest($pmodel->amount, $invoice_number);
+                $this->paypaltest($pmodel->subscription_type , $pmodel->amount, $invoice_number);
             }
         }
 
@@ -680,7 +691,7 @@ class SuppliersDirectoryController extends OGController {
         $this->render($viewpage, compact('pmodel', 'tab'));
     }
 
-    public function paypaltest($price = '', $invoice = '') {
+    public function paypaltest($subscription_type = '' ,$price = '', $invoice = '') {
         $paypalManager = new Paypal;
 
         $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optiguide/suppliersDirectory/paypalreturn'));
@@ -688,8 +699,16 @@ class SuppliersDirectoryController extends OGController {
         $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optiguide/suppliersDirectory/paypalnotify'));
         //$price = 10;
        // $invoice = rand();
+        
+        if($subscription_type==1)
+        {
+            $itemname = 'Suppliers Subscription - Profile only';
+        }else if($subscription_type==2)
+        {
+            $itemname = 'Suppliers Subscription - Profile & logo';             
+        }    
 
-        $paypalManager->addField('item_name', 'Suppliers Subscription');
+        $paypalManager->addField('item_name', $itemname );
         $paypalManager->addField('amount', $price);
         $paypalManager->addField('custom', $invoice);
         $paypalManager->addField('return', $returnUrl);
@@ -757,8 +776,9 @@ class SuppliersDirectoryController extends OGController {
                             $afmodel->ID_CATEGORIE = $pdetails['ID_CATEGORIE'];
                             $afmodel->TITRE_FICHIER_FR = $pdetails['TITRE_FICHIER'];
                             $afmodel->TITRE_FICHIER_EN = $pdetails['TITRE_FICHIER'];
-                            $afmodel->FICHIER = $pdetails['FICHIER'];
-                            $afmodel->EXTENSION = $pdetails['EXTENSION'];
+                            $afmodel->FICHIER    = $pdetails['FICHIER'];
+                            $afmodel->EXTENSION  = $pdetails['EXTENSION'];
+                            $afmodel->DISPONIBLE = 1;
 
                             $afmodel->save(false);
 
@@ -770,12 +790,12 @@ class SuppliersDirectoryController extends OGController {
                     $umodel = new UserDirectory('frontend');
 
                     // Save supplier in user and supplier table
-                    $model->attributes = $sess_attr_m;
-                    $model->ID_CLIENT = $sess_attr_m['ID_CLIENT'];
+                    $model->attributes  = $sess_attr_m;
+                    $model->ID_CLIENT   = $sess_attr_m['ID_CLIENT'];
                     $model->iId_fichier = $ficherid;
                     $model->save(false);
 
-                    $umodel->attributes = $sess_attr_u;
+                    $umodel->attributes  = $sess_attr_u;
                     $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
                     $umodel->save(false);
 
@@ -829,7 +849,33 @@ class SuppliersDirectoryController extends OGController {
                     $ptmodel->subscription_type = $pdetails['subscription_type'];
                     $ptmodel->save();
 
-                    SupplierTemp::model()->deleteAll("invoice_number = '" .$_POST['custom']. "'");
+                    SupplierTemp::model()->deleteAll("invoice_number = '" .$_POST['custom']. "'");                    
+                    
+                    /* Send mail to admin for confirmation */
+                    $mail          = new Sendmail();
+                    $suppliers_url = ADMIN_URL.'/admin/suppliersDirectory/update/id/'.$umodel->ID_RELATION;
+                    $invoice_url   = ADMIN_URL.'/admin/paymentTransaction/view/id/'.$ptmodel->id;
+                    
+                    $enc_url          = Myclass::refencryption($suppliers_url);              
+                    $nextstep_url     = ADMIN_URL.'admin/default/login/str/'.$enc_url;
+                    
+                    $enc_url2          = Myclass::refencryption($invoice_url);              
+                    $nextstep_url2     = ADMIN_URL.'admin/default/login/str/'.$enc_url2;
+                    
+                    $subject          = SITENAME."- New suppliers registration notification with invoice details - ".$model->COMPAGNIE;
+                    $trans_array = array(
+                        "{NAME}"    => $model->COMPAGNIE,                   
+                        "{UTYPE}"   => 'suppliers',
+                        "{NEXTSTEPURL}" => $nextstep_url,
+                        "{item_name}"   => $_POST['item_name'],
+                        "{total_price}" => $_POST['mc_gross'],
+                        "{payment_status}" => $_POST['payment_status'],
+                        "{txn_id}"     =>  $_POST['txn_id'],
+                        "{INVOICEURL}" => $nextstep_url2
+                    );
+                    $message = $mail->getMessage('supplier_registration', $trans_array);
+                    $mail->send(ADMIN_EMAIL, $subject, $message);
+
                 }
             }
         }

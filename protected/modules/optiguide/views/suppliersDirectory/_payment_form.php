@@ -5,10 +5,14 @@
 
 $cs_pos_end = CClientScript::POS_END;
 $themeUrl = $this->themeUrl;
-//$actn_url = Yii::app()->createUrl('/admin/suppliersDirectory/addproducts/');
+
 $lstr = Yii::app()->session['language'];
-$sectiontypes = CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_" . $lstr)), 'ID_SECTION', 'NOM_SECTION_' . $lstr);
-//$archivecats = CHtml::listData(ArchiveCategory::model()->findAll(array("order" => 'NOM_CATEGORIE_FR')), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
+$sectiontypes  = CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_" . $lstr)), 'ID_SECTION', 'NOM_SECTION_' . $lstr);
+
+$subprices     = SupplierSubscriptionPrice::model()->findByPk(1);
+$profile_price = $subprices->profile_price;
+$profile_logo_price = $subprices->profile_logo_price;
+
 ?>
 
 <div class="row"> 
@@ -93,8 +97,7 @@ $sectiontypes = CHtml::listData(SectionDirectory::model()->findAll(array("order"
                                 <?php echo $form->labelEx($pmodel, 'amount', array()); ?>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">            
-                                <?php echo $form->textField($pmodel, 'amount', array('value' => '', 'class' => 'form-control', 'size' => 60, 'maxlength' => 255, 'readonly' => true)); ?>
-                                <?php echo $form->error($pmodel, 'amount'); ?>
+                                <div id="sprice"></div>
                             </div>
                         </div>
                     </div>
@@ -116,8 +119,14 @@ $sectiontypes = CHtml::listData(SectionDirectory::model()->findAll(array("order"
     </div> 
 </div>   
 <?php
+$currency  = CURRENCY;
+$p_price   = $profile_price.' '.$currency;
+$p_l_price = $profile_logo_price.' '.$currency;
 $js = <<< EOD
 $(document).ready(function(){ 
+        
+    var profile_price      = '{$p_price}';   
+    var profile_logo_price = '{$p_l_price}';  
         
      var subval=$("#SuppliersSubscription_subscription_type").val();
      chnagedrop(subval);    
@@ -137,12 +146,12 @@ $(document).ready(function(){
         {
             $('#catlogo').show();
             $('#price').show();
-            $('#SuppliersSubscription_amount').val('125');
+            $('#sprice').html(profile_logo_price);
         }else  if(subval==1)
         {
             $('#catlogo').hide();
             $('#price').show();
-            $('#SuppliersSubscription_amount').val('100');
+            $('#sprice').html(profile_price);
         }
     }              
 });
