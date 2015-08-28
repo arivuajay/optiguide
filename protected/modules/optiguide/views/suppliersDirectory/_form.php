@@ -26,9 +26,13 @@ $cities = Myclass::getallcities($model->region);
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subscribe-btncont"> 
         <div class="inner-container"> 
-            <h2> <?php echo Myclass::t('OGO81', '', 'og'); ?> </h2>
+            <h2> <?php echo $model->isNewRecord ?  Myclass::t('OGO81'):Myclass::t('OG034','','og');?> </h2>
 
-            <?php  $this->renderPartial('_menu_steps', array());?>
+            <?php  
+            if($model->isNewRecord)
+            {
+              $this->renderPartial('_menu_steps', array());
+            }  ?>
             
             <?php
             $form = $this->beginWidget('CActiveForm', array(
@@ -72,21 +76,30 @@ $cities = Myclass::getallcities($model->region);
                             <?php echo $form->labelEx($umodel, 'USR'); ?> 
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
+                            <?php if($model->isNewRecord)
+                            {?> 
                             <?php echo $form->textField($umodel, 'USR', array('class' => 'form-txtfield')); ?>
                             <?php echo $form->error($umodel, 'USR'); ?>
                             <?php echo $form->error($model, 'ID_CLIENT'); ?>
+                       <?php }else{
+                              echo $umodel->USR; 
+                             } ?>
                         </div>
                     </div>
 
-                    <div class="form-row1"> 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                            <?php echo $form->labelEx($umodel, 'PWD'); ?>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-                            <?php echo $form->passwordField($umodel, 'PWD', array('class' => 'form-txtfield')); ?>
-                            <?php echo $form->error($umodel, 'PWD'); ?>
-                        </div>
-                    </div>
+                     <?php if($model->isNewRecord)
+                    {?>
+                      <div class="form-row1"> 
+                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                              <?php echo $form->labelEx($umodel, 'PWD'); ?>
+                          </div>
+                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
+                              <?php echo $form->passwordField($umodel, 'PWD', array('class' => 'form-txtfield')); ?>
+                              <?php echo $form->error($umodel, 'PWD'); ?>
+                          </div>
+                      </div>
+                   <?php
+                    }?>
 
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
@@ -428,11 +441,12 @@ $cities = Myclass::getallcities($model->region);
 
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 pull-right"> 
                 <?php
+                $btnval = $model->isNewRecord?Myclass::t('OGO80','','og'):Myclass::t('OG120');
                 echo CHtml::tag('button', array(
                     'name' => 'btnSubmit',
                     'type' => 'submit',
                     'class' => 'submit-btn'
-                        ), '<i class="fa fa-arrow-circle-right"></i> ' . Myclass::t('OGO80','','og'));
+                        ), '<i class="fa fa-arrow-circle-right"></i> ' . $btnval);
                 ?>
             </div>
             <?php $this->endWidget(); ?> 

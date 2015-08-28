@@ -50,6 +50,40 @@ class SuppliersDirectoryController extends OGController {
                 )
         );
     }
+    
+    public function actionUpdate() {
+        
+        $relid  = Yii::app()->user->relationid; 
+        $id     = Yii::app()->user->id; 
+        $model  = $this->loadModel($relid);
+        $umodel = UserDirectory::model()->findByPk($id);
+        $umodel->scenario = 'frontend';
+
+        // Uncomment the following line if AJAX validation is needed
+        $this->performAjaxValidation(array($model, $umodel));
+
+        if (isset($_POST['SuppliersDirectory'])) {
+
+            $model->attributes  = $_POST['SuppliersDirectory'];
+            $umodel->attributes = $_POST['UserDirectory'];           
+            $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;  
+
+            $valid = $umodel->validate();
+            $valid = $model->validate() && $valid;
+
+            if ($valid) {   
+                
+                $model->save(false);
+                $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
+                $umodel->save(false); 
+                
+                Yii::app()->user->setFlash('success', Myclass::t('OG036', '', 'og'));
+                $this->redirect(array('update'));
+            }
+        }
+        
+        $this->render('update', compact('umodel', 'model'));
+    }
 
     /**
      * Displays a particular model.

@@ -10,7 +10,7 @@ if (!Yii::app()->user->isGuest) {
       $profileurl =   '/optiguide/retailerDirectory/update';
     }else if(Yii::app()->user->role=="Fournisseurs")
     {
-      //$profileurl =   '/optiguide/suppliersDirectory/update';
+      $profileurl =   '/optiguide/suppliersDirectory/update';
     }
 }    
 ?>
