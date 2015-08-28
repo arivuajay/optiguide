@@ -3,8 +3,7 @@
 /* @var $model UserDirectory */
 
 $this->title='Modifier cet utilisateur de: '. $model->NOM_UTILISATEUR;
-$this->breadcrumbs=array(
-	'Utilisateurs'=>array('index'),
+$this->breadcrumbs=array(	
 	'Modifier Utilisateurs',
 );
 ?>

@@ -81,8 +81,11 @@ class UserDirectoryController extends Controller {
             }            
             $model->sGuid       = $guid_val;
             if ($model->save()) {
-                Yii::app()->user->setFlash('success', 'UserDirectory Created Successfully!!!');
-                $this->redirect(array('index'));
+                Yii::app()->user->setFlash('success', 'L\'accès de l\'utilisateur créé avec succès!!!');
+                $edituserlink =  '/admin/userDirectory/update';
+                $uid =  $model->ID_UTILISATEUR; 
+                $this->redirect(array($edituserlink,"id"=>$uid));
+               // $this->redirect(array('index'));
             }
         }
         
@@ -168,28 +171,16 @@ class UserDirectoryController extends Controller {
         if (isset($_POST['UserDirectory'])) {
             $model->attributes = $_POST['UserDirectory'];
             if ($model->save()) {
-                Yii::app()->user->setFlash('success', 'UserDirectory Updated Successfully!!!');
-                $this->redirect(array('index'));
+                Yii::app()->user->setFlash('success', 'L\'accès de l\'utilisateur à jour avec succès!!!');
+                //$this->redirect(array('index'));
+                $edituserlink =  '/admin/userDirectory/update';
+                $uid =  $model->ID_UTILISATEUR; 
+                $this->redirect(array($edituserlink,"id"=>$uid));
             }
         }
 
         $this->render('update', compact('userslist_query','model','relid','namestr'));
-    }
-
-    /**
-     * Deletes a particular model.
-     * If deletion is successful, the browser will be redirected to the 'admin' page.
-     * @param integer $id the ID of the model to be deleted
-     */
-    public function actionDelete($id) {
-        $this->loadModel($id)->delete();
-
-        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-        if (!isset($_GET['ajax'])) {
-            Yii::app()->user->setFlash('success', 'UserDirectory Deleted Successfully!!!');
-            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-        }
-    }
+    }   
 
     /**
      * Lists all models.

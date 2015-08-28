@@ -3,8 +3,7 @@
 /* @var $model UserDirectory */
 
 $this->title='Ajouter un utilisateur à '.$namestr;
-$this->breadcrumbs=array(
-	'Utilisateurs'=>array('index'),
+$this->breadcrumbs=array(	
 	$this->title,
 );
 ?>

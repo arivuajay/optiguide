@@ -4,6 +4,29 @@
 /* @var $form CActiveForm */
 ?>
 
+<?php
+  
+    $relid    = Yii::app()->getRequest()->getQuery('relid');
+    $nomtable = Yii::app()->getRequest()->getQuery('nomtable');
+    $userslist_query = Yii::app()->db->createCommand() //this query contains all the data
+            ->select('ID_UTILISATEUR , NOM_UTILISATEUR , USR')
+            ->from(array('repertoire_utilisateurs'))
+            ->where("ID_RELATION='$relid' AND NOM_TABLE='$nomtable'")
+            ->order('NOM_UTILISATEUR')
+            ->limit(1)
+            ->queryAll();  
+    if(!empty($userslist_query))
+    {       
+        foreach($userslist_query as $info)
+        {
+         $edituserlink =  '/admin/userDirectory/update';
+         $uid =  $info['ID_UTILISATEUR'];
+        } 
+        $this->redirect(array($edituserlink,"id"=>$uid));
+    }
+    
+?>
+
 <div class="row">
     <div class="col-lg-12 col-xs-12">
         <div class="box box-primary">
@@ -155,36 +178,36 @@
     </div><!-- ./col -->
 </div>
 <?php
-if(!empty($userslist_query))
-{    
-?>
-<div class="row">
+//if(!empty($userslist_query))
+//{    
+//?>
+<!--<div class="row">
     <div class="col-md-6">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">Liste des accès  associés à <?php echo $namestr;?></h3>
-            </div><!-- /.box-header -->
+                <h3 class="box-title">Liste des accès  associés à //<?php //echo $namestr;?></h3>
+            </div> /.box-header 
             <div class="box-body">
                 <table class="table table-bordered">
                     <tr>                      
                         <th>Nom</th>
                         <th>Nom d'usager</th>                      
                     </tr>
-                    <?php 
-                    foreach($userslist_query as $info)
-                    {?>    
+                    //<?php 
+//                    foreach($userslist_query as $info)
+//                    {?>    
                     <tr>                        
                         <td>
-                         <?php echo CHtml::link("- ".$info['NOM_UTILISATEUR'] , array("/admin/userDirectory/update/", "id" => $info['ID_UTILISATEUR']));?>
+                         //<?php //echo CHtml::link("- ".$info['NOM_UTILISATEUR'] , array("/admin/userDirectory/update/", "id" => $info['ID_UTILISATEUR']));?>
                         </td>     
-                        <td><?php echo $info['USR'];?></td>
+                        <td>//<?php //echo $info['USR'];?></td>
                     </tr>                   
-                  <?php 
-                    }?>
+                  //<?php 
+//                    }?>
                 </table>
-            </div><!-- /.box-body -->                               
-        </div><!-- /.box -->                         
-    </div><!-- /.col -->                 
-</div><!-- /.row -->
+            </div> /.box-body                                
+        </div> /.box                          
+    </div> /.col                  
+</div> /.row -->
 <?php
-}?>
+//}?>
