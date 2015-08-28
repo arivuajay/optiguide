@@ -18,7 +18,11 @@
             ));
 
             $retailertypes = CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR');
-            $groupetypes   = CHtml::listData(RetailerGroup::model()->findAll(), 'ID_GROUPE', 'NOM_GROUPE');
+            $groupetypes = array();
+            if($model->ID_RETAILER_TYPE)
+            {
+                $groupetypes = CHtml::listData(RetailerGroup::model()->findAll("ID_RETAILER_TYPE=".$model->ID_RETAILER_TYPE), 'ID_GROUPE', 'NOM_GROUPE');
+            }  
             $country       = Myclass::getallcountries();
             $regions       = Myclass::getallregions(@$model->country);         
             $cities        = Myclass::getallcities(@$model->region);

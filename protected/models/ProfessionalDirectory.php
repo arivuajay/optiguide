@@ -47,7 +47,7 @@ class ProfessionalDirectory extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('ID_TYPE_SPECIALISTE, PRENOM, NOM ,country, region, ID_VILLE', 'required'),
+            array('ID_TYPE_SPECIALISTE, PRENOM, NOM ,country, region, ID_VILLE,COURRIEL', 'required'),
             array('ID_TYPE_SPECIALISTE, country, region, ID_VILLE', 'numerical', 'integerOnly' => true),
             array('ID_CLIENT', 'length', 'max' => 8 ),
             array('PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, SITE_WEB, COURRIEL', 'length', 'max' => 255),

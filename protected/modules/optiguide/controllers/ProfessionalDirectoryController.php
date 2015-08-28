@@ -45,7 +45,7 @@ class ProfessionalDirectoryController extends OGController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view'),
+                'actions' => array('index', 'view' , 'update'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -191,7 +191,7 @@ class ProfessionalDirectoryController extends OGController {
             $this->redirect(array('index')); 
         }    
         
-        $model = new ProfessionalDirectory;
+        $model  = new ProfessionalDirectory;
         $umodel = new UserDirectory('frontend');
 
         // Uncomment the following line if AJAX validation is needed
@@ -200,8 +200,7 @@ class ProfessionalDirectoryController extends OGController {
         if (isset($_POST['ProfessionalDirectory'])) {
             $model->attributes = $_POST['ProfessionalDirectory'];
             $umodel->attributes = $_POST['UserDirectory'];
-            $model->ID_CLIENT = $umodel->USR;
-            $model->COURRIEL  = $umodel->COURRIEL;
+            $model->ID_CLIENT = $umodel->USR;            
             $umodel->NOM_TABLE = $model::$NOM_TABLE;
             $umodel->NOM_UTILISATEUR = $model->PRENOM . " " . $model->NOM;
             $umodel->sGuid = Myclass::getGuid();
@@ -242,6 +241,45 @@ class ProfessionalDirectoryController extends OGController {
         }
 
         $this->render('create', compact('umodel', 'model'));
+    }
+    
+    /**
+     * update model.    
+     */
+    public function actionUpdate() {
+        
+        $profid = Yii::app()->user->relationid; 
+        $id     = Yii::app()->user->id; 
+        $model  = $this->loadModel($profid);
+        $umodel = UserDirectory::model()->findByPk($id);
+        $umodel->scenario = 'frontend';
+        
+       // Uncomment the following line if AJAX validation is needed
+       $this->performAjaxValidation(array($model, $umodel));
+
+        if (isset($_POST['ProfessionalDirectory'])) {
+            $model->attributes = $_POST['ProfessionalDirectory'];
+            $umodel->attributes = $_POST['UserDirectory'];
+            $umodel->NOM_UTILISATEUR = $model->PRENOM . " " . $model->NOM; 
+            $valid = $umodel->validate();
+            $valid = $model->validate() && $valid;
+
+            if ($valid) {                
+                $model->save(false);
+                $umodel->ID_RELATION = $model->ID_SPECIALISTE;
+                $umodel->save(false);  
+                
+                Yii::app()->user->setFlash('success', Myclass::t('OG036', '', 'og'));
+                $this->redirect(array('update'));
+            }else
+            {
+//               echo "<pre>";
+//               print_r($model->getErrors());
+//               print_r($umodel->getErrors());
+//               exit;
+            }    
+        }
+        $this->render('update', compact('umodel', 'model'));
     }
 
     /**

@@ -7,7 +7,7 @@
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subscribe-btncont"> 
         <div class="inner-container"> 
-            <h2><?php echo  Myclass::t('OG110');?></h2>
+            <h2><?php echo $model->isNewRecord ? Myclass::t('OG110'):Myclass::t('OG034','','og');?></h2>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'retailer-directory-form',
@@ -20,12 +20,17 @@
 
             $retailertypes = CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR');
             $groupetypes = array();
+            if($model->ID_RETAILER_TYPE)
+            {
+                $groupetypes = CHtml::listData(RetailerGroup::model()->findAll("ID_RETAILER_TYPE=".$model->ID_RETAILER_TYPE), 'ID_GROUPE', 'NOM_GROUPE');
+            }    
+           
             $country = Myclass::getallcountries();
-            $regions = Myclass::getallregions();
-            $cities = Myclass::getallcities();
+            $regions = Myclass::getallregions($model->country);
+            $cities  = Myclass::getallcities($model->region);
             ?>
 
-            <p><b><?php echo  Myclass::t('OG111');?></b></p>
+            <p><b><?php echo $model->isNewRecord ? Myclass::t('OG111'):'';?></b></p>
 
             <div class="forms-cont"> 
                 <div class="forms-heading"><i class="fa fa-building"></i>   <?php echo  Myclass::t('OG112');?> </div>
@@ -35,13 +40,19 @@
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                             <?php echo $form->labelEx($umodel, 'USR'); ?>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">                           
+                            <?php if($model->isNewRecord)
+                            {?> 
                             <?php echo $form->textField($umodel, 'USR', array('class' => 'form-txtfield')); ?>
                             <?php echo $form->error($umodel, 'USR'); ?>
-                             <?php echo $form->error($model, 'ID_CLIENT'); ?>
+                            <?php echo $form->error($model, 'ID_CLIENT'); ?>
+                            <?php }else{
+                              echo $umodel->USR; 
+                            } ?>
                         </div>
                     </div>
-
+                <?php if($model->isNewRecord)
+                  {?>
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                             <?php echo $form->labelEx($umodel, 'PWD'); ?>
@@ -51,7 +62,8 @@
                             <?php echo $form->error($umodel, 'PWD'); ?>
                         </div>
                     </div>
-
+                <?php
+                  }?>
                     <div class="form-row1">                        
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                             <?php echo $form->labelEx($model, 'COMPAGNIE'); ?>

@@ -174,4 +174,7 @@ return array(
     'OGO135' => 'Processing Payment...',
     'OGO136' => 'Please wait, your subscription is being processed...',
     
+    'OGO137' => 'Subscription of a professional',
+    'OGO138' => 'Professional Profile',
+    
 );

@@ -169,6 +169,8 @@ return array(
     'OGO134' => "Votre paiement de l'abonnement est cancelled.please réessayer plus tard.",
     'OGO135' => 'le traitement des paiements...',
     'OGO136' => 'S\'il vous plaît patienter , votre abonnement est en cours de traitement...',
-
+    
+    'OGO137' => 'Abonnement d\'un professionnel',
+    'OGO138' => 'Profil professionnel',
     
 );

@@ -46,7 +46,7 @@ class RetailerDirectoryController extends OGController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array(),
+                'actions' => array('update'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -249,6 +249,39 @@ class RetailerDirectoryController extends OGController {
         }
 
         $this->render('create', compact('umodel', 'model'));
+    }
+    
+    /**
+     * update model.    
+     */
+    public function actionUpdate() {
+        
+        $relid  = Yii::app()->user->relationid; 
+        $id     = Yii::app()->user->id; 
+        $model  = $this->loadModel($relid);
+        $umodel = UserDirectory::model()->findByPk($id);
+        $umodel->scenario = 'frontend';
+        
+       // Uncomment the following line if AJAX validation is needed
+       $this->performAjaxValidation(array($model, $umodel));
+
+        if (isset($_POST['RetailerDirectory'])) { 
+            $model->attributes = $_POST['RetailerDirectory'];
+            $umodel->attributes = $_POST['UserDirectory'];
+            $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
+            $valid = $umodel->validate();
+            $valid = $model->validate() && $valid;
+
+            if ($valid) {                
+                $model->save(false);
+                $umodel->ID_RELATION = $model->ID_RETAILER;
+                $umodel->save(false);  
+                
+                Yii::app()->user->setFlash('success', Myclass::t('OG036', '', 'og'));
+                $this->redirect(array('update'));
+            } 
+        }
+        $this->render('update', compact('umodel', 'model'));
     }
 
     public function actionGetGroups() {

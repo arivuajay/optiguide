@@ -1,3 +1,19 @@
+<?php
+$profileurl = '';
+if (!Yii::app()->user->isGuest) {
+    
+    if(Yii::app()->user->role=="Professionnels")
+    {
+      $profileurl =   '/optiguide/professionalDirectory/update';
+    }else if(Yii::app()->user->role=="Detaillants")
+    {
+      $profileurl =   '/optiguide/retailerDirectory/update';
+    }else if(Yii::app()->user->role=="Fournisseurs")
+    {
+      //$profileurl =   '/optiguide/suppliersDirectory/update';
+    }
+}    
+?>
 <div class="header"> 
     <div class="header-row1"> 
         <div class="container"> 
@@ -13,7 +29,7 @@
                     if (Yii::app()->user->isGuest) {
                         echo CHtml::link(Myclass::t('OG003', '', 'og'), array('/optiguide/default/subscribe'));
                     } else {
-                        echo CHtml::link(Myclass::t('OG033', '', 'og'), array('/optiguide/userDirectory/update'));
+                        echo CHtml::link(Myclass::t('OG033', '', 'og'), array( $profileurl));
                     }
                     ?>
                 </li>    

@@ -29,6 +29,7 @@ class OgIdentity extends CUserIdentity {
             $this->setState('name', $user->NOM_UTILISATEUR);
             $this->setState('role', $user->NOM_TABLE);
             $this->setState('userstatus', $user->MUST_VALIDATE);
+            $this->setState('relationid', $user->ID_RELATION);
             $this->errorCode = self::ERROR_NONE;
         }
         return !$this->errorCode;

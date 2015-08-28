@@ -18,12 +18,25 @@
     if (Yii::app()->user->isGuest) {
         $this->widget('OgLoginFormWidget');
     } else {
+        
         $activeclass1 = array();
         $activeclass2 = array();
+            
+        if(Yii::app()->user->role=="Professionnels")
+        {
+          $profileurl =   '/optiguide/professionalDirectory/update';
+        }else if(Yii::app()->user->role=="Detaillants")
+        {
+          $profileurl =   '/optiguide/retailerDirectory/update';
+        }else if(Yii::app()->user->role=="Fournisseurs")
+        {
+          //$profileurl =   '/optiguide/suppliersDirectory/update';
+        }
+        
         $module_controller = Yii::app()->controller->id;
         $module_action     = Yii::app()->controller->action->id;
         
-        if($module_controller == "userDirectory" && $module_action=="update")
+        if(($module_controller == "professionalDirectory" || $module_controller == "retailerDirectory") && $module_action=="update")
         {
             $activeclass1['class'] = 'active2';
         }
@@ -40,7 +53,7 @@
                 <b><?php echo Yii::app()->user->name ?></b>
             </div>
             <ul>
-                <li> <?php echo CHtml::link(Myclass::t('OG033', '', 'og'), array('/optiguide/userDirectory/update'), $activeclass1);?> </li>
+                <li> <?php echo CHtml::link(Myclass::t('OG033', '', 'og'), array($profileurl), $activeclass1);?> </li>
                 <li> <?php echo CHtml::link(Myclass::t('OGO112', '', 'og'), array('/optiguide/userDirectory/changepassword'), $activeclass2);?> </li>
                 <li> <?php echo CHtml::link("<i class='fa fa-sign-out'></i> " . Myclass::t('OG025', '', 'og'), array('/optiguide/default/logout')) ?></li>
             </ul>
