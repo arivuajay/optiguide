@@ -21,6 +21,7 @@
         
         $activeclass1 = array();
         $activeclass2 = array();
+        $activeclass3 = array();
             
         if(Yii::app()->user->role=="Professionnels")
         {
@@ -39,12 +40,19 @@
         if(($module_controller == "professionalDirectory" || $module_controller == "retailerDirectory" || $module_controller == "suppliersDirectory") && $module_action=="update")
         {
             $activeclass1['class'] = 'active2';
-        }
+        }        
         if($module_controller == "userDirectory" && $module_action=="changepassword")
         {
             $activeclass2['class'] = 'active2';            
         }    
-        
+        if($module_controller == "suppliersDirectory" && ( $module_action=="updateproducts" || $module_action=="updatemarques"))
+        {
+            $activeclass3['class'] = 'active2';
+        }
+        if($module_controller == "suppliersDirectory" && $module_action=="transactions")
+        {
+            $activeclass4['class'] = 'active2';
+        }
         ?>
         <div class="pro-login">
 
@@ -54,6 +62,14 @@
             </div>
             <ul>
                 <li> <?php echo CHtml::link(Myclass::t('OG033', '', 'og'), array($profileurl), $activeclass1);?> </li>
+                <?php
+                if(Yii::app()->user->role=="Fournisseurs")
+                {?>
+                    <li> <?php echo CHtml::link(Myclass::t('OG059', '', 'og'), array('/optiguide/suppliersDirectory/updateproducts'), $activeclass3);?> </li> 
+                    <li> <?php echo CHtml::link(Myclass::t('OGO139', '', 'og'), array('/optiguide/suppliersDirectory/transactions'), $activeclass4);?> </li> 
+                <?php                 
+                }
+                ?>
                 <li> <?php echo CHtml::link(Myclass::t('OGO112', '', 'og'), array('/optiguide/userDirectory/changepassword'), $activeclass2);?> </li>
                 <li> <?php echo CHtml::link("<i class='fa fa-sign-out'></i> " . Myclass::t('OG025', '', 'og'), array('/optiguide/default/logout')) ?></li>
             </ul>

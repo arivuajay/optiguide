@@ -37,7 +37,7 @@ class SuppliersDirectoryController extends OGController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array(),
+                'actions' => array('update','updateproducts','updatemarques','transactions'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -51,40 +51,6 @@ class SuppliersDirectoryController extends OGController {
         );
     }
     
-    public function actionUpdate() {
-        
-        $relid  = Yii::app()->user->relationid; 
-        $id     = Yii::app()->user->id; 
-        $model  = $this->loadModel($relid);
-        $umodel = UserDirectory::model()->findByPk($id);
-        $umodel->scenario = 'frontend';
-
-        // Uncomment the following line if AJAX validation is needed
-        $this->performAjaxValidation(array($model, $umodel));
-
-        if (isset($_POST['SuppliersDirectory'])) {
-
-            $model->attributes  = $_POST['SuppliersDirectory'];
-            $umodel->attributes = $_POST['UserDirectory'];           
-            $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;  
-
-            $valid = $umodel->validate();
-            $valid = $model->validate() && $valid;
-
-            if ($valid) {   
-                
-                $model->save(false);
-                $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
-                $umodel->save(false); 
-                
-                Yii::app()->user->setFlash('success', Myclass::t('OG036', '', 'og'));
-                $this->redirect(array('update'));
-            }
-        }
-        
-        $this->render('update', compact('umodel', 'model'));
-    }
-
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
@@ -596,7 +562,8 @@ class SuppliersDirectoryController extends OGController {
         $tab = 3;
         $viewpage = '_products_marques_form';
         $this->render($viewpage, compact('model', 'tab', 'data_products'));
-    }
+    }   
+  
 
     public function actionPayment() {
 
@@ -916,11 +883,7 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function actionListmarques() {
-
-        if (!Yii::app()->user->isGuest) {
-            $this->redirect(array('index'));
-        }
-
+        
         $pid = Yii::app()->getRequest()->getQuery('id');
         $get_selected_marques = '';
         if (is_numeric($pid) && $pid != '') {
@@ -965,14 +928,270 @@ class SuppliersDirectoryController extends OGController {
                         Yii::app()->user->setState("marque_ids", $sess_marque_ids);
                     }
                 }
-                $this->redirect(array('addmarques'));
+               
+               
+                if (Yii::app()->user->hasState("relationid")) 
+                {
+                    $relid  = Yii::app()->user->relationid;     
+                    $this->redirect(array('updatemarques')); 
+                }else
+                {
+                    $this->redirect(array('addmarques'));
+                }    
             }
         } else {
-            $this->redirect(array('addmarques'));
+            
+                if (Yii::app()->user->hasState("relationid")) 
+                {  
+                    $this->redirect(array('updatemarques')); 
+                }else
+                {
+                    $this->redirect(array('addmarques'));
+                }   
         }
 
         $this->render('listmarques', compact('get_selected_marques'));
     }
+    
+      public function actionUpdate() {
+        
+        $relid  = Yii::app()->user->relationid; 
+        $id     = Yii::app()->user->id; 
+        $model  = $this->loadModel($relid);
+        $umodel = UserDirectory::model()->findByPk($id);
+        $umodel->scenario = 'frontend';
+
+        // Uncomment the following line if AJAX validation is needed
+        $this->performAjaxValidation(array($model, $umodel));
+
+        if (isset($_POST['SuppliersDirectory'])) {
+
+            $model->attributes  = $_POST['SuppliersDirectory'];
+            $umodel->attributes = $_POST['UserDirectory'];           
+            $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;  
+
+            $valid = $umodel->validate();
+            $valid = $model->validate() && $valid;
+
+            if ($valid) {   
+                
+                $model->save(false);
+                $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
+                $umodel->save(false); 
+                
+                Yii::app()->user->setFlash('success', Myclass::t('OG036', '', 'og'));
+                $this->redirect(array('update'));
+            }
+        }
+        
+        $this->render('update', compact('umodel', 'model'));
+    }
+    
+    public function actionUpdateproducts()
+    {
+        $data_products = array();
+        $result = array();
+        
+        $relid  = Yii::app()->user->relationid; 
+        $model  = $this->loadModel($relid);   
+        
+         // Set and intialize session from existing database records.         
+        if (Yii::app()->user->hasState("product_ids") == FALSE) 
+        {     
+            $fid = $relid;
+            $criteria1 = new CDbCriteria();
+            $criteria1->condition = 'ID_FOURNISSEUR=:id';
+            $criteria1->params = array(':id' => $fid);
+            $criteria1->group = 'productMarqueDirectory.ID_PRODUIT';
+            $get_selected_products = CHtml::listData(SupplierProducts::model()->with("productMarqueDirectory")->findAll($criteria1), 'ID_LIEN_REPERTOIRE_PRODUIT', 'productMarqueDirectory.ID_PRODUIT');
+
+            /* Set products in session */
+            if (!empty($get_selected_products)) 
+            {
+                foreach ($get_selected_products as $pinfo) {
+                    $result[] = $pinfo;
+                }
+                Yii::app()->user->setState("product_ids", $result);                
+                $data_products = SuppliersDirectory::getproducts($result);
+                
+                if(!empty($result))
+                {    
+                    /* Set marques in session */
+                    foreach ($result as $pid) {
+                        $prodid = $pid;
+                        $criteria1 = new CDbCriteria();
+                        $criteria1->condition = "ID_FOURNISSEUR=:fid AND productMarqueDirectory.ID_PRODUIT=:pid";
+                        $criteria1->params = array(":fid" => $fid, ":pid" => $prodid);
+                        $get_selected_marques = CHtml::listData(SupplierProducts::model()->with("productMarqueDirectory")->findAll($criteria1), 'ID_LIEN_REPERTOIRE_PRODUIT', 'productMarqueDirectory.ID_MARQUE');
+
+                        if (!empty($get_selected_marques)) 
+                        {
+                            $ma_ids = array();
+                            foreach ($get_selected_marques as $minfo) {
+                                $ma_ids[] = $minfo;
+                            }
+                            if (!empty($ma_ids)) {
+                                $imp_mids = implode(',', $ma_ids);
+                                $marque_ids[$pid] = $imp_mids;
+                            }
+                        }
+                    }
+                
+                }
+
+                if (!empty($marque_ids)) {
+                    Yii::app()->user->setState("marque_ids", $marque_ids);
+                }
+            }
+        }
+
+        if ($_POST['SuppliersDirectory']) {
+            $product_ids = $_POST['SuppliersDirectory']['Products2'];
+
+            if (!empty($product_ids)) {
+                $result = $product_ids;
+
+                if (Yii::app()->user->hasState("product_ids")) {
+                    $sess_product_ids = Yii::app()->user->getState("product_ids");
+                    $result = array_merge($product_ids, $sess_product_ids);
+                    array_unique($result);
+                }
+
+                // Set default 0 (All brands) value to marques for newly added products only
+                foreach ($product_ids as $key => $info) {
+                    $marque_ids[$info] = 0;
+                }
+
+                $marque_result = $marque_ids;
+
+                if (Yii::app()->user->hasState("marque_ids")) {
+                    $sess_marque_ids = Yii::app()->user->getState("marque_ids");
+                    $marque_result = $marque_ids + $sess_marque_ids;
+                    array_unique($marque_result);
+                }
+
+                Yii::app()->user->setState("marque_ids", $marque_result);
+                Yii::app()->user->setState("product_ids", $result);
+                Yii::app()->user->setState("thirdtab", "3");
+            } else {
+                Yii::app()->user->setState("thirdtab", "3");
+            }
+
+            $this->redirect(array('updatemarques'));
+        }
+
+        if (Yii::app()->user->hasState("product_ids")) {
+            $proids = Yii::app()->user->getState("product_ids");
+            $data_products = SuppliersDirectory::getproducts($proids);
+        }
+
+        $tab = 2;
+        $viewpage = '_update_section_products_form';
+
+        $this->render($viewpage, compact('model', 'tab', 'data_products'));
+        
+    }    
+    
+    public function actionUpdatemarques() {
+
+        $sess_product_ids = array();
+        $data_products = array();
+        
+        $relid  = Yii::app()->user->relationid; 
+        $model  = $this->loadModel($relid);  
+
+     
+        if ($_POST['btnSubmit'] == "marquesubmit") {
+           
+            SupplierProducts::model()->deleteAll("ID_FOURNISSEUR ='" . $relid . "'");
+              
+            $sess_productids = Yii::app()->user->getState("product_ids");
+            // Session marqueids 
+            $sess_marqueids = Yii::app()->user->getState("marque_ids");
+
+            if (Yii::app()->user->hasState("product_ids")) {
+                foreach ($sess_productids as $pids) {
+                    $productid = $pids;
+                    if (array_key_exists($productid, $sess_marqueids)) {
+                        $allmarqid = $sess_marqueids[$productid];
+                        $exp_marid = explode(',', $allmarqid);
+
+                        foreach ($exp_marid as $mid) {
+                            $marqid = $mid;
+
+                            $criteria1 = new CDbCriteria();
+                            $criteria1->condition = 'ID_PRODUIT=:pid and ID_MARQUE=:mid';
+                            $criteria1->params = array(':pid' => $productid, ':mid' => $marqid);
+                            $get_product_marques = ProductMarqueDirectory::model()->find($criteria1);
+
+                            if ($get_product_marques->ID_LIEN_MARQUE) {
+                                $prd_mar_id = $get_product_marques->ID_LIEN_MARQUE;
+                                $spmodel = new SupplierProducts();
+                                $spmodel->ID_FOURNISSEUR = $relid;
+                                $spmodel->ID_LIEN_PRODUIT_MARQUE = $prd_mar_id;
+                                $spmodel->save();
+                            }
+                        }
+                    }
+                }
+            }
+
+            Yii::app()->user->setFlash('success', 'Products and services modified successfully!!!');
+            $this->redirect(array('updatemarques'));
+        }
+
+        // Delete products from session
+        if (isset($_POST['yt0'])) {
+
+            $sess_product_ids = Yii::app()->user->getState("product_ids");
+
+            $pids = isset($_POST['productid']) ? $_POST['productid'] : '';
+            if ($pids != '') {
+                foreach ($pids as $pid) {
+                    if (($key = array_search($pid, $sess_product_ids)) !== FALSE) {
+                        // Remove from array
+                        unset($sess_product_ids[$key]);
+                    }
+
+                    if (Yii::app()->user->hasState("marque_ids")) {
+                        // UNset marque ids for the product                   
+                        $sess_marque_ids = Yii::app()->user->getState("marque_ids");
+                        if (array_key_exists($pid, $sess_marque_ids)) {
+                            // Remove from array                      
+                            unset($sess_marque_ids[$pid]);
+                        }
+                    }
+                }
+                Yii::app()->user->setState("product_ids", $sess_product_ids);
+                Yii::app()->user->setState("marque_ids", $sess_marque_ids);
+            }
+        }
+
+
+        if (Yii::app()->user->hasState("product_ids")) {
+            $sess_product_ids = Yii::app()->user->getState("product_ids");
+            $data_products = SuppliersDirectory::getproducts($sess_product_ids);
+
+            if (empty($sess_product_ids)) {
+                Yii::app()->user->setState("marque_ids", null);
+            }
+        }
+
+        $tab = 3;
+        $viewpage = '_update_products_marques_form';
+        $this->render($viewpage, compact('model', 'tab', 'data_products'));
+    }
+    
+    public function actionTransactions()
+    {
+        $relid  = Yii::app()->user->relationid; 
+        $model  = $this->loadModel($relid);  
+        
+        
+         $viewpage = '_transactions';
+
+        $this->render($viewpage, compact('model'));
+    }        
 
     /**
      * Returns the data model based on the primary key given in the GET variable.

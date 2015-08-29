@@ -16,13 +16,33 @@ if (Yii::app()->user->hasState("product_ids")) {
     $exp_str = array();
     $mval = 0;
 }
+
+$currenturl = Yii::app()->request->url;
+$secondstep_url = Yii::app()->createUrl('/optiguide/suppliersDirectory/updateproducts/');
+$thirdstep_url  = Yii::app()->createUrl('/optiguide/suppliersDirectory/updatemarques/');
 ?> 
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subscribe-btncont"> 
         <div class="inner-container"> 
-            <h2> <?php echo Myclass::t('OGO81', '', 'og'); ?> </h2>
+           <?php   
+          if (Yii::app()->user->hasState("relationid")) 
+          {
+            $relid  = Yii::app()->user->relationid;             
+           ?>
+              <h2> <?php echo Myclass::t('OG059', '', 'og'); ?> </h2>
+            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 steps-cont <?php echo $act_class2; ?>">  
+                <a href="<?php echo $secondstep_url; ?>"> <h4> <?php echo Myclass::t('OGO82', '', 'og'); ?> 1 </h4> <span> <?php echo Myclass::t('OG059', '', 'og'); ?></span> </a>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 steps-cont <?php echo $act_class3; ?>">  
+                <a href="<?php echo $thirdstep_url; ?>"> <h4> <?php echo Myclass::t('OGO82', '', 'og'); ?>  2 </h4> <span> <?php echo Myclass::t('OG135'); ?></span> </a>
+            </div>
            
+          <?php 
+          }else{  ?> 
+             <h2> <?php echo Myclass::t('OGO81', '', 'og'); ?> </h2>           
             <?php  $this->renderPartial('_menu_steps', array());?>
+         <?php }?>   
+          
             
             <?php
             $form = $this->beginWidget('CActiveForm', array(

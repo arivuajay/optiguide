@@ -176,5 +176,9 @@ return array(
     
     'OGO137' => 'Subscription of a professional',
     'OGO138' => 'Professional Profile',
-    
+    'OGO139' => 'Payment Transation',
+    'OGO140' => 'Subscription infos',
+    'OGO141' => 'Subscription Type',
+    'OGO142' => 'Created on',
+    'OGO143' => 'No Transactions found.',
 );
