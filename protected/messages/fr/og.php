@@ -177,5 +177,11 @@ return array(
     'OGO141' => 'Type d\'abonnement',
     'OGO142' => 'Créé sur',
     'OGO143' => 'Aucune transaction trouvé.',
+    'OGO144' => 'Produits et services modifié avec succès!!!',
+    'OGO145' => 'Sélectionnez vos détaillants optiques',
+    'OGO146' => 'Choisissez détaillants',
+    
+    'OGO147' => 'Les détaillants optiques [ disponibles dans ce type ]', 
+    'OGO148' => 'Les détaillants optiques [ à associer avec le professionnel ]',
     
 );

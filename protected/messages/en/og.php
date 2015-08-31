@@ -181,4 +181,10 @@ return array(
     'OGO141' => 'Subscription Type',
     'OGO142' => 'Created on',
     'OGO143' => 'No Transactions found.',
+    'OGO144' => 'Products and services modified successfully!!!',
+    'OGO145' => 'Select your Optical Retailers',
+    'OGO146' => 'Choose Retailers',
+    
+    'OGO147' => 'Optical Retailers [ available in this type ]', 
+    'OGO148' => 'Optical Retailers [ to associate with the professional ]', 
 );

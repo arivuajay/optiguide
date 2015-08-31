@@ -45,7 +45,7 @@ class ProfessionalDirectoryController extends OGController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view' , 'update'),
+                'actions' => array('index', 'view' , 'update','mappingretailers'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -81,7 +81,19 @@ class ProfessionalDirectoryController extends OGController {
         ));
     }
     
+    public function actionMappingretailers()
+    {
+        $model = new RetailerDirectory;
+        
+        $this->render('mappingretailers' ,  array('model' => $model));
+        
+    } 
     
+    public function actionGetretailers()
+    {
+        
+    }        
+
      /**
      * Lists all models.
      */

@@ -1136,7 +1136,7 @@ class SuppliersDirectoryController extends OGController {
                 }
             }
 
-            Yii::app()->user->setFlash('success', 'Products and services modified successfully!!!');
+            Yii::app()->user->setFlash('success', Myclass::t('OGO144', '', 'og') );
             $this->redirect(array('updatemarques'));
         }
 
