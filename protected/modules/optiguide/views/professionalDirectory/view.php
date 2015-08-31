@@ -18,4 +18,29 @@
             <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/professionalDirectory'), array('class' => 'basic-btn')); ?>
         </div>
     </div>
+ <?php
+    if (!empty($results)) {?>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
+        <h2> <?php echo Myclass::t('OGO158', '', 'og');?> </h2> 
+        <div class="box" id="box1">
+            <div class="brands">    
+           
+                <ul>
+                    
+                        <?php foreach ($results as $info) { ?>
+                        <li>
+                            <?php
+                            $dispname = $info['COMPAGNIE'];
+                            echo CHtml::link($dispname, array('/optiguide/retailerDirectory/view', 'id' => $info['ID_RETAILER']), array('target'=>'_blank')) . ' ';   
+                            echo $info['NOM_VILLE'].",".$info['ABREVIATION_'.$this->lang].",".$info['NOM_PAYS_'.$this->lang];
+                            ?>
+                        </li>
+                        <?php } ?>                       
+                </ul>               
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>  
+     <?php } ?>  
+    
 </div>

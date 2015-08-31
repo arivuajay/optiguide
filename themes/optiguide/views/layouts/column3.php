@@ -40,23 +40,34 @@
         if(($module_controller == "professionalDirectory" || $module_controller == "retailerDirectory" || $module_controller == "suppliersDirectory") && $module_action=="update")
         {
             $activeclass1['class'] = 'active2';
-        }        
-        if($module_controller == "userDirectory" && $module_action=="changepassword")
+        } 
+        
+        if($module_controller == "suppliersDirectory")
         {
-            $activeclass2['class'] = 'active2';            
-        }    
-        if($module_controller == "suppliersDirectory" && ( $module_action=="updateproducts" || $module_action=="updatemarques"))
-        {
-            $activeclass3['class'] = 'active2';
+            if( $module_action=="updateproducts" || $module_action=="updatemarques")
+            {    
+                $activeclass2['class'] = 'active2';
+            }else if( $module_action=="transactions")
+            {
+                $activeclass3['class'] = 'active2';
+            }
         }
-        if($module_controller == "suppliersDirectory" && $module_action=="transactions")
+        
+        if($module_controller == "professionalDirectory")
         {
-            $activeclass4['class'] = 'active2';
+            if($module_action=="mappingretailers")
+            {    
+                $activeclass2['class'] = 'active2';
+            }else if( $module_action=="listretailers")
+            {
+                $activeclass3['class'] = 'active2';
+            }    
+        }  
+        
+         if($module_controller == "userDirectory" && $module_action=="changepassword")
+        {
+            $activeclass4['class'] = 'active2';            
         }
-        if($module_controller == "professionalDirectory" && $module_action=="mappingretailers")
-        {
-           $activeclass3['class'] = 'active2';
-        }   
         
         ?>
         <div class="pro-login">
@@ -70,16 +81,17 @@
                 <?php
                 if(Yii::app()->user->role=="Fournisseurs")
                 {?>
-                    <li> <?php echo CHtml::link(Myclass::t('OG059', '', 'og'), array('/optiguide/suppliersDirectory/updateproducts'), $activeclass3);?> </li> 
-                    <li> <?php echo CHtml::link(Myclass::t('OGO139', '', 'og'), array('/optiguide/suppliersDirectory/transactions'), $activeclass4);?> </li> 
+                    <li> <?php echo CHtml::link(Myclass::t('OG059', '', 'og'), array('/optiguide/suppliersDirectory/updateproducts'), $activeclass2);?> </li> 
+                    <li> <?php echo CHtml::link(Myclass::t('OGO139', '', 'og'), array('/optiguide/suppliersDirectory/transactions'), $activeclass3);?> </li> 
                 <?php                 
                 }                
                 if(Yii::app()->user->role=="Professionnels")
                 {?>
-                    <li> <?php echo CHtml::link(Myclass::t('OGO146', '', 'og'), array('/optiguide/professionalDirectory/mappingretailers'), $activeclass3);?> </li>  
+                    <li> <?php echo CHtml::link(Myclass::t('OGO146', '', 'og'), array('/optiguide/professionalDirectory/mappingretailers'), $activeclass2);?> </li>  
+                     <li> <?php echo CHtml::link(Myclass::t('OGO149', '', 'og'), array('/optiguide/professionalDirectory/listretailers'), $activeclass3);?> </li> 
                 <?php                 
                 } ?>    
-                <li> <?php echo CHtml::link(Myclass::t('OGO112', '', 'og'), array('/optiguide/userDirectory/changepassword'), $activeclass2);?> </li>
+                <li> <?php echo CHtml::link(Myclass::t('OGO112', '', 'og'), array('/optiguide/userDirectory/changepassword'), $activeclass4);?> </li>
                 <li> <?php echo CHtml::link("<i class='fa fa-sign-out'></i> " . Myclass::t('OG025', '', 'og'), array('/optiguide/default/logout')) ?></li>
             </ul>
         </div>

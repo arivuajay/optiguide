@@ -185,6 +185,17 @@ return array(
     'OGO145' => 'Select your Optical Retailers',
     'OGO146' => 'Choose Retailers',
     
-    'OGO147' => 'Optical Retailers [ available in this type ]', 
+    'OGO147' => 'Available Optical Retailers', 
     'OGO148' => 'Optical Retailers [ to associate with the professional ]', 
+    'OGO149' => "Your Retailers",
+    'OGO150' => 'Retailers assigned successfully for you.',
+    'OGO151' => 'Your retailers deleted successfully.',
+    'OGO152' => 'Your corresponding retailers list',
+    'OGO153' => "Are you sure you want to delete these retailer",
+    'OGO154' => 'Please select a retailer(s) to delete.',
+    'OGO155' => 'No retailers available',
+    'OGO156' => 'Retailers Info',
+    'OGO157' => 'Corresponding professionals list',
+    'OGO158' => 'Corresponding retailers list.',
+    'OGO159' => 'Please choose Optical Retailers.',
 );

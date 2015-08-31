@@ -181,7 +181,18 @@ return array(
     'OGO145' => 'Sélectionnez vos détaillants optiques',
     'OGO146' => 'Choisissez détaillants',
     
-    'OGO147' => 'Les détaillants optiques [ disponibles dans ce type ]', 
+    'OGO147' => 'Les détaillants optique disponible', 
     'OGO148' => 'Les détaillants optiques [ à associer avec le professionnel ]',
+    'OGO149' => "Vos revendeurs",
+    'OGO150' => 'Les détaillants affectés succès pour vous.',
+    'OGO151' => 'Vos revendeurs supprimés avec succès.',
+    'OGO152' => 'Votre liste de détaillants correspondante',
+    'OGO153' => "Etes-vous sûr que vous voulez supprimer ces détaillants",
+    'OGO154' => 'S\'il vous plaît sélectionner un détaillant (s ) à supprimer.',
+    'OGO155' => 'Aucun détaillants disponibles',
+    'OGO156' => 'Infos détaillants',
+    'OGO157' => 'Liste des professionnels correspondants',
+    'OGO158' => 'Liste des détaillants correspondantes.',
+    'OGO169' => 'S\'il vous plaît choisir détaillants optiques.',
     
 );

@@ -8,7 +8,7 @@ class RetailerDirectoryController extends OGController {
     
     public $lang;
     
-    public function __construct($id, $module = null) {     
+    public function __construct($id, $module = null) {    
         
          if(Yii::app()->session['language'])
         {
@@ -46,7 +46,7 @@ class RetailerDirectoryController extends OGController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('update'),
+                'actions' => array('update','index','view'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -69,6 +69,28 @@ class RetailerDirectoryController extends OGController {
         $searchModel = new  RetailerDirectory();       
         $searchModel->unsetAttributes();
         
+        $retail_id = $id;
+        $mappingresult = MappingRetailers::model()->findAll("ID_RETAILER=" . $retail_id);
+
+        if (!empty($mappingresult)) 
+        {
+            foreach ($mappingresult as $info2) 
+            {
+                $prof_arr[] = $info2->ID_SPECIALISTE;
+            }
+            $imp_prof = (count($prof_arr) > 1) ? implode(',', $prof_arr) : $prof_arr[0];
+            $prof_query = " and rs.ID_SPECIALISTE IN (" . $imp_prof . ") ";
+
+            // Get all records list  with limit
+            $results = Yii::app()->db->createCommand() //this query contains all the data
+                ->select('ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
+                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
+                ->where("rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS " .$prof_query)
+                ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
+                ->limit(LISTPERPAGE, $limit) // the trick is here!
+                ->queryAll();
+        }
+        
          // Get all records list  with limit
         $retail_query = Yii::app()->db->createCommand() //this query contains all the data
         ->select('rs.* ,  NOM_TYPE_'.$this->lang.' ,  NOM_VILLE ,  NOM_REGION_'.$this->lang.' , ABREVIATION_'.$this->lang.' ,  NOM_PAYS_'.$this->lang.'')
@@ -79,6 +101,7 @@ class RetailerDirectoryController extends OGController {
         $this->render('view', array(
             'model' => $retail_query,
             'searchModel' => $searchModel,
+            'results' => $results
         ));
     }
     
@@ -87,7 +110,7 @@ class RetailerDirectoryController extends OGController {
      * Lists all models.
      */
     public function actionIndex() {
-
+      
         $searchModel = new RetailerDirectory();                 
     
         $searchModel->country = isset($searchModel->country)?$searchModel->country: DEFAULTPAYS;

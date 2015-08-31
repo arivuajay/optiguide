@@ -175,17 +175,6 @@ class ProfessionalDirectory extends CActiveRecord {
         ));
     }
     
-    public static function getretailers()
-    {        
-        $typeid = $_POST['typeid'];
-        $criteria = new CDbCriteria;
-        $criteria->addInCondition("ID_RETAILER_TYPE", $typeid);
-        $criteria->order = "COMPAGNIE ASC";
-        $data_retailers = RetailerDirectory::model()->findAll($criteria);
-
-        return $data_retailers;
-    }        
-
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!

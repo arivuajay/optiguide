@@ -186,7 +186,7 @@ and open the template in the editor.
 }
 
 // Supplier form - selected product display
-#bckrnd
+.bckrnd
 {
     background-color: #FFF !important;    
 }
