@@ -26,7 +26,7 @@ $cities = Myclass::getallcities($model->region);
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subscribe-btncont"> 
         <div class="inner-container"> 
-            <h2> <?php echo $model->isNewRecord ?  Myclass::t('OGO81'):Myclass::t('OG034','','og');?> </h2>
+            <h2> <?php echo $model->isNewRecord ?  Myclass::t('OGO81','','og'):Myclass::t('OG034','','og');?> </h2>
 
             <?php  
             if($model->isNewRecord)

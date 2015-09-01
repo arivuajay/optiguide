@@ -68,7 +68,8 @@ class ProfessionalDirectoryController extends OGController {
         $searchModel->unsetAttributes();
         $results    = array();
         
-        $profil_id = Yii::app()->user->relationid;
+        $profil_id = $id;
+       
         $mappingresult = MappingRetailers::model()->findAll("ID_SPECIALISTE=" . $profil_id);
 
         if (!empty($mappingresult)) 

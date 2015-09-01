@@ -8,7 +8,16 @@
      $this->renderPartial('_search_cat', array('searchModel' => $searchModel));
  }    
  $lang =  Yii::app()->session['language'];
-?>
+ 
+ if($model['expirydate']!='')
+ {    
+   $expdate  = strtotime($model['expirydate']);
+   $cur_date = strtotime("now");  
+   $disp = ($expdate > $cur_date)?1:0;   
+ }else {
+   $disp = 0;     
+ }  
+ ?>
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
         <div class="inner-container eventslist-cont">            
@@ -40,6 +49,7 @@
                             <?php echo $model['NOM_PAYS_'.$this->lang]; ?><br/> 
                             <?php echo $model['CODE_POSTAL']; ?>
                         </p>
+                        <?php if($disp==1){ ?>
                         <p>
                             <?php echo Myclass::t('OG041', '', 'og');?> : <?php echo $model['TELEPHONE']; ?><br>                       
                             <?php if($model['TELECOPIEUR']!='')    { echo   Myclass::t('OG042', '', 'og').' : '.$model['TELECOPIEUR']; } ?><br>                            
@@ -53,10 +63,11 @@
                             <?php if($model['SITE_WEB']!=''){
                             echo Myclass::t('APP76');?> : <a href="<?php echo $model['SITE_WEB']; ?>" target="_blank"><?php echo $model['SITE_WEB']; ?></a>
                             <?php } ?>  
-                        </p>                                                 
+                        </p>
+                        <?php }?>
                     </div>
                 </div>
-
+                 <?php if($disp==1){ ?>
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">  
                     <div class="search-list company-infom">
                         <h2><?php echo Myclass::t('OG072', '', 'og');?> </h2>
@@ -97,7 +108,7 @@
                   <?php if($model['REGIONS_'.$lang]!='') {echo "<p><b>".Myclass::t('OG070','','og')."</b> <br/>".$model['REGIONS_'.$lang]."</p>"; }?>
                     </div>
                 </div>
-
+                
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
                     <h2> <?php echo Myclass::t('OG073', '', 'og');?> </h2> 
                     <div class="box" id="box1">
@@ -134,7 +145,8 @@
                             <p>&nbsp;</p>
                         </div>
                     </div>
-                </div>                 
+                </div>   
+                <?php }?>
             </div>
         </div>
     </div>
