@@ -193,6 +193,11 @@ return array(
     'OGO156' => 'Infos détaillants',
     'OGO157' => 'Liste des professionnels correspondants',
     'OGO158' => 'Liste des détaillants correspondantes.',
-    'OGO169' => 'S\'il vous plaît choisir détaillants optiques.',
+    'OGO159' => 'S\'il vous plaît choisir détaillants optiques.',
     
+    'OGO160' => 'Envoyer détaillants demandent',
+    'OGO161' => 'Nom du détaillant',
+    'OGO162' => 'Détaillant Email',
+    'OGO163' => 'Ton message',
+    'OGO164' => 'Votre demande envoyé avec succès au détaillant .',
 );

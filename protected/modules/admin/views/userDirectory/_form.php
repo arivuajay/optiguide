@@ -147,6 +147,13 @@
                         <?php echo $form->radioButtonList($model, 'MUST_VALIDATE', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?>                      
                     </div>
                 </div>
+                
+                 <div class="form-group">
+                    <?php echo $form->labelEx($model, 'status', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">                       
+                        <?php echo $form->radioButtonList($model, 'status', array('1' => 'Activer', '0' => 'Désactiver'), array('separator' => ' ')); ?>                      
+                    </div>
+                </div>
 
                 <!--                <div class="form-group">
                 <?php //echo $form->labelEx($model, 'NOTE', array('class' => 'col-sm-2 control-label'));  ?>

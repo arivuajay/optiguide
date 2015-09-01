@@ -794,6 +794,8 @@ class SuppliersDirectoryController extends OGController {
                     $model->attributes  = $sess_attr_m;
                     $model->ID_CLIENT   = $sess_attr_m['ID_CLIENT'];
                     $model->iId_fichier = $ficherid;
+                    $model->expirydate  = date("Y-m-d", strtotime('+1 year'));
+                    $model->subscription_type = $pdetails['subscription_type'];
                     $model->save(false);
 
                     $umodel->attributes  = $sess_attr_u;
@@ -854,7 +856,7 @@ class SuppliersDirectoryController extends OGController {
                     
                     /* Send mail to admin for confirmation */
                     $mail          = new Sendmail();
-                    $suppliers_url = ADMIN_URL.'/admin/suppliersDirectory/update/id/'.$umodel->ID_RELATION;
+                    $suppliers_url = ADMIN_URL.'/admin/userDirectory/update/id/'.$umodel->ID_UTILISATEUR;
                     $invoice_url   = ADMIN_URL.'/admin/paymentTransaction/view/id/'.$ptmodel->id;
                     
                     $enc_url          = Myclass::refencryption($suppliers_url);              

@@ -44,7 +44,7 @@ class ProfessionalDirectoryController extends OGController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view', 'update', 'mappingretailers', 'getretailers','listretailers'),
+                'actions' => array('index', 'view', 'update', 'mappingretailers', 'getretailers','listretailers','retailersrequest'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -83,8 +83,8 @@ class ProfessionalDirectoryController extends OGController {
             // Get retailers records for this professional
             $results = Yii::app()->db->createCommand() //this query contains all the data
                     ->select('ID_RETAILER , COMPAGNIE , NOM_TYPE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                    ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
-                    ->where("rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS " . $ret_query)
+                    ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                    ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' " . $ret_query)
                     ->order('COMPAGNIE ASC')
                     ->queryAll();
         }
@@ -102,6 +102,45 @@ class ProfessionalDirectoryController extends OGController {
             'results' => $results,
         ));
     }
+    
+    public function actionRetailersrequest()
+    {
+        $baseurl = Yii::app()->request->getBaseUrl(true); 
+        $model   = new RetailersRequest();
+        // Uncomment the following line if AJAX validation is needed
+        $this->performAjaxValidation(array($model));
+      
+        // Mapping the user to the current professional.
+        if (isset($_POST['RetailersRequest'])) {
+            
+            $encryptval = Yii::app()->user->encryptval;
+             
+            $retailername   = $_POST['RetailersRequest']['retailername'];
+            $retaileremail  = $_POST['RetailersRequest']['retaileremail'];
+            $message        = $_POST['RetailersRequest']['message'];
+            
+            
+            /* Send mail to admin for confirmation */
+            $mail         = new Sendmail();
+            $nextstep_url = $baseurl . '/optiguide/retailerDirectory/create/profid/' .$encryptval;           
+            $subject      = Yii::app()->user->name." professional user send request to join in ". SITENAME;
+            $trans_array  = array(
+                "{SITENAME}" => SITENAME,
+                "{NAME}"     => $retailername,
+                "{MESSAGE}"  => $message,
+                "{NEXTSTEPURL}" => $nextstep_url,
+            );
+            $message = $mail->getMessage('retailerrequest', $trans_array);
+            $mail->send($retaileremail, $subject, $message);
+          
+          
+            Yii::app()->user->setFlash('success', Myclass::t('OGO164', '', 'og'));
+            $this->redirect(array('retailersrequest'));
+            
+        }
+
+        $this->render('retailersrequest', array('model' => $model));
+    }        
 
     public function actionMappingretailers() {
         
@@ -144,8 +183,8 @@ class ProfessionalDirectoryController extends OGController {
         // Get all records list  with limit
         $results = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('ID_RETAILER , COMPAGNIE , NOM_TYPE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
-                ->where("rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS " . $ret_query)
+                ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' " . $ret_query)
                 ->order('COMPAGNIE ASC')
                 ->queryAll();
 
@@ -183,8 +222,8 @@ class ProfessionalDirectoryController extends OGController {
             // Get all records list  with limit
             $results = Yii::app()->db->createCommand() //this query contains all the data
                     ->select('ID_RETAILER , COMPAGNIE , NOM_TYPE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                    ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
-                    ->where("rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS " . $ret_query)
+                    ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp' ,'repertoire_utilisateurs as ru'))
+                    ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' " . $ret_query)
                     ->order('COMPAGNIE ASC')
                     ->queryAll();
         }
@@ -250,8 +289,8 @@ class ProfessionalDirectoryController extends OGController {
         // Get all records list  with limit
         $prof_query = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
-                ->where("rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry)
+                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry)
                 ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
                 ->limit(LISTPERPAGE, $limit) // the trick is here!
                 ->queryAll();
@@ -259,8 +298,8 @@ class ProfessionalDirectoryController extends OGController {
         // Get total counts of records    
         $item_count = Yii::app()->db->createCommand() // this query get the total number of items,
                 ->select('count(*) as count')
-                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
-                ->where("rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry)
+                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry)
                 ->queryScalar(); // do not LIMIT it, this must count all items!
         // the pagination itself      
         $pages = new CPagination($item_count);
@@ -319,7 +358,7 @@ class ProfessionalDirectoryController extends OGController {
 
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
-                $professional_url = ADMIN_URL . '/admin/professionalDirectory/update/id/' . $umodel->ID_RELATION;
+                $professional_url = ADMIN_URL.'/admin/userDirectory/update/id/'.$umodel->ID_UTILISATEUR;
                 $enc_url = Myclass::refencryption($professional_url);
                 $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
                 $subject = SITENAME . "- New professional registration notification - " . $model->NOM . " " . $model->PRENOM;

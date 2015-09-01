@@ -84,8 +84,8 @@ class RetailerDirectoryController extends OGController {
             // Get all records list  with limit
             $results = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
-                ->where("rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS " .$prof_query)
+                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp' ,'repertoire_utilisateurs as ru'))
+                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " .$prof_query)
                 ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
                 ->limit(LISTPERPAGE, $limit) // the trick is here!
                 ->queryAll();
@@ -188,8 +188,8 @@ class RetailerDirectoryController extends OGController {
        // Get all records list  with limit
         $retail_query = Yii::app()->db->createCommand() //this query contains all the data
         ->select('ID_RETAILER , COMPAGNIE , NOM_TYPE_'.$this->lang.' ,  NOM_VILLE ,  NOM_REGION_'.$this->lang.' , ABREVIATION_'.$this->lang.' ,  NOM_PAYS_'.$this->lang.'')
-        ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp'))
-        ->where("rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry)
+        ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry)
         ->order('COMPAGNIE')
         ->limit( LISTPERPAGE , $limit) // the trick is here!
         ->queryAll();
@@ -197,8 +197,8 @@ class RetailerDirectoryController extends OGController {
        // Get total counts of records    
         $item_count = Yii::app()->db->createCommand() // this query get the total number of items,
         ->select('count(*) as count')
-        ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp'))
-        ->where("rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry)
+        ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry)
         ->queryScalar(); // do not LIMIT it, this must count all items!
 
         // the pagination itself      
@@ -225,7 +225,7 @@ class RetailerDirectoryController extends OGController {
         if (!Yii::app()->user->isGuest)
         {
             $this->redirect(array('index')); 
-        }   
+        } 
         
         
         $model = new RetailerDirectory;
@@ -254,7 +254,7 @@ class RetailerDirectoryController extends OGController {
                 
                  /* Send mail to admin for confirmation */
                 $mail    = new Sendmail();
-                $retailer_url = ADMIN_URL.'/admin/retailerDirectory/update/id/'.$umodel->ID_RELATION;
+                $retailer_url = ADMIN_URL.'/admin/userDirectory/update/id/'.$umodel->ID_UTILISATEUR;
                 $enc_url      = Myclass::refencryption($retailer_url);              
                 $nextstep_url = ADMIN_URL.'admin/default/login/str/'.$enc_url;
                 $subject      =  SITENAME."- New optical retailer registration notification - ".$model->COMPAGNIE;
@@ -265,6 +265,22 @@ class RetailerDirectoryController extends OGController {
                 );
                 $message = $mail->getMessage('registration', $trans_array);
                 $mail->send(ADMIN_EMAIL, $subject, $message);
+                
+                // mapping the retailer to the reference professional
+                $profid = Yii::app()->request->getParam('profid');
+                if($profid!='')
+                {                        
+                    $checkprofessionalexist = UserDirectory::model()->find("sGuid='".$profid."'");                    
+                    if(!empty($checkprofessionalexist))
+                    {    
+                        $professional_id = $checkprofessionalexist->ID_RELATION;
+                        $mr_model = new MappingRetailers();
+                        $mr_model->ID_SPECIALISTE = $professional_id;
+                        $mr_model->ID_RETAILER    = $model->ID_RETAILER;
+                        $mr_model->affliate       = 1;
+                        $mr_model->save();
+                    }    
+                }    
 
                 Yii::app()->user->setFlash('success', Myclass::t('OG044', '', 'og'));
                 $this->redirect(array('create'));

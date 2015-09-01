@@ -198,4 +198,10 @@ return array(
     'OGO157' => 'Corresponding professionals list',
     'OGO158' => 'Corresponding retailers list.',
     'OGO159' => 'Please choose Optical Retailers.',
+    
+    'OGO160' => 'Send request to retailer',
+    'OGO161' => 'Retailer Name',
+    'OGO162' => 'Retailer Email',
+    'OGO163' => 'Your message',
+    'OGO164' => 'Your request sent successfully to the retailer.',
 );

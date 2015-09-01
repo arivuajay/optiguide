@@ -190,3 +190,7 @@ and open the template in the editor.
 {
     background-color: #FFF !important;    
 }
+
+.active2 {   
+    padding: 2px 1px!important;
+}

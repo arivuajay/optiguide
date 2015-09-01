@@ -21,15 +21,16 @@ class OgIdentity extends CUserIdentity {
             $this->errorCode = self::ERROR_USERNAME_INVALID;     // Error Code : 1
         } else if ($user->PWD !== $this->password) {
             $this->errorCode = self::ERROR_PASSWORD_INVALID;   // Error Code : 1
-        } else if ($user->MUST_VALIDATE == 0) {
+        } else if ($user->status == 0) {
             //Add new condition to finding the status of user.
             $this->errorCode = self::ERROR_USERNAME_NOT_ACTIVE;
         } else {
             $this->_id = $user->ID_UTILISATEUR;
             $this->setState('name', $user->NOM_UTILISATEUR);
             $this->setState('role', $user->NOM_TABLE);
-            $this->setState('userstatus', $user->MUST_VALIDATE);
+            $this->setState('userstatus', $user->status);
             $this->setState('relationid', $user->ID_RELATION);
+            $this->setState('encryptval', $user->sGuid);
             $this->errorCode = self::ERROR_NONE;
         }
         return !$this->errorCode;
