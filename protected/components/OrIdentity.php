@@ -20,7 +20,7 @@ class OrIdentity extends CUserIdentity {
         $user = RepCredentials::model()->find('rep_username = :U', array(':U' => $this->username));
         if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID; 
-        } elseif ($user->rep_password !== Myclass::encrypt($this->password)) {
+        } elseif ($user->rep_password !== $this->password) {
             $this->errorCode = self::ERROR_PASSWORD_INVALID; 
         } elseif ($user->rep_status == 0) {
             $this->errorCode = self::ERROR_ACCOUNT_INACTIVE; 

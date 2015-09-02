@@ -44,6 +44,7 @@ class RepCredentials extends CActiveRecord {
         return array(
             array('subscription_type_id', 'required', 'on' => 'step1', 'message' => 'Select the subscription'),
             array('rep_username, rep_password, no_of_accounts_purchase', 'required', 'on' => 'step2'),
+            array('rep_username, rep_password', 'required', 'on' => 'update'),
             array('rep_username', 'unique'),
             array('no_of_accounts_purchase', 'numerical', 'integerOnly' => true),
             array('rep_parent_id', 'numerical', 'integerOnly' => true),
@@ -63,7 +64,7 @@ class RepCredentials extends CActiveRecord {
     //matching the old password with your existing password.
     public function findPasswords($attribute, $params) {
         $user = $this->model()->findByPk(Yii::app()->user->id);
-        if ($user->rep_password != Myclass::encrypt($this->old_password))
+        if ($user->rep_password != $this->old_password)
             $this->addError($attribute, 'Old password is incorrect.');
     }
 

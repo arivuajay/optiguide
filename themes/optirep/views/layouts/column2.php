@@ -15,6 +15,21 @@
                     </div>
                 <?php } ?>
             <?php endif ?>
+            
+            <?php
+            $activeclass1  = array();
+             $activeclass2 = array();
+            $module_controller = Yii::app()->controller->id;
+            $module_action     = Yii::app()->controller->action->id;
+
+            if ($module_controller == "repCredential" && $module_action == "editprofile") {
+                $activeclass1['class'] = 'active2';
+            }
+            
+             if ($module_controller == "repCredential" && $module_action == "changePassword") {
+                $activeclass2['class'] = 'active2';
+            }
+            ?>
             <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
                 <div class="user-left cate-bg"> 
                     <div class="user-deatils"> 
@@ -23,7 +38,8 @@
                         <p> <i class="fa fa-sign-out"></i> <?php echo CHtml::link('Logout', '/optirep/default/logout') ?></p>
                     </div>
                     <ul>
-                        <li><a href="#" class="active2">  Change Password </a></li>
+                        <li><?php echo CHtml::link('Edit Profile', array('/optirep/repCredential/editprofile'),$activeclass1); ?></li>
+                        <li><?php echo CHtml::link('Change Password', array('/optirep/repCredential/changePassword'),$activeclass2); ?></li>
                     </ul>
                 </div> 
             </div>

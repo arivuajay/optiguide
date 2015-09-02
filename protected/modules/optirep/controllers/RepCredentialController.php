@@ -24,7 +24,7 @@ class RepCredentialController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('changePassword'),
+                'actions' => array('changePassword','editProfile'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -117,7 +117,8 @@ class RepCredentialController extends ORController {
             $registration = Yii::app()->session['registration'];
             $model = new RepCredentials;
             $model->rep_username = $registration['step2']['RepCredentials']['rep_username'];
-            $model->rep_password = Myclass::encrypt($registration['step2']['RepCredentials']['rep_password']);
+           // $model->rep_password = Myclass::encrypt($registration['step2']['RepCredentials']['rep_password']);
+             $model->rep_password = $registration['step2']['RepCredentials']['rep_password'];
             if ($registration['step2']['RepCredentials']['no_of_accounts_purchase'] > 1) {
                 $model->rep_role = RepCredentials::ROLE_ADMIN;
             } else {
@@ -160,6 +161,36 @@ class RepCredentialController extends ORController {
         }
     }
     
+    public function actionEditProfile(){
+             
+         $model = RepCredentials::model()->findByAttributes(array('rep_credential_id' => Yii::app()->user->id));
+         $model->scenario ='update';
+         
+         $profile = RepCredentialProfiles::model()->findByAttributes(array('rep_credential_id' => Yii::app()->user->id));
+         $profile->scenario = 'update';
+      
+         if (isset($_POST['btnSubmit'])) 
+        {
+            $model->attributes = $_POST['RepCredentials'];
+            $profile->attributes = $_POST['RepCredentialProfiles'];
+            $valid = $model->validate();
+            $valid = $profile->validate() && $valid;
+            
+            if ($valid) 
+            {
+                $model->save(false);
+                $profile->save(false);
+                
+                 Yii::app()->user->setFlash('success', "Profile updated successfully!!!"); 
+                 $this->redirect(array('editprofile'));
+            }
+             
+         }
+        
+        $this->render('editprofile', array('model' => $model ,'profile' => $profile,));
+        
+    }
+    
     public function actionChangePassword(){
         $model = new RepCredentials;
         $model = RepCredentials::model()->findByAttributes(array('rep_credential_id' => Yii::app()->user->id));
@@ -170,7 +201,7 @@ class RepCredentialController extends ORController {
             $valid = $model->validate();
             
             if($valid){
-                $model->rep_password = Myclass::encrypt($model->new_password);
+                $model->rep_password = $model->new_password;
                 if($model->save()){
                     Yii::app()->user->setFlash('success', "successfully changed password"); 
                     $this->redirect(array('changepassword'));

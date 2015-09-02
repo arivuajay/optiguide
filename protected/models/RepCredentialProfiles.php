@@ -33,10 +33,12 @@ class RepCredentialProfiles extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('rep_profile_firstname, rep_profile_email', 'required', 'on' => 'step2'),
+            array('rep_profile_firstname, rep_profile_email', 'required', 'on' => 'update'),
             array('rep_profile_email', 'email'),
             array('rep_credential_id', 'numerical', 'integerOnly' => true),
             array('rep_profile_firstname, rep_profile_email, rep_profile_phone', 'length', 'max' => 255),
             array('rep_profile_lastname', 'length', 'max' => 100),
+            array('rep_profile_phone','phoneNumber'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('rep_profile_id, rep_credential_id, rep_profile_firstname, rep_profile_lastname, rep_profile_email, rep_profile_phone, created_at, modified_at', 'safe', 'on' => 'search'),
@@ -52,6 +54,19 @@ class RepCredentialProfiles extends CActiveRecord {
         return array(
             'repCredential' => array(self::BELONGS_TO, 'RepCredentials', 'rep_credential_id'),
         );
+    }
+    
+    /** 
+    * check the format of the phone number entered
+    * @param string $attribute the name of the attribute to be validated
+    * @param array $params options specified in the validation rule
+    */
+    public function phoneNumber($attribute,$params='')
+    {
+      if($this->$attribute!='' && preg_match("/[A-Za-z]+/",$this->$attribute)==1)
+      {            
+              $this->addError($attribute,'Invalid phone number.' );
+      }        
     }
 
     /**
