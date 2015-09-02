@@ -1,0 +1,17 @@
+/*
+  Hide radio button (the round disc)
+  we will use just the label to create pushbutton effect
+*/
+input.subscription_types {
+    display:none; 
+}
+
+.subscription-cont.selected{
+    /*Opacity*/
+    zoom: 1;
+    opacity: 0.45;
+}
+
+.active-stpe h4{
+    color: #FFFFFF;
+}
