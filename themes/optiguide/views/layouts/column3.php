@@ -93,12 +93,17 @@
             }
             ?> 
             <ul>
+                <?php
+                if (Yii::app()->user->role != "Fournisseurs") {
+                    ?>
                 <li> <?php echo CHtml::link(Myclass::t('OG033', '', 'og'), array($profileurl), $activeclass1); ?> </li>
+                    <?php
+                }?>
                 <?php
                 if (Yii::app()->user->role == "Fournisseurs") {
                     ?>
-                    <li> <?php echo CHtml::link(Myclass::t('OG059', '', 'og'), array('/optiguide/suppliersDirectory/updateproducts'), $activeclass2); ?> </li> 
-                    <li> <?php echo CHtml::link(Myclass::t('OGO139', '', 'og'), array('/optiguide/suppliersDirectory/transactions'), $activeclass3); ?> </li> 
+<!--                    <li> <?php //echo CHtml::link(Myclass::t('OG059', '', 'og'), array('/optiguide/suppliersDirectory/updateproducts'), $activeclass2); ?> </li> 
+                    <li> <?php //echo CHtml::link(Myclass::t('OGO139', '', 'og'), array('/optiguide/suppliersDirectory/transactions'), $activeclass3); ?> </li> -->
                     <?php
                 }
                 if (Yii::app()->user->role == "Professionnels") {
