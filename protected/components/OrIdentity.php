@@ -9,24 +9,27 @@ class OrIdentity extends CUserIdentity {
 
     private $_id;
 
-    const ERROR_ACCOUNT_NOT_ACTIVE = 3;
-    const ERROR_ACCOUNT_NOT_SUBSCRIBED = 4;
-    const ERROR_ACCOUNT_EXPIRED = 5;
+    const ERROR_ACCOUNT_INACTIVE = 3;
+    const ERROR_ACCOUNT_EXPIRED = 4;
 
     /**
      * Authenticates a user.
      * @return boolean whether authentication succeeds.
      */
     public function authenticate() {
-        $user = SalesRep::model()->find('rep_username = :U', array(':U' => $this->username));
+        $user = RepCredentials::model()->find('rep_username = :U', array(':U' => $this->username));
         if ($user === null) {
-            $this->errorCode = self::ERROR_USERNAME_INVALID;     // Error Code : 1
-        } else if ($user->rep_password !== Myclass::encrypt($this->password)) {
-            $this->errorCode = self::ERROR_PASSWORD_INVALID;   // Error Code : 1
+            $this->errorCode = self::ERROR_USERNAME_INVALID; 
+        } elseif ($user->rep_password !== Myclass::encrypt($this->password)) {
+            $this->errorCode = self::ERROR_PASSWORD_INVALID; 
+        } elseif ($user->rep_status == 0) {
+            $this->errorCode = self::ERROR_ACCOUNT_INACTIVE; 
+        } elseif ($user->rep_role == RepCredentials::ROLE_SINGLE && $user->rep_expiry_date < date("Y-m-d")) {
+            $this->errorCode = self::ERROR_ACCOUNT_EXPIRED; 
         } else {
-            $this->_id = $user->rep_id;
-            $this->setState('role', $user->rep_role);
-            $this->setState('username', $user->rep_username);
+            $this->_id = $user->rep_credential_id;
+            $this->setState('rep_role', $user->rep_role);
+            $this->setState('rep_username', $user->rep_username);
             $this->errorCode = self::ERROR_NONE;
         }
         return !$this->errorCode;
