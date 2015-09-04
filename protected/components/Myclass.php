@@ -191,7 +191,6 @@ class Myclass extends CController {
             $current_moduleid = 2;
         } else if ($module_controller == "suppliersDirectory") {
             $sectionid = isset($_GET['SuppliersDirectory']['ID_SECTION']) ? $_GET['SuppliersDirectory']['ID_SECTION'] : '';
-
             if ($module_action == "category") {
                 $current_moduleid = 8;
             } else {
@@ -205,7 +204,6 @@ class Myclass extends CController {
             $current_moduleid = 6;
         } else if ($module_controller == "marqueDirectory") {
             $sectionid = isset($_GET['MarqueDirectory']['ID_SECTION']) ? $_GET['MarqueDirectory']['ID_SECTION'] : '';
-
             $current_moduleid = 7;
         } else {
             $current_moduleid = 0;
@@ -252,7 +250,7 @@ class Myclass extends CController {
         if ($current_moduleid > 0) {
             $criteria->addCondition("adm.ID_MODULE = " . $current_moduleid);
             $criteria->addCondition("AFFICHER_ACCUEIL = 0");
-            $criteria->addCondition("ZONE_AFFICHAGE = 2");
+           // $criteria->addCondition("ZONE_AFFICHAGE = 2");
             $criteria->addCondition("PRIORITE = 0");
 
             if ($sectionid != '' && is_numeric($sectionid)) {
@@ -260,13 +258,14 @@ class Myclass extends CController {
             }
         } else {
             $criteria->addCondition("AFFICHER_ACCUEIL = 1");
-            $criteria->addCondition("ZONE_AFFICHAGE = 1");
+           // $criteria->addCondition("ZONE_AFFICHAGE = 1");
             $criteria->addCondition("PRIORITE = 0");
         }
 
         $criteria->order = "RAND()";
         $criteria->limit = 1;
 
+        // Merge other tables for banner image and modules , category check.
         if ($current_moduleid > 0) {
             $with_array["AdsLInkModule"] = array('alias' => 'adm', 'together' => true, 'select' => false);
         }
@@ -289,7 +288,7 @@ class Myclass extends CController {
             $criteria->select = "LIEN_URL,ID_PUBLICITE,TITRE";
             $criteria->addCondition("LANGUE = '" . $lang . "'");
             $criteria->addCondition("AFFICHER_ACCUEIL = 1");
-            $criteria->addCondition("ZONE_AFFICHAGE = 2");
+          //  $criteria->addCondition("ZONE_AFFICHAGE = 2");
             $criteria->addCondition("PRIORITE = 0");
             if ($sectionid != '' && is_numeric($sectionid)) {
                 $criteria->addCondition("adc.ID_SECTION = " . $sectionid);
@@ -327,7 +326,7 @@ class Myclass extends CController {
             // home section
             $criteria->addCondition("AFFICHER_ACCUEIL = 1");
             //public
-            $criteria->addCondition("ZONE_AFFICHAGE = 1");
+           // $criteria->addCondition("ZONE_AFFICHAGE = 1");
             // date between
             $criteria->addCondition("PRIORITE = 0");
             $criteria->addCondition("ID_POSITION = " . $positionid);

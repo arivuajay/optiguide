@@ -29,7 +29,10 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         <?php
          $gettypes =  ProfessionalType::model()->findAll(array('group'=>'t.TYPE_SPECIALISTE_FR'));
          
-        $gridColumns = array(      
+        $gridColumns = array(  
+                array('header' => 'SN.',
+                  'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
+                ), 
                 'NOM',            
 		'PRENOM',		
                  array(
@@ -48,10 +51,10 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                    },
                ),
                 array(
-                'header' => 'actes',
+                'header' => 'Actes',
                 'class' => 'booster.widgets.TbButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                'template' => '{update}{delete}',
+                'template' => '{update}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{delete}',
                 )
         );
 
@@ -61,7 +64,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         'ajaxUrl' => $this->createUrl('professionalDirectory/index'),
         'dataProvider' => $model->search(),
         'responsiveTable' => true,
-        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Gestion des professionnels</h3></div><div class="panel-body">{items}{pager}</div></div>',
+        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Gestion des professionnels</h3></div><div class="panel-body">{items}{pager}<div class="pull-right">{summary}</div></div></div>',
         'columns' => $gridColumns
         )
         );

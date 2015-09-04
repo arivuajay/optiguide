@@ -36,6 +36,9 @@ $btn_title = 'Ajouter une catégorie d\'association';
 //                'checkBoxHtmlOptions' => array('class' => 'catgry simple'),
 //                'headerTemplate' => '<input type="checkbox" id="selectedIds_all" name="selectedIds_all" value="1" class="simple">'
 //            ),
+            array('header' => 'SN.',
+                'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
+            ), 
             'CATEGORIE_FR',
             array(
                 'class' => 'booster.widgets.TbButtonColumn',
@@ -51,10 +54,10 @@ $btn_title = 'Ajouter une catégorie d\'association';
             )
             ,
             array(
-                'header' => Myclass::t('APP46'),
+                'header' => 'Actes',
                 'class' => 'booster.widgets.TbButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                'template' => '{update}{delete}',
+                'template' => '{update}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{delete}',
             )
         );
 
@@ -74,7 +77,7 @@ $btn_title = 'Ajouter une catégorie d\'association';
             . '                       <div class="pull-right">{summary}</div>'
             . '                           <h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Catégories d\'associations</h3>
                                </div>
-                               <div class="panel-body">{items}{pager}</div>                               
+                               <div class="panel-body">{items}{pager}<div class="pull-right">{summary}</div></div>                               
             .           </div>',
             'columns' => $gridColumns
                 )

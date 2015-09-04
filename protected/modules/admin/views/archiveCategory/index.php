@@ -43,10 +43,10 @@ $createtitle= 'Ajouter une catégorie';
                 )
             ),
             array(
-                'header' => 'actes',
+                'header' => 'Actes',
                 'class' => 'booster.widgets.TbButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                'template' => '{update} {delete}',
+                'template' => '{update}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{delete}',
             )
         );
 

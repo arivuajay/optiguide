@@ -72,7 +72,7 @@ class PublicityAdsController extends Controller {
             }
 
             $publicityModules = isset($_POST['PublicityAds']['publicityModules']) ? $_POST['PublicityAds']['publicityModules'] : array();
-            $regions = isset($_POST['PublicityAds']['regions']) ? $_POST['PublicityAds']['regions'] : array();
+            //$regions = isset($_POST['PublicityAds']['regions']) ? $_POST['PublicityAds']['regions'] : array();
             $section = isset($_POST['PublicityAds']['section']) ? $_POST['PublicityAds']['section'] : array();
 
             if ($model->save()) {
@@ -100,14 +100,14 @@ class PublicityAdsController extends Controller {
                 }
 
                 // Store selected region values                       
-                if (!empty($regions)) {
-                    foreach ($regions as $rinfo) {
-                        $rlmodel = new AdsLInkRegion();
-                        $rlmodel->ID_PUBLICITE = $publicite_id;
-                        $rlmodel->ID_REGION = $rinfo;
-                        $rlmodel->save(false);
-                    }
-                }
+//                if (!empty($regions)) {
+//                    foreach ($regions as $rinfo) {
+//                        $rlmodel = new AdsLInkRegion();
+//                        $rlmodel->ID_PUBLICITE = $publicite_id;
+//                        $rlmodel->ID_REGION = $rinfo;
+//                        $rlmodel->save(false);
+//                    }
+//                }
 
                 Yii::app()->user->setFlash('success', 'PublicityAds Created Successfully!!!');
                 $this->redirect(array('index'));
@@ -142,7 +142,7 @@ class PublicityAdsController extends Controller {
             }
 
             $publicityModules = isset($_POST['PublicityAds']['publicityModules']) ? $_POST['PublicityAds']['publicityModules'] : array();
-            $regions = isset($_POST['PublicityAds']['regions']) ? $_POST['PublicityAds']['regions'] : array();
+           // $regions = isset($_POST['PublicityAds']['regions']) ? $_POST['PublicityAds']['regions'] : array();
             $section = isset($_POST['PublicityAds']['section']) ? $_POST['PublicityAds']['section'] : array();
 
                     
@@ -152,7 +152,7 @@ class PublicityAdsController extends Controller {
                 
                 AdsLInkCategory::model()->deleteAll("ID_PUBLICITE ='" . $publicite_id . "'");
                 AdsLInkModule::model()->deleteAll("ID_PUBLICITE ='" . $publicite_id . "'");
-                AdsLInkRegion::model()->deleteAll("ID_PUBLICITE ='" . $publicite_id . "'");
+               // AdsLInkRegion::model()->deleteAll("ID_PUBLICITE ='" . $publicite_id . "'");
                 // Store selected section values
                 
                 if (!empty($section)) {
@@ -165,8 +165,7 @@ class PublicityAdsController extends Controller {
                     }
                 }
 
-                // Store selected module values    
-              
+                // Store selected module values                  
                 if (!empty($publicityModules)) {
                     
                     foreach ($publicityModules as $minfo) {
@@ -178,15 +177,15 @@ class PublicityAdsController extends Controller {
                 }
 
                 // Store selected region values                       
-                if (!empty($regions)) {
-                    
-                    foreach ($regions as $rinfo) {
-                        $rlmodel = new AdsLInkRegion();
-                        $rlmodel->ID_PUBLICITE = $publicite_id;
-                        $rlmodel->ID_REGION = $rinfo;
-                        $rlmodel->save(false);
-                    }
-                }
+//                if (!empty($regions)) {
+//                    
+//                    foreach ($regions as $rinfo) {
+//                        $rlmodel = new AdsLInkRegion();
+//                        $rlmodel->ID_PUBLICITE = $publicite_id;
+//                        $rlmodel->ID_REGION = $rinfo;
+//                        $rlmodel->save(false);
+//                    }
+//                }
 
                 Yii::app()->user->setFlash('success', 'Publicité mis à jour avec succès!!!');
                 $this->redirect(array('index'));

@@ -112,7 +112,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'header' => 'actes',
                 'class' => 'booster.widgets.TbButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                'template' => '{view}{update}{delete}',
+                'template' => '{view}&nbsp;&nbsp;&nbsp;{update}&nbsp;&nbsp;&nbsp;{delete}',
                 ),
                 array(
                 'name'  => 'datedisplay',

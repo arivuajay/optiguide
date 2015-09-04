@@ -37,20 +37,20 @@ foreach ($all_banner_poitions as $positions) {
     $banner_poitions[$position_id] = $positions['sPosition'] . " " . $positions['sFormat'];
 }
 
-$publicityZones = CHtml::listData(PublicityZones::model()->findAll(array('order' => 'ID_ZONE ASC')), 'ID_ZONE', 'NOM_ZONE');
+$publicityZones = CHtml::listData(PublicityZones::model()->findAll(array('order' => 'ID_ZONE ASC','condition' => 'ID_ZONE=2')), 'ID_ZONE', 'NOM_ZONE');
 $publicityModules = CHtml::listData(PublicityModules::model()->findAll(array('order' => 'NOM_MODULE ASC')), 'ID_MODULE', 'NOM_MODULE');
 
-$regions_result = Yii::app()->db->createCommand() //this query contains all the data
-        ->select('p.NOM_PAYS_FR , r.NOM_REGION_FR , r.ID_REGION')
-        ->from(array('repertoire_ville AS v', 'repertoire_region AS r', 'repertoire_pays AS p'))
-        ->where("p.ID_PAYS=r.ID_PAYS AND r.ID_REGION=v.ID_REGION AND (r.NOM_REGION_EN!='N/A' AND r.NOM_REGION_FR!='N/D' )")
-        ->group('r.ID_REGION')
-        ->order('p.NOM_PAYS_FR,r.NOM_REGION_FR')
-        ->queryAll();
-foreach ($regions_result as $regions) {
-    $region_id = $regions['ID_REGION'];
-    $regions_display[$region_id] = $regions['NOM_PAYS_FR'] . " - " . $regions['NOM_REGION_FR'];
-}
+//$regions_result = Yii::app()->db->createCommand() //this query contains all the data
+//        ->select('p.NOM_PAYS_FR , r.NOM_REGION_FR , r.ID_REGION')
+//        ->from(array('repertoire_ville AS v', 'repertoire_region AS r', 'repertoire_pays AS p'))
+//        ->where("p.ID_PAYS=r.ID_PAYS AND r.ID_REGION=v.ID_REGION AND (r.NOM_REGION_EN!='N/A' AND r.NOM_REGION_FR!='N/D' )")
+//        ->group('r.ID_REGION')
+//        ->order('p.NOM_PAYS_FR,r.NOM_REGION_FR')
+//        ->queryAll();
+//foreach ($regions_result as $regions) {
+//    $region_id = $regions['ID_REGION'];
+//    $regions_display[$region_id] = $regions['NOM_PAYS_FR'] . " - " . $regions['NOM_REGION_FR'];
+//}
 
 $sectiontypes = CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_FR")), 'ID_SECTION', 'NOM_SECTION_FR');
 
@@ -236,18 +236,6 @@ $enddate = $model->DATE_FIN;
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="Régions" class="col-sm-2 control-label"></label>
-                    <div class="col-sm-5">
-                        Régions (optionnel) :
-                        <?php
-                        $options_regions = $selected_regions;
-                        $htmlOptions = array('size' => '6', 'multiple' => 'true', 'id' => 'regions', 'class' => 'form-control','options'=>$options_regions);
-                        echo $form->listBox($model, 'regions', $regions_display, $htmlOptions);
-                        ?>  
-                    </div>
-                </div>
-
                 <div class="form-group" id="secure_category" <?php if ($model->AFFICHER_ACCUEIL == 1 && $model->ZONE_AFFICHAGE==1) { ?> style="display: none;" <?php } ?>>
                     <label for="associées" class="col-sm-2 control-label"></label>
                     <div class="col-sm-5">
@@ -291,7 +279,11 @@ $(document).ready(function(){
         
 $('.year').datepicker({ dateFormat: 'yyyy' });
 $('.date').datepicker({ format: 'yyyy-mm-dd' });    
-        
+    
+    $("#secure_category").show();  
+    $("#secure_keywords").show(); 
+    $("#secure_section").show();  
+    
         
  $("#PublicityAds_ZONE_AFFICHAGE").change(function(e){
     var id=$(this).val();

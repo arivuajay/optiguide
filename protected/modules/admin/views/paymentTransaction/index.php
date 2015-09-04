@@ -74,10 +74,10 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 		'invoice_number',
 		*/
         array(
-        'header' => 'Actions',
+        'header' => 'Actes',
         'class' => 'booster.widgets.TbButtonColumn',
         'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-        'template' => '{view}{update}',
+        'template' => '{view}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{update}',
          'buttons'=> array(
                     'update'=>array(                                    
                               'visible'=>'$data->payment_status=="Pending"',
