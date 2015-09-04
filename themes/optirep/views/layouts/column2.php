@@ -15,21 +15,7 @@
                     </div>
                 <?php } ?>
             <?php endif ?>
-            
-            <?php
-            $activeclass1  = array();
-             $activeclass2 = array();
-            $module_controller = Yii::app()->controller->id;
-            $module_action     = Yii::app()->controller->action->id;
 
-            if ($module_controller == "repCredential" && $module_action == "editprofile") {
-                $activeclass1['class'] = 'active2';
-            }
-            
-             if ($module_controller == "repCredential" && $module_action == "changePassword") {
-                $activeclass2['class'] = 'active2';
-            }
-            ?>
             <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
                 <div class="user-left cate-bg"> 
                     <div class="user-deatils"> 
@@ -37,10 +23,15 @@
                         <p> <a href="#"><?php echo Yii::app()->user->getState('rep_username'); ?></a> </p>
                         <p> <i class="fa fa-sign-out"></i> <?php echo CHtml::link('Logout', '/optirep/default/logout') ?></p>
                     </div>
-                    <ul>
-                        <li><?php echo CHtml::link('Edit Profile', array('/optirep/repCredential/editprofile'),$activeclass1); ?></li>
-                        <li><?php echo CHtml::link('Change Password', array('/optirep/repCredential/changePassword'),$activeclass2); ?></li>
-                    </ul>
+                    <?php
+                    $this->widget('zii.widgets.CMenu', array(
+                        'activeCssClass' => 'active2',
+                        'items' => array(
+                            array('label' => 'Edit Profile', 'url' => array('/optirep/repCredential/editprofile')),
+                            array('label' => 'Change Password', 'url' => array('/optirep/repCredential/changePassword')),
+                        ),
+                    ));
+                    ?>
                 </div> 
             </div>
             <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">  
