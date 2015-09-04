@@ -24,7 +24,8 @@
     <?php
    // if (!Yii::app()->user->isGuest) {
         $this->renderPartial('_latest_news');
-        $this->renderPartial('_calender');
+        //$this->renderPartial('_calender');
+        $this->renderPartial('_poll');
   //  }
 
     $this->renderPartial('_did_you_know');

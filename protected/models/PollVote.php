@@ -41,7 +41,7 @@ class PollVote extends CActiveRecord
   public function rules()
   {
     return array(
-      array('choice_id, poll_id', 'required'),
+      array('choice_id, poll_id', 'required','message'=> Myclass::t('OG149')),      
       array('choice_id, poll_id, user_id, timestamp', 'length', 'max'=>11),
       array('ip_address', 'length', 'max'=>16),
     );
@@ -65,7 +65,7 @@ class PollVote extends CActiveRecord
   public function attributeLabels()
   {
     return array(
-      'choice_id' => 'Choice',
+      'choice_id' =>  Myclass::t('OG150'),
     );
   }
 

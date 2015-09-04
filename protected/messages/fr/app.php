@@ -164,5 +164,9 @@ return array(
     'OG146' => 'Sexe',
     'OG147' => 'Mâle',
     'OG148' => 'Femelle',
+    
+    'OG149' => 'S\'il vous plaît choisir l\'un {attribute}  pour vote .',
+    'OG150' => 'choix',
+    'OG151' => 'Vote',
 );
 ?>
