@@ -158,8 +158,10 @@ class CalenderEvent extends CActiveRecord {
         $current_year = date("Y", strtotime($current_date));
         return array(
             'currentMonthYear' => array(
-                'condition' => 'LANGUE = :LN AND MONTH(DATE_AJOUT1) = :MN AND YEAR(DATE_AJOUT1) = :YR',
-                'params' => array(':LN' => Yii::app()->session['language'], ':MN' => $current_month, ':YR' => $current_year),
+               // 'condition' => 'LANGUE = :LN AND MONTH(DATE_AJOUT1) = :MN AND YEAR(DATE_AJOUT1) = :YR',
+               // 'params' => array(':LN' => Yii::app()->session['language'], ':MN' => $current_month, ':YR' => $current_year),
+                'condition' => 'LANGUE = :LN',
+                'params' => array(':LN' => Yii::app()->session['language']),
             ),
         );
     }

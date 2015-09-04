@@ -63,7 +63,7 @@ EOD;
                 'showAnim' => 'slide', //'slide','fold','slideDown','fadeIn','blind','bounce','clip','drop'
                 'beforeShowDay' => 'js:EventHighlight',
                 'onSelect' => 'js:EventRedirect',
-                'stepMonths' => 0,
+                //'stepMonths' => 0,
             ),
             'htmlOptions' => array(
                 'style' => ''

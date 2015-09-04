@@ -56,7 +56,7 @@ and open the template in the editor.
 
 .ui-datepicker-prev, .ui-datepicker-next
 {
-    display: none;
+   // display: none;
 }
 
 .ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
@@ -195,8 +195,7 @@ and open the template in the editor.
     padding: 2px 1px!important;
 }
 
-#calendar .content {
-    
+#calendar .content {    
     font-weight: normal;
     margin-bottom: 10px;
     padding-bottom: 5px;
@@ -218,4 +217,30 @@ and open the template in the editor.
     color: #000;
     display: block;
     font-weight: bold;
+}
+
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus {
+    background: none !important;
+}
+
+.ui-corner-all{    
+    border: none !important;
+}
+
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span {
+    display: block;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -11px;
+    position: relative;
+    top: 50%;
+}
+
+.poll-label{
+    padding: 13px 0 0;
 }
