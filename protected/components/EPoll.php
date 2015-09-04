@@ -69,8 +69,10 @@ class EPoll extends CWidget {
 
       // Save a user's vote
       if (isset($_POST['PortletPollVote_choice_id'])) {
+          
         $userVote->choice_id = $_POST['PortletPollVote_choice_id'];
         $userVote->poll_id = $model->id;
+        $userVote->ID_TYPE_SPECIALISTE = isset($_POST['PollVote']['ID_TYPE_SPECIALISTE'])?$_POST['PollVote']['ID_TYPE_SPECIALISTE']:'0';
         if ($userVote->save()) {
           // Prevent submit on refresh
           $route = Yii::app()->controller->route;

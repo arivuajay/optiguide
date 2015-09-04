@@ -200,4 +200,8 @@ return array(
     'OGO162' => 'Détaillant Email',
     'OGO163' => 'Ton message',
     'OGO164' => 'Votre demande envoyé avec succès au détaillant .',
+    
+    'OGO165' => 'Aucun événement',
+    'OGO166' => 'Tous les événements',
+    'OGO167' => 'Événements à venir'
 );

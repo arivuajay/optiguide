@@ -194,3 +194,28 @@ and open the template in the editor.
 .active2 {   
     padding: 2px 1px!important;
 }
+
+#calendar .content {
+    
+    font-weight: normal;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+
+#calendar a.allEvent {   
+    color: #46698f;
+    font-weight: bold;
+    padding: 0 0 0 12px;
+    position: relative;
+}
+
+#calendar h4.eventList {
+    text-align: center;
+}
+
+#calendar .date {
+    clear: both;
+    color: #000;
+    display: block;
+    font-weight: bold;
+}

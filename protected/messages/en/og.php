@@ -204,4 +204,8 @@ return array(
     'OGO162' => 'Retailer Email',
     'OGO163' => 'Your message',
     'OGO164' => 'Your request sent successfully to the retailer.',
+    
+    'OGO165' => 'No events',
+    'OGO166' => 'All Events',
+    'OGO167' => 'Upcoming events'
 );

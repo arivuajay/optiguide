@@ -1,4 +1,4 @@
-<div class="optinews-left"> 
+<div class="optinews-left" id="calendar"> 
     <div class="optinews-left-heading"> Calendar Of Events </div>
     <div class="optinews-left-bg"> 
         <?php
@@ -70,5 +70,37 @@ EOD;
             ),
         ));
         ?>
+        <?php
+        //Upcoming events display 
+        $now = date("Y-m-d",time());
+        $cLang = strtoupper(Yii::app()->language);   
+        
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("DATE_AJOUT1 > '".$now."'");
+        $criteria->addCondition("LANGUE = '".$cLang."'");
+        $criteria->order = 'DATE_AJOUT1 ASC';
+        $criteria->limit = 3;
+        $upcoming_events = CalenderEvent::model()->findAll($criteria);
+        ?>
+        <h4 class="eventList"><?php echo Myclass::t('OGO167','','og');?></h4>
+        <?php
+        if(!empty($upcoming_events))
+        {?>    
+        <ul class="eventList">
+           <?php
+           foreach($upcoming_events as $einfo)
+           {?>   
+            <li class="li-1">
+                <span class="date start"><?php echo date("F d Y",strtotime($einfo->DATE_AJOUT1)); ?></span>
+               <?php echo CHtml::link($einfo->TITRE, array('/optiguide/calenderEvent/view', 'id' => $einfo->ID_EVENEMENT));?> 
+            </li>
+           <?php
+           }
+           ?>
+        </ul>
+        <?php }else{
+            echo Myclass::t('OGO165','','og');
+        }  ?> 
+       <?php echo CHtml::link(Myclass::t('OGO166', '', 'og'), array('/optiguide/calenderEvent')); ?>
     </div>
 </div>
