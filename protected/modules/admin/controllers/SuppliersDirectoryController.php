@@ -91,7 +91,11 @@ class SuppliersDirectoryController extends Controller {
            $categoryid  = $fichres->ID_CATEGORIE;     
            $ficherfile  = $fichres->FICHIER; 
           // $fileurl     =  $themeurl.'/img/archivage/'.$categoryid.'/'.$ficherfile;
-           $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$categoryid."/".$ficherfile);
+           $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$categoryid."/".$ficherfile);   
+           if (!file_exists(YiiBase::getPathOfAlias('webroot').'/uploads/archivage/'.$categoryid.'/'.$ficherfile))
+           {
+               $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/noimage.png");
+           }    
         }        
         echo $fileurl;
         exit;

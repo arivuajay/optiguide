@@ -7,7 +7,7 @@
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subscribe-btncont"> 
         <div class="inner-container"> 
-            <h2> <?php echo $model->isNewRecord ?  Myclass::t('OG110'):Myclass::t('OG034','','og');?> </h2>
+            <h2> <?php echo $model->isNewRecord ? Myclass::t('OG110') : Myclass::t('OG034', '', 'og'); ?> </h2>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'professional-directory-form',
@@ -18,14 +18,14 @@
                 'enableAjaxValidation' => true,
             ));
 
-            $professional_types = CHtml::listData(ProfessionalType::model()->findAll(), 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_FR');           
-            $country   = Myclass::getallcountries();               
-            $regions   = Myclass::getallregions($model->country);
-            $cities    = Myclass::getallcities($model->region);
+            $professional_types = CHtml::listData(ProfessionalType::model()->findAll(), 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_FR');
+            $country = Myclass::getallcountries();
+            $regions = Myclass::getallregions($model->country);
+            $cities = Myclass::getallcities($model->region);
             ?>
 
             <div class="forms-cont"> 
-                <div class="forms-heading"><i class="fa fa-briefcase"></i>    <?php echo $model->isNewRecord ?  Myclass::t('OGO137','','og'):Myclass::t('OGO138','','og');?>  </div>
+                <div class="forms-heading"><i class="fa fa-briefcase"></i>    <?php echo $model->isNewRecord ? Myclass::t('OGO137', '', 'og') : Myclass::t('OGO138', '', 'og'); ?>  </div>
                 <div class="row"> 
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
@@ -52,29 +52,31 @@
                             <?php echo $form->labelEx($umodel, 'USR'); ?>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-                            <?php if($model->isNewRecord)
-                            {?> 
-                            <?php echo $form->textField($umodel, 'USR', array('class' => 'form-txtfield')); ?>
-                            <?php echo $form->error($umodel, 'USR'); ?>
-                            <?php echo $form->error($model, 'ID_CLIENT'); ?>
-                            <?php }else{
-                              echo $umodel->USR; 
-                            } ?>
+                            <?php if ($model->isNewRecord) {
+                                ?> 
+                                <?php echo $form->textField($umodel, 'USR', array('class' => 'form-txtfield')); ?>
+                                <?php echo $form->error($umodel, 'USR'); ?>
+                                <?php echo $form->error($model, 'ID_CLIENT'); ?>
+                                <?php
+                            } else {
+                                echo $umodel->USR;
+                            }
+                            ?>
                         </div>
                     </div>
-                <?php if($model->isNewRecord)
-                  {?>
-                    <div class="form-row1"> 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                            <?php echo $form->labelEx($umodel, 'PWD'); ?>
+                    <?php if ($model->isNewRecord) {
+                        ?>
+                        <div class="form-row1"> 
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                                <?php echo $form->labelEx($umodel, 'PWD'); ?>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
+                                <?php echo $form->passwordField($umodel, 'PWD', array('class' => 'form-txtfield')); ?>
+                                <?php echo $form->error($umodel, 'PWD'); ?>
+                            </div>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-                            <?php echo $form->passwordField($umodel, 'PWD', array('class' => 'form-txtfield')); ?>
-                            <?php echo $form->error($umodel, 'PWD'); ?>
-                        </div>
-                    </div>
-                 <?php
-                  }?>
+                    <?php }
+                    ?>
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
                             <?php echo $form->labelEx($model, 'ID_TYPE_SPECIALISTE'); ?>
@@ -82,6 +84,25 @@
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
                             <?php echo $form->dropDownList($model, 'ID_TYPE_SPECIALISTE', $professional_types, array('class' => 'selectpicker')); ?> 
                             <?php echo $form->error($model, 'ID_TYPE_SPECIALISTE'); ?>
+                        </div>
+                    </div>
+
+                    <div class="form-row1"> 
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                            <?php echo $form->labelEx($model, 'age'); ?>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
+                            <?php echo $form->textField($model, 'age', array('class' => 'form-txtfield')); ?>
+                            <?php echo $form->error($model, 'age'); ?>
+                        </div>
+                    </div>
+
+                    <div class="form-row1"> 
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                            <?php echo $form->labelEx($model, 'sex'); ?>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
+                            <?php echo $form->radioButtonList($model, 'sex', array('male' => Myclass::t('OG147'), 'female' => Myclass::t('OG148')), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                         </div>
                     </div>
 
@@ -217,11 +238,11 @@
 
                     <!--                    <div class="form-row1"> 
                                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                    <?php //echo $form->labelEx($model, 'TYPE_AUTRE'); ?>
+                    <?php //echo $form->labelEx($model, 'TYPE_AUTRE');  ?>
                                             </div>
                                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-                    <?php //echo $form->textArea($model, 'TYPE_AUTRE', array('class' => 'form-txtfield')); ?>
-                    <?php //echo $form->error($model, 'TYPE_AUTRE'); ?>
+                    <?php //echo $form->textArea($model, 'TYPE_AUTRE', array('class' => 'form-txtfield'));  ?>
+                    <?php //echo $form->error($model, 'TYPE_AUTRE');  ?>
                                             </div>
                                         </div>-->
                 </div>

@@ -37,7 +37,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                     'template' => '{view}{update}{delete}',
                     'buttons' => array(                           
                            'view' => array(
-                               'url' => 'Yii::app()->createAbsoluteUrl("/uploads/archivage/".$data->ID_CATEGORIE."/".$data->FICHIER)',
+                              'url' => '(file_exists(YiiBase::getPathOfAlias("webroot")."/uploads/archivage/".$data->ID_CATEGORIE."/".$data->FICHIER)) ? Yii::app()->createAbsoluteUrl("/uploads/archivage/".$data->ID_CATEGORIE."/".$data->FICHIER) : Yii::app()->createAbsoluteUrl("/uploads/archivage/noimage.png")',                            
                                'options' => array('class' => 'newWindow' ),
                            ),
                         ),

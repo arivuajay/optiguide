@@ -27,7 +27,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         <?php
         $gridColumns = array(
         	'NOM_SECTION_FR',
-		//'NOM_SECTION_EN',
+		'NOM_SECTION_EN',
                 array(   
                    'header' => 'Produits & Services Count', 
                    'name' => 'productCount',

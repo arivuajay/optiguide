@@ -158,7 +158,12 @@ return array(
     'OG141' => 'Payer Email',
     'OG142' => 'Payment Type',
     'OG143' => 'Expiry date',
-    'OG144' => 'Invoice number'
+    'OG144' => 'Invoice number',
+    
+    'OG145' => 'Age',
+    'OG146' => 'Sex',
+    'OG147' => 'Male',
+    'OG148' => 'Female',
     
 );
 ?>

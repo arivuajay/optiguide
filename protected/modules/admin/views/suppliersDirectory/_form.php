@@ -42,6 +42,11 @@
            $ficherfile = $fichres->FICHIER;    
           // $fileurl     =  $themeUrl.'/img/archivage/'.$categoryid.'/'.$ficherfile; 
            $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$categoryid."/".$ficherfile);
+          
+           if (!file_exists(YiiBase::getPathOfAlias('webroot').'/uploads/archivage/'.$categoryid.'/'.$ficherfile))
+            {
+                $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/noimage.png");    
+            }  
         }else
         {
             $fileurl     = "javascript:void(0);";

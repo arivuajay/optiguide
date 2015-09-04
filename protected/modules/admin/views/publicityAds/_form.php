@@ -16,11 +16,17 @@ $archivecats = CHtml::listData(ArchiveCategory::model()->findAll(array('order' =
 $ficherid = $model->ID_FICHIER;
 $categoryid = 0;
 $ficherimage = '';
+
 if ($ficherid > 0) {
     $fichres = ArchiveFichier::model()->find("ID_FICHIER=$ficherid");
     $categoryid = $fichres->ID_CATEGORIE;
     $ficherfile = $fichres->FICHIER;   
     $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$categoryid."/".$ficherfile);
+    
+    if (!file_exists(YiiBase::getPathOfAlias('webroot').'/uploads/archivage/'.$categoryid.'/'.$ficherfile))
+    {
+        $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/noimage.png");    
+    }   
 } else {
     $fileurl = "javascript:void(0);";
 }

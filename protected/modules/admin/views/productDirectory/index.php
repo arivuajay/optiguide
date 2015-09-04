@@ -24,11 +24,16 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         <?php
         $gridColumns = array(        	
         array(
-                'header'  =>  'Section',    
+                'header'  =>  'Section FR',    
                 'name'    => 'sectionDirectory.NOM_SECTION_FR',          
                 'filter'  => CHtml::activeDropDownList($model, 'ID_SECTION', CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_FR")), 'ID_SECTION', 'NOM_SECTION_FR'), array('class'=>'form-control','prompt'=>'Tous')),
                 ),
              'NOM_PRODUIT_FR',
+         array(
+                'header'  =>  'Section EN',    
+                'name'    => 'sectionDirectory.NOM_SECTION_EN',          
+                'filter'  => CHtml::activeDropDownList($model, 'ID_SECTION', CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_EN")), 'ID_SECTION', 'NOM_SECTION_EN'), array('class'=>'form-control','prompt'=>'All')),
+                ),    
              'NOM_PRODUIT_EN',
              array(
              'header' => 'Actes',

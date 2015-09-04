@@ -73,6 +73,21 @@
                         <?php echo $form->error($model, 'NOM'); ?>
                     </div>
                 </div>
+                
+                <div class="form-group">                        
+                    <?php echo $form->labelEx($model, 'age', array('class' => 'col-sm-2 control-label')); ?>                       
+                    <div class="col-sm-5"> 
+                        <?php echo $form->textField($model, 'age', array('class' => 'form-control', 'size' => 2, )); ?>
+                        <?php echo $form->error($model, 'age'); ?>
+                    </div>
+                </div>
+
+                <div class="form-group">                     
+                    <?php echo $form->labelEx($model, 'sex', array('class' => 'col-sm-2 control-label')); ?>     
+                    <div class="col-sm-5"> 
+                        <?php echo $form->radioButtonList($model, 'sex', array('male' => Myclass::t('OG147'), 'female' => Myclass::t('OG148')), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'BUREAU', array('class' => 'col-sm-2 control-label')); ?>
@@ -94,7 +109,7 @@
                      <div class="form-group">
                         <?php echo $form->labelEx($model,'region',  array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'region', $regions , array('class' => 'form-control','empty'=>Myclass::t('APP44'))); ?>                          
+                        <?php echo $form->dropDownList($model, 'region', $regions , array('class' => 'form-control','empty'=>Myclass::t('APP44'))); ?>                          
                         <?php echo $form->error($model,'region'); ?>
                         </div>
                     </div>

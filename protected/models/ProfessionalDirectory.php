@@ -48,13 +48,13 @@ class ProfessionalDirectory extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('ID_TYPE_SPECIALISTE, PRENOM, NOM ,country, region, ID_VILLE,COURRIEL', 'required'),
-            array('ID_TYPE_SPECIALISTE, country, region, ID_VILLE', 'numerical', 'integerOnly' => true),
+            array('ID_TYPE_SPECIALISTE, country, region, ID_VILLE, age', 'numerical', 'integerOnly' => true),
             array('ID_CLIENT', 'length', 'max' => 8 ),
             array('PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, SITE_WEB, COURRIEL', 'length', 'max' => 255),
             array('CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2', 'length', 'max' => 20),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('country,region', 'safe'),
+            array('country,region,age,sex', 'safe'),
             array('COURRIEL','email'),
             array('SITE_WEB','url'),
             array('ID_SPECIALISTE, TYPESPECIALISTEFR , ID_CLIENT, PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, ID_TYPE_SPECIALISTE, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, SITE_WEB, COURRIEL, DATE_MODIFICATION', 'safe', 'on' => 'search'),
@@ -115,6 +115,8 @@ class ProfessionalDirectory extends CActiveRecord {
             'DATE_MODIFICATION' => Myclass::t('Date Modification'),
             'region'     => Myclass::t('APP48'),
             'country'    => Myclass::t('APP68'),
+            'age'    => Myclass::t('OG145'),
+            'sex'    => Myclass::t('OG146'),            
             'TYPE_AUTRE'  => 'Note'  
             
         );
