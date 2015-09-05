@@ -24,6 +24,7 @@
         $cs->registerCssFile($themeUrl . '/css/responsive.css');
         $cs->registerCssFile($themeUrl . '/css/font-awesome.css');
         $cs->registerCssFile($themeUrl . '/css/bootstrap-select.min.css');
+        $cs->registerCssFile($themeUrl . '/css/custom.css');
         ?>
     </head>
     <body>

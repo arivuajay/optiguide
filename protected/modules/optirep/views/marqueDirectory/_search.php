@@ -10,7 +10,7 @@
         'htmlOptions' => array('role' => 'form')
     ));
     $prod_services = array();  
-    $lang =  "EN";     
+    $lang =  $this->lang;     
     $sectiontypes  = CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_".$lang)), 'ID_SECTION', 'NOM_SECTION_'.$lang); 
     if($searchModel->ID_SECTION!='')
     {    
@@ -38,7 +38,7 @@
 </div>
 
 <?php
-$ajaxproductsUrl = Yii::app()->createUrl('/optiguide/suppliersDirectory/getproducts');
+$ajaxproductsUrl = Yii::app()->createUrl('/optirep/suppliersDirectory/getproducts');
 $js = <<< EOD
     $(document).ready(function(){    
         $("#MarqueDirectory_ID_SECTION").change(function(){

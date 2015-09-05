@@ -41,6 +41,10 @@
                     'pageSize' => $page_size,
                     'maxButtonCount' => 10,
                     'header' => '',
+                    'selectedPageCssClass'=>'active',
+                    'htmlOptions'=>array(
+                        'class'=>'pagination',                               
+                    ),  
                 ));
                 ?>           
             </div>

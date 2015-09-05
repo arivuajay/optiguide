@@ -22,7 +22,7 @@
         'htmlOptions' => array('role' => 'form')
     ));
     $prod_services = array();  
-    $lang =  "EN";  
+    $lang =  $this->lang;  
     $suppliertypes = CHtml::listData(SupplierType::model()->findAll(), 'ID_TYPE_FOURNISSEUR', 'TYPE_FOURNISSEUR_'.$lang);
     $sectiontypes  = CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_".$lang)), 'ID_SECTION', 'NOM_SECTION_'.$lang); 
     if($searchModel->ID_SECTION!='')

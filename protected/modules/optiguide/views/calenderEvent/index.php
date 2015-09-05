@@ -25,7 +25,11 @@
             <?php
             $this->widget('CLinkPager', array(
                 'pages' => $pages,
-                'header' => ''
+                'header' => '',
+                'selectedPageCssClass'=>'active',
+                    'htmlOptions'=>array(
+                        'class'=>'pagination',                               
+                    ),  
             ))
             ?>
         </div>

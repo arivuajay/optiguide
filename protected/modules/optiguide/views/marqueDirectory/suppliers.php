@@ -43,7 +43,11 @@
                                 'itemCount'=>$item_count,
                                 'pageSize'=>$page_size,
                                 'maxButtonCount'=>10,                                  
-                                'header'=>'',                                    
+                                'header'=>'',  
+                                'selectedPageCssClass'=>'active',
+                                'htmlOptions'=>array(
+                                        'class'=>'pagination',                               
+                                    ),  
                             ));
             ?>           
         </div>

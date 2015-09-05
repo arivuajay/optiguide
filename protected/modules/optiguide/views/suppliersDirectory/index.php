@@ -48,12 +48,16 @@ if($actionpage == "index")
             </div>
               <?php
             $this->widget('CLinkPager', array(
-                                'pages' => $pages,
+                                'pages' => $pages,                               
                                 'currentPage'=>$pages->getCurrentPage(),
                                 'itemCount'=>$item_count,
                                 'pageSize'=>$page_size,
                                 'maxButtonCount'=>10,                                  
-                                'header'=>'',                                    
+                                'header'=>'',   
+                                'selectedPageCssClass'=>'active',
+                                'htmlOptions'=>array(
+                                    'class'=>'pagination',                               
+                                ),   
                             ));
             ?>           
         </div>

@@ -21,7 +21,12 @@
                 <?php
                 $this->widget('CLinkPager', array(
                     'pages' => $pages,
-                    'header' => ''
+                    'currentPage'=>$pages->getCurrentPage(),
+                    'header' => '',    
+                    'selectedPageCssClass'=>'active',
+                    'htmlOptions'=>array(
+                        'class'=>'pagination',                               
+                    ),   
                 ))
                 ?>
             </div>

@@ -1,8 +1,6 @@
 <?php
 
-class SuppliersDirectoryController extends ORController {
-
-    public $lang = "EN";
+class SuppliersDirectoryController extends ORController {    
    
     /**
      * @return array action filters
@@ -20,13 +18,15 @@ class SuppliersDirectoryController extends ORController {
      * @return array access control rules
      */
     public function accessRules() {
-        return  array(
+    return array_merge(
+        parent::accessRules(), 
+           array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array( 'index', 'view', 'category'),
+                'actions' => array(),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array(),
+                'actions' => array('index', 'view', 'category'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -35,7 +35,8 @@ class SuppliersDirectoryController extends ORController {
             ),
             array('deny', // deny all users
                 'users' => array('*'),
-            ),         
+            ),  
+          )     
         );
     }
     

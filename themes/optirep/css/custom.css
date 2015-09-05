@@ -15,3 +15,8 @@ input.subscription_types {
 .active-stpe h4{
     color: #FFFFFF;
 }
+
+.search-list ul {
+    float: none !important;
+    margin: 0 !important;
+}
