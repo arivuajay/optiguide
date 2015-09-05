@@ -20,3 +20,7 @@ input.subscription_types {
     float: none !important;
     margin: 0 !important;
 }
+
+.addfav {
+    margin-bottom: 9px;
+}

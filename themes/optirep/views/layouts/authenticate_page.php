@@ -25,6 +25,7 @@
         $cs->registerCssFile($themeUrl . '/css/font-awesome.css');
         $cs->registerCssFile($themeUrl . '/css/bootstrap-select.min.css');
         $cs->registerCssFile($themeUrl . '/css/bootstrap-switch.min.css');
+        $cs->registerCssFile($themeUrl . '/css/pink.css');
         $cs->registerCssFile($themeUrl . '/css/custom.css');
         ?>
     </head>
@@ -42,6 +43,9 @@
         $cs->registerScriptFile($themeUrl . '/js/bootstrap.min.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-select.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-switch.min.js', $cs_pos_end);
+        $cs->registerScriptFile($themeUrl . '/js/icheck.min.js', $cs_pos_end);
+        $cs->registerScriptFile($themeUrl . '/js/jquery.lionbars.0.3.js', $cs_pos_end);       
+        
         ?>
 
         <?php
