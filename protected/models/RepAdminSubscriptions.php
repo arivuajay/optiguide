@@ -7,7 +7,11 @@
  * @property integer $rep_admin_subscription_id
  * @property integer $rep_credential_id
  * @property integer $rep_subscription_type_id
+ * @property string $purchase_type
  * @property integer $no_of_accounts_purchased
+ * @property integer $rep_admin_old_active_accounts
+ * @property integer $no_of_accounts_used
+ * @property integer $no_of_accounts_remaining
  * @property double $rep_admin_per_account_price
  * @property double $rep_admin_total_price
  * @property double $rep_admin_tax
@@ -22,6 +26,9 @@
  * @property RepCredentials $repCredential
  */
 class RepAdminSubscriptions extends CActiveRecord {
+
+    const PURCHASE_TYPE_NEW = 'new';
+    const PURCHASE_TYPE_RENEWAL = 'renewal';
 
     /**
      * @return string the associated database table name
@@ -38,11 +45,12 @@ class RepAdminSubscriptions extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('rep_credential_id, rep_subscription_type_id, no_of_accounts_purchased, rep_admin_per_account_price, rep_admin_total_price, rep_admin_tax, rep_admin_grand_total, rep_admin_subscription_start, rep_admin_subscription_end, created_at, modified_at', 'required'),
-            array('rep_credential_id, rep_subscription_type_id, no_of_accounts_purchased', 'numerical', 'integerOnly' => true),
+            array('rep_credential_id, rep_subscription_type_id, no_of_accounts_purchased, rep_admin_old_active_accounts, no_of_accounts_used, no_of_accounts_remaining', 'numerical', 'integerOnly' => true),
             array('rep_admin_per_account_price, rep_admin_total_price, rep_admin_tax, rep_admin_grand_total', 'numerical'),
+            array('purchase_type', 'length', 'max' => 7),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('rep_admin_subscription_id, rep_credential_id, rep_subscription_type_id, no_of_accounts_purchased, rep_admin_per_account_price, rep_admin_total_price, rep_admin_tax, rep_admin_grand_total, rep_admin_subscription_start, rep_admin_subscription_end, created_at, modified_at', 'safe', 'on' => 'search'),
+            array('rep_admin_subscription_id, rep_credential_id, rep_subscription_type_id, purchase_type,  no_of_accounts_purchased, rep_admin_old_active_accounts, no_of_accounts_used, no_of_accounts_remaining, rep_admin_per_account_price, rep_admin_total_price, rep_admin_tax, rep_admin_grand_total, rep_admin_subscription_start, rep_admin_subscription_end, created_at, modified_at', 'safe', 'on' => 'search'),
         );
     }
 
@@ -53,6 +61,7 @@ class RepAdminSubscriptions extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'repAdminSubscribers' => array(self::HAS_MANY, 'RepAdminSubscribers', 'rep_admin_subscription_id'),
             'repSubscriptionType' => array(self::BELONGS_TO, 'RepSubscriptionTypes', 'rep_subscription_type_id'),
             'repCredential' => array(self::BELONGS_TO, 'RepCredentials', 'rep_credential_id'),
         );
@@ -66,7 +75,11 @@ class RepAdminSubscriptions extends CActiveRecord {
             'rep_admin_subscription_id' => Myclass::t('Rep Admin Subscription'),
             'rep_credential_id' => Myclass::t('Rep Credential'),
             'rep_subscription_type_id' => Myclass::t('Rep Subscription Type'),
+            'purchase_type' => Myclass::t('Purchase Type'),
             'no_of_accounts_purchased' => Myclass::t('No Of Accounts Purchased'),
+            'rep_admin_old_active_accounts' => Myclass::t('Old active accounts'),
+            'no_of_accounts_used' => Myclass::t('No Of Accounts Used'),
+            'no_of_accounts_remaining' => Myclass::t('No Of Accounts Remaining'),
             'rep_admin_per_account_price' => Myclass::t('Rep Admin Per Account Price'),
             'rep_admin_total_price' => Myclass::t('Rep Admin Total Price'),
             'rep_admin_tax' => Myclass::t('Rep Admin Tax'),
@@ -98,7 +111,11 @@ class RepAdminSubscriptions extends CActiveRecord {
         $criteria->compare('rep_admin_subscription_id', $this->rep_admin_subscription_id);
         $criteria->compare('rep_credential_id', $this->rep_credential_id);
         $criteria->compare('rep_subscription_type_id', $this->rep_subscription_type_id);
+        $criteria->compare('purchase_type', $this->purchase_type, true);
         $criteria->compare('no_of_accounts_purchased', $this->no_of_accounts_purchased);
+        $criteria->compare('rep_admin_old_active_accounts', $this->rep_admin_old_active_accounts);
+        $criteria->compare('no_of_accounts_used', $this->no_of_accounts_used);
+        $criteria->compare('no_of_accounts_remaining', $this->no_of_accounts_remaining);
         $criteria->compare('rep_admin_per_account_price', $this->rep_admin_per_account_price);
         $criteria->compare('rep_admin_total_price', $this->rep_admin_total_price);
         $criteria->compare('rep_admin_tax', $this->rep_admin_tax);
@@ -133,7 +150,7 @@ class RepAdminSubscriptions extends CActiveRecord {
             )
         ));
     }
-    
+
     public function beforeSave() {
         if ($this->isNewRecord)
             $this->created_at = new CDbExpression('NOW()');

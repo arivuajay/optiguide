@@ -28,6 +28,7 @@
                         'activeCssClass' => 'active2',
                         'items' => array(
                             array('label' => 'Edit Profile', 'url' => array('/optirep/repCredential/editprofile')),
+                            array('label' => 'Rep Accounts', 'url' => array('/optirep/repAccounts/index')),
                             array('label' => 'Change Password', 'url' => array('/optirep/repCredential/changePassword')),
                         ),
                     ));

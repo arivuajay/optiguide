@@ -4,7 +4,6 @@
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'rep-credential-form',
-        'enableAjaxValidation' => true,
     ));
     ?>
     <div class="form-group"> 

@@ -5,7 +5,6 @@
         <?php
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'rep-credential-form',
-            'enableAjaxValidation' => true,
         ));
         $repSubscriptionTypes = RepSubscriptionTypes::model()->findAll();
         echo $form->errorSummary($model);
@@ -35,16 +34,14 @@
                                 </span> <br/>
                                 Per month  <br/>
                                 +  <br/>
-                                applicable taxes in  <br/>
-                                accordance  <br/>
-                                with the province  <br/> <br/></p>
+                                <?php echo $repSubscriptionType['rep_subscription_description']; ?>
+                            </p>
                             <p><a href="javascript:void()" class="subscribe-btn"> Subscribe </a></p>
                         </div>
                     </div>
                 </label>
             </div>
         <?php } ?>
-        <?php // echo $form->error($model, 'subscription_type_id', array('hideErrorMessage'=>true)); ?>
         <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 pull-right steps-btn-cont"> 
             <?php
             echo CHtml::tag('button', array(

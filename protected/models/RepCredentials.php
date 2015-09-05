@@ -75,6 +75,7 @@ class RepCredentials extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'repAdminSubscribers' => array(self::HAS_MANY, 'RepAdminSubscribers', 'rep_credential_id'),
             'repAdminSubscriptions' => array(self::HAS_MANY, 'RepAdminSubscriptions', 'rep_credential_id'),
             'repCredentialProfiles' => array(self::HAS_MANY, 'RepCredentialProfiles', 'rep_credential_id'),
             'repSingleSubscriptions' => array(self::HAS_MANY, 'RepSingleSubscriptions', 'rep_credential_id'),
