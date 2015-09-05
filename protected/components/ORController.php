@@ -13,10 +13,12 @@ class ORController extends Controller {
      */
     public $layout = '//layouts/column2';
     public $lang   = "EN";
+    
 
     public function init() {
         parent::init();
-        
+        Yii::app()->session['language'] = $this->lang;
+         
 //        $app = Yii::app();
 //        if (isset($_POST['_lang']))
 //        {
