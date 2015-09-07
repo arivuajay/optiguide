@@ -155,7 +155,14 @@ class NewsManagement extends CActiveRecord {
                 'condition' => 'LANGUE = :LN',
                 'params' => array(':LN' => Yii::app()->session['language']),
             ),
+             'latest_rep' => array(
+                'order' => 'DATE_AJOUT1 DESC',
+                'limit' => 4,
+                'condition' => 'LANGUE = :LN',
+                'params' => array(':LN' => Yii::app()->session['language']),
+            ),
         );
+        
     }
 
 }
