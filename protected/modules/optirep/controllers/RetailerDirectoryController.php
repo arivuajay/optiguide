@@ -1,27 +1,10 @@
 <?php
 
-class RetailerDirectoryController extends OGController {
+class RetailerDirectoryController extends ORController {
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
-    
-    public $lang;
-    
-    public function __construct($id, $module = null) {    
-        
-         if(Yii::app()->session['language'])
-        {
-            $lang = Yii::app()->session['language'];
-        }else
-        {
-            $lang = "EN";
-        }
-        
-        $this->lang = $lang;
-      
-        parent::__construct($id, $module);
-    }
 
     /**
      * @return array action filters
@@ -42,11 +25,11 @@ class RetailerDirectoryController extends OGController {
         return array_merge(
                 parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('create', 'getgroups'),
+                'actions' => array(),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('update','index','view'),
+                'actions' => array('index','view','getgroups'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -113,8 +96,9 @@ class RetailerDirectoryController extends OGController {
       
         $searchModel = new RetailerDirectory();                 
     
-        $searchModel->country = isset($searchModel->country)?$searchModel->country: DEFAULTPAYS;        
+        $searchModel->country = isset($searchModel->country)?$searchModel->country: DEFAULTPAYS;
         
+       
         //$page = (isset($_GET['page']) ? $_GET['page'] : 1);  // define the variable to “LIMIT” the query        
         $page  = Yii::app()->request->getParam('page');
         $page  = isset($page) ? $page : 1; 
@@ -215,113 +199,31 @@ class RetailerDirectoryController extends OGController {
            ));
      
     }
-
-    /**
-     * Creates a new model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     */
-    public function actionCreate() {
-        
-        if (!Yii::app()->user->isGuest)
-        {
-            $this->redirect(array('index')); 
-        } 
-        
-        
-        $model = new RetailerDirectory;
-        $umodel = new UserDirectory('frontend');
-
-        $this->performAjaxValidation(array($model, $umodel));
-
-        if (isset($_POST['RetailerDirectory'])) {
-            $model->attributes = $_POST['RetailerDirectory'];
-            $umodel->attributes = $_POST['UserDirectory'];
-
-            $model->ID_CLIENT = $umodel->USR;
-            $umodel->NOM_TABLE = $model::$NOM_TABLE;
-            $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
-            $umodel->sGuid = Myclass::getGuid();
-            $umodel->LANGUE = Yii::app()->session['language'];
-            $umodel->MUST_VALIDATE = 0;
-
-            $valid = $umodel->validate();
-            $valid = $model->validate() && $valid;
-
-            if ($valid) {
-                $model->save(false);
-                $umodel->ID_RELATION = $model->ID_RETAILER;
-                $umodel->save(false);
-                
-                 /* Send mail to admin for confirmation */
-                $mail    = new Sendmail();
-                $retailer_url = ADMIN_URL.'/admin/userDirectory/update/id/'.$umodel->ID_UTILISATEUR;
-                $enc_url      = Myclass::refencryption($retailer_url);              
-                $nextstep_url = ADMIN_URL.'admin/default/login/str/'.$enc_url;
-                $subject      =  SITENAME."- New optical retailer registration notification - ".$model->COMPAGNIE;
-                $trans_array  = array(
-                    "{NAME}"    => $model->COMPAGNIE,                    
-                    "{UTYPE}"   => 'optical retailer',
-                    "{NEXTSTEPURL}" => $nextstep_url,
-                );
-                $message = $mail->getMessage('registration', $trans_array);
-                $mail->send(ADMIN_EMAIL, $subject, $message);
-                
-                // mapping the retailer to the reference professional
-                $profid = Yii::app()->request->getParam('profid');
-                if($profid!='')
-                {                        
-                    $checkprofessionalexist = UserDirectory::model()->find("sGuid='".$profid."'");                    
-                    if(!empty($checkprofessionalexist))
-                    {    
-                        $professional_id = $checkprofessionalexist->ID_RELATION;
-                        $mr_model = new MappingRetailers();
-                        $mr_model->ID_SPECIALISTE = $professional_id;
-                        $mr_model->ID_RETAILER    = $model->ID_RETAILER;
-                        $mr_model->affliate       = 1;
-                        $mr_model->save();
-                    }    
-                }    
-
-                Yii::app()->user->setFlash('success', Myclass::t('OG044', '', 'og'));
-                $this->redirect(array('create'));
-            } 
-        }
-
-        $this->render('create', compact('umodel', 'model'));
-    }
     
-    /**
-     * update model.    
-     */
-    public function actionUpdate() {
+    public function actionupdatefav()
+    {
+        $rep_id     = Yii::app()->user->id;
+        $retailerid = isset($_POST['id']) ? $_POST['id'] : '';        
+        $favstatus  = isset($_POST['favstatus']) ? $_POST['favstatus'] : '';
         
-        $relid  = Yii::app()->user->relationid; 
-        $id     = Yii::app()->user->id; 
-        $model  = $this->loadModel($relid);
-        $umodel = UserDirectory::model()->findByPk($id);
-        $umodel->scenario = 'frontend';
-        
-       // Uncomment the following line if AJAX validation is needed
-       $this->performAjaxValidation(array($model, $umodel));
+        if($favstatus!='' && $retailerid!='' && $rep_id!='')
+        {
+            if($favstatus=="removefav")
+            {
+                $criteria = new CDbCriteria;
+                $criteria->condition = 'rep_credential_id=:repid and ID_RETAILER= :retid'; 
+                $criteria->params = array(":repid" => $rep_id, ":retid" => $retailerid);
+                $favourites = RepFavourites::model()->find($criteria);
+                $favourites->delete();
+            }  else {
+               $favourites = new RepFavourites;
+               $favourites->rep_credential_id = $rep_id;
+               $favourites->ID_RETAILER  = $retailerid;
+               $favourites->save();
+            }    
+        }    
+    }        
 
-        if (isset($_POST['RetailerDirectory'])) { 
-            $model->attributes = $_POST['RetailerDirectory'];
-            $umodel->attributes = $_POST['UserDirectory'];
-            $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
-            $valid = $umodel->validate();
-            $valid = $model->validate() && $valid;
-
-            if ($valid) {                
-                $model->save(false);
-                $umodel->ID_RELATION = $model->ID_RETAILER;
-                $umodel->save(false);  
-                
-                Yii::app()->user->setFlash('success', Myclass::t('OG036', '', 'og'));
-                $this->redirect(array('update'));
-            } 
-        }
-        $this->render('update', compact('umodel', 'model'));
-    }
 
     public function actionGetGroups() {
         $options = '';

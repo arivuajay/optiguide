@@ -1,6 +1,5 @@
 <div class="cate-bg user-right">
 <?php $this->renderPartial('_search', array('searchModel' => $searchModel)); ?>
-
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
         <div class="inner-container eventslist-cont"> 
@@ -20,6 +19,5 @@
             </div>
         </div>
     </div>
-</div>
-    
+</div>    
 </div>    

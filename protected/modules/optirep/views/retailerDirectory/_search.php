@@ -6,7 +6,7 @@
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'search-form',
         'method' => 'get',
-        'action' => array('/optiguide/retailerDirectory/index'),
+        'action' => array('/optirep/retailerDirectory/index'),
         'htmlOptions' => array('role' => 'form')
     ));
     
@@ -47,8 +47,8 @@
 </div>
 
 <?php
-$ajaxRegionUrl = Yii::app()->createUrl('/optiguide/calenderEvent/getregions');
-$ajaxCityUrl = Yii::app()->createUrl('/optiguide/calenderEvent/getcities');
+$ajaxRegionUrl = Yii::app()->createUrl('/optirep/calenderEvent/getregions');
+$ajaxCityUrl = Yii::app()->createUrl('/optirep/calenderEvent/getcities');
 $js = <<< EOD
     $(document).ready(function(){
     $("#RetailerDirectory_country").change(function(){
