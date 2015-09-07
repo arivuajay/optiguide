@@ -18,7 +18,7 @@
                     <li><?php echo CHtml::link(Myclass::t('OG008', '', 'og'), array('/optirep/suppliersDirectory')); ?></li>        
                     <li><?php echo CHtml::link(Myclass::t('OG009', '', 'og'), array('/optirep/suppliersDirectory/category')); ?></li>          
                     <li><?php echo CHtml::link(Myclass::t('OG010', '', 'og'), array('/optirep/marqueDirectory')); ?></li>     
-                    <li><a href="#">  News     </a></li>        
+                    <li><?php echo CHtml::link(Myclass::t('OG011', '', 'og'), array('/optirep/newsManagement')); ?></li>        
                     <li><?php echo CHtml::link(Myclass::t('OG012', '', 'og'), array('/optirep/calenderEvent')); ?></li>          
                     <li><?php echo CHtml::link(Myclass::t('OG013', '', 'og'), array('/optirep/groupInformation')); ?></li>
                 </ul>

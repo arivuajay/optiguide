@@ -1,7 +1,7 @@
 <div class="cate-bg user-right">
 <?php $this->renderPartial('_search', array('searchModel' => $searchModel));?>
+    <h2> <?php echo Myclass::t('OG040', '', 'og'); ?> </h2>        
 <div class="search-list">
-    <h2> <?php echo Myclass::t('OG040', '', 'og'); ?> </h2>            
     <?php  
     $sectionid = ($searchModel->ID_SECTION!='')?"'sectionid' => ".$searchModel->ID_SECTION:'';
     $productid = ($searchModel->PROD_SERVICE!='')?"'productid' => ".$searchModel->PROD_SERVICE:'';

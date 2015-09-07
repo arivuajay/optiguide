@@ -11,8 +11,8 @@
        $parampage = "category";
     }
 ?>
-    <div class="search-list">
-        <h2><?php echo Myclass::t('OG040', '', 'og'); ?> </h2>
+    <h2><?php echo Myclass::t('OG040', '', 'og'); ?> </h2>
+    <div class="search-list">        
         <?php  
         $sectionid = ($searchModel->ID_SECTION!='')?"'sectionid' => ".$searchModel->ID_SECTION:'';
         $productid = ($searchModel->PROD_SERVICE!='')?"'productid' => ".$searchModel->PROD_SERVICE:'';
