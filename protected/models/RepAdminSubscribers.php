@@ -30,7 +30,7 @@ class RepAdminSubscribers extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('rep_admin_subscription_id, rep_credential_id, created_at, modified_at', 'required'),
+            array('rep_admin_subscription_id, rep_credential_id', 'required'),
             array('rep_admin_subscription_id, rep_credential_id', 'numerical', 'integerOnly' => true),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
@@ -110,6 +110,14 @@ class RepAdminSubscribers extends CActiveRecord {
                 'pageSize' => PAGE_SIZE,
             )
         ));
+    }
+    
+    public function beforeSave() {
+        if ($this->isNewRecord)
+            $this->created_at = new CDbExpression('NOW()');
+
+        $this->modified_at = new CDbExpression('NOW()');
+        return parent::beforeSave();
     }
 
 }

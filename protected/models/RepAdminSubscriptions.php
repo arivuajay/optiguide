@@ -30,6 +30,9 @@ class RepAdminSubscriptions extends CActiveRecord {
     const PURCHASE_TYPE_NEW = 'new';
     const PURCHASE_TYPE_RENEWAL = 'renewal';
 
+    public $total_no_of_accounts_purchased;
+    public $total_no_of_accounts_used;
+
     /**
      * @return string the associated database table name
      */
@@ -157,6 +160,45 @@ class RepAdminSubscriptions extends CActiveRecord {
 
         $this->modified_at = new CDbExpression('NOW()');
         return parent::beforeSave();
+    }
+
+    //Check Admin Current Plan for add a new subscribers.
+    public function getCurrentPlan() {
+        $criteria = new CDbCriteria;
+        $criteria->join = "INNER JOIN rep_admin_subscriptions t2 ON(t.rep_admin_subscription_id = t2.rep_admin_subscription_id)";
+        $criteria->condition = 't.rep_credential_id = :admin_id AND t.purchase_type = :type AND t.no_of_accounts_remaining > :rema AND t.rep_admin_subscription_start <= :today AND t.rep_admin_subscription_end >= :today AND t.no_of_accounts_used < t2.no_of_accounts_purchased';
+        $criteria->params = array(
+            ':admin_id' => Yii::app()->user->id,
+            ':type' => self::PURCHASE_TYPE_NEW,
+            ':rema' => 0,
+            ':today' => date("Y-m-d")
+        );
+        $admin_current_plan = $this->model()->find($criteria);
+        return $admin_current_plan;
+    }
+
+    public function getTotalNoOfAccountsPurchased() {
+        $criteria = new CDbCriteria;
+        $criteria->select = 'SUM(no_of_accounts_purchased) as total_no_of_accounts_purchased';
+        $criteria->condition = 'rep_credential_id = :admin_id AND purchase_type = :type';
+        $criteria->params = array(
+            ':admin_id' => Yii::app()->user->id,
+            ':type' => self::PURCHASE_TYPE_NEW,
+        );
+        $result = $this->model()->findAll($criteria);
+        return $result[0]['total_no_of_accounts_purchased'];
+    }
+    
+    public function getTotalNoOfAccountsUsed() {
+        $criteria = new CDbCriteria;
+        $criteria->select = 'SUM(no_of_accounts_used) as total_no_of_accounts_used';
+        $criteria->condition = 'rep_credential_id = :admin_id AND purchase_type = :type';
+        $criteria->params = array(
+            ':admin_id' => Yii::app()->user->id,
+            ':type' => self::PURCHASE_TYPE_NEW,
+        );
+        $result = $this->model()->findAll($criteria);
+        return $result[0]['total_no_of_accounts_used'];
     }
 
 }

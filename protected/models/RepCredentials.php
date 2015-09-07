@@ -46,6 +46,7 @@ class RepCredentials extends CActiveRecord {
             array('rep_username, rep_password, no_of_accounts_purchase', 'required', 'on' => 'step2'),
             array('rep_username, rep_password', 'required', 'on' => 'update'),
             array('rep_username', 'unique'),
+            array('rep_username, rep_password', 'required', 'on' => 'create_new_rep_account'),
             array('no_of_accounts_purchase', 'numerical', 'integerOnly' => true),
             array('rep_parent_id', 'numerical', 'integerOnly' => true),
             array('rep_username, rep_password', 'length', 'max' => 255),
@@ -158,6 +159,15 @@ class RepCredentials extends CActiveRecord {
 
         $this->modified_at = new CDbExpression('NOW()');
         return parent::beforeSave();
+    }
+
+    public function scopes() {
+        return array(
+            'rep_admin_subscribers' => array(
+                'condition' => 'rep_parent_id = :PARENT_ID',
+                'params' => array(':PARENT_ID' => Yii::app()->user->id),
+            ),
+        );
     }
 
 }
