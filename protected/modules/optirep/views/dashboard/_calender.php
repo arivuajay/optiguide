@@ -73,5 +73,7 @@ EOD;
         ));
         ?>
         </div>
+         <div class="viewall"><a href="#">View all</a></div>
     </div>
+    
 </div>

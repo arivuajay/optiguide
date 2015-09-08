@@ -75,6 +75,11 @@ input.subscription_types {
 }
 
 #datepicker-Inline-sidebar_container ui-datepicker td span, .ui-datepicker td a {
-    padding: 0;
+    padding: 6px;
     text-align: center;
+}
+
+
+.btn {
+  font-size: 15px;
 }

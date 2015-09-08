@@ -3,7 +3,7 @@
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 dashboard-userinfo"> 
-    <h2>  Hello, <span> <?php echo Yii::app()->user->getState('rep_username');?> </span> </h2>
+    <h2>  Hello, <span> <a href="#"><?php echo Yii::app()->user->getState('rep_username');?></a> </span> </h2>
     Welcome to your personalized dashboard! Here's some of the thing you can do starting from here: 
 </div>
 <?php
@@ -30,12 +30,11 @@
                 }
             }else
             {
-                    $fav_rets = "<p>You have no favourite retailers right now.Click to see the retailers listing and make it your favourite!!!.</p>";
-            }   
-            
+                    $fav_rets = "<p class='fav_message'>You have no favourite retailers right now.".CHtml::link( "Click", array('/optirep/retailerDirectory'))." to see the retailers listing and make it your favourite!!!.</p>";
+            }               
             echo $fav_rets;
             ?>   
-            
+        <div class="viewall"><a href="#">View all</a></div>
     </div>
 </div>
 
@@ -51,7 +50,9 @@
         <div class="fav-cont notes-cont"> 
             Commodo cupidatat godard hella brunch direct trade. Cardigan swag duis, irure proident. 
         </div>
+         <div class="viewall"><a href="#">View all</a></div>
     </div>
+    
 </div>
 
 <?php $this->renderPartial('_calender'); ?>
@@ -81,9 +82,9 @@
             <div class="lastest-date"> <span> <?php echo date("M", strtotime($latest_new['DATE_AJOUT1'])) . ' ' . date("d", strtotime($latest_new['DATE_AJOUT1'])) ?> </span> </div>
         </div>  
          <?php }?>
-        <?php echo CHtml::link(Myclass::t('OG038', '', 'og'), array('/optirep/newsManagement'), array('class' => 'basic-btn right')); ?>
+        <div class="viewall"><?php echo CHtml::link(Myclass::t('OG038', '', 'og'), array('/optirep/newsManagement'), array('class' => '')); ?></div>
        <?php }?>
-    </div>
+    </div>   
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ad1"> 
