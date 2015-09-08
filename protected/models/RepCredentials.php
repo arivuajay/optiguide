@@ -78,7 +78,7 @@ class RepCredentials extends CActiveRecord {
         return array(
             'repAdminSubscribers' => array(self::HAS_MANY, 'RepAdminSubscribers', 'rep_credential_id'),
             'repAdminSubscriptions' => array(self::HAS_MANY, 'RepAdminSubscriptions', 'rep_credential_id'),
-            'repCredentialProfiles' => array(self::HAS_MANY, 'RepCredentialProfiles', 'rep_credential_id'),
+            'repCredentialProfiles' => array(self::HAS_ONE, 'RepCredentialProfiles', 'rep_credential_id'),
             'repSingleSubscriptions' => array(self::HAS_MANY, 'RepSingleSubscriptions', 'rep_credential_id'),
         );
     }

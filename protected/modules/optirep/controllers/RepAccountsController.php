@@ -24,7 +24,7 @@ class RepAccountsController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'create'),
+                'actions' => array('index', 'create', 'edit'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -83,6 +83,37 @@ class RepAccountsController extends ORController {
             }
         }
         $this->render('create', array('model' => $model, 'profile' => $profile));
+    }
+
+    public function actionEdit($id) {
+        $model = RepCredentials::model()->findByPk($id);
+        $profile = RepCredentialProfiles::model()->findByAttributes(array('rep_credential_id' => $model->rep_credential_id));
+
+        if ($model->rep_parent_id != Yii::app()->user->id) {
+            Yii::app()->user->setFlash('danger', "Sorry, you don't have access to edit this account");
+            $this->redirect(array('index'));
+        }
+
+        if (isset($_POST['btnSubmit'])) {
+            $model->attributes = $_POST['RepCredentials'];
+            $profile->attributes = $_POST['RepCredentialProfiles'];
+
+            $valid = $model->validate();
+            $valid = $profile->validate() && $valid;
+
+            if ($valid) {
+                if ($model->save(false)) {
+                    $profile->save(false);
+                    Yii::app()->user->setFlash('success', "Rep account edited successfully!!!");
+                    $this->redirect(array('edit', 'id' => $id));
+                }
+            }
+        }
+
+        $this->render('edit', array(
+            'model' => $model,
+            'profile' => $profile
+        ));
     }
 
 }

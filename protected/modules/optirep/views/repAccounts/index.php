@@ -5,11 +5,11 @@
             <table class="table table-responsive table-bordered">
                 <tr>
                     <td>Total no.of accounts</td>
-                    <td><?php echo RepAdminSubscriptions::model()->getTotalNoOfAccountsPurchased();?></td>
+                    <td><?php echo RepAdminSubscriptions::model()->getTotalNoOfAccountsPurchased(); ?></td>
                 </tr>
                 <tr>
                     <td>Used accounts</td>
-                    <td><?php echo RepAdminSubscriptions::model()->getTotalNoOfAccountsUsed();?></td>
+                    <td><?php echo RepAdminSubscriptions::model()->getTotalNoOfAccountsUsed(); ?></td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -24,14 +24,19 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
                     <tr>
                         <th width="9%">S. No</th>
-                        <th width="26%"> Username</th>
-                        <th width="28%"> Password </th>
+                        <th width="20%"> Username</th>
+                        <th width="18%"> Password </th>
                         <th width="23%"> Expiry Date </th>
-                        <th width="14%">Actions</th>
+                        <th width="14%"> Status </th>
+                        <th width="16%"> Actions </th>
                     </tr>
                     <?php if (!empty($repAdminSubscribers)) { ?>
-                        <?php $i = 1;
+                        <?php
+                        $i = 1;
                         foreach ($repAdminSubscribers as $repAdminSubscriber) {
+                            $checked = '';
+                            if ($repAdminSubscriber['rep_status'] == 1)
+                                $checked = 'checked';
                             ?>
                             <tr>
                                 <td><?php echo $i++; ?></td>
@@ -39,15 +44,45 @@
                                 <td><?php echo $repAdminSubscriber['rep_password'] ?></td>
                                 <td><?php echo $repAdminSubscriber['rep_expiry_date'] ?></td>
                                 <td>
-                                    <input type="checkbox" name="my-checkbox" data-on-text="ACTIVE" data-off-text="BLOCK">
+                                    <input type="checkbox" name="rep_status" <?php echo $checked; ?> data-on-text="ACTIVE" data-off-text="BLOCK" data-rep-id ="<?php echo $repAdminSubscriber['rep_credential_id']?>" class="status">
+                                </td>
+                                <td>
+                                    <?php echo CHtml::link('<i class="fa fa-edit"></i>', array('/optirep/repAccounts/edit', 'id' => $repAdminSubscriber['rep_credential_id'])); ?>
                                 </td>
                             </tr>
                         <?php } ?>
                     <?php } else { ?>
-
-<?php } ?>
+                        <tr>
+                            <td colspan="6"> No Records Found </td>
+                        </tr>
+                    <?php } ?>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+
+
+<?php
+$ajaxChangeRepStatusURL = Yii::app()->createUrl('/optirep/repCredential/changeStatus');
+$js = <<< EOD
+    $(document).ready(function () {
+        $("input[name='rep_status']").bootstrapSwitch();
+        $('input[name="rep_status"]').on('switchChange.bootstrapSwitch', function(event, state) {
+            var id = $(this).data("rep-id");
+            var dataString = 'id='+ id;
+        
+            $.ajax({
+                type: "POST",
+                url: '{$ajaxChangeRepStatusURL}',
+                data: dataString,
+                cache: false,
+                success: function(html){             
+                }
+             });
+        });
+    });
+EOD;
+Yii::app()->clientScript->registerScript('_rep_accounts_index', $js);
+?>

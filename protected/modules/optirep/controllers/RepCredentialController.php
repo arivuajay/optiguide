@@ -24,7 +24,7 @@ class RepCredentialController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('changePassword', 'editProfile'),
+                'actions' => array('changePassword', 'editProfile', 'changeStatus'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -209,6 +209,17 @@ class RepCredentialController extends ORController {
         }
 
         $this->render('changePassword', array('model' => $model));
+    }
+    
+    public function actionChangeStatus(){
+        if(Yii::app()->request->isAjaxRequest){
+              $rep_credential_id = $_POST['id'];
+              $repCredential = RepCredentials::model()->findByPk($rep_credential_id);
+              $repCredential->rep_status = 1 - $repCredential->rep_status;
+              $repCredential->save(false);
+        } else {
+            $this->redirect(array('dashboard/index'));
+        }
     }
 
     protected function payment() {
