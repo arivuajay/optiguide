@@ -135,3 +135,7 @@ padding: 5px;
 .favusers{
     padding-bottom: 3px;
 }
+
+.active a{
+    background: #f0f0f0 none repeat scroll 0 0;
+}

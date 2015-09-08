@@ -25,7 +25,7 @@
                     </div>
                     <?php
                     $this->widget('zii.widgets.CMenu', array(
-                        'activeCssClass' => 'active2',
+                        'activeCssClass' => 'active',
                         'items' => array(
                             array('label' => 'Edit Profile', 'url' => array('/optirep/repCredential/editprofile')),
                             array('label' => 'Manage Rep Accounts', 'url' => array('/optirep/repAccounts/index')),
