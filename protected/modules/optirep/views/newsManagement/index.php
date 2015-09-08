@@ -15,7 +15,7 @@
                         <div class="clearfix"></div>
                         <p>
                             <?php echo $news['SYNOPSYS']; ?>
-                            <b> <?php echo CHtml::link(Myclass::t('OG015', '', 'og'), array('/optirep/newsManagement/view', 'id' => $news['ID_NOUVELLE'])); ?> </b> 
+                            <b> <?php echo CHtml::link(Myclass::t('OG015', '', 'og').' <i class="fa fa-arrow-circle-right"></i>', array('/optirep/newsManagement/view', 'id' => $news['ID_NOUVELLE'])); ?> </b> 
                         </p>
                     </div>
                 <?php } ?>

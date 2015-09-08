@@ -1,47 +1,42 @@
 <div class="cate-bg user-right">
-<?php 
- $disppage  = Yii::app()->request->getParam('disppage');
- if($disppage == "home")
- {    
-    $this->renderPartial('_search', array('searchModel' => $searchModel)); 
- }else if($disppage == "category")
- {
-     $this->renderPartial('_search_cat', array('searchModel' => $searchModel));
- }    
- $lang =  Yii::app()->session['language'];
- 
- if($model['expirydate']!='')
- {    
-   $expdate  = strtotime($model['expirydate']);
-   $cur_date = strtotime("now");  
-   $disp = ($expdate > $cur_date)?1:0;   
- }else {
-   $disp = 0;     
- }  
- ?>
-    <h2> <?php echo $model['COMPAGNIE'];?> </h2>
+    <?php
+    $disppage = Yii::app()->request->getParam('disppage');
+    if ($disppage == "home") {
+        $this->renderPartial('_search', array('searchModel' => $searchModel));
+    } else if ($disppage == "category") {
+        $this->renderPartial('_search_cat', array('searchModel' => $searchModel));
+    }
+    $lang = Yii::app()->session['language'];
+
+    if ($model['expirydate'] != '') {
+        $expdate = strtotime($model['expirydate']);
+        $cur_date = strtotime("now");
+        $disp = ($expdate > $cur_date) ? 1 : 0;
+    } else {
+        $disp = 0;
+    }
+    ?>
+    <h2> <?php echo $model['COMPAGNIE']; ?> </h2>    
     <div class="row"> 
-        <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8 brand-logo"> 
-         <?php
-            if($model['ID_CATEGORIE']>0)
-            { 
-               $extypes  = array('jpg','jpeg','png','gif','bmp');  
-               $img_ext  = $model['EXTENSION']; 
-               if(in_array($img_ext, $extypes))
-               {        
-                   $img_url  = Yii::app()->getBaseUrl(true).'/uploads/archivage/'.$model['ID_CATEGORIE'].'/'.$model['FICHIER']; 
+
+        <?php
+        if ($model['ID_CATEGORIE'] > 0) {
+            $extypes = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
+            $img_ext = $model['EXTENSION'];
+            if (in_array($img_ext, $extypes)) {
+                $img_url = Yii::app()->getBaseUrl(true) . '/uploads/archivage/' . $model['ID_CATEGORIE'] . '/' . $model['FICHIER'];
                 ?>
-                  <img src="<?php echo $img_url;?>"  alt="">
-            <?php
-               }
+                <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8 brand-logo">   <img src="<?php echo $img_url; ?>"  alt="">  </div>
+                <?php
             }
-            ?>
-        </div>
-                
+        }
+        ?>
+
+
         <!-- Contact information-->
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">  
             <div class="search-list">
-                <h2><?php echo Myclass::t('OG071', '', 'og'); ?> </h2>
+                <h2><i class="fa fa-map-marker"></i> <?php echo Myclass::t('OG071', '', 'og'); ?> </h2>
                 <div class="clearfix"></div>
                 <p> 
                     <?php echo $model['ADRESSE']; ?>. <br/> 
@@ -54,15 +49,15 @@
                         <?php echo Myclass::t('OG041', '', 'og'); ?> : <?php echo $model['TELEPHONE']; ?><br>                       
                         <?php
                         if ($model['TELECOPIEUR'] != '') {
-                            echo Myclass::t('OG042', '', 'og') . ' : ' . $model['TELECOPIEUR'].'<br>';
+                            echo Myclass::t('OG042', '', 'og') . ' : ' . $model['TELECOPIEUR'] . '<br>';
                         }
 
                         if ($model['TEL_SANS_FRAIS'] != '') {
-                            echo Myclass::t('OG068', '', 'og') . ' : ' . $model['TEL_SANS_FRAIS'].'<br>';
+                            echo Myclass::t('OG068', '', 'og') . ' : ' . $model['TEL_SANS_FRAIS'] . '<br>';
                         }
 
                         if ($model['TEL_SECONDAIRE'] != '') {
-                            echo Myclass::t('OG069', '', 'og') . ' : ' . $model['TEL_SECONDAIRE'].'<br>';
+                            echo Myclass::t('OG069', '', 'og') . ' : ' . $model['TEL_SECONDAIRE'] . '<br>';
                         }
                         ?>                          
                     </p>                                                   
@@ -85,9 +80,9 @@
         <!--  Company information-->
         <?php if ($disp == 1) { ?>
 
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">  
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">  
                 <div class="search-list">
-                    <h2><?php echo Myclass::t('OG072', '', 'og'); ?> </h2>
+                    <h2><i class="fa fa-building-o"></i>  <?php echo Myclass::t('OG072', '', 'og'); ?> </h2>
                     <p><?php
                         if ($model['SUCCURSALES'] != '') {
                             echo "<b>" . Myclass::t('OG130') . "</b> : " . $model['SUCCURSALES'] . "<br/>";
@@ -145,9 +140,9 @@
                     ?>
                 </div>
             </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
-                <h2> <?php echo Myclass::t('OG073', '', 'og'); ?> </h2> 
+          
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
+                <h2> <i class="fa fa-cubes"></i> <?php echo Myclass::t('OG073', '', 'og'); ?> </h2> 
                 <div class="box" id="box1">
                     <div class="brands">
                         <p>
@@ -177,17 +172,19 @@
                                 }
                             }
                             ?>
-                    </ul>
-                    <p></p>
+                        </ul>
+                        <p></p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <?php }?>        
+        <?php } ?>    
+        
     </div>
+    
+    <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> '.Myclass::t('OG016', '', 'og'), array('/optirep/suppliersDirectory'),array("class"=>"pull-left")); ?> </div>  
 </div>
 <?php
-//$ajaxRegionUrl = Yii::app()->createUrl('/optiguide/professionalDirectory/getregions');
 $js = <<< EOD
 $(document).ready(function(){        
      $('.box').lionbars();    

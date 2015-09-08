@@ -11,7 +11,6 @@
                     </h4> 
                     <div class="clearfix"></div>
                     <p> 
-                        <img src="images/264-Allergan.jpg"  alt="">
                         <?php echo $model['TEXTE']; ?>
                     </p>
                     <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/newsManagement')); ?>

@@ -14,16 +14,28 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li><?php echo CHtml::link(Myclass::t('OG008', '', 'og'), array('/optirep/suppliersDirectory')); ?></li>        
-                    <li><?php echo CHtml::link(Myclass::t('OG009', '', 'og'), array('/optirep/suppliersDirectory/category')); ?></li>          
-                    <li><?php echo CHtml::link(Myclass::t('OG010', '', 'og'), array('/optirep/marqueDirectory')); ?></li>     
-                    <li><?php echo CHtml::link(Myclass::t('OG011', '', 'og'), array('/optirep/newsManagement')); ?></li>   
-                    <li><?php echo CHtml::link(Myclass::t('OG030', '', 'og'), array('/optirep/professionalDirectory')); ?></li>  
-                    <li><?php echo CHtml::link(Myclass::t('OG032', '', 'og'), array('/optirep/retailerDirectory')); ?></li>  
-                    <li><?php echo CHtml::link(Myclass::t('OG012', '', 'og'), array('/optirep/calenderEvent')); ?></li>          
-                    <li><?php echo CHtml::link(Myclass::t('OG013', '', 'og'), array('/optirep/groupInformation')); ?></li>
-                </ul>
+                <?php
+                // Current controller name
+                $_controller = Yii::app()->controller->id;     
+                $_action     = Yii::app()->controller->action->id;
+                $this->widget('zii.widgets.CMenu', array(
+                    'activateParents' => true,
+                    'activeCssClass' => 'active2',
+                    'encodeLabel' => false,
+                    'activateItems' => true,
+                    'items' => array(
+                        array('label' => Myclass::t('OG008', '', 'og'), 'url' => array('/optirep/suppliersDirectory'), 'active' => ($_controller == 'suppliersDirectory' && ($_action == 'index' || $_action == 'view'))),
+                        array('label' => Myclass::t('OG009', '', 'og'), 'url' => array('/optirep/suppliersDirectory/category') , 'active' => ($_controller == 'suppliersDirectory' && $_action == 'category')),
+                        array('label' => Myclass::t('OG010', '', 'og'), 'url' => array('/optirep/marqueDirectory'), 'active' => $_controller == 'marqueDirectory'),
+                        array('label' => Myclass::t('OG011', '', 'og'), 'url' => array('/optirep/newsManagement'), 'active' => $_controller == 'newsManagement'),
+                        array('label' => Myclass::t('OG030', '', 'og'), 'url' => array('/optirep/professionalDirectory'), 'active' => $_controller == 'professionalDirectory'),
+                        array('label' => Myclass::t('OG032', '', 'og'), 'url' => array('/optirep/retailerDirectory'), 'active' => $_controller == 'retailerDirectory'),
+                        array('label' => Myclass::t('OG012', '', 'og'), 'url' => array('/optirep/calenderEvent'), 'active' => $_controller == 'calenderEvent'),
+                        array('label' => Myclass::t('OG013', '', 'og'), 'url' => array('/optirep/groupInformation'), 'active' => $_controller == 'groupInformation'),
+                        ),
+                    'htmlOptions' => array('class' => 'nav navbar-nav')
+                ));
+                ?>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>

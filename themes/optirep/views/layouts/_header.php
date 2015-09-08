@@ -33,12 +33,24 @@
                                 <a href="#" class="navbar-brand">Menu</a>
                             </div>
                             <div class="navbar-collapse collapse" id="navbar">
-                                <ul class="nav navbar-nav">
-                                    <li><a href="#"> Accueil </a></li>
-                                    <li><a href="#"> À propos  </a> </li> 
-                                    <li><a href="#">    Legende </a> </li>       
-                                    <li><a href="#"> Contact </a></li> 
-                                </ul>
+                            <?php
+                               // Current controller name
+                               $_controller = Yii::app()->controller->id;     
+                               $_action     = Yii::app()->controller->action->id;
+                               $this->widget('zii.widgets.CMenu', array(
+                                   'activateParents' => true,
+                                   'activeCssClass' => 'active2',
+                                   'encodeLabel' => false,
+                                   'activateItems' => true,
+                                   'items' => array(
+                                       array('label' => 'Home', 'url' => array('/optirep/dashboard'), 'active' => ($_controller == 'default' && $_action == 'index')),
+                                       array('label' => 'About', 'url' => array('/optirep/default/aboutus') , 'active' => ($_controller == 'default' && $_action == 'aboutus')),
+                                       array('label' => 'Legend', 'url' => array('/optirep/default/legend'), 'active' => ($_controller == 'default'&& $_action == 'legend')),
+                                       array('label' => 'Contact', 'url' => array('/optirep/default/contactus'), 'active' => ($_controller == 'default'&& $_action == 'contactus')),                                            
+                                       ),
+                                   'htmlOptions' => array('class' => 'nav navbar-nav')
+                               ));
+                               ?>
                             </div><!--/.nav-collapse -->
                         </div><!--/.container-fluid -->
                     </nav>

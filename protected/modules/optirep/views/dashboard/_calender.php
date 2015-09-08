@@ -73,7 +73,7 @@ EOD;
         ));
         ?>
         </div>
-         <div class="viewall"><a href="#">View all</a></div>
+         <div class="viewall"><?php echo CHtml::link('View All', array('/optirep/calenderEvent')); ?></div>
     </div>
     
 </div>

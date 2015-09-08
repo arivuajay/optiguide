@@ -3,7 +3,7 @@
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 dashboard-userinfo"> 
-    <h2>  Hello, <span> <a href="#"><?php echo Yii::app()->user->getState('rep_username');?></a> </span> </h2>
+    <h2>  Hello, <span> <?php echo CHtml::link(Yii::app()->user->getState('rep_username'), array('/optirep/repCredential/editprofile')); ?></span> </h2>
     Welcome to your personalized dashboard! Here's some of the thing you can do starting from here: 
 </div>
 <?php
@@ -25,7 +25,7 @@
             {    
              foreach($myfavourites as $favinfo)
                 {   
-                    $fav_rets .= "<div class='fav-cont'>".CHtml::image($this->themeUrl . '/images/fav.jpg');
+                    $fav_rets .= "<div class='fav-cont favusers'>".CHtml::image($this->themeUrl . '/images/fav.jpg');
                     $fav_rets .= CHtml::link( $favinfo['COMPAGNIE'], array('/optirep/retailerDirectory/view', 'id' => $favinfo['ID_RETAILER']))."<br/> <span> <b> Type : </b> ".$favinfo['NOM_TYPE_'.$this->lang]."</span> </div>";
                 }
             }else

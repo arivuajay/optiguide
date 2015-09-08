@@ -16,7 +16,7 @@
                 </p>
             </div>
             <div class="clearfix"></div>               
-            <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optirep/professionalDirectory'), array('class' => 'basic-btn')); ?>
+            <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> '.Myclass::t('OG016', '', 'og'), array('/optirep/professionalDirectory'),array("class"=>"pull-left")); ?> </div>  
         </div>
     </div>
  <?php

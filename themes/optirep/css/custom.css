@@ -25,6 +25,20 @@ input.subscription_types {
     margin-bottom: 9px;
 }
 
+
+.addfav-btn{
+        text-align:right;
+    background:#f0f0f0;
+    text-align: center;
+    	-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius:5px;
+padding: 5px;
+    
+    
+}
+
+
 .event a {
     background-color: #42B373 !important;
     background-image :none !important;
@@ -75,11 +89,49 @@ input.subscription_types {
 }
 
 #datepicker-Inline-sidebar_container ui-datepicker td span, .ui-datepicker td a {
-    padding: 6px;
+    padding: 4px;
     text-align: center;
 }
 
 
 .btn {
-  font-size: 15px;
+  font-size: 16px;
+}
+
+
+.calendar-list{
+    margin-top:-25px;
+    
+}
+
+
+.calendar-list ul{
+    
+    border-bottom: #f0f0f0 solid 1px;
+    
+}
+
+.frm-to
+{
+    background: #f0f0f0;
+    float: right;
+    font-weight: 300;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.search-list ul li h5
+{
+    border-bottom:#f0f0f0 solid 1px;
+    padding-bottom:10px;
+    font-weight: 700;
+}
+
+.active2 a{
+  background: #398aca none repeat scroll 0 0 !important;
+  color: #ffffff !important;
+}
+
+.favusers{
+    padding-bottom: 3px;
 }

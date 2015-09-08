@@ -53,6 +53,6 @@
                 ?>
             </p>
             <div class="clearfix"></div>               
-            <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optirep/groupInformation'), array('class' => 'basic-btn')); ?>
+            <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> '.Myclass::t('OG016', '', 'og'), array('/optirep/groupInformation'),array("class"=>"pull-left")); ?> </div>  
         </div>
 </div>

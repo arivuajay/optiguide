@@ -7,7 +7,7 @@
      if(!empty($model))
      {    
         foreach ($model as $proftype => $users) { ?>
-            <h2> <?php echo $proftype ?></h2>
+            <h4> <?php echo $proftype ?></h4>
             <ul>
                 <?php foreach ($users as $info) { ?>
                 <li>

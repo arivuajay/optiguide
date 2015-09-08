@@ -13,12 +13,10 @@
     $param_id = Yii::app()->getRequest()->getQuery('id');
    
   ?>
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8"> 
         <div class="inner-container eventslist-cont">         
                 <h2> <?php echo $model['COMPAGNIE']; ?></h2>
-                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 addfav">
-                    <input name="FAV" type="checkbox" id="FAV" value="<?php echo $model['ID_RETAILER']; ?>" <?php if($fav_retailer==$param_id){ echo "checked=checked";} ?>>  Add to Favorites 
-                </div>
+               
                 <div class="search-list">                   
                     <p> <?php echo $model['ADRESSE']; ?>. <br/> 
                          <?php echo $model['NOM_VILLE']; ?>,  <?php echo $model['NOM_REGION_'.$this->lang]; ?><br/> 
@@ -52,29 +50,33 @@
                     }
                    ?></p>
                 </div>
-                <div class="clearfix"></div>               
-                    <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optirep/retailerDirectory'),array('class'=>'basic-btn')); ?>                
+                <div class="clearfix"></div>                
+                 <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> '.Myclass::t('OG016', '', 'og'), array('/optirep/retailerDirectory'),array("class"=>"pull-left")); ?> </div>  
             </div>
         </div>
+    
+     <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 addfav">         
+         <div class="addfav-btn">          
+          <input name="FAV" type="checkbox" id="FAV" value="<?php echo $model['ID_RETAILER']; ?>" <?php if($fav_retailer==$param_id){ echo "checked=checked";} ?>>  Add to Favorites 
+         </div>
+     </div>
     
     <?php
     if (!empty($results)) {?>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
         <h2> <?php echo Myclass::t('OGO157', '', 'og');?> </h2> 
         <div class="box" id="box1">
-            <div class="brands">    
-           
+            <div class="brands">               
                 <ul>
-                    
-                        <?php foreach ($results as $info) { ?>
-                        <li>
-                            <?php
-                            $dispname = $info['NOM'].','.$info['PRENOM'];
-                            echo CHtml::link($dispname, array('/optirep/professionalDirectory/view', 'id' => $info['ID_SPECIALISTE']), array('target'=>'_blank')) . ' ';   
-                            echo $info['NOM_VILLE'].",".$info['ABREVIATION_'.$this->lang].",".$info['NOM_PAYS_'.$this->lang];
-                            ?>
-                        </li>
-                        <?php } ?>                       
+                    <?php foreach ($results as $info) { ?>
+                    <li>
+                        <?php
+                        $dispname = $info['NOM'].','.$info['PRENOM'];
+                        echo CHtml::link($dispname, array('/optirep/professionalDirectory/view', 'id' => $info['ID_SPECIALISTE']), array('target'=>'_blank')) . ' ';   
+                        echo $info['NOM_VILLE'].",".$info['ABREVIATION_'.$this->lang].",".$info['NOM_PAYS_'.$this->lang];
+                        ?>
+                    </li>
+                    <?php } ?>                       
                 </ul>               
                 <p>&nbsp;</p>
             </div>

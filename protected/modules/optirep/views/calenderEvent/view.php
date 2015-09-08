@@ -8,9 +8,9 @@
                     <h4> 
                         <?php
                         echo Myclass::t('OG018', '', 'og') . ' ';
-                        echo date("Y-m-d", strtotime($model['DATE_AJOUT1'])) . ' ';
+                        echo date("d-m-Y", strtotime($model['DATE_AJOUT1'])) . ' ';
                         echo Myclass::t('OG019', '', 'og') . ' ';
-                        echo date("Y-m-d", strtotime($model['DATE_AJOUT2']))
+                        echo date("d-m-Y", strtotime($model['DATE_AJOUT2']))
                         ?>
                     </h4>
                     <div class="clearfix"></div>
@@ -19,8 +19,8 @@
                         <p>
                             <a target="_blank" href="<?php echo $model['LIEN_URL']; ?>"><?php echo $model['LIEN_TITRE']; ?></a>
                         </p>
-                        <div class="clearfix"></div>               
-                        <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optirep/calenderEvent'), array('class' => 'basic-btn')); ?>
+                        <div class="clearfix"></div>      
+                         <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> '.Myclass::t('OG016', '', 'og'), array('/optirep/calenderEvent'),array("class"=>"pull-left")); ?> </div>  
                     </div>
                 </div>
             </div>
