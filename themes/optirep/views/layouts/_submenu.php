@@ -26,10 +26,10 @@
                     'items' => array(
                         array('label' => Myclass::t('OG008', '', 'og'), 'url' => array('/optirep/suppliersDirectory'), 'active' => ($_controller == 'suppliersDirectory' && ($_action == 'index' || $_action == 'view'))),
                         array('label' => Myclass::t('OG009', '', 'og'), 'url' => array('/optirep/suppliersDirectory/category') , 'active' => ($_controller == 'suppliersDirectory' && $_action == 'category')),
-                        array('label' => Myclass::t('OG010', '', 'og'), 'url' => array('/optirep/marqueDirectory'), 'active' => $_controller == 'marqueDirectory'),
-                        array('label' => Myclass::t('OG011', '', 'og'), 'url' => array('/optirep/newsManagement'), 'active' => $_controller == 'newsManagement'),
+                        array('label' => Myclass::t('OG010', '', 'og'), 'url' => array('/optirep/marqueDirectory'), 'active' => $_controller == 'marqueDirectory'),                       
                         array('label' => Myclass::t('OG030', '', 'og'), 'url' => array('/optirep/professionalDirectory'), 'active' => $_controller == 'professionalDirectory'),
                         array('label' => Myclass::t('OG032', '', 'og'), 'url' => array('/optirep/retailerDirectory'), 'active' => $_controller == 'retailerDirectory'),
+                        array('label' => Myclass::t('OG011', '', 'og'), 'url' => array('/optirep/newsManagement'), 'active' => $_controller == 'newsManagement'),
                         array('label' => Myclass::t('OG012', '', 'og'), 'url' => array('/optirep/calenderEvent'), 'active' => $_controller == 'calenderEvent'),
                         array('label' => Myclass::t('OG013', '', 'og'), 'url' => array('/optirep/groupInformation'), 'active' => $_controller == 'groupInformation'),
                         ),

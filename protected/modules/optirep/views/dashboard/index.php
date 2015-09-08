@@ -30,7 +30,7 @@
                 }
             }else
             {
-                    $fav_rets = "<p class='fav_message'>You have no favourite retailers right now.".CHtml::link( "Click", array('/optirep/retailerDirectory'))." to see the retailers listing and make it your favourite!!!.</p>";
+                    $fav_rets = "<p class='fav_message'>You have no favorite retailers right now.".CHtml::link( "Click", array('/optirep/retailerDirectory'))." to see the retailers listing and make it your favorite!!!.</p>";
             }               
             echo $fav_rets;
             ?>   

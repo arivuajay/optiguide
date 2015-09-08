@@ -10,7 +10,26 @@
                         <span> <?php echo date("Y-m-d", strtotime($model['DATE_AJOUT1'])); ?> </span>
                     </h4> 
                     <div class="clearfix"></div>
+                   
                     <p> 
+                         <?php
+                        if($model['ID_FICHIER']>0)
+                        {    
+                            $pk = $model['ID_FICHIER'];
+                            $imageresult = ArchiveFichier::model()->findByPk($pk);  
+                            if ($imageresult['ID_CATEGORIE'] > 0) 
+                            {
+                                $extypes = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
+                                $img_ext = $imageresult['EXTENSION'];
+                                if (in_array($img_ext, $extypes)) 
+                                {
+                                    $img_url = Yii::app()->getBaseUrl(true) . '/uploads/archivage/' . $imageresult['ID_CATEGORIE'] . '/' . $imageresult['FICHIER'];?>
+                                    <img src="<?php echo $img_url; ?>"  alt=""> 
+                                    <?php
+                                }
+                            }
+                        }       
+                        ?>
                         <?php echo $model['TEXTE']; ?>
                     </p>
                     <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/newsManagement')); ?>
