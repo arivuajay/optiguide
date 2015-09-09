@@ -24,7 +24,7 @@ class RepAccountsController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'create', 'edit'),
+                'actions' => array('index', 'create', 'edit', 'buyMoreAccounts'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -44,7 +44,7 @@ class RepAccountsController extends ORController {
     public function actionCreate() {
         $current_plan = RepAdminSubscriptions::model()->getCurrentPlan();
         if (empty($current_plan)) {
-            Yii::app()->user->setFlash('danger', "You can't create new rep account");
+            Yii::app()->user->setFlash('danger', "Sorry, you can't create new rep account");
             $this->redirect(array('index'));
         }
 
@@ -114,6 +114,52 @@ class RepAccountsController extends ORController {
             'model' => $model,
             'profile' => $profile
         ));
+    }
+
+    public function actionBuyMoreAccounts() {
+        $can_buy = RepAdminSubscriptions::model()->canBuyMoreAccounts();
+        if (!$can_buy) {
+            Yii::app()->user->setFlash('danger', "Sorry, you can not buy more accounts");
+            $this->redirect(array('index'));
+        }
+
+        $model = new RepCredentials;
+        if (isset($_POST['btnSubmit'])) {
+            $subscription = new RepAdminSubscriptions;
+
+            $rep_admin_old_active_accounts = $model->getRepAdminActiveAccountsCount();
+            $no_of_accounts_purchase = $_POST['RepCredentials']['no_of_accounts_purchase'];
+            $total_no_of_accounts = $rep_admin_old_active_accounts + $no_of_accounts_purchase;
+            $price_list = Myclass::repAdminBuyMoreAccountsPriceCalculation($total_no_of_accounts, $no_of_accounts_purchase);
+
+            if ($this->payment()) {
+                $subscription->rep_credential_id = Yii::app()->user->id;
+                $subscription->rep_subscription_type_id = $price_list['subscription_type_id'];
+                $subscription->purchase_type = RepAdminSubscriptions::PURCHASE_TYPE_NEW;
+                $subscription->no_of_accounts_purchased = $no_of_accounts_purchase;
+                $subscription->rep_admin_old_active_accounts = $rep_admin_old_active_accounts;
+                $subscription->no_of_accounts_remaining = $no_of_accounts_purchase;
+                $subscription->rep_admin_per_account_price = $price_list['per_account_price'];
+                $subscription->rep_admin_total_price = $price_list['total_price'];
+                $subscription->rep_admin_tax = $price_list['tax'];
+                $subscription->rep_admin_grand_total = $price_list['grand_total'];
+                $subscription->rep_admin_subscription_start = date('Y-m-d');
+                $subscription->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
+
+                if ($subscription->save(false)) {
+                    Yii::app()->user->setFlash('success', "Thank you for purchase more rep accounts");
+                    $this->redirect(array('index'));
+                }
+            }
+        }
+
+        $this->render('buyMoreAccounts', array(
+            'model' => $model
+        ));
+    }
+
+    protected function payment() {
+        return true;
     }
 
 }

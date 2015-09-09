@@ -170,4 +170,15 @@ class RepCredentials extends CActiveRecord {
         );
     }
 
+    public function getRepAdminActiveAccountsCount() {
+        $criteria = new CDbCriteria;
+        $criteria->condition = 'rep_parent_id = :admin_id AND rep_expiry_date >= :today';
+        $criteria->params = array(
+            ':admin_id' => Yii::app()->user->id,
+            ':today' => date("Y-m-d"),
+        );
+        $result = $this->model()->count($criteria);
+        return $result;
+    }
+
 }

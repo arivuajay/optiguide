@@ -43,6 +43,7 @@
         $cs->registerScriptFile($themeUrl . '/js/bootstrap.min.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-select.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-switch.min.js', $cs_pos_end);
+        $cs->registerScriptFile($themeUrl . '/js/bootstrap-number-input.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/icheck.min.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/jquery.lionbars.0.3.js', $cs_pos_end);       
         

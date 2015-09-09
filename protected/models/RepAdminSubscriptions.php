@@ -188,7 +188,7 @@ class RepAdminSubscriptions extends CActiveRecord {
         $result = $this->model()->findAll($criteria);
         return $result[0]['total_no_of_accounts_purchased'];
     }
-    
+
     public function getTotalNoOfAccountsUsed() {
         $criteria = new CDbCriteria;
         $criteria->select = 'SUM(no_of_accounts_used) as total_no_of_accounts_used';
@@ -199,6 +199,15 @@ class RepAdminSubscriptions extends CActiveRecord {
         );
         $result = $this->model()->findAll($criteria);
         return $result[0]['total_no_of_accounts_used'];
+    }
+
+    public function canBuyMoreAccounts() {
+        $total_no_of_accounts_purchased = $this->getTotalNoOfAccountsPurchased();
+        $total_no_of_accounts_used = $this->getTotalNoOfAccountsUsed();
+        if($total_no_of_accounts_purchased == $total_no_of_accounts_used){
+            return true;
+        } 
+        return false;
     }
 
 }

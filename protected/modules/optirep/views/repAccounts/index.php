@@ -1,7 +1,7 @@
 <div class="cate-bg user-right">
     <h2> Manage Rep Accounts </h2>
     <div class="row"> 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 col-lg-offset-9">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-lg-offset-8">
             <table class="table table-responsive table-bordered">
                 <tr>
                     <td>Total no.of accounts</td>
@@ -14,6 +14,11 @@
                 <tr>
                     <td colspan="2">
                         <?php echo CHtml::link('Create New Rep Account', array('/optirep/repAccounts/create'), array('class' => 'pull-right')) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <?php echo CHtml::link('Buy More Rep Accounts', array('/optirep/repAccounts/buyMoreAccounts'), array('class' => 'pull-right')) ?>
                     </td>
                 </tr>
             </table>
@@ -72,7 +77,6 @@ $js = <<< EOD
         $('input[name="rep_status"]').on('switchChange.bootstrapSwitch', function(event, state) {
             var id = $(this).data("rep-id");
             var dataString = 'id='+ id;
-        
             $.ajax({
                 type: "POST",
                 url: '{$ajaxChangeRepStatusURL}',
