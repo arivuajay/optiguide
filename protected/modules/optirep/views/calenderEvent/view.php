@@ -8,9 +8,9 @@
                     <h4> 
                         <?php
                         echo Myclass::t('OG018', '', 'og') . ' ';
-                        echo date("d-m-Y", strtotime($model['DATE_AJOUT1'])) . ' ';
+                        echo date("Y-m-d", strtotime($model['DATE_AJOUT1'])) . ' ';
                         echo Myclass::t('OG019', '', 'og') . ' ';
-                        echo date("d-m-Y", strtotime($model['DATE_AJOUT2']))
+                        echo date("Y-m-d", strtotime($model['DATE_AJOUT2']))
                         ?>
                     </h4>
                     <div class="clearfix"></div>

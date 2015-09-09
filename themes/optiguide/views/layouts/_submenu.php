@@ -15,21 +15,29 @@
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li><?php echo CHtml::link(Myclass::t('OG008', '', 'og'), array('/optiguide/suppliersDirectory')); ?></li>      
-                    <li><?php echo CHtml::link(Myclass::t('OG010', '', 'og'), array('/optiguide/marqueDirectory')); ?></li>  
-                    <li><?php echo CHtml::link(Myclass::t('OG009', '', 'og'), array('/optiguide/suppliersDirectory/category')); ?></li>   
-                    
-                    <?php if (!Yii::app()->user->isGuest) { ?>
-                    <li><?php echo CHtml::link(Myclass::t('OG030', '', 'og'), array('/optiguide/professionalDirectory')); ?></li>  
-                    <li><?php echo CHtml::link(Myclass::t('OG032', '', 'og'), array('/optiguide/retailerDirectory')); ?></li>  
-                    <?php } ?>
-                    
-                    <li><?php echo CHtml::link(Myclass::t('OG011', '', 'og'), array('/optiguide/newsManagement')); ?></li>        
-                    <li><?php echo CHtml::link(Myclass::t('OG012', '', 'og'), array('/optiguide/calenderEvent')); ?></li>          
-                    <li><?php echo CHtml::link(Myclass::t('OG013', '', 'og'), array('/optiguide/groupInformation')); ?></li>
-                </ul>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">   
+                <?php                
+                // Current controller name
+                $_controller = Yii::app()->controller->id;
+                $_action = Yii::app()->controller->action->id;
+                $this->widget('zii.widgets.CMenu', array(
+                    'activateParents' => true,
+                    'activeCssClass' => 'active',
+                    'encodeLabel' => false,
+                    'activateItems' => true,
+                    'items' => array(
+                        array('label' => Myclass::t('OG008', '', 'og'), 'url' => array('/optiguide/suppliersDirectory'), 'active' => ($_controller == 'suppliersDirectory' && $_action == "index")),
+                        array('label' => Myclass::t('OG010', '', 'og'), 'url' => array('/optiguide/marqueDirectory'), 'active' => $_controller == 'marqueDirectory'),     
+                        array('label' => Myclass::t('OG009', '', 'og'), 'url' => array('/optiguide/suppliersDirectory/category'), 'active' => ($_controller == 'suppliersDirectory' && $_action == "category")),
+                        array('label' => Myclass::t('OG030', '', 'og'), 'url' => array('/optiguide/professionalDirectory'), 'active' => ($_controller == 'professionalDirectory' && $_action == "index") , 'visible'=>(!Yii::app()->user->isGuest)),
+                        array('label' => Myclass::t('OG032', '', 'og'), 'url' => array('/optiguide/retailerDirectory'), 'active' => ($_controller == 'retailerDirectory' && $_action == "index"), 'visible'=>(!Yii::app()->user->isGuest)),
+                        array('label' => Myclass::t('OG011', '', 'og'), 'url' => array('/optiguide/newsManagement'), 'active' => $_controller == 'newsManagement'),
+                        array('label' => Myclass::t('OG012', '', 'og'), 'url' => array('/optiguide/calenderEvent'), 'active' => $_controller == 'calenderEvent'),
+                        array('label' => Myclass::t('OG013', '', 'og'), 'url' => array('/optiguide/groupInformation'), 'active' => $_controller == 'groupInformation'),
+                    ),
+                    'htmlOptions' => array('class' => 'nav navbar-nav')
+                ));
+                ?>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>

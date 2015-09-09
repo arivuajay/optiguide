@@ -13,9 +13,9 @@
                         <div class="frm-to">
                         <?php 
                         echo Myclass::t('OG018', '', 'og') . ' ';
-                        echo '<b>'.date("d-m-Y", strtotime($event['DATE_AJOUT1'])) . '</b> ';
+                        echo '<b>'.date("Y-m-d", strtotime($event['DATE_AJOUT1'])) . '</b> ';
                         echo Myclass::t('OG019', '', 'og') . ' ';
-                        echo '<b>'.date("d-m-Y", strtotime($event['DATE_AJOUT2'])). '</b> ';
+                        echo '<b>'.date("Y-m-d", strtotime($event['DATE_AJOUT2'])). '</b> ';
                         ?>
                         </div>
                     </li>

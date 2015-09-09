@@ -32,7 +32,7 @@
                         ?>
                         <?php echo $model['TEXTE']; ?>
                     </p>
-                    <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/newsManagement')); ?>
+                    <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/newsManagement'), array('class' => 'basic-btn')); ?>
                 </div>
             </div>
         </div>

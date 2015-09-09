@@ -193,6 +193,16 @@ and open the template in the editor.
 
 .active2 {   
     padding: 2px 1px!important;
+    background: #F0F0F0 none repeat scroll 0 0 !important;   
+}
+
+.active2 a{
+    color: #000 !important;
+}
+
+.active a {
+    background: #398aca none repeat scroll 0 0 !important;
+    color: #ffffff !important;
 }
 
 #calendar .content {    

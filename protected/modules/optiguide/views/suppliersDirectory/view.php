@@ -18,27 +18,28 @@
    $disp = 0;     
  }  
  ?>
+
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
         <div class="inner-container eventslist-cont">            
             <h2> <?php echo $model['COMPAGNIE'];?> </h2>
             <div class="row"> 
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 brand-logo">  
+                 
                 <?php
                 if($model['ID_CATEGORIE']>0)
                 { 
                    $extypes  = array('jpg','jpeg','png','gif','bmp');  
                    $img_ext  = $model['EXTENSION']; 
-                   if(in_array($img_ext, $extypes))
-                   {        
+                    if(in_array($img_ext, $extypes))
+                    {        
                        $img_url  = Yii::app()->getBaseUrl(true).'/uploads/archivage/'.$model['ID_CATEGORIE'].'/'.$model['FICHIER']; 
                     ?>
-                      <img src="<?php echo $img_url;?>"  alt="">
+                       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 brand-logo"> <img src="<?php echo $img_url;?>"  alt=""> </div>
                 <?php
-                   }
+                    }
                 }
                 ?>
-                </div>
+               
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">  
                     <div class="search-list ">
                         <h2><?php echo Myclass::t('OG071', '', 'og');?> </h2>
@@ -52,13 +53,13 @@
                         <?php if($disp==1){ ?>
                         <p>
                             <?php echo Myclass::t('OG041', '', 'og');?> : <?php echo $model['TELEPHONE']; ?><br>                       
-                            <?php if($model['TELECOPIEUR']!='')    { echo   Myclass::t('OG042', '', 'og').' : '.$model['TELECOPIEUR']; } ?><br>                            
-                            <?php if($model['TEL_SANS_FRAIS']!='') { echo   Myclass::t('OG068', '', 'og').' : '.$model['TEL_SANS_FRAIS']; } ?><br>
+                            <?php if($model['TELECOPIEUR']!='')    { echo   Myclass::t('OG042', '', 'og').' : '.$model['TELECOPIEUR'].'<br>'; } ?>                            
+                            <?php if($model['TEL_SANS_FRAIS']!='') { echo   Myclass::t('OG068', '', 'og').' : '.$model['TEL_SANS_FRAIS'].'<br>'; } ?>
                             <?php if($model['TEL_SECONDAIRE']!='') { echo   Myclass::t('OG069', '', 'og').' : '.$model['TEL_SECONDAIRE']; } ?>                          
                         </p>                                                   
                         <p>
                             <?php if($model['COURRIEL']!=''){
-                            echo Myclass::t('APP6');?> : <a href="mailto:<?php echo $model['COURRIEL']; ?>"><?php echo $model['COURRIEL']; ?></a><br/>
+                            echo Myclass::t('APP6');?> : <a href="mailto:<?php echo $model['COURRIEL']; ?>"><?php echo $model['COURRIEL'].'<br>'; ?></a>
                             <?php } ?>
                             <?php if($model['SITE_WEB']!=''){
                             echo Myclass::t('APP76');?> : <a href="<?php echo $model['SITE_WEB']; ?>" target="_blank"><?php echo $model['SITE_WEB']; ?></a>
@@ -67,7 +68,10 @@
                         <?php }?>
                     </div>
                 </div>
-                 <?php if($disp==1){ ?>
+                 
+                      
+            <?php if($disp==1){ ?>
+                    
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">  
                     <div class="search-list company-infom">
                         <h2><?php echo Myclass::t('OG072', '', 'og');?> </h2>
@@ -146,8 +150,11 @@
                         </div>
                     </div>
                 </div>   
+                    
                 <?php }?>
-            </div>
+                    
+            </div>             
         </div>
+        <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/suppliersDirectory'), array('class' => 'basic-btn')); ?>
     </div>
 </div>
