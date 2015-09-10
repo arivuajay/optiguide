@@ -27,15 +27,15 @@ input.subscription_types {
 
 
 .addfav-btn{
-        text-align:right;
+    text-align:right;
     background:#f0f0f0;
     text-align: center;
-    	-webkit-border-radius: 5px;
--moz-border-radius: 5px;
-border-radius:5px;
-padding: 5px;
-    
-    
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius:5px;
+    padding: 5px;
+
+
 }
 
 
@@ -62,7 +62,7 @@ padding: 5px;
 
 .ui-datepicker-prev, .ui-datepicker-next
 {
-   // display: none;
+    // display: none;
 }
 
 .ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
@@ -95,20 +95,20 @@ padding: 5px;
 
 
 .btn {
-  font-size: 16px;
+    font-size: 16px;
 }
 
 
 .calendar-list{
     margin-top:-25px;
-    
+
 }
 
 
 .calendar-list ul{
-    
+
     border-bottom: #f0f0f0 solid 1px;
-    
+
 }
 
 .frm-to
@@ -128,8 +128,8 @@ padding: 5px;
 }
 
 .active2 a{
-  background: #398aca none repeat scroll 0 0 !important;
-  color: #ffffff !important;
+    background: #398aca none repeat scroll 0 0 !important;
+    color: #ffffff !important;
 }
 
 .favusers{
@@ -144,4 +144,14 @@ padding: 5px;
     border-radius: 5px;
     padding: 5px;
     text-align: center;
+}
+
+span.input-group-btn {
+    float: left;
+    width: auto;
+}
+
+.no_of_accounts_input {
+  float: left;
+  width: auto;
 }

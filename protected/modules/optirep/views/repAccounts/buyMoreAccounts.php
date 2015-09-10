@@ -13,7 +13,9 @@ $form = $this->beginWidget('CActiveForm', array(
                         <?php echo $form->labelEx($model, 'no_of_accounts_purchase'); ?>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <?php echo $form->numberField($model, 'no_of_accounts_purchase', array('class' => 'form-field quantity_number', "min" => "1", "step" => "1")); ?>
+                        <div class="no_of_accounts">
+                            <?php echo $form->numberField($model, 'no_of_accounts_purchase', array('class' => 'no_of_accounts_input', "min" => "1", "step" => "1")); ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -52,7 +54,7 @@ $form = $this->beginWidget('CActiveForm', array(
 <?php
 $js = <<<EOD
     $(document).ready(function(){
-        $('.quantity_number').bootstrapNumber();
+        $('.no_of_accounts_input').bootstrapNumber();
     });
 EOD;
 
