@@ -47,7 +47,7 @@
                                 <td><?php echo $i++; ?></td>
                                 <td><?php echo $repAdminSubscriber['rep_username'] ?></td>
                                 <td><?php echo $repAdminSubscriber['rep_password'] ?></td>
-                                <td><?php echo $repAdminSubscriber['rep_expiry_date'] ?></td>
+                                <td><?php echo date("Y-m-d", strtotime($repAdminSubscriber['rep_expiry_date'])) ?></td>
                                 <td>
                                     <input type="checkbox" name="rep_status" <?php echo $checked; ?> data-on-text="ACTIVE" data-off-text="BLOCK" data-rep-id ="<?php echo $repAdminSubscriber['rep_credential_id']?>" class="status">
                                 </td>

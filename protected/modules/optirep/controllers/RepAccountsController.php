@@ -24,7 +24,7 @@ class RepAccountsController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'create', 'edit', 'buyMoreAccounts'),
+                'actions' => array('index', 'create', 'edit', 'buyMoreAccounts', 'buyMoreAccountsPriceList'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -156,6 +156,24 @@ class RepAccountsController extends ORController {
         $this->render('buyMoreAccounts', array(
             'model' => $model
         ));
+    }
+
+    public function actionBuyMoreAccountsPriceList() {
+        if (Yii::app()->request->isAjaxRequest) {
+            $model = new RepCredentials;
+            $rep_admin_old_active_accounts = $model->getRepAdminActiveAccountsCount();
+            $no_of_accounts_purchase = $_POST['no_of_accounts'];
+            $total_no_of_accounts = $rep_admin_old_active_accounts + $no_of_accounts_purchase;
+            $price_list = Myclass::repAdminBuyMoreAccountsPriceCalculation($total_no_of_accounts, $no_of_accounts_purchase);
+            $return = array();
+            $return['per_account_price'] = Myclass::currencyFormat($price_list['per_account_price']);
+            $return['total_price'] = Myclass::currencyFormat($price_list['total_price']);
+            $return['tax'] = Myclass::currencyFormat($price_list['tax']);
+            $return['grand_total'] = Myclass::currencyFormat($price_list['grand_total']);
+            echo json_encode($return);
+        } else {
+            $this->redirect(array('dashboard/index'));
+        }
     }
 
     protected function payment() {
