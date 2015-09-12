@@ -17,6 +17,13 @@ class DefaultController extends OGController {
         $this->render('subscribe');
     }
     
+    public function actionAccess()
+    {
+       //echo Yii::app()->createUrl('/optiguide/default/updateadsclick');
+        echo Yii::app()->createAbsoluteUrl('/optiguide/default/access');
+        exit;
+    }        
+    
     public function actionContactus() {
         $this->render('contactus');
     }

@@ -12,6 +12,7 @@ and open the template in the editor.
     color: #d9534f;
 }
 
+
 .fr .signin-btn {
     font-size: 15px;
 }
@@ -253,4 +254,13 @@ and open the template in the editor.
 
 .poll-label{
     padding: 13px 0 0;
+}
+
+.mapgenrate {
+    font-size: 12px !important;
+    padding: 6px!important;
+    text-align: center!important;
+}
+.mapgenrate:hover {
+    background: none !important;
 }

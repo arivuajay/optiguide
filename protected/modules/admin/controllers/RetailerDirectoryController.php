@@ -81,6 +81,19 @@ class RetailerDirectoryController extends Controller {
         //    $valid = $model->validate() && $valid;
 
             if ($model->validate()) {
+                
+                $address = $model->ADRESSE;
+                $country = $model->country;
+                $region  = $model->region;
+                $cty     = $model->ID_VILLE;
+                $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
+                if($geo_values!='')
+                {
+                    $exp_latlong = explode('~',$geo_values);
+                    $model->map_lat  = $exp_latlong[0];
+                    $model->map_long = $exp_latlong[1];        
+                }    
+                
                 $model->save(false);
                // $umodel->ID_RELATION = $model->ID_RETAILER;
               //  $umodel->save(false);
@@ -117,6 +130,19 @@ class RetailerDirectoryController extends Controller {
        //     $valid = $model->validate() && $valid;
 
             if ($model->validate()) {
+                
+                $address = $model->ADRESSE;
+                $country = $model->country;
+                $region  = $model->region;
+                $cty     = $model->ID_VILLE;
+                $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
+                if($geo_values!='')
+                {
+                    $exp_latlong = explode('~',$geo_values);
+                    $model->map_lat  = $exp_latlong[0];
+                    $model->map_long = $exp_latlong[1];        
+                }    
+                
              //   $umodel->save(false);
                 $model->save(false);
                 Yii::app()->user->setFlash('success', 'Détaillant correctement mis à jour!!!');

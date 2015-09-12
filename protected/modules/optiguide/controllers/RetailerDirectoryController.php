@@ -42,7 +42,7 @@ class RetailerDirectoryController extends OGController {
         return array_merge(
                 parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('create', 'getgroups'),
+                'actions' => array('create', 'getgroups','generatelatlong'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -59,7 +59,19 @@ class RetailerDirectoryController extends OGController {
                 )
         );
     }
-       
+    
+    public function actionGeneratelatlong()
+    {
+        $geo_values = '';
+        $address  = $_POST['RetailerDirectory']['ADRESSE'];
+        $country  = $_POST['RetailerDirectory']['country'];
+        $region   = $_POST['RetailerDirectory']['region'];
+        $cty      = $_POST['RetailerDirectory']['ID_VILLE'];      
+        $geo_values = Myclass::generatemaplocation($address,$country,$region,$cty);
+        echo $geo_values;
+        exit;        
+    }   
+    
       /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
@@ -248,11 +260,36 @@ class RetailerDirectoryController extends OGController {
             $valid = $model->validate() && $valid;
 
             if ($valid) {
+                
+                $address = $model->ADRESSE;
+                $country = $model->country;
+                $region  = $model->region;
+                $cty     = $model->ID_VILLE;
+                $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
+                if($geo_values!='')
+                {
+                    $exp_latlong = explode('~',$geo_values);
+                    $model->map_lat  = $exp_latlong[0];
+                    $model->map_long = $exp_latlong[1];        
+                }    
+                
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_RETAILER;
                 $umodel->save(false);
+                                
+                /* Send mail to retailer for confirmation */
+//                $mail    = new Sendmail();
+//                $retailer_url = Yii::app()->createAbsoluteUrl('/optiguide/default/access',array('id'=>$umodel->sGuid));
+//                $subject      =  SITENAME." - Registration Confirmation Email";
+//                $trans_array  = array(
+//                    "{NAME}"    => $model->COMPAGNIE,                    
+//                    "{UTYPE}"   => 'optical retailer',
+//                    "{NEXTSTEPURL}" => $retailer_url,
+//                );
+//                $message = $mail->getMessage('confirm_registration', $trans_array);
+//                $mail->send($model->COURRIEL, $subject, $message);
                 
-                 /* Send mail to admin for confirmation */
+                /* Send mail to admin for confirmation */
                 $mail    = new Sendmail();
                 $retailer_url = ADMIN_URL.'/admin/userDirectory/update/id/'.$umodel->ID_UTILISATEUR;
                 $enc_url      = Myclass::refencryption($retailer_url);              
@@ -311,7 +348,20 @@ class RetailerDirectoryController extends OGController {
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
 
-            if ($valid) {                
+            if ($valid) {          
+                
+                $address = $model->ADRESSE;
+                $country = $model->country;
+                $region  = $model->region;
+                $cty     = $model->ID_VILLE;
+                $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
+                if($geo_values!='')
+                {
+                    $exp_latlong = explode('~',$geo_values);
+                    $model->map_lat  = $exp_latlong[0];
+                    $model->map_long = $exp_latlong[1];        
+                }    
+                
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_RETAILER;
                 $umodel->save(false);  

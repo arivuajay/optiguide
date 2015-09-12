@@ -79,9 +79,9 @@ class CalenderEvent extends CActiveRecord {
             'AFFICHER_SITE' => Myclass::t('Afficher Site'),
             'AFFICHER_ACCUEIL' => Myclass::t('Afficher Accueil'),
             'AFFICHER_ARCHIVE' => Myclass::t('Afficher Archive'),
-            'ID_PAYS' => Myclass::t('Id Pays'),
-            'ID_REGION' => Myclass::t('Id Region'),
-            'ID_VILLE' => Myclass::t('Id Ville'),
+            'ID_PAYS' => Myclass::t('Pays'),
+            'ID_REGION' => Myclass::t('Region'),
+            'ID_VILLE' => Myclass::t('Ville'),
             'Year'      => Myclass::t('Année'),
             'Keyword'   =>  Myclass::t('Mot clé')
         );

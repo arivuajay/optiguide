@@ -15,7 +15,9 @@
                     </div>
                 <?php } ?>
             <?php endif ?>
-
+            
+            <?php $this->renderPartial('//layouts/_map'); ?>
+   
             <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
                 <div class="user-left cate-bg"> 
                     <div class="user-deatils"> 
@@ -36,6 +38,7 @@
                     ?>
                 </div> 
             </div>
+            
             <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">  
                 <?php echo $content; ?>
             </div>

@@ -34,7 +34,7 @@
             }               
             echo $fav_rets;
             ?>   
-        <div class="viewall"><a href="#">View all</a></div>
+        <div class="viewall"><?php echo CHtml::link(Myclass::t('OG038', '', 'og'), array('/optirep/repFavourites'), array('class' => '')); ?></div>
     </div>
 </div>
 

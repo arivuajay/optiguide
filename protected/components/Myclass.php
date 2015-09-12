@@ -383,5 +383,41 @@ class Myclass extends CController {
         $result['grand_total'] = $grand_total;
         return $result;
     }
+    
+    public static function generatemaplocation($address,$country,$region,$cty)
+    {
+        $geo_values = '';      
+      
+        if($address!='' && $country!='' && $region!='' && $cty!='')
+        {    
+            $results = Yii::app()->db->createCommand() //this query contains all the data
+                        ->select('NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
+                        ->from(array('repertoire_ville rv', 'repertoire_region rr', 'repertoire_pays AS rp'))
+                        ->where("rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND rv.ID_VILLE = ".$cty)
+                        ->queryAll();
+       
+            if(!empty($results))
+            {    
+                foreach ($results as $info) {
+                     $city_nme    = $info['NOM_VILLE'];
+                     $region_nme  = $info['NOM_REGION_EN'];
+                     $country_nme = $info['NOM_PAYS_EN'];
+                }
+                
+                $sample_address = $address." , ".$city_nme." ,".$region_nme." ,".$country_nme;               
+                
+                //Get lat ad long vales from gven addres
+                 Yii::import('ext.gmaps.*');    
+                 $gMap = new EGMap();  
+                 $geocoded_address = new EGMapGeocodedAddress($sample_address);
+                 $geocoded_address->geocode($gMap->getGMapClient());
+                 $lat_val  = $geocoded_address->getLat();
+                 $long_val = $geocoded_address->getLng();
+                 
+                 $geo_values = $lat_val."~".$long_val;                 
+            }  
+        }
+        return $geo_values;       
+    }  
 
 }

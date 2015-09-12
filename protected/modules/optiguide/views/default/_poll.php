@@ -1,5 +1,6 @@
 <?php
 if (Myclass::is_home_page()) {
+    
     $pdate = date("Y-m", time());
     $usertype = Yii::app()->user->getState('role');
     if ($usertype == "Professionnels") {
@@ -12,6 +13,7 @@ if (Myclass::is_home_page()) {
     {
         $utype = 1;
     }
+    
     $criteria = new CDbCriteria;
     $criteria->condition = "polldate like '%$pdate%' and usertype=$utype";
     $poll_rslt = Poll::model()->findAll($criteria);
@@ -22,6 +24,14 @@ if (Myclass::is_home_page()) {
         if($polid != '') {
             $this->widget('EPoll', array('poll_id' => $polid));
         }
-    }
+    }else
+    {?>
+     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">   
+        <div class="latest-newscont"> 
+             <h2><?php echo  Myclass::t('OG151');?></h2>   
+             <p>Please keep a watch...your polling question will be up in this space soon!</p>
+        </div>
+    </div>     
+   <?php }    
 }
 ?>

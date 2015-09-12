@@ -40,7 +40,7 @@ class ProfessionalDirectoryController extends OGController {
         return array_merge(
                 parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('create'),
+                'actions' => array('create','generatelatlong'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -54,10 +54,23 @@ class ProfessionalDirectoryController extends OGController {
             array('deny', // deny all users
                 'users' => array('*'),
             ),
-                )
+           )
         );
     }
-
+    
+    
+    public function actionGeneratelatlong()
+    {
+        $geo_values = '';
+        $address  = $_POST['ProfessionalDirectory']['ADRESSE'];
+        $country  = $_POST['ProfessionalDirectory']['country'];
+        $region   = $_POST['ProfessionalDirectory']['region'];
+        $cty      = $_POST['ProfessionalDirectory']['ID_VILLE'];      
+        $geo_values = Myclass::generatemaplocation($address,$country,$region,$cty);
+        echo $geo_values;
+        exit;        
+    }   
+    
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
@@ -353,6 +366,19 @@ class ProfessionalDirectoryController extends OGController {
             $valid = $model->validate() && $valid;
 
             if ($valid) {
+                   
+                $address = $model->ADRESSE;
+                $country = $model->country;
+                $region  = $model->region;
+                $cty     = $model->ID_VILLE;
+                $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
+                if($geo_values!='')
+                {
+                    $exp_latlong = explode('~',$geo_values);
+                    $model->map_lat  = $exp_latlong[0];
+                    $model->map_long = $exp_latlong[1];        
+                }    
+                        
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_SPECIALISTE;
                 $umodel->save(false);
@@ -406,6 +432,19 @@ class ProfessionalDirectoryController extends OGController {
             $valid = $model->validate() && $valid;
 
             if ($valid) {
+                
+                $address = $model->ADRESSE;
+                $country = $model->country;
+                $region  = $model->region;
+                $cty     = $model->ID_VILLE;
+                $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
+                if($geo_values!='')
+                {
+                    $exp_latlong = explode('~',$geo_values);
+                    $model->map_lat  = $exp_latlong[0];
+                    $model->map_long = $exp_latlong[1];        
+                }   
+                
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_SPECIALISTE;
                 $umodel->save(false);

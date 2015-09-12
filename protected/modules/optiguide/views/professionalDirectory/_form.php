@@ -171,11 +171,20 @@
                             <?php echo $form->labelEx($model, 'CODE_POSTAL'); ?>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-                            <?php echo $form->textField($model, 'CODE_POSTAL', array('class' => 'form-txtfield')); ?>
-                            <?php echo $form->error($model, 'CODE_POSTAL'); ?>
+                            <?php echo $form->textField($model, 'CODE_POSTAL', array('class' => 'form-txtfield')); ?>                            
                         </div>
                     </div>
-
+                    
+                     <div class="form-row1"> 
+                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">&nbsp;  </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
+                            <a class="mapgenrate" href="javascript:void(0);" id="genratemap">Click to View your location</a>
+                            <div id="display_map" style="display:none;width:450px;height:350px; "></div> 
+                            <?php echo $form->hiddenField($model,'map_lat',array('id'=>'latid')); ?>
+                            <?php echo $form->hiddenField($model,'map_long',array('id'=>'longid')); ?>                           
+                        </div>
+                    </div>
+                    
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                             <?php echo $form->labelEx($model, 'TELEPHONE'); ?>
@@ -308,9 +317,101 @@
 
 <?php
 $ajaxRegionUrl = Yii::app()->createUrl('/optiguide/professionalDirectory/getregions');
-$ajaxCityUrl = Yii::app()->createUrl('/optiguide/professionalDirectory/getcities');
+$ajaxCityUrl   = Yii::app()->createUrl('/optiguide/professionalDirectory/getcities');
+$ajaxgetlocation   = Yii::app()->createUrl('/optiguide/professionalDirectory/generatelatlong');
+$cs = Yii::app()->getClientScript();
+$cs_pos_end = CClientScript::POS_END;
+$cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
+
+$lat  = $model->map_lat;
+$long = $model->map_long;
 $js = <<< EOD
+   
     $(document).ready(function(){
+        
+      var latval  = parseFloat("{$lat}") || 0;
+      var longval = parseFloat("{$long}") || 0;
+        
+     function initialize() {
+      
+        // Define the latitude and longitude positions
+        var latitude = parseFloat(latval); // Latitude get from above variable
+        var longitude = parseFloat(longval); // Longitude from same
+        var latlngPos = new google.maps.LatLng(latitude, longitude);
+
+        // Set up options for the Google map
+        var mapOptions = {
+            zoom: 15,
+            center: latlngPos,
+            zoomControlOptions: true,
+            zoomControlOptions: {
+                style: google.maps.ZoomControlStyle.LARGE
+            }
+        };
+        // Define the map
+        $("#display_map").show();
+        map = new google.maps.Map(document.getElementById("display_map"), mapOptions);
+
+        var marker = new google.maps.Marker({
+                  position: latlngPos,
+                  map: map,
+                  icon:'{$this->themeUrl}/images/map-red.png',
+                  draggable:false,
+                  animation: google.maps.Animation.DROP
+          });
+    }   
+    
+    if(latval!=0 && longval!=0)
+    {    
+        google.maps.event.addDomListener(window, 'load', initialize);    
+    }    
+    
+     $('#genratemap').click(function(){
+        var form = $('#professional-directory-form');
+        $.ajax({
+            type: "POST",
+            url: '{$ajaxgetlocation}',
+            data: form.serialize(),
+            success: function( response ) {
+            
+                if(response!='')
+                {
+                    var res = response.split("~");                   
+
+                    // Define the latitude and longitude positions
+                    var latitude  = parseFloat(res[0]);
+                    var longitude = parseFloat(res[1]);
+                    var latlngPos = new google.maps.LatLng(latitude, longitude);
+            
+                    $('#latid').val(latitude);
+                    $('#longid').val(longitude);
+
+                    // Set up options for the Google map
+                    var mapOptions = {
+                        zoom: 15,
+                        center: latlngPos,
+                        zoomControlOptions: true,
+                        zoomControlOptions: {
+                            style: google.maps.ZoomControlStyle.LARGE
+                        }
+                    };
+
+                    // Define the map and show
+                    $("#display_map").show();
+                    map = new google.maps.Map(document.getElementById("display_map"), mapOptions);
+
+                    var marker = new google.maps.Marker({
+                              position: latlngPos,
+                              map: map,
+                              icon:'{$this->themeUrl}/images/map-red.png',
+                              draggable:false,
+                              animation: google.maps.Animation.DROP
+                      });
+                }        
+            }
+       });
+     });    
+        
     $("#ProfessionalDirectory_country").change(function(){
         var id=$(this).val();
         var dataString = 'id='+ id;
