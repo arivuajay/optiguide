@@ -1594,3 +1594,13 @@ a:focus
 {
 	outline:none;
 }
+
+.search-list ul li a {
+  color: #337ab7;
+  font-weight: 700;
+}
+
+.footer-bg a {
+  color: #337ab7;
+  text-decoration: none;
+}
