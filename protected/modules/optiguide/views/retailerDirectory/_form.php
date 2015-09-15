@@ -244,6 +244,70 @@
                         <?php echo $form->error($model, 'COURRIEL'); ?>
                     </div>
                 </div> 
+                
+                 <div class="form-row1"> 
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                            <?php echo $form->labelEx($model, 'established', array()); ?>   
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                            <?php echo $form->textField($model, 'established', array('class' => 'form-control', 'size' => 4, 'maxlength' => 4)); ?>
+                            <?php echo $form->error($model, 'established'); ?>  
+                        </div>      
+                    </div>
+
+                    <div class="form-row1"> 
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                            <?php echo $form->labelEx($model, 'no_of_employee', array()); ?>     
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                            <?php echo $form->textField($model, 'no_of_employee', array('class' => 'form-control')); ?>
+                            <?php echo $form->error($model, 'no_of_employee'); ?>  
+                        </div>     
+                    </div>
+                
+                   <div class="form-row1"> 
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                            <?php echo $form->labelEx($model, 'services_offered', array()); ?>     
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                            <?php echo $form->textField($model, 'services_offered', array('class' => 'form-control')); ?>
+                            <?php echo $form->error($model, 'services_offered'); ?>  
+                        </div>     
+                    </div>
+                
+                   <div class="form-row1"> 
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                            <?php echo $form->labelEx($model, 'description', array()); ?>     
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                            <?php echo $form->textField($model, 'description', array('class' => 'form-control')); ?>
+                            <?php echo $form->error($model, 'description'); ?>  
+                        </div>     
+                    </div>
+                
+                    <div class="form-row1"> 
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                            <?php echo $form->labelEx($model, 'turnover', array()); ?>     
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                            <?php echo $form->textField($model, 'turnover', array('class' => 'form-control')); ?>
+                            <?php echo $form->error($model, 'turnover'); ?>  
+                        </div>     
+                    </div>
+                
+                    <div class="form-row1"> 
+                           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                               <?php 
+                               $classificationtypes['Upscale'] = "Upscale (high priced)";
+                               $classificationtypes['Midscale'] = "Midscale (medium priced)";
+                               $classificationtypes['DownRange'] = "Down range (low priced)";                      
+                               echo $form->labelEx($model, 'classification', array()); ?>     
+                           </div>
+                           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                               <?php echo $form->dropDownList($model, 'classification', $classificationtypes, array('class' => 'selectpicker')); ?>    
+                               <?php echo $form->error($model, 'classification'); ?>  
+                           </div>     
+                    </div>
             </div>
             <div class="forms-cont"> 
                 <div class="forms-heading"><i class="fa fa-user"></i>  <?php echo  Myclass::t('OG113');?></div>

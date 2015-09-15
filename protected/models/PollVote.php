@@ -18,7 +18,7 @@
  */
 class PollVote extends CActiveRecord
 {
-    public  $ID_TYPE_SPECIALISTE;
+    public  $ID_TYPE_SPECIALISTE,$region,$ID_VILLE;
     /**
    * Returns the static model of the specified AR class.
    * @return PollVote the static model class
@@ -42,10 +42,11 @@ class PollVote extends CActiveRecord
   public function rules()
   {
     return array(
-      array('choice_id, poll_id', 'required','message'=> Myclass::t('OG149')),      
+      array('choice_id, poll_id', 'required','message'=> Myclass::t('OG149')),  
+      array('region,ID_VILLE', 'required','message'=> Myclass::t('OG152')),
       array('choice_id, poll_id, user_id, timestamp', 'length', 'max'=>11),
       array('ip_address', 'length', 'max'=>16),
-      array('ID_TYPE_SPECIALISTE','safe'),  
+      array('ID_TYPE_SPECIALISTE,region,ID_VILLE','safe'),  
     );
   }
 
@@ -69,6 +70,8 @@ class PollVote extends CActiveRecord
     return array(
       'choice_id' =>  Myclass::t('OG150'),
       'ID_TYPE_SPECIALISTE' => Myclass::t('OG102'),
+      'region' => Myclass::t('APP48'),
+      'ID_VILLE' => Myclass::t('APP70'),
     );
   }
 

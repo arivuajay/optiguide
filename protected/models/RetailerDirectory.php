@@ -56,17 +56,16 @@ class RetailerDirectory extends CActiveRecord
 		return array(
 			array('COMPAGNIE, ID_RETAILER_TYPE, ID_GROUPE, country, region, ID_VILLE,CODE_POSTAL, TELEPHONE,ADRESSE', 'required'),
                         array( 'Retailers2' , 'required' , 'on'=>'mapping' ,'message'=> Myclass::t('OGO159', '', 'og')),
-			array('ID_VILLE, ID_RETAILER_TYPE, ID_GROUPE, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5', 'numerical', 'integerOnly'=>true),
+			array('ID_VILLE, ID_RETAILER_TYPE, ID_GROUPE, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5,established,no_of_employee', 'numerical', 'integerOnly'=>true),
 			array('ID_CLIENT', 'length', 'max'=>10),
 			array('COMPAGNIE, ADRESSE, ADRESSE2, URL, COURRIEL, GROUPE, HEAD_OFFICE_NAME', 'length', 'max'=>255),
 			array('CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, TEL_1800', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.    
                         array('CATEGORY_1,CATEGORY_2,CATEGORY_3,CATEGORY_4,CATEGORY_5','Checkatleast'),                     
-                        array('Categories,uaccess_search,searchcat,Retailers1,Retailers2','safe'),
+                        array('Categories,uaccess_search,searchcat,Retailers1,Retailers2,services_offered,description,classification,turnover','safe'),
                         array('COURRIEL','email'),
-                        array('URL', 'url'),
-                        
+                        array('URL', 'url'),                        
 			array('uaccess_search,ID_RETAILER, ID_CLIENT, COMPAGNIE, ID_VILLE, ADRESSE, ADRESSE2, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, URL, COURRIEL, TEL_1800, DATE_MODIFICATION, ID_RETAILER_TYPE, ID_GROUPE, GROUPE, HEAD_OFFICE_NAME, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5', 'safe', 'on'=>'search'),
                         array('TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2,TEL_1800', 'phoneNumber'),
 		);
@@ -156,9 +155,13 @@ class RetailerDirectory extends CActiveRecord
                         'Categories' => Myclass::t('Catégories'),
                         'region'     => Myclass::t('APP48'),
                         'country'    => Myclass::t('APP68'),
-                        'USR'       => Myclass::t('ID')
-                        
-                        
+                        'USR'       => Myclass::t('ID'),
+                        'services_offered' => Myclass::t('OG155'),
+                        'description' => Myclass::t('OG156'),
+                        'established' => Myclass::t('OG128'),
+                        'no_of_employee' => Myclass::t('OG129'),
+                        'turnover'  => Myclass::t('OG153'),
+                        'classification' => Myclass::t('OG154'),
 		);
 	}
 

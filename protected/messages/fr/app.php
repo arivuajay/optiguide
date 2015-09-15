@@ -165,8 +165,15 @@ return array(
     'OG147' => 'Mâle',
     'OG148' => 'Femelle',
     
-    'OG149' => 'S\'il vous plaît choisir l\'un {attribute}  pour vote .',
+    'OG149' => 'Choisissez une quelconque {attribute} pour vote .',
     'OG150' => 'choix',
     'OG151' => 'Vote',
+    'OG152' => 'S\'il vous plaît sélectionnez tout {attribute}.',
+    
+     // Retailer form additional fields
+    'OG153' => 'TurnOver',
+    'OG154' => 'Classement des marchandises',
+    'OG155' => 'Services offerts',
+    'OG156' => 'Description'
 );
 ?>
