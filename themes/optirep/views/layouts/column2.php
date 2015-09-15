@@ -29,8 +29,8 @@
                     $this->widget('zii.widgets.CMenu', array(
                         'activeCssClass' => 'active',
                         'items' => array(
-                            array('label' => 'Edit Profile', 'url' => array('/optirep/repCredential/editprofile')),                          
-                            array('label' => 'Manage Rep Accounts', 'url' => array('/optirep/repAccounts/index')),
+                            array('label' => 'Edit Profile', 'url' => array('/optirep/repCredential/editprofile')),
+                            array('label' => 'Manage Rep Accounts', 'url' => array('/optirep/repAccounts/index'), 'visible'=>(Yii::app()->user->rep_role == "admin")),
                             array('label' => 'Favourite Retailers', 'url' => array('/optirep/repFavourites/index')),
                             array('label' => 'Internal Messages', 'url' => array('/optirep/internalMessage/index')),
                             array('label' => 'Change Password', 'url' => array('/optirep/repCredential/changePassword')),
