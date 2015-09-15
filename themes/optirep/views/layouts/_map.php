@@ -84,25 +84,10 @@
                         $search_region = isset($_GET['ProfessionalDirectory']['region']) ? $_GET['ProfessionalDirectory']['region'] : '';
                         $search_ville = isset($_GET['ProfessionalDirectory']['ID_VILLE']) ? $_GET['ProfessionalDirectory']['ID_VILLE'] : '';
 
-                        if ($search_name != '') {
-                            $searchModel->NOM = $search_name;
-                            $sname_qry = " AND NOM like '%$search_name%' ";
-                        }
-
-                        if ($search_country != '') {
-                            $searchModel->country = $search_country;
-                            $scntry_qry = " AND rp.ID_PAYS = " . $search_country;
-                        }
-
-                        if ($search_region != '') {
-                            $searchModel->region = $search_region;
-                            $sregion_qry = " AND rr.ID_REGION = " . $search_region;
-                        }
-
-                        if ($search_ville != '') {
-                            $searchModel->ID_VILLE = $search_ville;
-                            $scity_qry = " AND rs.ID_VILLE = " . $search_ville;
-                        }
+                        if ($search_name != '') { $sname_qry = " AND NOM like '%$search_name%' "; }
+                        if ($search_country != '') {  $scntry_qry = " AND rp.ID_PAYS = " . $search_country; }
+                        if ($search_region != '') {   $sregion_qry = " AND rr.ID_REGION = " . $search_region; }
+                        if ($search_ville != '') { $scity_qry = " AND rs.ID_VILLE = " . $search_ville; }
                     }
 
                     // Get all records list  with limit

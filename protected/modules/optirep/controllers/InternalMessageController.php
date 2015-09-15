@@ -24,7 +24,7 @@ class InternalMessageController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'createnew'),
+                'actions' => array('index', 'createnew', 'readmessage'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -52,16 +52,26 @@ class InternalMessageController extends ORController {
             $model->attributes = $_POST['InternalMessage'];
             $valid = $model->validate();
             if ($valid) {
+             
+                // Genreate the conversation id
+                $criteria=new CDbCriteria;
+                $criteria->select='max(id1) AS maxColumn';
+                $row = InternalMessage::model()->find($criteria);
+                $npm_count = $row['maxColumn'];
+                $id1 = $npm_count+1;              
                 
-                $npm_count = InternalMessage::model()->count();
-                $id1 = $npm_count+1;
+                // Get sender detail
+                $sess_id    = Yii::app()->user->id;
+                $condition  = " NOM_TABLE='rep_credential' AND ID_RELATION='$sess_id' ";
+                $ufrm_infos = UserDirectory::model()->find($condition);
                 
+                $model->message = nl2br($_POST['InternalMessage']['message']);
                 // conversation id
                 $model->id1   = $id1;
                 // New conversation start        
                 $model->id2   = 1;
                 // Sender
-                $model->user1 = 22;
+                $model->user1 = $ufrm_infos->ID_UTILISATEUR;
                 // Receiver   (the value send through post)    
                 //$model->user2 
                 $model->timestamp = time();
@@ -79,6 +89,90 @@ class InternalMessageController extends ORController {
         
         $this->render('create',array('model' => $model));
     }
+    
+     public function actionReadmessage() {
+        
+        $model = new InternalMessage;
+        
+        $sess_id    = Yii::app()->user->id;
+        $condition  = " NOM_TABLE='rep_credential' AND ID_RELATION='$sess_id' ";
+        $ufrm_infos = UserDirectory::model()->find($condition);
+        $session_userid = $ufrm_infos->ID_UTILISATEUR;
+        
+        $convid = Yii::app()->getRequest()->getQuery('convid');
+        
+        
+         if (isset($_POST['btnSubmit'])) {
+
+            $model->attributes = $_POST['InternalMessage'];
+            $valid = $model->validate();
+            if ($valid) {
+            
+                // conversation id
+                $model->message = nl2br($_POST['InternalMessage']['message']);
+                $model->id1 = $convid;
+                // Sender
+                $model->user1 = $session_userid;
+                // Receiver   (the value send through post)    
+                //$model->user2 
+                $model->timestamp = time();
+                $model->user1read = "yes";
+                $model->user2read = "no";
+                             
+                $model->save(false);
+
+                Yii::app()->user->setFlash('success', "Message send successfully!!!");
+                $this->redirect(array('index'));
+            }
+        }
+        
+        // Get the message conversations
+        $mymessages = array();
+        if(isset($convid))
+        {          
+           $id1      = intval($convid);
+           $msginfo  = InternalMessage::model()->findAllByAttributes(array('id1'=> $id1 , 'id2'=>"1" ));
+           $msgcount = count($msginfo);
+            //We check if the discussion exists
+            if($msgcount==1)
+            {
+                 foreach($msginfo as $uids)
+                {    
+                   $u1 = $uids['user1'];
+                   $u2 = $uids['user2'];
+                }  
+                       
+                if($u1 == $session_userid ||  $u2 == $session_userid)
+                {                   
+                    
+                    $mymessages = Yii::app()->db->createCommand() //this query contains all the data
+                    ->select('pm.timestamp, pm.message, users.ID_UTILISATEUR as userid, users.NOM_UTILISATEUR')
+                    ->from(array('internal_message pm', 'repertoire_utilisateurs users'))
+                    ->where("pm.id1='$id1' and users.ID_UTILISATEUR=pm.user1")
+                    ->order('pm.id2')
+                    ->queryAll();   
+                    
+                    
+                } else {
+                    Yii::app()->user->setFlash('danger', 'You dont have the rights to access this page.!');
+                    $this->redirect(array('index'));
+                }
+                            
+            }else
+            {
+                Yii::app()->user->setFlash('danger', 'This discussion does not exists!');
+                $this->redirect(array('index'));
+            }
+        
+        }else
+        {
+            Yii::app()->user->setFlash('danger', 'This discussion does not exists!');
+            $this->redirect(array('index'));
+        }    
+        
+         
+          $this->render('read_message',array('model'=>$model,'mymessages'=>$mymessages, 'user1_id'=>$u1 , 'user2_id'=>$u2 , 'uid' => $session_userid));;
+     }
     
         /**
      * Performs the AJAX validation.

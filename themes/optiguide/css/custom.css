@@ -264,3 +264,7 @@ and open the template in the editor.
 .mapgenrate:hover {
     background: none !important;
 }
+
+.user-right tr.highlight{
+   background: #d9edf7 none repeat scroll 0 0;
+}
