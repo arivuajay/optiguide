@@ -417,7 +417,30 @@ class Myclass extends CController {
                  $geo_values = $lat_val."~".$long_val;                 
             }  
         }
+        
         return $geo_values;       
-    }  
+    } 
+    
+    public static function format_numbers_words($totalusers) {
+
+        if(!is_numeric($totalusers)){ return false;}
+
+        // filter and format it 
+        if($totalusers>1000000000000){ 
+            return round(($totalusers/1000000000000)).' trillion';
+        }elseif($totalusers>1000000000){ 
+            return round(($totalusers/1000000000)).' billion';
+        }elseif($totalusers>1000000){ 
+            return round(($totalusers/1000000)).' million';
+        }elseif($totalusers>1000){ 
+            return 'Over '.round(($totalusers/1000)).' K';
+        }elseif($totalusers>100){ 
+            return round(($totalusers/100)).' hundred';
+        }else
+        {
+            return $totalusers;
+        }    
+
+    }
 
 }
