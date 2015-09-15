@@ -27,6 +27,7 @@ class RepCredentials extends CActiveRecord {
 
     const ROLE_SINGLE = 'single';
     const ROLE_ADMIN = 'admin';
+    const NAME_TABLE = 'rep_credential';
 
     /**
      * @return string the associated database table name
@@ -159,6 +160,22 @@ class RepCredentials extends CActiveRecord {
 
         $this->modified_at = new CDbExpression('NOW()');
         return parent::beforeSave();
+    }
+
+    public function afterSave() {
+        parent::afterSave();
+        if ($this->isNewRecord) {
+            $umodel = new UserDirectory();
+            $umodel->LANGUE = Yii::app()->session['language'];
+            $umodel->NOM_UTILISATEUR = $this->rep_username;
+            $umodel->USR = Myclass::getRandomString(8);
+            $umodel->PWD = Myclass::getRandomString(8);
+            $umodel->NOM_TABLE = self::NAME_TABLE;
+            $umodel->sGuid = Myclass::getGuid();
+            $umodel->MUST_VALIDATE = 0;
+            $umodel->ID_RELATION = $this->rep_credential_id;
+            $umodel->save(false);
+        }
     }
 
     public function scopes() {
