@@ -8,7 +8,7 @@ class RepAccountsController extends ORController {
     public function filters() {
         return array(
             'accessControl', // perform access control for CRUD operations
-                //'postOnly + delete', // we only allow deletion via POST request
+//'postOnly + delete', // we only allow deletion via POST request
         );
     }
 
@@ -24,9 +24,9 @@ class RepAccountsController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'create', 'edit', 'buyMoreAccounts', 'buyMoreAccountsPriceList'),
+                'actions' => array('index', 'create', 'edit', 'buyMoreAccounts', 'buyMoreAccountsPriceList', 'paypalCancel', 'paypalReturn', 'paypalNotify', 'renewalRepAccounts'),
                 'users' => array('@'),
-                'expression'=>'Yii::app()->user->rep_role=="admin"'
+                'expression' => 'Yii::app()->user->rep_role=="admin"'
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions' => array(''),
@@ -63,16 +63,16 @@ class RepAccountsController extends ORController {
                 $model->rep_expiry_date = $current_plan['rep_admin_subscription_end'];
 
                 if ($model->save(false)) {
-                    //Rep Profile Insert
+//Rep Profile Insert
                     $profile->rep_credential_id = $model->rep_credential_id;
                     $profile->save(false);
 
-                    //Current Plan - Upadate the used and remaining accounts count
+//Current Plan - Upadate the used and remaining accounts count
                     $current_plan->no_of_accounts_used = $current_plan->no_of_accounts_used + 1;
                     $current_plan->no_of_accounts_remaining = $current_plan->no_of_accounts_remaining - 1;
                     $current_plan->save(false);
 
-                    //Current Plan - New Subscriber Insert
+//Current Plan - New Subscriber Insert
                     $subscriber = new RepAdminSubscribers();
                     $subscriber->rep_admin_subscription_id = $current_plan->rep_admin_subscription_id;
                     $subscriber->rep_credential_id = $model->rep_credential_id;
@@ -126,37 +126,86 @@ class RepAccountsController extends ORController {
 
         $model = new RepCredentials;
         if (isset($_POST['btnSubmit'])) {
-            $subscription = new RepAdminSubscriptions;
+            $new_subscription = array();
+            $new_subscription['rep_credential_id'] = Yii::app()->user->id;
+            $new_subscription['rep_admin_old_active_accounts'] = $model->getRepAdminActiveAccountsCount();
+            $new_subscription['no_of_accounts_purchase'] = $_POST['RepCredentials']['no_of_accounts_purchase'];
+            $new_subscription['total_no_of_accounts'] = $rep_admin_old_active_accounts + $no_of_accounts_purchase;
+            $new_subscription['price_list'] = Myclass::repAdminBuyMoreAccountsPriceCalculation($total_no_of_accounts, $no_of_accounts_purchase);
 
-            $rep_admin_old_active_accounts = $model->getRepAdminActiveAccountsCount();
-            $no_of_accounts_purchase = $_POST['RepCredentials']['no_of_accounts_purchase'];
-            $total_no_of_accounts = $rep_admin_old_active_accounts + $no_of_accounts_purchase;
-            $price_list = Myclass::repAdminBuyMoreAccountsPriceCalculation($total_no_of_accounts, $no_of_accounts_purchase);
+            $price_list = $new_subscription['price_list'];
 
-            if ($this->payment()) {
-                $subscription->rep_credential_id = Yii::app()->user->id;
-                $subscription->rep_subscription_type_id = $price_list['subscription_type_id'];
-                $subscription->purchase_type = RepAdminSubscriptions::PURCHASE_TYPE_NEW;
-                $subscription->no_of_accounts_purchased = $no_of_accounts_purchase;
-                $subscription->rep_admin_old_active_accounts = $rep_admin_old_active_accounts;
-                $subscription->no_of_accounts_remaining = $no_of_accounts_purchase;
-                $subscription->rep_admin_per_account_price = $price_list['per_account_price'];
-                $subscription->rep_admin_total_price = $price_list['total_price'];
-                $subscription->rep_admin_tax = $price_list['tax'];
-                $subscription->rep_admin_grand_total = $price_list['grand_total'];
-                $subscription->rep_admin_subscription_start = date('Y-m-d');
-                $subscription->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
+            $repTemp = new RepTemp;
+            $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
+            $repTemp->rep_temp_key = 'Buy More Accounts';
+            $repTemp->rep_temp_value = serialize($new_subscription);
+            if ($repTemp->save()) {
+                $paypalManager = new Paypal;
+                $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalReturn'));
+                $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalCancel'));
+                $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalNotify'));
 
-                if ($subscription->save(false)) {
-                    Yii::app()->user->setFlash('success', "Thank you for purchase more rep accounts");
-                    $this->redirect(array('index'));
-                }
+                $paypalManager->addField('item_name', 'Buy More Accounts');
+                $paypalManager->addField('amount', $price_list['grand_total']);
+                $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
+                $paypalManager->addField('return', $returnUrl);
+                $paypalManager->addField('cancel_return', $cancelUrl);
+                $paypalManager->addField('notify_url', $notifyUrl);
+
+                //$paypalManager->dumpFields();   // for printing paypal form fields
+                $paypalManager->submitPaypalPost();
             }
         }
 
         $this->render('buyMoreAccounts', array(
             'model' => $model
         ));
+    }
+
+    public function actionPaypalCancel() {
+        Yii::app()->user->setFlash('danger', 'Your subscription has been cancelled. Please try again.');
+        $this->redirect(array('buyMoreAccounts'));
+    }
+
+    public function actionPaypalReturn() {
+        $pstatus = $_POST["payment_status"];
+        if (isset($_POST["txn_id"]) && isset($_POST["payment_status"])) {
+            if ($pstatus == "Pending") {
+                Yii::app()->user->setFlash('info', "Your payment status is pending. Admin will verify your payment details.");
+            } else {
+                Yii::app()->user->setFlash('success', "Thanks for your subscription! Now you can add more rep accounts");
+            }
+        } else {
+            Yii::app()->user->setFlash('danger', "Your subscription payment is failed. Please try again later or contact admin.");
+        }
+        $this->redirect(array('buyMoreAccounts'));
+    }
+
+    public function actionPaypalNotify() {
+        $paypalManager = new Paypal;
+
+        if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
+            $temp_random_id = $_POST['custom'];
+            $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
+            if (!empty($result)) {
+                $subscription_details = unserialize($result['rep_temp_value']);
+                $price_list = $subscription_details['price_list'];
+                $subscription = new RepAdminSubscriptions;
+                $subscription->rep_credential_id = $subscription_details['rep_credential_id'];
+                $subscription->rep_subscription_type_id = $price_list['subscription_type_id'];
+                $subscription->purchase_type = RepAdminSubscriptions::PURCHASE_TYPE_NEW;
+                $subscription->no_of_accounts_purchased = $subscription_details['no_of_accounts_purchase'];
+                $subscription->rep_admin_old_active_accounts = $subscription_details['rep_admin_old_active_accounts'];
+                $subscription->no_of_accounts_remaining = $subscription_details['no_of_accounts_purchase'];
+                $subscription->rep_admin_per_account_price = $price_list['per_account_price'];
+                $subscription->rep_admin_total_price = $price_list['total_price'];
+                $subscription->rep_admin_tax = $price_list['tax'];
+                $subscription->rep_admin_grand_total = $price_list['grand_total'];
+                $subscription->rep_admin_subscription_start = date('Y-m-d');
+                $subscription->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
+                $subscription->save(false);
+            }
+        }
     }
 
     public function actionBuyMoreAccountsPriceList() {
@@ -176,9 +225,12 @@ class RepAccountsController extends ORController {
             $this->redirect(array('dashboard/index'));
         }
     }
-
-    protected function payment() {
-        return true;
+    
+    public function actionRenewalRepAccounts(){
+        if(isset($_POST['renewalSubmit'])){
+            
+        }
+        $this->render('renewalRepAccounts');
     }
 
 }

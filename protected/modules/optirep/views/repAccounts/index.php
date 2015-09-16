@@ -26,9 +26,15 @@
         <?php $repAdminSubscribers = RepCredentials::model()->rep_admin_subscribers()->findAll(); ?>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">  
             <div class="table-responsive">
+                <?php
+                $form = $this->beginWidget('CActiveForm', array(
+                    'id' => 'renewal-rep-account-form',
+                ));
+                ?>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
                     <tr>
-                        <th width="9%">S. No</th>
+                        <th width="3%"></th>
+                        <th width="6%">S. No</th>
                         <th width="20%"> Username</th>
                         <th width="18%"> Password </th>
                         <th width="23%"> Expiry Date </th>
@@ -44,12 +50,15 @@
                                 $checked = 'checked';
                             ?>
                             <tr>
+                                <td>
+                                    <input type="checkbox" name="rep_credentials[]" value="<?php echo $repAdminSubscriber['rep_credential_id'] ?>">
+                                </td>
                                 <td><?php echo $i++; ?></td>
                                 <td><?php echo $repAdminSubscriber['rep_username'] ?></td>
                                 <td><?php echo $repAdminSubscriber['rep_password'] ?></td>
                                 <td><?php echo date("Y-m-d", strtotime($repAdminSubscriber['rep_expiry_date'])) ?></td>
                                 <td>
-                                    <input type="checkbox" name="rep_status" <?php echo $checked; ?> data-on-text="ACTIVE" data-off-text="BLOCK" data-rep-id ="<?php echo $repAdminSubscriber['rep_credential_id']?>" class="status">
+                                    <input type="checkbox" name="rep_status" <?php echo $checked; ?> data-on-text="ACTIVE" data-off-text="BLOCK" data-rep-id ="<?php echo $repAdminSubscriber['rep_credential_id'] ?>" class="status">
                                 </td>
                                 <td>
                                     <?php echo CHtml::link('<i class="fa fa-edit"></i>', array('/optirep/repAccounts/edit', 'id' => $repAdminSubscriber['rep_credential_id'])); ?>
@@ -62,6 +71,14 @@
                         </tr>
                     <?php } ?>
                 </table>
+                <?php
+                echo CHtml::tag('button', array(
+                    'name' => 'renewalSubmit',
+                    'type' => 'submit',
+                    'class' => 'register-btn'
+                        ), 'Renewal');
+                ?>
+                <?php $this->endWidget(); ?>
             </div>
         </div>
     </div>

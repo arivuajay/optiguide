@@ -20,7 +20,7 @@ class RepCredentialController extends ORController {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('step1', 'step2', 'step3', 'final'),
+                'actions' => array('step1', 'step2', 'step3', 'final', 'paypalCancel', 'paypalReturn', 'paypalNotify'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -111,58 +111,107 @@ class RepCredentialController extends ORController {
             $this->redirect('step3');
         }
 
-        if ($this->payment()) {
-            $registration = Yii::app()->session['registration'];
-            $model = new RepCredentials;
-            $model->rep_username = $registration['step2']['RepCredentials']['rep_username'];
-            $model->rep_password = $registration['step2']['RepCredentials']['rep_password'];
-            if ($registration['step2']['RepCredentials']['no_of_accounts_purchase'] > 1) {
-                $model->rep_role = RepCredentials::ROLE_ADMIN;
+        $registration = Yii::app()->session['registration'];
+
+        $repTemp = new RepTemp;
+        $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
+        $repTemp->rep_temp_key = 'Registration';
+        $repTemp->rep_temp_value = serialize($registration);
+        if ($repTemp->save()) {
+            Yii::app()->session->destroy();
+            $paypalManager = new Paypal;
+            $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalReturn'));
+            $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalCancel'));
+            $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalNotify'));
+
+            $paypalManager->addField('item_name', 'Registration');
+            $paypalManager->addField('amount', $registration['step3']['grand_total']);
+            $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
+            $paypalManager->addField('return', $returnUrl);
+            $paypalManager->addField('cancel_return', $cancelUrl);
+            $paypalManager->addField('notify_url', $notifyUrl);
+
+            //$paypalManager->dumpFields();   // for printing paypal form fields
+            $paypalManager->submitPaypalPost();
+        }
+    }
+
+    public function actionPaypalCancel() {
+        Yii::app()->user->setFlash('danger', 'Your registration has been cancelled. Please try again.');
+        $this->redirect(array('step1'));
+    }
+
+    public function actionPaypalReturn() {
+        $pstatus = $_POST["payment_status"];
+        if (isset($_POST["txn_id"]) && isset($_POST["payment_status"])) {
+            if ($pstatus == "Pending") {
+                Yii::app()->user->setFlash('info', "Your payment status is pending. Admin will verify your payment details and send activation email to you soon.");
             } else {
-                $model->rep_role = RepCredentials::ROLE_SINGLE;
-                $model->rep_expiry_date = date('Y-m-d', strtotime('+1 month'));
+                Yii::app()->user->setFlash('success', "Thanks for your registration! Once admin will verify your informations and activate your account soon. Later you will get confirmation mail.");
             }
+        } else {
+            Yii::app()->user->setFlash('danger', "Your registration payment is failed. Please try again later or contact admin.");
+        }
+        $this->redirect(array('step1'));
+    }
 
-            if ($model->save(false)) {
-                $repProfile = new RepCredentialProfiles;
-                $repProfile->attributes = $registration['step2']['RepCredentialProfiles'];
-                $repProfile->rep_credential_id = $model->rep_credential_id;
-                $repProfile->save(false);
+    public function actionPaypalNotify() {
+        $paypalManager = new Paypal;
 
-                if ($model->rep_role == RepCredentials::ROLE_SINGLE) {
-                    $repSingle = new RepSingleSubscriptions;
-                    $repSingle->rep_credential_id = $model->rep_credential_id;
-                    $repSingle->rep_subscription_type_id = $registration['step1']['subscription_type_id'];
-                    $repSingle->purchase_type = RepSingleSubscriptions::PURCHASE_TYPE_NEW;
-                    $repSingle->rep_single_price = $registration['step3']['per_account_price'];
-                    $repSingle->rep_single_tax = $registration['step3']['tax'];
-                    $repSingle->rep_single_total = $registration['step3']['grand_total'];
-                    $repSingle->rep_single_subscription_start = date('Y-m-d');
-                    $repSingle->rep_single_subscription_end = date('Y-m-d', strtotime('+1 month'));
-                    $repSingle->save(false);
-                } elseif ($model->rep_role == RepCredentials::ROLE_ADMIN) {
-                    $repAdmin = new RepAdminSubscriptions;
-                    $repAdmin->rep_credential_id = $model->rep_credential_id;
-                    $repAdmin->rep_subscription_type_id = $registration['step1']['subscription_type_id'];
-                    $repAdmin->purchase_type = RepAdminSubscriptions::PURCHASE_TYPE_NEW;
-                    $repAdmin->no_of_accounts_purchased = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
-                    $repAdmin->no_of_accounts_remaining = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
-                    $repAdmin->rep_admin_per_account_price = $registration['step3']['per_account_price'];
-                    $repAdmin->rep_admin_total_price = $registration['step3']['total_price'];
-                    $repAdmin->rep_admin_tax = $registration['step3']['tax'];
-                    $repAdmin->rep_admin_grand_total = $registration['step3']['grand_total'];
-                    $repAdmin->rep_admin_subscription_start = date('Y-m-d');
-                    $repAdmin->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
-                    $repAdmin->save(false);
+        if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
+            $temp_random_id = $_POST['custom'];
+            $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
+            if (!empty($result)) {
+                $registration = unserialize($result['rep_temp_value']);
+                $model = new RepCredentials;
+                $model->rep_username = $registration['step2']['RepCredentials']['rep_username'];
+                $model->rep_password = $registration['step2']['RepCredentials']['rep_password'];
+                if ($registration['step2']['RepCredentials']['no_of_accounts_purchase'] > 1) {
+                    $model->rep_role = RepCredentials::ROLE_ADMIN;
+                } else {
+                    $model->rep_role = RepCredentials::ROLE_SINGLE;
+                    $model->rep_expiry_date = date('Y-m-d', strtotime('+1 month'));
                 }
-                Yii::app()->session->destroy();
-                $this->redirect(array('/optirep/default/index'));
+
+                if ($model->save(false)) {
+                    $repProfile = new RepCredentialProfiles;
+                    $repProfile->attributes = $registration['step2']['RepCredentialProfiles'];
+                    $repProfile->rep_credential_id = $model->rep_credential_id;
+                    $repProfile->save(false);
+
+                    if ($model->rep_role == RepCredentials::ROLE_SINGLE) {
+                        $repSingle = new RepSingleSubscriptions;
+                        $repSingle->rep_credential_id = $model->rep_credential_id;
+                        $repSingle->rep_subscription_type_id = $registration['step1']['subscription_type_id'];
+                        $repSingle->purchase_type = RepSingleSubscriptions::PURCHASE_TYPE_NEW;
+                        $repSingle->rep_single_price = $registration['step3']['per_account_price'];
+                        $repSingle->rep_single_tax = $registration['step3']['tax'];
+                        $repSingle->rep_single_total = $registration['step3']['grand_total'];
+                        $repSingle->rep_single_subscription_start = date('Y-m-d');
+                        $repSingle->rep_single_subscription_end = date('Y-m-d', strtotime('+1 month'));
+                        $repSingle->save(false);
+                    } elseif ($model->rep_role == RepCredentials::ROLE_ADMIN) {
+                        $repAdmin = new RepAdminSubscriptions;
+                        $repAdmin->rep_credential_id = $model->rep_credential_id;
+                        $repAdmin->rep_subscription_type_id = $registration['step1']['subscription_type_id'];
+                        $repAdmin->purchase_type = RepAdminSubscriptions::PURCHASE_TYPE_NEW;
+                        $repAdmin->no_of_accounts_purchased = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
+                        $repAdmin->no_of_accounts_remaining = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
+                        $repAdmin->rep_admin_per_account_price = $registration['step3']['per_account_price'];
+                        $repAdmin->rep_admin_total_price = $registration['step3']['total_price'];
+                        $repAdmin->rep_admin_tax = $registration['step3']['tax'];
+                        $repAdmin->rep_admin_grand_total = $registration['step3']['grand_total'];
+                        $repAdmin->rep_admin_subscription_start = date('Y-m-d');
+                        $repAdmin->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
+                        $repAdmin->save(false);
+                    }
+                    RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
+                }
             }
         }
     }
 
     public function actionEditProfile() {
-
         $model = RepCredentials::model()->findByAttributes(array('rep_credential_id' => Yii::app()->user->id));
         $model->scenario = 'update';
 
@@ -210,29 +259,25 @@ class RepCredentialController extends ORController {
 
         $this->render('changePassword', array('model' => $model));
     }
-    
-    public function actionChangeStatus(){
-        if(Yii::app()->request->isAjaxRequest){
-              $rep_credential_id = $_POST['id'];
-              $repCredential = RepCredentials::model()->findByPk($rep_credential_id);
-              $repCredential->rep_status = 1 - $repCredential->rep_status;
-              $repCredential->save(false);
+
+    public function actionChangeStatus() {
+        if (Yii::app()->request->isAjaxRequest) {
+            $rep_credential_id = $_POST['id'];
+            $repCredential = RepCredentials::model()->findByPk($rep_credential_id);
+            $repCredential->rep_status = 1 - $repCredential->rep_status;
+            $repCredential->save(false);
         } else {
             $this->redirect(array('dashboard/index'));
         }
     }
 
-    protected function payment() {
-        return true;
-    }
-
     /**
-     * Performs the AJAX validation.
+     * Performs the AJAX validation.    
      * @param ArchiveCategory $model the model to be validated
      */
     protected function performAjaxValidation($model) {
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'rep-credential-form') {
-            echo CActiveForm::validate($model);
+            echo CActiveForm::validate($model); 
             Yii::app()->end();
         }
     }
