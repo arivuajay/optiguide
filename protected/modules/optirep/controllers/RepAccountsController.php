@@ -24,7 +24,7 @@ class RepAccountsController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'create', 'edit', 'buyMoreAccounts', 'buyMoreAccountsPriceList', 'paypalCancel', 'paypalReturn', 'paypalNotify', 'renewalRepAccounts'),
+                'actions' => array('index', 'create', 'edit', 'buyMoreAccounts', 'buyMoreAccountsPriceList', 'paypalCancel', 'paypalReturn', 'paypalNotify', 'renewalRepAccounts', 'paypalRenewalReturn', 'paypalRenewalCancel', 'paypalRenewalNotify'),
                 'users' => array('@'),
                 'expression' => 'Yii::app()->user->rep_role=="admin"'
             ),
@@ -39,6 +39,19 @@ class RepAccountsController extends ORController {
     }
 
     public function actionIndex() {
+        if (isset($_POST['renewalSubmit'])) {
+            if (isset($_POST['rep_credentials'])) {
+                $renewal = Yii::app()->session['renewal'];
+                $renewal['rep_credential_id'] = Yii::app()->user->id;
+                $renewal['no_of_accounts_purchase'] = count($_POST['rep_credentials']);
+                $renewal['rep_credentials'] = $_POST['rep_credentials'];
+                $renewal['price_list'] = Myclass::priceCalculation($renewal['no_of_accounts_purchase']);
+                Yii::app()->session['renewal'] = $renewal;
+                $this->redirect('renewalRepAccounts');
+            } else {
+                Yii::app()->user->setFlash('danger', "Kindly select the rep accounts for Renewal");
+            }
+        }
         $this->render('index');
     }
 
@@ -63,16 +76,16 @@ class RepAccountsController extends ORController {
                 $model->rep_expiry_date = $current_plan['rep_admin_subscription_end'];
 
                 if ($model->save(false)) {
-//Rep Profile Insert
+                    //Rep Profile Insert
                     $profile->rep_credential_id = $model->rep_credential_id;
                     $profile->save(false);
 
-//Current Plan - Upadate the used and remaining accounts count
+                    //Current Plan - Upadate the used and remaining accounts count
                     $current_plan->no_of_accounts_used = $current_plan->no_of_accounts_used + 1;
                     $current_plan->no_of_accounts_remaining = $current_plan->no_of_accounts_remaining - 1;
                     $current_plan->save(false);
 
-//Current Plan - New Subscriber Insert
+                    //Current Plan - New Subscriber Insert
                     $subscriber = new RepAdminSubscribers();
                     $subscriber->rep_admin_subscription_id = $current_plan->rep_admin_subscription_id;
                     $subscriber->rep_credential_id = $model->rep_credential_id;
@@ -116,6 +129,8 @@ class RepAccountsController extends ORController {
             'profile' => $profile
         ));
     }
+
+    /* ----------------------- Buy More Accounts Section ---------------------------------------------- */
 
     public function actionBuyMoreAccounts() {
         $can_buy = RepAdminSubscriptions::model()->canBuyMoreAccounts();
@@ -204,6 +219,8 @@ class RepAccountsController extends ORController {
                 $subscription->rep_admin_subscription_start = date('Y-m-d');
                 $subscription->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
                 $subscription->save(false);
+
+                RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
             }
         }
     }
@@ -225,12 +242,102 @@ class RepAccountsController extends ORController {
             $this->redirect(array('dashboard/index'));
         }
     }
-    
-    public function actionRenewalRepAccounts(){
-        if(isset($_POST['renewalSubmit'])){
-            
+
+    /* ----------------------- Renewal Rep Accounts Section ---------------------------------------------- */
+
+    public function actionRenewalRepAccounts() {
+        if (!isset(Yii::app()->session['renewal'])) {
+            $this->redirect('index');
+        }
+
+        if (isset($_POST['btnSubmit'])) {
+            $data = Yii::app()->session['renewal'];
+            $repTemp = new RepTemp;
+            $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
+            $repTemp->rep_temp_key = 'Renewal Rep Accounts';
+            $repTemp->rep_temp_value = serialize($data);
+            if ($repTemp->save()) {
+                unset(Yii::app()->session['renewal']);
+                $paypalManager = new Paypal;
+                $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalRenewalReturn'));
+                $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalRenewalCancel'));
+                $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalRenewalNotify'));
+
+                $paypalManager->addField('item_name', 'Renewal Rep Accounts');
+                $paypalManager->addField('amount', $data['price_list']['grand_total']);
+                $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
+                $paypalManager->addField('return', $returnUrl);
+                $paypalManager->addField('cancel_return', $cancelUrl);
+                $paypalManager->addField('notify_url', $notifyUrl);
+
+                //$paypalManager->dumpFields();   // for printing paypal form fields
+                $paypalManager->submitPaypalPost();
+            }
         }
         $this->render('renewalRepAccounts');
+    }
+
+    public function actionPaypalRenewalCancel() {
+        Yii::app()->user->setFlash('danger', 'Your renewal has been cancelled. Please try again.');
+        $this->redirect(array('index'));
+    }
+
+    public function actionPaypalRenewalReturn() {
+        $pstatus = $_POST["payment_status"];
+        if (isset($_POST["txn_id"]) && isset($_POST["payment_status"])) {
+            if ($pstatus == "Pending") {
+                Yii::app()->user->setFlash('info', "Your payment status is pending. Admin will verify your payment details.");
+            } else {
+                Yii::app()->user->setFlash('success', "Thanks for your renewal!");
+            }
+        } else {
+            Yii::app()->user->setFlash('danger', "Your renewal payment is failed. Please try again later or contact admin.");
+        }
+        $this->redirect(array('index'));
+    }
+
+    public function actionPaypalRenewalNotify() {
+        $paypalManager = new Paypal;
+
+        if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
+            $temp_random_id = $_POST['custom'];
+            $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
+            if (!empty($result)) {
+                $renewal_details = unserialize($result['rep_temp_value']);
+                $price_list = $renewal_details['price_list'];
+                $rep_credentials = $renewal_details['rep_credentials'];
+
+                $repAdminSubscription = new RepAdminSubscriptions;
+                $repAdminSubscription->rep_credential_id = $renewal_details['rep_credential_id'];
+                $repAdminSubscription->rep_subscription_type_id = $price_list['subscription_type_id'];
+                $repAdminSubscription->purchase_type = RepAdminSubscriptions::PURCHASE_TYPE_RENEWAL;
+                $repAdminSubscription->no_of_accounts_purchased = $renewal_details['no_of_accounts_purchase'];
+                $repAdminSubscription->no_of_accounts_used = $renewal_details['no_of_accounts_purchase'];
+                $repAdminSubscription->rep_admin_per_account_price = $price_list['per_account_price'];
+                $repAdminSubscription->rep_admin_total_price = $price_list['total_price'];
+                $repAdminSubscription->rep_admin_tax = $price_list['tax'];
+                $repAdminSubscription->rep_admin_grand_total = $price_list['grand_total'];
+                $repAdminSubscription->save(false);
+
+                foreach ($rep_credentials as $rep_credential) {
+                    $rep_account = RepCredentials::model()->findByPk($rep_credential);
+                    if ($rep_account['rep_expiry_date'] > date("Y-m-d")) {
+                        $time = strtotime($rep_account['rep_expiry_date']);
+                        $final = date("Y-m-d", strtotime("+1 month", $time));
+                        $rep_account->rep_expiry_date = $final;
+                    } else {
+                        $rep_account->rep_expiry_date = date('Y-m-d', strtotime('+1 month'));
+                    }
+                    $rep_account->save(false);
+
+                    $repAdminSubscriber = new RepAdminSubscribers();
+                    $repAdminSubscriber->rep_admin_subscription_id = $repAdminSubscription->rep_admin_subscription_id;
+                    $repAdminSubscriber->rep_credential_id = $rep_account->rep_credential_id;
+                    $repAdminSubscriber->save(false);
+                }
+                RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
+            }
+        }
     }
 
 }

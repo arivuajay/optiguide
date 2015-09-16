@@ -72,11 +72,13 @@
                     <?php } ?>
                 </table>
                 <?php
-                echo CHtml::tag('button', array(
-                    'name' => 'renewalSubmit',
-                    'type' => 'submit',
-                    'class' => 'register-btn'
-                        ), 'Renewal');
+                if (!empty($repAdminSubscribers)) {
+                    echo CHtml::tag('button', array(
+                        'name' => 'renewalSubmit',
+                        'type' => 'submit',
+                        'class' => 'register-btn'
+                            ), 'Renewal');
+                }
                 ?>
                 <?php $this->endWidget(); ?>
             </div>

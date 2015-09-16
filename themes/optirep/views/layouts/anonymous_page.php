@@ -32,7 +32,10 @@
             <div class="container"> 
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ad1"> 
-                        <?php echo CHtml::image("{$this->themeUrl}/images/logo2.png", 'Logo') ?>
+                        <?php
+                        $image = CHtml::image("{$this->themeUrl}/images/logo2.png", 'Logo');
+                        echo CHtml::link($image, array('/optirep'))
+                        ?>
                     </div>
                     <?php echo $content; ?>
                 </div>
