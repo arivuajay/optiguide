@@ -255,6 +255,8 @@ class RetailerDirectoryController extends OGController {
             $umodel->sGuid = Myclass::getGuid();
             $umodel->LANGUE = Yii::app()->session['language'];
             $umodel->MUST_VALIDATE = 0;
+            
+            $model->image=CUploadedFile::getInstance($model,'image');
 
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
@@ -271,6 +273,18 @@ class RetailerDirectoryController extends OGController {
                     $exp_latlong = explode('~',$geo_values);
                     $model->map_lat  = $exp_latlong[0];
                     $model->map_long = $exp_latlong[1];        
+                }  
+                
+                // save retailer logo
+                if($model->image)
+                {   
+                    $imgname = time() . '_' . $model->image->name;                    
+                    $model->FICHIER = $imgname;
+                    $ret_img_path = Yii::getPathOfAlias('webroot').'/'.RET_IMG_PATH.'/';                    
+                    if (!is_dir($ret_img_path)) {
+                        mkdir($ret_img_path, 0777, true);
+                    }
+                    $model->image->saveAs($ret_img_path . $imgname);
                 }    
                 
                 $model->save(false);
@@ -345,6 +359,9 @@ class RetailerDirectoryController extends OGController {
             $model->attributes = $_POST['RetailerDirectory'];
             $umodel->attributes = $_POST['UserDirectory'];
             $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
+            
+            $model->image=CUploadedFile::getInstance($model,'image');
+            
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
 
@@ -360,6 +377,18 @@ class RetailerDirectoryController extends OGController {
                     $exp_latlong = explode('~',$geo_values);
                     $model->map_lat  = $exp_latlong[0];
                     $model->map_long = $exp_latlong[1];        
+                }    
+                
+                 // save retailer logo
+                if($model->image)
+                {   
+                    $imgname = time() . '_' . $model->image->name;                    
+                    $model->FICHIER = $imgname;
+                    $ret_img_path = Yii::getPathOfAlias('webroot').'/'.RET_IMG_PATH.'/';                    
+                    if (!is_dir($ret_img_path)) {
+                        mkdir($ret_img_path, 0777, true);
+                    }
+                    $model->image->saveAs($ret_img_path . $imgname);
                 }    
                 
                 $model->save(false);

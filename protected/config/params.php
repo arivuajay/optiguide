@@ -54,5 +54,8 @@ return array(
     'SANDBOXVALUE'  => TRUE,
     'CURRENCY'      => 'CAD',
     'BUSINESSEMAIL' => 'vasanth@arkinfotec.com', 
+    
+    // retailer logo path
+    'RET_IMG_PATH' => 'uploads/retailer_logos/'
 );
 

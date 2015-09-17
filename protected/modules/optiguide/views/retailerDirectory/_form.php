@@ -7,11 +7,11 @@
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subscribe-btncont"> 
         <div class="inner-container"> 
-            <h2><?php echo $model->isNewRecord ? Myclass::t('OG110'):Myclass::t('OG034','','og');?></h2>
+            <h2><?php echo $model->isNewRecord ? Myclass::t('OG110') : Myclass::t('OG034', '', 'og'); ?></h2>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'retailer-directory-form',
-                'htmlOptions' => array('role' => 'form'),
+                'htmlOptions' => array('role' => 'form', 'enctype' => 'multipart/form-data'),
                 'clientOptions' => array(
                     'validateOnSubmit' => true,
                 ),
@@ -20,20 +20,19 @@
 
             $retailertypes = CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR');
             $groupetypes = array();
-            if($model->ID_RETAILER_TYPE)
-            {
-                $groupetypes = CHtml::listData(RetailerGroup::model()->findAll("ID_RETAILER_TYPE=".$model->ID_RETAILER_TYPE), 'ID_GROUPE', 'NOM_GROUPE');
-            }    
-           
+            if ($model->ID_RETAILER_TYPE) {
+                $groupetypes = CHtml::listData(RetailerGroup::model()->findAll("ID_RETAILER_TYPE=" . $model->ID_RETAILER_TYPE), 'ID_GROUPE', 'NOM_GROUPE');
+            }
+
             $country = Myclass::getallcountries();
             $regions = Myclass::getallregions($model->country);
-            $cities  = Myclass::getallcities($model->region);
+            $cities = Myclass::getallcities($model->region);
             ?>
 
-            <p><b><?php echo $model->isNewRecord ? Myclass::t('OG111'):'';?></b></p>
+            <p><b><?php echo $model->isNewRecord ? Myclass::t('OG111') : ''; ?></b></p>
 
             <div class="forms-cont"> 
-                <div class="forms-heading"><i class="fa fa-building"></i>   <?php echo  Myclass::t('OG112');?> </div>
+                <div class="forms-heading"><i class="fa fa-building"></i>   <?php echo Myclass::t('OG112'); ?> </div>
                 <div class="row"> 
 
                     <div class="form-row1"> 
@@ -41,29 +40,31 @@
                             <?php echo $form->labelEx($umodel, 'USR'); ?>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">                           
-                            <?php if($model->isNewRecord)
-                            {?> 
-                            <?php echo $form->textField($umodel, 'USR', array('class' => 'form-txtfield')); ?>
-                            <?php echo $form->error($umodel, 'USR'); ?>
-                            <?php echo $form->error($model, 'ID_CLIENT'); ?>
-                            <?php }else{
-                              echo $umodel->USR; 
-                            } ?>
+                            <?php if ($model->isNewRecord) {
+                                ?> 
+                                <?php echo $form->textField($umodel, 'USR', array('class' => 'form-txtfield')); ?>
+                                <?php echo $form->error($umodel, 'USR'); ?>
+                                <?php echo $form->error($model, 'ID_CLIENT'); ?>
+                                <?php
+                            } else {
+                                echo $umodel->USR;
+                            }
+                            ?>
                         </div>
                     </div>
-                <?php if($model->isNewRecord)
-                  {?>
-                    <div class="form-row1"> 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                            <?php echo $form->labelEx($umodel, 'PWD'); ?>
+                    <?php if ($model->isNewRecord) {
+                        ?>
+                        <div class="form-row1"> 
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                                <?php echo $form->labelEx($umodel, 'PWD'); ?>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
+                                <?php echo $form->passwordField($umodel, 'PWD', array('class' => 'form-txtfield')); ?>
+                                <?php echo $form->error($umodel, 'PWD'); ?>
+                            </div>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-                            <?php echo $form->passwordField($umodel, 'PWD', array('class' => 'form-txtfield')); ?>
-                            <?php echo $form->error($umodel, 'PWD'); ?>
-                        </div>
-                    </div>
-                <?php
-                  }?>
+                    <?php }
+                    ?>
                     <div class="form-row1">                        
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                             <?php echo $form->labelEx($model, 'COMPAGNIE'); ?>
@@ -107,7 +108,7 @@
 
                     <div class="form-row1">                        
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4"> 
-                          <?php echo  Myclass::t('OG104');?> 
+                            <?php echo Myclass::t('OG104'); ?> 
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">                   
                             <div class="row">  
@@ -129,7 +130,7 @@
                                     <br/> 
                                 </div>         
                             </div>  
-                              <?php echo $form->error($model, 'CATEGORY_5'); ?>
+                            <?php echo $form->error($model, 'CATEGORY_5'); ?>
                         </div>
                     </div>
                 </div>
@@ -184,16 +185,16 @@
                         <?php echo $form->error($model, 'CODE_POSTAL'); ?>
                     </div>
                 </div>
-                
-                  <div class="form-row1"> 
-                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">&nbsp;  </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-                            <a class="mapgenrate" href="javascript:void(0);" id="genratemap">Click to View your location</a>
-                            <div id="display_map" style="display:none;width:450px;height:350px; "></div> 
-                            <?php echo $form->hiddenField($model,'map_lat',array('id'=>'latid')); ?>
-                            <?php echo $form->hiddenField($model,'map_long',array('id'=>'longid')); ?>                           
-                        </div>
+
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">&nbsp;  </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
+                        <a class="mapgenrate" href="javascript:void(0);" id="genratemap">Click to View your location</a>
+                        <div id="display_map" style="display:none;width:450px;height:350px; "></div> 
+                        <?php echo $form->hiddenField($model, 'map_lat', array('id' => 'latid')); ?>
+                        <?php echo $form->hiddenField($model, 'map_long', array('id' => 'longid')); ?>                           
                     </div>
+                </div>
 
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
@@ -244,73 +245,151 @@
                         <?php echo $form->error($model, 'COURRIEL'); ?>
                     </div>
                 </div> 
-                
-                 <div class="form-row1"> 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                            <?php echo $form->labelEx($model, 'established', array()); ?>   
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
-                            <?php echo $form->textField($model, 'established', array('class' => 'form-control', 'size' => 4, 'maxlength' => 4)); ?>
-                            <?php echo $form->error($model, 'established'); ?>  
-                        </div>      
-                    </div>
 
-                    <div class="form-row1"> 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                            <?php echo $form->labelEx($model, 'no_of_employee', array()); ?>     
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
-                            <?php echo $form->textField($model, 'no_of_employee', array('class' => 'form-control')); ?>
-                            <?php echo $form->error($model, 'no_of_employee'); ?>  
-                        </div>     
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php echo $form->labelEx($model, 'established', array()); ?>   
                     </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                        <?php echo $form->textField($model, 'established', array('class' => 'form-control', 'size' => 4, 'maxlength' => 4)); ?>
+                        <?php echo $form->error($model, 'established'); ?>  
+                    </div>      
+                </div>
+
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php echo $form->labelEx($model, 'no_of_employee', array()); ?>     
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                        <?php echo $form->textField($model, 'no_of_employee', array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'no_of_employee'); ?>  
+                    </div>     
+                </div>
+
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php echo $form->labelEx($model, 'services_offered', array()); ?>     
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                        <?php echo $form->textField($model, 'services_offered', array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'services_offered'); ?>  
+                    </div>     
+                </div>
+
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php echo $form->labelEx($model, 'description', array()); ?>     
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                        <?php echo $form->textField($model, 'description', array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'description'); ?>  
+                    </div>     
+                </div>
+
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php echo $form->labelEx($model, 'turnover', array()); ?>     
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                        <?php echo $form->textField($model, 'turnover', array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'turnover'); ?>  
+                    </div>     
+                </div>
+
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php echo $form->labelEx($model, 'image', array()); ?>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">     
+                        <?php echo $form->fileField($model, 'image'); ?>                         
+                        <?php echo $form->error($model, 'image'); ?>
+                    </div>
+                </div>
+                <?php if($model->FICHIER!='')
+                {
+                     $img_url  = Yii::app()->getBaseUrl(true).'/uploads/retailer_logos/'.$model->FICHIER; 
+                    ?>   
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> &nbsp;</div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">     
+                        <img src="<?php echo $img_url;?>" width="100" height="100">
+                    </div>
+                </div>
+                <?php                 
+                }?>
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php
+                        $classificationtypes['Upscale'] = "Upscale (high priced)";
+                        $classificationtypes['Midscale'] = "Midscale (medium priced)";
+                        $classificationtypes['DownRange'] = "Down range (low priced)";
+                        echo $form->labelEx($model, 'classification', array());
+                        ?>     
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                        <?php echo $form->dropDownList($model, 'classification', $classificationtypes, array('class' => 'selectpicker')); ?>    
+                        <?php echo $form->error($model, 'classification'); ?>  
+                    </div>     
+                </div>
+
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php
+                        $language['EN'] = "English";
+                        $language['FR'] = "French";
+                        echo $form->labelEx($model, 'language', array());
+                        ?>     
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                        <?php echo $form->dropDownList($model, 'language', $language, array('class' => 'selectpicker')); ?>    
+                        <?php echo $form->error($model, 'language'); ?>  
+                    </div>     
+                </div>
+
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php echo $form->labelEx($model, 'contact_person', array()); ?>     
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                        <?php echo $form->textField($model, 'contact_person', array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'contact_person'); ?>  
+                    </div>     
+                </div>
+
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php echo $form->labelEx($model, 'facebooklink', array()); ?>     
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                        <?php echo $form->textField($model, 'facebooklink', array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'facebooklink'); ?>  
+                    </div>     
+                </div>
                 
-                   <div class="form-row1"> 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                            <?php echo $form->labelEx($model, 'services_offered', array()); ?>     
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
-                            <?php echo $form->textField($model, 'services_offered', array('class' => 'form-control')); ?>
-                            <?php echo $form->error($model, 'services_offered'); ?>  
-                        </div>     
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php echo $form->labelEx($model, 'twitterlink', array()); ?>     
                     </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                        <?php echo $form->textField($model, 'twitterlink', array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'twitterlink'); ?>  
+                    </div>     
+                </div>
                 
-                   <div class="form-row1"> 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                            <?php echo $form->labelEx($model, 'description', array()); ?>     
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
-                            <?php echo $form->textField($model, 'description', array('class' => 'form-control')); ?>
-                            <?php echo $form->error($model, 'description'); ?>  
-                        </div>     
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php echo $form->labelEx($model, 'linkedinlink', array()); ?>     
                     </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                        <?php echo $form->textField($model, 'linkedinlink', array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'linkedinlink'); ?>  
+                    </div>     
+                </div>
                 
-                    <div class="form-row1"> 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                            <?php echo $form->labelEx($model, 'turnover', array()); ?>     
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
-                            <?php echo $form->textField($model, 'turnover', array('class' => 'form-control')); ?>
-                            <?php echo $form->error($model, 'turnover'); ?>  
-                        </div>     
-                    </div>
-                
-                    <div class="form-row1"> 
-                           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                               <?php 
-                               $classificationtypes['Upscale'] = "Upscale (high priced)";
-                               $classificationtypes['Midscale'] = "Midscale (medium priced)";
-                               $classificationtypes['DownRange'] = "Down range (low priced)";                      
-                               echo $form->labelEx($model, 'classification', array()); ?>     
-                           </div>
-                           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
-                               <?php echo $form->dropDownList($model, 'classification', $classificationtypes, array('class' => 'selectpicker')); ?>    
-                               <?php echo $form->error($model, 'classification'); ?>  
-                           </div>     
-                    </div>
             </div>
+            
             <div class="forms-cont"> 
-                <div class="forms-heading"><i class="fa fa-user"></i>  <?php echo  Myclass::t('OG113');?></div>
+                <div class="forms-heading"><i class="fa fa-user"></i>  <?php echo Myclass::t('OG113'); ?></div>
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                         <?php echo $form->labelEx($umodel, 'COURRIEL'); ?>
@@ -322,33 +401,33 @@
                 </div> 
 
                 <div class="form-row1"> 
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label> <?php echo  Myclass::t('OG114');?></label></div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label> <?php echo Myclass::t('OG114'); ?></label></div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                         <?php echo $form->radioButtonList($umodel, 'bSubscription_envision', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                     </div>
                 </div>
 
                 <div class="form-row1"> 
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo  Myclass::t('OG115');?> </label>  </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo Myclass::t('OG115'); ?> </label>  </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                         <?php echo $form->radioButtonList($umodel, 'bSubscription_envue', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                     </div>
                 </div>
 
                 <div class="form-row1"> 
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo  Myclass::t('OG116');?>  </label>  </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo Myclass::t('OG116'); ?>  </label>  </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                         <?php echo $form->radioButtonList($umodel, 'ABONNE_MAILING', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                     </div>
                 </div>
 
                 <div class="form-row1"> 
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo  Myclass::t('OG117');?>  </label>  </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo Myclass::t('OG117'); ?>  </label>  </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                         <?php echo $form->radioButtonList($umodel, 'ABONNE_PROMOTION', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                     </div>
                 </div>
-           
+
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 pull-right"> 
                         <?php
@@ -356,17 +435,17 @@
                             'name' => 'btnSubmit',
                             'type' => 'submit',
                             'class' => 'submit-btn'
-                                ), '<i class="fa fa-check-circle"></i> '. Myclass::t('OG120'));
+                                ), '<i class="fa fa-check-circle"></i> ' . Myclass::t('OG120'));
                         ?>
                     </div>
                 </div>
-                
+
             </div>    
-             <?php $this->endWidget(); ?>
+            <?php $this->endWidget(); ?>
         </div>
     </div>
 
-   
+
 </div>
 <?php
 $ajaxRegionUrl = Yii::app()->createUrl('/optiguide/retailerDirectory/getregions');
@@ -374,12 +453,12 @@ $ajaxCityUrl = Yii::app()->createUrl('/optiguide/retailerDirectory/getcities');
 $ajaxGroupUrl = Yii::app()->createUrl('/optiguide/retailerDirectory/getgroups');
 
 
-$ajaxgetlocation   = Yii::app()->createUrl('/optiguide/retailerDirectory/generatelatlong');
+$ajaxgetlocation = Yii::app()->createUrl('/optiguide/retailerDirectory/generatelatlong');
 $cs = Yii::app()->getClientScript();
 $cs_pos_end = CClientScript::POS_END;
 $cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
 
-$lat  = $model->map_lat;
+$lat = $model->map_lat;
 $long = $model->map_long;
 $js = <<< EOD
     $(document).ready(function(){

@@ -72,12 +72,14 @@
                     // For suppliers
                   //  array('label' => Myclass::t('OG059', '', 'og'), 'url' => array('/optiguide/suppliersDirectory/updateproducts'), 'active' => ($_controller == 'suppliersDirectory' && ($_action == "updateproducts" || $_action == "updatemarques")), 'visible' => (Yii::app()->user->role == "Fournisseurs")),
                   //  array('label' => Myclass::t('OGO139', '', 'og'), 'url' => array('/optiguide/suppliersDirectory/transactions'), 'active' => ($_controller == 'suppliersDirectory' && $_action == "transactions"), 'visible' => (Yii::app()->user->role == "Fournisseurs")),
+                    array('label' => Myclass::t('OGO168', '', 'og'), 'url' => array('/optiguide/suppliersDirectory/mappingreps'), 'active' => ($_controller == 'suppliersDirectory' && $_action == "mappingreps"), 'visible' => (Yii::app()->user->role == "Fournisseurs")),
+                    array('label' => Myclass::t('OGO169', '', 'og'), 'url' => array('/optiguide/suppliersDirectory/listreps'), 'active' => ($_controller == 'suppliersDirectory' && $_action == "listreps"), 'visible' => (Yii::app()->user->role == "Fournisseurs")),
                     // For Professionals
                     array('label' => Myclass::t('OGO146', '', 'og'), 'url' => array('/optiguide/professionalDirectory/mappingretailers'), 'active' => ($_controller == 'professionalDirectory' && $_action == "mappingretailers"), 'visible' => (Yii::app()->user->role == "Professionnels")),
                     array('label' => Myclass::t('OGO149', '', 'og'), 'url' => array('/optiguide/professionalDirectory/listretailers'), 'active' => ($_controller == 'professionalDirectory' && $_action == "listretailers"), 'visible' => (Yii::app()->user->role == "Professionnels")),
                     array('label' => Myclass::t('OGO160', '', 'og'), 'url' => array('/optiguide/professionalDirectory/retailersrequest'), 'active' => ($_controller == 'professionalDirectory' && $_action == "retailersrequest"), 'visible' => (Yii::app()->user->role == "Professionnels")),
                     // Internal messages
-                    array('label' => 'Internal Messages', 'url' => array('/optiguide/internalMessage/'), 'active' => $_controller == 'internalMessage', 'visible' => (Yii::app()->user->role == "Professionnels" || Yii::app()->user->role == "Fournisseurs")),   
+                    array('label' => 'Internal Messages', 'url' => array('/optiguide/internalMessage/'), 'active' => $_controller == 'internalMessage', 'visible' => (Yii::app()->user->role == "Professionnels" || Yii::app()->user->role == "Detaillants")),   
                     // For all users
                     array('label' => Myclass::t('OGO112', '', 'og'), 'url' => array('/optiguide/userDirectory/changepassword'), 'active' => ($_controller == "userDirectory" && $_action == "changepassword")),
                     array('label' => "<i class='fa fa-sign-out'></i> " . Myclass::t('OG025', '', 'og'), 'url' => array('/optiguide/default/logout')),

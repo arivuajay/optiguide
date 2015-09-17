@@ -174,6 +174,9 @@ return array(
     'OG153' => 'TurnOver',
     'OG154' => 'Classement des marchandises',
     'OG155' => 'Services offerts',
-    'OG156' => 'Description'
+    'OG156' => 'Description',
+    'OG157' => 'Logo',
+    'OG158' => 'Contact',
+    'OG159' => 'Langue',
 );
 ?>

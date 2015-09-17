@@ -10,7 +10,7 @@
             <?php
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'retailer-directory-form',
-                'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal'),
+                'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'),              
                 'clientOptions' => array(
                     'validateOnSubmit' => true,
                 ),
@@ -245,17 +245,83 @@
                     </div>     
                 </div>
 
-                <div class="form-group">                
-                    <?php
-                    $classificationtypes['Upscale'] = "Upscale (high priced)";
-                    $classificationtypes['Midscale'] = "Midscale (medium priced)";
-                    $classificationtypes['DownRange'] = "Down range (low priced)";
-                    echo $form->labelEx($model, 'classification', array('class' => 'col-sm-2 control-label')); ?>                   
+                
+                <div class="form-group"> 
+                    <?php echo $form->labelEx($model, 'image', array('class' => 'col-sm-2 control-label')); ?>                   
+                    <div class="col-sm-5">     
+                        <?php echo $form->fileField($model, 'image'); ?>                         
+                        <?php echo $form->error($model, 'image'); ?>
+                    </div>
+                </div>
+                <?php if($model->FICHIER!='')
+                {
+                     $img_url  = Yii::app()->getBaseUrl(true).'/uploads/retailer_logos/'.$model->FICHIER; 
+                    ?>   
+                <div class="form-group">  
+                    <label for="RetailerDirectory_Logo" class="col-sm-2 control-label">&nbsp;</label>
+                    <div class="col-sm-5">     
+                        <img src="<?php echo $img_url;?>" width="100" height="100">
+                    </div>
+                </div>
+                <?php                 
+                }?>
+                <div class="form-group">                  
+                        <?php
+                        $classificationtypes['Upscale'] = "Upscale (high priced)";
+                        $classificationtypes['Midscale'] = "Midscale (medium priced)";
+                        $classificationtypes['DownRange'] = "Down range (low priced)";
+                        echo $form->labelEx($model, 'classification', array('class' => 'col-sm-2 control-label'));
+                        ?>    
                     <div class="col-sm-5">        
                         <?php echo $form->dropDownList($model, 'classification', $classificationtypes, array('class' => 'form-control')); ?>    
                         <?php echo $form->error($model, 'classification'); ?>  
                     </div>     
                 </div>
+
+                <div class="form-group">                    
+                        <?php
+                        $language['EN'] = "English";
+                        $language['FR'] = "French";
+                        echo $form->labelEx($model, 'language', array('class' => 'col-sm-2 control-label'));
+                        ?>   
+                    <div class="col-sm-5">        
+                        <?php echo $form->dropDownList($model, 'language', $language, array('class' => 'form-control')); ?>    
+                        <?php echo $form->error($model, 'language'); ?>  
+                    </div>     
+                </div>
+
+                <div class="form-group">                    
+                    <?php echo $form->labelEx($model, 'contact_person', array('class' => 'col-sm-2 control-label')); ?>    
+                    <div class="col-sm-5">        
+                        <?php echo $form->textField($model, 'contact_person', array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'contact_person'); ?>  
+                    </div>     
+                </div>
+
+                <div class="form-group">                    
+                    <?php echo $form->labelEx($model, 'facebooklink', array('class' => 'col-sm-2 control-label')); ?>                       
+                    <div class="col-sm-5">        
+                        <?php echo $form->textField($model, 'facebooklink', array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'facebooklink'); ?>  
+                    </div>     
+                </div>
+                
+                <div class="form-group"> 
+                    <?php echo $form->labelEx($model, 'twitterlink', array('class' => 'col-sm-2 control-label')); ?> 
+                    <div class="col-sm-5">        
+                        <?php echo $form->textField($model, 'twitterlink', array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'twitterlink'); ?>  
+                    </div>     
+                </div>
+                
+                <div class="form-group">                   
+                    <?php echo $form->labelEx($model, 'linkedinlink', array('class' => 'col-sm-2 control-label')); ?>                        
+                    <div class="col-sm-5">        
+                        <?php echo $form->textField($model, 'linkedinlink', array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'linkedinlink'); ?>  
+                    </div>     
+                </div>
+                
 
                 <!--                  <div class="form-group">
                 <?php //echo $form->labelEx($umodel, 'MUST_VALIDATE', array('class' => 'col-sm-2 control-label'));   ?>       

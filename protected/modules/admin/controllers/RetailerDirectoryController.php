@@ -67,6 +67,7 @@ class RetailerDirectoryController extends Controller {
 
         if (isset($_POST['RetailerDirectory'])) {
             $model->attributes = $_POST['RetailerDirectory'];
+            $model->image=CUploadedFile::getInstance($model,'image');
            // $umodel->attributes = $_POST['UserDirectory'];
      
           //  $model->ID_CLIENT = $umodel->USR;
@@ -92,8 +93,20 @@ class RetailerDirectoryController extends Controller {
                     $exp_latlong = explode('~',$geo_values);
                     $model->map_lat  = $exp_latlong[0];
                     $model->map_long = $exp_latlong[1];        
-                }    
+                }   
                 
+                // save retailer logo
+                if($model->image)
+                {   
+                    $imgname = time() . '_' . $model->image->name;                    
+                    $model->FICHIER = $imgname;
+                    $ret_img_path = Yii::getPathOfAlias('webroot').'/'.RET_IMG_PATH.'/';                    
+                    if (!is_dir($ret_img_path)) {
+                        mkdir($ret_img_path, 0777, true);
+                    }
+                    $model->image->saveAs($ret_img_path . $imgname);
+                }    
+                                
                 $model->save(false);
                // $umodel->ID_RELATION = $model->ID_RETAILER;
               //  $umodel->save(false);
@@ -119,9 +132,11 @@ class RetailerDirectoryController extends Controller {
       //  $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation(array($model));
+        
 
         if (isset($_POST['RetailerDirectory'])) {
             $model->attributes = $_POST['RetailerDirectory'];
+             $model->image=CUploadedFile::getInstance($model,'image');
          //   $umodel->attributes = $_POST['UserDirectory'];
         //    $umodel->NOM_TABLE = $model::$NOM_TABLE;
        //     $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
@@ -141,6 +156,18 @@ class RetailerDirectoryController extends Controller {
                     $exp_latlong = explode('~',$geo_values);
                     $model->map_lat  = $exp_latlong[0];
                     $model->map_long = $exp_latlong[1];        
+                }  
+                
+                // save retailer logo
+                if($model->image)
+                {   
+                    $imgname = time() . '_' . $model->image->name;                    
+                    $model->FICHIER = $imgname;
+                    $ret_img_path = Yii::getPathOfAlias('webroot').'/'.RET_IMG_PATH.'/';                    
+                    if (!is_dir($ret_img_path)) {
+                        mkdir($ret_img_path, 0777, true);
+                    }
+                    $model->image->saveAs($ret_img_path . $imgname);
                 }    
                 
              //   $umodel->save(false);

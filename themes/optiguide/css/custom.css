@@ -268,3 +268,17 @@ and open the template in the editor.
 .user-right tr.highlight{
    background: #d9edf7 none repeat scroll 0 0;
 }
+
+#repbox {
+    margin-right: 0;
+}
+
+.repbox{
+    background: white none repeat scroll 0 0;
+    color: #222;
+    float: left;
+    height: 350px;
+    overflow: auto;
+    padding: 0;
+    width: 100%;
+}

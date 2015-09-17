@@ -17,8 +17,7 @@
     }
     ?>
     <h2> <?php echo $model['COMPAGNIE']; ?> </h2>    
-    <div class="row"> 
-
+    <div class="row">
         <?php
         if ($model['ID_CATEGORIE'] > 0) {
             $extypes = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
@@ -140,7 +139,7 @@
                     ?>
                 </div>
             </div>
-          
+
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
                 <h2> <i class="fa fa-cubes"></i> <?php echo Myclass::t('OG073', '', 'og'); ?> </h2> 
                 <div class="box" id="box1">
@@ -162,8 +161,8 @@
                                                 foreach ($products as $brand) {
                                                     ?>
                                                     <li class="noBorder"><?php echo $brand['NOM_MARQUE']; ?></li>       
-                                                    <?php }
-                                                    ?>
+                                                <?php }
+                                                ?>
                                             </ul>    
                                         <?php }
                                         ?>  
@@ -178,16 +177,41 @@
                 </div>
             </div>
 
+             <?php
+             if (!empty($results)) {?>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
+                <h2> <i class="fa fa-users"></i> <?php echo Myclass::t('OGO181', '', 'og'); ?> </h2> 
+                <div class="repbox" id="repbox">
+                    <div class="brands">
+                        <p>
+                        </p>
+                        <ul>
+                            <?php foreach ($results as $info) { ?>
+                            <li>
+                                <?php
+                                $dispname = $info['rep_username'];
+                                echo $dispname;
+                                ?>
+                            </li>
+                            <?php } ?>                       
+                        </ul>              
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+            <?php } ?>   
+
         <?php } ?>    
-        
+
     </div>
-    
-    <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> '.Myclass::t('OG016', '', 'og'), array('/optirep/suppliersDirectory'),array("class"=>"pull-left")); ?> </div>  
+
+    <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/suppliersDirectory'), array("class" => "pull-left")); ?> </div>  
 </div>
 <?php
 $js = <<< EOD
 $(document).ready(function(){        
      $('.box').lionbars();    
+     $('.repbox').lionbars();    
 });
 EOD;
 Yii::app()->clientScript->registerScript('_form_view', $js);

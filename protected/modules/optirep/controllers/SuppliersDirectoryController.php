@@ -50,6 +50,29 @@ class SuppliersDirectoryController extends ORController {
         $sectionid = Yii::app()->request->getParam('sectionid');
         $productid = Yii::app()->request->getParam('productid');
         $marqueid = Yii::app()->request->getParam('marqueid');
+        
+        // Get the list of corresponding representatives to the supplier
+        $results = array();        
+        $supp_id = $id;       
+        $mappingresult = MappingReps::model()->findAll("ID_FOURNISSEUR=" . $supp_id);
+        if (!empty($mappingresult)) 
+        {
+            foreach ($mappingresult as $info2) 
+            {
+                $rep_arr[] = $info2->rep_credential_id;
+            }
+            $imp_rep = (count($rep_arr) > 1) ? implode(',', $rep_arr) : $rep_arr[0];
+            $rep_query = "  and rep_credential_id IN (" . $imp_rep . ") ";
+
+            // Get all records list  with limit
+            $results = Yii::app()->db->createCommand() //this query contains all the data
+                    ->select('*')
+                    ->from(array('rep_credentials'))
+                    ->where("rep_status='1' and rep_role='single' ".$rep_query)
+                    ->order('rep_username ASC')
+                    ->queryAll();
+           
+        }
 
         //this query contains supplier informations
         $supplier_query = Yii::app()->db->createCommand()
@@ -96,7 +119,8 @@ class SuppliersDirectoryController extends ORController {
         $this->render('view', array(
             'model' => $supplier_query,
             'searchModel' => $searchModel,
-            'supplierproducts' => $result
+            'supplierproducts' => $result,
+             'results' => $results,
         ));
     }
 

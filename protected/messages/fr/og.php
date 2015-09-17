@@ -203,5 +203,20 @@ return array(
     
     'OGO165' => 'Aucun événement',
     'OGO166' => 'Tous les événements',
-    'OGO167' => 'Événements à venir'
+    'OGO167' => 'Événements à venir',
+    
+    'OGO168' => 'Représentants de cartographie',
+    'OGO169' => 'Vos représentants',
+    'OGO170' => 'Les représentants affectés succès pour vous.',
+    'OGO171' => 'Sélectionnez vos représentants',
+    'OGO172' => 'représentants disponibles', 
+    'OGO173' => 'Représentants [ A associer avec le fournisseur ]', 
+    'OGO174' => 'Votre liste de représentants correspondant',
+    'OGO175' => 'Représentants Infos',
+    'OGO176' => 'Aucun des représentants disponibles',
+    'OGO177' => "Etes-vous sûr de vouloir supprimer ces représentative?",
+    'OGO178' => 'S\'il vous plaît choisir un représentant(s) à supprimer.',
+    'OGO179' => 'S\'il vous plaît choisir représentant(s).',
+    'OGO180' => 'Votre représentant (s ) supprimé avec succès.',
+    'OGO181' => 'Liste des représentants correspondants',
 );

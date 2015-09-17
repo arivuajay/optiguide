@@ -191,7 +191,7 @@ return array(
     'OGO150' => 'Retailers assigned successfully for you.',
     'OGO151' => 'Your retailers deleted successfully.',
     'OGO152' => 'Your corresponding retailers list',
-    'OGO153' => "Are you sure you want to delete these retailer",
+    'OGO153' => "Are you sure you want to delete these retailer?",
     'OGO154' => 'Please select a retailer(s) to delete.',
     'OGO155' => 'No retailers available',
     'OGO156' => 'Retailers Info',
@@ -207,5 +207,20 @@ return array(
     
     'OGO165' => 'No events',
     'OGO166' => 'All Events',
-    'OGO167' => 'Upcoming events'
+    'OGO167' => 'Upcoming events',
+    
+    'OGO168' => 'Select representatives',
+    'OGO169' => 'Your representatives',
+    'OGO170' => 'Representatives assigned successfully for you.',
+    'OGO171' => 'Select your representatives',
+    'OGO172' => 'Available Representatives', 
+    'OGO173' => 'Representatives [ to associate with the supplier ]', 
+    'OGO174' => 'Your corresponding representatives list',
+    'OGO175' => 'Representatives Info',
+    'OGO176' => 'No representatives available',
+    'OGO177' => "Are you sure you want to delete these representative?",
+    'OGO178' => 'Please select a representative(s) to delete.',
+    'OGO179' => 'Please choose representative(s).',
+    'OGO180' => 'Your representative(s) deleted successfully.',
+    'OGO181' => 'Corresponding representatives list',
 );

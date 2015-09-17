@@ -37,6 +37,7 @@ class RetailerDirectory extends CActiveRecord
     
         public $country, $region, $uaccess_search, $searchcat, $Retailers1, $Retailers2;
         static $NOM_TABLE = 'Detaillants';
+        public $image;
         
 	/**
 	 * @return string the associated database table name
@@ -64,10 +65,12 @@ class RetailerDirectory extends CActiveRecord
 			// @todo Please remove those attributes that should not be searched.    
                         array('CATEGORY_1,CATEGORY_2,CATEGORY_3,CATEGORY_4,CATEGORY_5','Checkatleast'),                     
                         array('Categories,uaccess_search,searchcat,Retailers1,Retailers2,services_offered,description,classification,turnover','safe'),
+                        array('language,contact_person,facebooklink,twitterlink,linkedinlink','safe'),
                         array('COURRIEL','email'),
                         array('URL', 'url'),                        
 			array('uaccess_search,ID_RETAILER, ID_CLIENT, COMPAGNIE, ID_VILLE, ADRESSE, ADRESSE2, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, URL, COURRIEL, TEL_1800, DATE_MODIFICATION, ID_RETAILER_TYPE, ID_GROUPE, GROUPE, HEAD_OFFICE_NAME, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5', 'safe', 'on'=>'search'),
                         array('TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2,TEL_1800', 'phoneNumber'),
+                        array('image', 'file', 'types'=>'jpg, gif, png', 'allowEmpty'=>true,'safe' => false),
 		);
 	}
         
@@ -162,6 +165,12 @@ class RetailerDirectory extends CActiveRecord
                         'no_of_employee' => Myclass::t('OG129'),
                         'turnover'  => Myclass::t('OG153'),
                         'classification' => Myclass::t('OG154'),
+                        'image'     => Myclass::t('OG157'),
+                        'contact_person'     => Myclass::t('OG158'),
+                        'language'     => Myclass::t('OG159'),
+                        'facebooklink' => 'Facebook',
+                        'twitterlink'  => 'Twitter',
+                        'linkedinlink' => 'LinkedIn'
 		);
 	}
 

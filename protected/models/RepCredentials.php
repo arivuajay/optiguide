@@ -19,7 +19,7 @@
  */
 class RepCredentials extends CActiveRecord {
 
-    public $subscription_type_id;
+    public $subscription_type_id, $Reps1, $Reps2;
     public $no_of_accounts_purchase = 1;
     public $old_password;
     public $new_password;
@@ -53,13 +53,14 @@ class RepCredentials extends CActiveRecord {
             array('rep_username, rep_password', 'length', 'max' => 255),
             array('rep_role', 'length', 'max' => 6),
             array('rep_status', 'length', 'max' => 1),
-            array('subscription_type_id, no_of_accounts_purchase', 'safe'),
+            array('subscription_type_id, no_of_accounts_purchase,Reps1,Reps2', 'safe'),
             array('old_password, new_password, confirm_password', 'required', 'on' => 'changePwd'),
             array('old_password', 'findPasswords', 'on' => 'changePwd'),
             array('confirm_password', 'compare', 'compareAttribute' => 'new_password', 'on' => 'changePwd'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('rep_credential_id, rep_username, rep_password, rep_role, rep_parent_id, rep_status, rep_expiry_date, created_at, modified_at', 'safe', 'on' => 'search'),
+            array( 'Reps2' , 'required' , 'on'=>'mapping' ,'message'=> Myclass::t('OGO179', '', 'og')),
         );
     }
 
