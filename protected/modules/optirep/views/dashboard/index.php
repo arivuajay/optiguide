@@ -38,19 +38,31 @@
     </div>
 </div>
 
+<?php
+$rep_id = Yii::app()->user->id;
+$criteria = new CDbCriteria();        
+$criteria->addCondition('rep_credential_id = "'.$rep_id.'"');
+$criteria->order = 'id DESC';
+$criteria->limit = 3;
+$model_notes = RepNotes::model()->findAll($criteria);
+?>
+
 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
     <div class="cate-bg"> 
         <div class="cate-heading cate-heading2">  <i class="fa fa-pencil"></i>  My Notes  </div>
-        <div class="fav-cont notes-cont"> 
-            Commodo cupidatat godard hella brunch direct trade. Cardigan swag duis, irure proident. 
-        </div>
-        <div class="fav-cont notes-cont"> 
-            Commodo cupidatat godard hella brunch direct trade. Cardigan swag duis, irure proident.
-        </div>
-        <div class="fav-cont notes-cont"> 
-            Commodo cupidatat godard hella brunch direct trade. Cardigan swag duis, irure proident. 
-        </div>
-         <div class="viewall"><a href="#">View all</a></div>
+         <?php                   
+         if (!empty($model_notes)) {
+             foreach ($model_notes as $notes) { ?>       
+            <div class="fav-cont notes-cont"> 
+                <?php echo (strlen($notes['message'])>100)?substr($notes['message'],0,100).'..':$notes['message'];?>
+            </div>         
+         <?php
+                }?>
+            <div class="viewall"><?php echo CHtml::link(Myclass::t('OG038', '', 'og'), array('/optirep/repNotes'), array('class' => '')); ?></div>        
+         <?php
+            }else{?>
+            <div class="fav-cont notes-cont">  Notes not available.</div>
+         <?php }?>
     </div>
     
 </div>
