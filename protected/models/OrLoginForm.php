@@ -74,6 +74,7 @@ class OrLoginForm extends CFormModel {
         if ($this->_identity->errorCode === OrIdentity::ERROR_NONE):
             $duration = $this->rememberMe ? 3600 * 24 * 5 : 0; // 30 days
             @Yii::app()->user->login($this->_identity, $duration);
+            RepLoggedinActivities::model()->insertLoggedinActivity();
             return true;
         endif;
     }

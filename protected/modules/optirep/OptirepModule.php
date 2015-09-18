@@ -15,6 +15,8 @@ class OptirepModule extends CWebModule {
             'optirep.models.*',
             'optirep.components.*',
         ));
+        
+        Yii::app()->getComponent("booster");
     }
 
     public function beforeControllerAction($controller, $action) {
