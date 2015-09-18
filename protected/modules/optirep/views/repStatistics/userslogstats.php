@@ -1,5 +1,5 @@
 <div class="cate-bg user-right">
-    <h2> Rep Accounts Logged in Activities </h2>
+    <h2> Users log stats </h2>
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php
@@ -20,7 +20,8 @@
                     'yAxis' => array(
                         'title' => array(
                             'text' => 'No.of Times Loggedin'
-                        )
+                        ),
+                        'min' => 0,                         
                     ),
                     'series' => $response['series']
                 )
