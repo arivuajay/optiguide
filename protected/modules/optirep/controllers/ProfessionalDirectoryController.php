@@ -64,7 +64,7 @@ class ProfessionalDirectoryController extends ORController {
         if($check_view==1)
         {  
 
-        }else  if($viewcounts>=5)
+        }else  if($viewcounts>=50)
         {
             Yii::app()->user->setFlash('info', 'Maximum 50 users ( professionals / retailers ) only able to view per day. Your limits are reached today!!');
             $this->redirect(array('index'));
