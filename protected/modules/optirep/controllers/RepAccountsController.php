@@ -146,8 +146,8 @@ class RepAccountsController extends ORController {
             $new_subscription['rep_admin_old_active_accounts'] = $model->getRepAdminActiveAccountsCount();
             $new_subscription['no_of_accounts_purchase'] = $_POST['RepCredentials']['no_of_accounts_purchase'];
             $new_subscription['total_no_of_accounts'] = $rep_admin_old_active_accounts + $no_of_accounts_purchase;
-            $new_subscription['price_list'] = Myclass::repAdminBuyMoreAccountsPriceCalculation($total_no_of_accounts, $no_of_accounts_purchase);
-
+            $new_subscription['price_list'] = Myclass::repAdminBuyMoreAccountsPriceCalculation($new_subscription['total_no_of_accounts'], $new_subscription['no_of_accounts_purchase']);
+            
             $price_list = $new_subscription['price_list'];
 
             $repTemp = new RepTemp;
@@ -160,7 +160,10 @@ class RepAccountsController extends ORController {
                 $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalCancel'));
                 $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalNotify'));
 
-                $paypalManager->addField('item_name', 'Buy More Accounts');
+                $paypalManager->addField('item_name', 'Rep Admin- Buy More Accounts Subscription');
+                $paypalManager->addField('item_price', $price_list['per_account_price']);
+                $paypalManager->addField('quantity', $new_subscription['no_of_accounts_purchase']);
+                $paypalManager->addField('tax', $price_list['tax']);
                 $paypalManager->addField('amount', $price_list['grand_total']);
                 $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
                 $paypalManager->addField('return', $returnUrl);
