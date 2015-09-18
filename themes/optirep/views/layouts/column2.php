@@ -35,6 +35,7 @@
                             array('label' => 'Internal Messages', 'url' => array('/optirep/internalMessage/index')),
                             array('label' => 'My Notes', 'url' => array('/optirep/repNotes/index')),
                             array('label' => 'My Stats', 'url' => array('/optirep/repStatistics/index')),
+                            array('label' => 'Users profile viewed stats', 'url' => array('/optirep/repStatistics/profileviewstats'), 'visible'=>(Yii::app()->user->rep_role == "admin")),
                             array('label' => 'Change Password', 'url' => array('/optirep/repCredential/changePassword')),
                         ),
                     ));
