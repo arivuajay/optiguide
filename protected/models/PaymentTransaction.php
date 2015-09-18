@@ -126,5 +126,37 @@ class PaymentTransaction extends CActiveRecord {
             'criteria' => $criteria,
         ));
     }
+    
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+     */
+    public function searchrep() {
+        // Warning: Please modify the following code to remove attributes that
+        // should not be searched.
+
+        $criteria = new CDbCriteria;
+
+        $criteria->compare('id', $this->id);        
+        $criteria->compare('total_price', $this->total_price, true);
+        $criteria->compare('payment_status', $this->payment_status, true);
+        $criteria->compare('payer_email', $this->payer_email, true);
+        $criteria->compare('verify_sign', $this->verify_sign, true);
+        $criteria->compare('txn_id', $this->txn_id, true);
+        $criteria->compare('payment_type', $this->payment_type, true);
+        $criteria->compare('receiver_email', $this->receiver_email, true);
+        $criteria->compare('txn_type', $this->txn_type, true);
+        $criteria->compare('item_name', $this->item_name, true);        
+        $criteria->compare('created_at', $this->created_at, true);
+        $criteria->compare('updated_at', $this->updated_at, true);
+        //$criteria->compare('suppliersDirectory.COMPAGNIE', $this->COMPAGNIE, true);
+        $criteria->addCondition("NOMTABLE = 'rep_credentials'");
+       //  $criteria->with = "suppliersDirectory";        
+       // $criteria->together = true;
+        $criteria->order ='id DESC';
+        return new CActiveDataProvider($this, array(            
+            'criteria' => $criteria,
+        ));
+    }
   
 }

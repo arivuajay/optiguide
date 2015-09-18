@@ -12,23 +12,17 @@
         <?php
         // Current controller name
         $_controller = Yii::app()->controller->id;
-
+        $_action = Yii::app()->controller->action->id;
         $this->widget('zii.widgets.CMenu', array(
             'activateParents' => true,
             'encodeLabel' => false,
             'activateItems' => true,
             'items' => array(
                 array('label' => '<i class="fa fa-dashboard"></i> <span>Dashboard</span>', 'url' => Yii::app()->homeUrl),
-                
                 array('label' => '<i class="fa fa-newspaper-o"></i> <span>Nouvelles</span>', 'url' => array('/admin/newsManagement/index'), 'active' => $_controller == 'newsManagement'),
-                
-                
                 array('label' => '<i class="fa fa-calendar"></i> <span>Calendrier</span>', 'url' => array('/admin/calenderEvent/index'), 'active' => $_controller == 'calenderEvent'),
-                
-                 array('label' => '<i class="fa fa-photo"></i> <span>Publicité</span>', 'url' => array('/admin/publicityAds/index'), 'active' => $_controller == 'publicityAds'),
-                
+                array('label' => '<i class="fa fa-photo"></i> <span>Publicité</span>', 'url' => array('/admin/publicityAds/index'), 'active' => $_controller == 'publicityAds'),
                 array('label' => '<i class="fa fa-list"></i> <span>Saviez-vous que ?</span>', 'url' => array('/admin/managementAdvice/index'), 'active' => $_controller == 'managementAdvice'),
-                
                 array('label' => '<i class="fa fa-folder"></i> <span> Produits & Services</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
@@ -39,19 +33,15 @@
                     ),
                 ),
                 array('label' => '<i class="fa fa-users"></i> <span>Détaillants</span>', 'url' => array('/admin/retailerDirectory/index'), 'active' => $_controller == 'retailerdirectory'),
-                
-                
-                
                 array('label' => '<i class="fa fa-folder"></i> <span> Fournisseurs</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
-                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Gestion des fournisseurs</span>', 'url' => array('/admin/suppliersDirectory/index'), 'active' => $_controller == 'suppliersDirectory'),
-                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Fournisseurs Transactions De Paiement </span>', 'url' => array('/admin/paymentTransaction/index'), 'active' => $_controller == 'paymentTransaction'),
-                       array('label' => '<i class="fa fa-angle-double-right"></i> <span>Paramètres </span>', 'url' => array('/admin/supplierSubscriptionPrice/index'), 'active' => $_controller == 'supplierSubscriptionPrice'),                        
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Gestion des fournisseurs</span>', 'url' => array('/admin/suppliersDirectory/index'), 'active' => $_controller == 'suppliersDirectory'),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Fournisseurs Transactions De Paiement </span>', 'url' => array('/admin/paymentTransaction/index'), 'active' => ($_controller == 'paymentTransaction' && $_action=="index")),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Paramètres </span>', 'url' => array('/admin/supplierSubscriptionPrice/index'), 'active' => $_controller == 'supplierSubscriptionPrice'),
                     ),
                 ),
-                
                 array('label' => '<i class="fa fa-briefcase"></i> <span>Professionnels</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
@@ -61,7 +51,6 @@
                     ),
                 ),
                 array('label' => '<i class="fa fa-group"></i> <span>Associations</span>', 'url' => array('/admin/categoryInformation/index'), 'active' => $_controller == 'categoryInformation'),
-              
                 array('label' => '<i class="fa fa-globe"></i> <span> Régions</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
@@ -72,11 +61,17 @@
                     ),
                 ),
                 array('label' => '<i class="fa fa-gear"></i> <span>Archivage</span>', 'url' => array('/admin/archiveCategory/index')),
-            // array('label' => '<i class="fa fa-dashboard"></i> <span>Utilisateurs</span>', 'url' => array('/admin/userdirectory/index'), 'active' => $_controller == 'userdirectory'),
-                
-                 array('label' => '<i class="fa fa-line-chart"></i> <span>Sondages</span>', 'url' => array('/admin/poll/index'), 'active' => $_controller == 'poll'),
-                
-                  array('label' => '<i class="fa fa-bell"></i> <span>Client Profiles</span>', 'url' => array('/admin/clientProfiles/index'), 'active' => $_controller == 'clientProfiles'),
+                // array('label' => '<i class="fa fa-dashboard"></i> <span>Utilisateurs</span>', 'url' => array('/admin/userdirectory/index'), 'active' => $_controller == 'userdirectory'),
+                array('label' => '<i class="fa fa-line-chart"></i> <span>Sondages</span>', 'url' => array('/admin/poll/index'), 'active' => $_controller == 'poll'),
+                array('label' => '<i class="fa fa-bell"></i> <span>Client Profiles</span>', 'url' => array('/admin/clientProfiles/index'), 'active' => $_controller == 'clientProfiles'),
+                array('label' => '<i class="fa fa-folder"></i> <span> Opti-rep</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
+                    'itemOptions' => array('class' => 'treeview'),
+                    'submenuOptions' => array('class' => 'treeview-menu'),
+                    'items' => array(                       
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Transactions de paiement Optirep</span>', 'url' => array('/admin/paymentTransaction/reptransaction'), 'active' => ($_controller == 'paymentTransaction' && $_action=="reptransaction")),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Paramètres </span>', 'url' => array('/admin/supplierSubscriptionPrice/index'), 'active' => $_controller == 'supplierSubscriptionPrice'),
+                    ),
+                ),
             ),
             'htmlOptions' => array('class' => 'sidebar-menu')
         ));

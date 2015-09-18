@@ -28,7 +28,7 @@ class PaymentTransactionController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete'),
+                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete','reptransaction'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -88,6 +88,22 @@ class PaymentTransactionController extends Controller {
             'model' => $model,
         ));
     }
+    
+     /**
+     * Lists all models.
+     */
+    public function actionReptransaction() {
+        $model = new PaymentTransaction('searchrep');
+        $model->unsetAttributes();  // clear any default values
+        if (isset($_GET['PaymentTransaction']))
+            $model->attributes = $_GET['PaymentTransaction'];
+
+        $this->render('reptransaction', array(
+            'model' => $model,
+        ));
+    }
+    
+    
 
     /**
      * Returns the data model based on the primary key given in the GET variable.
