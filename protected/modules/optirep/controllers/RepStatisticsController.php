@@ -95,5 +95,46 @@ class RepStatisticsController extends ORController {
         }
         $this->render('repAccountsLoggedinActivities', array('response' => $response));
     }
+    
+     public function actionProfileviewstats()
+    {        
+        $response = array();
+        
+        $adminid =  Yii::app()->user->id;
+        
+        $condition = "rep_status='1' and rep_parent_id = '".$adminid."'";
+        $getusers  = RepCredentials::model()->findAll($condition);
+
+        if(!empty($getusers))
+        {     
+            
+            $dates = array();
+            for ($i = 0; $i < 6; $i++) {
+                array_push($dates, date("Y-m-d", strtotime($i . " days ago")));
+            }
+            
+            $response['dates'] = array();
+            foreach ($dates as $date) {
+                array_push($response["dates"], $date);
+            }
+           
+            $response["uname"]  = array();
+           
+            foreach ($getusers as $key => $uinfo) 
+            {               
+                $rep_id = $uinfo['rep_credential_id'];
+                $response['series'][$key]['name'] = $uinfo['rep_username'];
+                $response['viewcounts'] = array();
+                foreach ($dates as $date) {                
+                    $condition1 = " DATE(view_date) ='$date' and rep_credential_id=".$rep_id;
+                    $viewcounts = RepViewCounts::model()->count($condition1);                    
+                    array_push($response["viewcounts"], (int) $viewcounts);
+                }   
+                $response['series'][$key]['data'] = $response["viewcounts"];                
+            }
+        }
+       
+        $this->render('profileviewstats', array('response' => $response));
+    }  
 
 }
