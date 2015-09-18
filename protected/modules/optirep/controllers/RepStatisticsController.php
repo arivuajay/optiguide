@@ -1,6 +1,6 @@
 <?php
 
-class RepLoggedinActivitiesController extends ORController {
+class RepStatisticsController extends ORController {
 
     /**
      * @return array action filters

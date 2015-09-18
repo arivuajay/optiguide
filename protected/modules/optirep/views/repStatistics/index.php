@@ -1,7 +1,7 @@
 
 
 <div class="cate-bg user-right">
-    <h2> Rep Logged in Activities </h2>
+    <h2> My Logged in Activities </h2>
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php

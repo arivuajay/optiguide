@@ -34,6 +34,7 @@
                             array('label' => 'Favourite Retailers', 'url' => array('/optirep/repFavourites/index')),
                             array('label' => 'Internal Messages', 'url' => array('/optirep/internalMessage/index')),
                             array('label' => 'My Notes', 'url' => array('/optirep/repNotes/index')),
+                            array('label' => 'My Stats', 'url' => array('/optirep/repStatistics/index')),
                             array('label' => 'Change Password', 'url' => array('/optirep/repCredential/changePassword')),
                         ),
                     ));
