@@ -51,8 +51,39 @@ class RetailerDirectoryController extends ORController {
               
         $searchModel = new  RetailerDirectory();       
         $searchModel->unsetAttributes();
-        
+                        
+        $rep_id    = Yii::app()->user->id;
         $retail_id = $id;
+        $today  = date('Y-m-d');
+
+        // Check the professional view today
+        $condition2 = " DATE(view_date) ='$today' and rep_credential_id=".$rep_id." and ID_RETAILER=".$retail_id;
+        $check_view = RepViewCounts::model()->count($condition2);
+
+        // Get total view counts
+        $condition1 = " DATE(view_date) ='$today' and rep_credential_id=".$rep_id;
+        $viewcounts = RepViewCounts::model()->count($condition1);
+
+        if($check_view==1)
+        {  
+
+        }else  if($viewcounts>=10)
+        {
+            Yii::app()->user->setFlash('info', 'Maximum 50 users ( professionals / retailers ) only able to view per day. Your limits are reached today!!');
+            $this->redirect(array('index'));
+        }         
+        // Add the view count
+        if($check_view==0)
+        {    
+            $vmodel=new RepViewCounts;
+            $vmodel->rep_credential_id = Yii::app()->user->id;
+            $vmodel->ID_SPECIALISTE    = 0;
+             $vmodel->ID_RETAILER      = $retail_id;
+            $vmodel->view_date = $today;
+            $vmodel->save();
+        }    
+        
+        
         $mappingresult = MappingRetailers::model()->findAll("ID_RETAILER=" . $retail_id);
 
         if (!empty($mappingresult)) 

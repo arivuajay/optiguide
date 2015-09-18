@@ -49,8 +49,37 @@ class ProfessionalDirectoryController extends ORController {
         $searchModel->unsetAttributes();
         $results    = array();
         
+        $rep_id    = Yii::app()->user->id;
         $profil_id = $id;
-       
+        $today  = date('Y-m-d');
+
+        // Check the professional view today
+        $condition2 = " DATE(view_date) ='$today' and rep_credential_id=".$rep_id." and ID_SPECIALISTE=".$profil_id;
+        $check_view = RepViewCounts::model()->count($condition2);
+
+        // Get total view counts
+        $condition1 = " DATE(view_date) ='$today' and rep_credential_id=".$rep_id;
+        $viewcounts = RepViewCounts::model()->count($condition1);
+
+        if($check_view==1)
+        {  
+
+        }else  if($viewcounts>=5)
+        {
+            Yii::app()->user->setFlash('info', 'Maximum 50 users ( professionals / retailers ) only able to view per day. Your limits are reached today!!');
+            $this->redirect(array('index'));
+        }         
+        // Add the view count
+        if($check_view==0)
+        {    
+            $vmodel=new RepViewCounts;
+            $vmodel->rep_credential_id = Yii::app()->user->id;
+            $vmodel->ID_SPECIALISTE    = $profil_id;
+             $vmodel->ID_RETAILER      = 0;
+            $vmodel->view_date = $today;
+            $vmodel->save();
+        }    
+        
         $mappingresult = MappingRetailers::model()->findAll("ID_SPECIALISTE=" . $profil_id);
 
         if (!empty($mappingresult)) 
