@@ -34,7 +34,7 @@
                             array('label' => 'Edit Profile', 'url' => array('/optirep/repCredential/editprofile')),
                             array('label' => 'Manage Rep Accounts', 'url' => array('/optirep/repAccounts/index'), 'visible'=>(Yii::app()->user->rep_role == "admin")),
                             array('label' => 'Favourite Retailers', 'url' => array('/optirep/repFavourites/index')),
-                            array('label' => 'Internal Messages', 'url' => array('/optirep/internalMessage/index')),
+                            array('label' => 'Internal Messages', 'url' => array('/optirep/internalMessage/index'), 'visible'=>(Yii::app()->user->rep_role != "admin")),
                             array('label' => 'My Notes', 'url' => array('/optirep/repNotes/index')),
                             array('label' => 'My Stats', 'url' => array('/optirep/repStatistics/index'), 'visible'=>($stats_disp == "1")),
                             array('label' => 'Users log stats', 'url' => array('/optirep/repStatistics/userslogstats'), 'visible'=>(Yii::app()->user->rep_role == "admin" && $stats_disp == "1")),
