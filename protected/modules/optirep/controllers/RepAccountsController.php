@@ -147,7 +147,7 @@ class RepAccountsController extends ORController {
             $new_subscription['no_of_accounts_purchase'] = $_POST['RepCredentials']['no_of_accounts_purchase'];
             $new_subscription['total_no_of_accounts'] = $rep_admin_old_active_accounts + $no_of_accounts_purchase;
             $new_subscription['price_list'] = Myclass::repAdminBuyMoreAccountsPriceCalculation($new_subscription['total_no_of_accounts'], $new_subscription['no_of_accounts_purchase']);
-            
+
             $price_list = $new_subscription['price_list'];
 
             $repTemp = new RepTemp;
@@ -223,6 +223,27 @@ class RepAccountsController extends ORController {
                 $subscription->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
                 $subscription->save(false);
 
+                // Save the payment details                                   
+                $ptmodel = new PaymentTransaction;
+                $ptmodel->user_id = $subscription_details['rep_credential_id'];    // need to assign acutal user id
+                $ptmodel->total_price = $_POST['mc_gross'];
+                $ptmodel->subscription_price = $price_list['total_price'];
+                $ptmodel->tax = $price_list['tax'];
+                $ptmodel->payment_status = $_POST['payment_status'];
+                $ptmodel->payer_email = $_POST['payer_email'];
+                $ptmodel->verify_sign = $_POST['verify_sign'];
+                $ptmodel->txn_id = $_POST['txn_id'];
+                $ptmodel->payment_type = $_POST['payment_type'];
+                $ptmodel->receiver_email = $_POST['receiver_email'];
+                $ptmodel->txn_type = $_POST['txn_type'];
+                $ptmodel->item_name = $_POST['item_name'];
+                $ptmodel->NOMTABLE = RepCredentials::NAME_TABLE;
+                $ptmodel->expirydate = date("Y-m-d", strtotime('+1 month'));
+                $ptmodel->invoice_number = $_POST['custom'];
+                $ptmodel->pay_type = '1';
+                $ptmodel->rep_admin_subscription_id = $subscription->rep_admin_subscription_id;
+                $ptmodel->save(false);
+
                 RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
             }
         }
@@ -257,7 +278,7 @@ class RepAccountsController extends ORController {
             $data = Yii::app()->session['renewal'];
             $repTemp = new RepTemp;
             $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
-            $repTemp->rep_temp_key = 'Renewal Rep Accounts';
+            $repTemp->rep_temp_key = 'Rep Admin- Renewal Rep Accounts Subscription';
             $repTemp->rep_temp_value = serialize($data);
             if ($repTemp->save()) {
                 unset(Yii::app()->session['renewal']);
@@ -338,6 +359,28 @@ class RepAccountsController extends ORController {
                     $repAdminSubscriber->rep_credential_id = $rep_account->rep_credential_id;
                     $repAdminSubscriber->save(false);
                 }
+
+                // Save the payment details                                   
+                $ptmodel = new PaymentTransaction;
+                $ptmodel->user_id = $renewal_details['rep_credential_id'];    // need to assign acutal user id
+                $ptmodel->total_price = $_POST['mc_gross'];
+                $ptmodel->subscription_price = $price_list['total_price'];
+                $ptmodel->tax = $price_list['tax'];
+                $ptmodel->payment_status = $_POST['payment_status'];
+                $ptmodel->payer_email = $_POST['payer_email'];
+                $ptmodel->verify_sign = $_POST['verify_sign'];
+                $ptmodel->txn_id = $_POST['txn_id'];
+                $ptmodel->payment_type = $_POST['payment_type'];
+                $ptmodel->receiver_email = $_POST['receiver_email'];
+                $ptmodel->txn_type = $_POST['txn_type'];
+                $ptmodel->item_name = $_POST['item_name'];
+                $ptmodel->NOMTABLE = RepCredentials::NAME_TABLE;
+//                $ptmodel->expirydate = date("Y-m-d", strtotime('+1 month'));
+                $ptmodel->invoice_number = $_POST['custom'];
+                $ptmodel->pay_type = '1';
+                $ptmodel->rep_admin_subscription_id = $repAdminSubscription->rep_admin_subscription_id;
+                $ptmodel->save(false);
+
                 RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
             }
         }

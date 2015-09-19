@@ -124,7 +124,7 @@ class RepCredentialController extends ORController {
             $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalCancel'));
             $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalNotify'));
 
-            $paypalManager->addField('item_name', 'Registration');
+            $paypalManager->addField('item_name', 'Opti-Rep : Registration');
             $paypalManager->addField('amount', $registration['step3']['grand_total']);
             $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
             $paypalManager->addField('return', $returnUrl);
@@ -205,6 +205,32 @@ class RepCredentialController extends ORController {
                         $repAdmin->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
                         $repAdmin->save(false);
                     }
+
+                    // Save the payment details                                   
+                    $ptmodel = new PaymentTransaction;
+                    $ptmodel->user_id = $model->rep_credential_id;    // need to assign acutal user id
+                    $ptmodel->total_price = $_POST['mc_gross'];
+                    $ptmodel->subscription_price = $registration['step3']['total_price'];
+                    $ptmodel->tax = $registration['step3']['tax'];
+                    $ptmodel->payment_status = $_POST['payment_status'];
+                    $ptmodel->payer_email = $_POST['payer_email'];
+                    $ptmodel->verify_sign = $_POST['verify_sign'];
+                    $ptmodel->txn_id = $_POST['txn_id'];
+                    $ptmodel->payment_type = $_POST['payment_type'];
+                    $ptmodel->receiver_email = $_POST['receiver_email'];
+                    $ptmodel->txn_type = $_POST['txn_type'];
+                    $ptmodel->item_name = $_POST['item_name'];
+                    $ptmodel->NOMTABLE = RepCredentials::NAME_TABLE;
+                    $ptmodel->expirydate = date("Y-m-d", strtotime('+1 month'));
+                    $ptmodel->invoice_number = $_POST['custom'];
+                    $ptmodel->pay_type = '1';
+                    if ($model->rep_role == RepCredentials::ROLE_SINGLE) {
+                        $ptmodel->rep_single_subscription_id = $repSingle->rep_single_subscription_id;
+                    } elseif ($model->rep_role == RepCredentials::ROLE_ADMIN) {
+                        $ptmodel->rep_admin_subscription_id = $repAdmin->rep_admin_subscription_id;
+                    }
+                    $ptmodel->save(false);
+
                     RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
                 }
             }
@@ -236,6 +262,7 @@ class RepCredentialController extends ORController {
         $this->render('editprofile', array('model' => $model, 'profile' => $profile,));
     }
 
+    //Change Password for Opti-Rep
     public function actionChangePassword() {
         $model = new RepCredentials;
         $model = RepCredentials::model()->findByAttributes(array('rep_credential_id' => Yii::app()->user->id));
@@ -256,10 +283,10 @@ class RepCredentialController extends ORController {
                 }
             }
         }
-
         $this->render('changePassword', array('model' => $model));
     }
 
+    //Rep Admin - Accounts change status.
     public function actionChangeStatus() {
         if (Yii::app()->request->isAjaxRequest) {
             $rep_credential_id = $_POST['id'];
@@ -268,17 +295,6 @@ class RepCredentialController extends ORController {
             $repCredential->save(false);
         } else {
             $this->redirect(array('dashboard/index'));
-        }
-    }
-
-    /**
-     * Performs the AJAX validation.    
-     * @param ArchiveCategory $model the model to be validated
-     */
-    protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'rep-credential-form') {
-            echo CActiveForm::validate($model); 
-            Yii::app()->end();
         }
     }
 
