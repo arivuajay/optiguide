@@ -1,12 +1,17 @@
 <div class="cate-bg user-right">
     <h2> Statistics Payment </h2>
-    <?php
+    <?php     
     $repid = Yii::app()->user->id;
     $criteria1 = new CDbCriteria();
-    $criteria1->condition = "user_id=" . $repid;
+    $criteria1->addCondition("user_id=".$repid);
+    $criteria1->addCondition("NOMTABLE='rep_credentials'");
+    $criteria1->addCondition("(subscription_type='3' || subscription_type='4')");
     $criteria1->order = 'id DESC';
     $criteria1->limit = 1;
     $get_transactions = PaymentTransaction::model()->find($criteria1);
+    
+    $subprices     = SupplierSubscriptionPrice::model()->findByPk(1);
+    $stats_price   = $subprices->rep_statistics_price;
     ?>
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -27,11 +32,13 @@
             ));
             ?>            
             <div class="row"> 
-                <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8"><h4>Payment Fee: 2 CAD</h4></div> 
+                <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8"><h4> Subscription Fee: <?php echo $stats_price;?> CAD</h4></div> 
                 <?php if (!empty($get_transactions)) { 
                     echo CHtml::hiddenField('subscription_type' , '4');
+                    $btntxt = "RENEW NOW";
                    }else{ 
                     echo CHtml::hiddenField('subscription_type' , '3');
+                    $btntxt = "PAY NOW";
                    }?>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
                     <?php
@@ -40,7 +47,7 @@
                         'value' => 'Payfee',
                         'type' => 'submit',
                         'class' => 'register-btn'
-                            ), '<i class="fa fa-arrow-circle-right"></i> ' . Myclass::t('OGO103', '', 'og'));
+                            ), '<i class="fa fa-arrow-circle-right"></i> ' .  $btntxt);
                     ?>
                 </div>  
             </div>            

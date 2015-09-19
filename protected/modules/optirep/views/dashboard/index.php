@@ -66,8 +66,41 @@
 
 
 <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
-    <div class="cate-bg">       
-        <?php echo CHtml::link(CHtml::image($this->themeUrl . '/images/chart.jpg'), array('/optirep/repStatistics/payment/'), array('class' => '')); ?>
+    <div class="cate-bg">    
+        <?php
+        $stats_disp = Myclass::stats_display();
+        if ($stats_disp == "1") {
+            $this->widget('booster.widgets.TbHighCharts', array(
+                'options' => array(
+                    'chart' => array(
+                        'type' => 'spline'
+                    ),
+                    'title' => array(
+                        'text' => 'Loggedin Activities'
+                    ),
+                    'subtitle' => array(
+                        'text' => 'Last 6 days'
+                    ),
+                    'xAxis' => array(
+                        'categories' => $response['dates']
+                    ),
+                    'yAxis' => array(
+                        'title' => array(
+                            'text' => 'No.of Times Loggedin'
+                        )
+                    ),
+                    'series' => array(
+                        array(
+                            'name' => Yii::app()->user->name,
+                            'data' => $response['visits']
+                        )
+                    )
+                )
+            ));
+        } else {
+            echo CHtml::link(CHtml::image($this->themeUrl . '/images/chart.jpg'), array('/optirep/repStatistics/payment/'), array('class' => ''));
+        }
+        ?>
     </div>
 </div>
 

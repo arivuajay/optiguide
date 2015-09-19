@@ -26,10 +26,10 @@ class SupplierSubscriptionPrice extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('profile_price, profile_logo_price', 'numerical'),
+			array('profile_price, profile_logo_price,rep_statistics_price', 'numerical'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, profile_price, profile_logo_price', 'safe', 'on'=>'search'),
+			array('id, profile_price, profile_logo_price,rep_statistics_price', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -53,6 +53,7 @@ class SupplierSubscriptionPrice extends CActiveRecord
 			'id' => Myclass::t('ID'),
 			'profile_price' => Myclass::t('Profil Prix'),
 			'profile_logo_price' => Myclass::t('Profil & Logo Prix'),
+                        'rep_statistics_price' => Myclass::t('Statistiques Prix'),
 		);
 	}
 
@@ -77,6 +78,7 @@ class SupplierSubscriptionPrice extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('profile_price',$this->profile_price);
 		$criteria->compare('profile_logo_price',$this->profile_logo_price);
+                $criteria->compare('rep_statistics_price',$this->rep_statistics_price);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

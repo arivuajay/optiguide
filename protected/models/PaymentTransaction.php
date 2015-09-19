@@ -30,7 +30,7 @@
  */
 class PaymentTransaction extends CActiveRecord {
 
-    public $COMPAGNIE;
+    public $COMPAGNIE,$rep_username;
     
     /**
      * Returns the static model of the specified AR class.
@@ -69,7 +69,8 @@ class PaymentTransaction extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-             'suppliersDirectory' => array(self::BELONGS_TO, 'SuppliersDirectory', 'user_id'),
+            'suppliersDirectory' => array(self::BELONGS_TO, 'SuppliersDirectory', 'user_id'),
+            'repCredentials' => array(self::BELONGS_TO, 'RepCredentials', 'user_id'),
         );
     }
 
@@ -151,10 +152,10 @@ class PaymentTransaction extends CActiveRecord {
         $criteria->compare('item_name', $this->item_name, true);        
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->compare('updated_at', $this->updated_at, true);
-        //$criteria->compare('suppliersDirectory.COMPAGNIE', $this->COMPAGNIE, true);
+        $criteria->compare('repCredentials.rep_username', $this->rep_username, true);
         $criteria->addCondition("NOMTABLE = 'rep_credentials'");
-       //  $criteria->with = "suppliersDirectory";        
-       // $criteria->together = true;
+        $criteria->with = "repCredentials";        
+        $criteria->together = true;
         $criteria->order ='id DESC';
         return new CActiveDataProvider($this, array(            
             'criteria' => $criteria,

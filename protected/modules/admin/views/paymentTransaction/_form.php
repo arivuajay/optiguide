@@ -26,6 +26,7 @@
                     </div>
                 </div>
             </div><!-- /.box-body -->
+            <?php  echo $form->hiddenField($model, 'NOMTABLE'); ?>
             <div class="box-footer">
                 <div class="form-group">
                     <div class="col-sm-0 col-sm-offset-2">

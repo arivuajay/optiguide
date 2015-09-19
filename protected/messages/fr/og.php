@@ -219,8 +219,8 @@ return array(
     'OGO179' => 'S\'il vous plaît choisir représentant(s).',
     'OGO180' => 'Votre représentant (s ) supprimé avec succès.',
     'OGO181' => 'Liste des représentants correspondants',
-    'OGO182' => "Votre statut de paiement de Satistics est pending.Admin va vérifier vos informations de paiement et envoyer email d'activation de vous bientôt.",
-    'OGO183' => "Votre paiement de Satistics est failed.Please réessayer ultérieurement ou Contact admin .",
-    'OGO184' => "Votre paiement de Satistics est cancelled.please réessayer plus tard .",
-    'OGO185' => 'Merci pour votre abonnement ! Une fois admin vérifier vos informations et activer vos statistiques voir bientôt accès .',
+    'OGO182' => "Votre statut de paiement de Satistics est pending.Admin va vérifier vos informations de paiement et activer vos fonctions statistiques bientôt.",
+    'OGO183' => "Votre paiement de Satistics est failed.Please réessayer ultérieurement ou Contact admin.",
+    'OGO184' => "Votre paiement de Satistics est cancelled.please réessayer plus tard.",
+    'OGO185' => 'Merci pour votre abonnement ! vous pouvez voir les statistiques fonctionnalités de sidenavigation et tableau de bord.',
 );

@@ -16,8 +16,22 @@
                 ),
                 'enableAjaxValidation' => true,
             ));
+            $disptype = Yii::app()->request->getParam('type');
+            
             ?>
             <div class="box-body">
+                <?php
+                if($disptype=="stats")
+                {?>    
+                 
+                 <div class="form-group">
+                    <?php echo $form->labelEx($model, 'rep_statistics_price', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($model, 'rep_statistics_price', array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'rep_statistics_price'); ?>
+                    </div>
+                </div>
+                <?php }else{?>
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'profile_price', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
@@ -33,6 +47,10 @@
                         <?php echo $form->error($model, 'profile_logo_price'); ?>
                     </div>
                 </div>
+                <?php }
+                  echo CHtml::hiddenField('disp_type' , $disptype);
+                ?>
+               
 
             </div><!-- /.box-body -->
             <div class="box-footer">

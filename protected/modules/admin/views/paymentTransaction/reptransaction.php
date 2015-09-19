@@ -23,7 +23,12 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         $gridColumns = array(
                 array('header' => 'SN.',
                     'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
-                ),                  
+                ),   
+                 array(
+                    'name' => 'repCredentials.rep_username',
+                    'value' => $data->repCredentials->rep_username,    
+                    'filter' => CHtml::activeTextField($model, 'rep_username' , array('class'=>'form-control')),                    
+                 ), 
                 array(
                     'name' => 'subscription_price',
                     'value' => $data->subscription_price,    
@@ -60,6 +65,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         array(
         'header' => 'Actes',
         'class' => 'booster.widgets.TbButtonColumn',
+        'viewButtonUrl'=>'Yii::app()->createUrl("/admin/paymentTransaction/repview/", array("id"=>$data->id))',       
         'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
         'template' => '{view}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{update}',
          'buttons'=> array(
@@ -67,6 +73,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                               'visible'=>'$data->payment_status=="Pending"',
                                 ),                                  
                      ),
+                    
                 ),
         );
 

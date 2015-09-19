@@ -2,9 +2,9 @@
 /* @var $this SupplierSubscriptionPriceController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title='Fournisseur Prix de l\'abonnement';
+$this->title='Statistiques prix de souscription';
 $this->breadcrumbs=array(
-	'Fournisseur Prix de l\'abonnement',
+	'Statistiques prix de souscription',
 );
 $themeUrl = $this->themeUrl;
 $cs = Yii::app()->getClientScript();
@@ -19,13 +19,12 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 <div class="col-lg-12 col-md-12">
     <div class="row">
         <?php
-        $gridColumns = array(
-        'profile_price',
-        'profile_logo_price',
+        $gridColumns = array(     
+        'rep_statistics_price',
         array(
             'header' => 'Actes',
             'class' => 'booster.widgets.TbButtonColumn',
-            'updateButtonUrl'=>'Yii::app()->createUrl("/admin/supplierSubscriptionPrice/update/", array("id"=>$data->id,"type"=>"supplier"))',
+            'updateButtonUrl'=>'Yii::app()->createUrl("/admin/supplierSubscriptionPrice/update/", array("id"=>$data->id,"type"=>"stats"))',
             'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
             'template' => '{update}',
         )

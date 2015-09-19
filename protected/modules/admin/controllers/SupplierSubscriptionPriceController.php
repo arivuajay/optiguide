@@ -31,7 +31,7 @@ class SupplierSubscriptionPriceController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','update'),
+				'actions'=>array('index','update','statsprice'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -62,7 +62,13 @@ class SupplierSubscriptionPriceController extends Controller
 			$model->attributes=$_POST['SupplierSubscriptionPrice'];
 			if($model->save()){
                                 Yii::app()->user->setFlash('success', 'Prix ​​de souscription correctement mis à jour!!!');
-                                $this->redirect(array('index'));
+                                
+                                if($_POST['disp_type'] ==  'stats')
+                                {
+                                    $this->redirect(array('statsprice'));
+                                }else{    
+                                    $this->redirect(array('index'));
+                                }                               
                         }
 		}
 
@@ -87,6 +93,20 @@ class SupplierSubscriptionPriceController extends Controller
 			'model'=>$model,
 		));
 	}
+        
+        public function actionStatsprice()
+	{
+            $model=new SupplierSubscriptionPrice('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['SupplierSubscriptionPrice']))
+			$model->attributes=$_GET['SupplierSubscriptionPrice'];
+
+		$this->render('statsprice',array(
+			'model'=>$model,
+		));
+	}
+        
+        
 
 	/**
 	 * Manages all models.

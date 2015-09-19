@@ -28,7 +28,7 @@ class PaymentTransactionController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete','reptransaction'),
+                'actions' => array('index', 'view','repview', 'create', 'update', 'admin', 'delete','reptransaction'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -50,6 +50,17 @@ class PaymentTransactionController extends Controller {
             'model' => $this->loadModel($id),
         ));
     }
+    
+       /**
+     * Displays a particular model.
+     * @param integer $id the ID of the model to be displayed
+     */
+    public function actionRepview($id) {
+        $this->render('repview', array(
+            'model' => $this->loadModel($id),
+        ));
+    }
+
 
     /**
      * Updates a particular model.
@@ -63,10 +74,16 @@ class PaymentTransactionController extends Controller {
         $this->performAjaxValidation($model);
 
         if (isset($_POST['PaymentTransaction'])) {
+            
             $model->attributes = $_POST['PaymentTransaction'];
             if ($model->save()) {
                 Yii::app()->user->setFlash('success', 'PaymentTransaction status Updated Successfully!!!');
-                $this->redirect(array('index'));
+                if($_POST['PaymentTransaction']['NOMTABLE'] ==  'rep_credentials')
+                {
+                    $this->redirect(array('reptransaction'));
+                }else{    
+                    $this->redirect(array('index'));
+                }
             }
         }
 

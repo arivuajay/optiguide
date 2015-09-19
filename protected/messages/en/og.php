@@ -223,8 +223,8 @@ return array(
     'OGO179' => 'Please choose representative(s).',
     'OGO180' => 'Your representative(s) deleted successfully.',
     'OGO181' => 'Corresponding representatives list',
-    'OGO182' => "Your satistics payment status is pending.Admin will verify your payment details and send activation email to you soon.",
+    'OGO182' => "Your satistics payment status is pending.Admin will verify your payment details and activate your statistics features soon.",
     'OGO183' => "Your satistics payment is failed.Please try again later or contact admin.",
     'OGO184' => "Your satistics payment is cancelled.please try again later.",
-    'OGO185' => 'Thanks for your subscription! Once admin will verify your informations and activate your statistics view access soon.',
+    'OGO185' => 'Thanks for your subscription! you can see the statistics features in sidenavigation and dashboard.',
 );

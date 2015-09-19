@@ -39,7 +39,7 @@
                     'items' => array(
                         array('label' => '<i class="fa fa-angle-double-right"></i> <span>Gestion des fournisseurs</span>', 'url' => array('/admin/suppliersDirectory/index'), 'active' => $_controller == 'suppliersDirectory'),
                         array('label' => '<i class="fa fa-angle-double-right"></i> <span>Fournisseurs Transactions De Paiement </span>', 'url' => array('/admin/paymentTransaction/index'), 'active' => ($_controller == 'paymentTransaction' && $_action=="index")),
-                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Paramètres </span>', 'url' => array('/admin/supplierSubscriptionPrice/index'), 'active' => $_controller == 'supplierSubscriptionPrice'),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Paramètres </span>', 'url' => array('/admin/supplierSubscriptionPrice/index'), 'active' => ($_controller == 'supplierSubscriptionPrice'&& $_action=="index")),
                     ),
                 ),
                 array('label' => '<i class="fa fa-briefcase"></i> <span>Professionnels</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
@@ -51,6 +51,7 @@
                     ),
                 ),
                 array('label' => '<i class="fa fa-group"></i> <span>Associations</span>', 'url' => array('/admin/categoryInformation/index'), 'active' => $_controller == 'categoryInformation'),
+               /*
                 array('label' => '<i class="fa fa-globe"></i> <span> Régions</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
@@ -60,6 +61,8 @@
                         array('label' => '<i class="fa fa-building"></i> <span>Villes</span>', 'url' => array('/admin/cityDirectory/index'), 'active' => $_controller == 'cityDirectory'),
                     ),
                 ),
+                * 
+                */
                 array('label' => '<i class="fa fa-gear"></i> <span>Archivage</span>', 'url' => array('/admin/archiveCategory/index')),
                 // array('label' => '<i class="fa fa-dashboard"></i> <span>Utilisateurs</span>', 'url' => array('/admin/userdirectory/index'), 'active' => $_controller == 'userdirectory'),
                 array('label' => '<i class="fa fa-line-chart"></i> <span>Sondages</span>', 'url' => array('/admin/poll/index'), 'active' => $_controller == 'poll'),
@@ -69,7 +72,7 @@
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(                       
                         array('label' => '<i class="fa fa-angle-double-right"></i> <span>Transactions de paiement Optirep</span>', 'url' => array('/admin/paymentTransaction/reptransaction'), 'active' => ($_controller == 'paymentTransaction' && $_action=="reptransaction")),
-                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Paramètres </span>', 'url' => array('/admin/supplierSubscriptionPrice/index'), 'active' => $_controller == 'supplierSubscriptionPrice'),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Paramètres </span>', 'url' => array('/admin/supplierSubscriptionPrice/statsprice'), 'active' => $_controller == 'supplierSubscriptionPrice' && $_action=="statsprice"),
                     ),
                 ),
             ),

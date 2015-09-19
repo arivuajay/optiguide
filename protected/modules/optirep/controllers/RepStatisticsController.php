@@ -20,13 +20,18 @@ class RepStatisticsController extends ORController {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array(),
+                'actions' => array(''),
                 'users' => array('*'),
+            ), 
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions' => array('index', 'payment','paypalreturn' , 'paypalcancel' , 'paypalnotify'),
+                'users' => array('@'),               
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'userslogstats', 'profileviewstats', 'payment'),
+                'actions' => array( 'userslogstats', 'profileviewstats'),      
                 'users' => array('@'),
-            ),
+                'expression' => 'Yii::app()->user->rep_role=="admin"'
+            ),           
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions' => array(''),
                 'users' => array('admin'),
@@ -45,19 +50,47 @@ class RepStatisticsController extends ORController {
             $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repStatistics/paypalreturn'));
             $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repStatistics/paypalcancel'));
             $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repStatistics/paypalnotify'));
-
-            $price = 2;
+            
+            $subprices  = SupplierSubscriptionPrice::model()->findByPk(1);
+            $price      = $subprices->rep_statistics_price;
+    
             $invoice = rand();
             $subscription_type = $_POST['subscription_type'];
 
             if ($subscription_type == 3) {
                 $itemname = 'Statistics Subscription';
-            } else if ($subscription_type == 4) {
+                $payment_details['expirydate'] = date("Y-m-d", strtotime('+1 month'));
+            } else if ($subscription_type == 4)
+            {
                 $itemname = 'Renew Statistics Subscription';
+               
+                $repid =  Yii::app()->user->id;
+                $criteria1 = new CDbCriteria();
+                $criteria1->addCondition("user_id=".$repid);
+                $criteria1->addCondition("NOMTABLE='rep_credentials'");
+                $criteria1->addCondition("(subscription_type='3' || subscription_type='4')");
+                $criteria1->order = 'id DESC';
+                $criteria1->limit = 1;
+                $get_recent_transaction = PaymentTransaction::model()->find($criteria1);
+                if(!empty($get_recent_transaction))
+                {    
+                    $exprydate  = $get_recent_transaction['expirydate'];
+                    if ($exprydate > date("Y-m-d")) 
+                    {
+                        $time = strtotime($exprydate);
+                        $payment_details['expirydate'] = date("Y-m-d", strtotime("+1 month", $time));                        
+                    } else {
+                        $payment_details['expirydate'] = date('Y-m-d', strtotime('+1 month'));
+                    }
+                }else
+                {
+                  $payment_details['expirydate'] = date("Y-m-d", strtotime('+1 month'));   
+                }    
             }
 
             $payment_details = array();
             $payment_details['rep_credential_id'] = Yii::app()->user->id;
+            $payment_details['rep_user_name']     = Yii::app()->user->rep_username;
             $payment_details['pay_type'] = '1';
             $payment_details['subscription_type'] = $_POST['subscription_type'];
             $pdetails = serialize($payment_details);
@@ -131,43 +164,50 @@ class RepStatisticsController extends ORController {
                 $ptmodel->txn_type = $_POST['txn_type'];
                 $ptmodel->item_name = $_POST['item_name'];
                 $ptmodel->NOMTABLE = 'rep_credentials';
-                $ptmodel->expirydate = date("Y-m-d", strtotime('+1 month'));
+                $ptmodel->expirydate = $pdetails['expirydate'];
                 $ptmodel->invoice_number = $_POST['custom'];
                 $ptmodel->pay_type = $pdetails['pay_type'];
                 $ptmodel->subscription_type = $pdetails['subscription_type'];
                 $ptmodel->save();
-
+                                
+                $repname = $pdetails['rep_user_name'];
+                
                 SupplierTemp::model()->deleteAll("invoice_number = '" . $_POST['custom'] . "'");
 
                 /* Send mail to admin for confirmation */
-                //$mail = new Sendmail();
-                //$suppliers_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
-                //$invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
-                //$enc_url = Myclass::refencryption($suppliers_url);
-                //$nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
-                //$enc_url2 = Myclass::refencryption($invoice_url);
-                //$nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
-                /*
-                  $subject = SITENAME . "- Statistics subscription notification with invoice details - " . $model->COMPAGNIE;
-                  $trans_array = array(
-                  "{NAME}" => $model->COMPAGNIE,
-                  "{UTYPE}" => 'suppliers',
-                  "{NEXTSTEPURL}" => $nextstep_url,
-                  "{item_name}" => $_POST['item_name'],
-                  "{total_price}" => $_POST['mc_gross'],
-                  "{payment_status}" => $_POST['payment_status'],
-                  "{txn_id}" => $_POST['txn_id'],
-                  "{INVOICEURL}" => $nextstep_url2
-                  );
-                  $message = $mail->getMessage('supplier_registration', $trans_array);
-                  $mail->send(ADMIN_EMAIL, $subject, $message);
-                 */
+                $mail = new Sendmail();
+                
+                $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
+                $enc_url2    = Myclass::refencryption($invoice_url);
+                $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
+                
+                $subject = SITENAME . "- Statistics subscription notification with invoice details - " . $repname;
+                $trans_array = array(
+                "{NAME}" => $repname,
+                "{UTYPE}" => 'Opti-Rep',               
+                "{item_name}" => $_POST['item_name'],
+                "{total_price}" => $_POST['mc_gross'],
+                "{payment_status}" => $_POST['payment_status'],
+                "{txn_id}" => $_POST['txn_id'],
+                "{INVOICEURL}" => $nextstep_url2
+                );
+                $message = $mail->getMessage('optirep_stats_subscription', $trans_array);
+                $mail->send(ADMIN_EMAIL, $subject, $message);
+                
             }
         }
     }
 
     //Particular Rep Logged in Activities
     public function actionIndex() {
+        
+        $stats_disp = Myclass::stats_display();
+        if($stats_disp==0)
+        {
+            Yii::app()->user->setFlash('info', "Kindly do the payment to see the statistics chart!!");
+            $this->redirect('payment');
+        }    
+        
         $response = array();
 
         $dates = array();
@@ -193,6 +233,15 @@ class RepStatisticsController extends ORController {
 
     //Rep Admin - Accounts Logged in Activites
     public function actionUserslogstats() {
+        
+        $stats_disp = Myclass::stats_display();
+        if($stats_disp==0)
+        {
+            Yii::app()->user->setFlash('info', "Kindly do the payment to see the statistics chart!!");
+            $this->redirect('payment');
+        }   
+        
+        
         $repAccountsCriteria = new CDbCriteria;
         $repAccountsCriteria->select = 't.rep_credential_id, t.rep_username'; // select fields which you want in output
         $repAccountsCriteria->condition = 't.rep_parent_id = ' . Yii::app()->user->id;
@@ -226,6 +275,14 @@ class RepStatisticsController extends ORController {
     }
 
     public function actionProfileviewstats() {
+        
+        $stats_disp = Myclass::stats_display();
+        if($stats_disp==0)
+        {
+            Yii::app()->user->setFlash('info', "Kindly do the payment to see the statistics chart!!");
+            $this->redirect('payment');
+        }   
+        
         $response = array();
 
         $adminid = Yii::app()->user->id;

@@ -8,7 +8,9 @@ $themeUrl = $this->themeUrl;
 
 $relid     = Yii::app()->user->relationid; 
 $criteria1 = new CDbCriteria();
-$criteria1->condition = "user_id=".$relid;
+$criteria1->addCondition("user_id=".$relid);
+$criteria1->addCondition("NOMTABLE='suppliers'");
+$criteria1->addCondition("(subscription_type='1' || subscription_type='2')");
 $criteria1->order = 'id DESC';
 $criteria1->limit = 1;
 

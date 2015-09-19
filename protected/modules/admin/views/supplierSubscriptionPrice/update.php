@@ -2,10 +2,9 @@
 /* @var $this SupplierSubscriptionPriceController */
 /* @var $model SupplierSubscriptionPrice */
 
-$this->title='Fournisseur Prix de l\'abonnement';
-$this->breadcrumbs=array(
-	'Fournisseur Prix de l\'abonnement' => array('index'),
-	'Mise à jour Fournisseur Prix de l\abonnement',
+$this->title='Modifier prix de souscription';
+$this->breadcrumbs=array(	
+	'Modifier prix de souscription',
 );
 ?>
 

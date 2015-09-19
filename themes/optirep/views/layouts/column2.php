@@ -25,7 +25,9 @@
                         <p> <a href="#"><?php echo Yii::app()->user->getState('rep_username'); ?></a> </p>
                         <p> <i class="fa fa-sign-out"></i> <?php echo CHtml::link('Logout', '/optirep/default/logout') ?></p>
                     </div>
-                    <?php
+                    <?php 
+                    $stats_disp = Myclass::stats_display();
+                    
                     $this->widget('zii.widgets.CMenu', array(
                         'activeCssClass' => 'active',
                         'items' => array(
@@ -34,9 +36,10 @@
                             array('label' => 'Favourite Retailers', 'url' => array('/optirep/repFavourites/index')),
                             array('label' => 'Internal Messages', 'url' => array('/optirep/internalMessage/index')),
                             array('label' => 'My Notes', 'url' => array('/optirep/repNotes/index')),
-                            array('label' => 'My Stats', 'url' => array('/optirep/repStatistics/index')),
-                            array('label' => 'Users log stats', 'url' => array('/optirep/repStatistics/userslogstats'), 'visible'=>(Yii::app()->user->rep_role == "admin")),
-                            array('label' => 'Users profile viewed stats', 'url' => array('/optirep/repStatistics/profileviewstats'), 'visible'=>(Yii::app()->user->rep_role == "admin")),
+                            array('label' => 'My Stats', 'url' => array('/optirep/repStatistics/index'), 'visible'=>($stats_disp == "1")),
+                            array('label' => 'Users log stats', 'url' => array('/optirep/repStatistics/userslogstats'), 'visible'=>(Yii::app()->user->rep_role == "admin" && $stats_disp == "1")),
+                            array('label' => 'Users profile viewed stats', 'url' => array('/optirep/repStatistics/profileviewstats'), 'visible'=>(Yii::app()->user->rep_role == "admin"&& $stats_disp == "1")),
+                            array('label' => 'Stats Payment/Infos', 'url' => array('/optirep/repStatistics/payment')),
                             array('label' => 'Change Password', 'url' => array('/optirep/repCredential/changePassword')),
                         ),
                     ));

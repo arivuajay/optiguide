@@ -39,7 +39,29 @@ class DashboardController extends ORController {
     
     public function actionIndex(){
         $this->layout = '//layouts/column1';
-        $this->render('index');
+        
+        $response = array();
+
+        $dates = array();
+        for ($i = 0; $i < 6; $i++) {
+            array_push($dates, date("Y-m-d", strtotime($i . " days ago")));
+        }
+
+        $response['dates'] = array();
+        foreach ($dates as $date) {
+            array_push($response["dates"], $date);
+        }
+
+        $response['visits'] = array();
+        foreach ($dates as $date) {
+            $criteria = new CDbCriteria();
+            $criteria->addCondition("DATE(loggedin_date) = '" . $date . "' AND rep_credential_id = " . Yii::app()->user->id);
+            $visits = RepLoggedinActivities::model()->count($criteria);
+            array_push($response["visits"], (int) $visits);
+        }
+
+        $this->render('index', array('response' => $response));
+    
     }
 
 
