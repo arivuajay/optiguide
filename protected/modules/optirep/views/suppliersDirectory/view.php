@@ -19,7 +19,7 @@
     <h2> <?php echo $model['COMPAGNIE']; ?> </h2>    
     <div class="row">
         <?php
-        if ($model['ID_CATEGORIE'] > 0) {
+        if ($model['ID_CATEGORIE'] > 0 && $disp==1) {
             $extypes = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
             $img_ext = $model['EXTENSION'];
             if (in_array($img_ext, $extypes)) {

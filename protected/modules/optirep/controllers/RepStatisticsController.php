@@ -140,6 +140,9 @@ class RepStatisticsController extends ORController {
         $paypalManager = new Paypal;
         
         if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
+            
+            
+            
 
             $invoice_number = $_POST['custom'];
 

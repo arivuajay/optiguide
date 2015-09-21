@@ -22,7 +22,7 @@ class SuppliersDirectoryController extends ORController {
         parent::accessRules(), 
            array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array(),
+                'actions' => array(''),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -228,7 +228,7 @@ class SuppliersDirectoryController extends ORController {
 
         // Get all records list  with limit
         $supplier_query = Yii::app()->db->createCommand() //this query contains all the data
-                ->select('ID_FOURNISSEUR , COMPAGNIE , TYPE_FOURNISSEUR_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
+                ->select('ID_FOURNISSEUR , COMPAGNIE ,expirydate , TYPE_FOURNISSEUR_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
                 ->from(array('repertoire_fournisseurs f', 'repertoire_fournisseur_type ft', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
                 ->where("f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and bAfficher_site=1 " . $sname_qry . $stype_qry . $section_product_qry)
                 ->order('ft.TYPE_FOURNISSEUR_' . $this->lang . ' ASC , expirydate DESC')

@@ -27,9 +27,8 @@ if (Myclass::is_home_page()) {
     }else
     {?>
      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">   
-        <div class="latest-newscont"> 
-             <h2><?php echo  Myclass::t('OG151');?></h2>   
-             <p>Please keep a watch...your polling question will be up in this space soon!</p>
+        <div class="poll-nocont"> 
+            <?php echo CHtml::image("{$this->themeUrl}/images/opti-guide-banner.jpg", 'No Poll');?>
         </div>
     </div>     
    <?php }    

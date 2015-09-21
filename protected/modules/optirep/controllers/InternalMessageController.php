@@ -62,7 +62,7 @@ class InternalMessageController extends ORController {
                 
                 // Get sender detail
                 $sess_id    = Yii::app()->user->id;
-                $condition  = " NOM_TABLE='rep_credential' AND ID_RELATION='$sess_id' ";
+                $condition  = " NOM_TABLE='rep_credentials' AND ID_RELATION='$sess_id' ";
                 $ufrm_infos = UserDirectory::model()->find($condition);
                 
                 $model->message = nl2br($_POST['InternalMessage']['message']);
@@ -95,7 +95,7 @@ class InternalMessageController extends ORController {
         $model = new InternalMessage;
         
         $sess_id    = Yii::app()->user->id;
-        $condition  = " NOM_TABLE='rep_credential' AND ID_RELATION='$sess_id' ";
+        $condition  = " NOM_TABLE='rep_credentials' AND ID_RELATION='$sess_id' ";
         $ufrm_infos = UserDirectory::model()->find($condition);
         $session_userid = $ufrm_infos->ID_UTILISATEUR;
         

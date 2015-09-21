@@ -4,7 +4,7 @@
         <?php
         $rep_id = Yii::app()->user->id;
         // Get rep usetable id
-        $condition  = " NOM_TABLE='rep_credential' AND ID_RELATION='$rep_id' ";
+        $condition  = " NOM_TABLE='rep_credentials' AND ID_RELATION='$rep_id' ";
         $ufrm_infos = UserDirectory::model()->find($condition);
         $session_userid = $ufrm_infos->ID_UTILISATEUR;
                 
@@ -56,7 +56,7 @@
                      }
                     }else{?>
                     <tr>
-                        <td colspan="3"> No Records Found </td>
+                        <td colspan="4"> No Records Found </td>
                     </tr>
                     <?php }?> 
                 </table>

@@ -8,7 +8,7 @@ if ($disppage == "home") {
 $lang = Yii::app()->session['language'];
 
 if ($model['expirydate'] != '') {
-    $expdate = strtotime($model['expirydate']);
+    $expdate  = strtotime($model['expirydate']);
     $cur_date = strtotime("now");
     $disp = ($expdate > $cur_date) ? 1 : 0;
 } else {
@@ -23,7 +23,7 @@ if ($model['expirydate'] != '') {
             <div class="row"> 
 
                 <?php
-                if ($model['ID_CATEGORIE'] > 0) {
+                if ($model['ID_CATEGORIE'] > 0 && $disp==1) {
                     $extypes = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
                     $img_ext = $model['EXTENSION'];
                     if (in_array($img_ext, $extypes)) {
