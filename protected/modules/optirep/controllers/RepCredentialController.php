@@ -157,82 +157,89 @@ class RepCredentialController extends ORController {
 
     public function actionPaypalNotify() {
         $paypalManager = new Paypal;
+        if ($paypalManager->notify()) {
+            $this->processPaymentTransaction($_POST['custom']);
+            if ($_POST['payment_status'] == "Completed") {
+                $this->processRegistration($_POST['custom']);
+            }
+        }
+    }
 
-        if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
-            $temp_random_id = $_POST['custom'];
-            $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
-            if (!empty($result)) {
-                $registration = unserialize($result['rep_temp_value']);
-                $model = new RepCredentials;
-                $model->rep_username = $registration['step2']['RepCredentials']['rep_username'];
-                $model->rep_password = $registration['step2']['RepCredentials']['rep_password'];
-                if ($registration['step2']['RepCredentials']['no_of_accounts_purchase'] > 1) {
-                    $model->rep_role = RepCredentials::ROLE_ADMIN;
-                } else {
-                    $model->rep_role = RepCredentials::ROLE_SINGLE;
-                    $model->rep_expiry_date = date('Y-m-d', strtotime('+1 month'));
+    protected function processPaymentTransaction($rep_temp_random_id) {
+        $temp_random_id = $rep_temp_random_id;
+        $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
+        if (!empty($result)) {
+            $registration = unserialize($result['rep_temp_value']);
+            // Save the payment details                                   
+            $ptmodel = new PaymentTransaction;
+//        $ptmodel->user_id = $model->rep_credential_id;    // need to assign acutal user id
+            $ptmodel->total_price = $_POST['mc_gross'];
+            $ptmodel->subscription_price = $registration['step3']['total_price'];
+            $ptmodel->tax = $registration['step3']['tax'];
+            $ptmodel->payment_status = $_POST['payment_status'];
+            $ptmodel->payer_email = $_POST['payer_email'];
+            $ptmodel->verify_sign = $_POST['verify_sign'];
+            $ptmodel->txn_id = $_POST['txn_id'];
+            $ptmodel->payment_type = $_POST['payment_type'];
+            $ptmodel->receiver_email = $_POST['receiver_email'];
+            $ptmodel->txn_type = $_POST['txn_type'];
+            $ptmodel->item_name = $_POST['item_name'];
+            $ptmodel->NOMTABLE = RepCredentials::NAME_TABLE;
+            $ptmodel->invoice_number = $_POST['custom'];
+            $ptmodel->pay_type = '1';
+            $ptmodel->rep_temp_id = $result['rep_temp_id'];
+            $ptmodel->save(false);
+        }
+    }
+
+    protected function processRegistration($rep_temp_random_id) {
+        $temp_random_id = $rep_temp_random_id;
+        $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
+        if (!empty($result)) {
+            $registration = unserialize($result['rep_temp_value']);
+            $model = new RepCredentials;
+            $model->rep_username = $registration['step2']['RepCredentials']['rep_username'];
+            $model->rep_password = $registration['step2']['RepCredentials']['rep_password'];
+            if ($registration['step2']['RepCredentials']['no_of_accounts_purchase'] > 1) {
+                $model->rep_role = RepCredentials::ROLE_ADMIN;
+            } else {
+                $model->rep_role = RepCredentials::ROLE_SINGLE;
+                $model->rep_expiry_date = date('Y-m-d', strtotime('+1 month'));
+            }
+
+            if ($model->save(false)) {
+                $repProfile = new RepCredentialProfiles;
+                $repProfile->attributes = $registration['step2']['RepCredentialProfiles'];
+                $repProfile->rep_credential_id = $model->rep_credential_id;
+                $repProfile->save(false);
+
+                if ($model->rep_role == RepCredentials::ROLE_SINGLE) {
+                    $repSingle = new RepSingleSubscriptions;
+                    $repSingle->rep_credential_id = $model->rep_credential_id;
+                    $repSingle->rep_subscription_type_id = $registration['step1']['subscription_type_id'];
+                    $repSingle->purchase_type = RepSingleSubscriptions::PURCHASE_TYPE_NEW;
+                    $repSingle->rep_single_price = $registration['step3']['per_account_price'];
+                    $repSingle->rep_single_tax = $registration['step3']['tax'];
+                    $repSingle->rep_single_total = $registration['step3']['grand_total'];
+                    $repSingle->rep_single_subscription_start = date('Y-m-d');
+                    $repSingle->rep_single_subscription_end = date('Y-m-d', strtotime('+1 month'));
+                    $repSingle->save(false);
+                } elseif ($model->rep_role == RepCredentials::ROLE_ADMIN) {
+                    $repAdmin = new RepAdminSubscriptions;
+                    $repAdmin->rep_credential_id = $model->rep_credential_id;
+                    $repAdmin->rep_subscription_type_id = $registration['step1']['subscription_type_id'];
+                    $repAdmin->purchase_type = RepAdminSubscriptions::PURCHASE_TYPE_NEW;
+                    $repAdmin->no_of_accounts_purchased = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
+                    $repAdmin->no_of_accounts_remaining = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
+                    $repAdmin->rep_admin_per_account_price = $registration['step3']['per_account_price'];
+                    $repAdmin->rep_admin_total_price = $registration['step3']['total_price'];
+                    $repAdmin->rep_admin_tax = $registration['step3']['tax'];
+                    $repAdmin->rep_admin_grand_total = $registration['step3']['grand_total'];
+                    $repAdmin->rep_admin_subscription_start = date('Y-m-d');
+                    $repAdmin->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
+                    $repAdmin->save(false);
                 }
-
-                if ($model->save(false)) {
-                    $repProfile = new RepCredentialProfiles;
-                    $repProfile->attributes = $registration['step2']['RepCredentialProfiles'];
-                    $repProfile->rep_credential_id = $model->rep_credential_id;
-                    $repProfile->save(false);
-
-                    if ($model->rep_role == RepCredentials::ROLE_SINGLE) {
-                        $repSingle = new RepSingleSubscriptions;
-                        $repSingle->rep_credential_id = $model->rep_credential_id;
-                        $repSingle->rep_subscription_type_id = $registration['step1']['subscription_type_id'];
-                        $repSingle->purchase_type = RepSingleSubscriptions::PURCHASE_TYPE_NEW;
-                        $repSingle->rep_single_price = $registration['step3']['per_account_price'];
-                        $repSingle->rep_single_tax = $registration['step3']['tax'];
-                        $repSingle->rep_single_total = $registration['step3']['grand_total'];
-                        $repSingle->rep_single_subscription_start = date('Y-m-d');
-                        $repSingle->rep_single_subscription_end = date('Y-m-d', strtotime('+1 month'));
-                        $repSingle->save(false);
-                    } elseif ($model->rep_role == RepCredentials::ROLE_ADMIN) {
-                        $repAdmin = new RepAdminSubscriptions;
-                        $repAdmin->rep_credential_id = $model->rep_credential_id;
-                        $repAdmin->rep_subscription_type_id = $registration['step1']['subscription_type_id'];
-                        $repAdmin->purchase_type = RepAdminSubscriptions::PURCHASE_TYPE_NEW;
-                        $repAdmin->no_of_accounts_purchased = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
-                        $repAdmin->no_of_accounts_remaining = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
-                        $repAdmin->rep_admin_per_account_price = $registration['step3']['per_account_price'];
-                        $repAdmin->rep_admin_total_price = $registration['step3']['total_price'];
-                        $repAdmin->rep_admin_tax = $registration['step3']['tax'];
-                        $repAdmin->rep_admin_grand_total = $registration['step3']['grand_total'];
-                        $repAdmin->rep_admin_subscription_start = date('Y-m-d');
-                        $repAdmin->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
-                        $repAdmin->save(false);
-                    }
-
-                    // Save the payment details                                   
-                    $ptmodel = new PaymentTransaction;
-                    $ptmodel->user_id = $model->rep_credential_id;    // need to assign acutal user id
-                    $ptmodel->total_price = $_POST['mc_gross'];
-                    $ptmodel->subscription_price = $registration['step3']['total_price'];
-                    $ptmodel->tax = $registration['step3']['tax'];
-                    $ptmodel->payment_status = $_POST['payment_status'];
-                    $ptmodel->payer_email = $_POST['payer_email'];
-                    $ptmodel->verify_sign = $_POST['verify_sign'];
-                    $ptmodel->txn_id = $_POST['txn_id'];
-                    $ptmodel->payment_type = $_POST['payment_type'];
-                    $ptmodel->receiver_email = $_POST['receiver_email'];
-                    $ptmodel->txn_type = $_POST['txn_type'];
-                    $ptmodel->item_name = $_POST['item_name'];
-                    $ptmodel->NOMTABLE = RepCredentials::NAME_TABLE;
-                    $ptmodel->expirydate = date("Y-m-d", strtotime('+1 month'));
-                    $ptmodel->invoice_number = $_POST['custom'];
-                    $ptmodel->pay_type = '1';
-                    if ($model->rep_role == RepCredentials::ROLE_SINGLE) {
-                        $ptmodel->rep_single_subscription_id = $repSingle->rep_single_subscription_id;
-                    } elseif ($model->rep_role == RepCredentials::ROLE_ADMIN) {
-                        $ptmodel->rep_admin_subscription_id = $repAdmin->rep_admin_subscription_id;
-                    }
-                    $ptmodel->save(false);
-
-                    RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
-                }
+                RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
             }
         }
     }

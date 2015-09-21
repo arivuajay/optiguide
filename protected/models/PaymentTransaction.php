@@ -25,8 +25,7 @@
  * @property string $invoice_number
  * @property string $pay_type
  * @property string $subscription_type
- * @property string $rep_single_subscription_id
- * @property string $rep_admin_subscription_id
+ * @property string $rep_temp_id
  */
 class PaymentTransaction extends CActiveRecord {
 
@@ -57,7 +56,7 @@ class PaymentTransaction extends CActiveRecord {
         return array(  
             array('user_id,total_price,tax,subscription_price,payment_status,payer_email,verify_sign','safe'),
             array('txn_type,item_name,ipn_track_id,created_at,updated_at','safe'),
-            array('txn_id,payment_type,receiver_email,NOMTABLE,expirydate,invoice_number,total,pay_type,subscription_type, rep_single_subscription_id, rep_admin_subscription_id' , 'safe'),      
+            array('txn_id,payment_type,receiver_email,NOMTABLE,expirydate,invoice_number,total,pay_type,subscription_type, rep_temp_id' , 'safe'),      
             array('COMPAGNIE', 'safe', 'on'=>'search')
         );
     }

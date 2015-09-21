@@ -27,7 +27,7 @@ class RepCredentials extends CActiveRecord {
 
     const ROLE_SINGLE = 'single';
     const ROLE_ADMIN = 'admin';
-    const NAME_TABLE = 'rep_credential';
+    const NAME_TABLE = 'rep_credentials';
 
     /**
      * @return string the associated database table name
