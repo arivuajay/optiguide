@@ -31,7 +31,7 @@
                        if($searchModel->PROD_SERVICE!=''){   $param_array['productid'] = $searchModel->PROD_SERVICE;}
                        if($parampage!=''){   $param_array['disppage'] = $parampage;}
                       
-                        $expirydate = $info['expirydate'];                           
+                        $expirydate = $info['profile_expirydate'];                           
                         $today      = time();
                         $expiry_str = strtotime($expirydate);
                         $disp_supp  = CHtml::link($dispname,$param_array) . ' ';   

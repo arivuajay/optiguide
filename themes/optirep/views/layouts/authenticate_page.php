@@ -10,7 +10,7 @@
         <?php
         $themeUrl = $this->themeUrl;
         $cs = Yii::app()->getClientScript();
-        $cs->registerCssFile($themeUrl . '/css/bootstrap.min.css');
+      //  $cs->registerCssFile($themeUrl . '/css/bootstrap.min.css');
         ?>
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,7 +40,7 @@
         $cs_pos_end = CClientScript::POS_END;
         $cs->registerCoreScript('jquery');
 
-        $cs->registerScriptFile($themeUrl . '/js/bootstrap.min.js', $cs_pos_end);
+      //  $cs->registerScriptFile($themeUrl . '/js/bootstrap.min.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-select.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-switch.min.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-number-input.js', $cs_pos_end);

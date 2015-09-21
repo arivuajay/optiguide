@@ -247,6 +247,41 @@ class SuppliersDirectoryController extends OGController {
         exit;
     }
 
+    public function Detect_supplier()
+    {
+        //echo "stop"; exit; 
+           // Get all records list  with limit
+        $supplier_query1 = Yii::app()->db->createCommand() //this query contains all the data
+                ->select('ID_FOURNISSEUR')
+                ->from(array('repertoire_fournisseurs f'))
+                ->order('ID_FOURNISSEUR ASC')
+                ->queryAll();
+        
+        foreach($supplier_query1 as $finfo1)
+        {
+            $sup_id = $finfo1['ID_FOURNISSEUR'];
+            
+            $supplier_query2 = Yii::app()->db->createCommand() //this query contains all the data
+                ->select('ru.ID_UTILISATEUR AS UID , ru.ID_RELATION,  f.ID_FOURNISSEUR')
+                ->from(array('repertoire_fournisseurs f','repertoire_utilisateurs ru'))
+                ->where("f.ID_FOURNISSEUR = ru.ID_RELATION AND ru.NOM_TABLE='Fournisseurs' and ru.ID_RELATION=".$sup_id)
+                ->order('ru.ID_RELATION , UID ASC')
+                ->queryAll();
+            $k=0;
+            foreach($supplier_query2 as $finfo2)
+            {
+                if($k==0)
+                {    
+                    $uid = $finfo2['UID'];
+                    $model = UserDirectory::model()->findByPk($uid);
+                    $model->status = 1;
+                    $model->save();
+                }    
+                $k++;
+            }
+        }    
+    }        
+    
     /**
      * Lists all suppliers.
      */
@@ -330,18 +365,18 @@ class SuppliersDirectoryController extends OGController {
 
         // Get all records list  with limit
         $supplier_query = Yii::app()->db->createCommand() //this query contains all the data
-                ->select('ID_FOURNISSEUR , COMPAGNIE ,expirydate , TYPE_FOURNISSEUR_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                ->from(array('repertoire_fournisseurs f', 'repertoire_fournisseur_type ft', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
-                ->where("f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and bAfficher_site=1 " . $sname_qry . $stype_qry . $section_product_qry)
-                ->order('ft.TYPE_FOURNISSEUR_' . $this->lang . ' ASC , expirydate DESC')
+                ->select('ID_FOURNISSEUR , COMPAGNIE ,profile_expirydate , TYPE_FOURNISSEUR_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
+                ->from(array('repertoire_fournisseurs f', 'repertoire_fournisseur_type ft', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                ->where("f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and bAfficher_site=1 AND ru.NOM_TABLE ='Fournisseurs' and ru.status=1 " . $sname_qry . $stype_qry . $section_product_qry)
+                ->order('ft.TYPE_FOURNISSEUR_' . $this->lang . ' ASC , profile_expirydate DESC')
                 ->limit(LISTPERPAGE, $limit) // the trick is here!
                 ->queryAll();
 
         // Get total counts of records    
         $item_count = Yii::app()->db->createCommand() // this query get the total number of items,
                 ->select('count(*) as count')
-                ->from(array('repertoire_fournisseurs f', 'repertoire_fournisseur_type ft', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
-                ->where("f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and bAfficher_site=1 " . $sname_qry . $stype_qry . $section_product_qry)
+                ->from(array('repertoire_fournisseurs f', 'repertoire_fournisseur_type ft', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                ->where("f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and bAfficher_site=1 AND ru.NOM_TABLE ='Fournisseurs' and ru.status=1 " . $sname_qry . $stype_qry . $section_product_qry)
                 ->queryScalar(); // do not LIMIT it, this must count all items!
         // the pagination itself      
         $pages = new CPagination($item_count);
@@ -896,15 +931,17 @@ class SuppliersDirectoryController extends OGController {
                         }
                     }
 
-                    $model = new SuppliersDirectory;
+                    $model  = new SuppliersDirectory;
                     $umodel = new UserDirectory('frontend');
 
                     // Save supplier in user and supplier table
                     $model->attributes = $sess_attr_m;
                     $model->ID_CLIENT = $sess_attr_m['ID_CLIENT'];
                     $model->iId_fichier = $ficherid;
-                    $model->expirydate = date("Y-m-d", strtotime('+1 year'));
-                    $model->subscription_type = $pdetails['subscription_type'];
+                    $model->profile_expirydate = date("Y-m-d", strtotime('+1 year'));
+                    if ($pdetails['subscription_type'] == 2) {
+                        $model->logo_expirydate    = date("Y-m-d", strtotime('+1 year'));
+                    }
                     $model->save(false);
 
                     $umodel->attributes = $sess_attr_u;
