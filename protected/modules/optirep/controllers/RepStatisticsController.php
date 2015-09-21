@@ -20,11 +20,11 @@ class RepStatisticsController extends ORController {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array(''),
+                'actions' => array('paypalreturn' , 'paypalcancel' , 'paypalnotify'),
                 'users' => array('*'),
             ), 
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'payment','paypalreturn' , 'paypalcancel' , 'paypalnotify'),
+                'actions' => array('index', 'payment'),
                 'users' => array('@'),               
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -44,6 +44,7 @@ class RepStatisticsController extends ORController {
 
     public function actionPayment() {
         $paypalManager = new Paypal;
+        $payment_details = array();
 
         if (isset($_POST['btnSubmit'])) {
 
@@ -87,8 +88,7 @@ class RepStatisticsController extends ORController {
                   $payment_details['expirydate'] = date("Y-m-d", strtotime('+1 month'));   
                 }    
             }
-
-            $payment_details = array();
+           
             $payment_details['rep_credential_id'] = Yii::app()->user->id;
             $payment_details['rep_user_name']     = Yii::app()->user->rep_username;
             $payment_details['pay_type'] = '1';
@@ -138,13 +138,13 @@ class RepStatisticsController extends ORController {
 
     public function actionPaypalnotify() {
         $paypalManager = new Paypal;
-
+        
         if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
 
             $invoice_number = $_POST['custom'];
 
-            $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");
-
+            $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");            
+           
             if (!empty($result)) {
 
                 $pdetails = $result->paymentdetails;
@@ -168,8 +168,8 @@ class RepStatisticsController extends ORController {
                 $ptmodel->invoice_number = $_POST['custom'];
                 $ptmodel->pay_type = $pdetails['pay_type'];
                 $ptmodel->subscription_type = $pdetails['subscription_type'];
-                $ptmodel->save();
-                                
+                $ptmodel->save(false);                
+                             
                 $repname = $pdetails['rep_user_name'];
                 
                 SupplierTemp::model()->deleteAll("invoice_number = '" . $_POST['custom'] . "'");
@@ -177,7 +177,7 @@ class RepStatisticsController extends ORController {
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
                 
-                $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
+                $invoice_url = ADMIN_URL . '/admin/paymentTransaction/repview/id/' . $ptmodel->id;
                 $enc_url2    = Myclass::refencryption($invoice_url);
                 $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
                 

@@ -29,7 +29,7 @@ class RetailerDirectoryController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view','getgroups'),  
+                'actions' => array('index', 'view','getgroups','updatefav'),  
                 'users' => array('@'),
                 'expression' => 'Yii::app()->user->rep_role!="admin"'
             ),
