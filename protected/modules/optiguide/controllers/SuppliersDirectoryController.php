@@ -1342,12 +1342,27 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function actionTransactions() {
-        $relid = Yii::app()->user->relationid;
-        $model = $this->loadModel($relid);
+        
+        $relid     = Yii::app()->user->relationid; 
+        
+        $criteria = new CDbCriteria();   
+        $criteria->addCondition('NOMTABLE="suppliers"');
+        $criteria->addCondition('user_id = '.$relid);
+        $criteria->order = 'id DESC';
 
-        $viewpage = '_transactions';
+        $count = PaymentTransaction::model()->count($criteria);
+        $pages = new CPagination($count);
 
-        $this->render($viewpage, compact('model'));
+        // results per page
+        $pages->pageSize = LISTPERPAGE;
+        $pages->applyLimit($criteria);
+        $model = PaymentTransaction::model()->findAll($criteria);
+
+        $this->render('_transactions', array(
+            'model' => $model,
+            'pages' => $pages,
+        ));
+        
     }
 
     public function actionRenewsubscription() {

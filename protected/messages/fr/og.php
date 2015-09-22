@@ -172,7 +172,7 @@ return array(
     
     'OGO137' => 'Abonnement d\'un professionnel',
     'OGO138' => 'Profil professionnel',
-    'OGO139' => 'Opération de paiement',
+    'OGO139' => 'Opérations de paiement',
     'OGO140' => 'Infos abonnement',
     'OGO141' => 'Type d\'abonnement',
     'OGO142' => 'Créé sur',
