@@ -2,9 +2,9 @@
 /* @var $this PaymentTransactionController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title='Transactions de paiement Optirep';
-$this->breadcrumbs=array(
-	'Transactions de paiement Optirep',
+$this->title = 'Transactions de paiement Optirep';
+$this->breadcrumbs = array(
+    'Transactions de paiement Optirep',
 );
 $themeUrl = $this->themeUrl;
 $cs = Yii::app()->getClientScript();
@@ -21,67 +21,62 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
     <div class="row">
         <?php
         $gridColumns = array(
-                array('header' => 'SN.',
-                    'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
-                ),   
-                 array(
-                    'name' => 'repCredentials.rep_username',
-                    'value' => $data->repCredentials->rep_username,    
-                    'filter' => CHtml::activeTextField($model, 'rep_username' , array('class'=>'form-control')),                    
-                 ), 
-                array(
-                    'name' => 'total_price',
-                    'value' => $data->total_price,    
-                    'filter' =>false,                    
-                 ),
-		array(
-                    'header'  => 'Type de rémunération',    
-                    'name'    => 'pay_type',
-                    'htmlOptions' => array('style' => 'width: 180px;text-align:center', 'vAlign' => 'middle'),             
-                    'type' => 'raw',
-                    'value' => function($data) {
-                         echo ($data->pay_type == 1) ? "Paypal" : "Strype";
-                     }, 
-                     'filter' => false,   
-                ), 
-                array(
-                    'header'  => 'Nom de l\'abonnement',    
-                    'name'    => 'item_name',
-                    'htmlOptions' => array('style' => 'width: 180px;text-align:center', 'vAlign' => 'middle'),             
-                    'type' => 'raw',                    
-                    'filter' => false,   
+            array('header' => 'SN.',
+                'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
+            ),
+            array(
+                'name' => 'payer_email',
+                'filter' => CHtml::activeTextField($model, 'payer_email', array('class' => 'form-control')),
+            ),
+            array(
+                'name' => 'total_price',
+                'filter' => false,
+            ),
+            array(
+                'header' => 'Type de rémunération',
+                'name' => 'pay_type',
+                'type' => 'raw',
+                'value' => function($data) {
+                    echo ($data->pay_type == 1) ? "Paypal" : "Strype";
+                },
+                'filter' => false,
+            ),
+            array(
+                'header' => 'Nom de l\'abonnement',
+                'name' => 'item_name',
+                'type' => 'raw',
+                'filter' => false,
+            ),
+            array(
+                'name' => 'payment_status',
+                'filter' => false,
+            ),
+            array(
+                'name' => 'created_at',
+                'filter' => false,
+            ),
+            array(
+                'header' => 'Actes',
+                'class' => 'booster.widgets.TbButtonColumn',
+                'viewButtonUrl' => 'Yii::app()->createUrl("/admin/paymentTransaction/repview/", array("id"=>$data->id))',
+                'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                'template' => '{view}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{update}',
+                'buttons' => array(
+                    'update' => array(
+                        'visible' => '$data->payment_status=="Pending"',
+                    ),
                 ),
-                 array(
-                    'name' => 'payment_status',
-                    'filter' => false,    
-                 ),
-                array(
-                    'name' => 'created_at',
-                    'filter' => false,    
-                 ),    		
-        array(
-        'header' => 'Actes',
-        'class' => 'booster.widgets.TbButtonColumn',
-        'viewButtonUrl'=>'Yii::app()->createUrl("/admin/paymentTransaction/repview/", array("id"=>$data->id))',       
-        'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-        'template' => '{view}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{update}',
-         'buttons'=> array(
-                    'update'=>array(                                    
-                              'visible'=>'$data->payment_status=="Pending"',
-                                ),                                  
-                     ),
-                    
-                ),
+            ),
         );
 
         $this->widget('booster.widgets.TbExtendedGridView', array(
-        'filter' => $model,
-        'type' => 'striped bordered datatable',
-        'dataProvider' => $model->searchrep(),
-        'responsiveTable' => true,
-        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Transactions de paiement Optirep</h3></div><div class="panel-body">{items}{pager}</div></div>',
-        'columns' => $gridColumns
-        )
+            'filter' => $model,
+            'type' => 'striped bordered datatable',
+            'dataProvider' => $model->searchrep(),
+            'responsiveTable' => true,
+            'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Transactions de paiement Optirep</h3></div><div class="panel-body">{items}{pager}</div></div>',
+            'columns' => $gridColumns
+                )
         );
         ?>
     </div>

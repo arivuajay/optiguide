@@ -125,7 +125,9 @@ class RepCredentialController extends ORController {
             $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalNotify'));
 
             $paypalManager->addField('item_name', 'Opti-Rep : Registration');
-            $paypalManager->addField('amount', $registration['step3']['grand_total']);
+            $paypalManager->addField('amount', $registration['step3']['per_account_price']);
+            $paypalManager->addField('quantity', $registration['step2']['RepCredentials']['no_of_accounts_purchase']);
+            $paypalManager->addField('tax', $registration['step3']['tax']);
             $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
             $paypalManager->addField('return', $returnUrl);
             $paypalManager->addField('cancel_return', $cancelUrl);
@@ -145,14 +147,14 @@ class RepCredentialController extends ORController {
         $pstatus = $_POST["payment_status"];
         if (isset($_POST["txn_id"]) && isset($_POST["payment_status"])) {
             if ($pstatus == "Pending") {
-                Yii::app()->user->setFlash('info', "Your payment status is pending. Admin will verify your payment details and send activation email to you soon.");
+                Yii::app()->user->setFlash('info', "Your payment status is pending. Please contact Admin.");
             } else {
-                Yii::app()->user->setFlash('success', "Thanks for your registration! Once admin will verify your informations and activate your account soon. Later you will get confirmation mail.");
+                Yii::app()->user->setFlash('success', "Thanks for your registration!.");
             }
         } else {
             Yii::app()->user->setFlash('danger', "Your registration payment is failed. Please try again later or contact admin.");
         }
-        $this->redirect(array('step1'));
+        $this->redirect(array('/optirep/defaults/index'));
     }
 
     public function actionPaypalNotify() {

@@ -179,10 +179,9 @@ class RepAccountsController extends ORController {
                 $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalNotify'));
 
                 $paypalManager->addField('item_name', 'Rep Admin- Buy More Accounts Subscription');
-                $paypalManager->addField('item_price', $price_list['per_account_price']);
+                $paypalManager->addField('amount', $price_list['per_account_price']);
                 $paypalManager->addField('quantity', $new_subscription['no_of_accounts_purchase']);
                 $paypalManager->addField('tax', $price_list['tax']);
-                $paypalManager->addField('amount', $price_list['grand_total']);
                 $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
                 $paypalManager->addField('return', $returnUrl);
                 $paypalManager->addField('cancel_return', $cancelUrl);
@@ -306,7 +305,9 @@ class RepAccountsController extends ORController {
                 $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalRenewalNotify'));
 
                 $paypalManager->addField('item_name', 'Renewal Rep Accounts');
-                $paypalManager->addField('amount', $data['price_list']['grand_total']);
+                $paypalManager->addField('amount', $data['price_list']['per_account_price']);
+                $paypalManager->addField('quantity', $data['no_of_accounts_purchase']);
+                $paypalManager->addField('tax', $data['price_list']['tax']);
                 $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
                 $paypalManager->addField('return', $returnUrl);
                 $paypalManager->addField('cancel_return', $cancelUrl);

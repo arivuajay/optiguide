@@ -14,7 +14,6 @@ $this->breadcrumbs=array(
 	'data'=>$model,
         'htmlOptions' => array('class'=>'table table-striped table-bordered'),
 	'attributes'=>array(		
-		'repCredentials.rep_username',
                 'item_name',
                 'repCredentials.rep_role',
 		'expirydate',
