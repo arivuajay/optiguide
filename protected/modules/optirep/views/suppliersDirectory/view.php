@@ -32,7 +32,7 @@
             if (in_array($img_ext, $extypes)) {
                 $img_url = Yii::app()->getBaseUrl(true) . '/uploads/archivage/' . $model['ID_CATEGORIE'] . '/' . $model['FICHIER'];
                 ?>
-                <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8 brand-logo">   <img src="<?php echo $img_url; ?>"  alt="">  </div>
+                <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8 brand-logo">   <img src="<?php echo $img_url; ?>" width="200" hieght="200"  alt="">  </div>
                 <?php
             }
         }

@@ -69,7 +69,7 @@ return array(
     'OG043' => 'No results found',
     
     
-    'OG044' => 'Thanks for your subscription! Once admin will verify your informations and activate your account soon. Later you will get confirmation mail with login access.',
+    'OG044' => 'Thanks for your subscription! Now you can login in the site.',
 
     'OG045' => 'Register',
     'OG046' => 'Toll Free',
@@ -168,7 +168,7 @@ return array(
     'OGO130' => 'Circulation Assistant',
     'OGO131' => 'Please feel free to contact us should you need additional information or simply to give us your feedback.',
     
-    'OGO132' => "Your subscription payment status is pending.Admin will verify your payment details and send activation email to you soon.",
+    'OGO132' => "Your subscription payment status is pending.Please contact admin for further details.",
     'OGO133' => "Your subscription payment is failed.Please try again later or contact admin.",
     'OGO134' => "Your subscription payment is cancelled.please try again later.",
     'OGO135' => 'Processing Payment...',

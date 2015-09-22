@@ -38,7 +38,7 @@ if ($model['logo_expirydate'] != '') {
                        
                         $img_url = Yii::app()->getBaseUrl(true) . '/uploads/archivage/' . $model['ID_CATEGORIE'] . '/' . $model['FICHIER'];
                         ?>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 brand-logo"> <img src="<?php echo $img_url; ?>"  alt=""> </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 brand-logo"> <img src="<?php echo $img_url; ?>" width="200" height="200" alt=""> </div>
                         <?php
                     }
                 }

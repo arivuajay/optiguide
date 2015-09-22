@@ -30,8 +30,8 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                     'filter' => CHtml::activeTextField($model, 'rep_username' , array('class'=>'form-control')),                    
                  ), 
                 array(
-                    'name' => 'subscription_price',
-                    'value' => $data->subscription_price,    
+                    'name' => 'total_price',
+                    'value' => $data->total_price,    
                     'filter' =>false,                    
                  ),
 		array(
@@ -45,14 +45,11 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                      'filter' => false,   
                 ), 
                 array(
-                    'header'  => 'Type d\'abonnement',    
-                    'name'    => 'subscription_type',
+                    'header'  => 'Nom de l\'abonnement',    
+                    'name'    => 'item_name',
                     'htmlOptions' => array('style' => 'width: 180px;text-align:center', 'vAlign' => 'middle'),             
-                    'type' => 'raw',
-                    'value' => function($data) {
-                         echo ($data->subscription_type == 3) ? "Statistics Subscription" : "Renew Statistics Subscription";
-                     },
-                     'filter' => false,   
+                    'type' => 'raw',                    
+                    'filter' => false,   
                 ),
                  array(
                     'name' => 'payment_status',

@@ -37,7 +37,7 @@ class SuppliersDirectoryController extends OGController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('update', 'updateproducts', 'updatemarques', 'transactions', 'mappingreps', 'listreps'),
+                'actions' => array('update', 'updateproducts', 'updatemarques', 'transactions', 'mappingreps', 'listreps','renewsubscription'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -892,140 +892,173 @@ class SuppliersDirectoryController extends OGController {
 
         if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
 
-            $invoice_number = $_POST['custom'];
+            $invoice_number = $_POST['custom'];            
+            
+            $paymentinfos = PaymentTransaction::model()->find("invoice_number ='".$invoice_number."'");
+            if(!empty($paymentinfos))
+            {    
+
+                $suppid =  $paymentinfos->user_id;  
+                $subscription_type = $paymentinfos->subscription_type;  
+                 
+                /* Update user status 1 in user table */
+                $userinfos = UserDirectory::model()->find("NOM_TABLE='Fournisseurs' AND ID_REALTION = ".$suppid);              
+                $userinfos->status = 1;               
+                $userinfos->save(false);
+                
+                /* Update supplier expiry date in supplier table */
+                $supp_model = SuppliersDirectory::model()->findByPk($suppid);               
+                $supp_model->profile_expirydate = date("Y-m-d", strtotime('+1 year'));
+                if ($subscription_type == 2) {
+                    $supp_model->logo_expirydate    = date("Y-m-d", strtotime('+1 year'));
+                }
+                $supp_model->save(false);
+                
+                /* Update supplier expiry date in payment transation table */
+                $paymentinfos->expirydate = date("Y-m-d", strtotime('+1 year'));
+                $paymentinfos->save(false);
+                
+            }else{
+                
             $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");
 
             if (!empty($result)) {
 
-                $serial_attr_u = $result->umodel;
-                $serial_attr_m = $result->smodel;
-                $serial_pids = $result->product_ids;
-                $serial_mids = $result->marque_ids;
-                $pdetails = $result->paymentdetails;
+                    $serial_attr_u = $result->umodel;
+                    $serial_attr_m = $result->smodel;
+                    $serial_pids = $result->product_ids;
+                    $serial_mids = $result->marque_ids;
+                    $pdetails = $result->paymentdetails;
 
 
-                $sess_attr_u = unserialize($serial_attr_u);
-                $sess_attr_m = unserialize($serial_attr_m);
-                $sess_productids = unserialize($serial_pids);
-                $sess_marqueids = unserialize($serial_mids);
-                $pdetails = unserialize($pdetails);
+                    $sess_attr_u = unserialize($serial_attr_u);
+                    $sess_attr_m = unserialize($serial_attr_m);
+                    $sess_productids = unserialize($serial_pids);
+                    $sess_marqueids = unserialize($serial_mids);
+                    $pdetails = unserialize($pdetails);
 
 
-                if (!empty($sess_attr_m)) {
-                    $ficherid = 0;
+                    if (!empty($sess_attr_m)) {
+                        $ficherid = 0;
 
-                    //Save the  supplier ficher (logo)
-                    if (!empty($pdetails)) {
-                        if ($pdetails['subscription_type'] == 2) {
-                            $afmodel = new ArchiveFichier('create');
-                            $afmodel->ID_CATEGORIE = $pdetails['ID_CATEGORIE'];
-                            $afmodel->TITRE_FICHIER_FR = $pdetails['TITRE_FICHIER'];
-                            $afmodel->TITRE_FICHIER_EN = $pdetails['TITRE_FICHIER'];
-                            $afmodel->FICHIER = $pdetails['FICHIER'];
-                            $afmodel->EXTENSION = $pdetails['EXTENSION'];
-                            $afmodel->DISPONIBLE = 1;
+                        //Save the  supplier ficher (logo)
+                        if (!empty($pdetails)) {
+                            if ($pdetails['subscription_type'] == 2) {
+                                $afmodel = new ArchiveFichier('create');
+                                $afmodel->ID_CATEGORIE = $pdetails['ID_CATEGORIE'];
+                                $afmodel->TITRE_FICHIER_FR = $pdetails['TITRE_FICHIER'];
+                                $afmodel->TITRE_FICHIER_EN = $pdetails['TITRE_FICHIER'];
+                                $afmodel->FICHIER = $pdetails['FICHIER'];
+                                $afmodel->EXTENSION = $pdetails['EXTENSION'];
+                                $afmodel->DISPONIBLE = 1;
 
-                            $afmodel->save(false);
+                                $afmodel->save(false);
 
-                            $ficherid = $afmodel->ID_FICHIER;
+                                $ficherid = $afmodel->ID_FICHIER;
+                            }
                         }
-                    }
 
-                    $model  = new SuppliersDirectory;
-                    $umodel = new UserDirectory('frontend');
+                        $model  = new SuppliersDirectory;
+                        $umodel = new UserDirectory('frontend');
 
-                    // Save supplier in user and supplier table
-                    $model->attributes = $sess_attr_m;
-                    $model->ID_CLIENT = $sess_attr_m['ID_CLIENT'];
-                    $model->iId_fichier = $ficherid;
-                    $model->profile_expirydate = date("Y-m-d", strtotime('+1 year'));
-                    if ($pdetails['subscription_type'] == 2) {
-                        $model->logo_expirydate    = date("Y-m-d", strtotime('+1 year'));
-                    }
-                    $model->save(false);
+                        // Save supplier in user and supplier table
+                        $model->attributes = $sess_attr_m;
+                        $model->ID_CLIENT = $sess_attr_m['ID_CLIENT'];
+                        $model->iId_fichier = $ficherid;
+                        $model->profile_expirydate = date("Y-m-d", strtotime('+1 year'));
+                        if ($pdetails['subscription_type'] == 2) {
+                            $model->logo_expirydate    = date("Y-m-d", strtotime('+1 year'));
+                        }
+                        $model->save(false);
 
-                    $umodel->attributes = $sess_attr_u;
-                    $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
-                    $umodel->save(false);
+                        $umodel->attributes = $sess_attr_u;
+                        $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
+                        if($_POST['payment_status'] == "Completed")
+                        {    
+                            $umodel->status = 1;
+                        }    
+                        $umodel->save(false);
 
-                    $supplierid = $model->ID_FOURNISSEUR;
+                        $supplierid = $model->ID_FOURNISSEUR;
 
-                    // Save products and brands for the supplier
-                    if (!empty($sess_productids)) {
-                        foreach ($sess_productids as $pids) {
-                            $productid = $pids;
-                            if (array_key_exists($productid, $sess_marqueids)) {
-                                $allmarqid = $sess_marqueids[$productid];
-                                $exp_marid = explode(',', $allmarqid);
+                        // Save products and brands for the supplier
+                        if (!empty($sess_productids)) {
+                            foreach ($sess_productids as $pids) {
+                                $productid = $pids;
+                                if (array_key_exists($productid, $sess_marqueids)) {
+                                    $allmarqid = $sess_marqueids[$productid];
+                                    $exp_marid = explode(',', $allmarqid);
 
-                                foreach ($exp_marid as $mid) {
-                                    $marqid = $mid;
+                                    foreach ($exp_marid as $mid) {
+                                        $marqid = $mid;
 
-                                    $criteria1 = new CDbCriteria();
-                                    $criteria1->condition = 'ID_PRODUIT=:pid and ID_MARQUE=:mid';
-                                    $criteria1->params = array(':pid' => $productid, ':mid' => $marqid);
-                                    $get_product_marques = ProductMarqueDirectory::model()->find($criteria1);
+                                        $criteria1 = new CDbCriteria();
+                                        $criteria1->condition = 'ID_PRODUIT=:pid and ID_MARQUE=:mid';
+                                        $criteria1->params = array(':pid' => $productid, ':mid' => $marqid);
+                                        $get_product_marques = ProductMarqueDirectory::model()->find($criteria1);
 
-                                    if ($get_product_marques->ID_LIEN_MARQUE) {
-                                        $prd_mar_id = $get_product_marques->ID_LIEN_MARQUE;
-                                        $spmodel = new SupplierProducts();
-                                        $spmodel->ID_FOURNISSEUR = $supplierid;
-                                        $spmodel->ID_LIEN_PRODUIT_MARQUE = $prd_mar_id;
-                                        $spmodel->save(false);
+                                        if ($get_product_marques->ID_LIEN_MARQUE) {
+                                            $prd_mar_id = $get_product_marques->ID_LIEN_MARQUE;
+                                            $spmodel = new SupplierProducts();
+                                            $spmodel->ID_FOURNISSEUR = $supplierid;
+                                            $spmodel->ID_LIEN_PRODUIT_MARQUE = $prd_mar_id;
+                                            $spmodel->save(false);
+                                        }
                                     }
                                 }
                             }
                         }
+
+                        // Save the payment details                                   
+                        $ptmodel = new PaymentTransaction;
+                        $ptmodel->user_id = $supplierid;    // need to assign acutal user id
+                        $ptmodel->total_price = $_POST['mc_gross'];
+                        $ptmodel->subscription_price = $_POST['mc_gross'];
+                        $ptmodel->payment_status = $_POST['payment_status'];
+                        $ptmodel->payer_email = $_POST['payer_email'];
+                        $ptmodel->verify_sign = $_POST['verify_sign'];
+                        $ptmodel->txn_id = $_POST['txn_id'];
+                        $ptmodel->payment_type = $_POST['payment_type'];
+                        $ptmodel->receiver_email = $_POST['receiver_email'];
+                        $ptmodel->txn_type = $_POST['txn_type'];
+                        $ptmodel->item_name = $_POST['item_name'];
+                        $ptmodel->NOMTABLE = 'suppliers';
+                        $ptmodel->expirydate = date("Y-m-d", strtotime('+1 year'));
+                        $ptmodel->invoice_number = $_POST['custom'];
+                        $ptmodel->pay_type = $pdetails['payment_type'];
+                        $ptmodel->subscription_type = $pdetails['subscription_type'];
+                        $ptmodel->save();
+
+                        SupplierTemp::model()->deleteAll("invoice_number = '" . $_POST['custom'] . "'");
+
+                        /* Send mail to admin for confirmation */
+                        $mail = new Sendmail();
+                        $suppliers_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
+                        $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
+
+                        $enc_url = Myclass::refencryption($suppliers_url);
+                        $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
+
+                        $enc_url2 = Myclass::refencryption($invoice_url);
+                        $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
+
+                        $subject = SITENAME . "- New suppliers registration notification with invoice details - " . $model->COMPAGNIE;
+                        $trans_array = array(
+                            "{NAME}" => $model->COMPAGNIE,
+                            "{UTYPE}" => 'suppliers',
+                            "{NEXTSTEPURL}" => $nextstep_url,
+                            "{item_name}" => $_POST['item_name'],
+                            "{total_price}" => $_POST['mc_gross'],
+                            "{payment_status}" => $_POST['payment_status'],
+                            "{txn_id}" => $_POST['txn_id'],
+                            "{INVOICEURL}" => $nextstep_url2
+                        );
+                        $message = $mail->getMessage('supplier_registration', $trans_array);
+                        $mail->send(ADMIN_EMAIL, $subject, $message);
                     }
-
-                    // Save the payment details                                   
-                    $ptmodel = new PaymentTransaction;
-                    $ptmodel->user_id = $supplierid;    // need to assign acutal user id
-                    $ptmodel->total_price = $_POST['mc_gross'];
-                    $ptmodel->subscription_price = $_POST['mc_gross'];
-                    $ptmodel->payment_status = $_POST['payment_status'];
-                    $ptmodel->payer_email = $_POST['payer_email'];
-                    $ptmodel->verify_sign = $_POST['verify_sign'];
-                    $ptmodel->txn_id = $_POST['txn_id'];
-                    $ptmodel->payment_type = $_POST['payment_type'];
-                    $ptmodel->receiver_email = $_POST['receiver_email'];
-                    $ptmodel->txn_type = $_POST['txn_type'];
-                    $ptmodel->item_name = $_POST['item_name'];
-                    $ptmodel->NOMTABLE = 'suppliers';
-                    $ptmodel->expirydate = date("Y-m-d", strtotime('+1 year'));
-                    $ptmodel->invoice_number = $_POST['custom'];
-                    $ptmodel->pay_type = $pdetails['payment_type'];
-                    $ptmodel->subscription_type = $pdetails['subscription_type'];
-                    $ptmodel->save();
-
-                    SupplierTemp::model()->deleteAll("invoice_number = '" . $_POST['custom'] . "'");
-
-                    /* Send mail to admin for confirmation */
-                    $mail = new Sendmail();
-                    $suppliers_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
-                    $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
-
-                    $enc_url = Myclass::refencryption($suppliers_url);
-                    $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
-
-                    $enc_url2 = Myclass::refencryption($invoice_url);
-                    $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
-
-                    $subject = SITENAME . "- New suppliers registration notification with invoice details - " . $model->COMPAGNIE;
-                    $trans_array = array(
-                        "{NAME}" => $model->COMPAGNIE,
-                        "{UTYPE}" => 'suppliers',
-                        "{NEXTSTEPURL}" => $nextstep_url,
-                        "{item_name}" => $_POST['item_name'],
-                        "{total_price}" => $_POST['mc_gross'],
-                        "{payment_status}" => $_POST['payment_status'],
-                        "{txn_id}" => $_POST['txn_id'],
-                        "{INVOICEURL}" => $nextstep_url2
-                    );
-                    $message = $mail->getMessage('supplier_registration', $trans_array);
-                    $mail->send(ADMIN_EMAIL, $subject, $message);
                 }
             }
+         
         }
     }
 
@@ -1327,6 +1360,12 @@ class SuppliersDirectoryController extends OGController {
 
         $this->render($viewpage, compact('model'));
     }
+    
+    public function actionRenewsubscription()
+    {
+        echo "hi";
+        exit;
+    }        
 
     /**
      * Returns the data model based on the primary key given in the GET variable.

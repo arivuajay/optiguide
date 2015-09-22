@@ -19,6 +19,7 @@ $this->breadcrumbs=array(
                 'repCredentials.rep_role',
 		'expirydate',
 		'invoice_number',
+                'total_price',
 		'subscription_price',
                 'txn_id',
 		'payment_status',

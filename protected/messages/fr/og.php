@@ -66,7 +66,7 @@ return array(
     'OG042' => 'Télécopieur',
     'OG043' => 'Aucun résultat trouvé',
     
-    '0G044' => 'Merci pour votre abonnement ! Une fois admin vérifier vos informations et activer votre compte bientôt. Plus tard, vous recevrez une confirmation mail avec un accès de connexion.',
+    'OG044' => 'Merci pour votre abonnement ! Maintenant, vous pouvez vous connecter sur le site .',
     'OG045' => 'Inscription',
     'OG046' => 'Sans frais',
     
@@ -164,7 +164,7 @@ return array(
     'OGO130' => 'Assistante au tirage',
     'OGO131' => 'Nous vous invitons à prendre contact avec nous pour de plus amples renseignements ou pour nous faire part de vos commentaires :',
     
-    'OGO132' => "Votre statut de paiement de l'abonnement est pending.Admin va vérifier vos informations de paiement et envoyer email d'activation de vous bientôt.",
+    'OGO132' => "Votre statut de paiement de l'abonnement est pending.Please Contact admin pour plus de détails.",
     'OGO133' => "Votre paiement de l'abonnement est failed.Please réessayer ultérieurement ou Contact admin.",
     'OGO134' => "Votre paiement de l'abonnement est cancelled.please réessayer plus tard.",
     'OGO135' => 'le traitement des paiements...',
