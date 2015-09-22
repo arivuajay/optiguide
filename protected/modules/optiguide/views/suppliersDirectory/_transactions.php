@@ -33,8 +33,7 @@ $get_transactions = PaymentTransaction::model()->find($criteria1);
                                 <th><?php echo Myclass::t('OG138'); ?></th>
                                 <th><?php echo Myclass::t('OG142'); ?></th>
                                 <th><?php echo Myclass::t('OG140'); ?></th>
-                                <th><?php echo "Txn ID"; ?></th>                                
-                                <th><?php echo Myclass::t('OG143'); ?></th>
+                                <th><?php echo "Txn ID"; ?></th>    
                                 <th><?php echo Myclass::t('OGO142', '', 'og'); ?></th>
                             </tr> 
                             <?php if(!empty($get_transactions)){?>
@@ -43,8 +42,7 @@ $get_transactions = PaymentTransaction::model()->find($criteria1);
                                 <td><?php echo $get_transactions->total_price; ?></td>
                                 <td><?php echo ($get_transactions->pay_type==1)?"Paypal":""; ?></td>
                                 <td><?php echo $get_transactions->payment_status; ?></td>
-                                <td><?php echo $get_transactions->txn_id; ?></td>
-                                <td><?php echo $get_transactions->expirydate; ?></td>
+                                <td><?php echo $get_transactions->txn_id; ?></td>                                
                                 <td><?php echo $get_transactions->created_at; ?></td>
                             </tr>
                             <?php }else{?>

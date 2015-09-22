@@ -37,20 +37,7 @@ class OGController extends Controller {
     }
     
     public function __construct($id, $module = null) {
-        parent::__construct($id, $module);
-                
-//        if(isset(Yii::app()->user->expirydate) && Yii::app()->user->expirydate!='')
-//        {
-//            $cur_date = strtotime("now");
-//            $expdate  = strtotime(Yii::app()->user->expirydate);
-//            $disp     = ($expdate > $cur_date) ? 1 : 0;
-//            
-//            if($disp==0)
-//            {
-//                 $this->redirect('suppliersDirectory/');
-//            }     
-//        }    
-        
+        parent::__construct($id, $module);    
     }
 
 

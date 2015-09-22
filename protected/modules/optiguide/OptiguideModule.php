@@ -35,7 +35,34 @@ class OptiguideModule extends CWebModule {
     }
 
     public function beforeControllerAction($controller, $action) {
-         Yii::app()->user->loginUrl = array('/optiguide/');
+               
+         // Check the expiry date for suppliers login and redirect to renew page       
+        if(isset(Yii::app()->user->expirydate) && Yii::app()->user->expirydate!='')
+        {
+            $_controller = $controller->id;
+            $_action = $action->id;
+            
+            $action_arr = array('renewsubscription',"renewpaypalreturn","renewpaypalnotify","renewpaypalcancel","transactions","logout");
+
+            if(Yii::app()->user->expirydate=="0000-00-00 00:00:00" && !in_array($_action,$action_arr))
+            {      
+               Yii::app()->user->setFlash('info', Myclass::t('OGO186', '', 'og')); 
+               Yii::app()->request->redirect("/optiguide/suppliersDirectory/renewsubscription/");             
+            }               
+
+            $cur_date = strtotime("now");
+            $expdate  = strtotime(Yii::app()->user->expirydate);
+            $disp     = ($expdate > $cur_date) ? 1 : 0;
+
+            if($disp==0 && !in_array($_action,$action_arr))
+            {
+                Yii::app()->user->setFlash('info', Myclass::t('OGO186', '', 'og')); 
+                Yii::app()->request->redirect("/optiguide/suppliersDirectory/renewsubscription/");           
+            }     
+            
+        }  
+        
+        Yii::app()->user->loginUrl = array('/optiguide/');
         
         if (parent::beforeControllerAction($controller, $action)) {
             // this method is called before any module controller action is performed

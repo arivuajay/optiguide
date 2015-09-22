@@ -176,7 +176,7 @@ return array(
     
     'OGO137' => 'Subscription of a professional',
     'OGO138' => 'Professional Profile',
-    'OGO139' => 'Payment Transation',
+    'OGO139' => 'Payment Transaction',
     'OGO140' => 'Subscription infos',
     'OGO141' => 'Subscription Type',
     'OGO142' => 'Created on',
@@ -227,4 +227,7 @@ return array(
     'OGO183' => "Your satistics payment is failed.Please try again later or contact admin.",
     'OGO184' => "Your satistics payment is cancelled.please try again later.",
     'OGO185' => 'Thanks for your subscription! you can see the statistics features in sidenavigation and dashboard.',
+    'OGO186' => 'Your subscription expired. So please renew the subscription and continue the site features.',
+    'OGO187' => 'Renew Subscription',
+    'OGO188' => 'Thanks for your subscription! Now you can access the features in the site.',
 );

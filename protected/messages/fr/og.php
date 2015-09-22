@@ -172,7 +172,7 @@ return array(
     
     'OGO137' => 'Abonnement d\'un professionnel',
     'OGO138' => 'Profil professionnel',
-    'OGO139' => 'Transation de paiement',
+    'OGO139' => 'Opération de paiement',
     'OGO140' => 'Infos abonnement',
     'OGO141' => 'Type d\'abonnement',
     'OGO142' => 'Créé sur',
@@ -223,4 +223,7 @@ return array(
     'OGO183' => "Votre paiement de Satistics est failed.Please réessayer ultérieurement ou Contact admin.",
     'OGO184' => "Votre paiement de Satistics est cancelled.please réessayer plus tard.",
     'OGO185' => 'Merci pour votre abonnement ! vous pouvez voir les statistiques fonctionnalités de sidenavigation et tableau de bord.',
+    'OGO186' => 'Votre abonnement a expiré . Alors s\'il vous plaît renouveler l\'abonnement et continuer les fonctionnalités du site.',  
+    'OGO187' => 'Renouveler l\'abonnement',
+    'OGO188' => 'Merci pour votre abonnement ! Maintenant, vous pouvez accéder aux fonctionnalités du site.',
 );

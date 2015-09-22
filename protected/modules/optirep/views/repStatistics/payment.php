@@ -46,7 +46,7 @@
                         'name' => 'btnSubmit',
                         'value' => 'Payfee',
                         'type' => 'submit',
-                        'class' => 'register-btn'
+                        'class' => 'submit-btn'
                             ), '<i class="fa fa-arrow-circle-right"></i> ' .  $btntxt);
                     ?>
                 </div>  

@@ -68,12 +68,13 @@
                 'activateItems' => true,
                 'items' => array(
                     // For all users 
-                    array('label' => Myclass::t('OG033', '', 'og'), 'url' => array($profileurl), 'active' => (($_controller == "professionalDirectory" || $_controller == "retailerDirectory" || $_controller == "suppliersDirectory") && $_action == "update"), 'visible' => (Yii::app()->user->role != "Fournisseurs")),
+                    array('label' => Myclass::t('OG033', '', 'og'), 'url' => array($profileurl), 'active' => (($_controller == "professionalDirectory" || $_controller == "retailerDirectory" || $_controller == "suppliersDirectory") && $_action == "update")),
                     // For suppliers
-                  //  array('label' => Myclass::t('OG059', '', 'og'), 'url' => array('/optiguide/suppliersDirectory/updateproducts'), 'active' => ($_controller == 'suppliersDirectory' && ($_action == "updateproducts" || $_action == "updatemarques")), 'visible' => (Yii::app()->user->role == "Fournisseurs")),
-                  //  array('label' => Myclass::t('OGO139', '', 'og'), 'url' => array('/optiguide/suppliersDirectory/transactions'), 'active' => ($_controller == 'suppliersDirectory' && $_action == "transactions"), 'visible' => (Yii::app()->user->role == "Fournisseurs")),
+                    array('label' => Myclass::t('OG059', '', 'og'), 'url' => array('/optiguide/suppliersDirectory/updateproducts'), 'active' => ($_controller == 'suppliersDirectory' && ($_action == "updateproducts" || $_action == "updatemarques")), 'visible' => (Yii::app()->user->role == "Fournisseurs")),
                     array('label' => Myclass::t('OGO168', '', 'og'), 'url' => array('/optiguide/suppliersDirectory/mappingreps'), 'active' => ($_controller == 'suppliersDirectory' && $_action == "mappingreps"), 'visible' => (Yii::app()->user->role == "Fournisseurs")),
                     array('label' => Myclass::t('OGO169', '', 'og'), 'url' => array('/optiguide/suppliersDirectory/listreps'), 'active' => ($_controller == 'suppliersDirectory' && $_action == "listreps"), 'visible' => (Yii::app()->user->role == "Fournisseurs")),
+                    array('label' => Myclass::t('OGO139', '', 'og'), 'url' => array('/optiguide/suppliersDirectory/transactions'), 'active' => ($_controller == 'suppliersDirectory' && $_action == "transactions"), 'visible' => (Yii::app()->user->role == "Fournisseurs")),
+                    array('label' => Myclass::t('OGO187', '', 'og'), 'url' => array('/optiguide/suppliersDirectory/renewsubscription'), 'active' => ($_controller == 'suppliersDirectory' && $_action == "renewsubscription"), 'visible' => (Yii::app()->user->role == "Fournisseurs")),
                     // For Professionals
                     array('label' => Myclass::t('OGO146', '', 'og'), 'url' => array('/optiguide/professionalDirectory/mappingretailers'), 'active' => ($_controller == 'professionalDirectory' && $_action == "mappingretailers"), 'visible' => (Yii::app()->user->role == "Professionnels")),
                     array('label' => Myclass::t('OGO149', '', 'og'), 'url' => array('/optiguide/professionalDirectory/listretailers'), 'active' => ($_controller == 'professionalDirectory' && $_action == "listretailers"), 'visible' => (Yii::app()->user->role == "Professionnels")),

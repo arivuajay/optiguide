@@ -37,7 +37,7 @@ class OgIdentity extends CUserIdentity {
             {    
                 $pk = $user->ID_RELATION;
                 $supp_result = SuppliersDirectory::model()->findByPk($pk);
-                $user->expirydate = $supp_result['profile_expirydate'];
+                $this->setState('expirydate', $supp_result['profile_expirydate']);
             }            
             
         }
