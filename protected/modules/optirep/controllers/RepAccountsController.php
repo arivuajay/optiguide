@@ -132,6 +132,24 @@ class RepAccountsController extends ORController {
 
     /* ----------------------- Buy More Accounts Section ---------------------------------------------- */
 
+    public function actionBuyMoreAccountsPriceList() {
+        if (Yii::app()->request->isAjaxRequest) {
+            $model = new RepCredentials;
+            $rep_admin_old_active_accounts = $model->getRepAdminActiveAccountsCount();
+            $no_of_accounts_purchase = $_POST['no_of_accounts'];
+            $total_no_of_accounts = $rep_admin_old_active_accounts + $no_of_accounts_purchase;
+            $price_list = Myclass::repAdminBuyMoreAccountsPriceCalculation($total_no_of_accounts, $no_of_accounts_purchase);
+            $return = array();
+            $return['per_account_price'] = Myclass::currencyFormat($price_list['per_account_price']);
+            $return['total_price'] = Myclass::currencyFormat($price_list['total_price']);
+            $return['tax'] = Myclass::currencyFormat($price_list['tax']);
+            $return['grand_total'] = Myclass::currencyFormat($price_list['grand_total']);
+            echo json_encode($return);
+        } else {
+            $this->redirect(array('dashboard/index'));
+        }
+    }
+
     public function actionBuyMoreAccounts() {
         $can_buy = RepAdminSubscriptions::model()->canBuyMoreAccounts();
         if (!$can_buy) {
@@ -201,31 +219,24 @@ class RepAccountsController extends ORController {
 
     public function actionPaypalNotify() {
         $paypalManager = new Paypal;
+        if ($paypalManager->notify()) {
+            $this->processPaymentTransaction($_POST['custom']);
+            if ($_POST['payment_status'] == "Completed") {
+                $this->processBuyMoreAccounts($_POST['custom']);
+            }
+        }
+    }
 
-        if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
-            $temp_random_id = $_POST['custom'];
-            $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
-            if (!empty($result)) {
+    protected function processPaymentTransaction($rep_temp_random_id) {
+        $temp_random_id = $rep_temp_random_id;
+        $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
+        if (!empty($result)) {
+            $checkTransactionExists = PaymentTransaction::model()->find("rep_temp_id = '" . $result['rep_temp_id'] . "'");
+            if (empty($checkTransactionExists)) {
                 $subscription_details = unserialize($result['rep_temp_value']);
                 $price_list = $subscription_details['price_list'];
-                $subscription = new RepAdminSubscriptions;
-                $subscription->rep_credential_id = $subscription_details['rep_credential_id'];
-                $subscription->rep_subscription_type_id = $price_list['subscription_type_id'];
-                $subscription->purchase_type = RepAdminSubscriptions::PURCHASE_TYPE_NEW;
-                $subscription->no_of_accounts_purchased = $subscription_details['no_of_accounts_purchase'];
-                $subscription->rep_admin_old_active_accounts = $subscription_details['rep_admin_old_active_accounts'];
-                $subscription->no_of_accounts_remaining = $subscription_details['no_of_accounts_purchase'];
-                $subscription->rep_admin_per_account_price = $price_list['per_account_price'];
-                $subscription->rep_admin_total_price = $price_list['total_price'];
-                $subscription->rep_admin_tax = $price_list['tax'];
-                $subscription->rep_admin_grand_total = $price_list['grand_total'];
-                $subscription->rep_admin_subscription_start = date('Y-m-d');
-                $subscription->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
-                $subscription->save(false);
 
-                // Save the payment details                                   
                 $ptmodel = new PaymentTransaction;
-                $ptmodel->user_id = $subscription_details['rep_credential_id'];    // need to assign acutal user id
                 $ptmodel->total_price = $_POST['mc_gross'];
                 $ptmodel->subscription_price = $price_list['total_price'];
                 $ptmodel->tax = $price_list['tax'];
@@ -238,32 +249,39 @@ class RepAccountsController extends ORController {
                 $ptmodel->txn_type = $_POST['txn_type'];
                 $ptmodel->item_name = $_POST['item_name'];
                 $ptmodel->NOMTABLE = RepCredentials::NAME_TABLE;
-                $ptmodel->expirydate = date("Y-m-d", strtotime('+1 month'));
                 $ptmodel->invoice_number = $_POST['custom'];
                 $ptmodel->pay_type = '1';
-                $ptmodel->rep_admin_subscription_id = $subscription->rep_admin_subscription_id;
+                $ptmodel->rep_temp_id = $result['rep_temp_id'];
                 $ptmodel->save(false);
-
-                RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
+            } else {
+                $checkTransactionExists->payment_status = $_POST['payment_status'];
+                $checkTransactionExists->save(false);
             }
         }
     }
 
-    public function actionBuyMoreAccountsPriceList() {
-        if (Yii::app()->request->isAjaxRequest) {
-            $model = new RepCredentials;
-            $rep_admin_old_active_accounts = $model->getRepAdminActiveAccountsCount();
-            $no_of_accounts_purchase = $_POST['no_of_accounts'];
-            $total_no_of_accounts = $rep_admin_old_active_accounts + $no_of_accounts_purchase;
-            $price_list = Myclass::repAdminBuyMoreAccountsPriceCalculation($total_no_of_accounts, $no_of_accounts_purchase);
-            $return = array();
-            $return['per_account_price'] = Myclass::currencyFormat($price_list['per_account_price']);
-            $return['total_price'] = Myclass::currencyFormat($price_list['total_price']);
-            $return['tax'] = Myclass::currencyFormat($price_list['tax']);
-            $return['grand_total'] = Myclass::currencyFormat($price_list['grand_total']);
-            echo json_encode($return);
-        } else {
-            $this->redirect(array('dashboard/index'));
+    protected function processBuyMoreAccounts($rep_temp_random_id) {
+        $temp_random_id = $rep_temp_random_id;
+        $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
+        if (!empty($result)) {
+            $subscription_details = unserialize($result['rep_temp_value']);
+            $price_list = $subscription_details['price_list'];
+
+            $subscription = new RepAdminSubscriptions;
+            $subscription->rep_credential_id = $subscription_details['rep_credential_id'];
+            $subscription->rep_subscription_type_id = $price_list['subscription_type_id'];
+            $subscription->purchase_type = RepAdminSubscriptions::PURCHASE_TYPE_NEW;
+            $subscription->no_of_accounts_purchased = $subscription_details['no_of_accounts_purchase'];
+            $subscription->rep_admin_old_active_accounts = $subscription_details['rep_admin_old_active_accounts'];
+            $subscription->no_of_accounts_remaining = $subscription_details['no_of_accounts_purchase'];
+            $subscription->rep_admin_per_account_price = $price_list['per_account_price'];
+            $subscription->rep_admin_total_price = $price_list['total_price'];
+            $subscription->rep_admin_tax = $price_list['tax'];
+            $subscription->rep_admin_grand_total = $price_list['grand_total'];
+            $subscription->rep_admin_subscription_start = date('Y-m-d');
+            $subscription->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
+            $subscription->save(false);
+            RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
         }
     }
 
@@ -322,47 +340,24 @@ class RepAccountsController extends ORController {
 
     public function actionPaypalRenewalNotify() {
         $paypalManager = new Paypal;
+        if ($paypalManager->notify()) {
+            $this->processRenewalPaymentTransaction($_POST['custom']);
+            if ($_POST['payment_status'] == "Completed") {
+                $this->processRenewalRepAccounts($_POST['custom']);
+            }
+        }
+    }
 
-        if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
-            $temp_random_id = $_POST['custom'];
-            $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
-            if (!empty($result)) {
+    protected function processRenewalPaymentTransaction($rep_temp_random_id) {
+        $temp_random_id = $rep_temp_random_id;
+        $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
+        if (!empty($result)) {
+            $checkTransactionExists = PaymentTransaction::model()->find("rep_temp_id = '" . $result['rep_temp_id'] . "'");
+            if (empty($checkTransactionExists)) {
                 $renewal_details = unserialize($result['rep_temp_value']);
                 $price_list = $renewal_details['price_list'];
-                $rep_credentials = $renewal_details['rep_credentials'];
 
-                $repAdminSubscription = new RepAdminSubscriptions;
-                $repAdminSubscription->rep_credential_id = $renewal_details['rep_credential_id'];
-                $repAdminSubscription->rep_subscription_type_id = $price_list['subscription_type_id'];
-                $repAdminSubscription->purchase_type = RepAdminSubscriptions::PURCHASE_TYPE_RENEWAL;
-                $repAdminSubscription->no_of_accounts_purchased = $renewal_details['no_of_accounts_purchase'];
-                $repAdminSubscription->no_of_accounts_used = $renewal_details['no_of_accounts_purchase'];
-                $repAdminSubscription->rep_admin_per_account_price = $price_list['per_account_price'];
-                $repAdminSubscription->rep_admin_total_price = $price_list['total_price'];
-                $repAdminSubscription->rep_admin_tax = $price_list['tax'];
-                $repAdminSubscription->rep_admin_grand_total = $price_list['grand_total'];
-                $repAdminSubscription->save(false);
-
-                foreach ($rep_credentials as $rep_credential) {
-                    $rep_account = RepCredentials::model()->findByPk($rep_credential);
-                    if ($rep_account['rep_expiry_date'] > date("Y-m-d")) {
-                        $time = strtotime($rep_account['rep_expiry_date']);
-                        $final = date("Y-m-d", strtotime("+1 month", $time));
-                        $rep_account->rep_expiry_date = $final;
-                    } else {
-                        $rep_account->rep_expiry_date = date('Y-m-d', strtotime('+1 month'));
-                    }
-                    $rep_account->save(false);
-
-                    $repAdminSubscriber = new RepAdminSubscribers();
-                    $repAdminSubscriber->rep_admin_subscription_id = $repAdminSubscription->rep_admin_subscription_id;
-                    $repAdminSubscriber->rep_credential_id = $rep_account->rep_credential_id;
-                    $repAdminSubscriber->save(false);
-                }
-
-                // Save the payment details                                   
                 $ptmodel = new PaymentTransaction;
-                $ptmodel->user_id = $renewal_details['rep_credential_id'];    // need to assign acutal user id
                 $ptmodel->total_price = $_POST['mc_gross'];
                 $ptmodel->subscription_price = $price_list['total_price'];
                 $ptmodel->tax = $price_list['tax'];
@@ -375,14 +370,54 @@ class RepAccountsController extends ORController {
                 $ptmodel->txn_type = $_POST['txn_type'];
                 $ptmodel->item_name = $_POST['item_name'];
                 $ptmodel->NOMTABLE = RepCredentials::NAME_TABLE;
-//                $ptmodel->expirydate = date("Y-m-d", strtotime('+1 month'));
                 $ptmodel->invoice_number = $_POST['custom'];
                 $ptmodel->pay_type = '1';
-                $ptmodel->rep_admin_subscription_id = $repAdminSubscription->rep_admin_subscription_id;
+                $ptmodel->rep_temp_id = $result['rep_temp_id'];
                 $ptmodel->save(false);
-
-                RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
+            } else {
+                $checkTransactionExists->payment_status = $_POST['payment_status'];
+                $checkTransactionExists->save(false);
             }
+        }
+    }
+
+    protected function processRenewalRepAccounts($rep_temp_random_id) {
+        $temp_random_id = $rep_temp_random_id;
+        $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
+        if (!empty($result)) {
+            $renewal_details = unserialize($result['rep_temp_value']);
+            $price_list = $renewal_details['price_list'];
+            $rep_credentials = $renewal_details['rep_credentials'];
+
+            $repAdminSubscription = new RepAdminSubscriptions;
+            $repAdminSubscription->rep_credential_id = $renewal_details['rep_credential_id'];
+            $repAdminSubscription->rep_subscription_type_id = $price_list['subscription_type_id'];
+            $repAdminSubscription->purchase_type = RepAdminSubscriptions::PURCHASE_TYPE_RENEWAL;
+            $repAdminSubscription->no_of_accounts_purchased = $renewal_details['no_of_accounts_purchase'];
+            $repAdminSubscription->no_of_accounts_used = $renewal_details['no_of_accounts_purchase'];
+            $repAdminSubscription->rep_admin_per_account_price = $price_list['per_account_price'];
+            $repAdminSubscription->rep_admin_total_price = $price_list['total_price'];
+            $repAdminSubscription->rep_admin_tax = $price_list['tax'];
+            $repAdminSubscription->rep_admin_grand_total = $price_list['grand_total'];
+            $repAdminSubscription->save(false);
+
+            foreach ($rep_credentials as $rep_credential) {
+                $rep_account = RepCredentials::model()->findByPk($rep_credential);
+                if ($rep_account['rep_expiry_date'] > date("Y-m-d")) {
+                    $time = strtotime($rep_account['rep_expiry_date']);
+                    $final = date("Y-m-d", strtotime("+1 month", $time));
+                    $rep_account->rep_expiry_date = $final;
+                } else {
+                    $rep_account->rep_expiry_date = date('Y-m-d', strtotime('+1 month'));
+                }
+                $rep_account->save(false);
+
+                $repAdminSubscriber = new RepAdminSubscribers();
+                $repAdminSubscriber->rep_admin_subscription_id = $repAdminSubscription->rep_admin_subscription_id;
+                $repAdminSubscriber->rep_credential_id = $rep_account->rep_credential_id;
+                $repAdminSubscriber->save(false);
+            }
+            RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
         }
     }
 

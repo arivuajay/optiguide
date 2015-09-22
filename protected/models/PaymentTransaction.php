@@ -29,8 +29,8 @@
  */
 class PaymentTransaction extends CActiveRecord {
 
-    public $COMPAGNIE,$rep_username;
-    
+    public $COMPAGNIE, $rep_username;
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -53,11 +53,11 @@ class PaymentTransaction extends CActiveRecord {
     public function rules() {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(  
-            array('user_id,total_price,tax,subscription_price,payment_status,payer_email,verify_sign','safe'),
-            array('txn_type,item_name,ipn_track_id,created_at,updated_at','safe'),
-            array('txn_id,payment_type,receiver_email,NOMTABLE,expirydate,invoice_number,total,pay_type,subscription_type, rep_temp_id' , 'safe'),      
-            array('COMPAGNIE', 'safe', 'on'=>'search')
+        return array(
+            array('user_id,total_price,tax,subscription_price,payment_status,payer_email,verify_sign', 'safe'),
+            array('txn_type,item_name,ipn_track_id,created_at,updated_at', 'safe'),
+            array('txn_id,payment_type,receiver_email,NOMTABLE,expirydate,invoice_number,total,pay_type,subscription_type, rep_temp_id', 'safe'),
+            array('COMPAGNIE', 'safe', 'on' => 'search')
         );
     }
 
@@ -81,17 +81,17 @@ class PaymentTransaction extends CActiveRecord {
             'id' => 'ID',
             'user_id' => Myclass::t('APP2'),
             'total_price' => Myclass::t('OG138'),
-            'payment_status' =>  Myclass::t('OG140'),
+            'payment_status' => Myclass::t('OG140'),
             'payer_email' => Myclass::t('OG141'),
             'verify_sign' => 'Vérifiez Connexion',
             'txn_id' => 'Txn Id',
             'payment_type' => Myclass::t('OG142'),
             'receiver_email' => 'Récepteur Email',
             'txn_type' => 'Type de Txn',
-            'item_name' => 'Nom de l\'abonnement',           
+            'item_name' => 'Nom de l\'abonnement',
             'created_at' => 'Reçu le',
             'updated_at' => 'Updated At',
-            'NOMTABLE'  => 'Type d\'utilisateur',
+            'NOMTABLE' => 'Type d\'utilisateur',
             'expirydate' => Myclass::t('OG143'),
             'invoice_number' => Myclass::t('OG144'),
         );
@@ -107,7 +107,7 @@ class PaymentTransaction extends CActiveRecord {
 
         $criteria = new CDbCriteria;
 
-        $criteria->compare('id', $this->id);        
+        $criteria->compare('id', $this->id);
         $criteria->compare('total_price', $this->total_price, true);
         $criteria->compare('payment_status', $this->payment_status, true);
         $criteria->compare('payer_email', $this->payer_email, true);
@@ -116,19 +116,19 @@ class PaymentTransaction extends CActiveRecord {
         $criteria->compare('payment_type', $this->payment_type, true);
         $criteria->compare('receiver_email', $this->receiver_email, true);
         $criteria->compare('txn_type', $this->txn_type, true);
-        $criteria->compare('item_name', $this->item_name, true);        
+        $criteria->compare('item_name', $this->item_name, true);
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->compare('updated_at', $this->updated_at, true);
         $criteria->compare('suppliersDirectory.COMPAGNIE', $this->COMPAGNIE, true);
         $criteria->addCondition("NOMTABLE = 'suppliers'");
-        $criteria->with = "suppliersDirectory";        
+        $criteria->with = "suppliersDirectory";
         $criteria->together = true;
-        $criteria->order ='id DESC';
-        return new CActiveDataProvider($this, array(            
+        $criteria->order = 'id DESC';
+        return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
         ));
     }
-    
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -139,7 +139,7 @@ class PaymentTransaction extends CActiveRecord {
 
         $criteria = new CDbCriteria;
 
-        $criteria->compare('id', $this->id);        
+        $criteria->compare('id', $this->id);
         $criteria->compare('total_price', $this->total_price, true);
         $criteria->compare('payment_status', $this->payment_status, true);
         $criteria->compare('payer_email', $this->payer_email, true);
@@ -148,17 +148,17 @@ class PaymentTransaction extends CActiveRecord {
         $criteria->compare('payment_type', $this->payment_type, true);
         $criteria->compare('receiver_email', $this->receiver_email, true);
         $criteria->compare('txn_type', $this->txn_type, true);
-        $criteria->compare('item_name', $this->item_name, true);        
+        $criteria->compare('item_name', $this->item_name, true);
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->compare('updated_at', $this->updated_at, true);
         $criteria->compare('repCredentials.rep_username', $this->rep_username, true);
         $criteria->addCondition("NOMTABLE = 'rep_credentials'");
-        $criteria->with = "repCredentials";        
+        $criteria->with = "repCredentials";
         $criteria->together = true;
-        $criteria->order ='id DESC';
-        return new CActiveDataProvider($this, array(            
+        $criteria->order = 'id DESC';
+        return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
         ));
     }
-  
+
 }

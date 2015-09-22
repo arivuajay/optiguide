@@ -170,25 +170,30 @@ class RepCredentialController extends ORController {
         $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
         if (!empty($result)) {
             $registration = unserialize($result['rep_temp_value']);
-            // Save the payment details                                   
-            $ptmodel = new PaymentTransaction;
-//        $ptmodel->user_id = $model->rep_credential_id;    // need to assign acutal user id
-            $ptmodel->total_price = $_POST['mc_gross'];
-            $ptmodel->subscription_price = $registration['step3']['total_price'];
-            $ptmodel->tax = $registration['step3']['tax'];
-            $ptmodel->payment_status = $_POST['payment_status'];
-            $ptmodel->payer_email = $_POST['payer_email'];
-            $ptmodel->verify_sign = $_POST['verify_sign'];
-            $ptmodel->txn_id = $_POST['txn_id'];
-            $ptmodel->payment_type = $_POST['payment_type'];
-            $ptmodel->receiver_email = $_POST['receiver_email'];
-            $ptmodel->txn_type = $_POST['txn_type'];
-            $ptmodel->item_name = $_POST['item_name'];
-            $ptmodel->NOMTABLE = RepCredentials::NAME_TABLE;
-            $ptmodel->invoice_number = $_POST['custom'];
-            $ptmodel->pay_type = '1';
-            $ptmodel->rep_temp_id = $result['rep_temp_id'];
-            $ptmodel->save(false);
+            $checkTransactionExists = PaymentTransaction::model()->find("rep_temp_id = '" . $result['rep_temp_id'] . "'");
+            if (empty($checkTransactionExists)) {
+                // Save the payment details                                   
+                $ptmodel = new PaymentTransaction;
+                $ptmodel->total_price = $_POST['mc_gross'];
+                $ptmodel->subscription_price = $registration['step3']['total_price'];
+                $ptmodel->tax = $registration['step3']['tax'];
+                $ptmodel->payment_status = $_POST['payment_status'];
+                $ptmodel->payer_email = $_POST['payer_email'];
+                $ptmodel->verify_sign = $_POST['verify_sign'];
+                $ptmodel->txn_id = $_POST['txn_id'];
+                $ptmodel->payment_type = $_POST['payment_type'];
+                $ptmodel->receiver_email = $_POST['receiver_email'];
+                $ptmodel->txn_type = $_POST['txn_type'];
+                $ptmodel->item_name = $_POST['item_name'];
+                $ptmodel->NOMTABLE = RepCredentials::NAME_TABLE;
+                $ptmodel->invoice_number = $_POST['custom'];
+                $ptmodel->pay_type = '1';
+                $ptmodel->rep_temp_id = $result['rep_temp_id'];
+                $ptmodel->save(false);
+            } else {
+                $checkTransactionExists->payment_status = $_POST['payment_status'];
+                $checkTransactionExists->save(false);
+            }
         }
     }
 
