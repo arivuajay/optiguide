@@ -12,6 +12,11 @@
  * @property string $modified_at
  */
 class RepTemp extends CActiveRecord {
+    
+    const REGISTRATION = "Registration";
+    const REP_ADMIN_BUY_MORE_ACCOUNTS = "AdminBuyMoreAccounts";
+    const REP_ADMIN_RENEWAL_REP_ACCOUNTS = "AdminRenewalRepAccounts";
+    const REP_SINGLE_RENEWAL_REP_ACCOUNT = "SingleRenewalRepAccount";
 
     /**
      * @return string the associated database table name

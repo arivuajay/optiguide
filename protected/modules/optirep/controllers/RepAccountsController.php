@@ -170,7 +170,7 @@ class RepAccountsController extends ORController {
 
             $repTemp = new RepTemp;
             $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
-            $repTemp->rep_temp_key = 'Buy More Accounts';
+            $repTemp->rep_temp_key = RepTemp::REP_ADMIN_BUY_MORE_ACCOUNTS;
             $repTemp->rep_temp_value = serialize($new_subscription);
             if ($repTemp->save()) {
                 $paypalManager = new Paypal;
@@ -178,7 +178,7 @@ class RepAccountsController extends ORController {
                 $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalCancel'));
                 $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalNotify'));
 
-                $paypalManager->addField('item_name', 'Rep Admin- Buy More Accounts Subscription');
+                $paypalManager->addField('item_name', RepTemp::REP_ADMIN_BUY_MORE_ACCOUNTS);
                 $paypalManager->addField('amount', $price_list['per_account_price']);
                 $paypalManager->addField('quantity', $new_subscription['no_of_accounts_purchase']);
                 $paypalManager->addField('tax', $price_list['tax']);
@@ -295,7 +295,7 @@ class RepAccountsController extends ORController {
             $data = Yii::app()->session['renewal'];
             $repTemp = new RepTemp;
             $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
-            $repTemp->rep_temp_key = 'Rep Admin- Renewal Rep Accounts Subscription';
+            $repTemp->rep_temp_key = RepTemp::REP_ADMIN_RENEWAL_REP_ACCOUNTS;
             $repTemp->rep_temp_value = serialize($data);
             if ($repTemp->save()) {
                 unset(Yii::app()->session['renewal']);
@@ -304,7 +304,7 @@ class RepAccountsController extends ORController {
                 $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalRenewalCancel'));
                 $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalRenewalNotify'));
 
-                $paypalManager->addField('item_name', 'Renewal Rep Accounts');
+                $paypalManager->addField('item_name', RepTemp::REP_ADMIN_RENEWAL_REP_ACCOUNTS);
                 $paypalManager->addField('amount', $data['price_list']['per_account_price']);
                 $paypalManager->addField('quantity', $data['no_of_accounts_purchase']);
                 $paypalManager->addField('tax', $data['price_list']['tax']);

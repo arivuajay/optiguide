@@ -28,7 +28,7 @@ class PaymentTransactionController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view','repview', 'create', 'update', 'admin', 'delete','reptransaction'),
+                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'reptransaction', 'repview', 'repUpdateStatus'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -50,17 +50,6 @@ class PaymentTransactionController extends Controller {
             'model' => $this->loadModel($id),
         ));
     }
-    
-       /**
-     * Displays a particular model.
-     * @param integer $id the ID of the model to be displayed
-     */
-    public function actionRepview($id) {
-        $this->render('repview', array(
-            'model' => $this->loadModel($id),
-        ));
-    }
-
 
     /**
      * Updates a particular model.
@@ -74,14 +63,13 @@ class PaymentTransactionController extends Controller {
         $this->performAjaxValidation($model);
 
         if (isset($_POST['PaymentTransaction'])) {
-            
+
             $model->attributes = $_POST['PaymentTransaction'];
             if ($model->save()) {
                 Yii::app()->user->setFlash('success', 'PaymentTransaction status Updated Successfully!!!');
-                if($_POST['PaymentTransaction']['NOMTABLE'] ==  'rep_credentials')
-                {
+                if ($_POST['PaymentTransaction']['NOMTABLE'] == 'rep_credentials') {
                     $this->redirect(array('reptransaction'));
-                }else{    
+                } else {
                     $this->redirect(array('index'));
                 }
             }
@@ -105,10 +93,9 @@ class PaymentTransactionController extends Controller {
             'model' => $model,
         ));
     }
-    
-     /**
-     * Lists all models.
-     */
+
+    /* ------------------------REP Payment Transaction Details--------------------------------------------- */
+
     public function actionReptransaction() {
         $model = new PaymentTransaction('searchrep');
         $model->unsetAttributes();  // clear any default values
@@ -119,8 +106,28 @@ class PaymentTransactionController extends Controller {
             'model' => $model,
         ));
     }
-    
-    
+
+    public function actionRepview($id) {
+        $this->render('repview', array(
+            'model' => $this->loadModel($id),
+        ));
+    }
+
+    public function actionRepUpdateStatus($id) {
+        $model = $this->loadModel($id);
+        if (isset($_POST['PaymentTransaction'])) {
+            if ($_POST['PaymentTransaction']['payment_status'] == 'Completed') {
+                $model->payment_status = $_POST['PaymentTransaction']['payment_status'];
+                
+                echo '<pre>';
+                print_r($model);
+                exit;
+            }
+        }
+        $this->render('repUpdateStatus', array(
+            'model' => $model,
+        ));
+    }
 
     /**
      * Returns the data model based on the primary key given in the GET variable.

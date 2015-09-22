@@ -115,7 +115,7 @@ class RepCredentialController extends ORController {
 
         $repTemp = new RepTemp;
         $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
-        $repTemp->rep_temp_key = 'Registration';
+        $repTemp->rep_temp_key = RepTemp::REGISTRATION;
         $repTemp->rep_temp_value = serialize($registration);
         if ($repTemp->save()) {
             Yii::app()->session->destroy();
@@ -124,7 +124,7 @@ class RepCredentialController extends ORController {
             $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalCancel'));
             $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalNotify'));
 
-            $paypalManager->addField('item_name', 'Opti-Rep : Registration');
+            $paypalManager->addField('item_name', RepTemp::REGISTRATION);
             $paypalManager->addField('amount', $registration['step3']['per_account_price']);
             $paypalManager->addField('quantity', $registration['step2']['RepCredentials']['no_of_accounts_purchase']);
             $paypalManager->addField('tax', $registration['step3']['tax']);

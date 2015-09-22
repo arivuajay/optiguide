@@ -6,12 +6,12 @@ $this->title = 'Transactions de paiement Optirep';
 $this->breadcrumbs = array(
     'Transactions de paiement Optirep',
 );
-$themeUrl = $this->themeUrl;
-$cs = Yii::app()->getClientScript();
-$cs_pos_end = CClientScript::POS_END;
-
-$cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
-$cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
+//$themeUrl = $this->themeUrl;
+//$cs = Yii::app()->getClientScript();
+//$cs_pos_end = CClientScript::POS_END;
+//
+//$cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
+//$cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
 ?>
 
 
@@ -47,8 +47,11 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'type' => 'raw',
                 'filter' => false,
             ),
-            array(
-                'name' => 'payment_status',
+            array('name' => 'payment_status',
+                'type' => 'raw',
+                'value' => function($data){
+                    echo ($data->payment_status == "Pending") ? '<span class="label label-warning">Pending</span>' : '<span class="label label-success">Completed</span>';
+                },
                 'filter' => false,
             ),
             array(
@@ -59,7 +62,8 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'header' => 'Actes',
                 'class' => 'booster.widgets.TbButtonColumn',
                 'viewButtonUrl' => 'Yii::app()->createUrl("/admin/paymentTransaction/repview/", array("id"=>$data->id))',
-                'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                'updateButtonUrl' => 'Yii::app()->createUrl("/admin/paymentTransaction/repUpdateStatus/", array("id"=>$data->id))',
+//                'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
                 'template' => '{view}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{update}',
                 'buttons' => array(
                     'update' => array(
