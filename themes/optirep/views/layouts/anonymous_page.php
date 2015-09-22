@@ -10,7 +10,7 @@
         <?php
         $themeUrl = $this->themeUrl;
         $cs = Yii::app()->getClientScript();
-      //  $cs->registerCssFile($themeUrl . '/css/bootstrap.min.css');
+        //  $cs->registerCssFile($themeUrl . '/css/bootstrap.min.css');
         ?>
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -37,6 +37,18 @@
                         echo CHtml::link($image, array('/optirep'))
                         ?>
                     </div>
+                    <?php if (isset($this->flashMessages)): ?>
+                        <?php foreach ($this->flashMessages as $key => $message) { ?>
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 flashmessage"> 
+                                <div class="alert alert-<?php echo $key; ?> fade in">
+                                    <button type="button" class="close close-sm" data-dismiss="alert">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                    <?php echo $message; ?>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    <?php endif ?>
                     <?php echo $content; ?>
                 </div>
             </div>
@@ -49,7 +61,7 @@
 
         $cs->registerCoreScript('jquery');
 
-       // $cs->registerScriptFile($themeUrl . '/js/bootstrap.min.js', $cs_pos_end);
+        // $cs->registerScriptFile($themeUrl . '/js/bootstrap.min.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-select.js', $cs_pos_end);
         ?>
 

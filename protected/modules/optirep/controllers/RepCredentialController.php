@@ -154,7 +154,7 @@ class RepCredentialController extends ORController {
         } else {
             Yii::app()->user->setFlash('danger', "Your registration payment is failed. Please try again later or contact admin.");
         }
-        $this->redirect(array('/optirep/defaults/index'));
+        $this->redirect(array('/optirep/default/index'));
     }
 
     public function actionPaypalNotify() {
