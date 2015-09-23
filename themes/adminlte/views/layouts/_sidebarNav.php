@@ -70,7 +70,8 @@
                 array('label' => '<i class="fa fa-folder"></i> <span> Opti-rep</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
-                    'items' => array(                       
+                    'items' => array(      
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Sales Rep</span>', 'url' => array('/admin/repCredential/index'), 'active' => ($_controller == 'repCredential' && $_action=="index")),
                         array('label' => '<i class="fa fa-angle-double-right"></i> <span>Transactions de paiement Optirep</span>', 'url' => array('/admin/paymentTransaction/reptransaction'), 'active' => ($_controller == 'paymentTransaction' && $_action=="reptransaction")),
                         array('label' => '<i class="fa fa-angle-double-right"></i> <span>Paramètres </span>', 'url' => array('/admin/supplierSubscriptionPrice/statsprice'), 'active' => $_controller == 'supplierSubscriptionPrice' && $_action=="statsprice"),
                     ),
