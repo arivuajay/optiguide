@@ -152,7 +152,7 @@ class PaymentTransaction extends CActiveRecord {
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->compare('updated_at', $this->updated_at, true);
         $criteria->compare('repCredentials.rep_username', $this->rep_username, true);
-        $criteria->addCondition("NOMTABLE = 'rep_credentials'");
+        $criteria->addCondition("NOMTABLE = '" . RepCredentials::NAME_TABLE . "'");
         $criteria->with = "repCredentials";
         $criteria->together = true;
         $criteria->order = 'id DESC';

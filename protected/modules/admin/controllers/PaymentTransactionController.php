@@ -118,16 +118,23 @@ class PaymentTransactionController extends Controller {
         if (isset($_POST['PaymentTransaction'])) {
             if ($_POST['PaymentTransaction']['payment_status'] == 'Completed') {
                 $model->payment_status = $_POST['PaymentTransaction']['payment_status'];
-                
-                echo '<pre>';
-                print_r($model);
-                exit;
+                $repTemp = RepTemp::model()->findByPk($model->rep_temp_id);
+                if (!empty($repTemp)) {
+                    if ($repTemp['rep_temp_key'] == RepTemp::REGISTRATION) {
+                        $this->processRegistration($repTemp['rep_temp_random_id']);
+                    } elseif ($repTemp['rep_temp_key'] == RepTemp::REP_ADMIN_BUY_MORE_ACCOUNTS) {
+                        $this->processBuyMoreAccounts($repTemp['rep_temp_random_id']);
+                    } elseif ($repTemp['rep_temp_key'] == RepTemp::REP_ADMIN_RENEWAL_REP_ACCOUNTS) {
+                        $this->processRenewalRepAccounts($repTemp['rep_temp_random_id']);
+                    }
+                }
             }
         }
         $this->render('repUpdateStatus', array(
             'model' => $model,
         ));
     }
+
 
     /**
      * Returns the data model based on the primary key given in the GET variable.
