@@ -199,7 +199,6 @@ class SuppliersDirectoryController extends OGController {
             $marqueqry = " AND rpm.ID_MARQUE = " . $marqueid;
         }
 
-
         //this query contains get all products with marques list for the supplier
         $products_query = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('rp.ID_PRODUIT , rm.ID_MARQUE , rp.NOM_PRODUIT_' . $this->lang . ' , rm.NOM_MARQUE')
@@ -246,7 +245,7 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function Detect_supplier() {
-        //echo "stop"; exit; 
+        
         // Get all records list  with limit
         $supplier_query1 = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('ID_FOURNISSEUR')
@@ -432,6 +431,7 @@ class SuppliersDirectoryController extends OGController {
                     $criteria->condition = 't.ID_PRODUIT=:pid';
                     $criteria->params = array(':pid' => $search_product);
                 }
+                
                 $data_products_marques = ProductDirectory::model()->findAll($criteria);
 
                 foreach ($data_products_marques as $infos) {
@@ -740,7 +740,7 @@ class SuppliersDirectoryController extends OGController {
                     $pmodel->amount = $profile_price;
                 }
 
-                $invoice_number = rand();
+                $invoice_number = Myclass::getRandomString();
 
                 $payment_details = array();
 
@@ -839,9 +839,7 @@ class SuppliersDirectoryController extends OGController {
         $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optiguide/suppliersDirectory/paypalreturn'));
         $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optiguide/suppliersDirectory/paypalcancel'));
         $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optiguide/suppliersDirectory/paypalnotify'));
-        //$price = 10;
-        // $invoice = rand();
-
+        
         if ($subscription_type == 1) {
             $itemname = 'Suppliers Subscription - Profile only';
         } else if ($subscription_type == 2) {
@@ -872,6 +870,7 @@ class SuppliersDirectoryController extends OGController {
         } else {
             Yii::app()->user->setFlash('danger', Myclass::t('OGO133', '', 'og'));
         }
+        
         $this->redirect(array('create'));
     }
 
@@ -889,27 +888,33 @@ class SuppliersDirectoryController extends OGController {
             $invoice_number = $_POST['custom'];
 
             $paymentinfos = PaymentTransaction::model()->find("invoice_number ='" . $invoice_number . "'");
-            if (!empty($paymentinfos)) {
+            // Check the transation already exists
+            if (!empty($paymentinfos)) 
+            {
 
                 $suppid = $paymentinfos->user_id;
                 $subscription_type = $paymentinfos->subscription_type;
+                
+                if ($_POST['payment_status'] == "Completed")
+                {                    
+                    /* Update user status 1 in user table */
+                    $userinfos = UserDirectory::model()->find("NOM_TABLE='Fournisseurs' AND ID_REALTION = " . $suppid);
+                    $userinfos->status = 1;
+                    $userinfos->save(false);                 
 
-                /* Update user status 1 in user table */
-                $userinfos = UserDirectory::model()->find("NOM_TABLE='Fournisseurs' AND ID_REALTION = " . $suppid);
-                $userinfos->status = 1;
-                $userinfos->save(false);
+                    /* Update supplier expiry date in supplier table */
+                    $supp_model = SuppliersDirectory::model()->findByPk($suppid);
+                    $supp_model->profile_expirydate = date("Y-m-d", strtotime('+1 year'));
+                    if ($subscription_type == 2) {
+                        $supp_model->logo_expirydate = date("Y-m-d", strtotime('+1 year'));
+                    }
+                    $supp_model->save(false);
 
-                /* Update supplier expiry date in supplier table */
-                $supp_model = SuppliersDirectory::model()->findByPk($suppid);
-                $supp_model->profile_expirydate = date("Y-m-d", strtotime('+1 year'));
-                if ($subscription_type == 2) {
-                    $supp_model->logo_expirydate = date("Y-m-d", strtotime('+1 year'));
+                    /* Update supplier expiry date in payment transation table */
+                    $paymentinfos->expirydate = date("Y-m-d", strtotime('+1 year'));
+                    $paymentinfos->save(false);                
                 }
-                $supp_model->save(false);
-
-                /* Update supplier expiry date in payment transation table */
-                $paymentinfos->expirydate = date("Y-m-d", strtotime('+1 year'));
-                $paymentinfos->save(false);
+                
             } else {
 
                 $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");
@@ -950,17 +955,20 @@ class SuppliersDirectoryController extends OGController {
                             }
                         }
 
-                        $model = new SuppliersDirectory;
+                        $model  = new SuppliersDirectory;
                         $umodel = new UserDirectory('frontend');
 
                         // Save supplier in user and supplier table
-                        $model->attributes = $sess_attr_m;
-                        $model->ID_CLIENT = $sess_attr_m['ID_CLIENT'];
+                        $model->attributes  = $sess_attr_m;
+                        $model->ID_CLIENT   = $sess_attr_m['ID_CLIENT'];
                         $model->iId_fichier = $ficherid;
-                        $model->profile_expirydate = date("Y-m-d", strtotime('+1 year'));
-                        if ($pdetails['subscription_type'] == 2) {
-                            $model->logo_expirydate = date("Y-m-d", strtotime('+1 year'));
-                        }
+                        if ($_POST['payment_status'] == "Completed")
+                        {
+                            $model->profile_expirydate = date("Y-m-d", strtotime('+1 year'));
+                            if ($pdetails['subscription_type'] == 2) {
+                                $model->logo_expirydate = date("Y-m-d", strtotime('+1 year'));
+                            }
+                         }
                         $model->save(false);
 
                         $umodel->attributes = $sess_attr_u;
@@ -1019,8 +1027,10 @@ class SuppliersDirectoryController extends OGController {
                         $ptmodel->pay_type = $pdetails['payment_type'];
                         $ptmodel->subscription_type = $pdetails['subscription_type'];
                         $ptmodel->save();
-
-                        SupplierTemp::model()->deleteAll("invoice_number = '" . $_POST['custom'] . "'");
+                        
+                        if ($_POST['payment_status'] == "Completed") {
+                            SupplierTemp::model()->deleteAll("invoice_number = '" . $_POST['custom'] . "'");
+                         }    
 
                         /* Send mail to admin for confirmation */
                         $mail = new Sendmail();
@@ -1386,7 +1396,7 @@ class SuppliersDirectoryController extends OGController {
                 $amount = $logo_price;
             }
 
-            $invoice_number = rand();
+            $invoice_number =  Myclass::getRandomString();
 
             $payment_details = array();
             $payment_details['payment_type'] = '1';
@@ -1402,9 +1412,7 @@ class SuppliersDirectoryController extends OGController {
             $cur_date = strtotime("now");
 
             if ($subscriptiontype == "1" || $subscriptiontype == "2") {
-                if ($profile_expirydate == "0000-00-00 00:00:00") {
-                    $payment_details['profile_expirydate'] = date('Y-m-d', strtotime('+1 year'));
-                } else {
+              
                     $p_expdate = date("Y-m-d", strtotime($profile_expirydate));
                     if ($p_expdate > date("Y-m-d")) {
                         $time = strtotime($profile_expirydate);
@@ -1412,13 +1420,11 @@ class SuppliersDirectoryController extends OGController {
                     } else {
                         $payment_details['profile_expirydate'] = date('Y-m-d', strtotime('+1 year'));
                     }
-                }
+               
             }
 
             if ($subscriptiontype == "3" || $subscriptiontype == "2") {
-                if ($profile_expirydate == "0000-00-00 00:00:00") {
-                    $payment_details['logo_expirydate'] = date('Y-m-d', strtotime('+1 year'));
-                } else {
+               
                     $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
                     if ($l_expdate > date("Y-m-d")) {
                         $time = strtotime($logo_expirydate);
@@ -1426,7 +1432,7 @@ class SuppliersDirectoryController extends OGController {
                     } else {
                         $payment_details['logo_expirydate'] = date('Y-m-d', strtotime('+1 year'));
                     }
-                }
+               
             }
 
             $pdetails = serialize($payment_details);
@@ -1470,16 +1476,16 @@ class SuppliersDirectoryController extends OGController {
     }
     
      public function actionRenewpaypalnotify() {
+         
         $paypalManager = new Paypal;
-        
-        
+               
 
         if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
 
-            $invoice_number = $_POST['custom'];
-              
+            $invoice_number = $_POST['custom'];              
             $paymentinfos = PaymentTransaction::model()->find("invoice_number ='" . $invoice_number . "'");
             $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");
+            
             if (!empty($paymentinfos)) {
 
                 $suppid = $paymentinfos->user_id;
@@ -1564,6 +1570,7 @@ class SuppliersDirectoryController extends OGController {
                         $ptmodel->invoice_number = $_POST['custom'];
                         $ptmodel->pay_type = $pdetails['payment_type'];
                         $ptmodel->subscription_type = $pdetails['subscription_type'];
+                        $ptmodel->supp_renew_status = 1;
                         $ptmodel->save();
                         
                         

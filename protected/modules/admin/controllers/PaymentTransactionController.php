@@ -65,13 +65,63 @@ class PaymentTransactionController extends Controller {
         if (isset($_POST['PaymentTransaction'])) {
 
             $model->attributes = $_POST['PaymentTransaction'];
-            if ($model->save()) {
-                Yii::app()->user->setFlash('success', 'PaymentTransaction status Updated Successfully!!!');
-                if ($_POST['PaymentTransaction']['NOMTABLE'] == 'rep_credentials') {
-                    $this->redirect(array('reptransaction'));
-                } else {
-                    $this->redirect(array('index'));
+            $pstatus = $_POST['PaymentTransaction']['payment_status'];
+            
+            if($pstatus=="Pending")
+            {
+                Yii::app()->user->setFlash('danger', 'Payment transaction status not yet completed!!!');                
+            }else
+            {    
+                $suppid = $model->user_id;
+                $subscription_type = $model->subscription_type;
+                $invoice_number = $model->invoice_number;
+                
+                $fmodel = SuppliersDirectory::model()->findByPk($suppid);
+                
+                $profile_expirydate = $fmodel->profile_expirydate;
+                $logo_expirydate    = $fmodel->logo_expirydate;
+
+                if ($subscriptiontype == "1" || $subscriptiontype == "2") {                   
+                        $p_expdate = date("Y-m-d", strtotime($profile_expirydate));
+                        if ($p_expdate > date("Y-m-d")) {
+                            $time = strtotime($profile_expirydate);
+                            $fmodel->profile_expirydate = date("Y-m-d", strtotime("+1 year", $time));
+                        } else {
+                            $fmodel->profile_expirydate = date('Y-m-d', strtotime('+1 year'));
+                        }                    
                 }
+
+                if ($subscriptiontype == "3" || $subscriptiontype == "2") {                   
+                        $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
+                        if ($l_expdate > date("Y-m-d")) {
+                            $time = strtotime($logo_expirydate);
+                            $fmodel->logo_expirydate = date("Y-m-d", strtotime("+1 year", $time));
+                        } else {
+                            $fmodel->logo_expirydate = date('Y-m-d', strtotime('+1 year'));
+                        }                   
+                }
+                
+                $fmodel->save(false);
+                
+                /* Registration - Update user status 1 in user table */
+                if($model->supp_renew_status==0)
+                {    
+                    $userinfos = UserDirectory::model()->find("NOM_TABLE='Fournisseurs' AND ID_REALTION = " . $suppid);
+                    $userinfos->status = 1;
+                    $userinfos->save(false);
+                }
+                
+                SupplierTemp::model()->deleteAll("invoice_number = '" . $invoice_number . "'");   
+                
+                if ($model->save()) {
+                    Yii::app()->user->setFlash('success', 'PaymentTransaction status Updated Successfully!!!');                   
+                }
+            }    
+            
+            if ($model->NOMTABLE == 'rep_credentials') {
+                $this->redirect(array('reptransaction'));
+            } else {
+                $this->redirect(array('index'));
             }
         }
 

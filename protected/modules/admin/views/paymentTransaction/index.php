@@ -54,10 +54,13 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                      },
                      'filter' => false,   
                 ),
-                 array(
-                    'name' => 'payment_status',
-                    'filter' => false,    
-                 ),
+                array('name' => 'payment_status',
+                    'type' => 'raw',
+                    'value' => function($data){
+                        echo ($data->payment_status == "Pending") ? '<span class="label label-warning">Pending</span>' : '<span class="label label-success">Completed</span>';
+                    },
+                    'filter' => false,
+                ),
                 array(
                     'name' => 'created_at',
                     'filter' => false,    
