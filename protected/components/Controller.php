@@ -78,7 +78,7 @@ class Controller extends CController {
         $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
         if (!empty($result)) {
             $registration = unserialize($result['rep_temp_value']);
-            
+
             //Save Rep Credentials
             $model = new RepCredentials;
             $model->rep_username = $registration['step2']['RepCredentials']['rep_username'];
@@ -125,17 +125,17 @@ class Controller extends CController {
                     $repAdmin->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
                     $repAdmin->save(false);
                 }
-                
+
                 //Update Payment Transaction details
-                $getTransactionDetail = PaymentTransaction::model()->find("rep_temp_id = '" . $result['rep_temp_id'] . "'");
-                if(!empty($getTransactionDetail)){
-                    $getTransactionDetail->user_id = $model->rep_credential_id;
-                    $getTransactionDetail->rep_temp_id = 0;
+                $updateTransactionDetail = PaymentTransaction::model()->find("rep_temp_id = '" . $result['rep_temp_id'] . "'");
+                if (!empty($updateTransactionDetail)) {
+                    $updateTransactionDetail->user_id = $model->rep_credential_id;
+                    $updateTransactionDetail->rep_temp_id = 0;
                     if ($model->rep_role == RepCredentials::ROLE_SINGLE)
-                        $getTransactionDetail->rep_single_subscription_id = $repSingle->rep_single_subscription_id;
+                        $updateTransactionDetail->rep_single_subscription_id = $repSingle->rep_single_subscription_id;
                     elseif ($model->rep_role == RepCredentials::ROLE_ADMIN)
-                        $getTransactionDetail->rep_admin_subscription_id = $repAdmin->rep_admin_subscription_id;
-                    $getTransactionDetail->save(false);
+                        $updateTransactionDetail->rep_admin_subscription_id = $repAdmin->rep_admin_subscription_id;
+                    $updateTransactionDetail->save(false);
                 }
                 RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
             }
@@ -163,6 +163,15 @@ class Controller extends CController {
             $subscription->rep_admin_subscription_start = date('Y-m-d');
             $subscription->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
             $subscription->save(false);
+
+            //Update Payment Transaction details
+            $updateTransactionDetail = PaymentTransaction::model()->find("rep_temp_id = '" . $result['rep_temp_id'] . "'");
+            if (!empty($updateTransactionDetail)) {
+                $updateTransactionDetail->user_id = $subscription->rep_credential_id;
+                $updateTransactionDetail->rep_temp_id = 0;
+                $updateTransactionDetail->rep_admin_subscription_id = $subscription->rep_admin_subscription_id;
+                $updateTransactionDetail->save(false);
+            }
             RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
         }
     }
@@ -202,6 +211,15 @@ class Controller extends CController {
                 $repAdminSubscriber->rep_admin_subscription_id = $repAdminSubscription->rep_admin_subscription_id;
                 $repAdminSubscriber->rep_credential_id = $rep_account->rep_credential_id;
                 $repAdminSubscriber->save(false);
+            }
+
+            //Update Payment Transaction details
+            $updateTransactionDetail = PaymentTransaction::model()->find("rep_temp_id = '" . $result['rep_temp_id'] . "'");
+            if (!empty($updateTransactionDetail)) {
+                $updateTransactionDetail->user_id = $repAdminSubscription->rep_credential_id;
+                $updateTransactionDetail->rep_temp_id = 0;
+                $updateTransactionDetail->rep_admin_subscription_id = $repAdminSubscription->rep_admin_subscription_id;
+                $updateTransactionDetail->save(false);
             }
             RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
         }
