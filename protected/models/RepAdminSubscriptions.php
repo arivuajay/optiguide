@@ -154,6 +154,15 @@ class RepAdminSubscriptions extends CActiveRecord {
         ));
     }
 
+    public function repAdminSubscriptionDetails($rep_credential_id) {
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("rep_credential_id = '$rep_credential_id'");
+
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+        ));
+    }
+
     public function beforeSave() {
         if ($this->isNewRecord)
             $this->created_at = new CDbExpression('NOW()');
@@ -204,9 +213,9 @@ class RepAdminSubscriptions extends CActiveRecord {
     public function canBuyMoreAccounts() {
         $total_no_of_accounts_purchased = $this->getTotalNoOfAccountsPurchased();
         $total_no_of_accounts_used = $this->getTotalNoOfAccountsUsed();
-        if($total_no_of_accounts_purchased == $total_no_of_accounts_used){
+        if ($total_no_of_accounts_purchased == $total_no_of_accounts_used) {
             return true;
-        } 
+        }
         return false;
     }
 

@@ -135,6 +135,15 @@ class RepSingleSubscriptions extends CActiveRecord {
         ));
     }
     
+    public function repSingleSubscriptionDetails($rep_credential_id){
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("rep_credential_id = '$rep_credential_id'");
+        
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+        ));
+    }
+    
     public function beforeSave() {
         if ($this->isNewRecord)
             $this->created_at = new CDbExpression('NOW()');
