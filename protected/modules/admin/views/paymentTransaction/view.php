@@ -16,8 +16,7 @@ $this->breadcrumbs=array(
 	'attributes'=>array(		
 		'suppliersDirectory.COMPAGNIE',
                 'item_name',
-                'NOMTABLE',
-		'expirydate',
+                'NOMTABLE',		
 		'invoice_number',
 		'subscription_price',
                 'txn_id',

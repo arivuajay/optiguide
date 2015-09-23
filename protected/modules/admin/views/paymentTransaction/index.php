@@ -45,14 +45,10 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                      'filter' => false,   
                 ), 
                 array(
-                    'header'  => 'Type d\'abonnement',    
-                    'name'    => 'subscription_type',
-                    'htmlOptions' => array('style' => 'width: 180px;text-align:center', 'vAlign' => 'middle'),             
-                    'type' => 'raw',
-                    'value' => function($data) {
-                         echo ($data->subscription_type == 1) ? "Profile only" : "Profile & Logo";
-                     },
-                     'filter' => false,   
+                    'header'  => 'Nom de l\'abonnement',    
+                    'name'    => 'item_name',
+                    'htmlOptions' => array('style' => 'width: 180px;text-align:center', 'vAlign' => 'middle'),            
+                    'filter' => false,   
                 ),
                 array('name' => 'payment_status',
                     'type' => 'raw',

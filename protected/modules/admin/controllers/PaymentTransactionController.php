@@ -81,17 +81,17 @@ class PaymentTransactionController extends Controller {
                 $profile_expirydate = $fmodel->profile_expirydate;
                 $logo_expirydate    = $fmodel->logo_expirydate;
 
-                if ($subscriptiontype == "1" || $subscriptiontype == "2") {                   
+                if ($subscription_type == "1" || $subscription_type == "2") {                   
                         $p_expdate = date("Y-m-d", strtotime($profile_expirydate));
                         if ($p_expdate > date("Y-m-d")) {
                             $time = strtotime($profile_expirydate);
                             $fmodel->profile_expirydate = date("Y-m-d", strtotime("+1 year", $time));
                         } else {
                             $fmodel->profile_expirydate = date('Y-m-d', strtotime('+1 year'));
-                        }                    
+                        }                         
                 }
 
-                if ($subscriptiontype == "3" || $subscriptiontype == "2") {                   
+                if ($subscription_type == "3" || $subscription_type == "2") {                   
                         $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
                         if ($l_expdate > date("Y-m-d")) {
                             $time = strtotime($logo_expirydate);
