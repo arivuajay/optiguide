@@ -6,9 +6,6 @@
 $cs_pos_end = CClientScript::POS_END;
 $themeUrl = $this->themeUrl;
 
-$lstr = Yii::app()->session['language'];
-$sectiontypes  = CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_" . $lstr)), 'ID_SECTION', 'NOM_SECTION_' . $lstr);
-
 $subprices     = SupplierSubscriptionPrice::model()->findByPk(1);
 $profile_price = $subprices->profile_price;
 $profile_logo_price = $subprices->profile_logo_price;

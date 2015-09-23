@@ -31,14 +31,7 @@ class OgIdentity extends CUserIdentity {
             $this->setState('userstatus', $user->status);
             $this->setState('relationid', $user->ID_RELATION);
             $this->setState('encryptval', $user->sGuid);
-            $this->errorCode = self::ERROR_NONE;
-            
-            if($user->NOM_TABLE=="Fournisseurs")
-            {    
-                $pk = $user->ID_RELATION;
-                $supp_result = SuppliersDirectory::model()->findByPk($pk);
-                $this->setState('expirydate', $supp_result['profile_expirydate']);
-            }            
+            $this->errorCode = self::ERROR_NONE;                    
             
         }
         return !$this->errorCode;

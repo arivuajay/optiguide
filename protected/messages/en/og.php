@@ -230,4 +230,20 @@ return array(
     'OGO186' => 'Your subscription expired. So please renew the subscription and continue the site features.',
     'OGO187' => 'Renew Subscription',
     'OGO188' => 'Thanks for your subscription! Now you can access the features in the site.',
+    'OGO189' => 'Update logo',    
+    //Renew page
+    'OGO190' => 'Profile expiry date',
+    'OGO191' => 'Logo expiry date',
+    'OGO192' => 'Please Choose any subscription for payment.',
+    'OGO193' => 'Here the following subscriptions to renew it and continue the site features.',
+    'OGO194' => 'Subscription Features:',
+    'OGO195' => 'Renew the profile subscription only means , your complete profile is visible for all users and you get professionals and retailers menu with searching options.',
+    'OGO196' => 'Renew the logo subscription only means , you can upload personal logo and its visible for all users.',
+    'OGO197' => 'Renew the profile and logo subscriptions means , your complete profile and logo is visible for all users and you get professionals and retailers users menu with searching options.',
+    'OGO198' => 'Renew Subscription',
+    'OGO199' => 'RENEW',
+    'OGO200' => 'Not Available',
+    'OGO201' => 'Renew it now!!!',
+    'OGO202' => 'Choose Types',
+    
 );

@@ -146,7 +146,9 @@
                     ?>
                 </div>
             </div>
-
+            
+          <?php
+         if (!empty($supplierproducts)) {?>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
                 <h2> <i class="fa fa-cubes"></i> <?php echo Myclass::t('OG073', '', 'og'); ?> </h2> 
                 <div class="box" id="box1">
@@ -154,8 +156,7 @@
                         <p>
                         </p>
                         <ul>
-                            <?php
-                            if (!empty($supplierproducts)) {
+                            <?php                           
                                 foreach ($supplierproducts as $pkey => $products) {
                                     $exp_key = explode('~', $pkey);
                                     ?>    
@@ -175,15 +176,14 @@
                                         ?>  
                                     </li>                                                        
                                     <?php
-                                }
-                            }
+                                }                           
                             ?>
                         </ul>
                         <p></p>
                     </div>
                 </div>
             </div>
-
+        <?php       }    ?>
              <?php
              if (!empty($results)) {?>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
@@ -212,7 +212,7 @@
 
     </div>
 
-    <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/suppliersDirectory'), array("class" => "pull-left")); ?> </div>  
+    <div class="viewall"> <?php //echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/suppliersDirectory'), array("class" => "pull-left")); ?> </div>  
 </div>
 <?php
 $js = <<< EOD

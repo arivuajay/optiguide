@@ -37,31 +37,32 @@ class OptiguideModule extends CWebModule {
     public function beforeControllerAction($controller, $action) {
                
         // Check the expiry date for suppliers login and redirect to renew page       
-        if(isset(Yii::app()->user->expirydate) && Yii::app()->user->expirydate!='')
+        if(isset(Yii::app()->user->id) && Yii::app()->user->id!='')
         {
-            $_controller = $controller->id;
-            $_action = $action->id;
-            
-            //$action_arr = array('renewsubscription',"renewpaypalreturn","renewpaypalnotify","renewpaypalcancel","transactions","logout");
-            $action_arr = array('update','updateproducts','mappingreps','listreps','changepassword');
-            $cntr_arr   = array('professionalDirectory',"retailerDirectory");
+            if(Yii::app()->user->role=="Fournisseurs")
+            {                 
+                $_controller = $controller->id;
+                $_action = $action->id;
+                $relid  = Yii::app()->user->relationid;
+                
+                $supp_result = SuppliersDirectory::model()->findByPk($relid);
+                $profile_expirydate = $supp_result['profile_expirydate'];
+                $p_expdate = date("Y-m-d", strtotime($profile_expirydate));  
 
-            if(Yii::app()->user->expirydate=="0000-00-00 00:00:00" && ( in_array($_action,$action_arr) || in_array($_controller,$cntr_arr) ))
-            {      
-               Yii::app()->user->setFlash('info', Myclass::t('OGO186', '', 'og')); 
-               Yii::app()->request->redirect("/optiguide/suppliersDirectory/renewsubscription/");             
-            }               
+                //$action_arr = array('renewsubscription',"renewpaypalreturn","renewpaypalnotify","renewpaypalcancel","transactions","logout");
+                $action_arr = array('update','updateproducts','mappingreps','listreps','changepassword');
+                $cntr_arr   = array('professionalDirectory',"retailerDirectory");
 
-            $cur_date = strtotime("now");
-            $expdate  = strtotime(Yii::app()->user->expirydate);
-            $disp     = ($expdate > $cur_date) ? 1 : 0;
+                if($p_expdate < date("Y-m-d"))
+                {  
+                   if( in_array($_action,$action_arr) || in_array($_controller,$cntr_arr) )
+                   {        
+                    Yii::app()->user->setFlash('info', Myclass::t('OGO186', '', 'og')); 
+                    Yii::app()->request->redirect("/optiguide/suppliersDirectory/renewsubscription/");             
+                   } 
+                }
 
-            if($disp==0 && ( in_array($_action,$action_arr) || in_array($_controller,$cntr_arr)))
-            {
-                Yii::app()->user->setFlash('info', Myclass::t('OGO186', '', 'og')); 
-                Yii::app()->request->redirect("/optiguide/suppliersDirectory/renewsubscription/");           
-            }     
-            
+            }            
         }  
         
         Yii::app()->user->loginUrl = array('/optiguide/');

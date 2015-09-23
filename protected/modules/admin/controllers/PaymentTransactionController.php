@@ -106,7 +106,7 @@ class PaymentTransactionController extends Controller {
                 /* Registration - Update user status 1 in user table */
                 if($model->supp_renew_status==0)
                 {    
-                    $userinfos = UserDirectory::model()->find("NOM_TABLE='Fournisseurs' AND ID_REALTION = " . $suppid);
+                    $userinfos = UserDirectory::model()->find("NOM_TABLE='Fournisseurs' AND ID_RELATION = " . $suppid);
                     $userinfos->status = 1;
                     $userinfos->save(false);
                 }

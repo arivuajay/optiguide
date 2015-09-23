@@ -101,14 +101,14 @@ class ArchiveFichier extends CActiveRecord
 	{
 		return array(
 			'ID_FICHIER' => Myclass::t('Id Fichier'),
-			'ID_CATEGORIE' => Myclass::t('Categorie'),
+			'ID_CATEGORIE' => Myclass::t('OG009','','og'),
 			'image' => Myclass::t('Fichier'),
 			'TITRE_FICHIER_FR' => Myclass::t('Titre Fichier Fr'),
-			'TITRE_FICHIER_EN' => Myclass::t('Titre Fichier En'),
+			'TITRE_FICHIER_EN' => Myclass::t('OGO108','','og'),
 			'MOTS_CLE' => Myclass::t('Mots Cle'),
 			'EXTENSION' => Myclass::t('Extension'),
 			'DATE_DEPOT' => Myclass::t('Date Depot'),
-			'DISPONIBLE' => Myclass::t('Mettre l\'archive active'),
+			'DISPONIBLE' => Myclass::t('Mettre l\'archive active'),                       
 		);
 	}
 
@@ -178,7 +178,7 @@ class ArchiveFichier extends CActiveRecord
            {
                $lang = "EN";
            }      
-           $get_catsql   =  ArchiveCategory::model()->findAll(array("order"=>"NOM_CATEGORIE_".$lang));
+           $get_catsql   =  ArchiveCategory::model()->findAll(array("condition"=>"NOM_CATEGORIE_$lang!=''","order"=>"NOM_CATEGORIE_".$lang));
            $cat_res      = CHtml::listData($get_catsql, 'ID_CATEGORIE', 'NOM_CATEGORIE_'.$lang); 
            return $cat_res;
         } 

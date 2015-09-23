@@ -37,7 +37,7 @@ class SuppliersDirectoryController extends OGController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('update', 'updateproducts', 'updatemarques', 'transactions', 'mappingreps', 'listreps', 'renewsubscription','renewpaypalreturn','renewpaypalcancel', 'renewpaypalnotify'),
+                'actions' => array('update', 'updateproducts','updatemarques', 'updatelogo' ,'transactions', 'mappingreps', 'listreps', 'renewsubscription','renewpaypalreturn','renewpaypalcancel', 'renewpaypalnotify'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -1260,6 +1260,79 @@ class SuppliersDirectoryController extends OGController {
 
         $this->render($viewpage, compact('model', 'tab', 'data_products'));
     }
+    
+     public function actionUpdatelogo() {  
+        
+        $relid  = Yii::app()->user->relationid;
+        $pmodel = $this->loadModel($relid);
+        
+        // Check expiry date and redirect to renew page for expired logos
+        $logo_expirydate = $pmodel->logo_expirydate;
+        $l_expdate = date("Y-m-d", strtotime($logo_expirydate));        
+        if ($l_expdate < date("Y-m-d")) {
+          Yii::app()->user->setFlash('info', Myclass::t('OGO186', '', 'og')); 
+          Yii::app()->request->redirect("/optiguide/suppliersDirectory/renewsubscription/");       
+        } 
+        
+        
+        if($pmodel->iId_fichier==0)
+        {    
+            $fmodel = new ArchiveFichier('create');
+        }else{    
+            $fichid = $pmodel->iId_fichier;
+            $fmodel = ArchiveFichier::model()->findByPk($fichid);            
+        }
+        
+        if (isset($_POST['ArchiveFichier'])) 
+        {        
+            $fmodel->attributes = $_POST['ArchiveFichier'];     
+            
+            $fmodel->TITRE_FICHIER_FR = $_POST['ArchiveFichier']['TITRE_FICHIER_EN'];
+                              
+            if($fmodel->validate())
+            {    
+                //Upload image and get the name
+                $path = Yii::getPathOfAlias('webroot') . '/' . ARCHIVE_IMG_PATH;
+                    
+                $fmodel->image     = CUploadedFile::getInstance($fmodel,'image');
+                
+                if( $fmodel->image )
+                {    
+                    $imgname = time().'_'.$fmodel->image->name;
+                    $fmodel->FICHIER   = $imgname;
+                    $fmodel->EXTENSION = $fmodel->image->extensionName;
+
+                    $catid =  $_POST['ArchiveFichier']['ID_CATEGORIE'];
+                    $cat_img_path =  $path.$catid.'/';
+
+                    if (!is_dir($cat_img_path)) 
+                    {
+                        mkdir($cat_img_path,0777, true);        
+                    }
+                   
+                    $fmodel->image->saveAs($cat_img_path .$imgname); 
+                 
+                }
+                
+                $fmodel->DISPONIBLE = 1;
+                
+                if($fmodel->save())
+                {   
+                    
+                    $pmodel->iId_fichier = $fmodel->ID_FICHIER;
+                    $pmodel->save(false);
+                    
+                    // redirect to success page
+                    Yii::app()->user->setFlash('success', 'Logo Updated Successfully!!!');
+                    $this->redirect(array('updatelogo'));
+                }
+            }
+        
+        }
+        
+        $viewpage = '_update_logo';
+        $this->render($viewpage, compact('pmodel','fmodel'));
+    }    
 
     public function actionUpdatemarques() {
 
