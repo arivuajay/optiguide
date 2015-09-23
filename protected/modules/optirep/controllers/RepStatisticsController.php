@@ -55,7 +55,7 @@ class RepStatisticsController extends ORController {
             $subprices  = SupplierSubscriptionPrice::model()->findByPk(1);
             $price      = $subprices->rep_statistics_price;
     
-            $invoice = rand();
+            $invoice = Myclass::getRandomString();
             $subscription_type = $_POST['subscription_type'];
 
             if ($subscription_type == 3) {
@@ -66,16 +66,10 @@ class RepStatisticsController extends ORController {
                 $itemname = 'Renew Statistics Subscription';
                
                 $repid =  Yii::app()->user->id;
-                $criteria1 = new CDbCriteria();
-                $criteria1->addCondition("user_id=".$repid);
-                $criteria1->addCondition("NOMTABLE='rep_credentials'");
-                $criteria1->addCondition("(subscription_type='3' || subscription_type='4')");
-                $criteria1->order = 'id DESC';
-                $criteria1->limit = 1;
-                $get_recent_transaction = PaymentTransaction::model()->find($criteria1);
-                if(!empty($get_recent_transaction))
+                $get_repinfos = RepCredentials::model()->findByPk($repid);
+                if(!empty($get_repinfos))
                 {    
-                    $exprydate  = $get_recent_transaction['expirydate'];
+                    $exprydate  = date("Y-m-d",strtotime($get_repinfos['stat_expiry_date']));
                     if ($exprydate > date("Y-m-d")) 
                     {
                         $time = strtotime($exprydate);
@@ -141,62 +135,92 @@ class RepStatisticsController extends ORController {
         
         if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
             
-            
-            
-
             $invoice_number = $_POST['custom'];
 
-            $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");            
+            $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");   
+            
+            $paymentinfos = PaymentTransaction::model()->find("invoice_number ='" . $invoice_number . "'");
+            $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");
+            
+            if (!empty($paymentinfos)) {
+                
+                if (!empty($result)) {                    
+                
+                    $pdetails = $result->paymentdetails;
+                    $pdetails = unserialize($pdetails);
+                
+                    if($_POST['payment_status'] == "Completed")
+                    {
+                       $repid = $pdetails['rep_credential_id'];
+                       $get_repinfos = RepCredentials::model()->findByPk($repid);
+                       $get_repinfos->stat_expiry_date = $pdetails['expirydate'];
+                       $get_repinfos->save(false);
+                    } 
+                 }
+                 
+            }else {    
            
-            if (!empty($result)) {
+                if (!empty($result)) {
 
-                $pdetails = $result->paymentdetails;
-                $pdetails = unserialize($pdetails);
+                    $pdetails = $result->paymentdetails;
+                    $pdetails = unserialize($pdetails);
 
-                // Save the payment details                                   
-                $ptmodel = new PaymentTransaction;
-                $ptmodel->user_id = $pdetails['rep_credential_id'];    // need to assign acutal user id
-                $ptmodel->total_price = $_POST['mc_gross'];
-                $ptmodel->subscription_price = $_POST['mc_gross'];
-                $ptmodel->payment_status = $_POST['payment_status'];
-                $ptmodel->payer_email = $_POST['payer_email'];
-                $ptmodel->verify_sign = $_POST['verify_sign'];
-                $ptmodel->txn_id = $_POST['txn_id'];
-                $ptmodel->payment_type = $_POST['payment_type'];
-                $ptmodel->receiver_email = $_POST['receiver_email'];
-                $ptmodel->txn_type = $_POST['txn_type'];
-                $ptmodel->item_name = $_POST['item_name'];
-                $ptmodel->NOMTABLE = 'rep_credentials';
-                $ptmodel->expirydate = $pdetails['expirydate'];
-                $ptmodel->invoice_number = $_POST['custom'];
-                $ptmodel->pay_type = $pdetails['pay_type'];
-                $ptmodel->subscription_type = $pdetails['subscription_type'];
-                $ptmodel->save(false);                
-                             
-                $repname = $pdetails['rep_user_name'];
-                
-                SupplierTemp::model()->deleteAll("invoice_number = '" . $_POST['custom'] . "'");
+                    if($_POST['payment_status'] == "Completed")
+                    {
+                       $repid = $pdetails['rep_credential_id'];
+                       $get_repinfos = RepCredentials::model()->findByPk($repid);
+                       $get_repinfos->stat_expiry_date = $pdetails['expirydate'];
+                       $get_repinfos->save(false);
+                    }   
 
-                /* Send mail to admin for confirmation */
-                $mail = new Sendmail();
-                
-                $invoice_url = ADMIN_URL . '/admin/paymentTransaction/repview/id/' . $ptmodel->id;
-                $enc_url2    = Myclass::refencryption($invoice_url);
-                $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
-                
-                $subject = SITENAME . "- Statistics subscription notification with invoice details - " . $repname;
-                $trans_array = array(
-                "{NAME}" => $repname,
-                "{UTYPE}" => 'Opti-Rep',               
-                "{item_name}" => $_POST['item_name'],
-                "{total_price}" => $_POST['mc_gross'],
-                "{payment_status}" => $_POST['payment_status'],
-                "{txn_id}" => $_POST['txn_id'],
-                "{INVOICEURL}" => $nextstep_url2
-                );
-                $message = $mail->getMessage('optirep_stats_subscription', $trans_array);
-                $mail->send(ADMIN_EMAIL, $subject, $message);
-                
+                    // Save the payment details                                   
+                    $ptmodel = new PaymentTransaction;
+                    $ptmodel->user_id = $pdetails['rep_credential_id'];    // need to assign acutal user id
+                    $ptmodel->total_price = $_POST['mc_gross'];
+                    $ptmodel->subscription_price = $_POST['mc_gross'];
+                    $ptmodel->payment_status = $_POST['payment_status'];
+                    $ptmodel->payer_email = $_POST['payer_email'];
+                    $ptmodel->verify_sign = $_POST['verify_sign'];
+                    $ptmodel->txn_id = $_POST['txn_id'];
+                    $ptmodel->payment_type = $_POST['payment_type'];
+                    $ptmodel->receiver_email = $_POST['receiver_email'];
+                    $ptmodel->txn_type = $_POST['txn_type'];
+                    $ptmodel->item_name = $_POST['item_name'];
+                    $ptmodel->NOMTABLE = 'rep_credentials';
+                    $ptmodel->expirydate = $pdetails['expirydate'];
+                    $ptmodel->invoice_number = $_POST['custom'];
+                    $ptmodel->pay_type = $pdetails['pay_type'];
+                    $ptmodel->subscription_type = $pdetails['subscription_type'];
+                    $ptmodel->save(false);                
+
+                    $repname = $pdetails['rep_user_name'];
+
+                    if($_POST['payment_status'] == "Completed")
+                    {
+                        SupplierTemp::model()->deleteAll("invoice_number = '" . $_POST['custom'] . "'");
+                    }    
+
+                    /* Send mail to admin for confirmation */
+                    $mail = new Sendmail();
+
+                    $invoice_url = ADMIN_URL . '/admin/paymentTransaction/repview/id/' . $ptmodel->id;
+                    $enc_url2    = Myclass::refencryption($invoice_url);
+                    $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
+
+                    $subject = SITENAME . "- Statistics subscription notification with invoice details - " . $repname;
+                    $trans_array = array(
+                    "{NAME}" => $repname,
+                    "{UTYPE}" => 'Opti-Rep',               
+                    "{item_name}" => $_POST['item_name'],
+                    "{total_price}" => $_POST['mc_gross'],
+                    "{payment_status}" => $_POST['payment_status'],
+                    "{txn_id}" => $_POST['txn_id'],
+                    "{INVOICEURL}" => $nextstep_url2
+                    );
+                    $message = $mail->getMessage('optirep_stats_subscription', $trans_array);
+                    $mail->send(ADMIN_EMAIL, $subject, $message);
+
+                }
             }
         }
     }

@@ -167,7 +167,32 @@ class PaymentTransactionController extends Controller {
         $model = $this->loadModel($id);
         if (isset($_POST['PaymentTransaction'])) {
             if ($_POST['PaymentTransaction']['payment_status'] == 'Completed') {
-                $model->payment_status = $_POST['PaymentTransaction']['payment_status'];
+                
+                // For statistics new/renew
+                if($model->subscription_type=="3" || $model->subscription_type=="4")
+                {
+                    $repid  = $model->user_id;
+                    $invoice_number = $model->invoice_number;
+                    
+                    // Update expiry date in repcredential table
+                    $rmodel = RepCredentials::model()->findByPk($repid);                
+                    $stat_expiry_date = $rmodel->stat_expiry_date;
+                    $s_expdate = date("Y-m-d", strtotime($stat_expiry_date));
+                    if ($s_expdate > date("Y-m-d")) {
+                        $time = strtotime($stat_expiry_date);
+                        $rmodel->stat_expiry_date = date("Y-m-d", strtotime("+1 month", $time));
+                    } else {
+                        $rmodel->stat_expiry_date = date('Y-m-d', strtotime('+1 month'));
+                    }                        
+                    $rmodel->save(false);
+                    
+                    $model->payment_status = "Completed";
+                    $model->save(false);
+                    
+                    SupplierTemp::model()->deleteAll("invoice_number = '" . $invoice_number . "'");   
+                }    
+                
+                // For rep/admin registration and renew
                 $repTemp = RepTemp::model()->findByPk($model->rep_temp_id);
                 if (!empty($repTemp)) {
                     if ($repTemp['rep_temp_key'] == RepTemp::REGISTRATION) {
@@ -179,6 +204,9 @@ class PaymentTransactionController extends Controller {
                     }
                 }
             }
+            
+            $this->redirect(array('reptransaction'));            
+            
         }
         $this->render('repUpdateStatus', array(
             'model' => $model,

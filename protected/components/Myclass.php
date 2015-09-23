@@ -449,20 +449,12 @@ class Myclass extends CController {
         $repid = isset(Yii::app()->user->id)?Yii::app()->user->id:'';
         if($repid!='')
         {    
-            $criteria1 = new CDbCriteria();
-            $criteria1->addCondition("user_id=".$repid);
-            $criteria1->addCondition("NOMTABLE='rep_credentials'");
-            $criteria1->addCondition("(subscription_type='3' || subscription_type='4')");
-            $criteria1->order = 'id DESC';
-            $criteria1->limit = 1;
-            $get_recent_transaction = PaymentTransaction::model()->find($criteria1);
-            if(!empty($get_recent_transaction))
-            {    
-                $exprydate  = strtotime($get_recent_transaction['expirydate']);
-                $tdydate    = time();
-                $stats_access   = ($exprydate>$tdydate)?"YES":"NO";                            
-                $payment_status = $get_recent_transaction['payment_status'];
-                $stats_disp     = ($stats_access=="YES" && $payment_status=="Completed")?"1":"0";                            
+           
+            $get_uinfos = RepCredentials::model()->findByPk($repid);       
+            if(!empty($get_uinfos))
+            {  
+                $exprydate  = date("Y-m-d",strtotime($get_uinfos['stat_expiry_date']));                
+                $stats_disp = ($exprydate>date("Y-m-d"))?"1":"0";                                          
             }
         }    
         return $stats_disp;

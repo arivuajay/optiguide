@@ -46,7 +46,7 @@
                         'name' => 'btnSubmit',
                         'value' => 'Payfee',
                         'type' => 'submit',
-                        'class' => 'submit-btn'
+                        'class' => 'register-btn'
                             ), '<i class="fa fa-arrow-circle-right"></i> ' .  $btntxt);
                     ?>
                 </div>  
@@ -66,8 +66,7 @@
                             <th width="15%"><?php echo Myclass::t('OG138'); ?></th>
                             <th width="10%"><?php echo Myclass::t('OG142'); ?></th>
                             <th width="10%"><?php echo Myclass::t('OG140'); ?></th>
-                            <th width="10%"><?php echo "Txn ID"; ?></th>                                
-                            <th width="10%"><?php echo Myclass::t('OG143'); ?></th>
+                            <th width="10%"><?php echo "Txn ID"; ?></th>           
                             <th width="10%"><?php echo Myclass::t('OGO142', '', 'og'); ?></th>
                         </tr>
                         <?php if (!empty($get_transactions)) { ?>
@@ -76,8 +75,7 @@
                                 <td><?php echo $get_transactions->total_price; ?></td>
                                 <td><?php echo ($get_transactions->pay_type == 1) ? "Paypal" : ""; ?></td>
                                 <td><?php echo $get_transactions->payment_status; ?></td>
-                                <td><?php echo $get_transactions->txn_id; ?></td>
-                                <td><?php echo $get_transactions->expirydate; ?></td>
+                                <td><?php echo $get_transactions->txn_id; ?></td>                               
                                 <td><?php echo $get_transactions->created_at; ?></td>
                             </tr>
                         <?php } else { ?>
