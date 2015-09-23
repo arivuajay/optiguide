@@ -131,6 +131,7 @@ class Controller extends CController {
                 if (!empty($updateTransactionDetail)) {
                     $updateTransactionDetail->user_id = $model->rep_credential_id;
                     $updateTransactionDetail->rep_temp_id = 0;
+                    $updateTransactionDetail->payment_status = 'Completed';
                     if ($model->rep_role == RepCredentials::ROLE_SINGLE)
                         $updateTransactionDetail->rep_single_subscription_id = $repSingle->rep_single_subscription_id;
                     elseif ($model->rep_role == RepCredentials::ROLE_ADMIN)
@@ -169,6 +170,7 @@ class Controller extends CController {
             if (!empty($updateTransactionDetail)) {
                 $updateTransactionDetail->user_id = $subscription->rep_credential_id;
                 $updateTransactionDetail->rep_temp_id = 0;
+                $updateTransactionDetail->payment_status = 'Completed';
                 $updateTransactionDetail->rep_admin_subscription_id = $subscription->rep_admin_subscription_id;
                 $updateTransactionDetail->save(false);
             }
@@ -218,6 +220,7 @@ class Controller extends CController {
             if (!empty($updateTransactionDetail)) {
                 $updateTransactionDetail->user_id = $repAdminSubscription->rep_credential_id;
                 $updateTransactionDetail->rep_temp_id = 0;
+                $updateTransactionDetail->payment_status = 'Completed';
                 $updateTransactionDetail->rep_admin_subscription_id = $repAdminSubscription->rep_admin_subscription_id;
                 $updateTransactionDetail->save(false);
             }
