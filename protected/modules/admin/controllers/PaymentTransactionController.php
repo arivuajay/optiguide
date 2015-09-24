@@ -201,10 +201,12 @@ class PaymentTransactionController extends Controller {
                         $this->processBuyMoreAccounts($repTemp['rep_temp_random_id']);
                     } elseif ($repTemp['rep_temp_key'] == RepTemp::REP_ADMIN_RENEWAL_REP_ACCOUNTS) {
                         $this->processRenewalRepAccounts($repTemp['rep_temp_random_id']);
+                    } elseif($repTemp['rep_temp_key'] == RepTemp::REP_SINGLE_RENEWAL_REP_ACCOUNT){
+                        $this->processRenewalSingleRepAccount($repTemp['rep_temp_random_id']);
                     }
                 }
+                Yii::app()->user->setFlash('success', 'PaymentTransaction status Updated Successfully!!!');  
             }
-            
             $this->redirect(array('reptransaction'));            
             
         }
