@@ -20,13 +20,13 @@ class OrLoginForm extends CFormModel {
     public function rules() {
         return array(
             // username and password are required
-            array('username, password', 'required'),
+            array('username, password', 'required', 'on' => 'login'),
             // username required On ForgotPassword
             array('username', 'required', 'on' => 'forgotpass'),
             // rememberMe needs to be a boolean
             array('rememberMe', 'boolean'),
             // password needs to be authenticated
-            array('password', 'authenticate'),
+            array('password', 'authenticate', 'on' => 'login'),
         );
     }
 
