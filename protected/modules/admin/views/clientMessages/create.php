@@ -1,10 +1,10 @@
 <?php
-/* @var $this ClientProfilesController */
-/* @var $model ClientProfiles */
+/* @var $this ClientMessagesController */
+/* @var $model ClientMessages */
 
-$this->title='Ajouter un Client Profile';
+$this->title='Create Client Messages';
 $this->breadcrumbs=array(
-	'Client Profiles'=>array('index'),
+	'Client Messages'=>array('index'),
 	$this->title,
 );
 ?>

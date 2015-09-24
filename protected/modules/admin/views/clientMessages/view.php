@@ -1,11 +1,11 @@
 <?php
-/* @var $this ClientProfilesController */
-/* @var $model ClientProfiles */
+/* @var $this ClientMessagesController */
+/* @var $model ClientMessages */
 
-$this->title='View #'.$model->id;
+$this->title='View #'.$model->message_id;
 $this->breadcrumbs=array(
-	'Client Profiles'=>array('index'),
-	'View '.'ClientProfiles',
+	'Client Messages'=>array('index'),
+	'View '.'ClientMessages',
 );
 ?>
 <div class="user-view">
@@ -14,7 +14,7 @@ $this->breadcrumbs=array(
         <?php        $this->widget(
                 'booster.widgets.TbButton', array(
                     'label' => 'Update',
-                    'url' => array('update', 'id' =>  $model->id ),
+                    'url' => array('update', 'id' =>  $model->message_id ),
                     'buttonType' => 'link',
                     'context' => 'primary',
 //                    'visible' => UserIdentity::checkAccess(Yii::app()->user->name)
@@ -24,7 +24,7 @@ $this->breadcrumbs=array(
         $this->widget(
                 'application.components.MyTbButton', array(
                     'label' => 'Delete',
-                    'url' => array('delete', 'id' =>  $model->id ),
+                    'url' => array('delete', 'id' =>  $model->message_id ),
                     'buttonType' => 'link',
                     'context' => 'danger',
                     'htmlOptions' => array('confirm' => 'Are you sure you want to delete this item?'),
@@ -35,7 +35,7 @@ $this->breadcrumbs=array(
         $this->widget(
                 'booster.widgets.TbButton', array(
             'label' => 'Download',
-            'url' => array('view', 'id' =>  $model->id , 'export' => 'PDF'),
+            'url' => array('view', 'id' =>  $model->message_id , 'export' => 'PDF'),
             'buttonType' => 'link',
             'context' => 'warning',
 //                    'visible' => UserIdentity::checkAccess(Yii::app()->user->name)
@@ -48,12 +48,15 @@ $this->breadcrumbs=array(
 	'data'=>$model,
         'htmlOptions' => array('class'=>'table table-striped table-bordered'),
 	'attributes'=>array(
-		'id',
-		'client',
+		'message_id',
+		'client_id',
+		'employee_id',
 		'message',
-		'meeting_date',
-		'created',
+		'date_remember',
+		'user_view_status',
+		'mail_sent_counts',
 		'status',
+		'created_date',
 	),
 )); ?>
 </div>
