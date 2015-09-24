@@ -32,15 +32,21 @@
                         'activeCssClass' => 'active',
                         'items' => array(
                             array('label' => 'Edit Profile', 'url' => array('/optirep/repCredential/editprofile')),
+                            
+                            array('label' => 'Subscription Details', 'url' => array('/optirep/repAccounts/subscriptions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN),
+                            array('label' => 'Transaction Details', 'url' => array('/optirep/repAccounts/transactions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN),
+                            array('label' => 'Manage Rep Accounts', 'url' => array('/optirep/repAccounts/index'), 'visible'=>(isset(Yii::app()->user->rep_role) &&  Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN)),
+                            
                             array('label' => 'Subscription Details', 'url' => array('/optirep/repSingleSubscriptions/index'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE),
                             array('label' => 'Transaction Details', 'url' => array('/optirep/repSingleSubscriptions/transactions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE),
-                            array('label' => 'Manage Rep Accounts', 'url' => array('/optirep/repAccounts/index'), 'visible'=>(isset(Yii::app()->user->rep_role) &&  Yii::app()->user->rep_role == "admin")),
+                            array('label' => 'Internal Messages', 'url' => array('/optirep/internalMessage/index'), 'visible'=>(isset(Yii::app()->user->rep_role) &&  Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE)),
+                            
                             array('label' => 'Favourite Retailers', 'url' => array('/optirep/repFavourites/index')),
-                            array('label' => 'Internal Messages', 'url' => array('/optirep/internalMessage/index'), 'visible'=>(isset(Yii::app()->user->rep_role) &&  Yii::app()->user->rep_role != "admin")),
                             array('label' => 'My Notes', 'url' => array('/optirep/repNotes/index')),
                             array('label' => 'My Stats', 'url' => array('/optirep/repStatistics/index'), 'visible'=>($stats_disp == "1")),
-                            array('label' => 'Users log stats', 'url' => array('/optirep/repStatistics/userslogstats'), 'visible'=>(isset(Yii::app()->user->rep_role) &&  Yii::app()->user->rep_role == "admin" && $stats_disp == "1")),
-                            array('label' => 'Users profile viewed stats', 'url' => array('/optirep/repStatistics/profileviewstats'), 'visible'=>(isset(Yii::app()->user->rep_role) &&  Yii::app()->user->rep_role == "admin"&& $stats_disp == "1")),
+                            array('label' => 'Users log stats', 'url' => array('/optirep/repStatistics/userslogstats'), 'visible'=>(isset(Yii::app()->user->rep_role) &&  Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN && $stats_disp == "1")),
+                            array('label' => 'Users profile viewed stats', 'url' => array('/optirep/repStatistics/profileviewstats'), 'visible'=>(isset(Yii::app()->user->rep_role) &&  Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN && $stats_disp == "1")),
+                            
                             array('label' => 'Stats Payment/Infos', 'url' => array('/optirep/repStatistics/payment')),
                             array('label' => 'Change Password', 'url' => array('/optirep/repCredential/changePassword')),
                         ),

@@ -24,7 +24,7 @@ class RepAccountsController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'create', 'edit', 'buyMoreAccounts', 'buyMoreAccountsPriceList', 'renewalRepAccounts'),
+                'actions' => array('index', 'create', 'edit', 'buyMoreAccounts', 'buyMoreAccountsPriceList', 'renewalRepAccounts', 'subscriptions', 'transactions'),
                 'users' => array('@'),
                 'expression' => 'Yii::app()->user->rep_role=="admin"'
             ),
@@ -357,6 +357,37 @@ class RepAccountsController extends ORController {
                 $checkTransactionExists->save(false);
             }
         }
+    }
+
+    /* ---------------------------- Rep Admin Subscriptions ------------------ */
+
+    public function actionSubscriptions() {
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("rep_credential_id = '" . Yii::app()->user->id . "'");
+        $criteria->order = 'created_at DESC';
+
+        $model = new CActiveDataProvider('RepAdminSubscriptions', array(
+            'criteria' => $criteria,
+        ));
+
+        $this->render('subscriptions', array(
+            'model' => $model,
+        ));
+    }
+
+    public function actionTransactions() {
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("user_id = '" . Yii::app()->user->id . "'");
+        $criteria->addCondition("NOMTABLE = '" . RepCredentials::NAME_TABLE . "'");
+        $criteria->order = 'created_at DESC';
+
+        $model = new CActiveDataProvider('PaymentTransaction', array(
+            'criteria' => $criteria,
+        ));
+
+        $this->render('transactions', array(
+            'model' => $model
+        ));
     }
 
 }
