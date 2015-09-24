@@ -6,6 +6,16 @@ class DefaultController extends OGController {
         $searchModel = new SuppliersDirectory();    
         $this->render('index', array('searchModel' => $searchModel));
     }
+    
+    public function actionError()
+    {
+        $error = Yii::app()->errorHandler->error;
+        if ($error)
+        $this->render('_error', array('error'=>$error));
+        else
+        throw new CHttpException(404, 'Page not found.');
+    }        
+            
 
     public function actionSubscribe() {
         

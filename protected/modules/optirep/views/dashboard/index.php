@@ -7,33 +7,7 @@
     Welcome to your personalized dashboard! Here's some of the thing you can do starting from here: 
 </div>
 
-<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-    <div class="cate-bg"> 
-        <div class="cate-heading">  <i class="fa fa-heart"></i> Favorites  </div>
-        <?php
-        $rep_id = Yii::app()->user->id;
-        $myfavourites = Yii::app()->db->createCommand() //this query contains all the data
-                ->select('rr.ID_RETAILER,rr.COMPAGNIE,rt.NOM_TYPE_' . $this->lang)
-                ->from(array('rep_favourites rf', 'repertoire_retailer rr', 'repertoire_retailer_type AS rt'))
-                ->where("rr.ID_RETAILER=rf.ID_RETAILER AND rt.ID_RETAILER_TYPE=rr.ID_RETAILER_TYPE AND rf.rep_credential_id =" . $rep_id)
-                ->order(',rf.id desc')
-                ->limit(4)
-                ->queryAll();
-
-        $fav_rets = '';
-        if (!empty($myfavourites)) {
-            foreach ($myfavourites as $favinfo) {
-                $fav_rets .= "<div class='fav-cont favusers'>" . CHtml::image($this->themeUrl . '/images/fav.jpg');
-                $fav_rets .= CHtml::link($favinfo['COMPAGNIE'], array('/optirep/retailerDirectory/view', 'id' => $favinfo['ID_RETAILER'])) . "<br/> <span> <b> Type : </b> " . $favinfo['NOM_TYPE_' . $this->lang] . "</span> </div>";
-            }
-            $fav_rets .= "<div class='viewall'>" . CHtml::link(Myclass::t('OG038', '', 'og'), array('/optirep/repFavourites'), array('class' => '')) . "</div>";
-        } else {
-            $fav_rets = "<p class='fav_message'>You have no favorite retailers right now." . CHtml::link("Click", array('/optirep/retailerDirectory')) . " to see the retailers listing and make it your favorite!!!.</p>";
-        }
-        echo $fav_rets;
-        ?>   
-    </div>
-</div>
+<?php $this->renderPartial('_favbox'); ?>
 
 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
     <div class="cate-bg"> 
