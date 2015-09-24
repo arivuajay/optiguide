@@ -79,10 +79,18 @@ class Controller extends CController {
         $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
         if (!empty($result)) {
             $registration = unserialize($result['rep_temp_value']);
+            
+            $rep_username = $registration['step2']['RepCredentials']['rep_username'];
+            $rep_username_exists = RepCredentials::model()->find('rep_username=:UN', array(
+                ':UN' => $rep_username,
+            ));
+            if(!empty($rep_username_exists)){
+                $rep_username = $rep_username_.time();
+            }
 
             //Save Rep Credentials
             $model = new RepCredentials;
-            $model->rep_username = $registration['step2']['RepCredentials']['rep_username'];
+            $model->rep_username = $rep_username;
             $model->rep_password = $registration['step2']['RepCredentials']['rep_password'];
             if ($registration['step2']['RepCredentials']['no_of_accounts_purchase'] > 1) {
                 $model->rep_role = RepCredentials::ROLE_ADMIN;
@@ -238,7 +246,7 @@ class Controller extends CController {
         if (!empty($result)) {
             $renewal_details = unserialize($result['rep_temp_value']);
             $price_list = $renewal_details['price_list'];
-            
+
             $rep_account = RepCredentials::model()->findByPk($renewal_details['rep_credential_id']);
             if ($rep_account['rep_expiry_date'] > date("Y-m-d")) {
                 $subscription_start = $rep_account['rep_expiry_date'];
