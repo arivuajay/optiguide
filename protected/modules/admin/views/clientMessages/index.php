@@ -16,7 +16,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Create ClientMessages', array('/admin/clientmessages/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Create ClientMessages', array('/admin/clientMessages/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 
