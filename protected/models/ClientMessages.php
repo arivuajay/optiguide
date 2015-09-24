@@ -32,8 +32,9 @@ class ClientMessages extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+                        array('client_id, employee_id,message,date_remember' , 'required'),
 			array('client_id, employee_id, user_view_status, mail_sent_counts, status', 'numerical', 'integerOnly'=>true),
-			array('message, date_remember, created_date', 'safe'),
+			array('message, date_remember, created_date,randkey', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('message_id, client_id, employee_id, message, date_remember, user_view_status, mail_sent_counts, status, created_date', 'safe', 'on'=>'search'),
@@ -47,7 +48,9 @@ class ClientMessages extends CActiveRecord
 	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
-		return array(
+		return array( 
+                    'clientProfiles' => array(self::BELONGS_TO, 'ClientProfiles', 'client_id'),
+                    'employeeProfiles' => array(self::BELONGS_TO, 'EmployeeProfiles', 'employee_id'),
 		);
 	}
 
@@ -59,53 +62,15 @@ class ClientMessages extends CActiveRecord
 		return array(
 			'message_id' => Myclass::t('Message'),
 			'client_id' => Myclass::t('Client'),
-			'employee_id' => Myclass::t('Employee'),
+			'employee_id' => Myclass::t('Employé'),
 			'message' => Myclass::t('Message'),
-			'date_remember' => Myclass::t('Date Remember'),
-			'user_view_status' => Myclass::t('User View Status'),
+			'date_remember' => Myclass::t('Date d\'alerte'),
+			'user_view_status' => Myclass::t('Vue de l\'utilisateur statut'),
 			'mail_sent_counts' => Myclass::t('Mail Sent Counts'),
-			'status' => Myclass::t('Status'),
+			'status' => Myclass::t('Rappel'),
 			'created_date' => Myclass::t('Created Date'),
 		);
 	}
-        
-        public function actionSendReminder()
-        {
-            $mdate = date("Y-m-d",time());            
-            $criteria = new CDbCriteria;        
-            $criteria->condition = "meeting_date='$mdate' and status=0";           
-            $data_meets = ClientProfiles::model()->findAll($criteria);
-         
-            if(!empty($data_meets))
-            {    
-                foreach ($data_meets as $info)
-                {
-                   $meetid = $info->id; 
-                    
-                  /* Send mail to admin for confirmation */
-                   $mail    = new Sendmail();
-                   $subject = SITENAME."- Reminder client profile - ".$info->client;
-                   $trans_array  = array(
-                       "{NAME}"    => $info->client,  
-                       "{FNAME}" => $info->first_name, 
-                       "{LNAME}" => $info->lastname, 
-                       "{COUNTRY}" => $info->country, 
-                       "{REGION}" => $info->region, 
-                       "{CITY}" => $info->ville,                       
-                       "{MDATE}"   => $info->meeting_date,   
-                   );
-                   $message = $mail->getMessage('meetingalert', $trans_array);
-                   $mail->send(ADMIN_EMAIL, $subject, $message);
-                                      
-                   $model=$this->loadModel($meetid);
-                   $model->status=1;
-                   $model->save();
-
-                 } 
-             }    
-          
-        }        
-
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
@@ -126,14 +91,25 @@ class ClientMessages extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('message_id',$this->message_id);
-		$criteria->compare('client_id',$this->client_id);
-		$criteria->compare('employee_id',$this->employee_id);
+		$criteria->compare('t.client_id',$this->client_id);
+		$criteria->compare('t.employee_id',$this->employee_id);
 		$criteria->compare('message',$this->message,true);
 		$criteria->compare('date_remember',$this->date_remember,true);
 		$criteria->compare('user_view_status',$this->user_view_status);
 		$criteria->compare('mail_sent_counts',$this->mail_sent_counts);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('created_date',$this->created_date,true);
+               
+                $criteria->with = array(
+                    "clientProfiles" => array(
+                      'alias' => 'clientProfiles', 
+                      'select' => 'name'
+                    ),
+                    "employeeProfiles" => array(
+                      'alias' => 'employeeProfiles',
+                      'select' => 'employee_name',
+                    ),
+                  );
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

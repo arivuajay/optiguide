@@ -2,10 +2,10 @@
 /* @var $this EmployeeProfilesController */
 /* @var $model EmployeeProfiles */
 
-$this->title='Update Employee Profiles: '. $model->employee_id;
+$this->title='Modifier le profil de l\'employé';
 $this->breadcrumbs=array(
-	'Employee Profiles'=>array('index'),
-	'Update Employee Profiles',
+	'Profils d\'employés'=>array('index'),
+	'Modifier le profil de l\'employé',
 );
 ?>
 

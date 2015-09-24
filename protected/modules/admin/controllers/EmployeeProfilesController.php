@@ -31,7 +31,7 @@ class EmployeeProfilesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','view','create','update','admin','delete'),
+				'actions'=>array('index','create','update','delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -42,17 +42,6 @@ class EmployeeProfilesController extends Controller
 				'users'=>array('*'),
 			),
 		);
-	}
-
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionView($id)
-	{
-                $this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
 	}
 
 	/**
@@ -70,7 +59,7 @@ class EmployeeProfilesController extends Controller
 		{
 			$model->attributes=$_POST['EmployeeProfiles'];
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'EmployeeProfiles Created Successfully!!!');
+                                Yii::app()->user->setFlash('success', 'Le profil des employés créé avec succès!!!');
                                 $this->redirect(array('index'));
                         }
 		}
@@ -96,7 +85,7 @@ class EmployeeProfilesController extends Controller
 		{
 			$model->attributes=$_POST['EmployeeProfiles'];
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'EmployeeProfiles Updated Successfully!!!');
+                                Yii::app()->user->setFlash('success', 'Profil de l\'employé mis à jour avec succès!!!');
                                 $this->redirect(array('index'));
                         }
 		}
@@ -117,7 +106,7 @@ class EmployeeProfilesController extends Controller
         
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax'])){
-                    Yii::app()->user->setFlash('success', 'EmployeeProfiles Deleted Successfully!!!');
+                    Yii::app()->user->setFlash('success', 'Profils des employés supprimés avec succès !!!');
                     $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
                 }
 	}
@@ -137,21 +126,7 @@ class EmployeeProfilesController extends Controller
 		));
 	}
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new EmployeeProfiles('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['EmployeeProfiles']))
-			$model->attributes=$_GET['EmployeeProfiles'];
-
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
-
+	
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

@@ -2,9 +2,9 @@
 /* @var $this EmployeeProfilesController */
 /* @var $model EmployeeProfiles */
 
-$this->title='Create Employee Profiles';
+$this->title='Créer un profil des employés';
 $this->breadcrumbs=array(
-	'Employee Profiles'=>array('index'),
+	'Profils d\'employés'=>array('index'),
 	$this->title,
 );
 ?>

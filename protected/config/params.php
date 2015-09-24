@@ -4,12 +4,14 @@ $whitelist = array('127.0.0.1', '::1');
 if (in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
     $mailsendby = 'smtp';
     $adminurl   = 'http://localhost/optiguide/branches/dev/';
-    $repurl = 'http://local.optirep'; 
+    $repurl     = 'http://local.optirep/'; 
+    $guideurl   = 'http://local.optiguide/'; 
     
 } else {
-    $mailsendby = 'phpmail';
+    $mailsendby  = 'phpmail';
      $adminurl   = 'http://demo.arkinfotec.in/optiguide/';
-     $repurl =  'http://optirep.arkinfotec.in'; 
+     $repurl     =  'http://optirep.arkinfotec.in/'; 
+     $guideurl   = 'http://optiguide.arkinfotec.in/'; 
 }
 
 
@@ -36,10 +38,8 @@ return array(
     'GOOGLE_APP_ID' => $google_app_id,
     'GOOGLE_SECRET_ID' => $google_sec_id,
     'ADMIN_EMAIL'   => 'vasanth@arkinfotec.com',
-    'ADMIN_URL'  => $adminurl,
-   
+    'ADMIN_URL'  => $adminurl,   
     
-    //
     //Product Settings
     'ARCHIVE_IMG_PATH' => 'uploads/archivage/',
     'JOURNAL_IMG_PATH' => 'uploads/journal/',
@@ -49,6 +49,7 @@ return array(
     'LISTPERPAGE' => 15,
     'DEFAULTPAYS' => 1,    
     'REPURL' => $repurl,
+    'GUIDEURL' => $guideurl,
     
     //Paypal values
     'SANDBOXVALUE'  => TRUE,

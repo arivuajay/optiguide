@@ -2,9 +2,9 @@
 /* @var $this ClientMessagesController */
 /* @var $model ClientMessages */
 
-$this->title='Create Client Messages';
+$this->title='Créer l\'alerte de message';
 $this->breadcrumbs=array(
-	'Client Messages'=>array('index'),
+	'Rappelez-vous des alertes'=>array('index'),
 	$this->title,
 );
 ?>

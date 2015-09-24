@@ -2,10 +2,10 @@
 /* @var $this ClientMessagesController */
 /* @var $model ClientMessages */
 
-$this->title='Update Client Messages: '. $model->message_id;
+$this->title='Modifier message d\'alerte ';
 $this->breadcrumbs=array(
-	'Client Messages'=>array('index'),
-	'Update Client Messages',
+	'Rappelez-vous des alertes'=>array('index'),
+	'Modifier message d\'alerte',
 );
 ?>
 

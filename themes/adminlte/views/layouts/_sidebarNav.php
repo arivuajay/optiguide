@@ -70,9 +70,9 @@
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(      
-                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Employee Profiles</span>', 'url' => array('/admin/employeeProfiles/index'), 'active' => ($_controller == 'employeeProfiles')),
-                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Client Profiles</span>', 'url' => array('/admin/clientProfiles/index'), 'active' => ($_controller == 'clientProfiles')),
-                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Client Remember Messages</span>', 'url' => array('/admin/clientMessages/index'), 'active' => ( $_controller == 'clientMessages')),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Profils D\'employés </span>', 'url' => array('/admin/employeeProfiles/index'), 'active' => ($_controller == 'employeeProfiles')),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Les profils des clients</span>', 'url' => array('/admin/clientProfiles/index'), 'active' => ($_controller == 'clientProfiles')),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Rappelez-vous des alertes</span>', 'url' => array('/admin/clientMessages/index'), 'active' => ( $_controller == 'clientMessages')),
                     ),
                 ),
                 array('label' => '<i class="fa fa-folder"></i> <span> Opti-rep</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',

@@ -2,9 +2,9 @@
 /* @var $this EmployeeProfilesController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title='Employee Profiles';
+$this->title='Profils d\'employés';
 $this->breadcrumbs=array(
-	'Employee Profiles',
+	'Profils d\'employés',
 );
 $themeUrl = $this->themeUrl;
 $cs = Yii::app()->getClientScript();
@@ -16,7 +16,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Create EmployeeProfiles', array('/admin/employeeProfiles/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Créer un profil d\' employé', array('/admin/employeeProfiles/create'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 
@@ -26,13 +26,13 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
     <div class="row">
         <?php
         $gridColumns = array(
-        		'employee_name',
+        	'employee_name',
 		'employee_email',
         array(
-        'header' => 'Actions',
+        'header' => 'Actes',
         'class' => 'booster.widgets.TbButtonColumn',
         'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-        'template' => '{view}{update}{delete}',
+        'template' => '{update}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{delete}',
         )
         );
 
@@ -41,7 +41,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         'type' => 'striped bordered datatable',
         'dataProvider' => $model->search(),
         'responsiveTable' => true,
-        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Employee Profiles</h3></div><div class="panel-body">{items}{pager}</div></div>',
+        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Profils d\'employés</h3></div><div class="panel-body">{items}{pager}</div></div>',
         'columns' => $gridColumns
         )
         );

@@ -2,10 +2,10 @@
 /* @var $this ClientProfilesController */
 /* @var $model ClientProfiles */
 
-$this->title='Update Client Profiles: '. $model->client_id;
+$this->title='Mise à jour de profil du client';
 $this->breadcrumbs=array(
-	'Client Profiles'=>array('index'),
-	'Update Client Profiles',
+	'Les profils des clients'=>array('index'),
+	'Mise à jour de profil du client',
 );
 ?>
 

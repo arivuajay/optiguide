@@ -2,9 +2,9 @@
 /* @var $this ClientProfilesController */
 /* @var $model ClientProfiles */
 
-$this->title='Create Client Profiles';
+$this->title='Créer profil cliente';
 $this->breadcrumbs=array(
-	'Client Profiles'=>array('index'),
+	'Les profils des clients'=>array('index'),
 	$this->title,
 );
 ?>

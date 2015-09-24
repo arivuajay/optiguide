@@ -28,6 +28,7 @@
  */
 class ClientProfiles extends CActiveRecord
 {
+        public $subscription;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -44,10 +45,13 @@ class ClientProfiles extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('category', 'numerical', 'integerOnly'=>true),
-			array('name, company, job_title, member_type, address, local_number, subscription', 'length', 'max'=>255),
+                        array('name,phonenumber1,email,address,country, region, ville,',"required"),
+                        array('email',"email"),
+			array('category,cat_type_id', 'numerical', 'integerOnly'=>true),
+			array('name, company, job_title, member_type, address, local_number', 'length', 'max'=>255),
 			array('country, region, ville, phonenumber1, phonenumber2, mobile_number, tollfree_number, fax, email, site_address', 'length', 'max'=>55),
 			array('created_date, modified_date', 'safe'),
+                        array('Optipromo , Optinews , Envision_print ,Envision_digital,Envue_print,Envue_digital' , 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('client_id, name, company, job_title, member_type, category, address, local_number, country, region, ville, phonenumber1, phonenumber2, mobile_number, tollfree_number, fax, email, site_address, subscription, created_date, modified_date', 'safe', 'on'=>'search'),
@@ -72,26 +76,27 @@ class ClientProfiles extends CActiveRecord
 	{
 		return array(
 			'client_id' => Myclass::t('Client'),
-			'name' => Myclass::t('Name'),
-			'company' => Myclass::t('Company'),
-			'job_title' => Myclass::t('Job Title'),
-			'member_type' => Myclass::t('Member Type'),
-			'category' => Myclass::t('Category'),
-			'address' => Myclass::t('Address'),
-			'local_number' => Myclass::t('Local Number'),
-			'country' => Myclass::t('Country'),
-			'region' => Myclass::t('Region'),
+			'name' => Myclass::t('Client Nom'),
+			'company' => Myclass::t('Entreprise'),
+			'job_title' => Myclass::t('Fonction'),
+			'member_type' => Myclass::t('Type'),
+                        'cat_type_id' => Myclass::t('Catégorie Type'),
+			'category' => Myclass::t('Catégorie Nom'),
+			'address' => Myclass::t('Adresse'),
+			'local_number' => Myclass::t('Numéro de local/bureau'),
+			'country' => Myclass::t('Pays'),
+			'region' => Myclass::t('Province'),
 			'ville' => Myclass::t('Ville'),
-			'phonenumber1' => Myclass::t('Phonenumber1'),
-			'phonenumber2' => Myclass::t('Phonenumber2'),
-			'mobile_number' => Myclass::t('Mobile Number'),
-			'tollfree_number' => Myclass::t('Tollfree Number'),
+			'phonenumber1' => Myclass::t('Téléphone'),
+			'phonenumber2' => Myclass::t('Téléphone 2'),
+			'mobile_number' => Myclass::t('Cellulaire'),
+			'tollfree_number' => Myclass::t('Sans frais'),
 			'fax' => Myclass::t('Fax'),
-			'email' => Myclass::t('Email'),
-			'site_address' => Myclass::t('Site Address'),
-			'subscription' => Myclass::t('Subscription'),
-			'created_date' => Myclass::t('Created Date'),
-			'modified_date' => Myclass::t('Modified Date'),
+			'email' => Myclass::t('Courriel'),
+			'site_address' => Myclass::t('Website'),
+			'subscription' => Myclass::t('Abonnement'),
+			'created_date' => Myclass::t('Date de création'),
+			'modified_date' => Myclass::t('Date de changement'),
 		);
 	}
 

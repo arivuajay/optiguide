@@ -1,182 +1,228 @@
 <?php
 
-class ClientMessagesController extends Controller
-{
-	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
+class ClientMessagesController extends Controller {
+    /**
+     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
+     * using two-column layout. See 'protected/views/layouts/column2.php'.
+     */
 
-	/**
-	 * @return array action filters
-	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			//'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
+    /**
+     * @return array action filters
+     */
+    public function filters() {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+                //'postOnly + delete', // we only allow deletion via POST request
+        );
+    }
 
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array(''),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','view','create','update','admin','delete'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array(''),
-				'users'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
+     */
+    public function accessRules() {
+        return array(
+            array('allow', // allow all users to perform 'index' and 'view' actions
+                'actions' => array('sendReminder'),
+                'users' => array('*'),
+            ),
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete'),
+                'users' => array('@'),
+            ),
+            array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                'actions' => array(''),
+                'users' => array('admin'),
+            ),
+            array('deny', // deny all users
+                'users' => array('*'),
+            ),
+        );
+    }
 
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionView($id)
-	{
-                $this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
-	}
+    public function actionSendReminder() {
+        $mdate = date("Y-m-d", time());
+        $criteria = new CDbCriteria;
+        $criteria->condition = "DATE(date_remember)='$mdate' and status=1";
+        $criteria->with = array(
+            "clientProfiles" => array(
+                'alias' => 'clientProfiles',
+                'select' => 'name'
+            ),
+            "employeeProfiles" => array(
+                'alias' => 'employeeProfiles',
+                'select' => 'employee_name,employee_email',
+            ),
+        );
+        $data_meets = ClientMessages::model()->findAll($criteria);
 
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionCreate()
-	{
-		$model=new ClientMessages;
+        if (!empty($data_meets)) {
+            foreach ($data_meets as $info) {
+                
+                $meetid = $info->message_id;
+                $client_name = $info->clientProfiles->name;
+                $randkey = $info->randkey;
+                $message = $info->message;
+                $employee_email = $info->employeeProfiles->employee_email;
+                $employee_name = $info->employeeProfiles->employee_name;
 
-		// Uncomment the following line if AJAX validation is needed
-		$this->performAjaxValidation($model);
+                $clientdetail_url = GUIDEURL . "optiguide/default/clientprofile/id/" . $randkey;
 
-		if(isset($_POST['ClientMessages']))
-		{
-			$model->attributes=$_POST['ClientMessages'];
-			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'ClientMessages Created Successfully!!!');
-                                $this->redirect(array('index'));
-                        }
-		}
+                /* Send mail to admin for confirmation */
+                $mail = new Sendmail();
+                $subject = SITENAME . "- Reminder Mail - Today meet with client " . $client_name;
+                $trans_array = array(
+                    "{REMKEY}" => $randkey,
+                    "{NAME}" => $client_name,
+                    "{MESSAGE}" => $message,
+                    "{MDATE}" => $info->date_remember,
+                    "{NEXTSTEPURL}" => $clientdetail_url
+                );
+                $message = $mail->getMessage('meetingalert', $trans_array);
+                $mail->send($employee_email, $subject, $message);
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
-	}
-
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		$this->performAjaxValidation($model);
-
-		if(isset($_POST['ClientMessages']))
-		{
-			$model->attributes=$_POST['ClientMessages'];
-			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'ClientMessages Updated Successfully!!!');
-                                $this->redirect(array('index'));
-                        }
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
-	}
-
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
-	public function actionDelete($id)
-	{
-                $this->loadModel($id)->delete();
-        
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax'])){
-                    Yii::app()->user->setFlash('success', 'ClientMessages Deleted Successfully!!!');
-                    $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+                $model = $this->loadModel($meetid);
+                if ($model->mail_sent_counts == 1) {
+                    $model->status = 0;
+                    $model->mail_sent_counts = 2;
+                } else {
+                    $model->mail_sent_counts = 1;
                 }
-	}
+                $model->save(false);
+            }
+        }
+    }
 
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-            $model=new ClientMessages('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['ClientMessages']))
-			$model->attributes=$_GET['ClientMessages'];
+    /**
+     * Displays a particular model.
+     * @param integer $id the ID of the model to be displayed
+     */
+    public function actionView($id) {
+        $this->render('view', array(
+            'model' => $this->loadModel($id),
+        ));
+    }
 
-		$this->render('index',array(
-			'model'=>$model,
-		));
-	}
+    /**
+     * Creates a new model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     */
+    public function actionCreate() {
+        $model = new ClientMessages;
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new ClientMessages('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['ClientMessages']))
-			$model->attributes=$_GET['ClientMessages'];
+        // Uncomment the following line if AJAX validation is needed
+        $this->performAjaxValidation($model);
 
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
+        if (isset($_POST['ClientMessages'])) {
 
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer $id the ID of the model to be loaded
-	 * @return ClientMessages the loaded model
-	 * @throws CHttpException
-	 */
-	public function loadModel($id)
-	{
-		$model=ClientMessages::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
-	}
+            $model->attributes = $_POST['ClientMessages'];
+            $model->date_remember = date("Y-m-d", strtotime($_POST['ClientMessages']['date_remember']));
+            $model->created_date = date("Y-m-d");
+            $model->randkey = Myclass::getGuid();
 
-	/**
-	 * Performs the AJAX validation.
-	 * @param ClientMessages $model the model to be validated
-	 */
-	protected function performAjaxValidation($model)
-	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='client-messages-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
+            if ($model->save()) {
+                Yii::app()->user->setFlash('success', 'Message d\'alerte créé avec succès!!!');
+                $this->redirect(array('index'));
+            }
+        }
+
+        $this->render('create', array(
+            'model' => $model,
+        ));
+    }
+
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function actionUpdate($id) {
+        $model = $this->loadModel($id);
+
+        // Uncomment the following line if AJAX validation is needed
+        $this->performAjaxValidation($model);
+
+        if (isset($_POST['ClientMessages'])) {
+            $model->attributes = $_POST['ClientMessages'];
+            $model->date_remember = date("Y-m-d", strtotime($_POST['ClientMessages']['date_remember']));
+            if ($model->save()) {
+                Yii::app()->user->setFlash('success', 'Les messages d\'alerte mis à jour avec succès!!!');
+                $this->redirect(array('index'));
+            }
+        }
+
+        $this->render('update', array(
+            'model' => $model,
+        ));
+    }
+
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     * @param integer $id the ID of the model to be deleted
+     */
+    public function actionDelete($id) {
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!isset($_GET['ajax'])) {
+            Yii::app()->user->setFlash('success', 'Message d\'alerte supprimé avec succès!!!');
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+        }
+    }
+
+    /**
+     * Lists all models.
+     */
+    public function actionIndex() {
+        $model = new ClientMessages('search');
+        $model->unsetAttributes();  // clear any default values
+        if (isset($_GET['ClientMessages']))
+            $model->attributes = $_GET['ClientMessages'];
+
+        $this->render('index', array(
+            'model' => $model,
+        ));
+    }
+
+    /**
+     * Manages all models.
+     */
+    public function actionAdmin() {
+        $model = new ClientMessages('search');
+        $model->unsetAttributes();  // clear any default values
+        if (isset($_GET['ClientMessages']))
+            $model->attributes = $_GET['ClientMessages'];
+
+        $this->render('admin', array(
+            'model' => $model,
+        ));
+    }
+
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     * @param integer $id the ID of the model to be loaded
+     * @return ClientMessages the loaded model
+     * @throws CHttpException
+     */
+    public function loadModel($id) {
+        $model = ClientMessages::model()->findByPk($id);
+        if ($model === null)
+            throw new CHttpException(404, 'The requested page does not exist.');
+        return $model;
+    }
+
+    /**
+     * Performs the AJAX validation.
+     * @param ClientMessages $model the model to be validated
+     */
+    protected function performAjaxValidation($model) {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'client-messages-form') {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+    }
+
 }

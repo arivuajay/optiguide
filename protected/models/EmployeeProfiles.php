@@ -26,6 +26,8 @@ class EmployeeProfiles extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+                        array('employee_name,employee_email','required'),
+                        array('employee_email','email'),
 			array('employee_name, employee_email', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -51,8 +53,8 @@ class EmployeeProfiles extends CActiveRecord
 	{
 		return array(
 			'employee_id' => Myclass::t('Employee'),
-			'employee_name' => Myclass::t('Employee Name'),
-			'employee_email' => Myclass::t('Employee Email'),
+			'employee_name' => Myclass::t('Nom de l\'employé'),
+			'employee_email' => Myclass::t('E-mail de l\'employé'),
 		);
 	}
 
