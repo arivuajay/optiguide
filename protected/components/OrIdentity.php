@@ -30,6 +30,7 @@ class OrIdentity extends CUserIdentity {
             $this->_id = $user->rep_credential_id;
             $this->setState('rep_role', $user->rep_role);
             $this->setState('rep_username', $user->rep_username);
+            $this->setState('rep_expiry_date', $user->rep_expiry_date);
             $this->errorCode = self::ERROR_NONE;
         }
         return !$this->errorCode;

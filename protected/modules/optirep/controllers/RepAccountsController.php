@@ -20,11 +20,11 @@ class RepAccountsController extends ORController {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array(''),
+                'actions' => array('paypalCancel', 'paypalReturn', 'paypalNotify', 'paypalRenewalCancel', 'paypalRenewalReturn', 'paypalRenewalNotify'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'create', 'edit', 'buyMoreAccounts', 'buyMoreAccountsPriceList', 'paypalCancel', 'paypalReturn', 'paypalNotify', 'renewalRepAccounts', 'paypalRenewalReturn', 'paypalRenewalCancel', 'paypalRenewalNotify'),
+                'actions' => array('index', 'create', 'edit', 'buyMoreAccounts', 'buyMoreAccountsPriceList', 'renewalRepAccounts'),
                 'users' => array('@'),
                 'expression' => 'Yii::app()->user->rep_role=="admin"'
             ),
@@ -236,6 +236,7 @@ class RepAccountsController extends ORController {
                 $price_list = $subscription_details['price_list'];
 
                 $ptmodel = new PaymentTransaction;
+                $ptmodel->user_id = $subscription_details['rep_credential_id'];
                 $ptmodel->total_price = $_POST['mc_gross'];
                 $ptmodel->subscription_price = $price_list['total_price'];
                 $ptmodel->tax = $price_list['tax'];
@@ -334,6 +335,7 @@ class RepAccountsController extends ORController {
                 $price_list = $renewal_details['price_list'];
 
                 $ptmodel = new PaymentTransaction;
+                $ptmodel->user_id = $renewal_details['rep_credential_id'];
                 $ptmodel->total_price = $_POST['mc_gross'];
                 $ptmodel->subscription_price = $price_list['total_price'];
                 $ptmodel->tax = $price_list['tax'];

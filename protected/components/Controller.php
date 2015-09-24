@@ -73,6 +73,7 @@ class Controller extends CController {
         exit;
     }
 
+    //Registration for Single/Admin - Opti Rep
     protected function processRegistration($rep_temp_random_id) {
         $temp_random_id = $rep_temp_random_id;
         $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
@@ -143,6 +144,7 @@ class Controller extends CController {
         }
     }
 
+    //Admin Buy More Sales Rep Accounts - Opti Rep
     protected function processBuyMoreAccounts($rep_temp_random_id) {
         $temp_random_id = $rep_temp_random_id;
         $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
@@ -178,6 +180,7 @@ class Controller extends CController {
         }
     }
 
+    //Admin Renewal Sales Rep Accounts - Opti Rep
     protected function processRenewalRepAccounts($rep_temp_random_id) {
         $temp_random_id = $rep_temp_random_id;
         $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
@@ -222,6 +225,50 @@ class Controller extends CController {
                 $updateTransactionDetail->rep_temp_id = 0;
                 $updateTransactionDetail->payment_status = 'Completed';
                 $updateTransactionDetail->rep_admin_subscription_id = $repAdminSubscription->rep_admin_subscription_id;
+                $updateTransactionDetail->save(false);
+            }
+            RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
+        }
+    }
+
+    //Single Renewal His account - Opti Rep
+    protected function processRenewalSingleRepAccount($rep_temp_random_id) {
+        $temp_random_id = $rep_temp_random_id;
+        $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
+        if (!empty($result)) {
+            $renewal_details = unserialize($result['rep_temp_value']);
+            $price_list = $renewal_details['price_list'];
+            
+            $rep_account = RepCredentials::model()->findByPk($renewal_details['rep_credential_id']);
+            if ($rep_account['rep_expiry_date'] > date("Y-m-d")) {
+                $subscription_start = $rep_account['rep_expiry_date'];
+                $time = strtotime($rep_account['rep_expiry_date']);
+                $subscription_end = date("Y-m-d", strtotime("+1 month", $time));
+                $rep_account->rep_expiry_date = $subscription_end;
+            } else {
+                $subscription_start = date('Y-m-d');
+                $subscription_end = date('Y-m-d', strtotime('+1 month'));
+                $rep_account->rep_expiry_date = $subscription_end;
+            }
+            $rep_account->save(false);
+
+            $repSingleSubscription = new RepSingleSubscriptions;
+            $repSingleSubscription->rep_credential_id = $renewal_details['rep_credential_id'];
+            $repSingleSubscription->rep_subscription_type_id = $price_list['subscription_type_id'];
+            $repSingleSubscription->purchase_type = RepSingleSubscriptions::PURCHASE_TYPE_RENEWAL;
+            $repSingleSubscription->rep_single_price = $price_list['total_price'];
+            $repSingleSubscription->rep_single_tax = $price_list['tax'];
+            $repSingleSubscription->rep_single_total = $price_list['grand_total'];
+            $repSingleSubscription->rep_single_subscription_start = $subscription_start;
+            $repSingleSubscription->rep_single_subscription_end = $subscription_end;
+            $repSingleSubscription->save(false);
+
+            //Update Payment Transaction details
+            $updateTransactionDetail = PaymentTransaction::model()->find("rep_temp_id = '" . $result['rep_temp_id'] . "'");
+            if (!empty($updateTransactionDetail)) {
+                $updateTransactionDetail->rep_temp_id = 0;
+                $updateTransactionDetail->payment_status = 'Completed';
+                $updateTransactionDetail->rep_single_subscription_id = $repSingleSubscription->rep_single_subscription_id;
                 $updateTransactionDetail->save(false);
             }
             RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
