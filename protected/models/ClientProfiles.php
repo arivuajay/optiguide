@@ -4,12 +4,27 @@
  * This is the model class for table "client_profiles".
  *
  * The followings are the available columns in table 'client_profiles':
- * @property integer $id
- * @property string $client
- * @property string $message
- * @property string $meeting_date
- * @property string $created
- * @property integer $status
+ * @property integer $client_id
+ * @property string $name
+ * @property string $company
+ * @property string $job_title
+ * @property string $member_type
+ * @property integer $category
+ * @property string $address
+ * @property string $local_number
+ * @property string $country
+ * @property string $region
+ * @property string $ville
+ * @property string $phonenumber1
+ * @property string $phonenumber2
+ * @property string $mobile_number
+ * @property string $tollfree_number
+ * @property string $fax
+ * @property string $email
+ * @property string $site_address
+ * @property string $subscription
+ * @property string $created_date
+ * @property string $modified_date
  */
 class ClientProfiles extends CActiveRecord
 {
@@ -29,32 +44,15 @@ class ClientProfiles extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                        array('client,message,meeting_date,first_name, lastname ,country ,region ,ville','required'),
-			array('status', 'numerical', 'integerOnly'=>true),
-			array('client', 'length', 'max'=>255),
-                        array('address', 'length', 'max'=>255),
-                        array('first_name, lastname ,country ,region ,ville ,pincode , mail ,phonenumber', 'length', 'max'=>55),                    
-			array('message, meeting_date, created', 'safe'),
-                        array('mail','email'),
-                        array('phonenumber','phoneNumber'),
+			array('category', 'numerical', 'integerOnly'=>true),
+			array('name, company, job_title, member_type, address, local_number, subscription', 'length', 'max'=>255),
+			array('country, region, ville, phonenumber1, phonenumber2, mobile_number, tollfree_number, fax, email, site_address', 'length', 'max'=>55),
+			array('created_date, modified_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, client, message, meeting_date, created, status , first_name, lastname ,address ,country ,region ,ville ,pincode , mail ,phonenumber', 'safe', 'on'=>'search'),
+			array('client_id, name, company, job_title, member_type, category, address, local_number, country, region, ville, phonenumber1, phonenumber2, mobile_number, tollfree_number, fax, email, site_address, subscription, created_date, modified_date', 'safe', 'on'=>'search'),
 		);
 	}
-        
-         /** 
-            * check the format of the phone number entered
-            * @param string $attribute the name of the attribute to be validated
-            * @param array $params options specified in the validation rule
-            */
-            public function phoneNumber($attribute,$params='')
-            {
-              if($this->$attribute!='' && preg_match("/[A-Za-z]+/",$this->$attribute)==1)
-              {            
-                      $this->addError($attribute,'Invalid Format.' );
-              }        
-            }
 
 	/**
 	 * @return array relational rules.
@@ -73,21 +71,27 @@ class ClientProfiles extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-                    'id' => Myclass::t('ID'),
-                    'client' => Myclass::t('Client'),
-                    'message' => Myclass::t('Message'),
-                    'meeting_date' => Myclass::t('Rappel date de'),
-                    'created' => Myclass::t('Created'),
-                    'status' => Myclass::t('Status'),
-                    'first_name' => Myclass::t('First Name'),
-                    'lastname' => Myclass::t('Last Name'),
-                    'address' => Myclass::t('Address'),
-                    'country' => Myclass::t('Country'),
-                    'region' => Myclass::t('Region'),
-                    'ville' => Myclass::t('City'),
-                    'pincode' => Myclass::t('Pincode'),
-                    'mail' => Myclass::t('Email'),
-                    'phonenumber' => Myclass::t('Phonenumber'),
+			'client_id' => Myclass::t('Client'),
+			'name' => Myclass::t('Name'),
+			'company' => Myclass::t('Company'),
+			'job_title' => Myclass::t('Job Title'),
+			'member_type' => Myclass::t('Member Type'),
+			'category' => Myclass::t('Category'),
+			'address' => Myclass::t('Address'),
+			'local_number' => Myclass::t('Local Number'),
+			'country' => Myclass::t('Country'),
+			'region' => Myclass::t('Region'),
+			'ville' => Myclass::t('Ville'),
+			'phonenumber1' => Myclass::t('Phonenumber1'),
+			'phonenumber2' => Myclass::t('Phonenumber2'),
+			'mobile_number' => Myclass::t('Mobile Number'),
+			'tollfree_number' => Myclass::t('Tollfree Number'),
+			'fax' => Myclass::t('Fax'),
+			'email' => Myclass::t('Email'),
+			'site_address' => Myclass::t('Site Address'),
+			'subscription' => Myclass::t('Subscription'),
+			'created_date' => Myclass::t('Created Date'),
+			'modified_date' => Myclass::t('Modified Date'),
 		);
 	}
 
@@ -109,12 +113,27 @@ class ClientProfiles extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('client',$this->client,true);
-		$criteria->compare('message',$this->message,true);
-		$criteria->compare('meeting_date',$this->meeting_date,true);
-		$criteria->compare('created',$this->created,true);
-		$criteria->compare('status',$this->status);
+		$criteria->compare('client_id',$this->client_id);
+		$criteria->compare('name',$this->name,true);
+		$criteria->compare('company',$this->company,true);
+		$criteria->compare('job_title',$this->job_title,true);
+		$criteria->compare('member_type',$this->member_type,true);
+		$criteria->compare('category',$this->category);
+		$criteria->compare('address',$this->address,true);
+		$criteria->compare('local_number',$this->local_number,true);
+		$criteria->compare('country',$this->country,true);
+		$criteria->compare('region',$this->region,true);
+		$criteria->compare('ville',$this->ville,true);
+		$criteria->compare('phonenumber1',$this->phonenumber1,true);
+		$criteria->compare('phonenumber2',$this->phonenumber2,true);
+		$criteria->compare('mobile_number',$this->mobile_number,true);
+		$criteria->compare('tollfree_number',$this->tollfree_number,true);
+		$criteria->compare('fax',$this->fax,true);
+		$criteria->compare('email',$this->email,true);
+		$criteria->compare('site_address',$this->site_address,true);
+		$criteria->compare('subscription',$this->subscription,true);
+		$criteria->compare('created_date',$this->created_date,true);
+		$criteria->compare('modified_date',$this->modified_date,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

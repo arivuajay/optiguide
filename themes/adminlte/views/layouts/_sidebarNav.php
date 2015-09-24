@@ -70,9 +70,9 @@
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(      
-                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Employee Profiles</span>', 'url' => array('/admin/employeeProfilesController/index'), 'active' => ($_controller == 'repCredential' && $_action=="index")),
-                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Client Profiles</span>', 'url' => array('/admin/paymentTransaction/reptransaction'), 'active' => ($_controller == 'paymentTransaction' && $_action=="reptransaction")),
-                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Client Remember Messages</span>', 'url' => array('/admin/clientMessagesController/index'), 'active' => $_controller == 'supplierSubscriptionPrice' && $_action=="statsprice"),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Employee Profiles</span>', 'url' => array('/admin/employeeProfilesController/index'), 'active' => ($_controller == 'employeeProfilesController')),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Client Profiles</span>', 'url' => array('/admin/clientProfiles/index'), 'active' => ($_controller == 'clientProfiles')),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Client Remember Messages</span>', 'url' => array('/admin/clientMessagesController/index'), 'active' => ( $_controller == 'clientMessagesController')),
                     ),
                 ),
                 array('label' => '<i class="fa fa-folder"></i> <span> Opti-rep</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
