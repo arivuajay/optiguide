@@ -22,7 +22,7 @@ class DefaultController extends ORController {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('index', 'aboutus', 'legend', 'contactus', 'forgotPassword'),
+                'actions' => array('index', 'aboutus', 'legend', 'contactus', 'forgotPassword','error'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -38,6 +38,16 @@ class DefaultController extends ORController {
             ),
         );
     }
+    
+     public function actionError()
+    {
+        $this->layout = '//layouts/column1';
+        $error = Yii::app()->errorHandler->error;
+        if ($error)
+        $this->render('_error', array('error'=>$error));
+        else
+        throw new CHttpException(404, 'Page not found.');
+    } 
 
     public function actionIndex() {
         $model = new OrLoginForm('login');
