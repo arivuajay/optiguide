@@ -41,7 +41,7 @@ class DefaultController extends ORController {
     
      public function actionError()
     {
-        $this->layout = '//layouts/column1';
+      
         $error = Yii::app()->errorHandler->error;
         if ($error)
         $this->render('_error', array('error'=>$error));
