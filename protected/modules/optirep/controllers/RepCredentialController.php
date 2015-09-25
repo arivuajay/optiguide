@@ -18,7 +18,8 @@ class RepCredentialController extends ORController {
      * @return array access control rules
      */
     public function accessRules() {
-        return array(
+        return array_merge(
+                parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
                 'actions' => array('step1', 'step2', 'step3', 'final', 'paypalCancel', 'paypalReturn', 'paypalNotify'),
                 'users' => array('*'),
@@ -34,6 +35,7 @@ class RepCredentialController extends ORController {
             array('deny', // deny all users
                 'users' => array('*'),
             ),
+                )
         );
     }
 
@@ -69,9 +71,20 @@ class RepCredentialController extends ORController {
         if (isset($_POST['btnSubmit'])) {
             $model->attributes = $_POST['RepCredentials'];
             $profile->attributes = $_POST['RepCredentialProfiles'];
+
             $valid = $model->validate();
             $valid = $profile->validate() && $valid;
             if ($valid) {
+                $address = $profile->rep_address;
+                $country = $profile->country;
+                $region = $profile->region;
+                $cty = $profile->ID_VILLE;
+                $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
+                if ($geo_values != '') {
+                    $exp_latlong = explode('~', $geo_values);
+                    $_POST['RepCredentialProfiles']['rep_lat'] = $exp_latlong[0];
+                    $_POST['RepCredentialProfiles']['rep_long'] = $exp_latlong[1];
+                }
                 $registration = Yii::app()->session['registration'];
                 $registration['step2']['RepCredentials'] = $_POST['RepCredentials'];
                 $registration['step2']['RepCredentialProfiles'] = $_POST['RepCredentialProfiles'];
@@ -213,6 +226,17 @@ class RepCredentialController extends ORController {
             $valid = $profile->validate() && $valid;
 
             if ($valid) {
+                $address = $profile->rep_address;
+                $country = $profile->country;
+                $region = $profile->region;
+                $cty = $profile->ID_VILLE;
+                $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
+                if ($geo_values != '') {
+                    $exp_latlong = explode('~', $geo_values);
+                    $profile->rep_lat = $exp_latlong[0];
+                    $profile->rep_long = $exp_latlong[1];
+                }
+                
                 $model->save(false);
                 $profile->save(false);
 
@@ -221,7 +245,7 @@ class RepCredentialController extends ORController {
             }
         }
 
-        $this->render('editprofile', array('model' => $model, 'profile' => $profile,));
+        $this->render('editprofile', array('model' => $model, 'profile' => $profile));
     }
 
     //Change Password for Opti-Rep
