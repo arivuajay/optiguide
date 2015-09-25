@@ -34,7 +34,7 @@
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ad1"> 
                         <?php
                         $image = CHtml::image("{$this->themeUrl}/images/logo2.png", 'Logo');
-                        echo CHtml::link($image, array('/optirep'))
+                        echo CHtml::link($image, array('/'))
                         ?>
                     </div>
                     <?php if (isset($this->flashMessages)): ?>
