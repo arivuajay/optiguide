@@ -28,7 +28,7 @@
  */
 class ClientProfiles extends CActiveRecord
 {
-        public $subscription;
+        public $subscription,$cname,$ctype;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -50,7 +50,7 @@ class ClientProfiles extends CActiveRecord
 			array('category,cat_type_id', 'numerical', 'integerOnly'=>true),
 			array('name, company, job_title, member_type, address, local_number', 'length', 'max'=>255),
 			array('country, region, ville, phonenumber1, phonenumber2, mobile_number, tollfree_number, fax, email, site_address', 'length', 'max'=>55),
-			array('created_date, modified_date', 'safe'),
+			array('created_date, modified_date,cname,ctype', 'safe'),
                         array('Optipromo , Optinews , Envision_print ,Envision_digital,Envue_print,Envue_digital' , 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -66,6 +66,9 @@ class ClientProfiles extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    'clientCategory' => array(self::BELONGS_TO, 'ClientCategory', 'category'),   
+                    'clientCategoryTypes' => array(self::BELONGS_TO, 'ClientCategoryTypes', 'cat_type_id'),                       
+                    'clientMessages' => array(self::HAS_MANY, 'ClientMessages', 'client_id'),
 		);
 	}
 
@@ -166,4 +169,11 @@ class ClientProfiles extends CActiveRecord
                 )
             ));
         }
+        
+         protected function afterFind() {
+        /* Get selected region for current category information */
+        $this->ctype = ClientCategoryTypes::model()->findByPk($this->cat_type_id)->cat_type;
+        $this->cname = ClientCategory::model()->findByPk($this->category)->cat_name;
+        return parent::afterFind();
+    }
 }

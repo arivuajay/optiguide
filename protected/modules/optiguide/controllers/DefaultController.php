@@ -14,6 +14,38 @@ class DefaultController extends OGController {
         $this->render('_error', array('error'=>$error));
         else
         throw new CHttpException(404, 'Page not found.');
+    } 
+    
+    public function actionClientprofile($id)
+    {
+        
+        if($id!='')
+        {    
+            $criteria = new CDbCriteria;
+            $criteria->condition = "randkey='".$id."'";
+            $criteria->with = array(
+                "clientProfiles" => array(
+                    'alias' => 'clientProfiles',
+                    'select' => 'clientProfiles.*'
+                ),                              
+            );
+
+            $messageinfos = ClientMessages::model()->find($criteria);
+            
+            if(!empty($messageinfos))
+            {    
+                $messageinfos->user_view_status = 1;
+                $messageinfos->status = 0;
+                $messageinfos->save(false);
+                
+                $this->render('_clientprofile', compact('messageinfos'));
+            }  else {
+                $this->redirect(array('index')); 
+            }    
+        }else{ 
+         $this->redirect(array('index')); 
+        }  
+        
     }        
             
 

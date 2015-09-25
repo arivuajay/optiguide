@@ -4,7 +4,7 @@
  * This is the model class for table "client_category".
  *
  * The followings are the available columns in table 'client_category':
- * @property integer $id
+ * @property integer $category
  * @property integer $cat_type_id
  * @property string $cat_name
  */
@@ -30,7 +30,7 @@ class ClientCategory extends CActiveRecord
 			array('cat_name', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, cat_type_id, cat_name', 'safe', 'on'=>'search'),
+			array('category, cat_type_id, cat_name', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -51,7 +51,7 @@ class ClientCategory extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => Myclass::t('ID'),
+			'category' => Myclass::t('category'),
 			'cat_type_id' => Myclass::t('Cat Type'),
 			'cat_name' => Myclass::t('Cat Name'),
 		);
@@ -75,7 +75,7 @@ class ClientCategory extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
+		$criteria->compare('category',$this->category);
 		$criteria->compare('cat_type_id',$this->cat_type_id);
 		$criteria->compare('cat_name',$this->cat_name,true);
 

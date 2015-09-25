@@ -21,7 +21,7 @@ $this->breadcrumbs = array(
             array(
                 'name' => 'user_view_status',
                 'type' => 'HTML',
-                'value' => ($model->user_view_status == "1") ? '<span class="label label-success">User See the alert.</span>' : '<span class="label label-warning">User not yet see the alert.</span>'
+                'value' => ($model->user_view_status == "1") ? '<span class="label label-success">User saw the infos.</span>' : '<span class="label label-warning">User not yet see the alert.</span>'
             ),
             array(
                 'name' => 'status',
