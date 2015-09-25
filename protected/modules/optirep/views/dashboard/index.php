@@ -1,6 +1,13 @@
+ <?php 
+ $topbanner = Myclass::banner_display(7);
+ if($topbanner!='')
+ {    
+ ?>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ad1"> 
-    <?php echo CHtml::image($this->themeUrl . '/images/ad.jpg'); ?>
+    <!--  Optirep top banner- position - 7 -->
+   <?php echo $topbanner;?>
 </div>
+<?php } ?>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 dashboard-userinfo"> 
     <h2>  Hello, <span> <?php echo CHtml::link(Yii::app()->user->getState('rep_username'), array('/optirep/repCredential/editprofile')); ?></span> </h2>
@@ -101,6 +108,13 @@
     </div>   
 </div>
 
+ <?php 
+ $bottombanner = Myclass::banner_display(8);
+ if($bottombanner!='')
+ {    
+ ?>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ad1"> 
-    <?php echo CHtml::image($this->themeUrl . '/images/ad.jpg'); ?>
+    <!--  Optirep bottom banner- position - 8 -->
+   <?php echo $bottombanner;?>
 </div>
+<?php } ?>
