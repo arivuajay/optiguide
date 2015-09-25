@@ -14,7 +14,7 @@ $data = Yii::app()->session['renewal'];
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 price-details">
                         <p> 
                             <b> No Of Accounts Renewal: </b> 
-                            <?php echo $data['no_of_accounts_renewal']; ?> 
+                            <?php echo $data['no_of_accounts_purchase']; ?> 
                         </p>
                         <p> 
                             <b>Price Per Account : </b> 

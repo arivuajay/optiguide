@@ -52,9 +52,9 @@ class OrLoginForm extends CFormModel {
                 if (($this->_identity->errorCode == 1) or ( $this->_identity->errorCode == 2))
                     $this->addError('password', 'Username/Password combination is wrong');
                 elseif ($this->_identity->errorCode == 3)
-                    $this->addError('password', 'Your account is now In-Active');
+                    $this->addError('password', 'Your account is now In-Active. Please contact admin.');
                 elseif ($this->_identity->errorCode == 4)
-                    $this->addError('password', 'Your account is expired');
+                    $this->addError('password', 'Your account is expired. Please contact admin.');
                 else
                     $this->addError('password', 'Invalid Exception');
             endif;

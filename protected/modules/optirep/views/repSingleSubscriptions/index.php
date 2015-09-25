@@ -1,11 +1,6 @@
 <div class="cate-bg user-right">
     <h2> Subscription Details </h2>
 
-    <p>
-        Your Expiry Date :
-        <b><?php echo date("Y-m-d", strtotime(Yii::app()->user->rep_expiry_date)) ?></b>
-    </p>
-
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'htmlOptions' => array('role' => 'form'),

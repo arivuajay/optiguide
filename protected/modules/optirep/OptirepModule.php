@@ -15,11 +15,34 @@ class OptirepModule extends CWebModule {
             'optirep.models.*',
             'optirep.components.*',
         ));
-        
+
         Yii::app()->getComponent("booster");
     }
 
     public function beforeControllerAction($controller, $action) {
+        // Check the expiry date for Rep Single login and redirect to renew page       
+        if (isset(Yii::app()->user->id)) {
+            if (Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE) {
+
+                $_controller = $controller->id;
+                $_action = $action->id;
+                
+                $cntr_arr = array('repSingleSubscriptions', 'default');
+                $action_arr = array('logout');
+
+                $rep_credential = RepCredentials::model()->findByPk(Yii::app()->user->id);
+                $rep_expiry_date = $rep_credential['rep_expiry_date'];
+                $expdate = date("Y-m-d", strtotime($rep_expiry_date));
+
+                if ($expdate < date("Y-m-d")) {
+                    if (!in_array($_action, $action_arr) && !in_array($_controller, $cntr_arr)) {
+                        Yii::app()->user->setFlash('info', 'Your account has been expired. Please renewal and continue the site features.');
+                        Yii::app()->request->redirect("/optirep/repSingleSubscriptions");
+                    } 
+                }
+            }
+        }
+
         Yii::app()->user->loginUrl = array('/optirep/');
         if (parent::beforeControllerAction($controller, $action)) {
             // this method is called before any module controller action is performed

@@ -24,13 +24,13 @@ class OrIdentity extends CUserIdentity {
             $this->errorCode = self::ERROR_PASSWORD_INVALID; 
         } elseif ($user->rep_status == 0) {
             $this->errorCode = self::ERROR_ACCOUNT_INACTIVE; 
-        } elseif ($user->rep_role == RepCredentials::ROLE_SINGLE && $user->rep_expiry_date < date("Y-m-d")) {
+        } elseif ($user->rep_role == RepCredentials::ROLE_SINGLE && $user->rep_expiry_date < date("Y-m-d") && $user->rep_parent_id != 0) {
             $this->errorCode = self::ERROR_ACCOUNT_EXPIRED; 
         } else {
             $this->_id = $user->rep_credential_id;
             $this->setState('rep_role', $user->rep_role);
             $this->setState('rep_username', $user->rep_username);
-            $this->setState('rep_expiry_date', $user->rep_expiry_date);
+            $this->setState('rep_parent_id', $user->rep_parent_id);
             $this->errorCode = self::ERROR_NONE;
         }
         return !$this->errorCode;

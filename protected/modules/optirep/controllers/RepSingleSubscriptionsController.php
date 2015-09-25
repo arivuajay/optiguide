@@ -26,7 +26,7 @@ class RepSingleSubscriptionsController extends ORController {
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('index', 'transactions'),
                 'users' => array('@'),
-                'expression' => 'Yii::app()->user->rep_role=="single"'
+                'expression' => array('RepSingleSubscriptionsController','allowOnlyRepSingleWithNoParent')
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions' => array(''),
@@ -36,6 +36,13 @@ class RepSingleSubscriptionsController extends ORController {
                 'users' => array('*'),
             ),
         );
+    }
+    
+
+    public static function allowOnlyRepSingleWithNoParent() {
+        if (Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE && Yii::app()->user->rep_parent_id == 0) {
+            return true;
+        } 
     }
 
     public function actionIndex() {
@@ -82,7 +89,7 @@ class RepSingleSubscriptionsController extends ORController {
 
         $this->render('index', array(
             'model' => $model,
-            'price_calculation' => $price_calculation
+            'price_calculation' => $price_calculation,
         ));
     }
 

@@ -159,12 +159,15 @@ class RepAccountsController extends ORController {
 
         $model = new RepCredentials;
         if (isset($_POST['btnSubmit'])) {
+            $rep_admin_old_active_accounts = $model->getRepAdminActiveAccountsCount();
+            $no_of_accounts_purchase = $_POST['RepCredentials']['no_of_accounts_purchase'];
+            
             $new_subscription = array();
             $new_subscription['rep_credential_id'] = Yii::app()->user->id;
-            $new_subscription['rep_admin_old_active_accounts'] = $model->getRepAdminActiveAccountsCount();
-            $new_subscription['no_of_accounts_purchase'] = $_POST['RepCredentials']['no_of_accounts_purchase'];
+            $new_subscription['rep_admin_old_active_accounts'] = $rep_admin_old_active_accounts;
+            $new_subscription['no_of_accounts_purchase'] = $no_of_accounts_purchase;
             $new_subscription['total_no_of_accounts'] = $rep_admin_old_active_accounts + $no_of_accounts_purchase;
-            $new_subscription['price_list'] = Myclass::repAdminBuyMoreAccountsPriceCalculation($new_subscription['total_no_of_accounts'], $new_subscription['no_of_accounts_purchase']);
+            $new_subscription['price_list'] = Myclass::repAdminBuyMoreAccountsPriceCalculation($new_subscription['total_no_of_accounts'], $no_of_accounts_purchase);
 
             $price_list = $new_subscription['price_list'];
 
