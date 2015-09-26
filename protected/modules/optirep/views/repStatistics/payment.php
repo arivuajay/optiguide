@@ -1,59 +1,63 @@
 <div class="cate-bg user-right">
     <h2> Statistics Payment </h2>
-    <?php     
+    <?php
     $repid = Yii::app()->user->id;
     $criteria1 = new CDbCriteria();
-    $criteria1->addCondition("user_id=".$repid);
+    $criteria1->addCondition("user_id=" . $repid);
     $criteria1->addCondition("NOMTABLE='rep_credentials'");
     $criteria1->addCondition("(subscription_type='3' || subscription_type='4')");
     $criteria1->order = 'id DESC';
     $criteria1->limit = 1;
     $get_transactions = PaymentTransaction::model()->find($criteria1);
-    
-    $subprices     = SupplierSubscriptionPrice::model()->findByPk(1);
-    $stats_price   = $subprices->rep_statistics_price;
+
+    $subprices = SupplierSubscriptionPrice::model()->findByPk(1);
+    $stats_price = $subprices->rep_statistics_price;
     ?>
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <p>Here the following features are you get after the payment.</p>
-            <p>For representative user</p>
+            <b>For representative user</b>
             <ul>
-                <li>Track your own login statistics.</li>
+                <li><i class="fa fa-check-square-o"></i> Track your own login statistics.</li>
             </ul>
-            <p>For admin user</p>
+            <b>For admin user</b>
             <ul>
-                <li>Track your own login statistics.</li>
-                <li>Track your owned users login statistics.</li>
-                <li>Track your owned users viewed the user profiles (professional / retailer).</li>
+                <li><i class="fa fa-check-square-o"></i> Track your own login statistics.</li>
+                <li><i class="fa fa-check-square-o"></i> Track your owned users login statistics.</li>
+                <li><i class="fa fa-check-square-o"></i> Track your owned users viewed the user profiles (professional / retailer).</li>
             </ul>
-            <?php
-            $form = $this->beginWidget('CActiveForm', array(
-                'htmlOptions' => array('role' => 'form'),
-            ));
-            ?>            
-            <div class="row"> 
-                <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8"><h4> Subscription Fee: <?php echo $stats_price;?> CAD</h4></div> 
-                <?php if (!empty($get_transactions)) { 
-                    echo CHtml::hiddenField('subscription_type' , '4');
-                    $btntxt = "RENEW NOW";
-                   }else{ 
-                    echo CHtml::hiddenField('subscription_type' , '3');
-                    $btntxt = "PAY NOW";
-                   }?>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
-                    <?php
-                    echo CHtml::tag('button', array(
-                        'name' => 'btnSubmit',
-                        'value' => 'Payfee',
-                        'type' => 'submit',
-                        'class' => 'register-btn'
-                            ), '<i class="fa fa-arrow-circle-right"></i> ' .  $btntxt);
-                    ?>
-                </div>  
-            </div>            
-            <?php $this->endWidget(); ?>           
         </div>
     </div>
+    <?php
+    $form = $this->beginWidget('CActiveForm', array(
+        'htmlOptions' => array('role' => 'form'),
+    ));
+    ?>            
+    <div class="row"> 
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h4> Subscription Fee: <?php echo $stats_price; ?> CAD <i class="fa fa-dollar"></i></h4>
+        </div> 
+        <?php
+        if (!empty($get_transactions)) {
+            echo CHtml::hiddenField('subscription_type', '4');
+            $btntxt = "RENEW NOW";
+        } else {
+            echo CHtml::hiddenField('subscription_type', '3');
+            $btntxt = "PAY NOW";
+        }
+        ?>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
+            <?php
+            echo CHtml::tag('button', array(
+                'name' => 'btnSubmit',
+                'value' => 'Payfee',
+                'type' => 'submit',
+                'class' => 'register-btn'
+                    ), '<i class="fa fa-arrow-circle-right"></i> ' . $btntxt);
+            ?>
+        </div>  
+    </div>            
+    <?php $this->endWidget(); ?> 
     <?php if (!empty($get_transactions)) { ?>
 
         <h2> Payment details</h2>

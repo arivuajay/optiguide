@@ -57,7 +57,7 @@ and open the template in the editor.
 
 .ui-datepicker-prev, .ui-datepicker-next
 {
-   // display: none;
+    // display: none;
 }
 
 .ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
@@ -131,59 +131,59 @@ and open the template in the editor.
 //POLL
 #poll-form .form-radio,
 #portlet-poll-form .form-radio {
-  //float: left;
- // width: 2em;
+    //float: left;
+    // width: 2em;
 }
 #poll-form .pollchoice-id,
 #portlet-poll-form .pollchoice-id {
-  display: none;
-  visibility: hidden;
+    display: none;
+    visibility: hidden;
 }
 
 .poll-results .result {
     font-size: 12px!important;
 }
 .poll-results {
-  margin-bottom: .5em;
-  overflow: hidden;
+    margin-bottom: .5em;
+    overflow: hidden;
 }
 .poll-results .label {
-  font-weight: bold;
+    font-weight: bold;
 }
 .poll-results .bar {
-  background-color: #FFF;
-  height: 1em;
-/*  margin: .5em 0;*/
+    background-color: #FFF;
+    height: 1em;
+    /*  margin: .5em 0;*/
 }
 .poll-results .bar .fill {
-  background-color: #298DCD;
-  height: 1em;
+    background-color: #298DCD;
+    height: 1em;
 }
 .poll-results .totals {
-  text-align: right;
+    text-align: right;
 }
 
 
 .poll-item {
-  position: relative;
+    position: relative;
 }
 .poll-item .poll-id {
-  //color: #dedede;
-  //font-size: 24px;
- // font-weight: bold;
-  position: absolute;
- // right: 5px;
- // top: 5px;
+    //color: #dedede;
+    //font-size: 24px;
+    // font-weight: bold;
+    position: absolute;
+    // right: 5px;
+    // top: 5px;
 }
 
 .optinews-left-bg.polls-bg {
-  padding: 10px;
+    padding: 10px;
 }
 
 #portlet-poll-form label {
     font-size : 13px;
     font-weight: 400;
-        
+
 }
 
 // Supplier form - selected product display
@@ -266,7 +266,7 @@ and open the template in the editor.
 }
 
 .user-right tr.highlight{
-   background: #d9edf7 none repeat scroll 0 0;
+    background: #d9edf7 none repeat scroll 0 0;
 }
 
 #repbox {
@@ -288,4 +288,16 @@ and open the template in the editor.
     margin-top: 10px;
     padding: 15px;
     width: 100%;
+}
+
+.page{
+
+    text-align:center;
+}
+
+
+.page b{
+    font-size:200px;
+    color: #f0f0f0;
+    line-height: 200px;
 }

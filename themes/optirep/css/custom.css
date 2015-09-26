@@ -152,12 +152,12 @@ span.input-group-btn {
 }
 
 .no_of_accounts_input {
-  float: left;
-  width: auto;
+    float: left;
+    width: auto;
 }
 
 .user-right tr.highlight{
-   background: #d9edf7 none repeat scroll 0 0;
+    background: #d9edf7 none repeat scroll 0 0;
 }
 
 
@@ -173,4 +173,46 @@ span.input-group-btn {
     overflow: auto;
     padding: 0;
     width: 100%;
+}
+
+
+.page{
+
+    text-align:center;
+}
+
+
+.page b{
+    font-size:200px;
+    color: #f0f0f0;
+    line-height: 200px;
+
+}
+
+
+.user-right .btn-default {
+    background-color: #f0f0f0;
+    border-color: #ccc;
+    color: #333;
+    border: 1px solid #e5e5e5;
+    margin-top: 0px;
+    border-radius: 0px;
+    height:40px;
+}
+
+
+.user-right .bootstrap-select
+{
+    margin-bottom:15px;
+}
+
+.user-right ul{
+    margin: 0px;
+    padding: 0px;
+}
+
+
+.user-right ul li
+{
+    list-style: none;
 }
