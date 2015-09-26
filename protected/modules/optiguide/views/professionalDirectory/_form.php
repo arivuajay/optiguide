@@ -230,7 +230,7 @@
                             <?php echo $form->labelEx($model, 'SITE_WEB'); ?>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-                            <?php echo $form->textField($model, 'SITE_WEB', array('class' => 'form-txtfield')); ?>
+                            <?php echo $form->textField($model, 'SITE_WEB', array('class' => 'form-txtfield')); ?>(http://www.monsite.com )
                             <?php echo $form->error($model, 'SITE_WEB'); ?>
                         </div>
                     </div>

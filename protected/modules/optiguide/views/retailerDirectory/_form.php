@@ -231,7 +231,7 @@
                         <?php echo $form->labelEx($model, 'URL'); ?>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-                        <?php echo $form->textField($model, 'URL', array('class' => 'form-txtfield')); ?>
+                        <?php echo $form->textField($model, 'URL', array('class' => 'form-txtfield')); ?>(http://www.monsite.com )
                         <?php echo $form->error($model, 'URL'); ?>
                     </div>
                 </div>

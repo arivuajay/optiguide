@@ -371,7 +371,7 @@ $cities = Myclass::getallcities($model->region);
             </div>
 
             <div class="forms-cont"> 
-                <div class="forms-heading"><i class="fa fa-building"></i> <?php echo Myclass::t('OG130'); ?> </div>
+                <div class="forms-heading"><i class="fa fa-building"></i> <?php echo Myclass::t('OG134'); ?> </div>
                 <div class="row"> 
                     <?php if (Yii::app()->session['language'] == "EN") {
                         ?>  

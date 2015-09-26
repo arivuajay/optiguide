@@ -2,9 +2,13 @@
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'create-rep-account-form',
         ));
+
+    $country = Myclass::getallcountries();
+    $regions = Myclass::getallregions($profile->country);
+    $cities = Myclass::getallcities($profile->region);
 ?>
 <div class="cate-bg user-right">
-    <?php if($model->isNewRecord){ ?>
+    <?php if ($model->isNewRecord) { ?>
         <h2> Create New Rep Account </h2>
     <?php } else { ?>
         <h2> Edit Rep Account </h2>
@@ -41,10 +45,30 @@ $form = $this->beginWidget('CActiveForm', array(
             <?php echo $form->textField($profile, 'rep_profile_phone', array('class' => "form-field")); ?>
         </div>
 
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <?php echo $form->labelEx($profile, 'rep_address'); ?>
+            <?php echo $form->textField($profile, 'rep_address', array('class' => 'form-field')); ?>  
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <?php echo $form->labelEx($profile, 'country'); ?>
+            <?php echo $form->dropDownList($profile, 'country', $country, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <?php echo $form->labelEx($profile, 'region'); ?>
+            <?php echo $form->dropDownList($profile, 'region', $regions, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <?php echo $form->labelEx($profile, 'ID_VILLE'); ?>
+            <?php echo $form->dropDownList($profile, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
+        </div>
+
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php
             $button = 'Edit';
-            if($model->isNewRecord){
+            if ($model->isNewRecord) {
                 $button = 'Create';
             }
             echo CHtml::tag('button', array(
@@ -57,3 +81,43 @@ $form = $this->beginWidget('CActiveForm', array(
     </div>
 </div>
 <?php $this->endWidget(); ?>
+<?php
+$ajaxRegionUrl = Yii::app()->createUrl('/optirep/repCredential/getregions');
+$ajaxCityUrl = Yii::app()->createUrl('/optirep/repCredential/getcities');
+
+$js = <<< EOD
+    $(document).ready(function(){
+        $("#RepCredentialProfiles_country").change(function(){
+            var id=$(this).val();
+            var dataString = 'id='+ id;
+
+            $.ajax({
+                type: "POST",
+                url: '{$ajaxRegionUrl}',
+                data: dataString,
+                cache: false,
+                success: function(html){             
+                    $("#RepCredentialProfiles_region").html(html).selectpicker('refresh');
+                }
+             });
+        });
+
+       $("#RepCredentialProfiles_region").change(function(){
+            var id=$(this).val();
+            var dataString = 'id='+ id;
+
+            $.ajax({
+                type: "POST",
+                url: '{$ajaxCityUrl}',
+                data: dataString,
+                cache: false,
+                success: function(html){             
+                    $("#RepCredentialProfiles_ID_VILLE").html(html).selectpicker('refresh');
+                }
+             });
+
+        });
+});
+EOD;
+Yii::app()->clientScript->registerScript('_step2', $js);
+?>
