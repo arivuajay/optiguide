@@ -34,7 +34,7 @@ $themeUrl = $this->themeUrl;
                                         <td><input type="checkbox" name="repid[]" class="simple checkbox1" value="<?php echo $userinfo['rep_credential_id']; ?>"></td>
                                         <td>
                                             <?php
-                                            $dispname = $userinfo['rep_username'];
+                                            $dispname = $userinfo['rep_username'].",".$userinfo['NOM_VILLE'].",".$userinfo['ABREVIATION_EN'].",".$userinfo['NOM_PAYS_EN'];
                                             echo $dispname;
                                             //echo CHtml::link($dispname, array('/optiguide/retailerDirectory/view', 'id' => $userinfo['rep_credential_id']), array('target'=>'_blank')). " " . $userinfo['NOM_VILLE'] . "," . $userinfo['ABREVIATION_' . $this->lang] . "," . $userinfo['NOM_PAYS_' . $this->lang];
                                             ?>

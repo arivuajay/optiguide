@@ -87,16 +87,17 @@ class SuppliersDirectoryController extends OGController {
                 $rep_arr[] = $info2->rep_credential_id;
             }
             $imp_rep = (count($rep_arr) > 1) ? implode(',', $rep_arr) : $rep_arr[0];
-            $rep_query = " and rep_credential_id NOT IN (" . $imp_rep . ") ";
+            $rep_query = " and rc.rep_credential_id NOT IN (" . $imp_rep . ") ";
         }
-
-        // Get all records list  with limit
+       
+         // Get all records list  with limit
         $results = Yii::app()->db->createCommand() //this query contains all the data
-                ->select('*')
-                ->from(array('rep_credentials'))
-                ->where("rep_status='1' and rep_role='single' " . $rep_query)
-                ->order('rep_username ASC')
+                ->select('rc.rep_credential_id , rc.rep_username, NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
+                ->from(array('rep_credentials rc', 'rep_credential_profiles rcf', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
+                ->where("rc.rep_credential_id=rcf.rep_credential_id AND rcf.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and rc.rep_status='1' and rep_role='single' " . $rep_query)
+                ->order('rc.rep_username ASC')               
                 ->queryAll();
+
 
         $this->render('mappingreps', array('model' => $model, 'results' => $results));
     }
@@ -127,14 +128,14 @@ class SuppliersDirectoryController extends OGController {
             }
 
             $imp_rep = (count($rep_arr) > 1) ? implode(',', $rep_arr) : $rep_arr[0];
-            $rep_query = " and rep_credential_id IN (" . $imp_rep . ") ";
+            $rep_query = " and rc.rep_credential_id IN (" . $imp_rep . ") ";
 
-            // Get all records list  with limit
+             // Get all records list  with limit
             $results = Yii::app()->db->createCommand() //this query contains all the data
-                    ->select('*')
-                    ->from(array('rep_credentials'))
-                    ->where("rep_status='1' and rep_role='single' " . $rep_query)
-                    ->order('rep_username ASC')
+                    ->select('rc.rep_credential_id , rc.rep_username, NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
+                    ->from(array('rep_credentials rc', 'rep_credential_profiles rcf', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
+                    ->where("rc.rep_credential_id=rcf.rep_credential_id AND rcf.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and rc.rep_status='1' and rep_role='single' " . $rep_query)
+                    ->order('rc.rep_username ASC')               
                     ->queryAll();
         }
 
@@ -162,14 +163,14 @@ class SuppliersDirectoryController extends OGController {
                 $rep_arr[] = $info2->rep_credential_id;
             }
             $imp_rep = (count($rep_arr) > 1) ? implode(',', $rep_arr) : $rep_arr[0];
-            $rep_query = "  and rep_credential_id IN (" . $imp_rep . ") ";
+            $rep_query = "  and rc.rep_credential_id IN (" . $imp_rep . ") ";
 
             // Get all records list  with limit
             $results = Yii::app()->db->createCommand() //this query contains all the data
-                    ->select('*')
-                    ->from(array('rep_credentials'))
-                    ->where("rep_status='1' and rep_role='single' " . $rep_query)
-                    ->order('rep_username ASC')
+                    ->select('rc.rep_credential_id , rc.rep_username, NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
+                    ->from(array('rep_credentials rc', 'rep_credential_profiles rcf', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
+                    ->where("rc.rep_credential_id=rcf.rep_credential_id AND rcf.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and rc.rep_status='1' and rep_role='single' " . $rep_query)
+                    ->order('rc.rep_username ASC')               
                     ->queryAll();
         }
 

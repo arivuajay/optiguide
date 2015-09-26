@@ -10,7 +10,7 @@ $rdatas    = array();
 foreach ($results as $userinfo)
 {
     $rid = $userinfo['rep_credential_id'];
-    $dispname = $userinfo['rep_username'];              
+    $dispname = $userinfo['rep_username'].",".$userinfo['NOM_VILLE'].",".$userinfo['ABREVIATION_EN'].",".$userinfo['NOM_PAYS_EN'];
     $rdatas[$rid]= $dispname;  
 }
 ?>

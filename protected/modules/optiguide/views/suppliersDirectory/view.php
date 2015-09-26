@@ -197,7 +197,7 @@ if ($model['logo_expirydate'] != '') {
                                         <?php foreach ($results as $info) { ?>
                                             <li>
                                                 <?php
-                                                $dispname = $info['rep_username'];
+                                                $dispname = $info['rep_username'].",".$info['NOM_VILLE'].",".$info['ABREVIATION_EN'].",".$info['NOM_PAYS_EN'];
                                                 echo $dispname;
                                                 ?>
                                             </li>
