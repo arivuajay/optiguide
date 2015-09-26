@@ -190,7 +190,7 @@ span.input-group-btn {
 }
 
 
-.user-right .btn-default {
+.user-right.profile-pages .btn-default {
     background-color: #f0f0f0;
     border-color: #ccc;
     color: #333;
@@ -201,7 +201,7 @@ span.input-group-btn {
 }
 
 
-.user-right .bootstrap-select
+.user-right.profile-pages .bootstrap-select
 {
     margin-bottom:15px;
 }

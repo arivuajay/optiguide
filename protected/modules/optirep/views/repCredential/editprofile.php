@@ -1,4 +1,4 @@
-<div class="cate-bg user-right">
+<div class="cate-bg user-right profile-pages">
     <h2> Edit profile </h2>
     <?php
     $form = $this->beginWidget('CActiveForm', array(

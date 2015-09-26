@@ -7,7 +7,7 @@ $form = $this->beginWidget('CActiveForm', array(
     $regions = Myclass::getallregions($profile->country);
     $cities = Myclass::getallcities($profile->region);
 ?>
-<div class="cate-bg user-right">
+<div class="cate-bg user-right profile-pages">
     <?php if ($model->isNewRecord) { ?>
         <h2> Create New Rep Account </h2>
     <?php } else { ?>
