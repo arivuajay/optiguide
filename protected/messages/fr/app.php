@@ -171,7 +171,7 @@ return array(
     'OG152' => 'S\'il vous plaît sélectionnez tout {attribute}.',
     
      // Retailer form additional fields
-    'OG153' => 'TurnOver',
+    'OG153' => 'Chiffre d\'affaires (en $)',
     'OG154' => 'Classement des marchandises',
     'OG155' => 'Services offerts',
     'OG156' => 'Description',
