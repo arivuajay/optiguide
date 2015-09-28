@@ -54,7 +54,9 @@ class ClientProfiles extends CActiveRecord
                         array('Optipromo , Optinews , Envision_print ,Envision_digital,Envue_print,Envue_digital' , 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
+                        array('site_address','url'),
 			array('client_id, name, company, job_title, member_type, category, address, local_number, country, region, ville, phonenumber1, phonenumber2, mobile_number, tollfree_number, fax, email, site_address, subscription, created_date, modified_date', 'safe', 'on'=>'search'),
+                        array('local_number , phonenumber1, phonenumber2, mobile_number, tollfree_number', 'phoneNumber'),
 		);
 	}
 
@@ -71,6 +73,20 @@ class ClientProfiles extends CActiveRecord
                     'clientMessages' => array(self::HAS_MANY, 'ClientMessages', 'client_id'),
 		);
 	}
+        
+         /** 
+        * check the format of the phone number entered
+        * @param string $attribute the name of the attribute to be validated
+        * @param array $params options specified in the validation rule
+        */
+        public function phoneNumber($attribute,$params='')
+        {
+          if($this->$attribute!='' && preg_match("/[A-Za-z]+/",$this->$attribute)==1)
+          {            
+                $this->addError($attribute,'Invalid Format.' );          
+          }        
+        }
+
 
 	/**
 	 * @return array customized attribute labels (name=>label)

@@ -60,7 +60,7 @@ class RetailerDirectoryController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model  = new RetailerDirectory;
+        $model  = new RetailerDirectory('backend');
        // $umodel = new UserDirectory();
 
         $this->performAjaxValidation(array($model));
@@ -68,6 +68,7 @@ class RetailerDirectoryController extends Controller {
         if (isset($_POST['RetailerDirectory'])) {
             $model->attributes = $_POST['RetailerDirectory'];
             $model->image=CUploadedFile::getInstance($model,'image');
+            $model->pfile = CUploadedFile::getInstance($model,'pfile');
            // $umodel->attributes = $_POST['UserDirectory'];
      
           //  $model->ID_CLIENT = $umodel->USR;
@@ -105,7 +106,19 @@ class RetailerDirectoryController extends Controller {
                         mkdir($ret_img_path, 0777, true);
                     }
                     $model->image->saveAs($ret_img_path . $imgname);
-                }    
+                }  
+                
+                 // save proof file
+                if($model->pfile)
+                {   
+                    $filename = time() . '_' . $model->pfile->name;                    
+                    $model->proof_file = $filename;
+                    $proof_path = Yii::getPathOfAlias('webroot').'/'.PROOF_PATH.'/';                    
+                    if (!is_dir($proof_path)) {
+                        mkdir($proof_path, 0777, true);
+                    }
+                    $model->pfile->saveAs($proof_path . $filename);
+                }   
                                 
                 $model->save(false);
                // $umodel->ID_RELATION = $model->ID_RETAILER;
@@ -129,6 +142,7 @@ class RetailerDirectoryController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
+        $model->scenario = 'backend';
       //  $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation(array($model));
@@ -137,6 +151,7 @@ class RetailerDirectoryController extends Controller {
         if (isset($_POST['RetailerDirectory'])) {
             $model->attributes = $_POST['RetailerDirectory'];
              $model->image=CUploadedFile::getInstance($model,'image');
+             $model->pfile = CUploadedFile::getInstance($model,'pfile');
          //   $umodel->attributes = $_POST['UserDirectory'];
         //    $umodel->NOM_TABLE = $model::$NOM_TABLE;
        //     $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
@@ -168,7 +183,19 @@ class RetailerDirectoryController extends Controller {
                         mkdir($ret_img_path, 0777, true);
                     }
                     $model->image->saveAs($ret_img_path . $imgname);
-                }    
+                }  
+                
+                 // save proof file
+                if($model->pfile)
+                { 
+                    $filename = time() . '_' . $model->pfile->name;                    
+                    $model->proof_file = $filename;
+                    $proof_path = Yii::getPathOfAlias('webroot').'/'.PROOF_PATH.'/';                    
+                    if (!is_dir($proof_path)) {
+                        mkdir($proof_path, 0777, true);
+                    }
+                    $model->pfile->saveAs($proof_path . $filename);
+                }   
                 
              //   $umodel->save(false);
                 $model->save(false);

@@ -122,10 +122,19 @@ class RetailerDirectoryController extends OGController {
      * Lists all models.
      */
     public function actionIndex() {
+        
+        $sname_qry   = '';
+        $scat_query  = '';
+        $scntry_qry  = '';
+        $sregion_qry = '';  
+        $scity_qry   = ''; 
+        $spostal_qry = '';
       
-        $searchModel = new RetailerDirectory();                 
+        $searchModel = new RetailerDirectory();       
+        $searchModel->unsetAttributes();
     
-        $searchModel->country = isset($searchModel->country)?$searchModel->country: DEFAULTPAYS;        
+        $searchModel->country = isset($searchModel->country)?$searchModel->country: DEFAULTPAYS;      
+        $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country;
         
         //$page = (isset($_GET['page']) ? $_GET['page'] : 1);  // define the variable to “LIMIT” the query        
         $page  = Yii::app()->request->getParam('page');
@@ -136,28 +145,21 @@ class RetailerDirectoryController extends OGController {
          $offset = $page-1;   
          $limit  = LISTPERPAGE * $offset;
         }   
-        
-        $sname_qry   = '';
-        $scat_query  = '';
-        $scntry_qry  = '';
-        $sregion_qry = '';  
-        $scity_qry   = ''; 
-        $spostal_qry = '';
-        
-        
+             
         // $searchModel->unsetAttributes();
          if (isset($_GET['RetailerDirectory'])) {
              
              $searchModel->attributes = $_REQUEST['RetailerDirectory'];
             
-             $search_name    = isset($_GET['RetailerDirectory']['COMPAGNIE'])?$_GET['RetailerDirectory']['COMPAGNIE']:'';
-             $search_cat     = isset($_GET['RetailerDirectory']['searchcat'])?$_GET['RetailerDirectory']['searchcat']:'';
-             $search_country = isset($_GET['RetailerDirectory']['country'])?$_GET['RetailerDirectory']['country']:'';
-             $search_region  = isset($_GET['RetailerDirectory']['region'])?$_GET['RetailerDirectory']['region']:'';
-             $search_ville   = isset($_GET['RetailerDirectory']['ID_VILLE'])?$_GET['RetailerDirectory']['ID_VILLE']:'';
-             $search_postal  = isset($_GET['RetailerDirectory']['CODE_POSTAL'])?$_GET['RetailerDirectory']['CODE_POSTAL']:'';
-            
-             
+             $search_name     = isset($_GET['RetailerDirectory']['COMPAGNIE'])?$_GET['RetailerDirectory']['COMPAGNIE']:'';
+             $search_cat      = isset($_GET['RetailerDirectory']['searchcat'])?$_GET['RetailerDirectory']['searchcat']:'';
+             $search_country  = isset($_GET['RetailerDirectory']['country'])?$_GET['RetailerDirectory']['country']:'';
+             $search_region   = isset($_GET['RetailerDirectory']['region'])?$_GET['RetailerDirectory']['region']:'';
+             $search_ville    = isset($_GET['RetailerDirectory']['ID_VILLE'])?$_GET['RetailerDirectory']['ID_VILLE']:'';
+             $search_postal   = isset($_GET['RetailerDirectory']['CODE_POSTAL'])?$_GET['RetailerDirectory']['CODE_POSTAL']:'';
+             $search_ret_type = isset($_GET['RetailerDirectory']['ID_RETAILER_TYPE'])?$_GET['RetailerDirectory']['ID_RETAILER_TYPE']:'';
+             $search_group    = isset($_GET['RetailerDirectory']['ID_GROUPE'])?$_GET['RetailerDirectory']['ID_GROUPE']:'';
+    
              
              if( $search_name != '')
              {
@@ -194,6 +196,18 @@ class RetailerDirectoryController extends OGController {
                  $searchModel->CODE_POSTAL =  $search_postal;
                  $spostal_qry    = " AND CODE_POSTAL = ". $search_postal;
              }
+             
+             if($search_ret_type != '')
+             {
+                 $searchModel->ID_RETAILER_TYPE =  $search_ret_type;
+                 $srettype_qry    = " AND rs.ID_RETAILER_TYPE = ". $search_ret_type;
+             }
+             
+             if($search_group != '')
+             {
+                 $searchModel->ID_GROUPE =  $search_group;
+                 $sgroup_qry    = " AND ID_GROUPE = ". $search_group;
+             } 
             
          }
        
@@ -201,7 +215,7 @@ class RetailerDirectoryController extends OGController {
         $retail_query = Yii::app()->db->createCommand() //this query contains all the data
         ->select('ID_RETAILER , COMPAGNIE , NOM_TYPE_'.$this->lang.' ,  NOM_VILLE ,  NOM_REGION_'.$this->lang.' , ABREVIATION_'.$this->lang.' ,  NOM_PAYS_'.$this->lang.'')
         ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry)
+        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry.$srettype_qry.$sgroup_qry)
         ->order('COMPAGNIE')
         ->limit( LISTPERPAGE , $limit) // the trick is here!
         ->queryAll();
@@ -210,7 +224,7 @@ class RetailerDirectoryController extends OGController {
         $item_count = Yii::app()->db->createCommand() // this query get the total number of items,
         ->select('count(*) as count')
         ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry)
+        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry.$srettype_qry.$sgroup_qry)
         ->queryScalar(); // do not LIMIT it, this must count all items!
 
         // the pagination itself      

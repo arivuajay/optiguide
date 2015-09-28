@@ -13,13 +13,27 @@
     $country = Myclass::getallcountries();
     $regions = Myclass::getallregions($searchModel->country);
     $cities  = Myclass::getallcities($searchModel->region);
-    $categories  = array("1"=>Myclass::t('OG105'),"2"=>Myclass::t('OG106'),"3"=>Myclass::t('OG107'),"4"=>Myclass::t('OG108'),"5"=>Myclass::t('OG109'))
+    $categories  = array("1"=>Myclass::t('OG105'),"2"=>Myclass::t('OG106'),"3"=>Myclass::t('OG107'),"4"=>Myclass::t('OG108'),"5"=>Myclass::t('OG109'));
+    
+    $retailertypes = CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR');
+    $groupetypes = array();
+    if ($searchModel->ID_RETAILER_TYPE) {
+        $groupetypes = CHtml::listData(RetailerGroup::model()->findAll("ID_RETAILER_TYPE=" . $searchModel->ID_RETAILER_TYPE), 'ID_GROUPE', 'NOM_GROUPE');
+    }
     ?>
 
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 "> 
         <?php echo $form->textField($searchModel, 'COMPAGNIE', array('class' => 'txtfield','placeholder'=>Myclass::t('APP2'))); ?>
     </div>
     
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 ">                      
+     <?php echo $form->dropDownList($searchModel, 'ID_RETAILER_TYPE', $retailertypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG118'))); ?>                          
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 ">                      
+        <?php echo $form->dropDownList($searchModel, 'ID_GROUPE', $groupetypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG119'))); ?>                          
+    </div>
+
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
         <?php echo $form->dropDownList($searchModel, 'searchcat', $categories, array('class' => 'selectpicker', 'empty' => Myclass::t('OG048', '', 'og'))); ?> 
     </div>
@@ -49,6 +63,8 @@
 <?php
 $ajaxRegionUrl = Yii::app()->createUrl('/optiguide/calenderEvent/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/optiguide/calenderEvent/getcities');
+$ajaxGroupUrl = Yii::app()->createUrl('/optiguide/retailerDirectory/getgroups');
+
 $js = <<< EOD
     $(document).ready(function(){
     $("#RetailerDirectory_country").change(function(){
@@ -81,6 +97,21 @@ $js = <<< EOD
          });
 
     });
+            
+    $("#RetailerDirectory_ID_RETAILER_TYPE").change(function(){
+        var id=$(this).val();
+        var dataString = 'id='+ id;
+            
+        $.ajax({
+            type: "POST",
+            url: '{$ajaxGroupUrl}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#RetailerDirectory_ID_GROUPE").html(html).selectpicker('refresh');
+            }
+         });
+    });                 
 });
 EOD;
 Yii::app()->clientScript->registerScript('index', $js);

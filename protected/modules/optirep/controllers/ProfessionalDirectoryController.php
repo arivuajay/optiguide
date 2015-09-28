@@ -119,10 +119,18 @@ class ProfessionalDirectoryController extends ORController {
      * Lists all models.
      */
     public function actionIndex() {
+        
+        $sname_qry = '';
+        $scntry_qry = '';
+        $sregion_qry = '';
+        $scity_qry = '';
 
         $searchModel = new ProfessionalDirectory();
+        $searchModel->unsetAttributes();
 
         $searchModel->country = isset($searchModel->country) ? $searchModel->country : DEFAULTPAYS;
+        $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country; 
+            
 
         //$page = (isset($_GET['page']) ? $_GET['page'] : 1);  // define the variable to “LIMIT” the query        
         $page = Yii::app()->request->getParam('page');
@@ -134,11 +142,6 @@ class ProfessionalDirectoryController extends ORController {
             $limit = LISTPERPAGE * $offset;
         }
 
-        $sname_qry = '';
-        $scntry_qry = '';
-        $sregion_qry = '';
-        $scity_qry = '';
-
         // $searchModel->unsetAttributes();
         if (isset($_GET['ProfessionalDirectory'])) {
 
@@ -148,6 +151,8 @@ class ProfessionalDirectoryController extends ORController {
             $search_country = isset($_GET['ProfessionalDirectory']['country']) ? $_GET['ProfessionalDirectory']['country'] : '';
             $search_region = isset($_GET['ProfessionalDirectory']['region']) ? $_GET['ProfessionalDirectory']['region'] : '';
             $search_ville = isset($_GET['ProfessionalDirectory']['ID_VILLE']) ? $_GET['ProfessionalDirectory']['ID_VILLE'] : '';
+            $search_type   = isset($_GET['ProfessionalDirectory']['ID_TYPE_SPECIALISTE']) ? $_GET['ProfessionalDirectory']['ID_TYPE_SPECIALISTE'] : '';
+            $search_postal   = isset($_GET['ProfessionalDirectory']['CODE_POSTAL'])?$_GET['ProfessionalDirectory']['CODE_POSTAL']:'';
 
             if ($search_name != '') {
                 $searchModel->NOM = $search_name;
@@ -168,13 +173,24 @@ class ProfessionalDirectoryController extends ORController {
                 $searchModel->ID_VILLE = $search_ville;
                 $scity_qry = " AND rs.ID_VILLE = " . $search_ville;
             }
+            
+            if( $search_postal != '')
+             {
+                 $searchModel->CODE_POSTAL =  $search_postal;
+                 $spostal_qry    = " AND CODE_POSTAL = ". $search_postal;
+             }
+            
+             if ($search_type != '') {
+                $searchModel->ID_TYPE_SPECIALISTE = $search_type;
+                $stype_qry = " AND rs.ID_TYPE_SPECIALISTE = " . $search_type;
+            }
         }
 
         // Get all records list  with limit
         $prof_query = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
                 ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry)
+                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
                 ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
                 ->limit(LISTPERPAGE, $limit) // the trick is here!
                 ->queryAll();
@@ -183,7 +199,7 @@ class ProfessionalDirectoryController extends ORController {
         $item_count = Yii::app()->db->createCommand() // this query get the total number of items,
                 ->select('count(*) as count')
                 ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry)
+                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
                 ->queryScalar(); // do not LIMIT it, this must count all items!
         // the pagination itself      
         $pages = new CPagination($item_count);

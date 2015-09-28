@@ -111,6 +111,7 @@ class SuppliersDirectoryController extends Controller {
         $data_products = array();
 
         $model = $this->loadModel($id);
+        $model->scenario = 'backend';
        // $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
 
         // Uncomment the following line if AJAX validation is needed
@@ -172,6 +173,7 @@ class SuppliersDirectoryController extends Controller {
         if (isset($_POST['SuppliersDirectory'])) 
         {
             $model->attributes = $_POST['SuppliersDirectory'];
+            $model->pfile = CUploadedFile::getInstance($model,'pfile');
          //   $umodel->attributes = $_POST['UserDirectory'];
          //   $umodel->NOM_TABLE = $model::$NOM_TABLE;
          //   $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
@@ -186,6 +188,18 @@ class SuppliersDirectoryController extends Controller {
                 $sregion  = $_POST['SuppliersDirectory']['region'];
                 Yii::app()->user->setState("scountry", $scountry);
                 Yii::app()->user->setState("sregion", $sregion);
+                
+                  // save proof file
+                if($model->pfile)
+                {   
+                    $filename = time() . '_' . $model->pfile->name;                    
+                    $model->proof_file = $filename;
+                    $proof_path = Yii::getPathOfAlias('webroot').'/'.PROOF_PATH.'/';                    
+                    if (!is_dir($proof_path)) {
+                        mkdir($proof_path, 0777, true);
+                    }
+                    $model->pfile->saveAs($proof_path . $filename);
+                }   
 
                 $mattributes = $model->attributes;
               //  $uattributes = $umodel->attributes;
@@ -238,7 +252,7 @@ class SuppliersDirectoryController extends Controller {
         
         
 
-        $model = new SuppliersDirectory;
+        $model = new SuppliersDirectory('backend');
    //     $umodel = new UserDirectory();
 
         if(Yii::app()->user->hasState("secondtab") || Yii::app()->user->hasState("thirdtab"))
@@ -277,6 +291,7 @@ class SuppliersDirectoryController extends Controller {
         if (isset($_POST['SuppliersDirectory'])) {
 
             $model->attributes = $_POST['SuppliersDirectory'];
+            $model->pfile = CUploadedFile::getInstance($model,'pfile');
           //  $umodel->attributes = $_POST['UserDirectory'];
 
           //  $model->ID_CLIENT = $umodel->USR;
@@ -296,6 +311,18 @@ class SuppliersDirectoryController extends Controller {
                 $sregion  = $_POST['SuppliersDirectory']['region'];
                 Yii::app()->user->setState("scountry", $scountry);
                 Yii::app()->user->setState("sregion", $sregion);
+                
+                  // save proof file
+                if($model->pfile)
+                {   
+                    $filename = time() . '_' . $model->pfile->name;                    
+                    $model->proof_file = $filename;
+                    $proof_path = Yii::getPathOfAlias('webroot').'/'.PROOF_PATH.'/';                    
+                    if (!is_dir($proof_path)) {
+                        mkdir($proof_path, 0777, true);
+                    }
+                    $model->pfile->saveAs($proof_path . $filename);
+                }   
 
                 $mattributes = $model->attributes;
               //  $uattributes = $umodel->attributes;
@@ -308,8 +335,8 @@ class SuppliersDirectoryController extends Controller {
                 $this->redirect(array('addproducts'));
             }else
             {
-                $errores = $model->getErrors();
-                print_r($errores);
+                //$errores = $model->getErrors();
+                //print_r($errores);
                
             }    
         }
@@ -322,9 +349,11 @@ class SuppliersDirectoryController extends Controller {
 
         $data_products = array();
         
+        
+        
         if (Yii::app()->user->hasState("mattributes")) {
             $sess_attr_m = Yii::app()->user->getState("mattributes");
-        }
+        }       
          
         /* Set session value for edit form */
         if (!empty($sess_attr_m)) 

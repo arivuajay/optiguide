@@ -57,6 +57,9 @@ return array(
     'BUSINESSEMAIL' => 'vasanth@arkinfotec.com', 
     
     // retailer logo path
-    'RET_IMG_PATH' => 'uploads/retailer_logos/'
+    'RET_IMG_PATH' => 'uploads/retailer_logos/',
+    
+    // Proof uploaded path
+    'PROOF_PATH' => 'uploads/user_proofs/',
 );
 

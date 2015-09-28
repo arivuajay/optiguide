@@ -322,6 +322,26 @@
                     </div>     
                 </div>
                 
+                 <div class="form-group"> 
+                    <?php echo $form->labelEx($model, 'pfile', array('class' => 'col-sm-2 control-label')); ?>                   
+                    <div class="col-sm-5">     
+                        <?php echo $form->fileField($model, 'pfile'); ?>                         
+                        <?php echo $form->error($model, 'pfile'); ?>
+                    </div>
+                </div>
+                <?php if($model->proof_file!='')
+                {
+                     $file_url  = Yii::app()->getBaseUrl(true).'/uploads/user_proofs/'.$model->proof_file; 
+                    ?>   
+               <div class="form-group"> 
+                   <label for="ProfessionalDirectory_prooffile" class="col-sm-2 control-label">&nbsp;</label>
+                   <div class="col-sm-5">     
+                    <a href="<?php echo $file_url;?>" target="_blank">Click to view the proof</a>  
+                   </div> 
+                </div>
+                <?php                 
+                }?>
+                
 
                 <!--                  <div class="form-group">
                 <?php //echo $form->labelEx($umodel, 'MUST_VALIDATE', array('class' => 'col-sm-2 control-label'));   ?>       

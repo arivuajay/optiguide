@@ -18,7 +18,7 @@
                 'enableAjaxValidation' => true,
             ));
 
-            $professional_types = CHtml::listData(ProfessionalType::model()->findAll(), 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_FR');
+            $professional_types = CHtml::listData(ProfessionalType::model()->findAll(), 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_'.$this->lang.'');
             $country = Myclass::getallcountries();
             $regions = Myclass::getallregions($model->country);
             $cities = Myclass::getallcities($model->region);

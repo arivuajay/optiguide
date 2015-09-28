@@ -64,7 +64,7 @@
                     <?php
                     $form = $this->beginWidget('CActiveForm', array(
                         'id' => 'suppliers-directory-form',
-                        'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal'),
+                        'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'), 
                         'action' => $actn_url ,
                         'clientOptions' => array(
                             'validateOnSubmit' => true,
@@ -185,6 +185,22 @@
                                     <?php echo $form->textField($model, 'TEL_SECONDAIRE', array('class' => 'form-control', 'size' => 20, 'maxlength' => 20)); ?>
                                     <?php echo $form->error($model, 'TEL_SECONDAIRE'); ?>
                                 </div>
+                                
+                                <div class="form-group"> 
+                                    <?php echo $form->labelEx($model, 'pfile', array()); ?>                  
+                                    <?php echo $form->fileField($model, 'pfile'); ?>                         
+                                    <?php echo $form->error($model, 'pfile'); ?>                                    
+                                </div>
+                                <?php if($model->proof_file!='')
+                                {
+                                     $file_url  = Yii::app()->getBaseUrl(true).'/uploads/user_proofs/'.$model->proof_file; 
+                                    ?>   
+                                <div class="form-group">    
+                                     <a href="<?php echo $file_url;?>" target="_blank">Click to view the proof</a>                                    
+                                 </div>
+                                <?php                 
+                                }?>
+                                
                                 <div class="box-header">
                                     <h3 class="box-title">Visualisation</h3>
                                 </div>
