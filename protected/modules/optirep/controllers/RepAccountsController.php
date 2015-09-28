@@ -74,22 +74,19 @@ class RepAccountsController extends ORController {
                 $model->rep_role = RepCredentials::ROLE_SINGLE;
                 $model->rep_parent_id = Yii::app()->user->id;
                 $model->rep_expiry_date = $current_plan['rep_admin_subscription_end'];
-                
-               
 
                 if ($model->save(false)) {
-                    
                     $address = $profile->rep_address;
                     $country = $profile->country;
-                    $region  = $profile->region;
-                    $cty     = $profile->ID_VILLE;
+                    $region = $profile->region;
+                    $cty = $profile->ID_VILLE;
                     $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
                     if ($geo_values != '') {
                         $exp_latlong = explode('~', $geo_values);
-                        $profile->rep_lat  = $exp_latlong[0];
+                        $profile->rep_lat = $exp_latlong[0];
                         $profile->rep_long = $exp_latlong[1];
-                    }                    
-                    
+                    }
+
                     //Rep Profile Insert
                     $profile->rep_credential_id = $model->rep_credential_id;
                     $profile->save(false);
@@ -128,22 +125,21 @@ class RepAccountsController extends ORController {
 
             $valid = $model->validate();
             $valid = $profile->validate() && $valid;
-            
 
             if ($valid) {
                 if ($model->save(false)) {
-                    
+
                     $address = $profile->rep_address;
                     $country = $profile->country;
-                    $region  = $profile->region;
-                    $cty     = $profile->ID_VILLE;
+                    $region = $profile->region;
+                    $cty = $profile->ID_VILLE;
                     $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
                     if ($geo_values != '') {
                         $exp_latlong = explode('~', $geo_values);
-                        $profile->rep_lat  = $exp_latlong[0];
+                        $profile->rep_lat = $exp_latlong[0];
                         $profile->rep_long = $exp_latlong[1];
-                    } 
-                    
+                    }
+
                     $profile->save(false);
                     Yii::app()->user->setFlash('success', "Rep account edited successfully!!!");
                     $this->redirect(array('edit', 'id' => $id));
@@ -188,7 +184,7 @@ class RepAccountsController extends ORController {
         if (isset($_POST['btnSubmit'])) {
             $rep_admin_old_active_accounts = $model->getRepAdminActiveAccountsCount();
             $no_of_accounts_purchase = $_POST['RepCredentials']['no_of_accounts_purchase'];
-            
+
             $new_subscription = array();
             $new_subscription['rep_credential_id'] = Yii::app()->user->id;
             $new_subscription['rep_admin_old_active_accounts'] = $rep_admin_old_active_accounts;

@@ -1,7 +1,8 @@
 <?php
-class RepFavouritesController extends ORController
-{
-      /**
+
+class RepFavouritesController extends ORController {
+
+    /**
      * @return array action filters
      */
     public function filters() {
@@ -36,9 +37,8 @@ class RepFavouritesController extends ORController
         );
     }
 
-    
-    public function actionIndex()
-    {
-            $this->render('index');
+    public function actionIndex() {
+        $this->render('index');
     }
+
 }

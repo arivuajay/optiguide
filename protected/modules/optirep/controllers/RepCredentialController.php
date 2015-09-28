@@ -236,7 +236,7 @@ class RepCredentialController extends ORController {
                     $profile->rep_lat = $exp_latlong[0];
                     $profile->rep_long = $exp_latlong[1];
                 }
-                
+
                 $model->save(false);
                 $profile->save(false);
 
