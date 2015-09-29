@@ -98,4 +98,14 @@ $command = Yii::app()->db->createCommand($sql)->execute();
         </div>
     </div>
 </div>    
-
+<?php
+$js = <<< EOD
+    var objDiv = document.getElementById("box1");
+    objDiv.scrollTop = objDiv.scrollHeight;
+    
+   $(document).ready(function(){      
+        $('#box1').scrollTop($('#box1')[0].scrollHeight);
+     });        
+EOD;
+Yii::app()->clientScript->registerScript('_form_prof', $js);
+?>

@@ -71,9 +71,8 @@ class InternalMessageController extends OGController {
                 $model->save(false);
                 
                 // Get rep infos
-                $rep_id     = $convid;
-                $condition  = " NOM_TABLE='rep_credentials' AND ID_RELATION='$sess_id' ";
-                $ufrm_infos = UserDirectory::model()->find($condition);
+                $rep_id     = $model->user2;
+                $ufrm_infos = UserDirectory::model()->findByPk($rep_id);
                 $rep_name   = $ufrm_infos->NOM_UTILISATEUR;
                 $rep_email  = $ufrm_infos->COURRIEL;
                 $todaydate  = date("d-m-Y");
@@ -82,7 +81,7 @@ class InternalMessageController extends OGController {
                 {    
                     /* Send notification mail to rep */
                     $mail         = new Sendmail();
-                    $nextstep_url = REPURL.'/optirep/internalMessage/readmessage/convid/' .$model->id1;           
+                    $nextstep_url = REPURL.'optirep/internalMessage/readmessage/convid/' .$model->id1;           
                     $subject      = SITENAME." - ".Yii::app()->user->name." sent message for you ( ".$todaydate." )";
                     $trans_array  = array(
                         "{SITENAME}" => SITENAME,

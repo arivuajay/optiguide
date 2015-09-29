@@ -87,7 +87,7 @@ class InternalMessageController extends ORController {
                 $ret_name    = $ret_infos->NOM_UTILISATEUR;
                 $ret_email   = $ret_infos->COURRIEL;
                 $todaydate   = date("d-m-Y");
-                
+              
                 if($ret_email!= '')
                 {    
                     /* Send notification mail to rep */
@@ -134,7 +134,9 @@ class InternalMessageController extends ORController {
             if ($valid) {
             
                 // conversation id
-                $model->message = nl2br($_POST['InternalMessage']['message']);
+                $conv_message   = nl2br($_POST['InternalMessage']['message']);
+                $model->message = $conv_message;
+               
                 $model->id1 = $convid;
                 // Sender
                 $model->user1 = $session_userid;
@@ -145,6 +147,30 @@ class InternalMessageController extends ORController {
                 $model->user2read = "no";
                              
                 $model->save(false);
+                
+                // Get rep infos
+                $ret_prof_id = $model->user2;
+                $ret_infos   = UserDirectory::model()->findByPk($ret_prof_id);
+                $ret_name    = $ret_infos->NOM_UTILISATEUR;
+                $ret_email   = $ret_infos->COURRIEL;
+                $todaydate   = date("d-m-Y");
+              
+                if($ret_email!= '')
+                {    
+                    /* Send notification mail to rep */
+                    $mail         = new Sendmail();
+                    $nextstep_url = GUIDEURL.'optiguide/internalMessage/readmessage/convid/' .$model->id1;           
+                    $subject      = SITENAME." - ".$ufrm_infos->NOM_UTILISATEUR." sent message for you ( ".$todaydate." )";
+                    $trans_array  = array(
+                        "{SITENAME}" => SITENAME,
+                        "{NAME}"     => $ufrm_infos->NOM_UTILISATEUR,
+                        "{RNAME}"    => $ret_name,
+                        "{MESSAGE}"  => $conv_message,
+                        "{NEXTSTEPURL}" => $nextstep_url,
+                    );
+                    $message = $mail->getMessage('internalmessage_notify', $trans_array);
+                    $mail->send($ret_email, $subject, $message);
+                } 
 
                 Yii::app()->user->setFlash('success', "Message send successfully!!!");
                 $this->redirect(array('index'));

@@ -71,3 +71,10 @@ $command = Yii::app()->db->createCommand($sql)->execute();
      <?php $this->endWidget(); ?>
     </div>   
 </div>
+<?php
+$js = <<< EOD
+    var objDiv = document.getElementById("box1");
+    objDiv.scrollTop = objDiv.scrollHeight;
+EOD;
+Yii::app()->clientScript->registerScript('_form_prof', $js);
+?>
