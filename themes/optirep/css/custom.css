@@ -236,3 +236,31 @@ span.input-group-btn {
     -moz-box-shadow       : inset 0px 0px 2px 0px rgba(50, 50, 50, 0.75);
     box-shadow            : inset 0px 0px 2px 0px rgba(50, 50, 50, 0.75);
 }
+
+.form-field-textarea {
+    border: 1px solid #e5e5e5;
+    float: left;
+    padding: 10px;
+    width: 100%;
+}
+
+ /*------Model Form CSS--------*/
+.model-form .form-field {
+  background: #f0f0f0 none repeat scroll 0 0;
+  margin-bottom: 15px;
+}
+
+.model-form .form-field-textarea {
+  background: #f0f0f0 none repeat scroll 0 0;
+  margin-bottom: 15px;
+}
+
+.model-form .btn-default {
+    background-color: #f0f0f0;
+    border-color: #ccc;
+    color: #333;
+    border: 1px solid #e5e5e5;
+    margin-top: 0px;
+    border-radius: 0px;
+    height:40px;
+}
