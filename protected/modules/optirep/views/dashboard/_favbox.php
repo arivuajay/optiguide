@@ -54,7 +54,7 @@ $rep_id = Yii::app()->user->id;
                 }
                 $fav_rets .= "<div class='viewall'>" . CHtml::link(Myclass::t('OG038', '', 'og'), array('/optirep/repFavourites'), array('class' => '')) . "</div>";
             } else {
-                $fav_rets = "<p class='fav_message'>You have no favorite retailers right now.See the retailers and professionals listing and make it your favorite!!!.</p>";
+                $fav_rets = "<p class='fav_message'>You have no favorite users right now.See the retailers and professionals users and make it your favorite!!!.</p>";
             }
             echo $fav_rets;
         }

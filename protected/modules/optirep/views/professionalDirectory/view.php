@@ -4,7 +4,27 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
             <div class="inner-container eventslist-cont">         
                 <h2> <?php echo $model['PRENOM']; ?>  <?php echo $model['NOM']; ?>  , <?php echo $model['TYPE_SPECIALISTE_' . $this->lang]; ?></h2>
-                <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('/optirep/internalMessage/createnew/id/' . $model['ID_UTILISATEUR']), array("class" => "pull-right")); ?>
+                 <?php
+                $rep_id = Yii::app()->user->id;
+                $userid = $model['ID_UTILISATEUR'];      
+                $criteria = new CDbCriteria;
+                $criteria->condition = 'rep_credential_id=:repid and ID_UTILISATEUR= :retid';
+                $criteria->params = array(":repid" => $rep_id, ":retid" => $userid);
+                $favourites = RepFavourites::model()->find($criteria);
+                $fav_user = $favourites->ID_UTILISATEUR;
+                ?>
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 pull-right"> 
+                    <div class="addfav-btn">          
+                        <input name="FAV" type="checkbox" id="FAV" value="<?php echo $model['ID_UTILISATEUR']; ?>" <?php
+                        if ($fav_user !='') {
+                            echo "checked=checked";
+                        }
+                        ?>>  Add to Favorites 
+                    </div>
+                     <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('/optirep/internalMessage/createnew/id/' . $model['ID_UTILISATEUR']), array("class" => "pull-right")); ?>
+                </div>
+                
+               
                 <div class="search-list">                   
                     <p><strong><?php echo $model['BUREAU']; ?></strong><br>
                         <?php echo $model['ADRESSE']; ?>. <br/> 
@@ -49,7 +69,6 @@
 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#sendMessage">
     Send Message
 </button>
-
 <!-- Modal -->
 <div class="modal fade" id="sendMessage" role="dialog">
     <div class="modal-dialog">
@@ -93,3 +112,42 @@
         </div>
     </div>
 </div>
+<?php
+$ajaxUpdatefav = Yii::app()->createUrl('/optirep/repFavourites/updatefav');
+$js = <<< EOD
+$(document).ready(function(){
+        
+    $('input').iCheck({
+                    checkboxClass: 'icheckbox_flat-pink',
+                    radioClass: 'iradio_flat-pink'
+                });
+        
+    $('.box').lionbars();    
+        
+    $('input[name="FAV"]').on('ifClicked', function(event){      
+      
+        var ret_val =  $(this).attr("value");   
+        if($(this).attr('checked')){
+            var fav_status = 'removefav';
+        }else{
+       
+            var fav_status = 'addfav';
+        }
+        
+        var dataString = 'id='+ ret_val+'&favstatus='+fav_status;
+           $.ajax({
+               type: "POST",
+               url: '{$ajaxUpdatefav}',
+               data: dataString,
+               cache: false,
+               success: function(html){             
+               }
+            });
+      
+    });  
+
+        
+});
+EOD;
+Yii::app()->clientScript->registerScript('_form_view', $js);
+?>

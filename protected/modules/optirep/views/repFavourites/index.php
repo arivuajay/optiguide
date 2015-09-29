@@ -1,5 +1,5 @@
 <div class="cate-bg user-right">
-    <h2> Favorite Retailers </h2>
+    <h2> Favorite Users </h2>
     <div class="row">     
         <?php
         $rep_id = Yii::app()->user->id;
@@ -15,7 +15,7 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
                     <tr>
                         <th width="9%">S. No</th>
-                        <th width="20%"> COMPAGNIE</th>
+                        <th width="20%"> Username</th>
                         <th width="18%"> Type </th>
                         <th width="16%"> Actions </th>
                     </tr>
