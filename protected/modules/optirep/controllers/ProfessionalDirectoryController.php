@@ -50,6 +50,7 @@ class ProfessionalDirectoryController extends ORController {
         $searchModel->unsetAttributes();
         $results    = array();
         
+        
         $rep_id    = Yii::app()->user->id;
         $profil_id = $id;
         $today  = date('Y-m-d');
@@ -107,6 +108,36 @@ class ProfessionalDirectoryController extends ORController {
                 ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
                 ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND  ru.NOM_TABLE ='Professionnels' AND ru.status=1 AND ID_SPECIALISTE=$id")
                 ->queryRow();
+        
+        // Send report change to admin
+        if(isset($_POST['ReportSubmit']))
+        {
+            // Reported by
+            $rep_name    = Yii::app()->user->rep_username;
+            
+            $uname   = $prof_query['PRENOM'].' '.$prof_query['NOM'];
+            $reason  =   $_POST['report_reason'];
+            $message =  $_POST['report_message'];
+            
+             /* Send notification mail to admin */
+            $mail         = new Sendmail();
+            $user_url = ADMIN_URL.'admin/professionalDirectory/update/id/' .$prof_query['ID_SPECIALISTE'];            
+            $enc_url = Myclass::refencryption($user_url);
+            $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
+            $subject      = SITENAME." - ".$rep_name." representative report the user ( ".$uname." )";
+            $trans_array  = array(
+                "{SITENAME}" => SITENAME,
+                "{NAME}"     => $uname,
+                "{MESSAGE}"  => $message,
+                "{REASON}"   => $reason,
+                "{NEXTSTEPURL}" => $nextstep_url,
+            );
+            $message = $mail->getMessage('report_change', $trans_array);
+            $mail->send(ADMIN_EMAIL, $subject, $message);
+                    
+            Yii::app()->user->setFlash('success', "Report sent successfully to admin!!!");    
+            $this->redirect(array('view', 'id'=>$id));
+        }   
 
         $this->render('view', array(
             'model' => $prof_query,

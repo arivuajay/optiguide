@@ -4,42 +4,46 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
             <div class="inner-container eventslist-cont">         
                 <h2> <?php echo $model['PRENOM']; ?>  <?php echo $model['NOM']; ?>  , <?php echo $model['TYPE_SPECIALISTE_' . $this->lang]; ?></h2>
-                 <?php
-                $rep_id = Yii::app()->user->id;
-                $userid = $model['ID_UTILISATEUR'];      
-                $criteria = new CDbCriteria;
-                $criteria->condition = 'rep_credential_id=:repid and ID_UTILISATEUR= :retid';
-                $criteria->params = array(":repid" => $rep_id, ":retid" => $userid);
-                $favourites = RepFavourites::model()->find($criteria);
-                $fav_user = $favourites->ID_UTILISATEUR;
-                ?>
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 pull-right"> 
-                    <div class="addfav-btn">          
-                        <input name="FAV" type="checkbox" id="FAV" value="<?php echo $model['ID_UTILISATEUR']; ?>" <?php
-                        if ($fav_user !='') {
-                            echo "checked=checked";
-                        }
-                        ?>>  Add to Favorites 
-                    </div>
-                     <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('/optirep/internalMessage/createnew/id/' . $model['ID_UTILISATEUR']), array("class" => "pull-right")); ?>
-                </div>
-                
-               
-                <div class="search-list">                   
-                    <p><strong><?php echo $model['BUREAU']; ?></strong><br>
-                        <?php echo $model['ADRESSE']; ?>. <br/> 
-                        <?php echo $model['NOM_VILLE']; ?>,  <?php echo $model['NOM_REGION_' . $this->lang]; ?><br/> 
-                        <?php echo $model['NOM_PAYS_' . $this->lang]; ?><br/> 
-                        <?php echo $model['CODE_POSTAL']; ?>
-                    </p>
-                    <p> <?php echo Myclass::t('OG041', '', 'og'); ?> : <?php echo $model['TELEPHONE']; ?><br>                       
-                        <?php echo Myclass::t('OG042', '', 'og'); ?> : <?php echo $model['TELECOPIEUR']; ?><br>                      
-                    </p>
-                </div>
-                <div class="clearfix"></div>               
-                <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/professionalDirectory'), array("class" => "pull-left")); ?> </div>  
             </div>
-        </div>
+        </div>    
+        <?php
+        $rep_id = Yii::app()->user->id;
+        $userid = $model['ID_UTILISATEUR'];      
+        $criteria = new CDbCriteria;
+        $criteria->condition = 'rep_credential_id=:repid and ID_UTILISATEUR= :retid';
+        $criteria->params = array(":repid" => $rep_id, ":retid" => $userid);
+        $favourites = RepFavourites::model()->find($criteria);
+        $fav_user = $favourites->ID_UTILISATEUR;
+       ?>
+       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 pull-right"> 
+           <div class="addfav-btn">          
+               <input name="FAV" type="checkbox" id="FAV" value="<?php echo $model['ID_UTILISATEUR']; ?>" <?php
+               if ($fav_user !='') {
+                   echo "checked=checked";
+               }
+               ?>>  Add to Favorites 
+           </div>
+            <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('/optirep/internalMessage/createnew/id/' . $model['ID_UTILISATEUR']), array("class" => "pull-right")); ?>
+            <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> Report a change', array('/optirep/professionalDirectory/reportuser/id/' . $model['ID_SPECIALISTE']), array("class" => "pull-right","data-toggle" => "modal","data-target"=>"#sendMessage")); ?>
+       </div>
+                
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">         
+            <div class="search-list">                   
+                <p><strong><?php echo $model['BUREAU']; ?></strong><br>
+                    <?php echo $model['ADRESSE']; ?>. <br/> 
+                    <?php echo $model['NOM_VILLE']; ?>,  <?php echo $model['NOM_REGION_' . $this->lang]; ?><br/> 
+                    <?php echo $model['NOM_PAYS_' . $this->lang]; ?><br/> 
+                    <?php echo $model['CODE_POSTAL']; ?>
+                </p>
+                <p> <?php echo Myclass::t('OG041', '', 'og'); ?> : <?php echo $model['TELEPHONE']; ?><br>                       
+                    <?php echo Myclass::t('OG042', '', 'og'); ?> : <?php echo $model['TELECOPIEUR']; ?><br>                      
+                </p>
+            </div>
+        </div>     
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">            
+           <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/professionalDirectory'), array("class" => "pull-left")); ?> </div>  
+        </div>        
+           
         <?php if (!empty($results)) { ?>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
                 <h2> <?php echo Myclass::t('OGO158', '', 'og'); ?> </h2> 
@@ -66,49 +70,46 @@
     </div>
 </div>  
 
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#sendMessage">
-    Send Message
-</button>
-<!-- Modal -->
+<!-- Report Modal Box-->
 <div class="modal fade" id="sendMessage" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Send Message</h4>
+                <h4 class="modal-title">Send Report</h4>
             </div>
+             <?php
+            $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'report_form',
+                'htmlOptions' => array('role' => 'form'),               
+            ));
+            ?>
             <div class="modal-body model-form">
                 <div class="row"> 
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <label>Username: </label>
-                        <textarea class="form-field-textarea"></textarea>
-                    </div>  
-
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <label>Username: </label>
-                        <input type="text" class="form-field">
-                    </div>  
-
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <label>Username: </label>
-                        <select class="selectpicker">
-                            <option>Option1</option>
-                            <option>Option2</option>
-                            <option>Option3</option>
+                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label>Report as </label>
+                        <select class="selectpicker" name="report_reason">
+                            <option value="moved">Moved</option>
+                            <option value="closed">Closed</option>                         
                         </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label>Comments </label>
+                        <textarea class="form-field-textarea" name="report_message"></textarea>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <?php
                 echo CHtml::tag('button', array(
-                    'name' => 'btnSubmit',
+                    'name' => 'ReportSubmit',
                     'type' => 'submit',
                     'class' => 'register-btn'
-                        ), 'Submit');
+                        ), 'Send');
                 ?>
             </div>
+            <?php $this->endWidget(); ?>
         </div>
     </div>
 </div>

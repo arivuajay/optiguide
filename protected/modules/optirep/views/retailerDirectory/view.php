@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 addfav">         
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 pull-right">      
             <div class="addfav-btn">          
                 <input name="FAV" type="checkbox" id="FAV" value="<?php echo $model['ID_UTILISATEUR']; ?>" <?php
                 if ($fav_retailer !='') {
@@ -25,6 +25,7 @@
                 ?>>  Add to Favorites 
             </div>
             <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('/optirep/internalMessage/createnew/id/'.$model['ID_UTILISATEUR']),array("class"=>"pull-right")); ?>
+            <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> Report a change', array('/optirep/retailerDirectory/reportuser/id/' . $model['ID_RETAILER']), array("class" => "pull-right","data-toggle" => "modal","data-target"=>"#sendMessage")); ?>
         </div>   
         
          <?php
@@ -156,7 +157,51 @@
         <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/retailerDirectory'), array("class" => "pull-left")); ?> </div>  
         </div>
     </div>
-</div>   
+</div>  
+
+<!-- Report Modal Box-->
+<div class="modal fade" id="sendMessage" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Send Report</h4>
+            </div>
+             <?php
+            $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'report_form',
+                'htmlOptions' => array('role' => 'form'),               
+            ));
+            ?>
+            <div class="modal-body model-form">
+                <div class="row"> 
+                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label>Report as </label>
+                        <select class="selectpicker" name="report_reason">
+                            <option value="moved">Moved</option>
+                            <option value="closed">Closed</option>                         
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label>Comments </label>
+                        <textarea class="form-field-textarea" name="report_message"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <?php
+                echo CHtml::tag('button', array(
+                    'name' => 'ReportSubmit',
+                    'type' => 'submit',
+                    'class' => 'register-btn'
+                        ), 'Send');
+                ?>
+            </div>
+            <?php $this->endWidget(); ?>
+        </div>
+    </div>
+</div>
 <?php
 $ajaxUpdatefav = Yii::app()->createUrl('/optirep/repFavourites/updatefav');
 $js = <<< EOD
