@@ -245,12 +245,7 @@ span.input-group-btn {
 }
 
  /*------Model Form CSS--------*/
-.model-form .form-field {
-  background: #f0f0f0 none repeat scroll 0 0;
-  margin-bottom: 15px;
-}
-
-.model-form .form-field-textarea {
+.model-form .form-field,.model-form .form-field-textarea  {
   background: #f0f0f0 none repeat scroll 0 0;
   margin-bottom: 15px;
 }
