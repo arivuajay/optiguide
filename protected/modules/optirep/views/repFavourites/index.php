@@ -4,10 +4,10 @@
         <?php
         $rep_id = Yii::app()->user->id;
         $myfavourites = Yii::app()->db->createCommand() //this query contains all the data
-                ->select('rr.ID_RETAILER,rr.COMPAGNIE,rt.NOM_TYPE_' . $this->lang)
-                ->from(array('rep_favourites rf', 'repertoire_retailer rr', 'repertoire_retailer_type AS rt'))
-                ->where("rr.ID_RETAILER=rf.ID_RETAILER AND rt.ID_RETAILER_TYPE=rr.ID_RETAILER_TYPE AND rf.rep_credential_id =" . $rep_id)
-                ->order(',rf.id desc')
+                ->select('ru.NOM_UTILISATEUR,ru.NOM_TABLE,ru.ID_RELATION')
+                ->from(array('rep_favourites rf', 'repertoire_utilisateurs ru'))
+                ->where("rf.ID_UTILISATEUR=ru.ID_UTILISATEUR AND ru.status=1 AND (ru.NOM_TABLE='Professionnels' OR ru.NOM_TABLE='Detaillants') AND rf.rep_credential_id =" . $rep_id)
+                ->order('rf.id desc')
                 ->queryAll();
         ?>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">  
@@ -24,13 +24,24 @@
                     if (!empty($myfavourites)) {
                         $i=1;
                         foreach ($myfavourites as $favinfo) {
+                          
+                            $utype = '';
+                            if($favinfo['NOM_TABLE']=='Professionnels')
+                            {
+                                $viewpage = "professionalDirectory";
+                                $utype    = "Professionals";
+                            }elseif($favinfo['NOM_TABLE']=='Detaillants')
+                            {
+                                $viewpage = "retailerDirectory";
+                                $utype    = "Retailers";
+                            } 
                             ?>
                             <tr>
                                 <td><?php echo $i++; ?></td>
-                                <td><?php echo CHtml::link( $favinfo['COMPAGNIE'], array('/optirep/retailerDirectory/view', 'id' => $favinfo['ID_RETAILER'])); ?></td>
-                                <td><?php echo $favinfo['NOM_TYPE_'.$this->lang]; ?></td>                               
+                                <td><?php echo CHtml::link( $favinfo['NOM_UTILISATEUR'], array('/optirep/'.$viewpage.'/view', 'id' => $favinfo['ID_RELATION'])); ?></td>
+                                <td><?php echo $utype; ?></td>                               
                                 <td>
-                                    <div class="addfav-btn-listing"><input name="FAV" type="checkbox" checked=checked id="FAV" value="<?php echo $favinfo['ID_RETAILER']; ?>"></div>
+                                    <div class="addfav-btn-listing"><input name="FAV" type="checkbox" checked=checked id="FAV" value="<?php echo $favinfo['ID_UTILISATEUR']; ?>"></div>
                                 </td>
                             </tr>
                         <?php } ?>

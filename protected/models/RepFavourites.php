@@ -6,7 +6,7 @@
  * The followings are the available columns in table 'rep_favourites':
  * @property integer $id
  * @property integer $rep_credential_id
- * @property integer $ID_RETAILER
+ * @property integer $ID_UTILISATEUR
  */
 class RepFavourites extends CActiveRecord
 {
@@ -26,10 +26,10 @@ class RepFavourites extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('rep_credential_id, ID_RETAILER', 'numerical', 'integerOnly'=>true),
+			array('rep_credential_id, ID_UTILISATEUR', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, rep_credential_id, ID_RETAILER', 'safe', 'on'=>'search'),
+			array('id, rep_credential_id, ID_UTILISATEUR', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -53,7 +53,7 @@ class RepFavourites extends CActiveRecord
 		return array(
 			'id' => Myclass::t('ID'),
 			'rep_credential_id' => Myclass::t('Rep Credential'),
-			'ID_RETAILER' => Myclass::t('Id Retailer'),
+			'ID_UTILISATEUR' => Myclass::t('Id Retailer'),
 		);
 	}
 
@@ -77,7 +77,7 @@ class RepFavourites extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('rep_credential_id',$this->rep_credential_id);
-		$criteria->compare('ID_RETAILER',$this->ID_RETAILER);
+		$criteria->compare('ID_UTILISATEUR',$this->ID_RETAILER);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

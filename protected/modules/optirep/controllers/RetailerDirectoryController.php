@@ -29,7 +29,7 @@ class RetailerDirectoryController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view','getgroups','updatefav'),  
+                'actions' => array('index', 'view','getgroups'),  
                 'users' => array('@'),
                 'expression' => 'Yii::app()->user->rep_role!="admin"'
             ),
@@ -110,7 +110,7 @@ class RetailerDirectoryController extends ORController {
         $retail_query = Yii::app()->db->createCommand() //this query contains all the data
         ->select('rs.* , ru.ID_UTILISATEUR  ,  NOM_TYPE_'.$this->lang.' ,  NOM_VILLE ,  NOM_REGION_'.$this->lang.' , ABREVIATION_'.$this->lang.' ,  NOM_PAYS_'.$this->lang.'')
         ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ID_RETAILER=$id")
+        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.status=1 AND ru.NOM_TABLE='Detaillants' AND ID_RETAILER=$id")
         ->queryRow();
               
         $this->render('view', array(
@@ -247,31 +247,6 @@ class RetailerDirectoryController extends ORController {
            ));
      
     }
-    
-    public function actionupdatefav()
-    {
-        $rep_id     = Yii::app()->user->id;
-        $retailerid = isset($_POST['id']) ? $_POST['id'] : '';        
-        $favstatus  = isset($_POST['favstatus']) ? $_POST['favstatus'] : '';
-        
-        if($favstatus!='' && $retailerid!='' && $rep_id!='')
-        {
-            if($favstatus=="removefav")
-            {
-                $criteria = new CDbCriteria;
-                $criteria->condition = 'rep_credential_id=:repid and ID_RETAILER= :retid'; 
-                $criteria->params = array(":repid" => $rep_id, ":retid" => $retailerid);
-                $favourites = RepFavourites::model()->find($criteria);
-                $favourites->delete();
-            }  else {
-               $favourites = new RepFavourites;
-               $favourites->rep_credential_id = $rep_id;
-               $favourites->ID_RETAILER  = $retailerid;
-               $favourites->save();
-            }    
-        }    
-    }        
-
 
     public function actionGetGroups() {
         $options = '';

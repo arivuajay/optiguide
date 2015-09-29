@@ -3,14 +3,12 @@
     <div class="row"> 
         <?php
         $rep_id = Yii::app()->user->id;
-        $retailerid = $model['ID_RETAILER'];
+        $retailerid = $model['ID_UTILISATEUR'];      
         $criteria = new CDbCriteria;
-        $criteria->condition = 'rep_credential_id=:repid and ID_RETAILER= :retid';
+        $criteria->condition = 'rep_credential_id=:repid and ID_UTILISATEUR= :retid';
         $criteria->params = array(":repid" => $rep_id, ":retid" => $retailerid);
         $favourites = RepFavourites::model()->find($criteria);
-        $fav_retailer = $favourites->ID_RETAILER;
-
-        $param_id = Yii::app()->getRequest()->getQuery('id');
+        $fav_retailer = $favourites->ID_UTILISATEUR;
         ?>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-8"> 
             <div class="inner-container eventslist-cont">         
@@ -20,8 +18,8 @@
 
         <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 addfav">         
             <div class="addfav-btn">          
-                <input name="FAV" type="checkbox" id="FAV" value="<?php echo $model['ID_RETAILER']; ?>" <?php
-                if ($fav_retailer == $param_id) {
+                <input name="FAV" type="checkbox" id="FAV" value="<?php echo $model['ID_UTILISATEUR']; ?>" <?php
+                if ($fav_retailer !='') {
                     echo "checked=checked";
                 }
                 ?>>  Add to Favorites 
@@ -160,7 +158,7 @@
     </div>
 </div>   
 <?php
-$ajaxUpdatefav = Yii::app()->createUrl('/optirep/retailerDirectory/updatefav');
+$ajaxUpdatefav = Yii::app()->createUrl('/optirep/repFavourites/updatefav');
 $js = <<< EOD
 $(document).ready(function(){
         
