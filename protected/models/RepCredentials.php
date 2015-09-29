@@ -164,22 +164,6 @@ class RepCredentials extends CActiveRecord {
         return parent::beforeSave();
     }
 
-    public function afterSave() {
-        parent::afterSave();
-        if ($this->isNewRecord) {
-            $umodel = new UserDirectory();
-            $umodel->LANGUE = Yii::app()->session['language'];
-            $umodel->NOM_UTILISATEUR = $this->rep_username;
-            $umodel->USR = Myclass::getRandomString(8);
-            $umodel->PWD = Myclass::getRandomString(8);
-            $umodel->NOM_TABLE = self::NAME_TABLE;
-            $umodel->sGuid = Myclass::getGuid();
-            $umodel->MUST_VALIDATE = 0;
-            $umodel->ID_RELATION = $this->rep_credential_id;
-            $umodel->save(false);
-        }
-    }
-
     public function scopes() {
         return array(
             'rep_admin_subscribers' => array(

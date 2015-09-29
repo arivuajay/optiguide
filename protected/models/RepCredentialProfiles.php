@@ -162,4 +162,33 @@ class RepCredentialProfiles extends CActiveRecord {
         return parent::afterFind();
     }
 
+    public function afterSave() {
+        parent::afterSave();
+        $rep_credential_id = $this->rep_credential_id;
+        $rep_name = $this->rep_profile_firstname . ' ' . $this->rep_profile_lastname;
+
+        $rep_user_exists = UserDirectory::model()->find('NOM_TABLE = :NOM AND ID_RELATION = :IDR', array(
+            ':NOM' => RepCredentials::NAME_TABLE,
+            ':IDR' => $rep_credential_id
+        ));
+
+        if ($rep_user_exists) {
+            $rep_user_exists->NOM_UTILISATEUR = $rep_name;
+            $rep_user_exists->COURRIEL = $this->rep_profile_email;
+            $rep_user_exists->save(false);
+        } else {
+            $umodel = new UserDirectory();
+            $umodel->LANGUE = Yii::app()->session['language'];
+            $umodel->NOM_UTILISATEUR = $rep_name;
+            $umodel->USR = Myclass::getRandomString(8);
+            $umodel->PWD = Myclass::getRandomString(8);
+            $umodel->COURRIEL = $this->rep_profile_email;
+            $umodel->NOM_TABLE = RepCredentials::NAME_TABLE;
+            $umodel->sGuid = Myclass::getGuid();
+            $umodel->MUST_VALIDATE = 0;
+            $umodel->ID_RELATION = $rep_credential_id;
+            $umodel->save(false);
+        }
+    }
+
 }
