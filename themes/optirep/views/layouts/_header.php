@@ -2,10 +2,28 @@
     <div class="header-row1"> 
         <div class="container">
             <div class="row"> 
-                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 col-lg-offset-4 welcome-user"> 
-                    <a class="btn btn-default">
-                        <i class="fa fa-envelope"><span class="icon_counter icon_counter_red">5</span></i>
-                    </a> &nbsp;
+                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 col-lg-offset-4 welcome-user">                    
+                    <?php 
+                    if( Yii::app()->user->rep_role == "single")
+                    {                         
+                        $mailicon = '';    
+                        $uid = isset(Yii::app()->user->user_id)?Yii::app()->user->user_id:'';
+                        if($uid!='')
+                        {    
+                            $condition_unread = "((user1=".$uid." AND user1read='no') OR (user2=".$uid." AND user2read='no'))";
+                            $dispcount = InternalMessage::model()->count($condition_unread);
+                            if($dispcount>0)
+                            {    
+                                $mailicon = "<i class='fa fa-envelope'><span class='icon_counter icon_counter_red'>".$dispcount."</span></i>";
+                            }else 
+                            {
+                                $mailicon = "<i class='fa fa-envelope'></i>";   
+                            }  
+                        }     
+                        echo CHtml::link($mailicon, array('/optirep/internalMessage/'),array("class"=>"btn btn-default")); 
+                        
+                    }    ?>
+                    &nbsp;
                     Welcome, <?php echo CHtml::link(Yii::app()->user->getState('rep_username'), array('/optirep/repCredential/editprofile')); ?>
                 </div>
                 <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2 login"> 

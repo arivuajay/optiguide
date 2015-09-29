@@ -57,6 +57,21 @@
             } else if (Yii::app()->user->role == "Fournisseurs") {
                 $profileurl = '/optiguide/suppliersDirectory/update';
             }
+            
+            $mailicon = '';
+            if (Yii::app()->user->role == "Professionnels" || Yii::app()->user->role == "Detaillants") 
+            { 
+                $uid = Yii::app()->user->id;
+                $condition_unread = "((user1=".$uid." AND user1read='no') OR (user2=".$uid." AND user2read='no'))";
+                $dispcount = InternalMessage::model()->count($condition_unread);
+                if($dispcount>0)
+                {    
+                 $mailicon = "<i class='fa fa-envelope'><span class='icon_counter icon_counter_red'>".$dispcount."</span></i>";
+                }else 
+                {
+                 $mailicon = "<i class='fa fa-envelope'></i>";   
+                }   
+            }
 
             // Current controller name
             $_controller = Yii::app()->controller->id;
@@ -81,7 +96,7 @@
                     array('label' => Myclass::t('OGO149', '', 'og'), 'url' => array('/optiguide/professionalDirectory/listretailers'), 'active' => ($_controller == 'professionalDirectory' && $_action == "listretailers"), 'visible' => (Yii::app()->user->role == "Professionnels")),
                     array('label' => Myclass::t('OGO160', '', 'og'), 'url' => array('/optiguide/professionalDirectory/retailersrequest'), 'active' => ($_controller == 'professionalDirectory' && $_action == "retailersrequest"), 'visible' => (Yii::app()->user->role == "Professionnels")),
                     // Internal messages
-                    array('label' => 'Internal Messages', 'url' => array('/optiguide/internalMessage/'), 'active' => $_controller == 'internalMessage', 'visible' => (Yii::app()->user->role == "Professionnels" || Yii::app()->user->role == "Detaillants")),   
+                    array('label' => 'Internal Messages &nbsp'.$mailicon, 'url' => array('/optiguide/internalMessage/'), 'active' => $_controller == 'internalMessage', 'visible' => (Yii::app()->user->role == "Professionnels" || Yii::app()->user->role == "Detaillants")),   
                     // For all users
                     array('label' => Myclass::t('OGO112', '', 'og'), 'url' => array('/optiguide/userDirectory/changepassword'), 'active' => ($_controller == "userDirectory" && $_action == "changepassword")),
                     array('label' => "<i class='fa fa-sign-out'></i> " . Myclass::t('OG025', '', 'og'), 'url' => array('/optiguide/default/logout')),

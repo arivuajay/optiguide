@@ -32,6 +32,14 @@ class OrIdentity extends CUserIdentity {
             $this->setState('rep_username', $user->rep_username);
             $this->setState('rep_parent_id', $user->rep_parent_id);
             $this->errorCode = self::ERROR_NONE;
+            
+            $sess_id    = $user->rep_credential_id;
+            $condition  = " NOM_TABLE='rep_credentials' AND ID_RELATION='$sess_id' ";
+            $ufrm_infos = UserDirectory::model()->find($condition);
+            if(!empty($ufrm_infos))
+            {    
+                $this->setState('user_id', $ufrm_infos->ID_UTILISATEUR);
+            }    
         }
         return !$this->errorCode;
     }

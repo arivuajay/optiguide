@@ -56,7 +56,8 @@ class InternalMessageController extends OGController {
             $valid = $model->validate();
             if ($valid) {
              
-                $model->message = nl2br($_POST['InternalMessage']['message']);
+                $conv_message   = nl2br($_POST['InternalMessage']['message']);
+                $model->message = $conv_message;
                 // conversation id
                 $model->id1 = $convid;
                 // Sender
@@ -68,7 +69,32 @@ class InternalMessageController extends OGController {
                 $model->user2read = "no";
                               
                 $model->save(false);
-
+                
+                // Get rep infos
+                $rep_id     = $convid;
+                $condition  = " NOM_TABLE='rep_credentials' AND ID_RELATION='$sess_id' ";
+                $ufrm_infos = UserDirectory::model()->find($condition);
+                $rep_name   = $ufrm_infos->NOM_UTILISATEUR;
+                $rep_email  = $ufrm_infos->COURRIEL;
+                $todaydate  = date("d-m-Y");
+                
+                if($rep_email!= '')
+                {    
+                    /* Send notification mail to rep */
+                    $mail         = new Sendmail();
+                    $nextstep_url = REPURL.'/optirep/internalMessage/readmessage/convid/' .$model->id1;           
+                    $subject      = SITENAME." - ".Yii::app()->user->name." sent message for you ( ".$todaydate." )";
+                    $trans_array  = array(
+                        "{SITENAME}" => SITENAME,
+                        "{NAME}"     => Yii::app()->user->name,
+                        "{RNAME}"    => $rep_name,
+                        "{MESSAGE}"  => $conv_message,
+                        "{NEXTSTEPURL}" => $nextstep_url,
+                    );
+                    $message = $mail->getMessage('internalmessage_notify', $trans_array);
+                    $mail->send($rep_email, $subject, $message);
+                }    
+          
                 Yii::app()->user->setFlash('success', "Message send successfully!!!");
                 $this->redirect(array('index'));
             }
