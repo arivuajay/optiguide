@@ -26,6 +26,7 @@
             </div>
             <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('/optirep/internalMessage/createnew/id/'.$model['ID_UTILISATEUR']),array("class"=>"pull-right")); ?>
             <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> Report a change', array('/optirep/retailerDirectory/reportuser/id/' . $model['ID_RETAILER']), array("class" => "pull-right","data-toggle" => "modal","data-target"=>"#sendMessage")); ?>
+             <?php echo CHtml::link('<i class="fa fa fa-edit"></i> Take Note', array('/optirep/retailerDirectory/preparenote/id/' . $model['ID_UTILISATEUR']), array("class" => "pull-right","data-toggle" => "modal","data-target"=>"#preparenote")); ?>
         </div>   
         
          <?php
