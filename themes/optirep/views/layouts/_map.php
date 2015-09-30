@@ -117,7 +117,8 @@
                                 $dispname  = $rinfo['NOM'].",".$rinfo['PRENOM'].",".$rinfo['NOM_VILLE'].",".$rinfo['ABREVIATION_'.$this->lang].",".$rinfo['NOM_PAYS_'.$this->lang];                                 
                             }elseif ($_controller=="retailerDirectory") {
                                 $titlename = $rinfo['COMPAGNIE'];
-                                $dispname  = $rinfo['COMPAGNIE'].",".$rinfo['NOM_VILLE'].",".$rinfo['ABREVIATION_'.$this->lang].",".$rinfo['NOM_PAYS_'.$this->lang]."( ".$rinfo['classification'].")"; 
+                                $classify = ($rinfo['classification']!='')?"(".$rinfo['classification'].")":'';
+                                $dispname  = $rinfo['COMPAGNIE'].",".$rinfo['NOM_VILLE'].",".$rinfo['ABREVIATION_'.$this->lang].",".$rinfo['NOM_PAYS_'.$this->lang].$classify; 
                             }   
                              
                             $info_window = new EGMapInfoWindow('<div>'.$dispname.'</div>');
