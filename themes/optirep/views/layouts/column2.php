@@ -47,11 +47,10 @@
                         'activeCssClass' => 'active',
                         'items' => array(
                             array('label' => '<i class="fa fa-pencil-square-o"></i> Edit Profile', 'url' => array('/optirep/repCredential/editprofile')),
-                            array('label' => ' <i class="fa fa-money"></i>
- Subscription Details', 'url' => array('/optirep/repAccounts/subscriptions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN),
+                            array('label' => '<i class="fa fa-money"></i> Subscription Details', 'url' => array('/optirep/repAccounts/subscriptions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN),
                             array('label' => '<i class="fa fa-exchange"></i> Transaction Details', 'url' => array('/optirep/repAccounts/transactions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN),
                             array('label' => '<i class="fa fa-briefcase"></i> Manage Rep Accounts', 'url' => array('/optirep/repAccounts/index'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN)),
-                            array('label' => 'Subscription Details', 'url' => array('/optirep/repSingleSubscriptions/index'), 'visible' => (Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE && Yii::app()->user->rep_parent_id == 0)),
+                            array('label' => '<i class="fa fa-money"></i> Subscription Details', 'url' => array('/optirep/repSingleSubscriptions/index'), 'visible' => (Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE && Yii::app()->user->rep_parent_id == 0)),
                             array('label' => '<i class="fa fa-exchange"></i> Transaction Details', 'url' => array('/optirep/repSingleSubscriptions/transactions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE && Yii::app()->user->rep_parent_id == 0),
                             array('label' => '<i class="fa fa-envelope"></i> Internal Messages', 'url' => array('/optirep/internalMessage/index'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE)),
                             array('label' => '<i class="fa fa-heart"></i> Favourite Users', 'url' => array('/optirep/repFavourites/index'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE),
