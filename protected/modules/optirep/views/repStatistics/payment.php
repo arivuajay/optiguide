@@ -14,12 +14,14 @@
     $stats_price = $subprices->rep_statistics_price;
     ?>
     <div class="row"> 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 stats-tips">
             <p>Here the following features are you get after the payment.</p>
             <b>For representative user</b>
             <ul>
                 <li><i class="fa fa-check-square-o"></i> Track your own login statistics.</li>
             </ul>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 stats-tips">
             <b>For admin user</b>
             <ul>
                 <li><i class="fa fa-check-square-o"></i> Track your own login statistics.</li>
