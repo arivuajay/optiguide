@@ -43,7 +43,15 @@
             <div class="small-box bg-yellow">
                 <div class="inner">
                     <p>
-                        <?php echo CHtml::link('Create New <br/> Rep Account', array('/optirep/repAccounts/create'), array('class' => 'pull-right')) ?>
+                        <?php
+                        $can_buy = RepAdminSubscriptions::model()->canBuyMoreAccounts();
+                        $current_plan = RepAdminSubscriptions::model()->getCurrentPlan();
+                        if (!empty($current_plan)) {
+                            echo CHtml::link('Create New <br> Rep Account', array('/optirep/repAccounts/create'));
+                        } elseif ($can_buy) {
+                            echo CHtml::link('Buy More Rep Accounts', array('/optirep/repAccounts/buyMoreAccounts'));
+                        }
+                        ?>
                     </p>
                 </div>
                 <div class="icon">
@@ -53,17 +61,9 @@
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-lg-offset-8">
-            <table class="table table-responsive table-bordered">
-                
-                
-                <tr>
-                    <td colspan="2">
-                        <?php echo CHtml::link('Buy More Rep Accounts', array('/optirep/repAccounts/buyMoreAccounts'), array('class' => 'pull-right')) ?>
-                    </td>
-                </tr>
-            </table>
-        </div>
+
+
+
         <?php $repAdminSubscribers = RepCredentials::model()->rep_admin_subscribers()->findAll(); ?>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">  
             <div class="table-responsive">

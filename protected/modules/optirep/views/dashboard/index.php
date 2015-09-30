@@ -1,12 +1,11 @@
- <?php 
- $topbanner = Myclass::banner_display(7);
- if($topbanner!='')
- {    
- ?>
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ad1"> 
-    <!--  Optirep top banner- position - 7 -->
-   <?php echo $topbanner;?>
-</div>
+<?php
+$topbanner = Myclass::banner_display(7);
+if ($topbanner != '') {
+    ?>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ad1"> 
+        <!--  Optirep top banner- position - 7 -->
+        <?php echo $topbanner; ?>
+    </div>
 <?php } ?>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 dashboard-userinfo"> 
@@ -67,13 +66,11 @@
         $latest_news = NewsManagement::model()->latest_rep()->findAll();
         if (!empty($latest_news)) {
             foreach ($latest_news as $latest_new) {
-
                 $dispname = (strlen($latest_new['TITRE']) >= 55) ? substr($latest_new['TITRE'], 0, 55) . '..' : $latest_new['TITRE'];
                 ?>
                 <div class="lastest-newscont">
                     <div class="lastest-newsconttxt"> 
-                        <strong><?php echo CHtml::link($dispname, array('/optirep/newsManagement/view', 'id' => $latest_new['ID_NOUVELLE'])); ?></strong><br/> 
-                        <?php //echo substr($latest_new['SYNOPSYS'],0,50).'...';    ?>
+                        <?php echo CHtml::link($dispname, array('/optirep/newsManagement/view', 'id' => $latest_new['ID_NOUVELLE'])); ?> <br/> 
                     </div>
                     <div class="lastest-date"> <span> <?php echo date("M", strtotime($latest_new['DATE_AJOUT1'])) . ' ' . date("d", strtotime($latest_new['DATE_AJOUT1'])) ?> </span> </div>
                 </div>  
@@ -83,13 +80,12 @@
     </div>   
 </div>
 
- <?php 
- $bottombanner = Myclass::banner_display(8);
- if($bottombanner!='')
- {    
- ?>
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ad1"> 
-    <!--  Optirep bottom banner- position - 8 -->
-   <?php echo $bottombanner;?>
-</div>
-<?php } ?>
+<?php
+$bottombanner = Myclass::banner_display(8);
+if ($bottombanner != '') {
+    ?>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ad1"> 
+        <!--  Optirep bottom banner- position - 8 -->
+    <?php echo $bottombanner; ?>
+    </div>
+    <?php } ?>
