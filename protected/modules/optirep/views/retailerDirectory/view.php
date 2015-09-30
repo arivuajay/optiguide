@@ -10,24 +10,43 @@
         $favourites = RepFavourites::model()->find($criteria);
         $fav_retailer = $favourites->ID_UTILISATEUR;
         ?>
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-8"> 
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
             <div class="inner-container eventslist-cont">         
                 <h2> <?php echo $model['COMPAGNIE']; ?></h2>
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 pull-right">      
+        <div class="users-links">
+            
+               <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
             <div class="addfav-btn">          
                 <input name="FAV" type="checkbox" id="FAV" value="<?php echo $model['ID_UTILISATEUR']; ?>" <?php
-                if ($fav_retailer !='') {
+                if ($fav_user != '') {
                     echo "checked=checked";
                 }
                 ?>>  Add to Favorites 
             </div>
-            <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('/optirep/internalMessage/createnew/id/'.$model['ID_UTILISATEUR']),array("class"=>"pull-right")); ?>
-            <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> Report a change', array('/optirep/retailerDirectory/reportuser/id/' . $model['ID_RETAILER']), array("class" => "pull-right","data-toggle" => "modal","data-target"=>"#sendMessage")); ?>
-            <?php echo CHtml::link('<i class="fa fa fa-edit"></i> Take Note', array('/optirep/retailerDirectory/preparenote/id/' . $model['ID_UTILISATEUR']), array("class" => "pull-right","data-toggle" => "modal","data-target"=>"#preparenote")); ?>
-        </div>   
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('/optirep/internalMessage/createnew/id/'.$model['ID_UTILISATEUR']),array("class"=>"addfav-btn pull-right")); ?>
+                
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> Report a change', array('/optirep/retailerDirectory/reportuser/id/' . $model['ID_RETAILER']), array("class" => "addfav-btn pull-right","data-toggle" => "modal","data-target"=>"#sendMessage")); ?>
+            
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <?php echo CHtml::link('<i class="fa fa fa-edit"></i> Take Note', array('/optirep/retailerDirectory/preparenote/id/' . $model['ID_UTILISATEUR']), array("class" => "addfav-btn  pull-right","data-toggle" => "modal","data-target"=>"#preparenote")); ?>
+           
+        </div>
+            
+        </div>
+     
+
+        <div class="clearfix"></div>
         
          <?php
         if ($model['FICHIER'] != '') {
@@ -37,6 +56,8 @@
             <?php
         }
         ?>
+            
+            
 
 
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">  
