@@ -33,7 +33,7 @@
                             $rep_expiry_date = $rep_credential['rep_expiry_date'];
                             ?>
                             <p>
-                                Account Expiry Date :
+                                Expiry Date :
                                 <b><?php echo date("Y-m-d", strtotime($rep_expiry_date)) ?></b>
                             </p>
                         <?php } ?>
@@ -43,22 +43,24 @@
                     $stats_disp = Myclass::stats_display();
 
                     $this->widget('zii.widgets.CMenu', array(
+                        'encodeLabel' => false,
                         'activeCssClass' => 'active',
                         'items' => array(
-                            array('label' => 'Edit Profile', 'url' => array('/optirep/repCredential/editprofile')),
-                            array('label' => 'Subscription Details', 'url' => array('/optirep/repAccounts/subscriptions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN),
-                            array('label' => 'Transaction Details', 'url' => array('/optirep/repAccounts/transactions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN),
-                            array('label' => 'Manage Rep Accounts', 'url' => array('/optirep/repAccounts/index'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN)),
+                            array('label' => '<i class="fa fa-pencil-square-o"></i> Edit Profile', 'url' => array('/optirep/repCredential/editprofile')),
+                            array('label' => ' <i class="fa fa-money"></i>
+ Subscription Details', 'url' => array('/optirep/repAccounts/subscriptions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN),
+                            array('label' => '<i class="fa fa-exchange"></i> Transaction Details', 'url' => array('/optirep/repAccounts/transactions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN),
+                            array('label' => '<i class="fa fa-briefcase"></i> Manage Rep Accounts', 'url' => array('/optirep/repAccounts/index'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN)),
                             array('label' => 'Subscription Details', 'url' => array('/optirep/repSingleSubscriptions/index'), 'visible' => (Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE && Yii::app()->user->rep_parent_id == 0)),
-                            array('label' => 'Transaction Details', 'url' => array('/optirep/repSingleSubscriptions/transactions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE && Yii::app()->user->rep_parent_id == 0),
-                            array('label' => 'Internal Messages', 'url' => array('/optirep/internalMessage/index'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE)),
-                            array('label' => 'Favourite Users', 'url' => array('/optirep/repFavourites/index'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE),
-                            array('label' => 'My Notes', 'url' => array('/optirep/repNotes/index')),
-                            array('label' => 'My Stats', 'url' => array('/optirep/repStatistics/index'), 'visible' => ($stats_disp == "1")),
-                            array('label' => 'Users log stats', 'url' => array('/optirep/repStatistics/userslogstats'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN && $stats_disp == "1")),
-                            array('label' => 'Users profile viewed stats', 'url' => array('/optirep/repStatistics/profileviewstats'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN && $stats_disp == "1")),
-                            array('label' => 'Stats Payment/Infos', 'url' => array('/optirep/repStatistics/payment')),
-                            array('label' => 'Change Password', 'url' => array('/optirep/repCredential/changePassword')),
+                            array('label' => '<i class="fa fa-exchange"></i> Transaction Details', 'url' => array('/optirep/repSingleSubscriptions/transactions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE && Yii::app()->user->rep_parent_id == 0),
+                            array('label' => '<i class="fa fa-envelope"></i> Internal Messages', 'url' => array('/optirep/internalMessage/index'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE)),
+                            array('label' => '<i class="fa fa-heart"></i> Favourite Users', 'url' => array('/optirep/repFavourites/index'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE),
+                            array('label' => '<i class="fa fa-file-text-o"></i> My Notes', 'url' => array('/optirep/repNotes/index')),
+                            array('label' => '<i class="fa fa-line-chart"></i> My Stats', 'url' => array('/optirep/repStatistics/index'), 'visible' => ($stats_disp == "1")),
+                            array('label' => ' <i class="fa fa-users"></i> Users log stats', 'url' => array('/optirep/repStatistics/userslogstats'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN && $stats_disp == "1")),
+                            array('label' => '<i class="fa fa-eye"></i> Users profile viewed stats', 'url' => array('/optirep/repStatistics/profileviewstats'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN && $stats_disp == "1")),
+                            array('label' => '<i class="fa fa-credit-card"></i> Stats Payment/Infos', 'url' => array('/optirep/repStatistics/payment')),
+                            array('label' => '<i class="fa fa-key"></i> Change Password', 'url' => array('/optirep/repCredential/changePassword')),
                         ),
                     ));
                     ?>

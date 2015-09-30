@@ -1,5 +1,6 @@
 @charset "utf-8";
 /* CSS Document */
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700);
 
 body
 {
@@ -8,6 +9,7 @@ body
     font-size:16px;
     color:#2e2e2e;
     background:#f0f0f0;
+    font-family: 'Roboto', sans-serif;
 }
 
 a:focus
@@ -693,6 +695,7 @@ a {
     height:40px;
     padding:10px;
     border:#e5e5e5 solid 1px;
+    font-family: 'Lato', sans-serif;
 }
 
 .register-select .dropdown-toggle
@@ -700,6 +703,7 @@ a {
     border:none;
     height:40px;
     padding:10px;
+    
 }
 
 .form-group div
@@ -785,7 +789,7 @@ a {
 
 .user-left ul li
 {
-    font-weight:bold;
+
     list-style:none;
     padding:2px 0px 0px 0px;
 }
@@ -794,7 +798,7 @@ a {
 {
     color:#2e2e2e;
     display:block;
-    padding:8px 15px;
+    padding:8px 10px;
 }
 
 .user-right
@@ -818,8 +822,9 @@ a {
 {
     margin-top:0px;
     border-bottom:#f0f0f0 solid 1px;
-    padding-bottom:5px;
+    padding-bottom:10px;
     margin-bottom:25px;
+    font-weight:400;
 }
 
 
@@ -954,7 +959,8 @@ a {
     -moz-border-radius: 10px;
     border-radius: 10px;
     padding:15px 0px;
-    margin-bottom:15px;
+    margin-bottom:40px;
+    
 }
 
 .search-heading
@@ -1025,6 +1031,7 @@ a {
     width:100%;
     float:left;
     margin:0px 0px 0px 0px;
+     font-family: 'Lato', sans-serif;
 
 }
 
@@ -1117,7 +1124,7 @@ a {
     border: medium none;
     float: left;
     font-size: 18px;
-    font-weight: 700;
+  
     margin: 0 0 10px;
     padding: 10px;
     width: 100%;
@@ -1125,6 +1132,7 @@ a {
     -moz-border-radius: 5px;
     border-radius: 5px;
     color:#ffffff;
+    font-family: 'Roboto', sans-serif;
 
 }
 
@@ -1268,3 +1276,9 @@ a {
     padding: 5px;
 }
 
+
+
+.user-left ul li i{
+    font-size:13px;
+    padding-right: 7px;
+}

@@ -8,26 +8,42 @@
         </div>    
         <?php
         $rep_id = Yii::app()->user->id;
-        $userid = $model['ID_UTILISATEUR'];      
+        $userid = $model['ID_UTILISATEUR'];
         $criteria = new CDbCriteria;
         $criteria->condition = 'rep_credential_id=:repid and ID_UTILISATEUR= :retid';
         $criteria->params = array(":repid" => $rep_id, ":retid" => $userid);
         $favourites = RepFavourites::model()->find($criteria);
         $fav_user = $favourites->ID_UTILISATEUR;
-       ?>
-       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 pull-right"> 
-           <div class="addfav-btn">          
-               <input name="FAV" type="checkbox" id="FAV" value="<?php echo $model['ID_UTILISATEUR']; ?>" <?php
-               if ($fav_user !='') {
-                   echo "checked=checked";
-               }
-               ?>>  Add to Favorites 
-           </div>
-            <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('/optirep/internalMessage/createnew/id/' . $model['ID_UTILISATEUR']), array("class" => "pull-right")); ?>
-            <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> Report a change', array('/optirep/professionalDirectory/reportuser/id/' . $model['ID_SPECIALISTE']), array("class" => "pull-right","data-toggle" => "modal","data-target"=>"#sendMessage")); ?>
-            <?php echo CHtml::link('<i class="fa fa fa-edit"></i> Take Note', array('/optirep/professionalDirectory/preparenote/id/' . $model['ID_UTILISATEUR']), array("class" => "pull-right","data-toggle" => "modal","data-target"=>"#preparenote")); ?>
-       </div>
-                
+        ?>
+        
+        <div class="users-links">
+            
+               <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <div class="addfav-btn">          
+                <input name="FAV" type="checkbox" id="FAV" value="<?php echo $model['ID_UTILISATEUR']; ?>" <?php
+                if ($fav_user != '') {
+                    echo "checked=checked";
+                }
+                ?>>  Add to Favorites 
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('/optirep/internalMessage/createnew/id/' . $model['ID_UTILISATEUR']), array("class" => "addfav-btn pull-right")); ?>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> Report a change', array('/optirep/professionalDirectory/reportuser/id/' . $model['ID_SPECIALISTE']), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#sendMessage")); ?>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <?php echo CHtml::link('<i class="fa fa fa-edit"></i> Take Note', array('/optirep/professionalDirectory/preparenote/id/' . $model['ID_UTILISATEUR']), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#preparenote")); ?>
+        </div>
+            
+        </div>
+     
+
+        <div class="clearfix"></div>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">         
             <div class="search-list">                   
                 <p><strong><?php echo $model['BUREAU']; ?></strong><br>
@@ -42,9 +58,9 @@
             </div>
         </div>     
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">            
-           <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/professionalDirectory'), array("class" => "pull-left")); ?> </div>  
+            <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/professionalDirectory'), array("class" => "pull-left")); ?> </div>  
         </div>        
-           
+
         <?php if (!empty($results)) { ?>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
                 <h2> <?php echo Myclass::t('OGO158', '', 'og'); ?> </h2> 
@@ -78,15 +94,15 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Send Report</h4>
             </div>
-             <?php
+            <?php
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'report_form',
-                'htmlOptions' => array('role' => 'form'),               
+                'htmlOptions' => array('role' => 'form'),
             ));
             ?>
             <div class="modal-body model-form">
                 <div class="row"> 
-                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <label>Report as </label>
                         <select class="selectpicker" name="report_reason">
                             <option value="moved">Moved</option>
@@ -122,15 +138,15 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Create Note</h4>
             </div>
-             <?php
+            <?php
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'note_form',
-                'htmlOptions' => array('role' => 'form'),               
+                'htmlOptions' => array('role' => 'form'),
             ));
             ?>
             <div class="modal-body model-form">
                 <div class="row"> 
-                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <label>For: </label>   <?php echo $model['NOM_UTILISATEUR']; ?>                      
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
