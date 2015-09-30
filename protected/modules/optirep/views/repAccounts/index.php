@@ -1,6 +1,71 @@
 <div class="cate-bg user-right">
     <h2> Manage Rep Accounts </h2>
     <div class="row"> 
+        
+        <div class="col-lg-4 col-xs-6">
+                            <!-- small box -->
+                            <div class="small-box bg-aqua">
+                                <div class="inner">
+                                    <h3>
+                                      5
+                                    </h3>
+                                    <p>
+                                       Total no.of accounts
+                                    </p>
+                                </div>
+                                <div class="icon">
+                              <i class="fa fa-users"></i>
+                                </div>
+                                
+                            </div>
+                        </div>
+        
+        <div class="col-lg-4 col-xs-6">
+                            <!-- small box -->
+                            <div class="small-box bg-green">
+                                <div class="inner">
+                                    <h3>
+                                     4
+                                    </h3>
+                                    <p>
+                                    Used accounts
+                                    </p>
+                                </div>
+                                <div class="icon">
+                              <i class="fa fa-users"></i>
+                                </div>
+                            
+                            </div>
+                        </div>
+        
+        <div class="col-lg-4 col-xs-6">
+                            <!-- small box -->
+                            <div class="small-box bg-yellow">
+                                <div class="inner">
+                                   
+                                    <p>
+                                        <a href="#">   Create New <br/>Rep Account </a>
+                                    </p>
+                                </div>
+                                <div class="icon">
+                                  <i class="fa fa-briefcase"></i>
+                                </div>
+                                
+                            </div>
+                        </div>
+        
+        <div class="col-lg-4 col-xs-6">
+                       
+            
+
+
+            
+                           
+                        </div>
+        
+        
+        
+        
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-lg-offset-8">
             <table class="table table-responsive table-bordered">
                 <tr>

@@ -30,10 +30,10 @@ input.subscription_types {
     text-align:right;
     background:#f0f0f0;
     text-align: center;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius:5px;
-    padding: 5px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius:2px;
+    padding: 7px;
 
 
 }
@@ -258,4 +258,76 @@ span.input-group-btn {
     margin-top: 0px;
     border-radius: 0px;
     height:40px;
+}
+
+
+
+
+
+
+.small-box {
+  border-radius: 2px;
+  display: block;
+  margin-bottom: 15px;
+  position: relative;
+  color: #ffffff;
+}
+
+.small-box > .inner {
+  padding: 10px;
+}
+
+.small-box > .small-box-footer {
+  background: rgba(0, 0, 0, 0.1) none repeat scroll 0 0;
+  color: rgba(255, 255, 255, 0.8);
+  display: block;
+  padding: 3px 0;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  z-index: 10;
+}
+
+.bg-aqua {
+  background-color: #00c0ef !important;
+}
+
+
+.small-box h3 {
+  font-size: 38px;
+  font-weight: bold;
+  margin: 0 0 10px;
+  padding: 0;
+  white-space: nowrap;
+}
+
+
+.small-box .icon {
+  bottom: 5px;
+  color: rgba(0, 0, 0, 0.15);
+  font-size: 80px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  z-index: 0;
+}
+
+.bg-green {
+  background-color: #00a65a !important;
+}
+
+.addfav-btn{
+    color:#2e2e2e;
+}
+
+.bg-yellow {
+  background-color: #f39c12 !important;
+  padding: 7px;
+}
+
+.small-box a
+{
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 22px;
 }
