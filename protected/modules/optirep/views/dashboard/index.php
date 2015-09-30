@@ -16,32 +16,7 @@
 
 <?php $this->renderPartial('_favbox'); ?>
 
-<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-    <div class="cate-bg"> 
-        <div class="cate-heading cate-heading2">  <i class="fa fa-pencil"></i>  My Notes  </div>
-        <?php
-        $rep_id = Yii::app()->user->id;
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('rep_credential_id = "' . $rep_id . '"');
-        $criteria->order = 'id DESC';
-        $criteria->limit = 3;
-        $model_notes = RepNotes::model()->findAll($criteria);
-        if (!empty($model_notes)) {
-            foreach ($model_notes as $notes) {
-                ?>       
-                <div class="fav-cont notes-cont"> 
-                    <?php echo (strlen($notes['message']) > 100) ? substr($notes['message'], 0, 100) . '..' : $notes['message']; ?>
-                </div>         
-            <?php }
-            ?>
-            <div class="viewall"><?php echo CHtml::link(Myclass::t('OG038', '', 'og'), array('/optirep/repNotes'), array('class' => '')); ?></div>        
-            <?php
-        } else {
-            echo "<p class='fav_message'>You have no notes right now." . CHtml::link("Click", array('/optirep/repNotes/create')) . " to make your notes!!!.</p>";
-        }
-        ?>
-    </div>
-</div>
+<?php $this->renderPartial('_notes'); ?>
 
 <?php $this->renderPartial('_calender'); ?>
 

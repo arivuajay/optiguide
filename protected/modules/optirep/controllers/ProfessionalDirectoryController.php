@@ -104,7 +104,7 @@ class ProfessionalDirectoryController extends ORController {
 
         // Get professional detail
         $prof_query = Yii::app()->db->createCommand() //this query contains all the data
-                ->select('rs.* , ru.ID_UTILISATEUR , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
+                ->select('rs.* , ru.ID_UTILISATEUR , ru.NOM_UTILISATEUR , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
                 ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
                 ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND  ru.NOM_TABLE ='Professionnels' AND ru.status=1 AND ID_SPECIALISTE=$id")
                 ->queryRow();
@@ -137,7 +137,24 @@ class ProfessionalDirectoryController extends ORController {
                     
             Yii::app()->user->setFlash('success', "Report sent successfully to admin!!!");    
             $this->redirect(array('view', 'id'=>$id));
-        }   
+        }
+        
+        // Send report change to admin
+        if(isset($_POST['NoteSubmit']))
+        {
+            $message =  nl2br($_POST['message']);
+            
+            $notemodel = new RepNotes;
+            $notemodel->message = $message;
+            $notemodel->rep_credential_id = $rep_id;
+            $notemodel->created_at = date("Y-m-d");
+            $notemodel->ID_UTILISATEUR = $prof_query['ID_UTILISATEUR'];
+            $notemodel->save(false);
+             
+            Yii::app()->user->setFlash('success', "Note Created successfully!!!");    
+            $this->redirect(array('view', 'id'=>$id));
+             
+        }
 
         $this->render('view', array(
             'model' => $prof_query,

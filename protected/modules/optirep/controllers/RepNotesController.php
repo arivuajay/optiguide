@@ -125,21 +125,29 @@ class RepNotesController extends ORController
 	 */
 	public function actionIndex()
 	{
-            $rep_id = Yii::app()->user->id;
-            $criteria = new CDbCriteria();        
-            $criteria->addCondition('rep_credential_id = "'.$rep_id.'"');
-            $criteria->order = 'id DESC';
+            $rep_id = Yii::app()->user->id;        
+            
+            $mynotes = Yii::app()->db->createCommand() //this query contains all the data
+             ->select('rn.message,rn.created_at,ru.NOM_UTILISATEUR,ru.NOM_TABLE,ru.ID_RELATION')
+             ->from(array('rep_notes rn', 'repertoire_utilisateurs ru'))
+             ->where("rn.ID_UTILISATEUR=ru.ID_UTILISATEUR AND ru.status=1 AND (ru.NOM_TABLE='Professionnels' OR ru.NOM_TABLE='Detaillants') AND rn.rep_credential_id =" . $rep_id)
+             ->order('rn.id desc')
+             ->queryAll();
 
-            $count = RepNotes::model()->count($criteria);
-            $pages = new CPagination($count);
-
+           
+            // Get total counts of records    
+            $item_count = Yii::app()->db->createCommand() // this query get the total number of items,
+            ->select('count(*) as count')
+            ->from(array('rep_notes rn', 'repertoire_utilisateurs ru'))
+            ->where("rn.ID_UTILISATEUR=ru.ID_UTILISATEUR AND ru.status=1 AND (ru.NOM_TABLE='Professionnels' OR ru.NOM_TABLE='Detaillants') AND rn.rep_credential_id =" . $rep_id)
+            ->queryScalar(); // do not LIMIT it, this must count all items!
+          
             // results per page
-            $pages->pageSize = 5;
-            $pages->applyLimit($criteria);
-            $model = RepNotes::model()->findAll($criteria);
+            $pages = new CPagination($item_count);
+            $pages->setPageSize(LISTPERPAGE);
 
             $this->render('index', array(
-                'model' => $model,
+                'model' => $mynotes,
                 'pages' => $pages,
             ));
 	}

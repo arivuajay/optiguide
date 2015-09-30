@@ -25,6 +25,7 @@
            </div>
             <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('/optirep/internalMessage/createnew/id/' . $model['ID_UTILISATEUR']), array("class" => "pull-right")); ?>
             <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> Report a change', array('/optirep/professionalDirectory/reportuser/id/' . $model['ID_SPECIALISTE']), array("class" => "pull-right","data-toggle" => "modal","data-target"=>"#sendMessage")); ?>
+            <?php echo CHtml::link('<i class="fa fa fa-edit"></i> Take Note', array('/optirep/professionalDirectory/preparenote/id/' . $model['ID_UTILISATEUR']), array("class" => "pull-right","data-toggle" => "modal","data-target"=>"#preparenote")); ?>
        </div>
                 
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">         
@@ -49,9 +50,7 @@
                 <h2> <?php echo Myclass::t('OGO158', '', 'og'); ?> </h2> 
                 <div class="box" id="box1">
                     <div class="brands">    
-
                         <ul>
-
                             <?php foreach ($results as $info) { ?>
                                 <li>
                                     <?php
@@ -107,6 +106,46 @@
                     'type' => 'submit',
                     'class' => 'register-btn'
                         ), 'Send');
+                ?>
+            </div>
+            <?php $this->endWidget(); ?>
+        </div>
+    </div>
+</div>
+
+<!-- Note Modal Box-->
+<div class="modal fade" id="preparenote" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create Note</h4>
+            </div>
+             <?php
+            $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'note_form',
+                'htmlOptions' => array('role' => 'form'),               
+            ));
+            ?>
+            <div class="modal-body model-form">
+                <div class="row"> 
+                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label>For: </label>   <?php echo $model['NOM_UTILISATEUR']; ?>                      
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label>Notes </label>
+                        <textarea class="form-field-textarea" name="message"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <?php
+                echo CHtml::tag('button', array(
+                    'name' => 'NoteSubmit',
+                    'type' => 'submit',
+                    'class' => 'register-btn'
+                        ), 'Submit');
                 ?>
             </div>
             <?php $this->endWidget(); ?>
