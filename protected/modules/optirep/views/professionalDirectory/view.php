@@ -56,7 +56,15 @@
                     <?php echo Myclass::t('OG042', '', 'og'); ?> : <?php echo $model['TELECOPIEUR']; ?><br>                      
                 </p>
             </div>
-        </div>     
+        </div> 
+        
+         <?php if($model['map_lat'] && $model['map_long'])
+         { ?>    
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">         
+         <div id="display_map" style="display:none;width:100%;height:350px; "></div> 
+        </div>
+         <?php 
+         }?>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">            
             <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/professionalDirectory'), array("class" => "pull-left")); ?> </div>  
         </div>        
@@ -170,8 +178,50 @@
 </div>
 <?php
 $ajaxUpdatefav = Yii::app()->createUrl('/optirep/repFavourites/updatefav');
+$lat  = $model['map_lat'];
+$long = $model['map_long'];
+$cs = Yii::app()->getClientScript();
+$cs_pos_end = CClientScript::POS_END;
+$cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
 $js = <<< EOD
 $(document).ready(function(){
+        
+    var latval  = parseFloat("{$lat}") || 0;
+     var longval = parseFloat("{$long}") || 0;
+        
+     function initialize() {
+      
+        // Define the latitude and longitude positions
+        var latitude = parseFloat(latval); // Latitude get from above variable
+        var longitude = parseFloat(longval); // Longitude from same
+        var latlngPos = new google.maps.LatLng(latitude, longitude);
+
+        // Set up options for the Google map
+        var mapOptions = {
+            zoom: 15,
+            center: latlngPos,
+            zoomControlOptions: true,
+            zoomControlOptions: {
+                style: google.maps.ZoomControlStyle.LARGE
+            }
+        };
+        // Define the map
+        $("#display_map").show();
+        map = new google.maps.Map(document.getElementById("display_map"), mapOptions);
+
+        var marker = new google.maps.Marker({
+                  position: latlngPos,
+                  map: map,
+                  icon:'{$this->themeUrl}/images/map-red.png',
+                  draggable:false,
+                  animation: google.maps.Animation.DROP
+          });
+    }   
+    
+    if(latval!=0 && longval!=0)
+    {    
+        google.maps.event.addDomListener(window, 'load', initialize);    
+    }       
         
     $('input').iCheck({
                     checkboxClass: 'icheckbox_flat-pink',

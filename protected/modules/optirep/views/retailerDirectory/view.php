@@ -26,7 +26,7 @@
             </div>
             <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('/optirep/internalMessage/createnew/id/'.$model['ID_UTILISATEUR']),array("class"=>"pull-right")); ?>
             <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> Report a change', array('/optirep/retailerDirectory/reportuser/id/' . $model['ID_RETAILER']), array("class" => "pull-right","data-toggle" => "modal","data-target"=>"#sendMessage")); ?>
-             <?php echo CHtml::link('<i class="fa fa fa-edit"></i> Take Note', array('/optirep/retailerDirectory/preparenote/id/' . $model['ID_UTILISATEUR']), array("class" => "pull-right","data-toggle" => "modal","data-target"=>"#preparenote")); ?>
+            <?php echo CHtml::link('<i class="fa fa fa-edit"></i> Take Note', array('/optirep/retailerDirectory/preparenote/id/' . $model['ID_UTILISATEUR']), array("class" => "pull-right","data-toggle" => "modal","data-target"=>"#preparenote")); ?>
         </div>   
         
          <?php
@@ -132,6 +132,14 @@
             <?php
         }
         ?> 
+            
+        <?php if($model['map_lat'] && $model['map_long'])
+         { ?>    
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">         
+         <div id="display_map" style="display:none;width:100%;height:350px; "></div> 
+        </div>
+         <?php 
+         }?>
         
         <?php if (!empty($results)) { ?>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
@@ -203,10 +211,94 @@
         </div>
     </div>
 </div>
+
+
+<!-- Note Modal Box-->
+<div class="modal fade" id="preparenote" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create Note</h4>
+            </div>
+             <?php
+            $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'note_form',
+                'htmlOptions' => array('role' => 'form'),               
+            ));
+            ?>
+            <div class="modal-body model-form">
+                <div class="row"> 
+                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label>For: </label>   <?php echo $model['NOM_UTILISATEUR']; ?>                      
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label>Notes </label>
+                        <textarea class="form-field-textarea" name="message"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <?php
+                echo CHtml::tag('button', array(
+                    'name' => 'NoteSubmit',
+                    'type' => 'submit',
+                    'class' => 'register-btn'
+                        ), 'Submit');
+                ?>
+            </div>
+            <?php $this->endWidget(); ?>
+        </div>
+    </div>
+</div>
 <?php
+$lat  = $model['map_lat'];
+$long = $model['map_long'];
 $ajaxUpdatefav = Yii::app()->createUrl('/optirep/repFavourites/updatefav');
+$cs = Yii::app()->getClientScript();
+$cs_pos_end = CClientScript::POS_END;
+$cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
 $js = <<< EOD
 $(document).ready(function(){
+        
+     var latval  = parseFloat("{$lat}") || 0;
+     var longval = parseFloat("{$long}") || 0;
+        
+     function initialize() {
+      
+        // Define the latitude and longitude positions
+        var latitude = parseFloat(latval); // Latitude get from above variable
+        var longitude = parseFloat(longval); // Longitude from same
+        var latlngPos = new google.maps.LatLng(latitude, longitude);
+
+        // Set up options for the Google map
+        var mapOptions = {
+            zoom: 15,
+            center: latlngPos,
+            zoomControlOptions: true,
+            zoomControlOptions: {
+                style: google.maps.ZoomControlStyle.LARGE
+            }
+        };
+        // Define the map
+        $("#display_map").show();
+        map = new google.maps.Map(document.getElementById("display_map"), mapOptions);
+
+        var marker = new google.maps.Marker({
+                  position: latlngPos,
+                  map: map,
+                  icon:'{$this->themeUrl}/images/map-red.png',
+                  draggable:false,
+                  animation: google.maps.Animation.DROP
+          });
+    }   
+    
+    if(latval!=0 && longval!=0)
+    {    
+        google.maps.event.addDomListener(window, 'load', initialize);    
+    }       
+        
         
     $('input').iCheck({
                     checkboxClass: 'icheckbox_flat-pink',

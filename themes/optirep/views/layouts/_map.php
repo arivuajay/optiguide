@@ -62,7 +62,7 @@
                        if( $search_postal != '') { $spostal_qry    = " AND CODE_POSTAL = ". $search_postal;}
                       
                         $results = Yii::app()->db->createCommand() //this query contains all the data
-                        ->select(' COMPAGNIE , NOM_TYPE_'.$this->lang.' ,  NOM_VILLE ,  NOM_REGION_'.$this->lang.' , ABREVIATION_'.$this->lang.' ,  NOM_PAYS_'.$this->lang.', map_lat , map_long')
+                        ->select(' COMPAGNIE , classification,NOM_TYPE_'.$this->lang.' ,  NOM_VILLE ,  NOM_REGION_'.$this->lang.' , ABREVIATION_'.$this->lang.' ,  NOM_PAYS_'.$this->lang.', map_lat , map_long')
                         ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                         ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS "
                                 . "AND ru.status=1 AND ru.NOM_TABLE ='Detaillants' ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry)
@@ -117,7 +117,7 @@
                                 $dispname  = $rinfo['NOM'].",".$rinfo['PRENOM'].",".$rinfo['NOM_VILLE'].",".$rinfo['ABREVIATION_'.$this->lang].",".$rinfo['NOM_PAYS_'.$this->lang];                                 
                             }elseif ($_controller=="retailerDirectory") {
                                 $titlename = $rinfo['COMPAGNIE'];
-                                $dispname  = $rinfo['COMPAGNIE'].",".$rinfo['NOM_VILLE'].",".$rinfo['ABREVIATION_'.$this->lang].",".$rinfo['NOM_PAYS_'.$this->lang]; 
+                                $dispname  = $rinfo['COMPAGNIE'].",".$rinfo['NOM_VILLE'].",".$rinfo['ABREVIATION_'.$this->lang].",".$rinfo['NOM_PAYS_'.$this->lang]."( ".$rinfo['classification'].")"; 
                             }   
                              
                             $info_window = new EGMapInfoWindow('<div>'.$dispname.'</div>');
