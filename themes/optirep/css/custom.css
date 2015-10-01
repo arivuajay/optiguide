@@ -370,3 +370,13 @@ span.input-group-btn {
     padding-top: 4px;
     text-align: right;
 }
+
+.topviewall{
+    color: #fff;
+    float: right;
+    font-size: 13px;
+    font-weight: bold;
+    padding-top: 13px;
+    text-transform:none;
+    
+}

@@ -61,7 +61,7 @@ if ($topbanner != '') {
 
 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
     <div class="cate-bg"> 
-        <div class="cate-heading cate-heading4"> <i class="fa fa-envelope"></i> Latest News  </div>
+        <div class="cate-heading cate-heading4"> <i class="fa fa-envelope"></i> Latest News  <?php echo CHtml::link(Myclass::t('OG038', '', 'og'), array('/optirep/newsManagement'), array('class' => 'topviewall')); ?> </div>
         <?php
         $latest_news = NewsManagement::model()->latest_rep()->findAll();
         if (!empty($latest_news)) {
@@ -75,7 +75,6 @@ if ($topbanner != '') {
                     <div class="lastest-date"> <span> <?php echo date("M", strtotime($latest_new['DATE_AJOUT1'])) . ' ' . date("d", strtotime($latest_new['DATE_AJOUT1'])) ?> </span> </div>
                 </div>  
             <?php } ?>
-            <div class="viewall"><?php echo CHtml::link(Myclass::t('OG038', '', 'og'), array('/optirep/newsManagement'), array('class' => '')); ?></div>
         <?php } ?>
     </div>   
 </div>

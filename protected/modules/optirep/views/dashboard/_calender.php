@@ -1,6 +1,6 @@
 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
     <div class="cate-bg"> 
-        <div class="cate-heading cate-heading3"> <i class="fa fa-calendar"></i> Calendar  </div>
+        <div class="cate-heading cate-heading3"> <i class="fa fa-calendar"></i> Calendar  <?php echo CHtml::link(Myclass::t('OG038', '', 'og'), array('/optirep/calenderEvent'), array('class' => 'topviewall')); ?> </div>
         <div class="calc-cont"> 
         <?php
         $events = CalenderEvent::model()->currentMonthYear()->findAll();
@@ -73,7 +73,7 @@ EOD;
         ));
         ?>
         </div>
-         <div class="viewall"><?php echo CHtml::link('View All', array('/optirep/calenderEvent')); ?></div>
+<!--         <div class="viewall"><?php //echo CHtml::link('View All', array('/optirep/calenderEvent')); ?></div>-->
     </div>
     
 </div>
