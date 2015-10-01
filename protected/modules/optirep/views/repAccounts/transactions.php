@@ -11,6 +11,7 @@
                     ),
                     'item_name',
                     'payment_status',
+                    'payer_email',
                     'txn_id',
                     array(
                         'name' => 'total_price',

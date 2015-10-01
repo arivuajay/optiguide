@@ -60,10 +60,13 @@ class RepCredentialController extends ORController {
         if (!isset(Yii::app()->session['registration']['step1'])) {
             $this->redirect('step1');
         }
+        
+        $rep_subscription_type = RepSubscriptionTypes::model()->findByPk(Yii::app()->session['registration']['step1']['subscription_type_id']);
 
         $model = new RepCredentials('step2');
         $profile = new RepCredentialProfiles('step2');
 
+        $model->no_of_accounts_purchase = $rep_subscription_type['rep_subscription_min'];
         if (isset(Yii::app()->session['registration']['step2'])) {
             $model->attributes = Yii::app()->session['registration']['step2']['RepCredentials'];
             $profile->attributes = Yii::app()->session['registration']['step2']['RepCredentialProfiles'];
