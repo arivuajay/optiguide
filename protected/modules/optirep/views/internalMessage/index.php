@@ -21,7 +21,7 @@
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
                     <tr>
                         <th width="9%">S. No</th>
-                        <th width="20%"> User</th>
+                        <th width="20%"> Send To</th>
                         <th width="18%"> Message </th>
                          <th width="18%"> Date </th>
                     </tr>

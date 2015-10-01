@@ -23,7 +23,7 @@ $command = Yii::app()->db->createCommand($sql)->execute();
               <div class="table-responsive">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
                     <tr>          
-                        <th class="author">User</th>
+                        <th class="author">Name</th>
                         <th>Message</th>
                         <th>Sent</th>
                     </tr>
@@ -52,8 +52,9 @@ $command = Yii::app()->db->createCommand($sql)->execute();
                 'validateOnSubmit' => true,
             ),
         ));
-        echo $form->errorSummary(array($model));?>
-        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-6">
+        ?>
+        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8"><?php echo $form->errorSummary(array($model));?></div>        
+        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
             <?php echo $form->labelEx($model, 'message'); ?>
             <?php echo $form->textArea($model, 'message', array('class' => 'form-control', 'maxlength' => 1000, 'rows' => 5, 'cols' => 50)); ?>         
         </div>    

@@ -28,7 +28,7 @@ $rep_id = Yii::app()->user->id;
 //                    ->limit(4)
 //                    ->queryAll();
             
-            $myfavourites = Yii::app()->db->createCommand() //this query contains all the data
+            $myfavourites = Yii::app()->db->createCommand() //tihs query contains all the data
                     ->select('ru.NOM_UTILISATEUR,ru.NOM_TABLE,ru.ID_RELATION')
                     ->from(array('rep_favourites rf', 'repertoire_utilisateurs ru'))
                     ->where("rf.ID_UTILISATEUR=ru.ID_UTILISATEUR AND ru.status=1 AND (ru.NOM_TABLE='Professionnels' OR ru.NOM_TABLE='Detaillants') AND rf.rep_credential_id =" . $rep_id)

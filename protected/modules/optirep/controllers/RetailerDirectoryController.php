@@ -52,6 +52,8 @@ class RetailerDirectoryController extends ORController {
               
         $searchModel = new  RetailerDirectory();       
         $searchModel->unsetAttributes();
+        
+        $internalmodel = new InternalMessage;
                         
         $rep_id    = Yii::app()->user->id;
         $retail_id = $id;
@@ -151,7 +153,7 @@ class RetailerDirectoryController extends ORController {
             $notemodel = new RepNotes;
             $notemodel->message = $message;
             $notemodel->rep_credential_id = $rep_id;
-            $notemodel->created_at = date("Y-m-d");
+            $notemodel->created_at = date('Y-m-d H:i');
             $notemodel->ID_UTILISATEUR = $retail_query['ID_UTILISATEUR'];
             $notemodel->save(false);
              
@@ -163,7 +165,8 @@ class RetailerDirectoryController extends ORController {
         $this->render('view', array(
             'model' => $retail_query,
             'searchModel' => $searchModel,
-            'results' => $results
+            'results' => $results,
+             'internalmodel' => $internalmodel
         ));
     }
     

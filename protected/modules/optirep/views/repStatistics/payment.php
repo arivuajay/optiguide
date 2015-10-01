@@ -37,7 +37,7 @@
     ?>            
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h4> Subscription Fee: <?php echo $stats_price; ?> CAD <i class="fa fa-dollar"></i></h4>
+            <h4> Subscription Fee (Per month): <?php echo $stats_price; ?> CAD <i class="fa fa-dollar"></i> </h4>
         </div> 
         <?php
         if (!empty($get_transactions)) {

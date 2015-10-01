@@ -67,7 +67,7 @@ class RepNotesController extends ORController
 		{
 			$model->attributes=$_POST['RepNotes'];
                         $model->rep_credential_id = Yii::app()->user->id;
-                        $model->created_at = date('Y-m-d');
+                        $model->created_at = date('Y-m-d H:i:s');
 			if($model->save()){
                                 Yii::app()->user->setFlash('success', 'Notes Created Successfully!!!');
                                 $this->redirect(array('index'));
@@ -128,7 +128,7 @@ class RepNotesController extends ORController
             $rep_id = Yii::app()->user->id;        
             
             $mynotes = Yii::app()->db->createCommand() //this query contains all the data
-             ->select('rn.message,rn.created_at,ru.NOM_UTILISATEUR,ru.NOM_TABLE,ru.ID_RELATION')
+             ->select('rn.id,rn.message,rn.created_at,ru.NOM_UTILISATEUR,ru.NOM_TABLE,ru.ID_RELATION')
              ->from(array('rep_notes rn', 'repertoire_utilisateurs ru'))
              ->where("rn.ID_UTILISATEUR=ru.ID_UTILISATEUR AND ru.status=1 AND (ru.NOM_TABLE='Professionnels' OR ru.NOM_TABLE='Detaillants') AND rn.rep_credential_id =" . $rep_id)
              ->order('rn.id desc')

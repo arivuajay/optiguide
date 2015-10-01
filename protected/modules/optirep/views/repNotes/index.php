@@ -27,12 +27,35 @@
                             <tr>
                                 <td><?php echo $i++; ?></td>
                                 <td><?php echo CHtml::link($notes['NOM_UTILISATEUR'], array('/optirep/'.$viewpage.'/view', 'id' => $notes['ID_RELATION']), array('target' => '_blank')) . ' '; ?></td>
-                                <td><?php echo nl2br($notes['message']);?></td>                                 
+                                <td><?php echo (strlen($notes['message']) > 35) ? substr($notes['message'], 0, 35) . '..' : $notes['message'];?></td>                                 
                                 <td><?php echo $notes['created_at']; ?></td>                               
                                 <td>
+                                    <?php echo CHtml::link('<i class="fa fa-eye"></i>', array('#'), array( "data-toggle" => "modal", "data-target" => "#viewmessage_".$notes['id'])); ?>&nbsp;
+                                    <?php echo CHtml::link('<i class="fa fa-pencil-square-o"></i>', array('#'), array( "data-toggle" => "modal", "data-target" => "#editmessage_".$notes['id'])); ?>&nbsp;
                                     <?php echo CHtml::link( '<i class="fa fa-trash"></i>', array('/optirep/repNotes/delete', 'id' => $notes['id'])); ?>
                                 </td>
                             </tr>
+                            <!-- Note Display Box-->
+                            <div class="modal fade" id="viewmessage_<?php echo $notes['id'];?>" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Notes</h4>
+                                        </div>                                       
+                                        <div class="modal-body model-form">
+                                            <div class="row"> 
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                  <?php echo nl2br($notes['message']);?>      
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
                         <?php } ?>
                     <?php } else { ?>
                         <tr>

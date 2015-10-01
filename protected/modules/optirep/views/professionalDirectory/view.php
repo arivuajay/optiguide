@@ -29,15 +29,15 @@
         </div>
 
         <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('/optirep/internalMessage/createnew/id/' . $model['ID_UTILISATEUR']), array("class" => "addfav-btn pull-right")); ?>
+                <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#sendmessage")); ?>
         </div>
 
         <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-            <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> Report a change', array('/optirep/professionalDirectory/reportuser/id/' . $model['ID_SPECIALISTE']), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#sendMessage")); ?>
+            <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> Report a change', array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#reportchange")); ?>
         </div>
 
         <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-            <?php echo CHtml::link('<i class="fa fa fa-edit"></i> Take Note', array('/optirep/professionalDirectory/preparenote/id/' . $model['ID_UTILISATEUR']), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#preparenote")); ?>
+            <?php echo CHtml::link('<i class="fa fa fa-edit"></i> Add Note', array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#preparenote")); ?>
         </div>
             
         </div>
@@ -94,7 +94,7 @@
 </div>  
 
 <!-- Report Modal Box-->
-<div class="modal fade" id="sendMessage" role="dialog">
+<div class="modal fade" id="reportchange" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -119,7 +119,8 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <label>Comments </label>
-                        <textarea class="form-field-textarea" name="report_message"></textarea>
+                        <textarea class="form-field-textarea" id="report_message" name="report_message"></textarea>
+                        <div style="display:none;" class="errorMessage" id="report_error">Comments required.</div>
                     </div>
                 </div>
             </div>
@@ -159,7 +160,8 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <label>Notes </label>
-                        <textarea class="form-field-textarea" name="message"></textarea>
+                        <textarea class="form-field-textarea" id="note_message" name="message"></textarea>
+                        <div style="display:none;" class="errorMessage" id="note_error">Notes required.</div>
                     </div>
                 </div>
             </div>
@@ -170,6 +172,49 @@
                     'type' => 'submit',
                     'class' => 'register-btn'
                         ), 'Submit');
+                ?>
+            </div>
+            <?php $this->endWidget(); ?>
+        </div>
+    </div>
+</div>
+
+<!-- Send Message Modal Box-->
+<div class="modal fade" id="sendmessage" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Send Message</h4>
+            </div>
+            <?php
+            $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'send_message_form',
+                'htmlOptions' => array('role' => 'form'),
+                'action'=>Yii::app()->createUrl('/optirep/internalMessage/createnew'),                
+            ));
+            ?>
+            <div class="modal-body model-form">
+                <div class="row"> 
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label>To: </label>   <?php echo $model['NOM_UTILISATEUR']; ?>                      
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label>Message </label>                       
+                         <?php echo $form->textArea($internalmodel, 'message', array('class' => 'form-field-textarea', "id"=>"messageval" ,'maxlength' => 1000, 'rows' => 5, 'cols' => 50)); ?> 
+                        <div style="display:none;" class="errorMessage" id="message_error">Message required.</div>
+                    </div>
+                </div>
+            </div>            
+            <?php echo $form->hiddenField($internalmodel, 'user2', array("value" => $userid)); ?>
+            <div class="modal-footer">
+                <?php
+                echo CHtml::tag('button', array(
+                    'name' => 'SendMessage',
+                    'type' => 'submit',
+                    'class' => 'register-btn'
+                        ), 'Send');
                 ?>
             </div>
             <?php $this->endWidget(); ?>
@@ -187,7 +232,7 @@ $js = <<< EOD
 $(document).ready(function(){
         
     var latval  = parseFloat("{$lat}") || 0;
-     var longval = parseFloat("{$long}") || 0;
+    var longval = parseFloat("{$long}") || 0;
         
      function initialize() {
       
@@ -250,9 +295,41 @@ $(document).ready(function(){
                }
             });
       
+    }); 
+               
+    $('#note_form').on('submit', function() {
+               
+         var notmsg = $("#note_message").val();      
+         $("#note_error").hide();
+         if(notmsg=='')
+         {
+              $("#note_error").show();
+              return false; 
+         }    
+    });
+               
+    $('#report_form').on('submit', function() {
+               
+         var rprtmsg = $("#report_message").val();      
+         $("#report_error").hide();
+         if(rprtmsg=='')
+         {
+              $("#report_error").show();
+              return false; 
+         }    
     });  
-
-        
+    
+   $('#send_message_form').on('submit', function() {
+               
+         var msgval= $("#messageval").val();      
+         $("#message_error").hide();
+         if(msgval=='')
+         {
+              $("#message_error").show();
+              return false; 
+         }    
+    });  
+            
 });
 EOD;
 Yii::app()->clientScript->registerScript('_form_view', $js);

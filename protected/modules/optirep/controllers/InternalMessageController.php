@@ -44,75 +44,77 @@ class InternalMessageController extends ORController {
     public function actionCreatenew() {
         
         $model = new InternalMessage;
-
-        $this->performAjaxValidation(array($model));
       
-        if (isset($_POST['btnSubmit'])) {
+        if (isset($_POST['SendMessage'])) {
             
-            $model->attributes = $_POST['InternalMessage'];
-            $valid = $model->validate();
-            if ($valid) {
+            $model->attributes = $_POST['InternalMessage'];          
              
-                // Genreate the conversation id
-                $criteria=new CDbCriteria;
-                $criteria->select='max(id1) AS maxColumn';
-                $row = InternalMessage::model()->find($criteria);
-                $npm_count = $row['maxColumn'];
-                $id1 = $npm_count+1;              
-                
-                // Get sender detail
-                $sess_id    = Yii::app()->user->id;
-                $condition  = " NOM_TABLE='rep_credentials' AND ID_RELATION='$sess_id' ";
-                $ufrm_infos = UserDirectory::model()->find($condition);
-                
-                $model->message = nl2br($_POST['InternalMessage']['message']);
-                // conversation id
-                $model->id1   = $id1;
-                // New conversation start        
-                $model->id2   = 1;
-                // Sender
-                $model->user1 = $ufrm_infos->ID_UTILISATEUR;
-                // Receiver   (the value send through post)    
-                //$model->user2 
-                $model->timestamp = time();
-                $model->user1read = "yes";
-                $model->user2read = "no";
-                
-                $model->save(false);     
-                
-                // Get rep infos
-                $ret_prof_id = $model->user2;
-                $rcondition  = " NOM_TABLE='rep_credentials' AND ID_RELATION='$ret_prof_id' ";
-                $ret_infos   = UserDirectory::model()->find($rcondition);
-                $ret_name    = $ret_infos->NOM_UTILISATEUR;
-                $ret_email   = $ret_infos->COURRIEL;
-                $todaydate   = date("d-m-Y");
-              
-                if($ret_email!= '')
-                {    
-                    /* Send notification mail to rep */
-                    $mail         = new Sendmail();
-                    $nextstep_url = GUIDEURL.'/optiguide/internalMessage/readmessage/convid/' .$model->id1;           
-                    $subject      = SITENAME." - ".$ufrm_infos->NOM_UTILISATEUR." sent message for you ( ".$todaydate." )";
-                    $trans_array  = array(
-                        "{SITENAME}" => SITENAME,
-                        "{NAME}"     => $ufrm_infos->NOM_UTILISATEUR,
-                        "{RNAME}"    => $ret_name,
-                        "{MESSAGE}"  => $conv_message,
-                        "{NEXTSTEPURL}" => $nextstep_url,
-                    );
-                    $message = $mail->getMessage('internalmessage_notify', $trans_array);
-                    $mail->send($ret_email, $subject, $message);
-                } 
+            // Genreate the conversation id
+            $criteria=new CDbCriteria;
+            $criteria->select='max(id1) AS maxColumn';
+            $row = InternalMessage::model()->find($criteria);
+            $npm_count = $row['maxColumn'];
+            $id1 = $npm_count+1;              
 
-                Yii::app()->user->setFlash('success', "Message send successfully!!!");
-                $this->redirect(array('index'));
-                
-            }
+            // Get sender detail
+            $sess_id    = Yii::app()->user->id;
+            $condition  = " NOM_TABLE='rep_credentials' AND ID_RELATION='$sess_id' ";
+            $ufrm_infos = UserDirectory::model()->find($condition);
+
+            $model->message = nl2br($_POST['InternalMessage']['message']);
+            // conversation id
+            $model->id1   = $id1;
+            // New conversation start        
+            $model->id2   = 1;
+            // Sender
+            $model->user1 = $ufrm_infos->ID_UTILISATEUR;
+            // Receiver   (the value send through post)    
+            //$model->user2 
+            $model->timestamp = time();
+            $model->user1read = "yes";
+            $model->user2read = "no";
+
+            $model->save(false);     
+
+            // Get user infos
+            $ret_prof_id = $model->user2;
+            $ret_infos   = UserDirectory::model()->findByPk($ret_prof_id);
+            $ret_name    = $ret_infos->NOM_UTILISATEUR;
+            $ret_email   = $ret_infos->COURRIEL;
+            $todaydate   = date("d-m-Y");
             
+            $redirect_id   = $ret_infos->ID_RELATION;
+            
+            $identy_user    = $ret_infos->NOM_TABLE;
+            if($identy_user=="Professionnels")
+            {
+                $directoryname = "professionalDirectory";
+            }else if($identy_user=="Detaillants")
+            {    
+                $directoryname = "retailerDirectory";
+            }    
+             
+
+            if($ret_email!= '')
+            {    
+                /* Send notification mail to rep */
+                $mail         = new Sendmail();
+                $nextstep_url = GUIDEURL.'/optiguide/internalMessage/readmessage/convid/' .$model->id1;           
+                $subject      = SITENAME." - ".$ufrm_infos->NOM_UTILISATEUR." sent message for you ( ".$todaydate." )";
+                $trans_array  = array(
+                    "{SITENAME}" => SITENAME,
+                    "{NAME}"     => $ufrm_infos->NOM_UTILISATEUR,
+                    "{RNAME}"    => $ret_name,
+                    "{MESSAGE}"  => $conv_message,
+                    "{NEXTSTEPURL}" => $nextstep_url,
+                );
+                $message = $mail->getMessage('internalmessage_notify', $trans_array);
+                $mail->send($ret_email, $subject, $message);
+            } 
+
+            Yii::app()->user->setFlash('success', "Message sent successfully!!!");
+            $this->redirect(array($directoryname.'/view','id'=>$redirect_id));
         }
-        
-        $this->render('create',array('model' => $model));
     }
     
      public function actionReadmessage() {

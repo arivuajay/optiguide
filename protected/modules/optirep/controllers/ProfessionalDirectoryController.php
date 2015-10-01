@@ -50,6 +50,7 @@ class ProfessionalDirectoryController extends ORController {
         $searchModel->unsetAttributes();
         $results    = array();
         
+        $internalmodel = new InternalMessage;
         
         $rep_id    = Yii::app()->user->id;
         $profil_id = $id;
@@ -147,7 +148,7 @@ class ProfessionalDirectoryController extends ORController {
             $notemodel = new RepNotes;
             $notemodel->message = $message;
             $notemodel->rep_credential_id = $rep_id;
-            $notemodel->created_at = date("Y-m-d");
+            $notemodel->created_at =  date('Y-m-d H:i');
             $notemodel->ID_UTILISATEUR = $prof_query['ID_UTILISATEUR'];
             $notemodel->save(false);
              
@@ -160,6 +161,7 @@ class ProfessionalDirectoryController extends ORController {
             'model' => $prof_query,
             'searchModel' => $searchModel,
             'results' => $results,
+            'internalmodel' => $internalmodel
         ));
     }    
    
@@ -204,7 +206,7 @@ class ProfessionalDirectoryController extends ORController {
 
             if ($search_name != '') {
                 $searchModel->NOM = $search_name;
-                $sname_qry = " AND NOM like '%$search_name%' ";
+                $sname_qry = " AND (NOM like '%$search_name%' ";
             }
 
             if ($search_country != '') {

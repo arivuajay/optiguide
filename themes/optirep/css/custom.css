@@ -348,6 +348,10 @@ span.input-group-btn {
     text-transform: uppercase;
 }
 
+.errorMessage { 
+    color: #d9534f;
+}
+
 .stats-tips{
     margin-bottom: 10px;
 }

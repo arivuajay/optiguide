@@ -17,10 +17,18 @@ $rep_id = Yii::app()->user->id;
        
        if (!empty($model_notes)) {
             foreach ($model_notes as $notes) {
-                ?>       
-                <div class="fav-cont notes-cont"> 
-                    <?php echo (strlen($notes['message']) > 100) ? substr($notes['message'], 0, 100) . '..' : $notes['message']; ?>
-                </div>         
+                
+                 $nmessage = (strlen($notes['message']) > 35) ? substr($notes['message'], 0, 35) . '..' : $notes['message']; 
+                 $uname    = (strlen($notes['NOM_UTILISATEUR']) > 25) ? substr($notes['NOM_UTILISATEUR'], 0, 25) . '..' : $notes['NOM_UTILISATEUR']; 
+                 ?>
+                 
+               <div class="lastest-newscont">
+                    <div class="lastest-newsconttxt"> 
+                        <strong><?php echo $nmessage; ?></strong><br/> 
+                        <span> <b> For : </b> <?php echo $uname; ?></span>
+                    </div>
+                    <div class="lastest-date"> <span> <?php echo date("M", strtotime($notes['created_at'])) . ' ' . date("d", strtotime($notes['created_at'])) ?> </span> </div>
+                </div>  
             <?php }
             ?>
             <div class="viewall"><?php echo CHtml::link(Myclass::t('OG038', '', 'og'), array('/optirep/repNotes'), array('class' => '')); ?></div>        
