@@ -22,7 +22,7 @@ class DefaultController extends ORController {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('index', 'aboutus', 'legend', 'contactus', 'forgotPassword','error'),
+                'actions' => array('index', 'aboutus', 'legend', 'contactus', 'forgotPassword','error','footercount'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -48,6 +48,42 @@ class DefaultController extends ORController {
         else
         throw new CHttpException(404, 'Page not found.');
     } 
+    
+    public function actionFootercount()
+    {
+        $profesional_count = Yii::app()->db->createCommand() // this query get the total number of items,
+                ->select('count(*) as count')
+                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' ")
+                ->queryScalar(); 
+      
+        $retailer_count = Yii::app()->db->createCommand() // this query get the total number of items,
+                ->select('count(*) as count')
+                ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' ")
+                ->queryScalar(); 
+        
+        $supplier_count = Yii::app()->db->createCommand() // this query get the total number of items,
+                ->select('count(*) as count')
+                ->from(array('repertoire_fournisseurs f', 'repertoire_fournisseur_type ft', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                ->where("f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.NOM_TABLE ='Fournisseurs' and ru.status=1 " . $sname_qry . $stype_qry . $section_product_qry)
+                ->queryScalar();
+        
+        $rep_count = Yii::app()->db->createCommand() // this query get the total number of items,
+                ->select('count(*) as count')
+                ->from(array('rep_credentials'))
+                ->where("rep_role='single' and rep_status='1'")
+                ->queryScalar();
+        
+        $pk =1;
+        $coun_results = UserCounts::model()->findByPk($pk);
+        $coun_results->prof_users = $profesional_count;
+        $coun_results->supp_users = $supplier_count;
+        $coun_results->ret_users  = $retailer_count;
+        $coun_results->rep_users  = $rep_count;
+        $coun_results->save(false);
+        
+    }        
 
     public function actionIndex() {
         $model = new OrLoginForm('login');

@@ -5,16 +5,16 @@ $getallcounts_query = Yii::app()->db->createCommand() //this query contains all 
         ->where("id=1")
         ->queryAll();
 
-$total_prof = $getallcounts_query[0]['prof_users'];
+$total_prof   = $getallcounts_query[0]['prof_users'];
 $prof_display = Myclass::format_numbers_words($total_prof);
 
-$total_retail = $getallcounts_query[0]['ret_users'];
+$total_retail   = $getallcounts_query[0]['ret_users'];
 $retail_display = Myclass::format_numbers_words($total_retail);
 
-$total_supp = $getallcounts_query[0]['supp_users'];
+$total_supp   = $getallcounts_query[0]['supp_users'];
 $supp_display = Myclass::format_numbers_words($total_supp);
 
-$total_rep = $getallcounts_query[0]['rep_users'];
+$total_rep   = $getallcounts_query[0]['rep_users'];
 $rep_display = Myclass::format_numbers_words($total_rep);
 ?>
 <div class="footer-cont">
@@ -36,7 +36,7 @@ $rep_display = Myclass::format_numbers_words($total_rep);
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">                    
                     <?php echo CHtml::image("{$this->themeUrl}/images/footer-icon4.jpg", 'Footer Icon4') ?>
-                    <h2> <?php echo $rep_display; ?></h2> <span>  Sales representatives </span>
+                    <h2> <?php echo $rep_display; ?></h2> <span>  Sales Reps </span>
                 </div>
             </div>
         </div>
