@@ -81,6 +81,13 @@ $this->breadcrumbs = array(
                                 'rep_single_subscription_start',
                                 'rep_single_subscription_end',
                                 'created_at',
+                                array(
+                                    'header' => 'Action',
+                                    'type' => 'raw',
+                                    'filter' => false,
+                                    //call the method 'repSinglePaymentTransactionLink' from the controller
+                                    'value' => '$data->repSinglePaymentTransactionLink($data->rep_credential_id, $data->rep_single_subscription_id)',
+                                ),
                             );
 
                             $this->widget('booster.widgets.TbExtendedGridView', array(
@@ -120,6 +127,13 @@ $this->breadcrumbs = array(
                                 'rep_admin_subscription_start',
                                 'rep_admin_subscription_end',
                                 'created_at',
+                                array(
+                                    'header' => 'Action',
+                                    'type' => 'raw',
+                                    'filter' => false,
+                                    //call the method 'repAdminPaymentTransactionLink' from the controller
+                                    'value' => '$data->repAdminPaymentTransactionLink($data->rep_credential_id, $data->rep_admin_subscription_id)',
+                                ),
                             );
 
                             $this->widget('booster.widgets.TbExtendedGridView', array(
@@ -136,3 +150,59 @@ $this->breadcrumbs = array(
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="rep-payment-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-money"></i> Payment Details :</h4>
+                <div id="payment_contents"></div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<?php
+$ajax_get_rep_admin_payment_transaction = Yii::app()->createUrl('/admin/paymentTransaction/getRepAdminPaymentDetails');
+$ajax_get_rep_single_payment_transaction = Yii::app()->createUrl('/admin/paymentTransaction/getRepSinglePaymentDetails');
+
+$js = <<< EOD
+$(document).ready(function()
+{   
+    $('.payment_popup').live('click',function(event){
+        event.preventDefault();
+        var rep_cred_id = $(this).attr("id");      
+        var rep_admin_subs_id = $(this).data("admin-subs-id"); 
+        var rep_single_subs_id = $(this).data("single-subs-id");  
+            
+        if (rep_admin_subs_id > 0){
+            var dataString = 'user_id='+rep_cred_id+'&rep_admin_subscription_id='+rep_admin_subs_id;
+            $.ajax({
+                type: "POST",
+                url: '{$ajax_get_rep_admin_payment_transaction}',
+                data: dataString,
+                cache: false,
+                success: function(html){             
+                    $("#payment_contents").html(html);               
+                }
+             });
+        }
+        
+        if(rep_single_subs_id > 0){
+            var dataString = 'user_id='+rep_cred_id+'&rep_single_subscription_id='+rep_single_subs_id;
+            $.ajax({
+                type: "POST",
+                url: '{$ajax_get_rep_single_payment_transaction}',
+                data: dataString,
+                cache: false,
+                success: function(html){             
+                    $("#payment_contents").html(html);               
+                }
+             });
+        }
+    });
+});     
+EOD;
+Yii::app()->clientScript->registerScript('_form', $js);
+?>

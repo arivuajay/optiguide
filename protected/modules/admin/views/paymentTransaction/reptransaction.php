@@ -6,12 +6,6 @@ $this->title = 'Transactions de paiement Optirep';
 $this->breadcrumbs = array(
     'Transactions de paiement Optirep',
 );
-//$themeUrl = $this->themeUrl;
-//$cs = Yii::app()->getClientScript();
-//$cs_pos_end = CClientScript::POS_END;
-//
-//$cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
-//$cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
 ?>
 
 
@@ -25,8 +19,9 @@ $this->breadcrumbs = array(
                 'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
             ),
             array(
-                'name' => 'payer_email',
-                'filter' => CHtml::activeTextField($model, 'payer_email', array('class' => 'form-control')),
+                'name' => 'repCredentials.rep_username',
+                'value' => '$data->getTransactionUserName($data->id)',
+                'filter' => false,
             ),
             array(
                 'name' => 'total_price',
@@ -49,7 +44,7 @@ $this->breadcrumbs = array(
             ),
             array('name' => 'payment_status',
                 'type' => 'raw',
-                'value' => function($data){
+                'value' => function($data) {
                     echo ($data->payment_status == "Pending") ? '<span class="label label-warning">Pending</span>' : '<span class="label label-success">Completed</span>';
                 },
                 'filter' => false,
@@ -63,7 +58,6 @@ $this->breadcrumbs = array(
                 'class' => 'booster.widgets.TbButtonColumn',
                 'viewButtonUrl' => 'Yii::app()->createUrl("/admin/paymentTransaction/repview/", array("id"=>$data->id))',
                 'updateButtonUrl' => 'Yii::app()->createUrl("/admin/paymentTransaction/repUpdateStatus/", array("id"=>$data->id))',
-//                'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
                 'template' => '{view}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{update}',
                 'buttons' => array(
                     'update' => array(
@@ -74,7 +68,6 @@ $this->breadcrumbs = array(
         );
 
         $this->widget('booster.widgets.TbExtendedGridView', array(
-            'filter' => $model,
             'type' => 'striped bordered datatable',
             'dataProvider' => $model->searchrep(),
             'responsiveTable' => true,

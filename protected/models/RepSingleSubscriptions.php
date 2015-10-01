@@ -151,5 +151,10 @@ class RepSingleSubscriptions extends CActiveRecord {
         $this->modified_at = new CDbExpression('NOW()');
         return parent::beforeSave();
     }
+    
+    public function repSinglePaymentTransactionLink($rep_credential_id, $rep_single_subscription_id) {
+        $linkval = "<a href='javascript:void(0)' data-target='#rep-payment-modal' data-toggle='modal' class='payment_popup' id=" . $rep_credential_id . " data-single-subs-id = ".$rep_single_subscription_id." data-admin-subs-id = 0>View More</a>";
+        return $linkval;
+    }
 
 }

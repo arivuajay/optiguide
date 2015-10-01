@@ -24,7 +24,7 @@ class PaymentTransactionController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array(''),
+                'actions' => array('getRepAdminPaymentDetails', 'getRepSinglePaymentDetails'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -66,58 +66,55 @@ class PaymentTransactionController extends Controller {
 
             $model->attributes = $_POST['PaymentTransaction'];
             $pstatus = $_POST['PaymentTransaction']['payment_status'];
-            
-            if($pstatus=="Pending")
-            {
-                Yii::app()->user->setFlash('danger', 'Payment transaction status not yet completed!!!');                
-            }else
-            {    
+
+            if ($pstatus == "Pending") {
+                Yii::app()->user->setFlash('danger', 'Payment transaction status not yet completed!!!');
+            } else {
                 $suppid = $model->user_id;
                 $subscription_type = $model->subscription_type;
                 $invoice_number = $model->invoice_number;
-                
+
                 $fmodel = SuppliersDirectory::model()->findByPk($suppid);
-                
+
                 $profile_expirydate = $fmodel->profile_expirydate;
-                $logo_expirydate    = $fmodel->logo_expirydate;
+                $logo_expirydate = $fmodel->logo_expirydate;
 
-                if ($subscription_type == "1" || $subscription_type == "2") {                   
-                        $p_expdate = date("Y-m-d", strtotime($profile_expirydate));
-                        if ($p_expdate > date("Y-m-d")) {
-                            $time = strtotime($profile_expirydate);
-                            $fmodel->profile_expirydate = date("Y-m-d", strtotime("+1 year", $time));
-                        } else {
-                            $fmodel->profile_expirydate = date('Y-m-d', strtotime('+1 year'));
-                        }                         
+                if ($subscription_type == "1" || $subscription_type == "2") {
+                    $p_expdate = date("Y-m-d", strtotime($profile_expirydate));
+                    if ($p_expdate > date("Y-m-d")) {
+                        $time = strtotime($profile_expirydate);
+                        $fmodel->profile_expirydate = date("Y-m-d", strtotime("+1 year", $time));
+                    } else {
+                        $fmodel->profile_expirydate = date('Y-m-d', strtotime('+1 year'));
+                    }
                 }
 
-                if ($subscription_type == "3" || $subscription_type == "2") {                   
-                        $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
-                        if ($l_expdate > date("Y-m-d")) {
-                            $time = strtotime($logo_expirydate);
-                            $fmodel->logo_expirydate = date("Y-m-d", strtotime("+1 year", $time));
-                        } else {
-                            $fmodel->logo_expirydate = date('Y-m-d', strtotime('+1 year'));
-                        }                   
+                if ($subscription_type == "3" || $subscription_type == "2") {
+                    $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
+                    if ($l_expdate > date("Y-m-d")) {
+                        $time = strtotime($logo_expirydate);
+                        $fmodel->logo_expirydate = date("Y-m-d", strtotime("+1 year", $time));
+                    } else {
+                        $fmodel->logo_expirydate = date('Y-m-d', strtotime('+1 year'));
+                    }
                 }
-                
+
                 $fmodel->save(false);
-                
+
                 /* Registration - Update user status 1 in user table */
-                if($model->supp_renew_status==0)
-                {    
+                if ($model->supp_renew_status == 0) {
                     $userinfos = UserDirectory::model()->find("NOM_TABLE='Fournisseurs' AND ID_RELATION = " . $suppid);
                     $userinfos->status = 1;
                     $userinfos->save(false);
                 }
-                
-                SupplierTemp::model()->deleteAll("invoice_number = '" . $invoice_number . "'");   
-                
+
+                SupplierTemp::model()->deleteAll("invoice_number = '" . $invoice_number . "'");
+
                 if ($model->save()) {
-                    Yii::app()->user->setFlash('success', 'PaymentTransaction status Updated Successfully!!!');                   
+                    Yii::app()->user->setFlash('success', 'PaymentTransaction status Updated Successfully!!!');
                 }
-            }    
-            
+            }
+
             if ($model->NOMTABLE == 'rep_credentials') {
                 $this->redirect(array('reptransaction'));
             } else {
@@ -167,15 +164,14 @@ class PaymentTransactionController extends Controller {
         $model = $this->loadModel($id);
         if (isset($_POST['PaymentTransaction'])) {
             if ($_POST['PaymentTransaction']['payment_status'] == 'Completed') {
-                
+
                 // For statistics new/renew
-                if($model->subscription_type=="3" || $model->subscription_type=="4")
-                {
-                    $repid  = $model->user_id;
+                if ($model->subscription_type == "3" || $model->subscription_type == "4") {
+                    $repid = $model->user_id;
                     $invoice_number = $model->invoice_number;
-                    
+
                     // Update expiry date in repcredential table
-                    $rmodel = RepCredentials::model()->findByPk($repid);                
+                    $rmodel = RepCredentials::model()->findByPk($repid);
                     $stat_expiry_date = $rmodel->stat_expiry_date;
                     $s_expdate = date("Y-m-d", strtotime($stat_expiry_date));
                     if ($s_expdate > date("Y-m-d")) {
@@ -183,15 +179,15 @@ class PaymentTransactionController extends Controller {
                         $rmodel->stat_expiry_date = date("Y-m-d", strtotime("+1 month", $time));
                     } else {
                         $rmodel->stat_expiry_date = date('Y-m-d', strtotime('+1 month'));
-                    }                        
+                    }
                     $rmodel->save(false);
-                    
+
                     $model->payment_status = "Completed";
                     $model->save(false);
-                    
-                    SupplierTemp::model()->deleteAll("invoice_number = '" . $invoice_number . "'");   
-                }    
-                
+
+                    SupplierTemp::model()->deleteAll("invoice_number = '" . $invoice_number . "'");
+                }
+
                 // For rep/admin registration and renew
                 $repTemp = RepTemp::model()->findByPk($model->rep_temp_id);
                 if (!empty($repTemp)) {
@@ -201,20 +197,18 @@ class PaymentTransactionController extends Controller {
                         $this->processBuyMoreAccounts($repTemp['rep_temp_random_id']);
                     } elseif ($repTemp['rep_temp_key'] == RepTemp::REP_ADMIN_RENEWAL_REP_ACCOUNTS) {
                         $this->processRenewalRepAccounts($repTemp['rep_temp_random_id']);
-                    } elseif($repTemp['rep_temp_key'] == RepTemp::REP_SINGLE_RENEWAL_REP_ACCOUNT){
+                    } elseif ($repTemp['rep_temp_key'] == RepTemp::REP_SINGLE_RENEWAL_REP_ACCOUNT) {
                         $this->processRenewalSingleRepAccount($repTemp['rep_temp_random_id']);
                     }
                 }
-                Yii::app()->user->setFlash('success', 'PaymentTransaction status Updated Successfully!!!');  
+                Yii::app()->user->setFlash('success', 'PaymentTransaction status Updated Successfully!!!');
             }
-            $this->redirect(array('reptransaction'));            
-            
+            $this->redirect(array('reptransaction'));
         }
         $this->render('repUpdateStatus', array(
             'model' => $model,
         ));
     }
-
 
     /**
      * Returns the data model based on the primary key given in the GET variable.
@@ -239,6 +233,28 @@ class PaymentTransactionController extends Controller {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
+    }
+
+    public function actionGetRepAdminPaymentDetails() {
+        $model = PaymentTransaction::model()->find('user_id = :UID AND rep_admin_subscription_id = :AID', array(
+            ':UID' => $_POST['user_id'],
+            ':AID' => $_POST['rep_admin_subscription_id']
+        ));
+        $this->renderPartial('repview', array(
+            'model' => $model,
+        ));
+        exit;
+    }
+
+    public function actionGetRepSinglePaymentDetails() {
+        $model = PaymentTransaction::model()->find('user_id = :UID AND rep_single_subscription_id = :SID', array(
+            ':UID' => $_POST['user_id'],
+            ':SID' => $_POST['rep_single_subscription_id']
+        ));
+        $this->renderPartial('repview', array(
+            'model' => $model,
+        ));
+        exit;
     }
 
 }

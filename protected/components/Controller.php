@@ -85,7 +85,7 @@ class Controller extends CController {
                 ':UN' => $rep_username,
             ));
             if(!empty($rep_username_exists)){
-                $rep_username = $rep_username_.time();
+                $rep_username = $rep_username . "_" . time();
             }
 
             //Save Rep Credentials

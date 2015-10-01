@@ -161,4 +161,33 @@ class PaymentTransaction extends CActiveRecord {
         ));
     }
 
+    public function getTransactionUserName($payment_transaction_id) {
+        $payment_transaction = $this->model()->findByPk($payment_transaction_id);
+        if ($payment_transaction['user_id']) {
+            $rep_credential = $payment_transaction->repCredentials;
+            return $rep_credential['rep_username'];
+        } elseif ($payment_transaction['rep_temp_id']) {
+            $rep_temp = RepTemp::model()->findByPk($payment_transaction['rep_temp_id']);
+            $user_info = unserialize($rep_temp['rep_temp_value']);
+            $rep_username = $user_info['step2']['RepCredentials']['rep_username'];
+            return $rep_username;
+        }
+    }
+
+    public function getTransactionUserDetails($payment_transaction_id) {
+        $payment_transaction = $this->model()->findByPk($payment_transaction_id);
+        $rep = array();
+        if ($payment_transaction['user_id']) {
+            $rep_credential = RepCredentials::model()->findByPK($payment_transaction['user_id']);
+            $rep['rep_credential'] = $rep_credential;
+            $rep['rep_credential_profile'] = $rep_credential->repCredentialProfiles;
+        } elseif ($payment_transaction['rep_temp_id']) {
+            $rep_temp = RepTemp::model()->findByPk($payment_transaction['rep_temp_id']);
+            $user_info = unserialize($rep_temp['rep_temp_value']);
+            $rep['rep_credential'] = $user_info['step2']['RepCredentials'];
+            $rep['rep_credential_profile'] = $user_info['step2']['RepCredentialProfiles'];
+        }
+        return $rep;
+    }
+
 }

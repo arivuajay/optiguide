@@ -129,6 +129,7 @@ class RepCredentials extends CActiveRecord {
         $criteria->compare('rep_expiry_date', $this->rep_expiry_date, true);
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->compare('modified_at', $this->modified_at, true);
+        $criteria->order = 'created_at DESC';
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

@@ -218,5 +218,10 @@ class RepAdminSubscriptions extends CActiveRecord {
         }
         return false;
     }
+    
+    public function repAdminPaymentTransactionLink($rep_credential_id, $rep_admin_subscription_id) {
+        $linkval = "<a href='javascript:void(0)' data-target='#rep-payment-modal' data-toggle='modal' class='payment_popup' id=" . $rep_credential_id . " data-admin-subs-id = ".$rep_admin_subscription_id." data-single-subs-id = 0>View More</a>";
+        return $linkval;
+    }
 
 }
