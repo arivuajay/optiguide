@@ -180,8 +180,9 @@ class ProfessionalDirectoryController extends ORController {
 
         $searchModel->country = isset($searchModel->country) ? $searchModel->country : DEFAULTPAYS;
         $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country; 
-            
-
+         
+        $searchModel->listperpage = (isset($_GET['listperpage']))?$_GET['listperpage']:LISTPERPAGE;
+       
         //$page = (isset($_GET['page']) ? $_GET['page'] : 1);  // define the variable to “LIMIT” the query        
         $page = Yii::app()->request->getParam('page');
         $page = isset($page) ? $page : 1;
@@ -189,7 +190,7 @@ class ProfessionalDirectoryController extends ORController {
 
         if ($page > 1) {
             $offset = $page - 1;
-            $limit = LISTPERPAGE * $offset;
+            $limit = $searchModel->listperpage * $offset;
         }
 
         // $searchModel->unsetAttributes();
@@ -206,7 +207,7 @@ class ProfessionalDirectoryController extends ORController {
 
             if ($search_name != '') {
                 $searchModel->NOM = $search_name;
-                $sname_qry = " AND (NOM like '%$search_name%' ";
+                $sname_qry = " AND NOM like '%$search_name%' ";
             }
 
             if ($search_country != '') {
@@ -242,7 +243,7 @@ class ProfessionalDirectoryController extends ORController {
                 ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
                 ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
                 ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
-                ->limit(LISTPERPAGE, $limit) // the trick is here!
+                ->limit($searchModel->listperpage, $limit) // the trick is here!
                 ->queryAll();
 
         // Get total counts of records    
@@ -253,7 +254,7 @@ class ProfessionalDirectoryController extends ORController {
                 ->queryScalar(); // do not LIMIT it, this must count all items!
         // the pagination itself      
         $pages = new CPagination($item_count);
-        $pages->setPageSize(LISTPERPAGE);
+        $pages->setPageSize($searchModel->listperpage);
 
         $result = array();
         foreach ($prof_query as $users) {

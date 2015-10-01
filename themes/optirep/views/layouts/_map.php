@@ -42,6 +42,7 @@
             
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">       
                 <?php
+                $listperpage = (isset($_GET['listperpage']))?$_GET['listperpage']:LISTPERPAGE;
                 if($_controller=="retailerDirectory")
                 {  
                     // $searchModel->unsetAttributes();
@@ -67,7 +68,7 @@
                         ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS "
                                 . "AND ru.status=1 AND ru.NOM_TABLE ='Detaillants' ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry)
                         ->order('COMPAGNIE ASC')
-                        ->limit( LISTPERPAGE , $limit) // the trick is here!
+                        ->limit( $listperpage , $limit) // the trick is here!
                         ->queryAll();
                    }               
                     
@@ -96,7 +97,7 @@
                             ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
                             ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry)
                             ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
-                            ->limit(LISTPERPAGE, $limit) // the trick is here!
+                            ->limit($listperpage, $limit) // the trick is here!
                             ->queryAll();
                      
                 }

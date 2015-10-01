@@ -58,6 +58,7 @@
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
         <?php echo CHtml::submitButton(Myclass::t('OG024', '', 'og'), array('class' => 'find-btn')); ?>
     </div>
+    <?php echo CHtml::hiddenField('listperpage' , $searchModel->listperpage, array('id' => 'listperpage')); ?>   
     <?php $this->endWidget(); ?>
 </div>
 

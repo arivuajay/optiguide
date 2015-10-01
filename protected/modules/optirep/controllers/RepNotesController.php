@@ -62,16 +62,27 @@ class RepNotesController extends ORController
 	public function actionCreate()
 	{
 		$model=new RepNotes;
+                
+                $this->performAjaxValidation(array($model));
 
 		if(isset($_POST['RepNotes']))
 		{
-			$model->attributes=$_POST['RepNotes'];
+                    $model->attributes=$_POST['RepNotes'];
+                    
+                    $sess_id    = Yii::app()->user->id;
+                    $condition  = " NOM_TABLE='rep_credentials' AND ID_RELATION='$sess_id' ";
+                    $ufrm_infos = UserDirectory::model()->find($condition);                    
+
+                    $valid = $model->validate();
+                    if ($valid) {
                         $model->rep_credential_id = Yii::app()->user->id;
                         $model->created_at = date('Y-m-d H:i:s');
+                        $model->ID_UTILISATEUR = $ufrm_infos->ID_UTILISATEUR;
 			if($model->save()){
                                 Yii::app()->user->setFlash('success', 'Notes Created Successfully!!!');
                                 $this->redirect(array('index'));
                         }
+                    }    
 		}
 
 		$this->render('create',array(
@@ -88,15 +99,19 @@ class RepNotesController extends ORController
 	{
 		$model=$this->loadModel($id);
 
-
-		if(isset($_POST['RepNotes']))
+                $this->performAjaxValidation(array($model));
+		
+                if(isset($_POST['RepNotes']))
 		{
-			$model->attributes=$_POST['RepNotes'];
-                        $model->created_at = date('Y-m-d');
-			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'Notes Updated Successfully!!!');
-                                $this->redirect(array('index'));
+                    $model->attributes=$_POST['RepNotes'];   
+
+                    $valid = $model->validate();
+                    if ($valid) {
+                        if($model->save()){
+                            Yii::app()->user->setFlash('success', 'Notes Updated Successfully!!!');
+                            $this->redirect(array('index'));
                         }
+                     }    
 		}
 
 		$this->render('update',array(
@@ -125,12 +140,21 @@ class RepNotesController extends ORController
 	 */
 	public function actionIndex()
 	{
-            $rep_id = Yii::app()->user->id;        
+            $rep_id = Yii::app()->user->id;            
+            $urole  = Yii::app()->user->rep_role;
+            
+            if($urole=="single")
+            {  
+              $qstring  = " ru.status=1 AND (ru.NOM_TABLE='Professionnels' OR ru.NOM_TABLE='Detaillants') ";
+            }else if($urole=="admin")
+            {
+               $qstring = " (ru.NOM_TABLE='rep_credentials') ";  
+            }
             
             $mynotes = Yii::app()->db->createCommand() //this query contains all the data
              ->select('rn.id,rn.message,rn.created_at,ru.NOM_UTILISATEUR,ru.NOM_TABLE,ru.ID_RELATION')
              ->from(array('rep_notes rn', 'repertoire_utilisateurs ru'))
-             ->where("rn.ID_UTILISATEUR=ru.ID_UTILISATEUR AND ru.status=1 AND (ru.NOM_TABLE='Professionnels' OR ru.NOM_TABLE='Detaillants') AND rn.rep_credential_id =" . $rep_id)
+             ->where("rn.ID_UTILISATEUR=ru.ID_UTILISATEUR AND ".$qstring." AND rn.rep_credential_id =" . $rep_id)
              ->order('rn.id desc')
              ->queryAll();
 
@@ -139,9 +163,9 @@ class RepNotesController extends ORController
             $item_count = Yii::app()->db->createCommand() // this query get the total number of items,
             ->select('count(*) as count')
             ->from(array('rep_notes rn', 'repertoire_utilisateurs ru'))
-            ->where("rn.ID_UTILISATEUR=ru.ID_UTILISATEUR AND ru.status=1 AND (ru.NOM_TABLE='Professionnels' OR ru.NOM_TABLE='Detaillants') AND rn.rep_credential_id =" . $rep_id)
+            ->where("rn.ID_UTILISATEUR=ru.ID_UTILISATEUR AND  ".$qstring." AND rn.rep_credential_id =" . $rep_id)
             ->queryScalar(); // do not LIMIT it, this must count all items!
-          
+                      
             // results per page
             $pages = new CPagination($item_count);
             $pages->setPageSize(LISTPERPAGE);

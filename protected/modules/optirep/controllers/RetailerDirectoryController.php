@@ -189,7 +189,8 @@ class RetailerDirectoryController extends ORController {
         $searchModel->country = isset($searchModel->country)?$searchModel->country: DEFAULTPAYS;
         $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country;
         
-       
+        $searchModel->listperpage = (isset($_GET['listperpage']))?$_GET['listperpage']:LISTPERPAGE;
+        
         //$page = (isset($_GET['page']) ? $_GET['page'] : 1);  // define the variable to “LIMIT” the query        
         $page  = Yii::app()->request->getParam('page');
         $page  = isset($page) ? $page : 1; 
@@ -197,7 +198,7 @@ class RetailerDirectoryController extends ORController {
        
         if($page>1){
          $offset = $page-1;   
-         $limit  = LISTPERPAGE * $offset;
+         $limit  = $searchModel->listperpage * $offset;
         }   
         
         
@@ -206,12 +207,12 @@ class RetailerDirectoryController extends ORController {
              
              $searchModel->attributes = $_REQUEST['RetailerDirectory'];
             
-             $search_name    = isset($_GET['RetailerDirectory']['COMPAGNIE'])?$_GET['RetailerDirectory']['COMPAGNIE']:'';
-             $search_cat     = isset($_GET['RetailerDirectory']['searchcat'])?$_GET['RetailerDirectory']['searchcat']:'';
-             $search_country = isset($_GET['RetailerDirectory']['country'])?$_GET['RetailerDirectory']['country']:'';
-             $search_region  = isset($_GET['RetailerDirectory']['region'])?$_GET['RetailerDirectory']['region']:'';
-             $search_ville   = isset($_GET['RetailerDirectory']['ID_VILLE'])?$_GET['RetailerDirectory']['ID_VILLE']:'';
-             $search_postal  = isset($_GET['RetailerDirectory']['CODE_POSTAL'])?$_GET['RetailerDirectory']['CODE_POSTAL']:'';
+             $search_name     = isset($_GET['RetailerDirectory']['COMPAGNIE'])?$_GET['RetailerDirectory']['COMPAGNIE']:'';
+             $search_cat      = isset($_GET['RetailerDirectory']['searchcat'])?$_GET['RetailerDirectory']['searchcat']:'';
+             $search_country  = isset($_GET['RetailerDirectory']['country'])?$_GET['RetailerDirectory']['country']:'';
+             $search_region   = isset($_GET['RetailerDirectory']['region'])?$_GET['RetailerDirectory']['region']:'';
+             $search_ville    = isset($_GET['RetailerDirectory']['ID_VILLE'])?$_GET['RetailerDirectory']['ID_VILLE']:'';
+             $search_postal   = isset($_GET['RetailerDirectory']['CODE_POSTAL'])?$_GET['RetailerDirectory']['CODE_POSTAL']:'';
              $search_ret_type = isset($_GET['RetailerDirectory']['ID_RETAILER_TYPE'])?$_GET['RetailerDirectory']['ID_RETAILER_TYPE']:'';
              $search_group    = isset($_GET['RetailerDirectory']['ID_GROUPE'])?$_GET['RetailerDirectory']['ID_GROUPE']:'';
             
@@ -273,7 +274,7 @@ class RetailerDirectoryController extends ORController {
         ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp','repertoire_utilisateurs as ru'))
         ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry.$srettype_qry.$sgroup_qry)
         ->order('COMPAGNIE')
-        ->limit( LISTPERPAGE , $limit) // the trick is here!
+        ->limit( $searchModel->listperpage , $limit) // the trick is here!
         ->queryAll();
       
        // Get total counts of records    
@@ -285,14 +286,14 @@ class RetailerDirectoryController extends ORController {
 
         // the pagination itself      
         $pages = new CPagination($item_count);
-        $pages->setPageSize(LISTPERPAGE);
+        $pages->setPageSize($searchModel->listperpage);
        
         // render
         $this->render('index',array(
             'searchModel' => $searchModel,
             'model'=>$retail_query,
             'item_count'=>$item_count,
-            'page_size'=>LISTPERPAGE,
+            'page_size'=>$searchModel->listperpage,
             'pages'=>$pages,           
            ));
      
