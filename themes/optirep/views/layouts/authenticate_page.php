@@ -26,6 +26,7 @@
         $cs->registerCssFile($themeUrl . '/css/bootstrap-select.min.css');
         $cs->registerCssFile($themeUrl . '/css/bootstrap-switch.min.css');
         $cs->registerCssFile($themeUrl . '/css/pink.css');
+        $cs->registerCssFile($themeUrl . '/css/nanoscroller.css');
         $cs->registerCssFile($themeUrl . '/css/custom.css');
         ?>
     </head>
@@ -45,7 +46,8 @@
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-switch.min.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-number-input.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/icheck.min.js', $cs_pos_end);
-        $cs->registerScriptFile($themeUrl . '/js/jquery.lionbars.0.3.js', $cs_pos_end);       
+        $cs->registerScriptFile($themeUrl . '/js/jquery.lionbars.0.3.js', $cs_pos_end); 
+        $cs->registerScriptFile($themeUrl . '/js/jquery.nanoscroller.min.js', $cs_pos_end);
         
         ?>
 

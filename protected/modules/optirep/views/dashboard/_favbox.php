@@ -9,6 +9,7 @@ $rep_id = Yii::app()->user->id;
         if ($urole == "admin") {
             $my_usrs = '';
             $myusers = RepCredentials::model()->findAll(array("limit" => "4", "order" => "rep_credential_id desc", "condition" => "rep_parent_id=" . $rep_id));
+            $myusers = array();
             if (!empty($myusers)) {
                 foreach ($myusers as $uinfo) {
                     $my_usrs .= "<div class='fav-cont favusers'>" . CHtml::image($this->themeUrl . '/images/fav.jpg');

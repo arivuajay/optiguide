@@ -28,6 +28,7 @@
         $cs->registerCssFile($themeUrl . '/css/font-awesome.css');
         $cs->registerCssFile($themeUrl . '/css/style.css');
         $cs->registerCssFile($themeUrl . '/css/responsive.css');
+        $cs->registerCssFile($themeUrl . '/css/nanoscroller.css');
         $cs->registerCssFile($themeUrl . '/css/custom.css');
         ?>
     </head>
@@ -77,6 +78,7 @@
         $cs->registerScriptFile($themeUrl . '/js/maps.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/icheck.min.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/jquery.lionbars.0.3.js', $cs_pos_end);
+        $cs->registerScriptFile($themeUrl . '/js/jquery.nanoscroller.min.js', $cs_pos_end);
         ?>
 
         <?php

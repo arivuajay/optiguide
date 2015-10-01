@@ -2,14 +2,14 @@
     <?php $this->renderPartial('_search', array('searchModel' => $searchModel)); ?>
 
     <h2> <?php echo Myclass::t('OG040', '', 'og'); ?> </h2>
-    <div class="col-xs-12 col-sm-8 col-md-3 col-lg-3 pull-right"> 
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">Per Page </div>
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 pull-right"> 
+        <div class="perpage pull-right"> <span>Per Page </span>
         <?php
         $options = array('15' => '15', '30' => '30', '75' => '75', '100' => '100');
-        echo CHtml::dropDownList('page_select', $searchModel->listperpage, $options, array("class" => "selectpicker" , "id"=>"page_change"));
+        echo CHtml::dropDownList('page_select', $searchModel->listperpage, $options, array("class" => "" , "id"=>"page_change"));
         ?>
         </div>
+        
     </div>    
     <div class="search-list">
         <?php

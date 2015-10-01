@@ -22,8 +22,8 @@ $command = Yii::app()->db->createCommand($sql)->execute();
             <h2> Conversation </h2>
             <div class="row"> 
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">  
-                   <div class="box" id="box1">
-                    <div class="table-responsive">
+                   <div class="nano">
+                     <div class="table-responsive nano-content">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
                             <tr>          
                                 <th class="author">User</th>
@@ -100,11 +100,12 @@ $command = Yii::app()->db->createCommand($sql)->execute();
 </div>    
 <?php
 $js = <<< EOD
-    var objDiv = document.getElementById("box1");
-    objDiv.scrollTop = objDiv.scrollHeight;
     
    $(document).ready(function(){      
-        $('#box1').scrollTop($('#box1')[0].scrollHeight);
+        $(".nano").nanoScroller({ 
+                scroll: 'bottom',
+                alwaysVisible: true 
+                });
      });        
 EOD;
 Yii::app()->clientScript->registerScript('_form_prof', $js);
