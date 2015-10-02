@@ -48,7 +48,7 @@
                      <tr class="<?php echo $hglightclass;?>">
                         <td width="9%"><?php echo $i; ?></td>
                         <td width="20%"><?php echo $infos['NOM_UTILISATEUR'];?></td>
-                         <td width="18%"><a href=""><?php echo CHtml::link($mdisplay , array('/optirep/internalMessage/readmessage/convid/'.$convid)); ?></a></td>
+                         <td width="18%"><?php echo CHtml::link($mdisplay , array('/optirep/internalMessage/readmessage/convid/'.$convid)); ?></td>
                         <td width="18%"><?php echo date('Y/m/d H:i:s' ,$infos['timestamp']); ?></td>
                      </tr>
                     <?php 

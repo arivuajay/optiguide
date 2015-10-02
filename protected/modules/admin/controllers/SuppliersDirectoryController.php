@@ -480,6 +480,7 @@ class SuppliersDirectoryController extends Controller {
             if (Yii::app()->user->hasState("mattributes")) {
                 $model->attributes = $sess_attr_m;    
               //  $model->ID_CLIENT  = $sess_attr_m['ID_CLIENT'];
+                $model->CREATED_DATE = date("Y-m-d");
                 $model->save(false);              
              //   $umodel->attributes  = $sess_attr_u;
              //   $umodel->ID_RELATION = $model->ID_FOURNISSEUR;

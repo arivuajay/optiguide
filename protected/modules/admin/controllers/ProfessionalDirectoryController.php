@@ -95,7 +95,7 @@ class ProfessionalDirectoryController extends Controller {
                     $model->map_lat  = $exp_latlong[0];
                     $model->map_long = $exp_latlong[1];        
                 }   
-                
+                 $model->CREATED_DATE = date("Y-m-d");
                 // save proof file
                 if($model->pfile)
                 {   

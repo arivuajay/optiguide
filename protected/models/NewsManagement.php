@@ -157,7 +157,7 @@ class NewsManagement extends CActiveRecord {
             ),
              'latest_rep' => array(
                 'order' => 'DATE_AJOUT1 DESC',
-                'limit' => 4,
+                'limit' => 5,
                 'condition' => 'LANGUE = :LN',
                 'params' => array(':LN' => Yii::app()->session['language']),
             ),

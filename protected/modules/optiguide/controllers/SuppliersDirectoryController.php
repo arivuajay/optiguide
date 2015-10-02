@@ -970,6 +970,7 @@ class SuppliersDirectoryController extends OGController {
                                 $model->logo_expirydate = date("Y-m-d", strtotime('+1 year'));
                             }
                          }
+                        $model->CREATED_DATE = date("Y-m-d");
                         $model->save(false);
 
                         $umodel->attributes = $sess_attr_u;

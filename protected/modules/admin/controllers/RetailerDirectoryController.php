@@ -119,7 +119,7 @@ class RetailerDirectoryController extends Controller {
                     }
                     $model->pfile->saveAs($proof_path . $filename);
                 }   
-                                
+                $model->CREATED_DATE = date("Y-m-d");                
                 $model->save(false);
                // $umodel->ID_RELATION = $model->ID_RETAILER;
               //  $umodel->save(false);

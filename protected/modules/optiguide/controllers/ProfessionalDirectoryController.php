@@ -395,7 +395,8 @@ class ProfessionalDirectoryController extends OGController {
                     $model->map_lat  = $exp_latlong[0];
                     $model->map_long = $exp_latlong[1];        
                 }    
-                        
+                
+                $model->CREATED_DATE = date("Y-m-d");
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_SPECIALISTE;
                 $umodel->save(false);
