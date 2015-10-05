@@ -32,7 +32,7 @@
             <div class="form">
                 <?php //echo $form->labelEx($userVote,'choice_id'); ?>
                 <?php $template = '{input} {label}'; ?>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-12">  
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
                 <?php echo $form->radioButtonList($userVote,'choice_id',$choices,array('template' =>$template,'separator'=>'<br>','name'=>'PortletPollVote_choice_id')); ?>
                 <?php echo $form->error($userVote,'choice_id'); ?>  
                 </div>    

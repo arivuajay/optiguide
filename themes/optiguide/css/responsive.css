@@ -7,7 +7,7 @@ display:none!important
 }
 .header-row1
 {
-	height:40px;
+	height:75px;
 }
 
 .ad2
@@ -105,10 +105,19 @@ display:none!important
 	margin-bottom:0px;
 }
 
+.search-field4 {
+
+  width: 88%;
+}
+
 }
 @media (min-width:768px) and (max-width:991px) {
 .hidden-sm {
 display:none!important
+}
+
+.search-bg4 {
+  margin-top: 11px;
 }
 
 .header-row1
@@ -194,6 +203,10 @@ display:none!important
 
 .contact-cont {
   min-height: 120px;
+}
+
+.search-bg4 {
+  margin-top: 4px;
 }
 
 

@@ -323,3 +323,25 @@ and open the template in the editor.
     -moz-box-shadow       : inset 0px 0px 2px 0px rgba(50, 50, 50, 0.75);
     box-shadow            : inset 0px 0px 2px 0px rgba(50, 50, 50, 0.75);
 }
+
+.search-results{
+    border-bottom: none;
+    float: left;
+    line-height: 25px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    width: 100%;
+}
+
+.search-results span {
+    background: #8e090e none repeat scroll 0 0;
+    color: #ffffff;
+    float: right;
+    font-size: 13px;
+    padding: 5px;
+    width: auto;
+}
+
+.search-results h4 a {
+    color: #0B7ECF;
+}

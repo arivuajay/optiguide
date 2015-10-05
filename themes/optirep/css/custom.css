@@ -352,6 +352,10 @@ span.input-group-btn {
     color: #d9534f;
 }
 
+.rep-login .errorMessage { 
+    color: #000;
+}
+
 .stats-tips{
     margin-bottom: 10px;
 }
