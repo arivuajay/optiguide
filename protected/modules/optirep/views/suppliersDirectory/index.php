@@ -35,7 +35,7 @@
                         $today      = time();
                         $expiry_str = strtotime($expirydate);
                         $disp_supp  = CHtml::link($dispname,$param_array) . ' ';   
-                        $disp_supp .= $info['NOM_VILLE'].",".$info['ABREVIATION_'.$this->lang].",".$info['NOM_PAYS_'.$this->lang]." ";
+                        $disp_supp .= $info['NOM_VILLE'].", ".$info['ABREVIATION_'.$this->lang].", ".$info['NOM_PAYS_'.$this->lang]." ";
 
                         if($expiry_str!='' && ($expiry_str>$today))
                         $disp_supp .= CHtml::image("{$this->themeUrl}/images/paid.jpg", 'Paid');

@@ -20,7 +20,7 @@
                         <?php
                         $dispname = $userinfo['COMPAGNIE'];
                         echo CHtml::link($dispname, array('/optirep/retailerDirectory/view', 'id' => $userinfo['ID_RETAILER'])) . ' ';
-                        echo $userinfo['NOM_VILLE'] . "," . $userinfo['ABREVIATION_' . $this->lang] . "," . $userinfo['NOM_PAYS_' . $this->lang];
+                        echo $userinfo['NOM_VILLE'] . ", " . $userinfo['ABREVIATION_' . $this->lang] . ", " . $userinfo['NOM_PAYS_' . $this->lang];
                         ?>
                     </li>    
                 <?php } ?>
