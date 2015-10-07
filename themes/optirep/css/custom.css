@@ -376,11 +376,54 @@ span.input-group-btn {
 }
 
 .topviewall{
-    color: #fff;
+    color: #ffffff;
     float: right;
     font-size: 13px;
     font-weight: bold;
     padding-top: 13px;
-    text-transform:none;
-    
+   text-transform:none;
+}
+
+.topviewall:hover
+{
+	color: #ffffff;
+	text-decoration:underline;
+}
+
+.cate-bg ul
+{
+	margin:0px;
+	padding:0px;
+}
+
+.cate-bg ul li
+{
+	list-style:none;
+	font-size:14px;
+}
+
+.cate-bg .eventList
+{
+	font-size:15px;
+	text-transform:uppercase;
+	margin-bottom:5px;
+}
+
+.login {
+  border-left: 1px solid #d9d9d9;
+  padding: 11px 18px;
+}
+
+.no_of_accounts .btn-default {
+  background: #f0f0f0 none repeat scroll 0 0;
+  font-size: 35px;
+  line-height: 28px;
+}
+.no_of_accounts_input {
+  border-bottom: 1px solid #f0f0f0;
+  border-left: medium none;
+  border-top: 1px solid #f0f0f0;
+  font-size: 20px;
+  padding: 5px;
+  width:110px;
 }
