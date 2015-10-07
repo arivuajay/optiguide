@@ -6,7 +6,7 @@ $form = $this->beginWidget('CActiveForm', array(
 <div class="cate-bg user-right">
     <h2> Buy More Rep Accounts </h2>
     <div class="row"> 
-        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">    
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">    
             <div class="form-group"> 
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -21,14 +21,28 @@ $form = $this->beginWidget('CActiveForm', array(
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">  
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
             <div class="form-group"> 
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 price-details">
-                        <p > <b>Price Per Account : </b> <span id="per_acc_price"></span> </p>
-                        <p> <b>Total : </b>  <span id="total_price"></span> </p>
-                        <p> <b>Tax : </b> <span id="tax_price"></span>  </p>
-                        <p> <b>Grand Total : </b>  <span id="grand_total"></span> </p>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>Price Per Account : </td>
+                                <td><span id="per_acc_price"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Total : </td>
+                                <td><span id="total_price"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Tax : </td>
+                                <td><span id="tax_price"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Grand Total : </td>
+                                <td><span id="grand_total"></span></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
