@@ -60,7 +60,7 @@ class RepCredentialController extends ORController {
         if (!isset(Yii::app()->session['registration']['step1'])) {
             $this->redirect('step1');
         }
-        
+
         $rep_subscription_type = RepSubscriptionTypes::model()->findByPk(Yii::app()->session['registration']['step1']['subscription_type_id']);
 
         $model = new RepCredentials('step2');
@@ -225,6 +225,8 @@ class RepCredentialController extends ORController {
         if (isset($_POST['btnSubmit'])) {
             $model->attributes = $_POST['RepCredentials'];
             $profile->attributes = $_POST['RepCredentialProfiles'];
+
+            $profile->image = CUploadedFile::getInstance($profile, 'image');
             $valid = $model->validate();
             $valid = $profile->validate() && $valid;
 
@@ -234,6 +236,18 @@ class RepCredentialController extends ORController {
                 $region = $profile->region;
                 $cty = $profile->ID_VILLE;
                 $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
+
+                // save profile
+                if ($profile->image) {
+                    $imgname = time() . '_' . $profile->image->name;
+                    $profile->rep_profile_picture = $imgname;
+                    $rep_img_path = Yii::getPathOfAlias('webroot') . '/' . REP_PROFILE_PICTURE;
+                    if (!is_dir($rep_img_path)) {
+                        mkdir($rep_img_path, 0777, true);
+                    }
+                    $profile->image->saveAs($rep_img_path . $imgname);
+                }
+                
                 if ($geo_values != '') {
                     $exp_latlong = explode('~', $geo_values);
                     $profile->rep_lat = $exp_latlong[0];

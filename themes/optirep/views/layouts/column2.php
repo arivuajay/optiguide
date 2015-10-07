@@ -21,17 +21,26 @@
             <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
                 <div class="user-left cate-bg"> 
                     <div class="user-deatils"> 
-                        <p> <?php echo CHtml::image($this->themeUrl . '/images/user-img.jpg', 'Profile'); ?> </p>
+                        <?php
+                        $rep_credential = RepCredentials::model()->findByPk(Yii::app()->user->id);
+                        $rep_credential_profile = $rep_credential->repCredentialProfiles;
+                        ?>
+                        <p> 
+                            <?php
+                            if ($rep_credential_profile['rep_profile_picture']) {
+                                echo CHtml::image('/' . REP_PROFILE_PICTURE . $rep_credential_profile['rep_profile_picture'], 'Profile', array('width' => 135, 'height' => 135));
+                            } else {
+                                echo CHtml::image($this->themeUrl . '/images/user-img.jpg', 'Profile');
+                            }
+                            ?> 
+                        </p>
                         <p> 
                             <?php
                             echo CHtml::link(Yii::app()->user->getState('rep_username'), '/optirep/repCredential/editprofile')
                             ?>
                         </p>
                         <?php if (Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE) { ?>
-                            <?php
-                            $rep_credential = RepCredentials::model()->findByPk(Yii::app()->user->id);
-                            $rep_expiry_date = $rep_credential['rep_expiry_date'];
-                            ?>
+                            <?php $rep_expiry_date = $rep_credential['rep_expiry_date']; ?>
                             <p>
                                 Expiry Date :
                                 <b><?php echo date("Y-m-d", strtotime($rep_expiry_date)) ?></b>

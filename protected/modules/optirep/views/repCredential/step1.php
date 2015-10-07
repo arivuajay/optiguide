@@ -26,7 +26,7 @@
                 <?php echo $form->radioButton($model, 'subscription_type_id', array('value' => $repSubscriptionType['rep_subscription_type_id'], 'uncheckValue' => null, 'class' => 'subscription_types', 'id' => $repSubsTypeId, 'checked' => $checked)); ?>
                 <label for="<?php echo $repSubsTypeId; ?>">
                     <div class="subscription-cont <?php echo $active_class ?>">
-                        <div class="subscription-heading">  <?php echo $repSubscriptionType['rep_subscription_name']; ?> </div>
+                        <div class="subscription-heading subscription-heading<?php echo $repSubsTypeId+1?>">  <?php echo $repSubscriptionType['rep_subscription_name']; ?> </div>
                         <div class="subscription-txt"> 
                             <p> 
                                 <span> 

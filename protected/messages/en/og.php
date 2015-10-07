@@ -12,7 +12,7 @@ return array(
     //_submenu.php
     'OG007' => 'Submenu',
     'OG008' => 'Suppliers',
-    'OG009' => 'Category',
+    'OG009' => 'Categories',
     'OG010' => 'Brands',
     'OG011' => 'News',
     'OG012' => 'Calendar',
@@ -47,9 +47,9 @@ return array(
     'OG029' => '<p>New digital magazines! Register and get your FREE digital subcription to ENVISION and ENVUE.</p>
                 <p>Plus, receive your OPTI-NEWS subscription and your access codes to OPTI-GUIDE.</p>
                 <p>Please complete one of the following forms. It should only take you a few minutes.</p>',
-    'OG030' => 'Professional',
+    'OG030' => 'Professionals',
     'OG031' => 'Supplier',
-    'OG032' => 'Optical Retailer',
+    'OG032' => 'Optical Retailers',
     
     //My profile
     'OG033' => 'My Profile',

@@ -61,5 +61,8 @@ return array(
     
     // Proof uploaded path
     'PROOF_PATH' => 'uploads/user_proofs/',
+    
+    //REP PROFILE PICTURE
+    'REP_PROFILE_PICTURE' => 'uploads/rep_profile_pictures/',
 );
 

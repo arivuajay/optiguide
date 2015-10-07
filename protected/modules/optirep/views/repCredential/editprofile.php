@@ -3,6 +3,7 @@
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'rep-credential-form',
+        'htmlOptions' => array('role' => 'form', 'enctype' => 'multipart/form-data'),
         'clientOptions' => array(
             'validateOnSubmit' => true,
         ),
@@ -58,7 +59,17 @@
             <?php echo $form->labelEx($profile, 'ID_VILLE'); ?>
             <?php echo $form->dropDownList($profile, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
         </div>
-
+        
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <?php echo $form->labelEx($profile, 'rep_company'); ?>
+            <?php echo $form->textField($profile, 'rep_company', array('class' => 'form-field')); ?>  
+        </div>
+        
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <?php echo $form->labelEx($profile, 'image'); ?>
+            <?php echo $form->fileField($profile, 'image'); ?> 
+        </div>
+        
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php
             echo CHtml::tag('button', array(
