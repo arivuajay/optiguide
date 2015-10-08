@@ -134,10 +134,10 @@ class Controller extends CController {
                     $repAdmin->no_of_accounts_remaining = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
                     $repAdmin->rep_admin_per_account_price = $registration['step3']['per_account_price'];
                     
-                    $repSingle->rep_admin_no_of_months = $no_of_months;
-                    $repSingle->rep_admin_total_month_price = $registration['step3']['total_month_price'];
-                    $repSingle->offer_in_percentage = $registration['step3']['offer_in_percentage'];
-                    $repSingle->offer_price = $registration['step3']['offer_price'];
+                    $repAdmin->rep_admin_no_of_months = $no_of_months;
+                    $repAdmin->rep_admin_total_month_price = $registration['step3']['total_month_price'];
+                    $repAdmin->offer_in_percentage = $registration['step3']['offer_in_percentage'];
+                    $repAdmin->offer_price = $registration['step3']['offer_price'];
                     
                     $repAdmin->rep_admin_total_price = $registration['step3']['total_price'];
                     $repAdmin->rep_admin_tax = $registration['step3']['tax'];
