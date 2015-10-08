@@ -7,7 +7,7 @@
                     <h4> <?php echo $model['TITRE']?></h4> 
                     <div class="clearfix"></div>
                     <p> <?php echo nl2br($model['TEXTE'])?> </p>
-                    <p> <?php echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/optiguide/default/index')); ?> </p>
+                    <p> <?php echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/optiguide/managementAdvice/index'), array('class' => 'basic-btn')); ?> </p>
                 </div>
             </div>
         </div>

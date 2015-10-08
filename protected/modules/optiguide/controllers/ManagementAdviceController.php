@@ -15,5 +15,28 @@ class ManagementAdviceController extends OGController {
             'model' => $model,
         ));
     }
+    
+     /**
+     * Lists all models.
+     */
+    public function actionIndex() {
+       
+        $criteria = new CDbCriteria();      
+        $criteria->addCondition('LANGUE = "' . Yii::app()->session['language'] . '"');
+        $criteria->order = 'ID_CONSEIL DESC';
+
+        $count = ManagementAdvice::model()->count($criteria);
+        $pages = new CPagination($count);
+
+        // results per page
+        $pages->pageSize = 8;
+        $pages->applyLimit($criteria);
+        $model = ManagementAdvice::model()->findAll($criteria);
+
+        $this->render('index', array(
+            'model' => $model,
+            'pages' => $pages,
+        ));
+    }
 
 }

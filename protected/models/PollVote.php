@@ -70,7 +70,7 @@ class PollVote extends CActiveRecord
     return array(
       'choice_id' =>  Myclass::t('OG150'),
       'ID_TYPE_SPECIALISTE' => Myclass::t('OG102'),
-      'region' => Myclass::t('APP48'),
+      'region' => 'Province',
       'ID_VILLE' => Myclass::t('APP70'),
     );
   }

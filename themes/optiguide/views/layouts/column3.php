@@ -94,7 +94,7 @@
                     // For Professionals
                     array('label' => Myclass::t('OGO146', '', 'og'), 'url' => array('/optiguide/professionalDirectory/mappingretailers'), 'active' => ($_controller == 'professionalDirectory' && $_action == "mappingretailers"), 'visible' => (Yii::app()->user->role == "Professionnels")),
                     array('label' => Myclass::t('OGO149', '', 'og'), 'url' => array('/optiguide/professionalDirectory/listretailers'), 'active' => ($_controller == 'professionalDirectory' && $_action == "listretailers"), 'visible' => (Yii::app()->user->role == "Professionnels")),
-                    array('label' => Myclass::t('OGO160', '', 'og'), 'url' => array('/optiguide/professionalDirectory/retailersrequest'), 'active' => ($_controller == 'professionalDirectory' && $_action == "retailersrequest"), 'visible' => (Yii::app()->user->role == "Professionnels")),
+                    //array('label' => Myclass::t('OGO160', '', 'og'), 'url' => array('/optiguide/professionalDirectory/retailersrequest'), 'active' => ($_controller == 'professionalDirectory' && $_action == "retailersrequest"), 'visible' => (Yii::app()->user->role == "Professionnels")),
                     // Internal messages
                     array('label' => 'Internal Messages &nbsp'.$mailicon, 'url' => array('/optiguide/internalMessage/'), 'active' => $_controller == 'internalMessage', 'visible' => (Yii::app()->user->role == "Professionnels" || Yii::app()->user->role == "Detaillants")),   
                     // For all users
@@ -149,6 +149,11 @@
     <div class="ad3">   
         <!--  Parking - position - 6 -->
         <?php echo Myclass::banner_display(6); ?>
+    </div>
+    
+     <div class="ad3">   
+        <!--  Right side bottom banner - position - 6 -->
+        <?php echo Myclass::banner_display(9); ?>
     </div>
 
 </div>

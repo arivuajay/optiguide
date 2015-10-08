@@ -16,21 +16,21 @@ $searchval = isset($_GET['searchval'])?$_GET['searchval']:'';
                             if($expvals[2]=="NEWS")
                             {
                                 echo "<div class='news-thumbs search-results'>"
-                           .         "<h4>".CHtml::link($expvals[0], array('/optiguide/newsManagement/view', 'id' => $expvals[1]))."<span> NEWS </span></h4>                         
+                           .         "<h4>".CHtml::link($expvals[0], array('/optiguide/newsManagement/view', 'id' => $expvals[1]))."<span class='newscolor'> NEWS </span></h4>                         
                                      </div>"; 
                             }
                             
                             if($expvals[2]=="EVENT")
                             {
                                 echo "<div class='news-thumbs search-results'>"
-                           .         "<h4>".CHtml::link($expvals[0], array('/optiguide/calenderEvent/view', 'id' => $expvals[1]))."<span> EVENT </span></h4>                         
+                           .         "<h4>".CHtml::link($expvals[0], array('/optiguide/calenderEvent/view', 'id' => $expvals[1]))."<span class='eventcolor'> EVENT </span></h4>                         
                                      </div>"; 
                             }
                             
                             if($expvals[2]=="Miscellaneous")
                             {
                                 echo "<div class='news-thumbs search-results'>"
-                           .         "<h4>".CHtml::link($expvals[0], array('/optiguide/groupInformation/view', 'id' => $expvals[1]))."<span> Miscellaneous </span></h4>                         
+                           .         "<h4>".CHtml::link($expvals[0], array('/optiguide/groupInformation/view', 'id' => $expvals[1]))."<span class='misccolor'> Miscellaneous </span></h4>                         
                                      </div>"; 
                             }
                             

@@ -10,4 +10,5 @@
             <?php echo CHtml::link(Myclass::t('OG015', '', 'og'), array('/optiguide/managementAdvice/view', 'id' => $did_you_know['ID_CONSEIL'])); ?>
         </p>
     </div>
+      <?php echo CHtml::link(Myclass::t('OG161'), array('/optiguide/managementAdvice'), array('class' => 'basic-btn right')); ?>
 </div>

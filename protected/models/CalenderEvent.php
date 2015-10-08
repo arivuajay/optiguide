@@ -23,7 +23,7 @@ class CalenderEvent extends CActiveRecord {
     
     public $EVENT_MONTH;
     public $EVENT_YEAR;
-    public $Year,$Emplacement,$keyword;
+    public $Year,$Emplacement,$keyword,$region,$country,$city;
 
     /**
      * @return string the associated database table name
@@ -45,7 +45,7 @@ class CalenderEvent extends CActiveRecord {
             array('LANGUE', 'length', 'max' => 2),
             array('TITRE, LIEN_URL, LIEN_TITRE', 'length', 'max' => 255),
             array('TEXTE', 'length', 'max' => 5000),
-            array('EVENT_MONTH, EVENT_YEAR', 'safe'),
+            array('EVENT_MONTH, EVENT_YEAR,region,country,city', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('Year,Emplacement,keyword', 'safe'),
@@ -60,6 +60,7 @@ class CalenderEvent extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            
         );
     }
 
@@ -164,6 +165,19 @@ class CalenderEvent extends CActiveRecord {
                 'params' => array(':LN' => Yii::app()->session['language']),
             ),
         );
+    }
+    
+     protected function afterFind() {
+        /* Get selected country , region and city for current calender information */
+        $country = "NOM_PAYS_".Yii::app()->session['language'];
+        $this->country = CountryDirectory::model()->findByPk($this->ID_PAYS)->$country;
+        
+        $region = "ABREVIATION_".Yii::app()->session['language'];
+        $this->region  = RegionDirectory::model()->findByPk($this->ID_REGION)->$region;
+        
+        $this->city  = CityDirectory::model()->findByPk($this->ID_VILLE)->NOM_VILLE;
+        
+        return parent::afterFind();
     }
 
 }

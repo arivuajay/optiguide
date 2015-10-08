@@ -8,10 +8,27 @@
                 <?php foreach ($model as $month_year => $events) { ?>
                     <h2> <?php echo $month_year ?></h2>
                     <ul>
-                        <?php foreach ($events as $event) { ?>
+                        <?php                       
+                        foreach ($events as $event) {    
+                            $dstr = '';
+                            if($event['city']!='')
+                            {
+                                $dstr =  $event['city'].' ,';
+                            } 
+                            if($event['region']!='')
+                            {
+                                $dstr .=  $event['region'].' ,';
+                            } 
+                            if($event['country']!='')
+                            {
+                                $dstr .=  $event['country'].' - ';
+                            } 
+                            
+                                
+                            ?>
                             <li>
                                 <?php
-                                echo CHtml::link($event['TITRE'], array('/optiguide/calenderEvent/view', 'id' => $event['ID_EVENEMENT'])) . ' ';
+                                echo CHtml::link($event['TITRE'], array('/optiguide/calenderEvent/view', 'id' => $event['ID_EVENEMENT'])). ' - '.$dstr;
                                 echo Myclass::t('OG018', '', 'og') . ' ';
                                 echo date("Y-m-d", strtotime($event['DATE_AJOUT1'])) . ' ';
                                 echo Myclass::t('OG019', '', 'og') . ' ';

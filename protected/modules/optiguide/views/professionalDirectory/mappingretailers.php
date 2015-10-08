@@ -20,7 +20,7 @@ foreach ($results as $userinfo)
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subscribe-btncont"> 
         <div class="inner-container"> 
             <h2> <?php echo Myclass::t('OGO145', '', 'og'); ?> </h2>
-
+            <p><?php echo Myclass::t('OG163'); ?> <?php echo CHtml::link(Myclass::t('OG162'), array('/optiguide/professionalDirectory/retailersrequest'),array("class"=>"sendrequest")); ?><?php echo Myclass::t('OG164'); ?> </p>
 
             <?php
             $form = $this->beginWidget('CActiveForm', array(

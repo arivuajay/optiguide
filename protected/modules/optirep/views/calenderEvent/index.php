@@ -5,10 +5,25 @@
         <?php foreach ($model as $month_year => $events) { ?>
             <h3> <?php echo $month_year ?></h3>
             <ul>
-                <?php foreach ($events as $event) { ?>
+                <?php foreach ($events as $event) { 
+                    
+                    $dstr = '';
+                    if($event['city']!='')
+                    {
+                        $dstr =  $event['city'].' ,';
+                    } 
+                    if($event['region']!='')
+                    {
+                        $dstr .=  $event['region'].' ,';
+                    } 
+                    if($event['country']!='')
+                    {
+                        $dstr .=  $event['country'].' ';
+                    } 
+                    ?>
                     <li>
                         <?php
-                        echo CHtml::link($event['TITRE'], array('/optirep/calenderEvent/view', 'id' => $event['ID_EVENEMENT'])) . ' ';
+                        echo CHtml::link($event['TITRE'], array('/optirep/calenderEvent/view', 'id' => $event['ID_EVENEMENT'])) . ' - '.$dstr;
                         ?>
                         <div class="frm-to">
                         <?php 

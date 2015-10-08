@@ -334,7 +334,6 @@ and open the template in the editor.
 }
 
 .search-results span {
-    background: #8e090e none repeat scroll 0 0;
     color: #ffffff;
     float: right;
     font-size: 13px;
@@ -342,6 +341,31 @@ and open the template in the editor.
     width: auto;
 }
 
+.search-results span.newscolor{
+    background: #8e090e none repeat scroll 0 0;
+}  
+
+.search-results span.eventcolor{
+    background: #3B4552 none repeat scroll 0 0;
+}  
+
+.search-results span.misccolor{
+    background: #42b373 none repeat scroll 0 0;
+}  
+
 .search-results h4 a {
     color: #0B7ECF;
+}
+
+.subscribe-btncont a.sendrequest{
+        display:inline;       
+        font-family: "Raleway",sans-serif;
+        font-size: 14px;
+        padding: 6px;
+        text-transform: none;
+}
+
+.subscribe-btncont a.sendrequest:hover
+{
+    background:none;
 }

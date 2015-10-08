@@ -178,5 +178,11 @@ return array(
     'OG157' => 'Logo',
     'OG158' => 'Contact person',
     'OG159' => 'Language',
+    
+    'OG160' => 'Select Province',
+    'OG161' => 'More Advice',
+    'OG162' => 'Send a request',
+    'OG163' => 'If you can’t find the retailers in the list?',
+    'OG164' => 'to the retailer to join in the site.',
 );
 ?>

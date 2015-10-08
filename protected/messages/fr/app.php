@@ -178,5 +178,11 @@ return array(
     'OG157' => 'Logo',
     'OG158' => 'Contact',
     'OG159' => 'Langue',
+    
+    'OG160' => 'Choisir une province',
+    'OG161' => 'Plus conseils',
+    'OG162' => 'Envoyer une demande',
+    'OG163' => 'Si vous ne pouvez pas trouver les détaillants dans la liste ?',
+    'OG164' => 'à le détaillant à se joindre au site.'
 );
 ?>

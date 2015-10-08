@@ -84,7 +84,7 @@ class CalenderEventController extends ORController {
             $criteria->addCondition('DATE_AJOUT1 >= "' . $current_date . '"');
         }
         $criteria->addCondition('AFFICHER_SITE = 1');
-        $criteria->order = 'DATE_AJOUT1 DESC';
+        $criteria->order = 'DATE_AJOUT1 ASC';
 
         $count = CalenderEvent::model()->count($criteria);
         $pages = new CPagination($count);
