@@ -107,7 +107,12 @@ class RepCredentialController extends ORController {
         $model = new RepCredentials;
         $registration = Yii::app()->session['registration'];
         $no_of_accounts_purchased = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
-        $price_list = Myclass::priceCalculation($no_of_accounts_purchased);
+        $no_of_months = $registration['step2']['RepCredentials']['no_of_months'];
+        $offer_calculation = true;
+        if($no_of_accounts_purchased > 1){
+            $offer_calculation = false;
+        }
+        $price_list = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchased, $offer_calculation);
 
         $registration['step1']['subscription_type_id'] = $price_list['subscription_type_id'];
         Yii::app()->session['registration'] = $registration;
@@ -141,8 +146,8 @@ class RepCredentialController extends ORController {
             $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalNotify'));
 
             $paypalManager->addField('item_name', RepTemp::REGISTRATION);
-            $paypalManager->addField('amount', $registration['step3']['per_account_price']);
-            $paypalManager->addField('quantity', $registration['step2']['RepCredentials']['no_of_accounts_purchase']);
+            $paypalManager->addField('amount', $registration['step3']['total_price']);
+//            $paypalManager->addField('quantity', $registration['step2']['RepCredentials']['no_of_accounts_purchase']);
             $paypalManager->addField('tax', $registration['step3']['tax']);
             $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
             $paypalManager->addField('return', $returnUrl);

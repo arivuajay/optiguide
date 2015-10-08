@@ -10,6 +10,7 @@
     $country = Myclass::getallcountries();
     $regions = Myclass::getallregions($profile->country);
     $cities = Myclass::getallcities($profile->region);
+    $no_of_months = Myclass::noOfMonths();
     ?>
     <div class="form-group"> 
         <div class="row">
@@ -66,6 +67,11 @@
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <?php echo $form->labelEx($profile, 'ID_VILLE'); ?>
                 <?php echo $form->dropDownList($profile, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
+            </div>
+            
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <?php echo $form->labelEx($model, 'no_of_months'); ?>
+                <?php echo $form->dropDownList($model, 'no_of_months', $no_of_months, array('class' => 'selectpicker')); ?>  
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 pull-right steps-btn-cont"> 

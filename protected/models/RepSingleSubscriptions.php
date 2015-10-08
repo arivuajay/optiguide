@@ -9,8 +9,13 @@
  * @property integer $rep_subscription_type_id
  * @property string $purchase_type
  * @property double $rep_single_price
- * @property double $rep_single_tax
+ * @property integer $rep_single_no_of_months
+ * @property double $rep_single_total_month_price
+ * @property integer $offer_in_percentage
+ * @property double $offer_price
  * @property double $rep_single_total
+ * @property double $rep_single_tax
+ * @property double $rep_single_grand_total
  * @property string $rep_single_subscription_start
  * @property string $rep_single_subscription_end
  * @property string $created_at
@@ -40,12 +45,12 @@ class RepSingleSubscriptions extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('rep_credential_id, rep_single_price, rep_single_tax, rep_single_total, rep_single_subscription_start, rep_single_subscription_end', 'required'),
-            array('rep_credential_id, rep_subscription_type_id', 'numerical', 'integerOnly' => true),
-            array('rep_single_price, rep_single_tax, rep_single_total', 'numerical'),
+            array('rep_credential_id, rep_subscription_type_id, rep_single_no_of_months, offer_in_percentage', 'numerical', 'integerOnly' => true),
+            array('rep_single_price, rep_single_total_month_price, offer_price, rep_single_total, rep_single_tax, rep_single_grand_total', 'numerical'),
             array('purchase_type', 'length', 'max'=>7),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('rep_single_subscription_id, rep_credential_id, rep_subscription_type_id, purchase_type, rep_single_price, rep_single_tax, rep_single_total, rep_single_subscription_start, rep_single_subscription_end, created_at, modified_at', 'safe', 'on' => 'search'),
+            array('rep_single_subscription_id, rep_credential_id, rep_subscription_type_id, purchase_type, rep_single_price, rep_single_no_of_months, rep_single_total_month_price, offer_in_percentage, offer_price, rep_single_total, rep_single_tax, rep_single_grand_total, rep_single_subscription_start, rep_single_subscription_end, created_at, modified_at', 'safe', 'on' => 'search'),
         );
     }
 
@@ -71,8 +76,13 @@ class RepSingleSubscriptions extends CActiveRecord {
             'rep_subscription_type_id' => Myclass::t('Rep Subscription Type'),
             'purchase_type' => Myclass::t('Purchase Type'),
             'rep_single_price' => Myclass::t('Rep Single Price'),
-            'rep_single_tax' => Myclass::t('Rep Single Tax'),
+            'rep_single_no_of_months' => Myclass::t('Rep Single No Of Months'),
+            'rep_single_total_month_price' => Myclass::t('Rep Single Total Month Price'),
+            'offer_in_percentage' => Myclass::t('Offer In Percentage'),
+            'offer_price' => Myclass::t('Offer Price'),
             'rep_single_total' => Myclass::t('Rep Single Total'),
+            'rep_single_tax' => Myclass::t('Rep Single Tax'),
+            'rep_single_grand_total' => Myclass::t('Rep Single Grand Total'),
             'rep_single_subscription_start' => Myclass::t('Rep Single Subscription Start'),
             'rep_single_subscription_end' => Myclass::t('Rep Single Subscription End'),
             'created_at' => Myclass::t('Created At'),
@@ -102,8 +112,13 @@ class RepSingleSubscriptions extends CActiveRecord {
         $criteria->compare('rep_subscription_type_id', $this->rep_subscription_type_id);
         $criteria->compare('purchase_type',$this->purchase_type,true);
         $criteria->compare('rep_single_price', $this->rep_single_price);
-        $criteria->compare('rep_single_tax', $this->rep_single_tax);
-        $criteria->compare('rep_single_total', $this->rep_single_total);
+        $criteria->compare('rep_single_no_of_months',$this->rep_single_no_of_months);
+        $criteria->compare('rep_single_total_month_price',$this->rep_single_total_month_price);
+        $criteria->compare('offer_in_percentage',$this->offer_in_percentage);
+        $criteria->compare('offer_price',$this->offer_price);
+        $criteria->compare('rep_single_total',$this->rep_single_total);
+        $criteria->compare('rep_single_tax',$this->rep_single_tax);
+        $criteria->compare('rep_single_grand_total',$this->rep_single_grand_total);
         $criteria->compare('rep_single_subscription_start', $this->rep_single_subscription_start, true);
         $criteria->compare('rep_single_subscription_end', $this->rep_single_subscription_end, true);
         $criteria->compare('created_at', $this->created_at, true);

@@ -1,7 +1,7 @@
 <?php
 
 class Myclass extends CController {
-    
+
     const TAX = 5;
 
     public static function encrypt($value) {
@@ -348,8 +348,12 @@ class Myclass extends CController {
     }
 
     public static function currencyFormat($number) {
-        $result = number_format($number, 2);
+        $result = self::numberFormat($number);
         return $result . ' CAD';
+    }
+    
+    public static function numberFormat($number){
+        return number_format($number, 2);
     }
 
     public static function priceCalculation($no_of_accounts_purchased) {
@@ -361,10 +365,42 @@ class Myclass extends CController {
         $grand_total = $total_price + $tax;
         $result = array();
         $result['subscription_type_id'] = $subscription_type_id;
-        $result['per_account_price'] = $per_account_price;
-        $result['total_price'] = $total_price;
-        $result['tax'] = $tax;
-        $result['grand_total'] = $grand_total;
+        $result['per_account_price'] = self::numberFormat($per_account_price);
+        $result['total_price'] = self::numberFormat($total_price);
+        $result['tax'] = self::numberFormat($tax);
+        $result['grand_total'] = self::numberFormat($grand_total);
+        return $result;
+    }
+
+    public static function priceCalculationWithMonths($months = 1, $no_of_accounts_purchased = 1, $offer_calculate = true) {
+        $findSubscriptionType = RepSubscriptionTypes::model()->findByAccountMembers($no_of_accounts_purchased);
+        $subscription_type_id = $findSubscriptionType['rep_subscription_type_id'];
+        $per_account_price = $findSubscriptionType['rep_subscription_price'];
+        $total_month_price = $per_account_price * $no_of_accounts_purchased * $months;
+
+        if ($offer_calculate) {
+            $offer_in_percentage = self::monthWiseOffer($months);
+            $offer_price = $total_month_price * $offer_in_percentage / 100;
+            $total = $total_month_price - $offer_price;
+        } else {
+            $offer_in_percentage = 0;
+            $offer_price = 0;
+            $total = $total_month_price;
+        }
+        $tax = self::TAX;
+        $grand_total = $total + $tax;
+
+        $result = array();
+        $result['subscription_type_id'] = $subscription_type_id;
+        $result['per_account_price'] = self::numberFormat($per_account_price);
+        $result['no_of_months'] = $months;
+        $result['no_of_accounts_purchased'] = $no_of_accounts_purchased;
+        $result['total_month_price'] = self::numberFormat($total_month_price);
+        $result['offer_in_percentage'] = $offer_in_percentage;
+        $result['offer_price'] = self::numberFormat($offer_price);
+        $result['total_price'] = self::numberFormat($total);
+        $result['tax'] = self::numberFormat($tax);
+        $result['grand_total'] = self::numberFormat($grand_total);
         return $result;
     }
 
@@ -377,87 +413,105 @@ class Myclass extends CController {
         $grand_total = $total_price + $tax;
         $result = array();
         $result['subscription_type_id'] = $subscription_type_id;
-        $result['per_account_price'] = $per_account_price;
-        $result['total_price'] = $total_price;
-        $result['tax'] = $tax;
-        $result['grand_total'] = $grand_total;
+        $result['per_account_price'] = self::numberFormat($per_account_price);
+        $result['total_price'] = self::numberFormat($total_price);
+        $result['tax'] = self::numberFormat($tax);
+        $result['grand_total'] = self::numberFormat($grand_total);
         return $result;
     }
-    
-    public static function generatemaplocation($address,$country,$region,$cty)
-    {
-        $geo_values = '';      
-      
-        if($address!='' && $country!='' && $region!='' && $cty!='')
-        {    
+
+    public static function generatemaplocation($address, $country, $region, $cty) {
+        $geo_values = '';
+
+        if ($address != '' && $country != '' && $region != '' && $cty != '') {
             $results = Yii::app()->db->createCommand() //this query contains all the data
-                        ->select('NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
-                        ->from(array('repertoire_ville rv', 'repertoire_region rr', 'repertoire_pays AS rp'))
-                        ->where("rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND rv.ID_VILLE = ".$cty)
-                        ->queryAll();
-       
-            if(!empty($results))
-            {    
+                    ->select('NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
+                    ->from(array('repertoire_ville rv', 'repertoire_region rr', 'repertoire_pays AS rp'))
+                    ->where("rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND rv.ID_VILLE = " . $cty)
+                    ->queryAll();
+
+            if (!empty($results)) {
                 foreach ($results as $info) {
-                     $city_nme    = $info['NOM_VILLE'];
-                     $region_nme  = $info['NOM_REGION_EN'];
-                     $country_nme = $info['NOM_PAYS_EN'];
+                    $city_nme = $info['NOM_VILLE'];
+                    $region_nme = $info['NOM_REGION_EN'];
+                    $country_nme = $info['NOM_PAYS_EN'];
                 }
-                
-                $sample_address = $address." , ".$city_nme." ,".$region_nme." ,".$country_nme;               
-                
+
+                $sample_address = $address . " , " . $city_nme . " ," . $region_nme . " ," . $country_nme;
+
                 //Get lat ad long vales from gven addres
-                 Yii::import('ext.gmaps.*');    
-                 $gMap = new EGMap();  
-                 $geocoded_address = new EGMapGeocodedAddress($sample_address);
-                 $geocoded_address->geocode($gMap->getGMapClient());
-                 $lat_val  = $geocoded_address->getLat();
-                 $long_val = $geocoded_address->getLng();
-                 
-                 $geo_values = $lat_val."~".$long_val;                 
-            }  
+                Yii::import('ext.gmaps.*');
+                $gMap = new EGMap();
+                $geocoded_address = new EGMapGeocodedAddress($sample_address);
+                $geocoded_address->geocode($gMap->getGMapClient());
+                $lat_val = $geocoded_address->getLat();
+                $long_val = $geocoded_address->getLng();
+
+                $geo_values = $lat_val . "~" . $long_val;
+            }
         }
-        
-        return $geo_values;       
-    } 
-    
+
+        return $geo_values;
+    }
+
     public static function format_numbers_words($totalusers) {
 
-        if(!is_numeric($totalusers)){ return false;}
+        if (!is_numeric($totalusers)) {
+            return false;
+        }
 
         // filter and format it 
-        if($totalusers>1000000000000){ 
-            return round(($totalusers/1000000000000)).' trillion';
-        }elseif($totalusers>1000000000){ 
-            return round(($totalusers/1000000000)).' billion';
-        }elseif($totalusers>1000000){ 
-            return round(($totalusers/1000000)).' million';
-        }elseif($totalusers>1000){ 
-            return 'Over '.round(($totalusers/1000)).' K';
-        }elseif($totalusers>100){ 
-            return round(($totalusers/100)).' hundred';
-        }else
-        {
+        if ($totalusers > 1000000000000) {
+            return round(($totalusers / 1000000000000)) . ' trillion';
+        } elseif ($totalusers > 1000000000) {
+            return round(($totalusers / 1000000000)) . ' billion';
+        } elseif ($totalusers > 1000000) {
+            return round(($totalusers / 1000000)) . ' million';
+        } elseif ($totalusers > 1000) {
+            return 'Over ' . round(($totalusers / 1000)) . ' K';
+        } elseif ($totalusers > 100) {
+            return round(($totalusers / 100)) . ' hundred';
+        } else {
             return $totalusers;
-        }    
-
+        }
     }
-    
-    public static function stats_display() 
-    {
+
+    public static function stats_display() {
         $stats_disp = 0;
-        $repid = isset(Yii::app()->user->id)?Yii::app()->user->id:'';
-        if($repid!='')
-        {    
-           
-            $get_uinfos = RepCredentials::model()->findByPk($repid);       
-            if(!empty($get_uinfos))
-            {  
-                $exprydate  = date("Y-m-d",strtotime($get_uinfos['stat_expiry_date']));                
-                $stats_disp = ($exprydate>date("Y-m-d"))?"1":"0";                                          
+        $repid = isset(Yii::app()->user->id) ? Yii::app()->user->id : '';
+        if ($repid != '') {
+
+            $get_uinfos = RepCredentials::model()->findByPk($repid);
+            if (!empty($get_uinfos)) {
+                $exprydate = date("Y-m-d", strtotime($get_uinfos['stat_expiry_date']));
+                $stats_disp = ($exprydate > date("Y-m-d")) ? "1" : "0";
             }
-        }    
+        }
         return $stats_disp;
+    }
+
+    public static function noOfMonths() {
+        $no_of_months = array(
+            1 => '1 Month',
+            6 => '6 Months',
+            12 => '1 Year',
+        );
+
+        return $no_of_months;
+    }
+
+    public static function monthWiseOffer($month) {
+        //1 - 1 Month, 0% OFFER
+        //2 - 6 Months, 5% OFFER
+        //3 - 1 Year, 10% OFFER
+        if ($month == 12) {
+            $offer_in_percentage = 10;
+        } elseif ($month == 6) {
+            $offer_in_percentage = 5;
+        } else {
+            $offer_in_percentage = 0;
+        }
+        return $offer_in_percentage;
     }
 
 }

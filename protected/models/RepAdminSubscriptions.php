@@ -13,6 +13,10 @@
  * @property integer $no_of_accounts_used
  * @property integer $no_of_accounts_remaining
  * @property double $rep_admin_per_account_price
+ * @property integer $rep_admin_no_of_months
+ * @property double $rep_admin_total_month_price
+ * @property integer $offer_in_percentage
+ * @property double $offer_price
  * @property double $rep_admin_total_price
  * @property double $rep_admin_tax
  * @property double $rep_admin_grand_total
@@ -48,12 +52,12 @@ class RepAdminSubscriptions extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('rep_credential_id, rep_subscription_type_id, no_of_accounts_purchased, rep_admin_per_account_price, rep_admin_total_price, rep_admin_tax, rep_admin_grand_total, rep_admin_subscription_start, rep_admin_subscription_end, created_at, modified_at', 'required'),
-            array('rep_credential_id, rep_subscription_type_id, no_of_accounts_purchased, rep_admin_old_active_accounts, no_of_accounts_used, no_of_accounts_remaining', 'numerical', 'integerOnly' => true),
-            array('rep_admin_per_account_price, rep_admin_total_price, rep_admin_tax, rep_admin_grand_total', 'numerical'),
+            array('rep_credential_id, rep_subscription_type_id, no_of_accounts_purchased, rep_admin_old_active_accounts, no_of_accounts_used, no_of_accounts_remaining, rep_admin_no_of_months, offer_in_percentage', 'numerical', 'integerOnly' => true),
+            array('rep_admin_per_account_price, rep_admin_total_price, rep_admin_total_month_price, offer_price, rep_admin_tax, rep_admin_grand_total', 'numerical'),
             array('purchase_type', 'length', 'max' => 7),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('rep_admin_subscription_id, rep_credential_id, rep_subscription_type_id, purchase_type,  no_of_accounts_purchased, rep_admin_old_active_accounts, no_of_accounts_used, no_of_accounts_remaining, rep_admin_per_account_price, rep_admin_total_price, rep_admin_tax, rep_admin_grand_total, rep_admin_subscription_start, rep_admin_subscription_end, created_at, modified_at', 'safe', 'on' => 'search'),
+            array('rep_admin_subscription_id, rep_credential_id, rep_subscription_type_id, purchase_type,  no_of_accounts_purchased, rep_admin_old_active_accounts, no_of_accounts_used, no_of_accounts_remaining, rep_admin_per_account_price, rep_admin_no_of_months, rep_admin_total_month_price, offer_in_percentage, offer_price, rep_admin_total_price, rep_admin_tax, rep_admin_grand_total, rep_admin_subscription_start, rep_admin_subscription_end, created_at, modified_at', 'safe', 'on' => 'search'),
         );
     }
 
@@ -84,6 +88,10 @@ class RepAdminSubscriptions extends CActiveRecord {
             'no_of_accounts_used' => Myclass::t('No Of Accounts Used'),
             'no_of_accounts_remaining' => Myclass::t('No Of Accounts Remaining'),
             'rep_admin_per_account_price' => Myclass::t('Rep Admin Per Account Price'),
+            'rep_admin_no_of_months' => Myclass::t('Rep Admin No Of Months'),
+            'rep_admin_total_month_price' => Myclass::t('Rep Admin Total Month Price'),
+            'offer_in_percentage' => Myclass::t('Offer In Percentage'),
+            'offer_price' => Myclass::t('Offer Price'),
             'rep_admin_total_price' => Myclass::t('Rep Admin Total Price'),
             'rep_admin_tax' => Myclass::t('Rep Admin Tax'),
             'rep_admin_grand_total' => Myclass::t('Rep Admin Grand Total'),
@@ -120,6 +128,10 @@ class RepAdminSubscriptions extends CActiveRecord {
         $criteria->compare('no_of_accounts_used', $this->no_of_accounts_used);
         $criteria->compare('no_of_accounts_remaining', $this->no_of_accounts_remaining);
         $criteria->compare('rep_admin_per_account_price', $this->rep_admin_per_account_price);
+        $criteria->compare('rep_admin_no_of_months',$this->rep_admin_no_of_months);
+        $criteria->compare('rep_admin_total_month_price',$this->rep_admin_total_month_price);
+        $criteria->compare('offer_in_percentage',$this->offer_in_percentage);
+        $criteria->compare('offer_price',$this->offer_price);
         $criteria->compare('rep_admin_total_price', $this->rep_admin_total_price);
         $criteria->compare('rep_admin_tax', $this->rep_admin_tax);
         $criteria->compare('rep_admin_grand_total', $this->rep_admin_grand_total);

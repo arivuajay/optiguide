@@ -92,11 +92,12 @@ class Controller extends CController {
             $model = new RepCredentials;
             $model->rep_username = $rep_username;
             $model->rep_password = $registration['step2']['RepCredentials']['rep_password'];
+            $no_of_months = $registration['step2']['RepCredentials']['no_of_months'];
             if ($registration['step2']['RepCredentials']['no_of_accounts_purchase'] > 1) {
                 $model->rep_role = RepCredentials::ROLE_ADMIN;
             } else {
                 $model->rep_role = RepCredentials::ROLE_SINGLE;
-                $model->rep_expiry_date = date('Y-m-d', strtotime('+1 month'));
+                $model->rep_expiry_date = date('Y-m-d', strtotime('+'.$no_of_months.' month'));
             }
 
             if ($model->save(false)) {
@@ -113,10 +114,15 @@ class Controller extends CController {
                     $repSingle->rep_subscription_type_id = $registration['step1']['subscription_type_id'];
                     $repSingle->purchase_type = RepSingleSubscriptions::PURCHASE_TYPE_NEW;
                     $repSingle->rep_single_price = $registration['step3']['per_account_price'];
+                    $repSingle->rep_single_no_of_months = $no_of_months;
+                    $repSingle->rep_single_total_month_price = $registration['step3']['total_month_price'];
+                    $repSingle->offer_in_percentage = $registration['step3']['offer_in_percentage'];
+                    $repSingle->offer_price = $registration['step3']['offer_price'];
+                    $repSingle->rep_single_total = $registration['step3']['total_price'];
                     $repSingle->rep_single_tax = $registration['step3']['tax'];
-                    $repSingle->rep_single_total = $registration['step3']['grand_total'];
+                    $repSingle->rep_single_grand_total = $registration['step3']['grand_total'];
                     $repSingle->rep_single_subscription_start = date('Y-m-d');
-                    $repSingle->rep_single_subscription_end = date('Y-m-d', strtotime('+1 month'));
+                    $repSingle->rep_single_subscription_end = $model->rep_expiry_date;
                     $repSingle->save(false);
                 } elseif ($model->rep_role == RepCredentials::ROLE_ADMIN) {
                     //Save Rep Admin Subscription Details
@@ -127,11 +133,17 @@ class Controller extends CController {
                     $repAdmin->no_of_accounts_purchased = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
                     $repAdmin->no_of_accounts_remaining = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
                     $repAdmin->rep_admin_per_account_price = $registration['step3']['per_account_price'];
+                    
+                    $repSingle->rep_admin_no_of_months = $no_of_months;
+                    $repSingle->rep_admin_total_month_price = $registration['step3']['total_month_price'];
+                    $repSingle->offer_in_percentage = $registration['step3']['offer_in_percentage'];
+                    $repSingle->offer_price = $registration['step3']['offer_price'];
+                    
                     $repAdmin->rep_admin_total_price = $registration['step3']['total_price'];
                     $repAdmin->rep_admin_tax = $registration['step3']['tax'];
                     $repAdmin->rep_admin_grand_total = $registration['step3']['grand_total'];
                     $repAdmin->rep_admin_subscription_start = date('Y-m-d');
-                    $repAdmin->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
+                    $repAdmin->rep_admin_subscription_end = date('Y-m-d',  strtotime('+'.$no_of_months.' month'));
                     $repAdmin->save(false);
                 }
 
