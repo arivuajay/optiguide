@@ -40,7 +40,15 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'name'    => 'professionalType.TYPE_SPECIALISTE_FR',
                 'value'   => $data->professionalType->TYPE_SPECIALISTE_FR,
                 'filter'  => CHtml::activeDropDownList($model, 'ID_TYPE_SPECIALISTE', CHtml::listData($gettypes , 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_FR'), array('class'=>'form-control','prompt'=>'Tous')),
-                ),            
+                ), 
+                array(
+                'name' => 'DATE_MODIFICATION',
+                'filter' => false
+                ),
+                array(
+                'name' =>  'CREATED_DATE',  
+                'filter' => false
+                ),   
                // 'ID_CLIENT',			
                 array(
                    'header' => "Accès",

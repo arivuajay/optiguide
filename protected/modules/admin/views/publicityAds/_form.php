@@ -92,7 +92,7 @@ $enddate = $model->DATE_FIN;
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="display:none;">
                     <?php echo $form->labelEx($model, 'PRIX', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-2">
                         <?php echo $form->textField($model, 'PRIX', array('class' => 'form-control', 'size' => 50, 'maxlength' => 50)); ?>
@@ -100,7 +100,7 @@ $enddate = $model->DATE_FIN;
                     </div>                    
                 </div>
               
-                <div class="form-group">
+                <div class="form-group" style="display:none;">
                     <?php echo $form->labelEx($model, 'PAYE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-2">                      
                         <?php echo $form->radioButtonList($model, 'PAYE', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 

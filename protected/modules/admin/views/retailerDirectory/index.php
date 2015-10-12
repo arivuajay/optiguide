@@ -33,12 +33,21 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             'COMPAGNIE',
           //  'ID_CLIENT',
           //  'ADRESSE',
-         //   'CODE_POSTAL',
+         //   'CODE_POSTAL',           
+            
             array(
                 'header' => 'Type de retailer',
                 'name' => 'retailerType.NOM_TYPE_FR',
                 'value' => $data->retailerType->NOM_TYPE_FR,
                 'filter' => CHtml::activeDropDownList($model, 'ID_RETAILER_TYPE', CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR'), array('class' => 'form-control', 'prompt' => 'Tous')),
+            ),   
+            array(
+            'name' => 'DATE_MODIFICATION',
+            'filter' => false
+            ),
+            array(
+            'name' =>  'CREATED_DATE',  
+            'filter' => false
             ),   
             array(
                 'header' => "Accès",

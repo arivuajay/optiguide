@@ -123,7 +123,7 @@ $enddate = $model->DATE_AJOUT2;
                 </div>
 
 
-                <div class="form-group">
+                <div class="form-group" style="display:none;">
                     <?php echo $form->labelEx($model, 'LIEN_TITRE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
                         <?php echo $form->textField($model, 'LIEN_TITRE', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
@@ -131,7 +131,7 @@ $enddate = $model->DATE_AJOUT2;
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="display:none;">
                     <?php echo $form->labelEx($model, 'LIEN_URL', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
                         <?php echo $form->textField($model, 'LIEN_URL', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
@@ -168,7 +168,7 @@ $enddate = $model->DATE_AJOUT2;
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="display:none;">
                     <?php echo $form->labelEx($model, 'AFFICHER_ACCUEIL', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
                         <?php echo $form->radioButtonList($model, 'AFFICHER_ACCUEIL', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
