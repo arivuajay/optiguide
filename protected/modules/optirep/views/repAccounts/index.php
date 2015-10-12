@@ -102,7 +102,11 @@
                                     <input type="checkbox" name="rep_status" <?php echo $checked; ?> data-on-text="ACTIVE" data-off-text="BLOCK" data-rep-id ="<?php echo $repAdminSubscriber['rep_credential_id'] ?>" class="status">
                                 </td>
                                 <td>
-                                    <?php echo CHtml::link('<i class="fa fa-edit"></i>', array('/optirep/repAccounts/edit', 'id' => $repAdminSubscriber['rep_credential_id'])); ?>
+                                    <?php 
+                                    echo CHtml::link('<i class="fa fa-edit"></i>', array('/optirep/repAccounts/edit', 'id' => $repAdminSubscriber['rep_credential_id']));
+                                    echo '&nbsp; &nbsp;';
+                                    echo CHtml::link('<i class="fa fa-remove"></i>', array('/optirep/repAccounts/delete', 'id' => $repAdminSubscriber['rep_credential_id']), array('confirm' => 'Are you sure?'));
+                                    ?>
                                 </td>
                             </tr>
                         <?php } ?>

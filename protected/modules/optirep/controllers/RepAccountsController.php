@@ -24,7 +24,7 @@ class RepAccountsController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'create', 'edit', 'buyMoreAccounts', 'buyMoreAccountsPriceList', 'renewalRepAccounts', 'subscriptions', 'transactions'),
+                'actions' => array('index', 'create', 'edit', 'delete', 'buyMoreAccounts', 'buyMoreAccountsPriceList', 'renewalRepAccounts', 'subscriptions', 'transactions'),
                 'users' => array('@'),
                 'expression' => 'Yii::app()->user->rep_role=="admin"'
             ),
@@ -151,6 +151,58 @@ class RepAccountsController extends ORController {
             'model' => $model,
             'profile' => $profile
         ));
+    }
+
+    public function actionDelete($id) {
+        $rep = RepCredentials::model()->findByPk($id);
+        if ($rep === null)
+            throw new CHttpException(404, 'The requested page does not exist.');
+
+        $rep_profile = $rep->repCredentialProfiles;
+        $rep_admin_subscribers = $rep->repAdminSubscribers;
+
+        //Rep Account - Delete
+        RepCredentials::model()->deleteByPk($rep['rep_credential_id']);
+
+        //Check what plan this rep entered, Once find then increase count in the "rep_admin_subscriptions" Table 
+        $entry_plan = '';
+        foreach ($rep_admin_subscribers as $rep_admin_subscriber) {
+            $rep_admin_subscription_id = $rep_admin_subscriber['rep_admin_subscription_id'];
+
+            $find_entry_plan = RepAdminSubscriptions::model()->find(
+                    "rep_admin_subscription_id = :RASID AND purchase_type = :PT", array(
+                ':RASID' => $rep_admin_subscription_id,
+                ':PT' => RepAdminSubscriptions::PURCHASE_TYPE_NEW
+                    )
+            );
+
+            if ($find_entry_plan) {
+                $entry_plan = $find_entry_plan;
+                break;
+            }
+        }
+
+        //Update count
+        if ($entry_plan) {
+            $entry_plan->no_of_accounts_used = $entry_plan->no_of_accounts_used - 1;
+            $entry_plan->no_of_accounts_remaining = $entry_plan->no_of_accounts_remaining + 1;
+            $entry_plan->save(false);
+        }
+
+        //rep_favourites - Delete
+        RepFavourites::model()->deleteAll("rep_credential_id ='" . $rep['rep_credential_id'] . "'");
+        
+        //rep_loggedin_activities - Delete 
+        RepLoggedinActivities::model()->deleteAll("rep_credential_id ='" . $rep['rep_credential_id'] . "'");
+
+        //rep_notes - Delete
+        RepNotes::model()->deleteAll("rep_credential_id ='" . $rep['rep_credential_id'] . "'");
+
+        //rep_view_counts - Delete
+        RepViewCounts::model()->deleteAll("rep_credential_id ='" . $rep['rep_credential_id'] . "'");
+
+        Yii::app()->user->setFlash('success', "Rep account deleted successfully!!!");
+        $this->redirect(array('index'));
     }
 
     /* ----------------------- Buy More Accounts Section ---------------------------------------------- */
