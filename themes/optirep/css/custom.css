@@ -433,3 +433,16 @@ span.input-group-btn {
      font-size: 15px;
      color:#E42688;
 }
+
+.results tr[visible='false'],
+.no-result{
+  display:none;
+}
+
+.results tr[visible='true']{
+  display:table-row;
+}
+
+.brand_search{
+    margin-top: 27px;
+}

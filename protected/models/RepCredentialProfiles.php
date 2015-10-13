@@ -14,6 +14,8 @@
  * @property string $rep_address
  * @property string $rep_profile_picture
  * @property string $rep_company
+ * @property string $rep_territories
+ * @property string $rep_brands
  * @property string $created_at
  * @property string $modified_at
  *
@@ -44,10 +46,10 @@ class RepCredentialProfiles extends CActiveRecord {
             array('rep_profile_firstname, rep_profile_email, country, region, ID_VILLE, rep_address', 'required', 'on' => 'update'),
             array('rep_profile_email', 'email'),
             array('rep_credential_id, country, region, ID_VILLE', 'numerical', 'integerOnly' => true),
-            array('rep_profile_firstname, rep_profile_email, rep_profile_phone, rep_address, rep_company', 'length', 'max' => 255),
+            array('rep_profile_firstname, rep_profile_email, rep_profile_phone, rep_address, rep_company, rep_territories, rep_brands', 'length', 'max' => 255),
             array('rep_profile_lastname', 'length', 'max' => 100),
             array('rep_profile_phone', 'phoneNumber'),
-            array('country, region, rep_lat, rep_long, rep_company, rep_profile_picture', 'safe'),
+            array('country, region, rep_lat, rep_long, rep_company, rep_profile_picture, rep_territories, rep_brands', 'safe'),
             array('image', 'file', 'types'=>'jpg, gif, png, jpeg', 'allowEmpty'=>true ,'safe' => false),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
@@ -94,6 +96,8 @@ class RepCredentialProfiles extends CActiveRecord {
             'rep_address' => Myclass::t('Address'),
             'image' => Myclass::t('Profile Picture'),
             'rep_company' => Myclass::t('Company'),
+            'rep_territories' => Myclass::t('Territories'),
+            'rep_brands' => Myclass::t('Brands'),
             'created_at' => Myclass::t('Created At'),
             'modified_at' => Myclass::t('Modified At'),
         );
