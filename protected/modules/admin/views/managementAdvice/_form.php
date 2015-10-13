@@ -2,6 +2,16 @@
 /* @var $this ManagementAdviceController */
 /* @var $model ManagementAdvice */
 /* @var $form CActiveForm */
+
+$themeUrl = $this->themeUrl;
+$cs = Yii::app()->getClientScript();
+$cs_pos_end = CClientScript::POS_END;
+
+$cs->registerCssFile($themeUrl . '/css/datepicker/datepicker3.css');
+$cs->registerScriptFile($themeUrl . '/js/datepicker/bootstrap-datepicker.js', $cs_pos_end);
+
+$startdate = date("Y-m-d",  strtotime($model->DATE_AJOUT1));
+$enddate   = date("Y-m-d",  strtotime($model->DATE_AJOUT2));
 ?>
 
 <div class="row">
@@ -65,6 +75,22 @@
                         <?php echo $form->error($model, 'LIEN_TITRE'); ?>
                     </div>
                 </div>
+                
+                 <div class="form-group">
+                    <?php echo $form->labelEx($model, 'DATE_AJOUT1', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($model, 'DATE_AJOUT1', array('class' => 'form-control date', 'readonly' => 'true')); ?>
+                        <?php echo $form->error($model, 'DATE_AJOUT1'); ?>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'DATE_AJOUT2', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($model, 'DATE_AJOUT2', array('class' => 'form-control date', 'readonly' => 'true')); ?>
+                        <?php echo $form->error($model, 'DATE_AJOUT2'); ?>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'AFFICHER_SITE', array('class' => 'col-sm-2 control-label')); ?>
@@ -86,3 +112,23 @@
         </div>
     </div><!-- ./col -->
 </div>
+
+
+<?php
+$js = <<< EOD
+$(document).ready(function(){
+        
+   $('.year').datepicker({ dateFormat: 'yyyy' });
+   $('.date').datepicker({ format: 'yyyy-mm-dd' });     
+        
+    var startdate = '{$startdate}';
+    var enddate   = '{$enddate}';
+    if(startdate=='' || enddate=='')
+    {
+       $( "#ManagementAdvice_DATE_AJOUT1" ).datepicker( "setDate" , new Date())
+       $( "#ManagementAdvice_DATE_AJOUT2" ).datepicker( "setDate" , new Date())    
+    }
+});
+EOD;
+Yii::app()->clientScript->registerScript('_form', $js);
+?>

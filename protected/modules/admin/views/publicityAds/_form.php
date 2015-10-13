@@ -31,7 +31,7 @@ if ($ficherid > 0) {
     $fileurl = "javascript:void(0);";
 }
 
-$all_banner_poitions = PublicityPosition::model()->findAll(array('order' => 'iId_position ASC'));
+$all_banner_poitions = PublicityPosition::model()->findAll(array('order' => 'iId_position ASC','condition'=>"iId_position!=0"));
 foreach ($all_banner_poitions as $positions) {
     $position_id = $positions['iId_position'];
     $banner_poitions[$position_id] = $positions['sPosition'] . " " . $positions['sFormat'];

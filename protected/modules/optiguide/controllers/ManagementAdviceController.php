@@ -23,6 +23,7 @@ class ManagementAdviceController extends OGController {
        
         $criteria = new CDbCriteria();      
         $criteria->addCondition('LANGUE = "' . Yii::app()->session['language'] . '"');
+        $criteria->addCondition('AFFICHER_SITE=1');
         $criteria->order = 'ID_CONSEIL DESC';
 
         $count = ManagementAdvice::model()->count($criteria);

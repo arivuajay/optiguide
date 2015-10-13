@@ -148,17 +148,18 @@ class NewsManagement extends CActiveRecord {
     }
 
     public function scopes() {
+        $current_date = date("Y-m-d");
         return array(
             'latest' => array(
-                'order' => 'DATE_AJOUT1 DESC',
+                'order' => 'DATE_AJOUT1 DESC, TITRE ASC',
                 'limit' => 3,
-                'condition' => 'LANGUE = :LN',
+                'condition' => 'DATE_AJOUT1 <= "' . $current_date . '" AND DATE_AJOUT2 >= "' . $current_date . '" AND LANGUE = :LN',
                 'params' => array(':LN' => Yii::app()->session['language']),
             ),
              'latest_rep' => array(
-                'order' => 'DATE_AJOUT1 DESC',
+                'order' => 'DATE_AJOUT1 DESC, TITRE ASC',
                 'limit' => 5,
-                'condition' => 'LANGUE = :LN',
+                'condition' => 'DATE_AJOUT1 <= "' . $current_date . '" AND DATE_AJOUT2 >= "' . $current_date . '" AND LANGUE = :LN',
                 'params' => array(':LN' => Yii::app()->session['language']),
             ),
         );

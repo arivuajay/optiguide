@@ -143,7 +143,7 @@ $enddate = $model->DATE_AJOUT2;
                     <h3 class="box-title">Visualisation</h3>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="display:none;">
                     <?php echo $form->labelEx($model, 'HIERARCHIE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                       
                         <?php echo $form->dropDownList($model, 'HIERARCHIE', $hierarchie, array('class' => 'form-control')); ?>  
@@ -160,7 +160,7 @@ $enddate = $model->DATE_AJOUT2;
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="display:none;">
                     <?php echo $form->labelEx($model, 'AFFICHER_SECTION', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                      
                         <?php echo $form->radioButtonList($model, 'AFFICHER_SECTION', array('1' => 'Dans sa section', '0' => 'Archives'), array('separator' => ' ')); ?> 

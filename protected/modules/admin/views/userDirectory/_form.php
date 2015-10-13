@@ -98,23 +98,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <?php echo $form->labelEx($model, 'ABONNE_MAILING', array('class' => 'col-sm-2 control-label')); ?>
-                    <div class="col-sm-5">                       
-                        <?php echo $form->radioButtonList($model, 'ABONNE_MAILING', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?>
-
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <?php echo $form->labelEx($model, 'ABONNE_PROMOTION', array('class' => 'col-sm-2 control-label')); ?>
-                    <div class="col-sm-5">                     
-                        <?php echo $form->radioButtonList($model, 'ABONNE_PROMOTION', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?>
-
-                    </div>
-                </div>
-
-                <div class="form-group">
+                <div class="form-group" style="display:none;">
                     <?php echo $form->labelEx($model, 'ABONNE_TRANSITION', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
 
@@ -125,7 +109,7 @@
 
                 <div class="form-group">
                     <?php //echo $form->labelEx($model, 'bSubscription_envision', array('class' => 'col-sm-2 control-label'));  ?>
-                    <label for="UserDirectory_bSubscription_envision" class="col-sm-2 control-label">Abonné à Envision</label>
+                    <label for="UserDirectory_bSubscription_envision" class="col-sm-2 control-label">Envision Digital Edition</label>
                     <div class="col-sm-5">                       
                         <?php echo $form->radioButtonList($model, 'bSubscription_envision', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
                     </div>
@@ -133,9 +117,41 @@
 
                 <div class="form-group">
                     <?php //echo $form->labelEx($model, 'bSubscription_envue', array('class' => 'col-sm-2 control-label'));  ?>                    
-                    <label for="UserDirectory_bSubscription_envision" class="col-sm-2 control-label">Abonné à Envue</label>
+                    <label for="UserDirectory_bSubscription_envue" class="col-sm-2 control-label">Envue Digital Edition </label>
                     <div class="col-sm-5">                       
                         <?php echo $form->radioButtonList($model, 'bSubscription_envue', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
+                    </div>
+                </div>
+                
+                <div class="form-group"> 
+                    <label for="UserDirectory_print_envision" class="col-sm-2 control-label">Envision Print Edition  </label>
+                    <div class="col-sm-5"> 
+                        <?php echo $form->radioButtonList($model, 'print_envision', array('1' => 'Oui', '0' => 'Non'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
+                    </div>
+                </div>
+
+                <div class="form-group"> 
+                     <label for="UserDirectory_print_envue" class="col-sm-2 control-label">Envue Print Edition   </label>
+                    <div class="col-sm-5"> 
+                        <?php echo $form->radioButtonList($model, 'print_envue', array('1' => 'Oui', '0' => 'Non'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <?php //echo $form->labelEx($model, 'ABONNE_MAILING', array('class' => 'col-sm-2 control-label')); ?>
+                      <label for="UserDirectory_ABONNE_MAILING" class="col-sm-2 control-label">Opti-News </label>
+                    <div class="col-sm-5">                       
+                        <?php echo $form->radioButtonList($model, 'ABONNE_MAILING', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <?php //echo $form->labelEx($model, 'ABONNE_PROMOTION', array('class' => 'col-sm-2 control-label')); ?>
+                      <label for="UserDirectory_ABONNE_PROMOTION" class="col-sm-2 control-label">Opti-Promo </label>
+                    <div class="col-sm-5">                     
+                        <?php echo $form->radioButtonList($model, 'ABONNE_PROMOTION', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?>
+
                     </div>
                 </div>
 

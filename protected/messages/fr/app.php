@@ -183,6 +183,10 @@ return array(
     'OG161' => 'Plus conseils',
     'OG162' => 'Envoyer une demande',
     'OG163' => 'Si vous ne pouvez pas trouver les détaillants dans la liste ?',
-    'OG164' => 'à le détaillant à se joindre au site.'
+    'OG164' => 'à le détaillant à se joindre au site.',
+    
+    'OG165' => 'Oui , je souhaite recevoir la Envue Imprimer édition:',
+    'OG166' => 'Oui , je souhaite recevoir la Envision Imprimer édition:',
+    
 );
 ?>

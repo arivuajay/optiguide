@@ -33,7 +33,7 @@
                 'enableAjaxValidation' => true,
             ));
 
-            $all_banner_poitions = PublicityPosition::model()->findAll(array('order' => 'iId_position ASC','condition'=>"site='optiguide'" ));
+            $all_banner_poitions = PublicityPosition::model()->findAll(array('order' => 'iId_position ASC','condition'=>"site='optiguide' and iId_position!=0" ));
             foreach ($all_banner_poitions as $positions) {
                 $position = $positions['sPosition'] . " " . $positions['sFormat'];
                 $banner_poitions[$position] = $position ;

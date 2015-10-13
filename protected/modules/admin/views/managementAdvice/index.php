@@ -28,7 +28,9 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         $gridColumns = array(
                 
 		'TITRE',
-                'LANGUE',		
+                'LANGUE',
+                'DATE_AJOUT1',
+                'DATE_AJOUT2',
         array(
         'header' => 'Actes',
         'class' => 'booster.widgets.TbButtonColumn',

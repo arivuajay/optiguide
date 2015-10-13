@@ -184,5 +184,8 @@ return array(
     'OG162' => 'Send a request',
     'OG163' => 'If you can’t find the retailers in the list?',
     'OG164' => 'to the retailer to join in the site.',
+    
+    'OG165' => 'Yes, I wish to receive the Envue Print Edition:',
+    'OG166' => 'Yes, I wish to receive the Envision Print Edition:',    
 );
 ?>

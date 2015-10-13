@@ -29,7 +29,7 @@ class ManagementAdvice extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('TITRE,SYNOPSYS,AFFICHER_SITE', 'required'),
+            array('TITRE,SYNOPSYS,AFFICHER_SITE,DATE_AJOUT1,DATE_AJOUT2', 'required'),
             array('AFFICHER_SITE', 'numerical', 'integerOnly' => true),
             array('LANGUE', 'length', 'max' => 2),
             array('TITRE, LIEN_URL, LIEN_TITRE', 'length', 'max' => 255),
@@ -37,7 +37,7 @@ class ManagementAdvice extends CActiveRecord {
             array('TEXTE', 'length', 'max' => 5000),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('ID_CONSEIL, LANGUE, TITRE, SYNOPSYS, TEXTE, LIEN_URL, LIEN_TITRE, AFFICHER_SITE', 'safe', 'on' => 'search'),
+            array('ID_CONSEIL, LANGUE, TITRE, SYNOPSYS, TEXTE, LIEN_URL, LIEN_TITRE, AFFICHER_SITE,DATE_AJOUT1,DATE_AJOUT2', 'safe', 'on' => 'search'),
         );
     }
 
@@ -64,6 +64,8 @@ class ManagementAdvice extends CActiveRecord {
             'LIEN_URL' => Myclass::t('Titre de l\'adresse web'),
             'LIEN_TITRE' => Myclass::t('Adresse web'),
             'AFFICHER_SITE' => Myclass::t('Activer le conseil'),
+            'DATE_AJOUT1' => Myclass::t('Début de l\'affichage'),
+            'DATE_AJOUT2' => Myclass::t('Fin de l\'affichage'),
         );
     }
 
@@ -92,6 +94,8 @@ class ManagementAdvice extends CActiveRecord {
         $criteria->compare('LIEN_URL', $this->LIEN_URL, true);
         $criteria->compare('LIEN_TITRE', $this->LIEN_TITRE, true);
         $criteria->compare('AFFICHER_SITE', $this->AFFICHER_SITE);
+        
+         $criteria->order = 'TITRE ASC';
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -120,10 +124,11 @@ class ManagementAdvice extends CActiveRecord {
     }
 
     public function scopes() {
+        $current_date = date("Y-m-d");
         return array(
             'random' => array(
                 'order' => 'rand()',
-                'condition' => 'LANGUE = :LN',
+                'condition' => 'AFFICHER_SITE=1 AND ( DATE_AJOUT1 <= "' . $current_date . '" AND DATE_AJOUT2 >= "' . $current_date . '") AND LANGUE = :LN',
                 'params' => array(':LN' => Yii::app()->session['language']),
             ),
         );

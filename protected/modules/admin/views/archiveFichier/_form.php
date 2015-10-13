@@ -54,10 +54,12 @@ $drp_val_cat['empty'] = Myclass::t('APP60');
                     </div>
                 </div>
                
-                <div class="form-group">
+                <div class="form-group" style="display:none;">
                     <?php echo $form->labelEx($model, 'DISPONIBLE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                        
-                        <?php echo $form->radioButtonList($model, 'DISPONIBLE', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?> 
+                        <?php 
+                        $model->DISPONIBLE = 1;
+                        echo $form->radioButtonList($model, 'DISPONIBLE', array('1' => 'Oui', '0' => 'Non'),array('separator'=>' ')); ?> 
                         <?php echo $form->error($model, 'DISPONIBLE'); ?>
                     </div>
                 </div>

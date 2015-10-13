@@ -282,13 +282,28 @@
                         <?php echo $form->radioButtonList($umodel, 'bSubscription_envue', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                     </div>
                 </div>
+                
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo Myclass::t('OG165'); ?>  </label>  </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php echo $form->radioButtonList($umodel, 'print_envision', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
+                    </div>
+                </div>
 
                 <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo Myclass::t('OG166'); ?>  </label>  </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php echo $form->radioButtonList($umodel, 'print_envue', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
+                    </div>
+                </div>
+                
+                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo Myclass::t('OG116'); ?>  </label>  </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                         <?php echo $form->radioButtonList($umodel, 'ABONNE_MAILING', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                     </div>
-                </div>
+                </div>               
+              
 
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo Myclass::t('OG117'); ?>  </label>  </div>
