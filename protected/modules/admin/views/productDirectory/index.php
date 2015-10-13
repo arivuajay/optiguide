@@ -32,7 +32,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
          array(
                 'header'  =>  'Section EN',    
                 'name'    => 'sectionDirectory.NOM_SECTION_EN',          
-                'filter'  => CHtml::activeDropDownList($model, 'ID_SECTION', CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_EN")), 'ID_SECTION', 'NOM_SECTION_EN'), array('class'=>'form-control','prompt'=>'All')),
+                'filter'  => CHtml::activeDropDownList($model, 'ID_SECTION', CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_EN")), 'ID_SECTION', 'NOM_SECTION_EN'), array('id' => 'ProductDirectory_ID_SECTION2', 'class'=>'form-control','prompt'=>'All')),
                 ),    
              'NOM_PRODUIT_EN',
              array(
@@ -56,3 +56,12 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         ?>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#ProductDirectory_ID_SECTION").live("change", function () {
+            var section_one_val = $(this).val();
+            $("#ProductDirectory_ID_SECTION2").val(section_one_val);
+        });
+    });
+</script> 
