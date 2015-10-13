@@ -65,12 +65,7 @@
             <?php echo $form->labelEx($profile, 'ID_VILLE'); ?>
             <?php echo $form->dropDownList($profile, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
         </div>
-
-        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-            <?php echo $form->labelEx($profile, 'image'); ?>
-            <?php echo $form->fileField($profile, 'image'); ?> 
-        </div>
-
+        
         <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
             <?php echo $form->labelEx($profile, 'rep_company'); ?>
             <?php echo $form->textField($profile, 'rep_company', array('class' => 'form-field')); ?>  
@@ -82,12 +77,17 @@
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <?php echo $form->labelEx($profile, 'image'); ?>
+            <?php echo $form->fileField($profile, 'image'); ?> 
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
                     <?php echo $form->labelEx($profile, 'rep_brands'); ?>
                     <input type="text" class="search form-field" placeholder="Search brands">
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 brand_search">
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 brand_search">
                     <a href="javascript:void(0)" class="search_link btn btn-primary">Search</a>
                     <span class="counter"></span>
                 </div>
