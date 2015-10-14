@@ -18,7 +18,7 @@
  */
 class PollVote extends CActiveRecord
 {
-    public  $ID_TYPE_SPECIALISTE,$region,$ID_VILLE;
+    public  $ID_TYPE_SPECIALISTE,$region,$ID_VILLE,$NOM_REGION_FR;
     /**
    * Returns the static model of the specified AR class.
    * @return PollVote the static model class
@@ -46,7 +46,7 @@ class PollVote extends CActiveRecord
       array('region,ID_VILLE', 'required','message'=> Myclass::t('OG152')),
       array('choice_id, poll_id, user_id, timestamp', 'length', 'max'=>11),
       array('ip_address', 'length', 'max'=>16),
-      array('ID_TYPE_SPECIALISTE,region,ID_VILLE','safe'),  
+      array('ID_TYPE_SPECIALISTE,region,ID_VILLE,NOM_REGION_FR','safe'),  
     );
   }
 
@@ -57,10 +57,37 @@ class PollVote extends CActiveRecord
   {
     return array(
       'user' => array(self::BELONGS_TO, 'User', 'user_id'),
-      'choice' => array(self::BELONGS_TO, 'PollChoice', 'choice_id'),
+      'pollChoice' => array(self::BELONGS_TO, 'PollChoice', 'choice_id'),
+      'regionDirectory' => array(self::BELONGS_TO, 'RegionDirectory', 'region'),      
+      'cityDirectory' => array(self::BELONGS_TO, 'CityDirectory', 'ID_VILLE'),  
+      'professionalType' => array(self::BELONGS_TO, 'ProfessionalType', 'ID_TYPE_SPECIALISTE'),
       'poll' => array(self::BELONGS_TO, 'Poll', 'poll_id'),
     );
   }
+  
+   public function search($id) {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+//echo $id; exit;
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("poll_id='$id'");
+        $criteria->with  = array('regionDirectory','cityDirectory','professionalType');
+        //$criteria->together = true;
+        $criteria->order = 'timestamp ASC';
+
+        return new CActiveDataProvider($this, array(  
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => PAGE_SIZE,
+            )
+        ));
+    }
+    
+    protected function afterFind() {
+        /* Get selected region for current category information */
+        $this->ID_VILLE = CityDirectory::model()->findByPk($this->ID_VILLE)->NOM_VILLE;
+        $this->NOM_REGION_FR   = RegionDirectory::model()->findByPk($this->region)->NOM_REGION_FR;      
+        return parent::afterFind();
+    }
 
   /**
    * @return array customized attribute labels (name=>label)

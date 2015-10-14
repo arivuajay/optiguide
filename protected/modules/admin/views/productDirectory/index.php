@@ -30,7 +30,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 ),
              'NOM_PRODUIT_FR',
          array(
-                'header'  =>  'Section EN',    
+                'header'  =>  'Section EN', 
                 'name'    => 'sectionDirectory.NOM_SECTION_EN',          
                 'filter'  => CHtml::activeDropDownList($model, 'ID_SECTION', CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_EN")), 'ID_SECTION', 'NOM_SECTION_EN'), array('id' => 'ProductDirectory_ID_SECTION2', 'class'=>'form-control','prompt'=>'All')),
                 ),    

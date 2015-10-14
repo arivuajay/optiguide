@@ -47,14 +47,55 @@ class PollController extends Controller
       $this->redirect(array('vote', 'id' => $model->id)); 
     }
     else {
+        
       $userVote = $this->loadVote($model);
       $userChoice = $this->loadChoice($model, $userVote->choice_id);
+      
+      // define the variable to “LIMIT” the query        
+//        $page = Yii::app()->request->getParam('page');
+//        $page = isset($page) ? $page : 1;
+//        $limit = 0;
+//
+//        if ($page > 1) {
+//            $offset = $page - 1;
+//            $limit = LISTPERPAGE * $offset;
+//        }
+   
+        // Get all records list  with limit
+//        $votes_query = Yii::app()->db->createCommand() //this query contains all the data
+//                ->select('pc.label,rst.TYPE_SPECIALISTE_FR,rr.NOM_REGION_FR,rv.NOM_VILLE,pv.timestamp')
+//                ->from(array('poll_vote pv', 'poll_choice pc', 'repertoire_specialiste_type AS rst', 'repertoire_ville AS rv', 'repertoire_region AS rr'))
+//                ->where("pc.id=pv.choice_id AND pv.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND pv.ID_VILLE = rv.ID_VILLE AND pv.region = rr.ID_REGION AND  pv.poll_id='" . $id ."'")
+//                ->order('pv.timestamp')
+//                ->limit(LISTPERPAGE, $limit) // the trick is here!
+//                ->queryAll();
+//
+//        // Get total counts of records    
+//        $item_count = Yii::app()->db->createCommand() // this query get the total number of items,
+//                ->select('count(*) as count')
+//                ->from(array('poll_vote pv', 'poll_choice pc', 'repertoire_specialiste_type AS rst', 'repertoire_ville AS rv', 'repertoire_region AS rr'))
+//                ->where("pc.id=pv.choice_id AND pv.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND pv.ID_VILLE = rv.ID_VILLE AND pv.region = rr.ID_REGION AND  pv.poll_id='" . $id ."'")
+//                ->queryScalar(); // do not LIMIT it, this must count all items!
+//        // the pagination itself      
+//        $pages = new CPagination($item_count);
+//        $pages->setPageSize(LISTPERPAGE);
+      
+       $vmodel = new PollVote('search');
+       $vmodel->unsetAttributes();  // clear any default values
+       if (isset($_GET['ProfessionalDirectory']))
+       $vmodel->attributes = $_GET['ProfessionalDirectory'];
+     
+      $vsearchmodel = $vmodel->search($model->id);
 
       $this->render('view', array(
         'model' => $model,
         'userVote' => $userVote,
         'userChoice' => $userChoice,
         'userCanCancel' => $model->userCanCancelVote($userVote),
+//        'item_count' => $item_count,
+//        'page_size' => LISTPERPAGE,
+//        'pages' => $pages,
+        'vmodel' =>   $vsearchmodel
       ));
     }
   }
