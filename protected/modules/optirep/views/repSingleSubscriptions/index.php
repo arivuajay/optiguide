@@ -36,19 +36,53 @@
                     ),
                     'purchase_type',
                     array(
+                        'header' => 'Price',
                         'name' => 'rep_single_price',
                         'value' => 'Myclass::currencyFormat($data->rep_single_price)'
                     ),
                     array(
+                        'header' => 'No Of Months',
+                        'name' => 'rep_single_no_of_months',
+                    ),
+                    array(
+                        'header' => 'Total Month Price',
+                        'name' => 'rep_single_total_month_price',
+                        'value' => 'Myclass::currencyFormat($data->rep_single_total_month_price)'
+                    ),
+                    array(
+                        'header' => 'Offer (%)',
+                        'name' => 'offer_in_percentage',
+                    ),
+                    array(
+                        'header' => 'Offer Price',
+                        'name' => 'offer_price',
+                        'value' => 'Myclass::currencyFormat($data->offer_price)'
+                    ),
+                    array(
+                        'header' => 'Total',
+                        'name' => 'rep_single_total',
+                        'value' => 'Myclass::currencyFormat($data->rep_single_total)'
+                    ),
+                    array(
+                        'header' => 'Tax',
                         'name' => 'rep_single_tax',
                         'value' => 'Myclass::currencyFormat($data->rep_single_tax)'
                     ),
                     array(
-                        'name' => 'rep_single_total',
-                        'value' => 'Myclass::currencyFormat($data->rep_single_total)'
+                        'header' => 'Grand Total',
+                        'name' => 'rep_single_grand_total',
+                        'value' => 'Myclass::currencyFormat($data->rep_single_grand_total)'
                     ),
-                    'rep_single_subscription_start',
-                    'rep_single_subscription_end',
+                    array(
+                        'header' => 'Subscription Start',
+                        'name' => 'rep_single_subscription_start',
+                        'value' => 'Myclass::dateFormat($data->rep_single_subscription_start)'
+                    ),
+                    array(
+                        'header' => 'Subscription End',
+                        'name' => 'rep_single_subscription_end',
+                        'value' => 'Myclass::dateFormat($data->rep_single_subscription_end)'
+                    ),
                     'created_at',
                 );
                 $this->widget('zii.widgets.grid.CGridView', array(

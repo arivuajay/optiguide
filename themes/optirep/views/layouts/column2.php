@@ -43,7 +43,7 @@
                             <?php $rep_expiry_date = $rep_credential['rep_expiry_date']; ?>
                             <p>
                                 Expiry Date :
-                                <b><?php echo date("Y-m-d", strtotime($rep_expiry_date)) ?></b>
+                                <b><?php echo Myclass::dateFormat($rep_expiry_date) ?></b>
                             </p>
                         <?php } ?>
                         <p> <i class="fa fa-sign-out"></i> <?php echo CHtml::link('Logout', '/optirep/default/logout') ?></p>

@@ -19,6 +19,7 @@
                         'name' => 'rep_admin_per_account_price',
                         'value' => 'Myclass::currencyFormat($data->rep_admin_per_account_price)'
                     ),
+                    'rep_admin_no_of_months',
                     array(
                         'name' => 'rep_admin_total_price',
                         'value' => 'Myclass::currencyFormat($data->rep_admin_total_price)'
@@ -31,8 +32,14 @@
                         'name' => 'rep_admin_grand_total',
                         'value' => 'Myclass::currencyFormat($data->rep_admin_grand_total)'
                     ),
-                    'rep_admin_subscription_start',
-                    'rep_admin_subscription_end',
+                    array(
+                        'name' => 'rep_admin_subscription_start',
+                        'value' => 'Myclass::dateFormat($data->rep_admin_subscription_start)'
+                    ),
+                    array(
+                        'name' => 'rep_admin_subscription_end',
+                        'value' => 'Myclass::dateFormat($data->rep_admin_subscription_end)'
+                    ),
                     'created_at',
                 );
                 $this->widget('zii.widgets.grid.CGridView', array(

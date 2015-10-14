@@ -351,8 +351,8 @@ class Myclass extends CController {
         $result = self::numberFormat($number);
         return $result . ' CAD';
     }
-    
-    public static function numberFormat($number){
+
+    public static function numberFormat($number) {
         return number_format($number, 2);
     }
 
@@ -404,16 +404,22 @@ class Myclass extends CController {
         return $result;
     }
 
-    public static function repAdminBuyMoreAccountsPriceCalculation($total_no_accounts, $no_of_accounts_purchase) {
+    public static function repAdminBuyMoreAccountsPriceCalculation($total_no_accounts, $no_of_accounts_purchase, $months = 1) {
         $findSubscriptionType = RepSubscriptionTypes::model()->findByAccountMembers($total_no_accounts);
         $subscription_type_id = $findSubscriptionType['rep_subscription_type_id'];
         $per_account_price = $findSubscriptionType['rep_subscription_price'];
-        $total_price = $no_of_accounts_purchase * $per_account_price;
+
+        $total_month_price = $no_of_accounts_purchase * $per_account_price * $months;
+        $total_price = $total_month_price;
         $tax = self::TAX;
         $grand_total = $total_price + $tax;
+
         $result = array();
         $result['subscription_type_id'] = $subscription_type_id;
         $result['per_account_price'] = self::numberFormat($per_account_price);
+        $result['no_of_months'] = $months;
+        $result['no_of_accounts_purchased'] = $no_of_accounts_purchase;
+        $result['total_month_price'] = self::numberFormat($total_month_price);
         $result['total_price'] = self::numberFormat($total_price);
         $result['tax'] = self::numberFormat($tax);
         $result['grand_total'] = self::numberFormat($grand_total);
@@ -512,6 +518,13 @@ class Myclass extends CController {
             $offer_in_percentage = 0;
         }
         return $offer_in_percentage;
+    }
+
+    public static function dateFormat($date) {
+        if (strtotime($date) > 0)
+            return date("Y-m-d", strtotime($date));
+        else
+            return '-';
     }
 
 }

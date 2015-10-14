@@ -45,7 +45,7 @@ class RepAccountsController extends ORController {
                 $renewal['rep_credential_id'] = Yii::app()->user->id;
                 $renewal['no_of_accounts_purchase'] = count($_POST['rep_credentials']);
                 $renewal['rep_credentials'] = $_POST['rep_credentials'];
-                $renewal['price_list'] = Myclass::priceCalculation($renewal['no_of_accounts_purchase']);
+                $renewal['price_list'] = Myclass::priceCalculationWithMonths(1, $renewal['no_of_accounts_purchase'], false);
                 Yii::app()->session['renewal'] = $renewal;
                 $this->redirect('renewalRepAccounts');
             } else {
@@ -257,8 +257,8 @@ class RepAccountsController extends ORController {
                 $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalNotify'));
 
                 $paypalManager->addField('item_name', RepTemp::REP_ADMIN_BUY_MORE_ACCOUNTS);
-                $paypalManager->addField('amount', $price_list['per_account_price']);
-                $paypalManager->addField('quantity', $new_subscription['no_of_accounts_purchase']);
+                $paypalManager->addField('amount', $price_list['total_price']);
+//                $paypalManager->addField('quantity', $new_subscription['no_of_accounts_purchase']);
                 $paypalManager->addField('tax', $price_list['tax']);
                 $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
                 $paypalManager->addField('return', $returnUrl);
@@ -359,8 +359,8 @@ class RepAccountsController extends ORController {
                 $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalRenewalNotify'));
 
                 $paypalManager->addField('item_name', RepTemp::REP_ADMIN_RENEWAL_REP_ACCOUNTS);
-                $paypalManager->addField('amount', $data['price_list']['per_account_price']);
-                $paypalManager->addField('quantity', $data['no_of_accounts_purchase']);
+                $paypalManager->addField('amount', $data['price_list']['total_price']);
+//                $paypalManager->addField('quantity', $data['no_of_accounts_purchase']);
                 $paypalManager->addField('tax', $data['price_list']['tax']);
                 $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
                 $paypalManager->addField('return', $returnUrl);
@@ -437,7 +437,7 @@ class RepAccountsController extends ORController {
         }
     }
 
-    /* ---------------------------- Rep Admin Subscriptions ------------------ */
+    /* ---------------------------- Rep Admin Subscriptions and Transactions ------------------ */
 
     public function actionSubscriptions() {
         $criteria = new CDbCriteria;

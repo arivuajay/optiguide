@@ -55,7 +55,9 @@ class RepSingleSubscriptionsController extends ORController {
         ));
 
         $no_of_accounts_purchase = 1;
-        $price_calculation = Myclass::priceCalculation($no_of_accounts_purchase);
+        $no_of_months = 1;
+        $offer_calculation = false;
+        $price_calculation = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchase, $offer_calculation);
 
         if (isset($_POST['btnSubmit'])) {
             $data = array();
@@ -75,8 +77,8 @@ class RepSingleSubscriptionsController extends ORController {
                 $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repSingleSubscriptions/paypalRenewalNotify'));
 
                 $paypalManager->addField('item_name', RepTemp::REP_SINGLE_RENEWAL_REP_ACCOUNT);
-                $paypalManager->addField('amount', $data['price_list']['per_account_price']);
-                $paypalManager->addField('quantity', $no_of_accounts_purchase);
+                $paypalManager->addField('amount', $data['price_list']['total_price']);
+//                $paypalManager->addField('quantity', $no_of_accounts_purchase);
                 $paypalManager->addField('tax', $data['price_list']['tax']);
                 $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
                 $paypalManager->addField('return', $returnUrl);
