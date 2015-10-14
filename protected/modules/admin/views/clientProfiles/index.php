@@ -49,7 +49,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'header' => 'Actes',
                 'class' => 'booster.widgets.TbButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                'template' => '{update}&nbsp;&nbsp;{delete}',
+                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
             )
         );
 

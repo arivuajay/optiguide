@@ -28,7 +28,7 @@ class ClientProfilesController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view', 'create', 'update', 'getcategories', 'delete'),
+                'actions' => array('index', 'view', 'create', 'update', 'getcategories', 'delete','getmessage'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -69,23 +69,39 @@ class ClientProfilesController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new ClientProfiles;
+        $model  = new ClientProfiles;
+        $cmodel = new ClientMessages;
 
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
-
+       
         if (isset($_POST['ClientProfiles'])) {
             $model->attributes = $_POST['ClientProfiles'];
             $model->created_date  = date("Y-m-d");
             $model->modified_date = date("Y-m-d");
-            if ($model->save()) {
+            if ($model->save()) {                
+                // save the alert message         
+                if (isset($_POST['ClientMessages'])) 
+                {  
+                    $cmodel->attributes    = $_POST['ClientMessages'];
+                    $cmodel->client_id     = $model->client_id;
+                    $cmodel->date_remember = date("Y-m-d", strtotime($_POST['ClientMessages']['date_remember']));
+                    $cmodel->created_date  = date("Y-m-d");
+                    $cmodel->randkey       = Myclass::getGuid();
+                    if($cmodel->date_remember!='' && $cmodel->employee_id!='' && $cmodel->message!='')
+                    {     
+                        $cmodel->save();
+                    }                   
+                }
+                
                 Yii::app()->user->setFlash('success', 'Client profile created successfully!!!');
                 $this->redirect(array('index'));
-            }
+            }  
         }
 
         $this->render('create', array(
             'model' => $model,
+            'cmodel' => $cmodel
         ));
     }
 
@@ -96,6 +112,7 @@ class ClientProfilesController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
+        $cmodel = new ClientMessages;
 
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
@@ -104,14 +121,50 @@ class ClientProfilesController extends Controller {
             $model->attributes = $_POST['ClientProfiles'];
             $model->modified_date = date("Y-m-d");
             if ($model->save()) {
+                 // save the alert message         
+                if (isset($_POST['ClientMessages'])) 
+                {  
+                    $cmodel->attributes    = $_POST['ClientMessages'];
+                    $cmodel->client_id     = $model->client_id;
+                    $cmodel->date_remember = date("Y-m-d", strtotime($_POST['ClientMessages']['date_remember']));
+                    $cmodel->created_date  = date("Y-m-d");
+                    $cmodel->randkey       = Myclass::getGuid();
+                    if($cmodel->date_remember!='' && $cmodel->employee_id!='' && $cmodel->message!='')
+                    {     
+                        $cmodel->save();
+                    }                   
+                }
                 Yii::app()->user->setFlash('success', 'Client profile updated successfully!!!');
                 $this->redirect(array('index'));
             }
         }
+        
+        // Get the alert history for the client
+        $cmodel = new ClientMessages('search_client');
+        $csearchmodel = $cmodel->search_client($id);
 
         $this->render('update', array(
             'model' => $model,
+            'cmodel' => $cmodel,
+            'csearchmodel' => $csearchmodel
         ));
+    }
+    
+    public function actionGetmessage()
+    {
+        $messageid = $_POST['id'];
+        $message_info = ClientMessages::model()->findByPk($messageid);
+        $return_str = $message_info->message;
+        echo  $return_str;
+        exit;
+    }        
+    
+     //called on rendering the column for each row 
+    protected function gridDataColumn($data, $row) {
+
+        $message_id = $data->message_id;
+        $linkval = "<a href='javascript:void(0)' data-target='#products-disp-modal' style='text-align:center;' data-toggle='modal' class='popupmessage' id=" . $message_id . "><i class='glyphicon glyphicon-eye-open'></i></a>";
+        return $linkval;
     }
 
     /**

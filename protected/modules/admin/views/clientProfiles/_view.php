@@ -1,93 +1,45 @@
 <?php
-/* @var $this ClientProfilesController */
-/* @var $data ClientProfiles */
+/* @var $this ClientMessagesController */
+/* @var $data ClientMessages */
 ?>
 
 <div class="view">
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('message_id')); ?>:</b>
+	<?php echo CHtml::link(CHtml::encode($data->message_id), array('view', 'id'=>$data->message_id)); ?>
+	<br />
+
 	<b><?php echo CHtml::encode($data->getAttributeLabel('client_id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->client_id), array('view', 'id'=>$data->client_id)); ?>
+	<?php echo CHtml::encode($data->client_id); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('name')); ?>:</b>
-	<?php echo CHtml::encode($data->name); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('employee_id')); ?>:</b>
+	<?php echo CHtml::encode($data->employee_id); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('company')); ?>:</b>
-	<?php echo CHtml::encode($data->company); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('message')); ?>:</b>
+	<?php echo CHtml::encode($data->message); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('job_title')); ?>:</b>
-	<?php echo CHtml::encode($data->job_title); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('date_remember')); ?>:</b>
+	<?php echo CHtml::encode($data->date_remember); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('member_type')); ?>:</b>
-	<?php echo CHtml::encode($data->member_type); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('user_view_status')); ?>:</b>
+	<?php echo CHtml::encode($data->user_view_status); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('category')); ?>:</b>
-	<?php echo CHtml::encode($data->category); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('address')); ?>:</b>
-	<?php echo CHtml::encode($data->address); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('mail_sent_counts')); ?>:</b>
+	<?php echo CHtml::encode($data->mail_sent_counts); ?>
 	<br />
 
 	<?php /*
-	<b><?php echo CHtml::encode($data->getAttributeLabel('local_number')); ?>:</b>
-	<?php echo CHtml::encode($data->local_number); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('country')); ?>:</b>
-	<?php echo CHtml::encode($data->country); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('region')); ?>:</b>
-	<?php echo CHtml::encode($data->region); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('ville')); ?>:</b>
-	<?php echo CHtml::encode($data->ville); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('phonenumber1')); ?>:</b>
-	<?php echo CHtml::encode($data->phonenumber1); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('phonenumber2')); ?>:</b>
-	<?php echo CHtml::encode($data->phonenumber2); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('mobile_number')); ?>:</b>
-	<?php echo CHtml::encode($data->mobile_number); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('tollfree_number')); ?>:</b>
-	<?php echo CHtml::encode($data->tollfree_number); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('fax')); ?>:</b>
-	<?php echo CHtml::encode($data->fax); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('email')); ?>:</b>
-	<?php echo CHtml::encode($data->email); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('site_address')); ?>:</b>
-	<?php echo CHtml::encode($data->site_address); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('subscription')); ?>:</b>
-	<?php echo CHtml::encode($data->subscription); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('status')); ?>:</b>
+	<?php echo CHtml::encode($data->status); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('created_date')); ?>:</b>
 	<?php echo CHtml::encode($data->created_date); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('modified_date')); ?>:</b>
-	<?php echo CHtml::encode($data->modified_date); ?>
 	<br />
 
 	*/ ?>

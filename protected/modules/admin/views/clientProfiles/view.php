@@ -1,43 +1,159 @@
 <?php
-/* @var $this ClientProfilesController */
-/* @var $model ClientProfiles */
+/* @var $this ClientMessagesController */
+/* @var $model ClientMessages */
 
-$this->title='Voir #'.$model->name;
-$this->breadcrumbs=array(
-	'Les profils des clients'=>array('index'),
-	'Voir le profil de client',
+$this->title = 'View Profile';
+$this->breadcrumbs = array(
+    'Client Profile' => array('index'),
+    'View profile',
 );
+
+$themeUrl = $this->themeUrl;
+$cs = Yii::app()->getClientScript();
+$cs_pos_end = CClientScript::POS_END;
+$cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
+$cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
 ?>
 <div class="user-view">
-    
-    <?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-        'htmlOptions' => array('class'=>'table table-striped table-bordered'),
-	'attributes'=>array(
-		'client_id',
-		'name',
-		'company',
-		'job_title',
-		'member_type',
-		'category',
-		'address',
-		'local_number',
-		'country',
-		'region',
-		'ville',
-		'phonenumber1',
-		'phonenumber2',
-		'mobile_number',
-		'tollfree_number',
-		'fax',
-		'email',
-		'site_address',
-		'subscription',
-		'created_date',
-		'modified_date',
-	),
-)); ?>
+    <?php
+    $this->widget('zii.widgets.CDetailView', array(
+        'data' => $model,
+        'htmlOptions' => array('class' => 'table table-striped table-bordered'),
+        'attributes' => array(
+          'name',
+          'company',
+          'job_title',
+           array(
+                'name' => 'member_type',
+                'type' => 'HTML',
+                'value' => ($model->member_type == "free_member") ? 'Free Member' : 'Advertiser'
+            ),
+            array(
+                'name' => 'clientCategoryTypes.cat_type',
+                'type' => 'HTML',
+                'value' => $model->clientCategoryTypes->cat_type
+            ),
+           array(
+                'name' => 'clientCategory.cat_name',
+                'type' => 'HTML',
+                'value' => $model->clientCategory->cat_name
+            ),
+          'address',
+          'local_number',
+          'country',
+          'region',
+          'ville',
+          'phonenumber1',
+          'phonenumber2',
+          'mobile_number',
+          'tollfree_number',
+          'fax',
+          'email',
+          'site_address',
+          'created_date',
+          'modified_date'
+        ),
+    ));
+    ?>
 </div>
+
+ <div class="box-header">
+                    <h3 class="box-title">L'historique des alertes</h3>
+                </div>                
+                 <div class="row">
+                      <?php
+                       // Get the alert history for the client
+                        $cmodel = new ClientMessages('search_client');
+                        $csearchmodel = $cmodel->search_client($model->client_id);
+
+                            $gridColumns = array(  
+                                array('header' => 'SN.',
+                                    'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
+                                ), 
+                                array(
+                               'name'    => 'employeeProfiles.employee_name',
+                               'value'   => $data->employeeProfiles->employee_name,
+                                ), 
+                                array(
+                               'name'    => 'employeeProfiles.employee_email',
+                               'value'   => $data->employeeProfiles->employee_email,
+                                ), 
+                                array('name' => 'date_remember',
+                                   'type' => 'raw',
+                                   'value' => function($data){
+                                       echo date("d-m-Y",strtotime($data->date_remember));
+                                   },
+                                   'filter' => false,
+                                ),
+                                array('name' => 'status',
+                                   'type' => 'raw',
+                                   'value' => function($data){
+                                       echo ($data->status == "1") ? '<span class="label label-success">Enable</span>' : '<span class="label label-warning">Disable</span>';
+                                   },
+                                   'filter' => false,
+                                ),      
+                                array('header' => 'message',
+                                    'type' => 'raw',
+                                    'filter' => false,
+                                      //call the method 'gridDataColumn' from the controller
+                                    'value' => array($this, 'gridDataColumn'),
+                                ),                                          
+                            );
+
+                            $this->widget('booster.widgets.TbExtendedGridView', array(
+                            'type' => 'striped bordered datatable',
+                            'enableSorting' => false,
+                            'dataProvider' => $csearchmodel,
+                            'responsiveTable' => true,
+                            'template' => '  <div class="col-md-7"><div class="box"> <div class="box-body">{items}</div> <div class="box-footer clearfix">{pager}</div> </div></div>',
+                            'columns' => $gridColumns
+                            )
+                            );
+                            ?>
+                 </div>
+
+
+<div class="modal fade" id="products-disp-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-folder-open-o"></i> Message</h4>
+                <div id="product_contents"></div>
+            </div>
+            
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<?php
+$ajax_getmessage  = Yii::app()->createUrl('/admin/clientProfiles/getmessage');
+$js = <<< EOD
+
+   $(document).ready(function(){
+        
+            
+   $('.popupmessage').live('click',function(event){
+        event.preventDefault();
+        var message_id = $(this).attr("id");      
+        var dataString = 'id='+message_id;
+            
+        $.ajax({
+            type: "POST",
+            url: '{$ajax_getmessage}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#product_contents").html(html);               
+            }
+         });
+       
+    });
+  
+});
+EOD;
+Yii::app()->clientScript->registerScript('_form_prof', $js);
+?>
 
 
 

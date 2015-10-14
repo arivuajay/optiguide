@@ -32,7 +32,7 @@ class ClientMessages extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                        array('client_id, employee_id,message,date_remember' , 'required'),
+                        //array('client_id, employee_id,message,date_remember' , 'required'),
 			array('client_id, employee_id, user_view_status, mail_sent_counts, status', 'numerical', 'integerOnly'=>true),
 			array('message, date_remember, created_date,randkey', 'safe'),
 			// The following rule is used by search().
@@ -84,7 +84,30 @@ class ClientMessages extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
+	public function search_client($id)
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria=new CDbCriteria;
+	
+		$criteria->addCondition("t.client_id='$id'");
+		
+                $criteria->with = array(
+                    "employeeProfiles" => array(
+                      'alias' => 'employeeProfiles',
+                      'select' => 'employee_name,employee_email',
+                    ),
+                  );
+                $criteria->order = 'date_remember ASC';
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+                        'pagination' => array(
+                            'pageSize' => 5,
+                        )
+		));
+	}
+        
+        public function search()
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
