@@ -158,6 +158,20 @@ class Controller extends CController {
                     elseif ($model->rep_role == RepCredentials::ROLE_ADMIN)
                         $updateTransactionDetail->rep_admin_subscription_id = $repAdmin->rep_admin_subscription_id;
                     $updateTransactionDetail->save(false);
+
+                    if ($repProfile->rep_profile_email) {
+                        $mail = new Sendmail;
+                        $trans_array = array(
+                            "{USERNAME}" => $model->rep_username,
+                            "{PASSWORD}" => $model->rep_password,
+                            "{NEXTSTEPURL}" => REPURL,
+                            "{SITENAME}" => OPTIREPSITENAME
+                        );
+
+                        $message = $mail->getMessage('rep_registration_completed_status', $trans_array);
+                        $Subject = $mail->translate('Registration Details');
+                        $mail->send($repProfile->rep_profile_email, $Subject, $message);
+                    }
                 }
                 RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
             }
@@ -208,6 +222,21 @@ class Controller extends CController {
                 $updateTransactionDetail->payment_status = 'Completed';
                 $updateTransactionDetail->rep_single_subscription_id = $repSingleSubscription->rep_single_subscription_id;
                 $updateTransactionDetail->save(false);
+                
+                $rep_profile = $rep_account->repCredentialProfiles;
+                $rep_email = $rep_profile['rep_profile_email'];
+                if ($rep_email) {
+                    $mail = new Sendmail;
+                    $trans_array = array(
+                        "{USERNAME}" => $rep_account['rep_username'],
+                        "{SITENAME}" => OPTIREPSITENAME,
+                        "{EXPIRYDATE}" => $rep_account->rep_expiry_date
+                    );
+
+                    $message = $mail->getMessage('rep_renewal_completed_status', $trans_array);
+                    $Subject = $mail->translate('Renewal Details');
+                    $mail->send($rep_email, $Subject, $message);
+                }
             }
             RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
         }
@@ -229,10 +258,10 @@ class Controller extends CController {
             $subscription->rep_admin_old_active_accounts = $subscription_details['rep_admin_old_active_accounts'];
             $subscription->no_of_accounts_remaining = $subscription_details['no_of_accounts_purchase'];
             $subscription->rep_admin_per_account_price = $price_list['per_account_price'];
-            
+
             $subscription->rep_admin_no_of_months = $price_list['no_of_months'];
             $subscription->rep_admin_total_month_price = $price_list['total_month_price'];
-            
+
             $subscription->rep_admin_total_price = $price_list['total_price'];
             $subscription->rep_admin_tax = $price_list['tax'];
             $subscription->rep_admin_grand_total = $price_list['grand_total'];
@@ -269,10 +298,10 @@ class Controller extends CController {
             $repAdminSubscription->no_of_accounts_purchased = $renewal_details['no_of_accounts_purchase'];
             $repAdminSubscription->no_of_accounts_used = $renewal_details['no_of_accounts_purchase'];
             $repAdminSubscription->rep_admin_per_account_price = $price_list['per_account_price'];
-            
+
             $repAdminSubscription->rep_admin_no_of_months = $price_list['no_of_months'];
             $repAdminSubscription->rep_admin_total_month_price = $price_list['total_month_price'];
-            
+
             $repAdminSubscription->rep_admin_total_price = $price_list['total_price'];
             $repAdminSubscription->rep_admin_tax = $price_list['tax'];
             $repAdminSubscription->rep_admin_grand_total = $price_list['grand_total'];

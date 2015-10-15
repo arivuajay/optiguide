@@ -26,7 +26,7 @@ class RepSingleSubscriptionsController extends ORController {
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('index', 'transactions'),
                 'users' => array('@'),
-                'expression' => array('RepSingleSubscriptionsController','allowOnlyRepSingleWithNoParent')
+                'expression' => array('RepSingleSubscriptionsController', 'allowOnlyRepSingleWithNoParent')
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions' => array(''),
@@ -37,12 +37,11 @@ class RepSingleSubscriptionsController extends ORController {
             ),
         );
     }
-    
 
     public static function allowOnlyRepSingleWithNoParent() {
         if (Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE && Yii::app()->user->rep_parent_id == 0) {
             return true;
-        } 
+        }
     }
 
     public function actionIndex() {
@@ -154,6 +153,22 @@ class RepSingleSubscriptionsController extends ORController {
             } else {
                 $checkTransactionExists->payment_status = $_POST['payment_status'];
                 $checkTransactionExists->save(false);
+            }
+
+            if ($_POST['payment_status'] == "Pending") {
+                $rep_account = RepCredentials::model()->findByPk($renewal_details['rep_credential_id']);
+                $rep_profile = $rep_account->repCredentialProfiles;
+                $rep_email = $rep_profile['rep_profile_email'];
+                if (!empty($rep_email)) {
+                    $rep_username = $rep_account['rep_username'];
+                    $mail = new Sendmail;
+                    $trans_array = array(
+                        "{USERNAME}" => $rep_username,
+                    );
+                    $message = $mail->getMessage('rep_renewal_pending_status', $trans_array);
+                    $Subject = $mail->translate('Renewal - Payment Status Pending');
+                    $mail->send($rep_email, $Subject, $message);
+                }
             }
         }
     }

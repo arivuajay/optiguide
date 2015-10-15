@@ -6,15 +6,12 @@ if (in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
     $adminurl   = 'http://localhost/optiguide/branches/dev/';
     $repurl     = 'http://local.optirep/'; 
     $guideurl   = 'http://local.optiguide/'; 
-    
 } else {
     $mailsendby  = 'phpmail';
      $adminurl   = 'http://demo.arkinfotec.in/optiguide/';
      $repurl     =  'http://optirep.arkinfotec.in/'; 
      $guideurl   = 'http://optiguide.arkinfotec.in/'; 
 }
-
-
 
 // Custom Params Value
 return array(
@@ -29,7 +26,7 @@ return array(
     'SMTPPASS' => 'ninja12345',
     'SMTPAUTH' => true, // Auth : true or false
     'SMTPSECURE' => 'ssl', // Secure :tls or ssl
-    'NOREPLYMAIL' => 'noreply@gmail.com',
+    'NOREPLYMAIL' => 'noreply@optiguide.com',
 //    'SITENAME' => 'Optiguide.com',
     'JS_SHORT_DATE_FORMAT' => 'yy-mm-dd',
     'PHP_SHORT_DATE_FORMAT' => 'Y-m-d',
@@ -64,5 +61,9 @@ return array(
     
     //REP PROFILE PICTURE
     'REP_PROFILE_PICTURE' => 'uploads/rep_profile_pictures/',
+    
+    'ADMINSITENAME' => 'Optiguide Admin',
+    'OPTIGUIDESITENAME' => 'Optiguide',
+    'OPTIREPSITENAME' => 'Optirep',
 );
 

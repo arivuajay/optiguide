@@ -109,7 +109,7 @@ class RepCredentialController extends ORController {
         $no_of_accounts_purchased = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
         $no_of_months = $registration['step2']['RepCredentials']['no_of_months'];
         $offer_calculation = true;
-        if($no_of_accounts_purchased > 1){
+        if ($no_of_accounts_purchased > 1) {
             $offer_calculation = false;
         }
         $price_list = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchased, $offer_calculation);
@@ -217,6 +217,20 @@ class RepCredentialController extends ORController {
                 $checkTransactionExists->payment_status = $_POST['payment_status'];
                 $checkTransactionExists->save(false);
             }
+
+            if ($_POST['payment_status'] == "Pending") {
+                $rep_email = $registration['step2']['RepCredentialProfiles']['rep_profile_email'];
+                if (!empty($rep_email)) {
+                    $rep_username = $registration['step2']['RepCredentials']['rep_username'];
+                    $mail = new Sendmail;
+                    $trans_array = array(
+                        "{USERNAME}" => $rep_username,
+                    );
+                    $message = $mail->getMessage('rep_registration_pending_status', $trans_array);
+                    $Subject = $mail->translate('Registration - Payment Status Pending');
+                    $mail->send($rep_email, $Subject, $message);
+                }
+            }
         }
     }
 
@@ -252,14 +266,14 @@ class RepCredentialController extends ORController {
                     }
                     $profile->image->saveAs($rep_img_path . $imgname);
                 }
-                
+
                 if ($geo_values != '') {
                     $exp_latlong = explode('~', $geo_values);
                     $profile->rep_lat = $exp_latlong[0];
                     $profile->rep_long = $exp_latlong[1];
                 }
-                
-                if($_POST['marqueid']){
+
+                if ($_POST['marqueid']) {
                     $profile->rep_brands = implode(',', $_POST['marqueid']);
                 }
 
