@@ -29,7 +29,7 @@ return array(
     'SMTPPASS' => 'ninja12345',
     'SMTPAUTH' => true, // Auth : true or false
     'SMTPSECURE' => 'ssl', // Secure :tls or ssl
-    'NOREPLYMAIL' => 'noreply@optiguide.com',
+    'NOREPLYMAIL' => 'noreply@gmail.com',
 //    'SITENAME' => 'Optiguide.com',
     'JS_SHORT_DATE_FORMAT' => 'yy-mm-dd',
     'PHP_SHORT_DATE_FORMAT' => 'Y-m-d',
