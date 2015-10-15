@@ -171,7 +171,7 @@
                     'name' => 'NoteSubmit',
                     'type' => 'submit',
                     'class' => 'register-btn'
-                        ), 'Submit');
+                        ), 'Save');
                 ?>
             </div>
             <?php $this->endWidget(); ?>

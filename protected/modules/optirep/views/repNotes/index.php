@@ -39,7 +39,7 @@
                                 <td>
                                     <?php echo CHtml::link('<i class="fa fa-eye"></i>', array('#'), array("data-toggle" => "modal", "data-target" => "#viewmessage_".$notes['id'])); ?>&nbsp;
                                     <?php echo CHtml::link('<i class="fa fa-pencil-square-o"></i>', array('/optirep/repNotes/update', 'id' => $notes['id'])); ?>&nbsp;
-                                    <?php echo CHtml::link('<i class="fa fa-trash"></i>', array('/optirep/repNotes/delete', 'id' => $notes['id'])); ?>
+                                    <?php echo CHtml::link('<i class="fa fa-trash"></i>', array('/optirep/repNotes/delete', 'id' => $notes['id']), array('confirm' => 'Are you sure?')); ?>
                                 </td>
                             </tr>
                             <!-- Note Display Box-->

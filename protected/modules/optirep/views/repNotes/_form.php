@@ -27,6 +27,8 @@
                     'type' => 'submit',
                     'class' => 'register-btn'
                         ), 'Save');
+                
+                echo CHtml::link('Back', '/optirep/repNotes/index', array('class' => 'back'))
                 ?>
             </div>
     </div>
