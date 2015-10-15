@@ -29,8 +29,8 @@ return array(
     'SMTPPASS' => 'ninja12345',
     'SMTPAUTH' => true, // Auth : true or false
     'SMTPSECURE' => 'ssl', // Secure :tls or ssl
-    'NOREPLYMAIL' => 'noreply@express2help.com',
-    'SITENAME' => 'Optiguide.com',
+    'NOREPLYMAIL' => 'noreply@optiguide.com',
+//    'SITENAME' => 'Optiguide.com',
     'JS_SHORT_DATE_FORMAT' => 'yy-mm-dd',
     'PHP_SHORT_DATE_FORMAT' => 'Y-m-d',
     'FB_APP_ID' => $fb_app_id,
@@ -43,7 +43,7 @@ return array(
     //Product Settings
     'ARCHIVE_IMG_PATH' => 'uploads/archivage/',
     'JOURNAL_IMG_PATH' => 'uploads/journal/',
-    'COPYRIGHT' => '&copy; 2014 Express2Help.',
+    'COPYRIGHT' => '&copy; 2015 Optiguide.',
     'EMAILHEADERIMAGE' => '/themes/site/css/frontend/img/logos/header-logo.png',
     
     'LISTPERPAGE' => 15,

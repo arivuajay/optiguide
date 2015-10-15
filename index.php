@@ -19,12 +19,15 @@ $optirep_array = array('local.optirep', 'optirep.arkinfotec.in');
 if (in_array($_SERVER['HTTP_HOST'], $optiguide_array)) {
     $modules = array('optiguide');
     $def_mod = 'optiguide';
+    define('SITENAME', 'OptiGudie');
 } elseif (in_array($_SERVER['HTTP_HOST'], $optirep_array)) {
     $modules = array('optirep');
     $def_mod = 'optirep';
+    define('SITENAME', 'OptiRep');
 } else {
     $modules = array('admin');
     $def_mod = 'admin';
+    define('SITENAME', 'OptiGudie Admin');
 }
 
 if ($modules) {
