@@ -49,7 +49,14 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'name' =>  'CREATED_DATE',  
                 'filter' => false
                 ),   
-               // 'ID_CLIENT',			
+               // 'ID_CLIENT',	
+               array(
+                   'header' => "Alert Date",
+                   'type' => 'raw',
+                   'value' => function($data) {
+                        return  CHtml::link(Myclass::dateFormat($data->professionalMessages2->date_remember), array("/admin/professionalDirectory/update/" , "id" => $data->ID_SPECIALISTE ,"alerthistory"=>1));
+                   },           
+                ),
                 array(
                    'header' => "Accès",
                    'type' => 'raw',

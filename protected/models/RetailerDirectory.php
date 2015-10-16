@@ -123,6 +123,14 @@ class RetailerDirectory extends CActiveRecord
                         'retailerGroup' => array(self::BELONGS_TO, 'RetailerGroup', 'ID_GROUPE'),                     
                         'userDirectory' => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION' , 'condition' => 'NOM_TABLE = "Detaillants"'),
                         'cntUsr'        => array(self::STAT, 'UserDirectory',  'ID_RELATION', 'condition' => 'NOM_TABLE = "Detaillants"'),
+                        'retailerMessages2' => array(
+                             self::HAS_ONE, 
+                            'RetailerMessages', 
+                            'ID_RETAILER',                                      
+                            'on'     => 'retailerMessages2.status = :type', 
+                            'params' => array(':type' => 1),
+                            'order'  => 'date_remember ASC',  
+                        ),  
 		);
 	}
 

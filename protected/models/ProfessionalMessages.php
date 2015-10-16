@@ -50,6 +50,7 @@ class ProfessionalMessages extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    'professionalDirectory' => array(self::BELONGS_TO, 'ProfessionalDirectory', 'ID_SPECIALISTE'),
                     'employeeProfiles' => array(self::BELONGS_TO, 'EmployeeProfiles', 'employee_id'),
 		);
 	}

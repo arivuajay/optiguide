@@ -37,8 +37,13 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'value' => 'EmployeeProfiles::model()->findByPk($data->clientMessages2->employee_id)->employee_name',
                  
             ),
-            'clientMessages2.date_remember',
-            
+              array(
+                   'header' => "Alert Date",
+                   'type' => 'raw',
+                   'value' => function($data) {
+                        return Myclass::dateFormat($data->clientMessages2->date_remember);
+                   },           
+                ),
             /*
               'local_number',
               'country',

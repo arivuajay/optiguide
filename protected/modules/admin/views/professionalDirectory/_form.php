@@ -313,7 +313,7 @@
                                     'enableSorting' => false,
                                     'dataProvider' => $psearchmodel,
                                     'responsiveTable' => true,
-                                    'template' => '  <div class="col-md-7"><div class="box"> <div class="box-body">{items}</div> <div class="box-footer clearfix">{pager}</div> </div></div>',
+                                    'template' => '  <div id="histrydisp" tabindex="-1" class="col-md-7"><div class="box"> <div class="box-body">{items}</div> <div class="box-footer clearfix">{pager}</div> </div></div>',
                                     'columns' => $gridColumns
                                 )
                             );
@@ -361,11 +361,17 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php
+$alerthistory = Yii::app()->request->getQuery('alerthistory','0'); 
 $ajaxRegionUrl = Yii::app()->createUrl('/admin/professionalDirectory/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/admin/professionalDirectory/getcities');
 $ajax_getmessage  = Yii::app()->createUrl('/admin/professionalDirectory/getmessage');
 $js = <<< EOD
     $(document).ready(function(){
+    
+    if({$alerthistory}=='1')
+    {
+        $('#histrydisp').css('outline', 0).focus();
+    } 
         
     $("#ProfessionalDirectory_country").change(function(){
         var id=$(this).val();

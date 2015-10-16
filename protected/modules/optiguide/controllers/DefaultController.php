@@ -41,12 +41,46 @@ class DefaultController extends OGController {
                 $this->render('_clientprofile', compact('messageinfos'));
             }  else {
                 $this->redirect(array('index')); 
-            }    
+            } 
+            
         }else{ 
          $this->redirect(array('index')); 
         }  
         
-    }        
+    }      
+    
+     public function actionProfessionalprofile($id)
+    {
+        
+        if($id!='')
+        {    
+            $criteria = new CDbCriteria;
+            $criteria->condition = "randkey='".$id."'";
+            $criteria->with = array(              
+               "professionalDirectory" => array(
+                'alias' => 'professionalDirectory',
+                'select' => 'professionalDirectory.*'
+                ),
+            );
+
+            $messageinfos = ProfessionalMessages::model()->find($criteria);
+            
+            if(!empty($messageinfos))
+            {    
+                $messageinfos->user_view_status = 1;
+                $messageinfos->status = 0;
+                $messageinfos->save(false);
+                
+                $this->render('_professionalprofile', compact('messageinfos'));
+            }  else {
+                $this->redirect(array('index')); 
+            } 
+            
+        }else{ 
+         $this->redirect(array('index')); 
+        }  
+        
+    }  
             
 
     public function actionSubscribe() {

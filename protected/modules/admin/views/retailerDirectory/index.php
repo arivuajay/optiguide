@@ -50,6 +50,13 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             'filter' => false
             ),   
             array(
+                   'header' => "Alert Date",
+                   'type' => 'raw',
+                   'value' => function($data) {
+                        return  CHtml::link(Myclass::dateFormat($data->retailerMessages2->date_remember), array("/admin/retailerDirectory/update/" , "id" => $data->ID_RETAILER ,"alerthistory"=>1));
+                   },           
+                ),
+            array(
                 'header' => "Accès",
                 'type' => 'raw',
                 'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle'),

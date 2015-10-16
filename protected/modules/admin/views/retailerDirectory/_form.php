@@ -448,7 +448,7 @@
                                     'enableSorting' => false,
                                     'dataProvider' => $rsearchmodel,
                                     'responsiveTable' => true,
-                                    'template' => '  <div class="col-md-7"><div class="box"> <div class="box-body">{items}</div> <div class="box-footer clearfix">{pager}</div> </div></div>',
+                                    'template' => '  <div class="col-md-7" id="histrydisp" tabindex="-1"><div class="box"> <div class="box-body">{items}</div> <div class="box-footer clearfix">{pager}</div> </div></div>',
                                     'columns' => $gridColumns
                                 )
                             );
@@ -497,12 +497,19 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php
+$alerthistory = Yii::app()->request->getQuery('alerthistory','0'); 
 $ajaxRegionUrl = Yii::app()->createUrl('/admin/retailerDirectory/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/admin/retailerDirectory/getcities');
 $ajaxGroupUrl = Yii::app()->createUrl('/admin/retailerDirectory/getgroups');
 $ajax_getmessage  = Yii::app()->createUrl('/admin/retailerDirectory/getmessage');
 $js = <<< EOD
     $(document).ready(function(){
+    
+    if({$alerthistory}=='1')
+    {
+        $('#histrydisp').css('outline', 0).focus();
+    } 
+        
     $("#RetailerDirectory_country").change(function(){
         var id=$(this).val();
         var dataString = 'id='+ id;

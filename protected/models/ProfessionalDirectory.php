@@ -73,8 +73,16 @@ class ProfessionalDirectory extends CActiveRecord {
             'cityDirectory'       => array(self::BELONGS_TO, 'CityDirectory', 'ID_VILLE'),            
             'professionalType' => array(self::BELONGS_TO, 'ProfessionalType', 'ID_TYPE_SPECIALISTE'),
             'userDirectory'    => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION'),
-            'cntUsr'           => array(self::STAT, 'UserDirectory',  'ID_RELATION', 'condition' => 'NOM_TABLE = "Professionnels"'),
-        );
+            'cntUsr'           => array(self::STAT, 'UserDirectory',  'ID_RELATION', 'condition' => 'NOM_TABLE = "Professionnels"'),           
+            'professionalMessages2' => array(
+                             self::HAS_ONE, 
+                            'ProfessionalMessages', 
+                            'ID_SPECIALISTE',                                      
+                            'on'     => 'professionalMessages2.status = :type', 
+                            'params' => array(':type' => 1),
+                            'order'  => 'date_remember ASC',  
+                            ),                                        
+            );        
     }
     
     /** 
