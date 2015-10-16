@@ -234,7 +234,6 @@
     </div>
 </div>
 
-
 <!-- Note Modal Box-->
 <div class="modal fade" id="preparenote" role="dialog">
     <div class="modal-dialog">
@@ -260,6 +259,14 @@
                         <textarea class="form-field-textarea" id="note_message" name="message"></textarea>
                         <div style="display:none;" class="errorMessage" id="note_error">Notes required.</div>
                     </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label>Reminder Date</label>
+                        <div id="reminder_datepicker" class="input-append date">
+                            <input type="text" class="form-field" name="alert_date">
+                            <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                            <small><b>NOTE:</b> If you choose any date in the above field, you will get the reminder email in that particular date.</small>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -275,7 +282,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- Send Message Modal Box-->
 <div class="modal fade" id="sendmessage" role="dialog">
@@ -328,6 +334,11 @@ $cs_pos_end = CClientScript::POS_END;
 $cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
 $js = <<< EOD
 $(document).ready(function(){
+        
+        $('#reminder_datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            startDate: '+1d'
+        });
         
      var latval  = parseFloat("{$lat}") || 0;
      var longval = parseFloat("{$long}") || 0;

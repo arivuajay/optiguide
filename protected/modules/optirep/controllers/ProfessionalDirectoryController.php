@@ -144,9 +144,11 @@ class ProfessionalDirectoryController extends ORController {
         if(isset($_POST['NoteSubmit']))
         {
             $message =  nl2br($_POST['message']);
+            $alert_date = $_POST['alert_date'];
             
             $notemodel = new RepNotes;
             $notemodel->message = $message;
+            $notemodel->alert_date = $alert_date;
             $notemodel->rep_credential_id = $rep_id;
             $notemodel->created_at =  date('Y-m-d H:i');
             $notemodel->ID_UTILISATEUR = $prof_query['ID_UTILISATEUR'];

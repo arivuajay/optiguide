@@ -15,33 +15,33 @@
         $favourites = RepFavourites::model()->find($criteria);
         $fav_user = $favourites->ID_UTILISATEUR;
         ?>
-        
+
         <div class="users-links">
-            
-               <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-            <div class="addfav-btn">          
-                <input name="FAV" type="checkbox" id="FAV" value="<?php echo $model['ID_UTILISATEUR']; ?>" <?php
-                if ($fav_user != '') {
-                    echo "checked=checked";
-                }
-                ?>>  Add to Favorites 
+
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <div class="addfav-btn">          
+                    <input name="FAV" type="checkbox" id="FAV" value="<?php echo $model['ID_UTILISATEUR']; ?>" <?php
+                    if ($fav_user != '') {
+                        echo "checked=checked";
+                    }
+                    ?>>  Add to Favorites 
+                </div>
             </div>
-        </div>
 
-        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#sendmessage")); ?>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> Report a change', array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#reportchange")); ?>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                <?php echo CHtml::link('<i class="fa fa fa-edit"></i> Add Note', array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#preparenote")); ?>
+            </div>
+
         </div>
 
-        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-            <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> Report a change', array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#reportchange")); ?>
-        </div>
-
-        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-            <?php echo CHtml::link('<i class="fa fa fa-edit"></i> Add Note', array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#preparenote")); ?>
-        </div>
-            
-        </div>
-     
 
         <div class="clearfix"></div>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">         
@@ -57,14 +57,14 @@
                 </p>
             </div>
         </div> 
-        
-         <?php if($model['map_lat'] && $model['map_long'])
-         { ?>    
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">         
-         <div id="display_map" style="display:none;width:100%;height:350px; "></div> 
-        </div>
-         <?php 
-         }?>
+
+        <?php if ($model['map_lat'] && $model['map_long']) {
+            ?>    
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">         
+                <div id="display_map" style="display:none;width:100%;height:350px; "></div> 
+            </div>
+        <?php }
+        ?>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">            
             <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/professionalDirectory'), array("class" => "pull-left")); ?> </div>  
         </div>        
@@ -163,6 +163,14 @@
                         <textarea class="form-field-textarea" id="note_message" name="message"></textarea>
                         <div style="display:none;" class="errorMessage" id="note_error">Notes required.</div>
                     </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label>Reminder Date</label>
+                        <div id="reminder_datepicker" class="input-append date">
+                            <input type="text" class="form-field" name="alert_date">
+                            <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                            <small><b>NOTE:</b> If you choose any date in the above field, you will get the reminder email in that particular date.</small>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -192,7 +200,7 @@
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'send_message_form',
                 'htmlOptions' => array('role' => 'form'),
-                'action'=>Yii::app()->createUrl('/optirep/internalMessage/createnew'),                
+                'action' => Yii::app()->createUrl('/optirep/internalMessage/createnew'),
             ));
             ?>
             <div class="modal-body model-form">
@@ -202,7 +210,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <label>Message </label>                       
-                         <?php echo $form->textArea($internalmodel, 'message', array('class' => 'form-field-textarea', "id"=>"messageval" ,'maxlength' => 1000, 'rows' => 5, 'cols' => 50)); ?> 
+                        <?php echo $form->textArea($internalmodel, 'message', array('class' => 'form-field-textarea', "id" => "messageval", 'maxlength' => 1000, 'rows' => 5, 'cols' => 50)); ?> 
                         <div style="display:none;" class="errorMessage" id="message_error">Message required.</div>
                     </div>
                 </div>
@@ -223,13 +231,18 @@
 </div>
 <?php
 $ajaxUpdatefav = Yii::app()->createUrl('/optirep/repFavourites/updatefav');
-$lat  = $model['map_lat'];
+$lat = $model['map_lat'];
 $long = $model['map_long'];
 $cs = Yii::app()->getClientScript();
 $cs_pos_end = CClientScript::POS_END;
 $cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
 $js = <<< EOD
 $(document).ready(function(){
+        
+        $('#reminder_datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            startDate: '+1d'
+        });
         
     var latval  = parseFloat("{$lat}") || 0;
     var longval = parseFloat("{$long}") || 0;

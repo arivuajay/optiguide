@@ -29,7 +29,7 @@ class RetailerDirectoryController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view','getgroups'),  
+                'actions' => array('index', 'view', 'getgroups'),
                 'users' => array('@'),
                 'expression' => 'Yii::app()->user->rep_role!="admin"'
             ),
@@ -43,56 +43,51 @@ class RetailerDirectoryController extends ORController {
                 )
         );
     }
-       
-      /**
+
+    /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
      */
     public function actionView($id) {
-              
-        $searchModel = new  RetailerDirectory();       
+
+        $searchModel = new RetailerDirectory();
         $searchModel->unsetAttributes();
-        
+
         $internalmodel = new InternalMessage;
-                        
-        $rep_id    = Yii::app()->user->id;
+
+        $rep_id = Yii::app()->user->id;
         $retail_id = $id;
-        $today  = date('Y-m-d');
+        $today = date('Y-m-d');
 
         // Check the professional view today
-        $condition2 = " DATE(view_date) ='$today' and rep_credential_id=".$rep_id." and ID_RETAILER=".$retail_id;
+        $condition2 = " DATE(view_date) ='$today' and rep_credential_id=" . $rep_id . " and ID_RETAILER=" . $retail_id;
         $check_view = RepViewCounts::model()->count($condition2);
 
         // Get total view counts
-        $condition1 = " DATE(view_date) ='$today' and rep_credential_id=".$rep_id;
+        $condition1 = " DATE(view_date) ='$today' and rep_credential_id=" . $rep_id;
         $viewcounts = RepViewCounts::model()->count($condition1);
 
-        if($check_view==1)
-        {  
-
-        }else  if($viewcounts>=50)
-        {
+        if ($check_view == 1) {
+            
+        } else if ($viewcounts >= 50) {
             Yii::app()->user->setFlash('info', 'Maximum 50 users ( professionals / retailers ) only able to view per day. Your limits are reached today!!');
             $this->redirect(array('index'));
-        }         
+        }
         // Add the view count
-        if($check_view==0)
-        {    
-            $vmodel=new RepViewCounts;
+        if ($check_view == 0) {
+            $vmodel = new RepViewCounts;
             $vmodel->rep_credential_id = Yii::app()->user->id;
-            $vmodel->ID_SPECIALISTE    = 0;
-             $vmodel->ID_RETAILER      = $retail_id;
+            $vmodel->ID_SPECIALISTE = 0;
+            $vmodel->ID_RETAILER = $retail_id;
             $vmodel->view_date = $today;
             $vmodel->save();
-        }    
-        
-        
+        }
+
+
         $mappingresult = MappingRetailers::model()->findAll("ID_RETAILER=" . $retail_id);
 
-        if (!empty($mappingresult)) 
-        {
-            foreach ($mappingresult as $info2) 
-            {
+        if (!empty($mappingresult)) {
+            foreach ($mappingresult as $info2) {
                 $prof_arr[] = $info2->ID_SPECIALISTE;
             }
             $imp_prof = (count($prof_arr) > 1) ? implode(',', $prof_arr) : $prof_arr[0];
@@ -100,209 +95,196 @@ class RetailerDirectoryController extends ORController {
 
             // Get all records list  with limit
             $results = Yii::app()->db->createCommand() //this query contains all the data
-                ->select('ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp' ,'repertoire_utilisateurs as ru'))
-                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " .$prof_query)
-                ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
-                ->limit(LISTPERPAGE, $limit) // the trick is here!
-                ->queryAll();
+                    ->select('ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
+                    ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                    ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $prof_query)
+                    ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
+                    ->limit(LISTPERPAGE, $limit) // the trick is here!
+                    ->queryAll();
         }
-        
-         // Get all records list  with limit
+
+        // Get all records list  with limit
         $retail_query = Yii::app()->db->createCommand() //this query contains all the data
-        ->select('rs.* , ru.ID_UTILISATEUR , ru.NOM_UTILISATEUR ,  NOM_TYPE_'.$this->lang.' ,  NOM_VILLE ,  NOM_REGION_'.$this->lang.' , ABREVIATION_'.$this->lang.' ,  NOM_PAYS_'.$this->lang.'')
-        ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.status=1 AND ru.NOM_TABLE='Detaillants' AND ID_RETAILER=$id")
-        ->queryRow();
-        
-         // Send report change to admin
-        if(isset($_POST['ReportSubmit']))
-        {
+                ->select('rs.* , ru.ID_UTILISATEUR , ru.NOM_UTILISATEUR ,  NOM_TYPE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
+                ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.status=1 AND ru.NOM_TABLE='Detaillants' AND ID_RETAILER=$id")
+                ->queryRow();
+
+        // Send report change to admin
+        if (isset($_POST['ReportSubmit'])) {
             // Reported by
-            $rep_name    = Yii::app()->user->rep_username;
-            
-            $uname   = $retail_query['COMPAGNIE'];
-            $reason  =   $_POST['report_reason'];
-            $message =  $_POST['report_message'];
-            
-             /* Send notification mail to admin */
-            $mail     = new Sendmail();
-            $user_url = ADMIN_URL.'admin/retailerDirectory/update/id/' .$retail_query['ID_RETAILER'];            
+            $rep_name = Yii::app()->user->rep_username;
+
+            $uname = $retail_query['COMPAGNIE'];
+            $reason = $_POST['report_reason'];
+            $message = $_POST['report_message'];
+
+            /* Send notification mail to admin */
+            $mail = new Sendmail();
+            $user_url = ADMIN_URL . 'admin/retailerDirectory/update/id/' . $retail_query['ID_RETAILER'];
             $enc_url = Myclass::refencryption($user_url);
             $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
-            $subject      = SITENAME." - ".$rep_name." representative report the user ( ".$uname." )";
-            $trans_array  = array(
+            $subject = SITENAME . " - " . $rep_name . " representative report the user ( " . $uname . " )";
+            $trans_array = array(
                 "{SITENAME}" => SITENAME,
-                "{NAME}"     => $uname,
-                "{MESSAGE}"  => $message,
-                "{REASON}"   => $reason,
+                "{NAME}" => $uname,
+                "{MESSAGE}" => $message,
+                "{REASON}" => $reason,
                 "{NEXTSTEPURL}" => $nextstep_url,
             );
             $message = $mail->getMessage('report_change', $trans_array);
             $mail->send(ADMIN_EMAIL, $subject, $message);
-                    
-            Yii::app()->user->setFlash('success', "Report sent successfully to admin!!!");    
-            $this->redirect(array('view', 'id'=>$id));
-        }  
-        
-          // Send report change to admin
-        if(isset($_POST['NoteSubmit']))
-        {
-            $message =  nl2br($_POST['message']);
-            
+
+            Yii::app()->user->setFlash('success', "Report sent successfully to admin!!!");
+            $this->redirect(array('view', 'id' => $id));
+        }
+
+        // Send report change to admin
+        if (isset($_POST['NoteSubmit'])) {
+            $message = nl2br($_POST['message']);
+            $alert_date = $_POST['alert_date'];
+
             $notemodel = new RepNotes;
             $notemodel->message = $message;
+            $notemodel->alert_date = $alert_date;
             $notemodel->rep_credential_id = $rep_id;
             $notemodel->created_at = date('Y-m-d H:i');
             $notemodel->ID_UTILISATEUR = $retail_query['ID_UTILISATEUR'];
             $notemodel->save(false);
-             
-            Yii::app()->user->setFlash('success', "Note Created successfully!!!");    
-            $this->redirect(array('view', 'id'=>$id));
-             
+
+            Yii::app()->user->setFlash('success', "Note Created successfully!!!");
+            $this->redirect(array('view', 'id' => $id));
         }
-              
+
         $this->render('view', array(
             'model' => $retail_query,
             'searchModel' => $searchModel,
             'results' => $results,
-             'internalmodel' => $internalmodel
+            'internalmodel' => $internalmodel
         ));
     }
-    
-    
-     /**
+
+    /**
      * Lists all models.
      */
     public function actionIndex() {
-        
-        $sname_qry   = '';
-        $scat_query  = '';
-        $scntry_qry  = '';
-        $sregion_qry = '';  
-        $scity_qry   = ''; 
-        $spostal_qry = '';
-      
-        $searchModel = new RetailerDirectory(); 
-        $searchModel->unsetAttributes();
-    
-        $searchModel->country = isset($searchModel->country)?$searchModel->country: DEFAULTPAYS;
-        $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country;
-        
-        $searchModel->listperpage = (isset($_GET['listperpage']))?$_GET['listperpage']:LISTPERPAGE;
-        
-        //$page = (isset($_GET['page']) ? $_GET['page'] : 1);  // define the variable to “LIMIT” the query        
-        $page  = Yii::app()->request->getParam('page');
-        $page  = isset($page) ? $page : 1; 
-        $limit = 0;
-       
-        if($page>1){
-         $offset = $page-1;   
-         $limit  = $searchModel->listperpage * $offset;
-        }   
-        
-        
-        // $searchModel->unsetAttributes();
-         if (isset($_GET['RetailerDirectory'])) {
-             
-             $searchModel->attributes = $_REQUEST['RetailerDirectory'];
-            
-             $search_name     = isset($_GET['RetailerDirectory']['COMPAGNIE'])?$_GET['RetailerDirectory']['COMPAGNIE']:'';
-             $search_cat      = isset($_GET['RetailerDirectory']['searchcat'])?$_GET['RetailerDirectory']['searchcat']:'';
-             $search_country  = isset($_GET['RetailerDirectory']['country'])?$_GET['RetailerDirectory']['country']:'';
-             $search_region   = isset($_GET['RetailerDirectory']['region'])?$_GET['RetailerDirectory']['region']:'';
-             $search_ville    = isset($_GET['RetailerDirectory']['ID_VILLE'])?$_GET['RetailerDirectory']['ID_VILLE']:'';
-             $search_postal   = isset($_GET['RetailerDirectory']['CODE_POSTAL'])?$_GET['RetailerDirectory']['CODE_POSTAL']:'';
-             $search_ret_type = isset($_GET['RetailerDirectory']['ID_RETAILER_TYPE'])?$_GET['RetailerDirectory']['ID_RETAILER_TYPE']:'';
-             $search_group    = isset($_GET['RetailerDirectory']['ID_GROUPE'])?$_GET['RetailerDirectory']['ID_GROUPE']:'';
-            
-             
-             
-             if( $search_name != '')
-             {
-                 $searchModel->COMPAGNIE =  $search_name;
-                 $sname_qry  = " AND COMPAGNIE like '%$search_name%' ";
-             }  
-             
-             if( $search_cat != '')
-             {    
-                $searchModel->searchcat =  $search_cat;
-                $scat_query = " AND CATEGORY_$search_cat ";              
-             }
-             
-             if( $search_country != '')
-             {
-                 $searchModel->country =  $search_country;
-                 $scntry_qry  = " AND rp.ID_PAYS = ". $search_country;
-             } 
-             
-              if( $search_region != '')
-             {
-                 $searchModel->region =  $search_region;
-                 $sregion_qry  = " AND rr.ID_REGION = ". $search_region;
-             } 
-             
-             if( $search_ville != '')
-             {
-                 $searchModel->ID_VILLE =  $search_ville;
-                 $scity_qry    = " AND rs.ID_VILLE = ". $search_ville;
-             } 
-             
-             if( $search_postal != '')
-             {
-                 $searchModel->CODE_POSTAL =  $search_postal;
-                 $spostal_qry    = " AND CODE_POSTAL = ". $search_postal;
-             }             
-               
-             if($search_ret_type != '')
-             {
-                 $searchModel->ID_RETAILER_TYPE =  $search_ret_type;
-                 $srettype_qry    = " AND rs.ID_RETAILER_TYPE = ". $search_ret_type;
-             }
-             
-             if($search_group != '')
-             {
-                 $searchModel->ID_GROUPE =  $search_group;
-                 $sgroup_qry    = " AND ID_GROUPE = ". $search_group;
-             } 
-            
-         }
-       
-       // Get all records list  with limit
-        $retail_query = Yii::app()->db->createCommand() //this query contains all the data
-        ->select('ID_RETAILER , COMPAGNIE , NOM_TYPE_'.$this->lang.' ,  NOM_VILLE ,  NOM_REGION_'.$this->lang.' , ABREVIATION_'.$this->lang.' ,  NOM_PAYS_'.$this->lang.'')
-        ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry.$srettype_qry.$sgroup_qry)
-        ->order('COMPAGNIE')
-        ->limit( $searchModel->listperpage , $limit) // the trick is here!
-        ->queryAll();
-      
-       // Get total counts of records    
-        $item_count = Yii::app()->db->createCommand() // this query get the total number of items,
-        ->select('count(*) as count')
-        ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry.$srettype_qry.$sgroup_qry)
-        ->queryScalar(); // do not LIMIT it, this must count all items!
 
+        $sname_qry = '';
+        $scat_query = '';
+        $scntry_qry = '';
+        $sregion_qry = '';
+        $scity_qry = '';
+        $spostal_qry = '';
+
+        $searchModel = new RetailerDirectory();
+        $searchModel->unsetAttributes();
+
+        $searchModel->country = isset($searchModel->country) ? $searchModel->country : DEFAULTPAYS;
+        $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country;
+
+        $searchModel->listperpage = (isset($_GET['listperpage'])) ? $_GET['listperpage'] : LISTPERPAGE;
+
+        //$page = (isset($_GET['page']) ? $_GET['page'] : 1);  // define the variable to “LIMIT” the query        
+        $page = Yii::app()->request->getParam('page');
+        $page = isset($page) ? $page : 1;
+        $limit = 0;
+
+        if ($page > 1) {
+            $offset = $page - 1;
+            $limit = $searchModel->listperpage * $offset;
+        }
+
+
+        // $searchModel->unsetAttributes();
+        if (isset($_GET['RetailerDirectory'])) {
+
+            $searchModel->attributes = $_REQUEST['RetailerDirectory'];
+
+            $search_name = isset($_GET['RetailerDirectory']['COMPAGNIE']) ? $_GET['RetailerDirectory']['COMPAGNIE'] : '';
+            $search_cat = isset($_GET['RetailerDirectory']['searchcat']) ? $_GET['RetailerDirectory']['searchcat'] : '';
+            $search_country = isset($_GET['RetailerDirectory']['country']) ? $_GET['RetailerDirectory']['country'] : '';
+            $search_region = isset($_GET['RetailerDirectory']['region']) ? $_GET['RetailerDirectory']['region'] : '';
+            $search_ville = isset($_GET['RetailerDirectory']['ID_VILLE']) ? $_GET['RetailerDirectory']['ID_VILLE'] : '';
+            $search_postal = isset($_GET['RetailerDirectory']['CODE_POSTAL']) ? $_GET['RetailerDirectory']['CODE_POSTAL'] : '';
+            $search_ret_type = isset($_GET['RetailerDirectory']['ID_RETAILER_TYPE']) ? $_GET['RetailerDirectory']['ID_RETAILER_TYPE'] : '';
+            $search_group = isset($_GET['RetailerDirectory']['ID_GROUPE']) ? $_GET['RetailerDirectory']['ID_GROUPE'] : '';
+
+
+
+            if ($search_name != '') {
+                $searchModel->COMPAGNIE = $search_name;
+                $sname_qry = " AND COMPAGNIE like '%$search_name%' ";
+            }
+
+            if ($search_cat != '') {
+                $searchModel->searchcat = $search_cat;
+                $scat_query = " AND CATEGORY_$search_cat ";
+            }
+
+            if ($search_country != '') {
+                $searchModel->country = $search_country;
+                $scntry_qry = " AND rp.ID_PAYS = " . $search_country;
+            }
+
+            if ($search_region != '') {
+                $searchModel->region = $search_region;
+                $sregion_qry = " AND rr.ID_REGION = " . $search_region;
+            }
+
+            if ($search_ville != '') {
+                $searchModel->ID_VILLE = $search_ville;
+                $scity_qry = " AND rs.ID_VILLE = " . $search_ville;
+            }
+
+            if ($search_postal != '') {
+                $searchModel->CODE_POSTAL = $search_postal;
+                $spostal_qry = " AND CODE_POSTAL = " . $search_postal;
+            }
+
+            if ($search_ret_type != '') {
+                $searchModel->ID_RETAILER_TYPE = $search_ret_type;
+                $srettype_qry = " AND rs.ID_RETAILER_TYPE = " . $search_ret_type;
+            }
+
+            if ($search_group != '') {
+                $searchModel->ID_GROUPE = $search_group;
+                $sgroup_qry = " AND ID_GROUPE = " . $search_group;
+            }
+        }
+
+        // Get all records list  with limit
+        $retail_query = Yii::app()->db->createCommand() //this query contains all the data
+                ->select('ID_RETAILER , COMPAGNIE , NOM_TYPE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
+                ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $scat_query . $spostal_qry . $srettype_qry . $sgroup_qry)
+                ->order('COMPAGNIE')
+                ->limit($searchModel->listperpage, $limit) // the trick is here!
+                ->queryAll();
+
+        // Get total counts of records    
+        $item_count = Yii::app()->db->createCommand() // this query get the total number of items,
+                ->select('count(*) as count')
+                ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $scat_query . $spostal_qry . $srettype_qry . $sgroup_qry)
+                ->queryScalar(); // do not LIMIT it, this must count all items!
         // the pagination itself      
         $pages = new CPagination($item_count);
         $pages->setPageSize($searchModel->listperpage);
-       
+
         // render
-        $this->render('index',array(
+        $this->render('index', array(
             'searchModel' => $searchModel,
-            'model'=>$retail_query,
-            'item_count'=>$item_count,
-            'page_size'=>$searchModel->listperpage,
-            'pages'=>$pages,           
-           ));
-     
+            'model' => $retail_query,
+            'item_count' => $item_count,
+            'page_size' => $searchModel->listperpage,
+            'pages' => $pages,
+        ));
     }
 
     public function actionGetGroups() {
         $options = '';
         $cid = isset($_POST['id']) ? $_POST['id'] : '';
-        $options = "<option value=''>".Myclass::t('OG119')."</option>";
+        $options = "<option value=''>" . Myclass::t('OG119') . "</option>";
         if ($cid != '') {
             $criteria = new CDbCriteria;
             $criteria->order = 'NOM_GROUPE ASC';
