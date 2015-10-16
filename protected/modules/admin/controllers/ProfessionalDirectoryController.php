@@ -31,7 +31,7 @@ class ProfessionalDirectoryController extends Controller {
                         'users' => array('*'),
                     ),
                     array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                        'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete'),
+                        'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete','getmessage','deleteMessage'),
                         'users' => array('@'),
                     ),
                     array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -60,7 +60,8 @@ class ProfessionalDirectoryController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model  = new ProfessionalDirectory('backend');
+        $model   = new ProfessionalDirectory('backend');
+        $pmodel  = new ProfessionalMessages;
        // $umodel = new UserDirectory();
 
         $this->performAjaxValidation(array($model));
@@ -111,13 +112,28 @@ class ProfessionalDirectoryController extends Controller {
                 $model->save(false);
              //   $umodel->ID_RELATION = $model->ID_SPECIALISTE;
              //   $umodel->save(false);
+                
+                 // save the alert message         
+                if (isset($_POST['ProfessionalMessages'])) 
+                {  
+                    $pmodel->attributes     = $_POST['ProfessionalMessages'];
+                    $pmodel->ID_SPECIALISTE = $model->ID_SPECIALISTE;
+                    $pmodel->message        = nl2br($_POST['ProfessionalMessages']['message']);
+                    $pmodel->date_remember  = date("Y-m-d", strtotime($_POST['ProfessionalMessages']['date_remember']));
+                    $pmodel->created_date   = date("Y-m-d");
+                    $pmodel->randkey        = Myclass::getGuid();
+                    if($pmodel->date_remember!='' && $pmodel->employee_id!='' && $pmodel->message!='')
+                    {     
+                        $pmodel->save();
+                    }                   
+                }
                
                 Yii::app()->user->setFlash('success', 'professionnel créé avec succès!!!');
                 $this->redirect(array('index'));
             }
         }
             
-        $this->render('create', compact('model'));
+        $this->render('create', compact('model','pmodel'));
     }
     
     /**
@@ -128,6 +144,7 @@ class ProfessionalDirectoryController extends Controller {
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
         $model->scenario = 'backend';
+        $pmodel  = new ProfessionalMessages;
        // $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation(array($model));
@@ -171,12 +188,49 @@ class ProfessionalDirectoryController extends Controller {
                 
            //   $umodel->save(false);
                 $model->save(false);
+                
+                 // save the alert message         
+                if (isset($_POST['ProfessionalMessages'])) 
+                {  
+                    $pmodel->attributes     = $_POST['ProfessionalMessages'];
+                    $pmodel->ID_SPECIALISTE = $model->ID_SPECIALISTE;
+                    $pmodel->message        = nl2br($_POST['ProfessionalMessages']['message']);
+                    $pmodel->date_remember  = date("Y-m-d", strtotime($_POST['ProfessionalMessages']['date_remember']));
+                    $pmodel->created_date   = date("Y-m-d");
+                    $pmodel->randkey        = Myclass::getGuid();
+                    if($pmodel->date_remember!='' && $pmodel->employee_id!='' && $pmodel->message!='')
+                    {     
+                        $pmodel->save();
+                    }                   
+                }
+                
                 Yii::app()->user->setFlash('success', 'professionnelle mis à jour avec succès!!!');
                 $this->redirect(array('index'));
             }
         }
             
-        $this->render('update', compact('model'));
+         // Get the alert history for the client
+        $pmodel = new ProfessionalMessages('search');
+        $psearchmodel = $pmodel->search($id);
+        
+        $this->render('update', compact('model','pmodel','psearchmodel'));
+    }
+    
+    public function actionGetmessage()
+    {
+        $messageid = $_POST['id'];
+        $message_info = ProfessionalMessages::model()->findByPk($messageid);
+        $return_str = $message_info->message;
+        echo  $return_str;
+        exit;
+    }     
+    
+     //called on rendering the column for each row 
+    protected function gridDataColumn($data, $row) {
+
+        $message_id = $data->message_id;
+        $linkval = "<a href='javascript:void(0)' data-target='#products-disp-modal' style='text-align:center;' data-toggle='modal' class='popupmessage' id=" . $message_id . "><i class='glyphicon glyphicon-eye-open'></i></a>";
+        return $linkval;
     }
 
     /**
@@ -190,6 +244,17 @@ class ProfessionalDirectoryController extends Controller {
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax'])) {
             Yii::app()->user->setFlash('success', 'ProfessionalDirectory Deleted Successfully!!!');
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+        }
+    }
+    
+    public function actionDeleteMessage($id) {
+        
+        ProfessionalMessages::model()->findByPk($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!isset($_GET['ajax'])) {
+            Yii::app()->user->setFlash('success', 'Message d\'alerte supprimé avec succès!!!');
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
         }
     }

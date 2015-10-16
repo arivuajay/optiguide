@@ -70,10 +70,18 @@ class ClientProfiles extends CActiveRecord
 		return array(
                     'clientCategory' => array(self::BELONGS_TO, 'ClientCategory', 'category'),   
                     'clientCategoryTypes' => array(self::BELONGS_TO, 'ClientCategoryTypes', 'cat_type_id'),                       
-                    'clientMessages' => array(self::HAS_MANY, 'ClientMessages', 'client_id'),
-		);
+                    'clientMessages' => array(self::HAS_MANY, 'ClientMessages', 'client_id'),                    
+                    'clientMessages2' => array(
+                                     self::HAS_ONE, 
+                                    'ClientMessages', 
+                                    'client_id',                                      
+                                    'on'     => 'clientMessages2.status = :type', 
+                                    'params' => array(':type' => 1),
+                                    'order'  => 'date_remember ASC',  
+                                    ),                                        
+                    );
 	}
-        
+         
          /** 
         * check the format of the phone number entered
         * @param string $attribute the name of the attribute to be validated
@@ -158,6 +166,8 @@ class ClientProfiles extends CActiveRecord
 		$criteria->compare('subscription',$this->subscription,true);
 		$criteria->compare('created_date',$this->created_date,true);
 		$criteria->compare('modified_date',$this->modified_date,true);
+                
+                $criteria->with = array('clientMessages2');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

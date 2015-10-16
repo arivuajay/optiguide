@@ -207,6 +207,121 @@
                 <?php                 
                 }?>
                 
+                <div class="box-header">
+                    <h3 class="box-title">Réglez l'alerte à l'employé</h3>
+                </div>
+                <?php
+                $themeUrl = $this->themeUrl;
+                $cs = Yii::app()->getClientScript();
+                $cs_pos_end = CClientScript::POS_END;
+
+                $cs->registerCssFile($themeUrl . '/css/datepicker/datepicker3.css');
+                $cs->registerScriptFile($themeUrl . '/js/datepicker/bootstrap-datepicker.js', $cs_pos_end);
+                
+                $cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
+                $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
+
+                if(!$pmodel->status){ $pmodel->status=0;}                
+                $employees = CHtml::listData(EmployeeProfiles::model()->findall(array("order"=>"employee_name asc")), 'employee_id', 'employee_name');           
+                ?>
+
+                <div class="form-group">
+                    <?php echo $form->labelEx($pmodel, 'employee_id', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->dropDownList($pmodel, 'employee_id', $employees, array('class' => 'form-control')); ?> 
+                        <?php echo $form->error($pmodel, 'employee_id'); ?>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <?php echo $form->labelEx($pmodel, 'date_remember', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($pmodel, 'date_remember', array('class' => 'form-control date')); ?>
+                        <?php echo $form->error($pmodel, 'date_remember'); ?>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <?php echo $form->labelEx($pmodel, 'message', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textArea($pmodel, 'message', array('class' => 'form-control', 'rows' => 6, 'cols' => 50)); ?>
+                        <?php echo $form->error($pmodel, 'message'); ?>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <?php echo $form->labelEx($pmodel, 'status', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->radioButtonList($pmodel, 'status', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
+                        <?php echo $form->error($pmodel, 'status'); ?>
+                    </div>
+                </div>
+                <?php
+                if(!$model->isNewRecord)
+                {?>    
+                <div class="box-header">
+                    <h3 class="box-title">L'historique des alertes</h3>
+                </div>                
+                 <div class="row">
+                      <?php
+                            $gridColumns = array(  
+                                    array('header' => 'SN.',
+                                        'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
+                                    ), 
+                                    array(
+                                   'name'    => 'employeeProfiles.employee_name',
+                                   'value'   => $data->employeeProfiles->employee_name,
+                                    ), 		
+                                    array('name' => 'date_remember',
+                                       'type' => 'raw',
+                                       'value' => function($data){
+                                           echo date("d-m-Y",strtotime($data->date_remember));
+                                       },
+                                       'filter' => false,
+                                    ),
+                                    array('name' => 'status',
+                                       'type' => 'raw',
+                                       'value' => function($data){
+                                           echo ($data->status == "1") ? '<span class="label label-success">Enable</span>' : '<span class="label label-warning">Disable</span>';
+                                       },
+                                       'filter' => false,
+                                    ),      
+                                    array('header' => 'message',
+                                        'type' => 'raw',
+                                        'filter' => false,
+                                          //call the method 'gridDataColumn' from the controller
+                                        'value' => array($this, 'gridDataColumn'),
+                                    ),              
+                                    array(
+                                    'header' => 'Actes',
+                                    'class' => 'booster.widgets.TbButtonColumn',
+                                    'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                                    'template' => '{delete}',
+                                    'buttons'=>array
+                                        (
+                                            'delete' => array
+                                            (
+                                                'label'=>'Delete',                                            
+                                                'url'=>'Yii::app()->createUrl("admin/professionalDirectory/deleteMessage", array("id"=>$data->message_id))',
+                                            ),                                   
+                                        ),
+                                    )
+                            );
+
+                            $this->widget('booster.widgets.TbExtendedGridView', array(
+                                    'type' => 'striped bordered datatable',
+                                    'enableSorting' => false,
+                                    'dataProvider' => $psearchmodel,
+                                    'responsiveTable' => true,
+                                    'template' => '  <div class="col-md-7"><div class="box"> <div class="box-body">{items}</div> <div class="box-footer clearfix">{pager}</div> </div></div>',
+                                    'columns' => $gridColumns
+                                )
+                            );
+                            ?>
+                 </div>
+                <?php 
+                }?>
+                
 <!--                <div class="form-group">
                     <?php //echo $form->labelEx($umodel, 'MUST_VALIDATE', array('class' => 'col-sm-2 control-label')); ?>       
                     <div class="col-sm-5">
@@ -232,11 +347,26 @@
         </div>
     </div><!-- ./col -->
 </div>
+
+<div class="modal fade" id="products-disp-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-folder-open-o"></i> Message</h4>
+                <div id="product_contents"></div>
+            </div>
+            
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <?php
 $ajaxRegionUrl = Yii::app()->createUrl('/admin/professionalDirectory/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/admin/professionalDirectory/getcities');
+$ajax_getmessage  = Yii::app()->createUrl('/admin/professionalDirectory/getmessage');
 $js = <<< EOD
     $(document).ready(function(){
+        
     $("#ProfessionalDirectory_country").change(function(){
         var id=$(this).val();
         var dataString = 'id='+ id;
@@ -267,6 +397,27 @@ $js = <<< EOD
          });
 
     });
+            
+    $('.year').datepicker({ dateFormat: 'yyyy' });
+    $('.date').datepicker({ format: 'dd-mm-yyyy', startDate: '+0d',});          
+            
+    $('.popupmessage').live('click',function(event){
+        event.preventDefault();
+        var message_id = $(this).attr("id");      
+        var dataString = 'id='+message_id;
+            
+        $.ajax({
+            type: "POST",
+            url: '{$ajax_getmessage}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#product_contents").html(html);               
+            }
+         });
+       
+    });        
+            
 });
 EOD;
 Yii::app()->clientScript->registerScript('_form', $js);

@@ -31,7 +31,7 @@ class RetailerDirectoryController extends Controller {
                     'users' => array('*'),
                 ),
                 array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                    'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getgroups'),
+                    'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getgroups','getmessage','deleteMessage'),
                     'users' => array('@'),
                 ),
                 array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -60,7 +60,8 @@ class RetailerDirectoryController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model  = new RetailerDirectory('backend');
+        $model   = new RetailerDirectory('backend');
+        $rmodel  = new RetailerMessages;
        // $umodel = new UserDirectory();
 
         $this->performAjaxValidation(array($model));
@@ -123,6 +124,21 @@ class RetailerDirectoryController extends Controller {
                 $model->save(false);
                // $umodel->ID_RELATION = $model->ID_RETAILER;
               //  $umodel->save(false);
+                
+                 // save the alert message         
+                if (isset($_POST['RetailerMessages'])) 
+                {  
+                    $rmodel->attributes     = $_POST['RetailerMessages'];
+                    $rmodel->ID_RETAILER    = $model->ID_RETAILER;
+                    $rmodel->message        = nl2br($_POST['RetailerMessages']['message']);
+                    $rmodel->date_remember  = date("Y-m-d", strtotime($_POST['RetailerMessages']['date_remember']));
+                    $rmodel->created_date   = date("Y-m-d");
+                    $rmodel->randkey        = Myclass::getGuid();
+                    if($rmodel->date_remember!='' && $rmodel->employee_id!='' && $rmodel->message!='')
+                    {     
+                        $rmodel->save();
+                    }                   
+                }
 
                 Yii::app()->user->setFlash('success', 'Détaillant créé avec succès!!!');
                 $this->redirect(array('index'));
@@ -132,7 +148,7 @@ class RetailerDirectoryController extends Controller {
             }
         }
 
-        $this->render('create', compact('model'));
+        $this->render('create', compact('model','rmodel'));
     }
 
     /**
@@ -143,6 +159,7 @@ class RetailerDirectoryController extends Controller {
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
         $model->scenario = 'backend';
+        $rmodel  = new RetailerMessages;
       //  $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation(array($model));
@@ -199,12 +216,50 @@ class RetailerDirectoryController extends Controller {
                 
              //   $umodel->save(false);
                 $model->save(false);
+                
+                  // save the alert message         
+                if (isset($_POST['RetailerMessages'])) 
+                {  
+                    $rmodel->attributes     = $_POST['RetailerMessages'];
+                    $rmodel->ID_RETAILER    = $model->ID_RETAILER;
+                    $rmodel->message        = nl2br($_POST['RetailerMessages']['message']);
+                    $rmodel->date_remember  = date("Y-m-d", strtotime($_POST['RetailerMessages']['date_remember']));
+                    $rmodel->created_date   = date("Y-m-d");
+                    $rmodel->randkey        = Myclass::getGuid();
+                    if($rmodel->date_remember!='' && $rmodel->employee_id!='' && $rmodel->message!='')
+                    {     
+                        $rmodel->save();
+                    }                   
+                }
+                
                 Yii::app()->user->setFlash('success', 'Détaillant correctement mis à jour!!!');
                 $this->redirect(array('index'));
             }
         }
+        
+          // Get the alert history for the client
+        $rmodel = new RetailerMessages('search');
+        $rsearchmodel = $rmodel->search($id);
 
-        $this->render('update', compact( 'model'));
+        $this->render('update', compact( 'model','rmodel','rsearchmodel'));
+    }
+    
+    
+     public function actionGetmessage()
+    {
+        $messageid = $_POST['id'];
+        $message_info = RetailerMessages::model()->findByPk($messageid);
+        $return_str = $message_info->message;
+        echo  $return_str;
+        exit;
+    }     
+    
+     //called on rendering the column for each row 
+    protected function gridDataColumn($data, $row) {
+
+        $message_id = $data->message_id;
+        $linkval = "<a href='javascript:void(0)' data-target='#products-disp-modal' style='text-align:center;' data-toggle='modal' class='popupmessage' id=" . $message_id . "><i class='glyphicon glyphicon-eye-open'></i></a>";
+        return $linkval;
     }
 
     /**
@@ -218,6 +273,17 @@ class RetailerDirectoryController extends Controller {
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax'])) {
             Yii::app()->user->setFlash('success', 'RetailerDirectory Deleted Successfully!!!');
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+        }
+    }
+    
+     public function actionDeleteMessage($id) {
+        
+        RetailerMessages::model()->findByPk($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!isset($_GET['ajax'])) {
+            Yii::app()->user->setFlash('success', 'Message d\'alerte supprimé avec succès!!!');
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
         }
     }

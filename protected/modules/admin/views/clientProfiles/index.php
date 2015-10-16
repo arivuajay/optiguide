@@ -28,7 +28,17 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         $gridColumns = array(
             'name',
             'company',
-            'job_title',           
+            'job_title',
+              array(
+                'name' => 'clientMessages2.employee_id',              
+                'type' => 'raw',
+                'filter' => false,
+                //call the method 'gridDataColumn' from the controller
+                'value' => 'EmployeeProfiles::model()->findByPk($data->clientMessages2->employee_id)->employee_name',
+                 
+            ),
+            'clientMessages2.date_remember',
+            
             /*
               'local_number',
               'country',
