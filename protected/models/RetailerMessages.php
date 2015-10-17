@@ -50,6 +50,7 @@ class RetailerMessages extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                      'retailerDirectory' => array(self::BELONGS_TO, 'RetailerDirectory', 'ID_RETAILER'),  
                       'employeeProfiles' => array(self::BELONGS_TO, 'EmployeeProfiles', 'employee_id'),
 		);
 	}

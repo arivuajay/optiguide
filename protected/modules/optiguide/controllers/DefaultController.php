@@ -49,7 +49,7 @@ class DefaultController extends OGController {
         
     }      
     
-     public function actionProfessionalprofile($id)
+    public function actionProfessionalprofile($id)
     {
         
         if($id!='')
@@ -81,6 +81,39 @@ class DefaultController extends OGController {
         }  
         
     }  
+    
+    public function actionRetailerprofile($id)
+    {
+        
+        if($id!='')
+        {    
+            $criteria = new CDbCriteria;
+            $criteria->condition = "randkey='".$id."'";
+            $criteria->with = array(              
+               "retailerDirectory" => array(
+                'alias' => 'retailerDirectory',
+                'select' => 'retailerDirectory.*'
+                ),
+            );
+
+            $messageinfos = RetailerMessages::model()->find($criteria);
+            
+            if(!empty($messageinfos))
+            {    
+                $messageinfos->user_view_status = 1;
+                $messageinfos->status = 0;
+                $messageinfos->save(false);
+                
+                $this->render('_retailerprofile', compact('messageinfos'));
+            }  else {
+                $this->redirect(array('index')); 
+            } 
+            
+        }else{ 
+         $this->redirect(array('index')); 
+        }  
+        
+    }
             
 
     public function actionSubscribe() {

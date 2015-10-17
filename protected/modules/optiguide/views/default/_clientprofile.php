@@ -167,12 +167,17 @@
                                     if($messageinfos->clientProfiles->Envue_digital==1){
                                         $disptxt[] = "Envue digital";
                                     }    
-                                    
-                                    $exp_disp = implode(',',$disptxt);                                    
+                                                                   
                                 ?>  
                                     <tr>                                        
                                         <td><strong>Abonnement</strong></td>   
-                                        <td><?php echo $exp_disp; ?></td>  
+                                        <td><?php
+                                        $k=1;
+                                        foreach($disptxt as $info)
+                                        {    
+                                            echo $k.") ".$info."<br>";
+                                            $k++;
+                                        }    ?></td>  
                                     </tr> 
                                 <?php }
                                 ?>

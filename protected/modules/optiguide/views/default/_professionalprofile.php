@@ -1,16 +1,28 @@
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subscribe-btncont"> 
         <div class="inner-container"> 
-            <h2> Client Profile </h2>           
+            <h2> Professional Profile </h2>           
 
             <div class="forms-cont"> 
-                <div class="forms-heading"><i class="fa fa-user"></i> <?php echo $messageinfos->clientProfiles->name; ?> infos</div>
+                <div class="forms-heading"><i class="fa fa-user"></i> <?php echo $messageinfos->professionalDirectory->NOM; ?> infos</div>
                 <div class="row"> 
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <table class="table table-bordered" id="bckrnd"> 
 
-                            <?php
+                            <?php                          
+                            
                             if (!empty($messageinfos)) {
+                                
+                            $cityinfo    = CityDirectory::model()->findByPk($messageinfos->professionalDirectory->ID_VILLE);
+                            $regionid    = $cityinfo->ID_REGION;
+                            $citynme     = $cityinfo->NOM_VILLE;
+                            
+                            $regioninfo  = RegionDirectory::model()->findByPk($regionid);
+                            $countryid   = $regioninfo->ID_PAYS;
+                            $regionnme   = $regioninfo->NOM_REGION_EN;
+                            
+                            $countryname = CountryDirectory::model()->findByPk($countryid)->NOM_PAYS_EN;
+                                
                                 ?>
                                 <tr>                                        
                                     <td><strong>Nom</strong></td>   
@@ -20,12 +32,12 @@
                                  <tr>                                        
                                     <td><strong>Prenom</strong></td>   
                                     <td><?php echo $messageinfos->professionalDirectory->PRENOM; ?></td>   
-                                </tr>   
-
-                                <tr>                                        
-                                    <td><strong>Adresse</strong></td>   
-                                    <td><?php echo $messageinfos->professionalDirectory->ADRESSE; ?></td>  
-                                </tr> 
+                                </tr>  
+                                
+                                <tr>
+                                    <td><strong>Type</strong></td>   
+                                    <td><?php echo ProfessionalType::model()->findByPk($messageinfos->professionalDirectory->ID_TYPE_SPECIALISTE)->TYPE_SPECIALISTE_EN; ?></td>   
+                                </tr>
 
                                 <?php if ($messageinfos->professionalDirectory->BUREAU != '') {
                                     ?>                                      
@@ -35,21 +47,34 @@
                                     </tr> 
                                 <?php }
                                 ?>   
-
+                                 <tr>                                        
+                                    <td><strong>Adresse</strong></td>   
+                                    <td><?php echo $messageinfos->professionalDirectory->ADRESSE; ?></td>  
+                                </tr> 
+                                
                                 <tr>                                        
                                     <td><strong>Ville</strong></td>   
-                                    <td><?php echo $messageinfos->professionalDirectory->ID_VILLE; ?></td>  
+                                    <td><?php echo $citynme; ?></td>  
                                 </tr> 
 
                                 <tr>                                        
                                     <td><strong>Province</strong></td>   
-                                    <td><?php //echo $messageinfos->professionalDirectory->region; ?></td>  
+                                    <td><?php echo $regionnme; ?></td>  
                                 </tr> 
 
                                 <tr>                                        
                                     <td><strong>Pays</strong></td>   
-                                    <td><?php //echo $messageinfos->professionalDirectory->country; ?></td>  
+                                    <td><?php echo $countryname; ?></td>  
                                 </tr> 
+                                
+                                 <?php if ($messageinfos->professionalDirectory->CODE_POSTAL != '') {
+                                    ?>  
+                                    <tr>                                        
+                                        <td><strong>Pincode</strong></td>   
+                                        <td><?php echo $messageinfos->professionalDirectory->CODE_POSTAL; ?></td>  
+                                    </tr> 
+                                <?php }
+                                ?>
 
                                 <?php if ($messageinfos->professionalDirectory->TELEPHONE != '') {
                                     ?>   
@@ -69,79 +94,84 @@
                                 <?php }
                                 ?>
 
-                                <?php if ($messageinfos->clientProfiles->mobile_number != '') {
+                                <?php if ($messageinfos->professionalDirectory->TELECOPIEUR != '') {
                                     ?>  
                                     <tr>                                        
-                                        <td><strong>Cellulaire</strong></td>   
-                                        <td><?php echo $messageinfos->clientProfiles->mobile_number; ?></td>  
+                                        <td><strong>Fax</strong></td>   
+                                        <td><?php echo $messageinfos->professionalDirectory->TELECOPIEUR; ?></td>  
                                     </tr> 
                                 <?php }
                                 ?>
-
-
-                                <?php if ($messageinfos->clientProfiles->CODE_POSTAL != '') {
-                                    ?>  
-                                    <tr>                                        
-                                        <td><strong>Pincode</strong></td>   
-                                        <td><?php echo $messageinfos->clientProfiles->CODE_POSTAL; ?></td>  
-                                    </tr> 
-                                <?php }
-                                ?>
-
-                                <?php if ($messageinfos->clientProfiles->email != '') {
+                                    
+                                <?php if ($messageinfos->professionalDirectory->COURRIEL != '') {
                                     ?>  
                                     <tr>                                        
                                         <td><strong>Courriel</strong></td>   
-                                        <td><?php echo $messageinfos->clientProfiles->email; ?></td>  
+                                        <td><?php echo $messageinfos->professionalDirectory->COURRIEL; ?></td>  
                                     </tr> 
                                 <?php }
                                 ?>
 
-                                <?php if ($messageinfos->clientProfiles->site_address != '') {
+                                <?php if ($messageinfos->professionalDirectory->SITE_WEB != '') {
                                     ?>  
                                     <tr>                                        
                                         <td><strong>Website</strong></td>   
-                                        <td><?php echo $messageinfos->clientProfiles->site_address; ?></td>  
+                                        <td><?php echo $messageinfos->professionalDirectory->SITE_WEB; ?></td>  
                                     </tr> 
                                 <?php }
                                 ?>
-                                    
-                                <?php if ($messageinfos->clientProfiles->Optipromo != '0' || $messageinfos->clientProfiles->Optinews != '0' ||
-                                         $messageinfos->clientProfiles->Envision_print != '0' || $messageinfos->clientProfiles->Envision_digital != '0' ||
-                                        $messageinfos->clientProfiles->Envue_print != '0' || $messageinfos->clientProfiles->Envue_digital != '0') {
+                                <?php
+                                $profid = $messageinfos->professionalDirectory->ID_SPECIALISTE;
+                                $uinfos = UserDirectory::model()->find("ID_RELATION=$profid AND NOM_TABLE='Professionnels' and status=1");
+                                
+                                if ($uinfos->ABONNE_MAILING != '0' || $uinfos->ABONNE_PROMOTION != '0' ||
+                                    $uinfos->bSubscription_envision != '0' || $uinfos->bSubscription_envue != '0' ||
+                                    $uinfos->print_envision != '0' || $uinfos->print_envue != '0') 
+                                {
                                     
                                     $disptxt = array();
-                                    if($messageinfos->clientProfiles->Optipromo==1){
-                                        $disptxt[] = "Opti promo";
+                                    
+                                    if($uinfos->ABONNE_MAILING==1){
+                                        $disptxt[] = "OPTI-NEWS by e-mail";
                                     }
-                                    if($messageinfos->clientProfiles->Optinews==1){
-                                        $disptxt[] = "Opti news";
+                                    
+                                    if($uinfos->ABONNE_PROMOTION==1){
+                                        $disptxt[] = "OPTI-PROMOS by e-mail";
                                     }
-                                    if($messageinfos->clientProfiles->Envision_print==1){                                        
-                                        $disptxt[] = "Envision print";
+                                    
+                                    if($uinfos->bSubscription_envision==1){                                        
+                                        $disptxt[] = "Free English digital magazine ENVISION";
                                     }
-                                    if($messageinfos->clientProfiles->Envision_digital==1){                                        
-                                        $disptxt[] = "Envision digital";
+                                    
+                                    if($uinfos->bSubscription_envue==1){                                        
+                                        $disptxt[] = "Free French digital magazine ENVUE";
                                     }
-                                    if($messageinfos->clientProfiles->Envue_print==1){                                        
-                                        $disptxt[] = "Envue print";
+                                    
+                                    if($uinfos->print_envision==1){                                        
+                                        $disptxt[] = "Envue Print Edition";
                                     }
-                                    if($messageinfos->clientProfiles->Envue_digital==1){
-                                        $disptxt[] = "Envue digital";
+                                    
+                                    if($uinfos->print_envue==1){
+                                        $disptxt[] = "Envision Print Edition";
                                     }    
                                     
-                                    $exp_disp = implode(',',$disptxt);                                    
+                                                                      
                                 ?>  
                                     <tr>                                        
                                         <td><strong>Abonnement</strong></td>   
-                                        <td><?php echo $exp_disp; ?></td>  
+                                        <td><?php
+                                        $k=1;
+                                        foreach($disptxt as $info)
+                                        {    
+                                            echo $k.") ".$info."<br>";
+                                            $k++;
+                                        }    ?></td>  
                                     </tr> 
-                                <?php }
+                                <?php 
+                                }
                                 ?>
                                     
-
-                                <?php
-                            }
+                           <?php }
                             ?>                  
                         </table>
                     </div> 

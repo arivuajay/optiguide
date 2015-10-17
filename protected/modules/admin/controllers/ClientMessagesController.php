@@ -45,55 +45,55 @@ class ClientMessagesController extends Controller {
         $mdate = date("Y-m-d", time());
         
         // Client profiles
-//        $criteria = new CDbCriteria;
-//        $criteria->condition = "DATE(date_remember)='$mdate' and status=1";
-//        $criteria->with = array(
-//            "clientProfiles" => array(
-//                'alias' => 'clientProfiles',
-//                'select' => 'name'
-//            ),
-//            "employeeProfiles" => array(
-//                'alias' => 'employeeProfiles',
-//                'select' => 'employee_name,employee_email',
-//            ),
-//        );
-//        $data_meets = ClientMessages::model()->findAll($criteria);
-//
-//        if (!empty($data_meets)) {
-//            foreach ($data_meets as $info) {
-//                
-//                $meetid = $info->message_id;
-//                $client_name = $info->clientProfiles->name;
-//                $randkey = $info->randkey;
-//                $message = $info->message;
-//                $employee_email = $info->employeeProfiles->employee_email;
-//                $employee_name = $info->employeeProfiles->employee_name;
-//
-//                $clientdetail_url = GUIDEURL . "optiguide/default/clientprofile/id/" . $randkey;
-//
-//                /* Send mail to admin for confirmation */
-//                $mail = new Sendmail();
-//                $subject = SITENAME . "- Reminder Mail - Today meet with client " . $client_name;
-//                $trans_array = array(
-//                    "{REMKEY}" => $randkey,
-//                    "{NAME}" => $client_name,
-//                    "{MESSAGE}" => $message,
-//                    "{MDATE}" => $info->date_remember,
-//                    "{NEXTSTEPURL}" => $clientdetail_url
-//                );
-//                $message = $mail->getMessage('meetingalert', $trans_array);
-//                $mail->send($employee_email, $subject, $message);
-//
-//                $model = $this->loadModel($meetid);
-//                if ($model->mail_sent_counts == 1) {
-//                    $model->status = 0;
-//                    $model->mail_sent_counts = 2;
-//                } else {
-//                    $model->mail_sent_counts = 1;
-//                }
-//                $model->save(false);
-//            }
-//        }
+        $criteria = new CDbCriteria;
+        $criteria->condition = "DATE(date_remember)='$mdate' and status=1";
+        $criteria->with = array(
+            "clientProfiles" => array(
+                'alias' => 'clientProfiles',
+                'select' => 'name'
+            ),
+            "employeeProfiles" => array(
+                'alias' => 'employeeProfiles',
+                'select' => 'employee_name,employee_email',
+            ),
+        );
+        $data_meets = ClientMessages::model()->findAll($criteria);
+
+        if (!empty($data_meets)) {
+            foreach ($data_meets as $info) {
+                
+                $meetid = $info->message_id;
+                $client_name = $info->clientProfiles->name;
+                $randkey = $info->randkey;
+                $message = $info->message;
+                $employee_email = $info->employeeProfiles->employee_email;
+                $employee_name = $info->employeeProfiles->employee_name;
+
+                $clientdetail_url = GUIDEURL . "optiguide/default/clientprofile/id/" . $randkey;
+
+                /* Send mail to admin for confirmation */
+                $mail = new Sendmail();
+                $subject = SITENAME . "- Reminder Mail - Today meet with client " . $client_name;
+                $trans_array = array(
+                    "{REMKEY}" => $randkey,
+                    "{NAME}" => $client_name,
+                    "{MESSAGE}" => $message,
+                    "{MDATE}" => $info->date_remember,
+                    "{NEXTSTEPURL}" => $clientdetail_url
+                );
+                $message = $mail->getMessage('meetingalert', $trans_array);
+                $mail->send($employee_email, $subject, $message);
+
+                $model = $this->loadModel($meetid);
+                if ($model->mail_sent_counts == 1) {
+                    $model->status = 0;
+                    $model->mail_sent_counts = 2;
+                } else {
+                    $model->mail_sent_counts = 1;
+                }
+                $model->save(false);
+            }
+        }
         
         // Professional alerts
         $pcriteria = new CDbCriteria;
@@ -147,6 +147,57 @@ class ClientMessagesController extends Controller {
             }
         }
         
+        // Retailer alerts
+        $rcriteria = new CDbCriteria;
+        $rcriteria->condition = "DATE(date_remember)='$mdate' and status=1";
+        $rcriteria->with = array(
+            "retailerDirectory" => array(
+                'alias' => 'RetailerDirectory',
+                'select' => 'COMPAGNIE'
+            ),
+            "employeeProfiles" => array(
+                'alias' => 'employeeProfiles',
+                'select' => 'employee_name,employee_email',
+            ),
+        );
+        
+        $data_meets = RetailerMessages::model()->findAll($rcriteria);
+   
+        if (!empty($data_meets)) {
+            foreach ($data_meets as $info) {
+     
+                $meetid = $info->message_id;
+                $client_name = $info->retailerDirectory->COMPAGNIE;              
+                $randkey = $info->randkey;
+                $message = $info->message;
+                $employee_email = $info->employeeProfiles->employee_email;
+                $employee_name = $info->employeeProfiles->employee_name;
+               
+                $clientdetail_url = GUIDEURL . "optiguide/default/retailerprofile/id/" . $randkey;
+
+                /* Send mail to admin for confirmation */
+                $mail = new Sendmail();
+                $subject = SITENAME . "- Reminder Mail - Today meet with retailer " . $client_name;
+                $trans_array = array(
+                    "{REMKEY}" => $randkey,
+                    "{NAME}" => $client_name,
+                    "{MESSAGE}" => $message,
+                    "{MDATE}" => $info->date_remember,
+                    "{NEXTSTEPURL}" => $clientdetail_url
+                );
+                $message = $mail->getMessage('meetingalert', $trans_array);
+                $mail->send($employee_email, $subject, $message);
+
+                $model = RetailerMessages::model()->findByPk($meetid);
+                if ($model->mail_sent_counts == 1) {
+                    $model->status = 0;
+                    $model->mail_sent_counts = 2;
+                } else {
+                    $model->mail_sent_counts = 1;
+                }
+                $model->save(false);
+            }
+        }
         
         
     }
