@@ -45,7 +45,17 @@
             <?php echo $form->labelEx($profile, 'rep_profile_phone'); ?>
             <?php echo $form->textField($profile, 'rep_profile_phone', array('class' => 'form-field')); ?>                 
         </div>
+        
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <?php echo $form->labelEx($profile, 'rep_company'); ?>
+            <?php echo $form->textField($profile, 'rep_company', array('class' => 'form-field')); ?>  
+        </div>
 
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <?php echo $form->labelEx($profile, 'rep_territories'); ?>
+            <?php echo $form->textField($profile, 'rep_territories', array('class' => 'form-field')); ?>  
+        </div>
+        
         <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
             <?php echo $form->labelEx($profile, 'rep_address'); ?>
             <?php echo $form->textField($profile, 'rep_address', array('class' => 'form-field')); ?>  
@@ -66,15 +76,15 @@
             <?php echo $form->dropDownList($profile, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
         </div>
         
-        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-            <?php echo $form->labelEx($profile, 'rep_company'); ?>
-            <?php echo $form->textField($profile, 'rep_company', array('class' => 'form-field')); ?>  
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            <label class="required" for="#">&nbsp;</label>
+            <a class="mapgenrate" href="javascript:void(0);" id="genratemap">Click to View your location</a>
         </div>
-
-        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-            <?php echo $form->labelEx($profile, 'rep_territories'); ?>
-            <?php echo $form->textField($profile, 'rep_territories', array('class' => 'form-field')); ?>  
+        
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                                       
+                <div id="display_map" style="display:none;width:auto;height:350px;"></div>                                                   
         </div>
+        
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php echo $form->labelEx($profile, 'image'); ?>
@@ -147,6 +157,13 @@
 $ajaxRegionUrl = Yii::app()->createUrl('/optirep/repCredential/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/optirep/repCredential/getcities');
 
+$ajaxgetlocation   = Yii::app()->createUrl('/optirep/repCredential/generatelatlong');
+$cs = Yii::app()->getClientScript();
+$cs_pos_end = CClientScript::POS_END;
+$cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
+
+$lat  = $profile->rep_lat;
+$long = $profile->rep_long;
 $js = <<< EOD
     $(document).ready(function(){
         $("#RepCredentialProfiles_country").change(function(){
@@ -179,6 +196,89 @@ $js = <<< EOD
              });
 
         });
+                
+    //MAP display
+        
+    var latval  = parseFloat("{$lat}") || 0;
+    var longval = parseFloat("{$long}") || 0;
+        
+    function initialize() {
+      
+        // Define the latitude and longitude positions
+        var latitude  = parseFloat(latval); // Latitude get from above variable
+        var longitude = parseFloat(longval); // Longitude from same
+        var latlngPos = new google.maps.LatLng(latitude, longitude);
+
+        // Set up options for the Google map
+        var mapOptions = {
+            zoom: 15,
+            center: latlngPos,
+            zoomControlOptions: true,
+            zoomControlOptions: {
+                style: google.maps.ZoomControlStyle.LARGE
+            }
+        };
+        // Define the map
+        $("#display_map").show();
+        map = new google.maps.Map(document.getElementById("display_map"), mapOptions);
+
+        var marker = new google.maps.Marker({
+                  position: latlngPos,
+                  map: map,
+                  icon:'{$this->themeUrl}/images/map-red.png',
+                  draggable:false,
+                  animation: google.maps.Animation.DROP
+          });
+    }   
+    
+    if(latval!=0 && longval!=0)
+    {    
+        google.maps.event.addDomListener(window, 'load', initialize);    
+    }    
+
+         $('#genratemap').click(function(){
+            var form = $('#rep-credential-form');
+            $.ajax({
+                type: "POST",
+                url: '{$ajaxgetlocation}',
+                data: form.serialize(),
+                success: function( response ) {
+
+                    if(response!='')
+                    {
+                        var res = response.split("~");                   
+
+                        // Define the latitude and longitude positions
+                        var latitude  = parseFloat(res[0]);
+                        var longitude = parseFloat(res[1]);
+                        var latlngPos = new google.maps.LatLng(latitude, longitude);
+
+                        // Set up options for the Google map
+                        var mapOptions = {
+                            zoom: 15,
+                            center: latlngPos,
+                            zoomControlOptions: true,
+                            zoomControlOptions: {
+                                style: google.maps.ZoomControlStyle.LARGE
+                            }
+                        };
+
+                        // Define the map and show
+                        $("#display_map").show();
+                        map = new google.maps.Map(document.getElementById("display_map"), mapOptions);
+
+                        var marker = new google.maps.Marker({
+                                  position: latlngPos,
+                                  map: map,
+                                  icon:'{$this->themeUrl}/images/map-red.png',
+                                  draggable:false,
+                                  animation: google.maps.Animation.DROP
+                          });
+                    }        
+                }
+           });
+        });            
+                
     });
                 
     $(document).ready(function () {

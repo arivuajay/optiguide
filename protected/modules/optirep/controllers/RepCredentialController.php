@@ -21,7 +21,7 @@ class RepCredentialController extends ORController {
         return array_merge(
                 parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('step1', 'step2', 'step3', 'final', 'paypalCancel', 'paypalReturn', 'paypalNotify'),
+                'actions' => array('step1', 'step2', 'step3', 'final', 'paypalCancel', 'paypalReturn', 'paypalNotify', 'generatelatlong'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -38,6 +38,18 @@ class RepCredentialController extends ORController {
                 )
         );
     }
+    
+     public function actionGeneratelatlong()
+    {
+        $geo_values = '';
+        $address  = $_POST['RepCredentialProfiles']['rep_address'];
+        $country  = $_POST['RepCredentialProfiles']['country'];
+        $region   = $_POST['RepCredentialProfiles']['region'];
+        $cty      = $_POST['RepCredentialProfiles']['ID_VILLE'];      
+        $geo_values = Myclass::generatemaplocation($address,$country,$region,$cty);
+        echo $geo_values;
+        exit;        
+    }   
 
     public function actionStep1() {
         $this->layout = '//layouts/anonymous_page';
