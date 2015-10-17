@@ -49,9 +49,61 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
           'tollfree_number',
           'fax',
           'email',
-          'site_address',
+          'site_address',          
           'created_date',
           'modified_date'
+        ),
+    ));
+    ?>
+    <h4>Subscription</h4>
+    <?php
+    $this->widget('zii.widgets.CDetailView', array(
+        'data' => $model,
+        'htmlOptions' => array('class' => 'table table-striped table-bordered'),
+        'attributes' => array(
+          
+            array(
+                'label'=> 'Optipromo',
+                'name' => 'Optipromo',
+                'type' => 'HTML',
+                 'htmlOptions'=>array('width'=>'40'),
+                'value' => ($model->Optipromo=='1')?"Yes":"No"
+            ),
+             array(
+                'label'=> 'Optinews',
+                'name' => 'Optinews',
+                'type' => 'HTML',
+                'htmlOptions'=>array('width'=>'40'),
+                'value' => ($model->Optinews=='1')?"Yes":"No"
+            ),
+                        array(
+                'label'=> 'Envision print',
+                'name' => 'Envision_print',
+                'type' => 'HTML',
+                             'htmlOptions'=>array('width'=>'40'),
+                'value' => ($model->Envision_print=='1')?"Yes":"No"
+            ),
+            array(
+                'label'=> 'Envision digital',
+                'name' => 'Envision_digital',
+                'type' => 'HTML',
+                 'htmlOptions'=>array('width'=>'40'),
+                'value' => ($model->Envision_digital=='1')?"Yes":"No"
+            ),
+             array(
+                'label'=> 'Envue print',
+                'name' => 'Envue_print',
+                'type' => 'HTML',
+                'htmlOptions'=>array('width'=>'40'),
+                'value' => ($model->Envue_print=='1')?"Yes":"No"
+            ),
+             array(
+                'label'=> 'Envue digital',
+                'name' => 'Envue_digital',
+                'type' => 'HTML',
+                'htmlOptions'=>array('width'=>'40'),
+                'value' => ($model->Envue_digital=='1')?"Yes":"No"
+            ),
         ),
     ));
     ?>

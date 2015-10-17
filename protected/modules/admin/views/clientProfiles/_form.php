@@ -164,7 +164,9 @@
                         <?php echo $form->error($model, 'site_address'); ?>
                     </div>
                 </div>
-
+                <div class="box-header">
+                    <h3 class="box-title">Subscription</h3>
+                </div>
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'subscription', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
