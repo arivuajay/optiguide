@@ -43,6 +43,12 @@
     <?php $this->endWidget(); ?>
 </div>
 <?php
+$themeUrl = $this->themeUrl;
+$cs = Yii::app()->getClientScript();
+$cs_pos_end = CClientScript::POS_END;
+$cs->registerCssFile($themeUrl . '/css/datepicker3.css');
+$cs->registerScriptFile($themeUrl . '/js/bootstrap-datepicker.js', $cs_pos_end);
+
 $js = <<< EOD
 $(document).ready(function(){
     $('#reminder_datepicker').datepicker({

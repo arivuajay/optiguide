@@ -230,12 +230,18 @@
     </div>
 </div>
 <?php
+$themeUrl = $this->themeUrl;
+
 $ajaxUpdatefav = Yii::app()->createUrl('/optirep/repFavourites/updatefav');
 $lat = $model['map_lat'];
 $long = $model['map_long'];
 $cs = Yii::app()->getClientScript();
 $cs_pos_end = CClientScript::POS_END;
 $cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
+
+$cs->registerCssFile($themeUrl . '/css/datepicker3.css');
+$cs->registerScriptFile($themeUrl . '/js/bootstrap-datepicker.js', $cs_pos_end);
+
 $js = <<< EOD
 $(document).ready(function(){
         
