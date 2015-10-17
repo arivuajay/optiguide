@@ -196,8 +196,8 @@ $enddate = $model->DATE_FIN;
                         <?php echo $form->dropDownList($model, 'LANGUE', array("FR" => 'Français', "EN" => 'Anglais'), array('class' => 'form-control')); ?>
                         <?php echo $form->error($model, 'LANGUE'); ?>
                     </div>
-                    <?php echo $form->labelEx($model, 'ZONE_AFFICHAGE', array('class' => 'col-sm-1 control-label')); ?>
-                    <div class="col-sm-2">
+                    <?php //echo $form->labelEx($model, 'ZONE_AFFICHAGE', array('class' => 'col-sm-1 control-label')); ?>
+                    <div class="col-sm-2" style="display:none;">
                         <?php echo $form->dropDownList($model, 'ZONE_AFFICHAGE', $publicityZones, array('class' => 'form-control')); ?>
                         <?php echo $form->error($model, 'ZONE_AFFICHAGE'); ?>
                     </div>

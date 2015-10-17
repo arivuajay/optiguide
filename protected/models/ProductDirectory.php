@@ -95,6 +95,9 @@ class ProductDirectory extends CActiveRecord
 		$criteria->compare('NOM_PRODUIT_EN',$this->NOM_PRODUIT_EN,true);
 
 		return new CActiveDataProvider($this, array(
+                        'sort'=>array(
+                            'defaultOrder'=>'NOM_PRODUIT_FR ASC',
+                        ),
 			'criteria'=>$criteria,
                         'pagination' => array(
                             'pageSize' => PAGE_SIZE,
