@@ -2,10 +2,13 @@
 
 return array(
     //Login Box
-    'OR001' => 'Opti-rep Login',
-    'OR002' => 'Username',
-    'OR003' => 'Password',
-    'OR004' => 'Forgot Password?',
-    'OR005' => 'Login',
+    'OR501' => 'Opti-rep Login',
+    'OR502' => 'Username',
+    'OR503' => 'Password',
+    'OR504' => 'Forgot Password?',
+    'OR505' => 'Login',
+    
+    'OR506' => 'Dont have account ? Signup !',
+    'OR507' => 'Register',
     
 );
