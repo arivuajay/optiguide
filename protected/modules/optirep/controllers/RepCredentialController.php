@@ -52,6 +52,9 @@ class RepCredentialController extends ORController {
     }   
 
     public function actionStep1() {
+        if (!Yii::app()->user->isGuest){
+            $this->redirect('/optirep/dashboard');
+        }
         $this->layout = '//layouts/anonymous_page';
         $model = new RepCredentials('step1');
         if (isset($_POST['btnSubmit'])) {
@@ -68,6 +71,9 @@ class RepCredentialController extends ORController {
     }
 
     public function actionStep2() {
+        if (!Yii::app()->user->isGuest){
+            $this->redirect('/optirep/dashboard');
+        }
         $this->layout = '//layouts/anonymous_page';
         if (!isset(Yii::app()->session['registration']['step1'])) {
             $this->redirect('step1');
@@ -111,6 +117,9 @@ class RepCredentialController extends ORController {
     }
 
     public function actionStep3() {
+        if (!Yii::app()->user->isGuest){
+            $this->redirect('/optirep/dashboard');
+        }
         $this->layout = '//layouts/anonymous_page';
         if (!isset(Yii::app()->session['registration']['step2'])) {
             $this->redirect('step2');
@@ -139,6 +148,9 @@ class RepCredentialController extends ORController {
     }
 
     public function actionFinal() {
+        if (!Yii::app()->user->isGuest){
+            $this->redirect('/optirep/dashboard');
+        }
         $this->layout = '//layouts/anonymous_page';
         if (!isset(Yii::app()->session['registration']['step3'])) {
             $this->redirect('step3');
