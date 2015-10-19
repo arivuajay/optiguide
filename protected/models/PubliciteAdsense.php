@@ -28,6 +28,7 @@ class PubliciteAdsense extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+                        array('content','required'),
 			array('iId_position, status', 'numerical', 'integerOnly'=>true),
 			array('content, created_date', 'safe'),
 			// The following rule is used by search().
