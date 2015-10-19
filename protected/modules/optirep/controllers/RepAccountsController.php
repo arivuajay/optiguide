@@ -191,7 +191,7 @@ class RepAccountsController extends ORController {
 
         //rep_favourites - Delete
         RepFavourites::model()->deleteAll("rep_credential_id ='" . $rep['rep_credential_id'] . "'");
-        
+
         //rep_loggedin_activities - Delete 
         RepLoggedinActivities::model()->deleteAll("rep_credential_id ='" . $rep['rep_credential_id'] . "'");
 
@@ -335,6 +335,22 @@ class RepAccountsController extends ORController {
                 $checkTransactionExists->payment_status = $_POST['payment_status'];
                 $checkTransactionExists->save(false);
             }
+
+            if ($_POST['payment_status'] == "Pending") {
+                $rep_account = RepCredentials::model()->findByPk($subscription_details['rep_credential_id']);
+                $rep_profile = $rep_account->repCredentialProfiles;
+                $rep_email = $rep_profile['rep_profile_email'];
+                if (!empty($rep_email)) {
+                    $rep_username = $rep_account['rep_username'];
+                    $mail = new Sendmail;
+                    $trans_array = array(
+                        "{USERNAME}" => $rep_username,
+                    );
+                    $message = $mail->getMessage('rep_admin_buymoreaccounts_pending_status', $trans_array);
+                    $Subject = $mail->translate('Buy More Rep Accounts - Payment Status Pending');
+                    $mail->send($rep_email, $Subject, $message);
+                }
+            }
         }
     }
 
@@ -433,6 +449,22 @@ class RepAccountsController extends ORController {
             } else {
                 $checkTransactionExists->payment_status = $_POST['payment_status'];
                 $checkTransactionExists->save(false);
+            }
+
+            if ($_POST['payment_status'] == "Pending") {
+                $rep_account = RepCredentials::model()->findByPk($renewal_details['rep_credential_id']);
+                $rep_profile = $rep_account->repCredentialProfiles;
+                $rep_email = $rep_profile['rep_profile_email'];
+                if (!empty($rep_email)) {
+                    $rep_username = $rep_account['rep_username'];
+                    $mail = new Sendmail;
+                    $trans_array = array(
+                        "{USERNAME}" => $rep_username,
+                    );
+                    $message = $mail->getMessage('rep_admin_renewal_pending_status', $trans_array);
+                    $Subject = $mail->translate('Rep Accounts Renewal - Payment Status Pending');
+                    $mail->send($rep_email, $Subject, $message);
+                }
             }
         }
     }

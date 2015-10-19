@@ -222,7 +222,7 @@ class Controller extends CController {
                 $updateTransactionDetail->payment_status = 'Completed';
                 $updateTransactionDetail->rep_single_subscription_id = $repSingleSubscription->rep_single_subscription_id;
                 $updateTransactionDetail->save(false);
-                
+
                 $rep_profile = $rep_account->repCredentialProfiles;
                 $rep_email = $rep_profile['rep_profile_email'];
                 if ($rep_email) {
@@ -277,6 +277,21 @@ class Controller extends CController {
                 $updateTransactionDetail->payment_status = 'Completed';
                 $updateTransactionDetail->rep_admin_subscription_id = $subscription->rep_admin_subscription_id;
                 $updateTransactionDetail->save(false);
+
+                $rep_account = RepCredentials::model()->findByPk($subscription_details['rep_credential_id']);
+                $rep_profile = $rep_account->repCredentialProfiles;
+                $rep_email = $rep_profile['rep_profile_email'];
+                if ($rep_email) {
+                    $mail = new Sendmail;
+                    $trans_array = array(
+                        "{USERNAME}" => $rep_account['rep_username'],
+                        "{SITENAME}" => OPTIREPSITENAME,
+                    );
+
+                    $message = $mail->getMessage('rep_admin_buymoreaccounts_completed_status', $trans_array);
+                    $Subject = $mail->translate('Buy More Rep Accounts - Payment Status Completed');
+                    $mail->send($rep_email, $Subject, $message);
+                }
             }
             RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
         }
@@ -332,6 +347,21 @@ class Controller extends CController {
                 $updateTransactionDetail->payment_status = 'Completed';
                 $updateTransactionDetail->rep_admin_subscription_id = $repAdminSubscription->rep_admin_subscription_id;
                 $updateTransactionDetail->save(false);
+
+                $rep_admin_account = RepCredentials::model()->findByPk($renewal_details['rep_credential_id']);
+                $rep_admin_profile = $rep_admin_account->repCredentialProfiles;
+                $rep_admin_email = $rep_admin_profile['rep_profile_email'];
+                if ($rep_admin_email) {
+                    $mail = new Sendmail;
+                    $trans_array = array(
+                        "{USERNAME}" => $rep_admin_account['rep_username'],
+                        "{SITENAME}" => OPTIREPSITENAME,
+                    );
+
+                    $message = $mail->getMessage('rep_admin_renewal_completed_status', $trans_array);
+                    $Subject = $mail->translate('Rep Accounts Renewal - Payment Status Completed');
+                    $mail->send($rep_admin_email, $Subject, $message);
+                }
             }
             RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
         }
