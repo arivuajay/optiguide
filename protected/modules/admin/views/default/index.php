@@ -59,9 +59,9 @@ $view = "View All <i class='fa fa-arrow-circle-right'></i>";
         </div>
     </div><!-- ./col -->
 
-   
+
     <div class="col-lg-6 col-xs-12">
-        <?php   
+        <?php
         // Display register stats per month for optiguide.com
         $months = array();
         for ($i = 0; $i < 6; $i++) {
@@ -72,40 +72,35 @@ $view = "View All <i class='fa fa-arrow-circle-right'></i>";
         foreach ($months as $month) {
             array_push($response["months"], $month);
         }
-        
-        $usertypes = array("Professionals","Retailers","Suppliers");
-        
-        foreach($usertypes as $key => $utype)
-        {    
+
+        $usertypes = array("Professionals", "Retailers", "Suppliers");
+
+        foreach ($usertypes as $key => $utype) {
             // Count  profile view counts  per month
             $response['viewcounts'] = array();
             $viewcounts = '';
             foreach ($months as $month) {
-                
-                $searchdate = date("Y-m",strtotime($month));
-                if($utype=="Professionals")
-                {    
+
+                $searchdate = date("Y-m", strtotime($month));
+                if ($utype == "Professionals") {
                     $viewcounts = ProfessionalDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
-                }  
-                
-                if($utype=="Retailers")
-                { 
+                }
+
+                if ($utype == "Retailers") {
                     $viewcounts = RetailerDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
                 }
-                
-                if($utype=="Suppliers")
-                {
-                   $viewcounts = SuppliersDirectory::model()->count(" CREATED_DATE like '%$searchdate%'"); 
-                }    
-                
+
+                if ($utype == "Suppliers") {
+                    $viewcounts = SuppliersDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
+                }
+
                 array_push($response["viewcounts"], (int) $viewcounts);
             }
-            
+
             $response['allprofiles'][$key]['name'] = $utype;
             $response['allprofiles'][$key]['data'] = $response["viewcounts"];
+        }
 
-        }    
-        
         $this->widget('booster.widgets.TbHighCharts', array(
             'options' => array(
                 'chart' => array(
@@ -119,7 +114,7 @@ $view = "View All <i class='fa fa-arrow-circle-right'></i>";
                 ),
                 'xAxis' => array(
                     'categories' => $response['months'],
-                    'crosshair' =>  true
+                    'crosshair' => true
                 ),
                 'yAxis' => array(
                     'title' => array(
@@ -129,29 +124,32 @@ $view = "View All <i class='fa fa-arrow-circle-right'></i>";
                 ),
                 'tooltip' => array(
                     'headerFormat' => '<span style="font-size:10px">{point.key}</span><table>',
-                    'pointFormat' =>  '<tr><td style="color:{series.color};padding:0">{series.name}: </td><td style="padding:0"><b>{point.y}</b></td></tr>',
+                    'pointFormat' => '<tr><td style="color:{series.color};padding:0">{series.name}: </td><td style="padding:0"><b>{point.y}</b></td></tr>',
                     'footerFormat' => '</table>',
-                    'shared' =>  true,
+                    'shared' => true,
                     'useHTML' => true
                 ),
                 'plotOptions' => array(
                     'column' => array(
                         'pointPadding' => 0.2,
-                        'borderWidth' =>  0
-                        )
-                  ),
-                'series' => $response['allprofiles']           
-            )    
+                        'borderWidth' => 0
+                    )
+                ),
+                'series' => $response['allprofiles'],
+                "credits" => array(
+                    'enabled' => false
+                )
+            )
         ));
         ?>
     </div><!-- /.row -->
-    
+
     <div class="col-lg-6 col-xs-12">
-        <?php   
+        <?php
         // Display register stats per month for optiguide.com
         $months = array();
         $response = array();
-        
+
         for ($i = 0; $i < 6; $i++) {
             array_push($months, date("M Y", strtotime($i . " months ago")));
         }
@@ -160,27 +158,25 @@ $view = "View All <i class='fa fa-arrow-circle-right'></i>";
         foreach ($months as $month) {
             array_push($response["months"], $month);
         }
-        
-        $usertypes = array("Rep-Single","Rep-Admin");
-        
-        foreach($usertypes as $key => $utype)
-        {    
+
+        $usertypes = array("Rep-Single", "Rep-Admin");
+
+        foreach ($usertypes as $key => $utype) {
             // Count  profile view counts  per month
             $response['viewcounts'] = array();
             $viewcounts = '';
             foreach ($months as $month) {
-                
-                $searchdate = date("Y-m",strtotime($month));
-                $condition_type = ($utype=="Rep-Single")?"single":"admin";
+
+                $searchdate = date("Y-m", strtotime($month));
+                $condition_type = ($utype == "Rep-Single") ? "single" : "admin";
                 $viewcounts = RepCredentials::model()->count("rep_role='$condition_type' AND created_at like '%$searchdate%'");
                 array_push($response["viewcounts"], (int) $viewcounts);
             }
-            
+
             $response['allprofiles'][$key]['name'] = $utype;
             $response['allprofiles'][$key]['data'] = $response["viewcounts"];
+        }
 
-        }    
-        
         $this->widget('booster.widgets.TbHighCharts', array(
             'options' => array(
                 'chart' => array(
@@ -194,7 +190,7 @@ $view = "View All <i class='fa fa-arrow-circle-right'></i>";
                 ),
                 'xAxis' => array(
                     'categories' => $response['months'],
-                    'crosshair' =>  true
+                    'crosshair' => true
                 ),
                 'yAxis' => array(
                     'title' => array(
@@ -204,20 +200,23 @@ $view = "View All <i class='fa fa-arrow-circle-right'></i>";
                 ),
                 'tooltip' => array(
                     'headerFormat' => '<span style="font-size:10px">{point.key}</span><table>',
-                    'pointFormat' =>  '<tr><td style="color:{series.color};padding:0">{series.name}: </td><td style="padding:0"><b>{point.y}</b></td></tr>',
+                    'pointFormat' => '<tr><td style="color:{series.color};padding:0">{series.name}: </td><td style="padding:0"><b>{point.y}</b></td></tr>',
                     'footerFormat' => '</table>',
-                    'shared' =>  true,
+                    'shared' => true,
                     'useHTML' => true
                 ),
                 'plotOptions' => array(
                     'column' => array(
                         'pointPadding' => 0.2,
-                        'borderWidth' =>  0
-                        )
-                  ),
-                'series' => $response['allprofiles']           
-            )    
+                        'borderWidth' => 0
+                    )
+                ),
+                'series' => $response['allprofiles'],
+                "credits" => array(
+                    'enabled' => false
+                )
+            )
         ));
         ?>
     </div><!-- /.row -->
-       
+

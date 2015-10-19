@@ -29,6 +29,9 @@
                             'name' => Yii::app()->user->name,
                             'data' => $response['visits']
                         )
+                    ),
+                    "credits" => array(
+                        'enabled' => false
                     )
                 )
             ));

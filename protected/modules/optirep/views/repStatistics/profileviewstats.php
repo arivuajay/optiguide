@@ -25,6 +25,9 @@
                         'max' => 50,
                     ),
                     'series' => $response['allprofiles'],
+                    "credits" => array(
+                        'enabled' => false
+                    )
                 )
             ));
             ?>
@@ -53,6 +56,9 @@
                         'max' => 50,
                     ),
                     'series' => $response['professionalviews'],
+                    "credits" => array(
+                        'enabled' => false
+                    )
                 )
             ));
             ?>
@@ -81,6 +87,9 @@
                         'max' => 50,
                     ),
                     'series' => $response['retailerviews'],
+                    "credits" => array(
+                        'enabled' => false
+                    )
                 )
             ));
             ?>

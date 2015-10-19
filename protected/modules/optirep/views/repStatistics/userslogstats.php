@@ -21,9 +21,12 @@
                         'title' => array(
                             'text' => 'No.of Times Loggedin'
                         ),
-                        'min' => 0,                         
+                        'min' => 0,
                     ),
-                    'series' => $response['series']
+                    'series' => $response['series'],
+                    "credits" => array(
+                        'enabled' => false
+                    )
                 )
             ));
             ?>

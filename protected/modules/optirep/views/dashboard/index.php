@@ -49,6 +49,9 @@ if ($topbanner != '') {
                             'name' => Yii::app()->user->name,
                             'data' => $response['visits']
                         )
+                    ),
+                    "credits" => array(
+                        'enabled' => false
                     )
                 )
             ));
@@ -85,6 +88,6 @@ if ($bottombanner != '') {
     ?>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ad1"> 
         <!--  Optirep bottom banner- position - 8 -->
-    <?php echo $bottombanner; ?>
+        <?php echo $bottombanner; ?>
     </div>
-    <?php } ?>
+<?php } ?>
