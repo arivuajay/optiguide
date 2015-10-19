@@ -1,22 +1,23 @@
 <?php
 
 /**
- * This is the model class for table "publicite_position".
+ * This is the model class for table "publicite_adsense".
  *
- * The followings are the available columns in table 'publicite_position':
+ * The followings are the available columns in table 'publicite_adsense':
+ * @property integer $id_adsense
  * @property integer $iId_position
- * @property string $sPosition
- * @property string $sFormat
- * @property integer $bActive
+ * @property string $content
+ * @property integer $status
+ * @property string $created_date
  */
-class PublicityPosition extends CActiveRecord
+class PubliciteAdsense extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'publicite_position';
+		return 'publicite_adsense';
 	}
 
 	/**
@@ -27,13 +28,11 @@ class PublicityPosition extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('iId_position, sPosition, sFormat', 'required'),
-			array('iId_position, bActive', 'numerical', 'integerOnly'=>true),
-			array('sPosition', 'length', 'max'=>50),
-			array('sFormat', 'length', 'max'=>20),
+			array('iId_position, status', 'numerical', 'integerOnly'=>true),
+			array('content, created_date', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('iId_position, sPosition, sFormat, bActive', 'safe', 'on'=>'search'),
+			array('id_adsense, iId_position, content, status, created_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -45,6 +44,7 @@ class PublicityPosition extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                     'publicityPosition' => array(self::BELONGS_TO, 'PublicityPosition', 'iId_position'),
 		);
 	}
 
@@ -54,10 +54,11 @@ class PublicityPosition extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'iId_position' => Myclass::t('I Id Position'),
-			'sPosition' => Myclass::t('Position'),
-			'sFormat' => Myclass::t('Size'),
-			'bActive' => Myclass::t('B Active'),
+			'id_adsense' => Myclass::t('Id Adsense'),
+			'iId_position' => Myclass::t('Position'),
+			'content' => Myclass::t('Content'),
+			'status' => Myclass::t('Status'),
+			'created_date' => Myclass::t('Created Date'),
 		);
 	}
 
@@ -79,10 +80,13 @@ class PublicityPosition extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
+		$criteria->compare('id_adsense',$this->id_adsense);
 		$criteria->compare('iId_position',$this->iId_position);
-		$criteria->compare('sPosition',$this->sPosition,true);
-		$criteria->compare('sFormat',$this->sFormat,true);
-		$criteria->compare('bActive',$this->bActive);
+		$criteria->compare('content',$this->content,true);
+		$criteria->compare('status',$this->status);
+		$criteria->compare('created_date',$this->created_date,true);
+                
+                $criteria->with = "publicityPosition";
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -96,7 +100,7 @@ class PublicityPosition extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return PublicityPosition the static model class
+	 * @return PubliciteAdsense the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

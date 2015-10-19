@@ -230,10 +230,28 @@ class Myclass extends CController {
                     ->createCommand("UPDATE publicite_publicite SET NB_IMPRESSIONS_FAITES = NB_IMPRESSIONS_FAITES + 1 WHERE ID_PUBLICITE=:adsId")
                     ->bindValues(array(':adsId' => $ads_id))
                     ->execute();
-        }
+        }else
+        {
+            $adsresult = Myclass::get_adsense_result($positionid);
+            if (!empty($adsresult)) {
+                $html = $adsresult->content;
+            }
+        }    
 
         return $html;
     }
+    
+    public static function get_adsense_result($positionid)
+    {
+       // For module / sections / default / datewise filters
+        $criteria = new CDbCriteria();
+        $criteria->addCondition("iId_position = " . $positionid);
+        $criteria->addCondition("status = 1");
+        $criteria->order = "RAND()";
+        $criteria->limit = 1;
+        $result = PubliciteAdsense::model()->find($criteria);
+        return $result;
+    }        
 
     public static function get_banner_result($positionid, $current_moduleid, $sectionid) {
         $lang = strtoupper(Yii::app()->session['language']);
