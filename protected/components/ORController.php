@@ -3,8 +3,7 @@
 /**
  * Controller is the customized base controller class.
  * All controller classes for this application should extend from this base class.
-*/
-
+ */
 class ORController extends Controller {
 
     /**
@@ -12,30 +11,24 @@ class ORController extends Controller {
      * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
      */
     public $layout = '//layouts/column2';
-    public $lang   = "EN";
-    
+    public $lang = "EN";
 
     public function init() {
         parent::init();
-        Yii::app()->session['language'] = $this->lang;
-         
-//        $app = Yii::app();
-//        if (isset($_POST['_lang']))
-//        {
-//            $app->language = $_POST['_lang'];
-//            $app->session['_lang'] = $app->language;
-//            Yii::app()->session['language'] = strtoupper($app->language); 
-//            
-//        }
-//        else if (isset($app->session['_lang']))
-//        {
-//            $app->language = $app->session['_lang'];
-//            Yii::app()->session['language'] = strtoupper($app->language); 
-//        }else
-//        {
-//            $app->language = 'en';
-//            Yii::app()->session['language'] = strtoupper($app->language);
-//        }    
+//        Yii::app()->session['language'] = $this->lang;
+
+        $app = Yii::app();
+        if (isset($_POST['_lang'])) {
+            $app->language = $_POST['_lang'];
+            $app->session['_lang'] = $app->language;
+            Yii::app()->session['language'] = strtoupper($app->language);
+        } else if (isset($app->session['_lang'])) {
+            $app->language = $app->session['_lang'];
+            Yii::app()->session['language'] = strtoupper($app->language);
+        } else {
+            $app->language = 'en';
+            Yii::app()->session['language'] = strtoupper($app->language);
+        }
     }
 
 }
