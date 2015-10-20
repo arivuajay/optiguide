@@ -9,8 +9,12 @@ if ($topbanner != '') {
 <?php } ?>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 dashboard-userinfo"> 
-    <h2>  Hello, <span> <?php echo CHtml::link(Yii::app()->user->getState('rep_username'), array('/optirep/repCredential/editprofile')); ?></span> </h2>
-    Welcome to your personalized dashboard! Here's some of the thing you can do starting from here: 
+    <h2>  <?php echo Myclass::t('OR511', '', 'or') ?>, 
+        <span> 
+            <?php echo CHtml::link(Yii::app()->user->getState('rep_username'), array('/optirep/repCredential/editprofile')); ?>
+        </span> 
+    </h2>
+     <?php echo Myclass::t('OR512', '', 'or') ?>
 </div>
 
 <?php $this->renderPartial('_favbox'); ?>
@@ -64,7 +68,10 @@ if ($topbanner != '') {
 
 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
     <div class="cate-bg"> 
-        <div class="cate-heading cate-heading4"> <i class="fa fa-envelope"></i> Latest News  <?php echo CHtml::link(Myclass::t('OG038', '', 'og'), array('/optirep/newsManagement'), array('class' => 'topviewall')); ?> </div>
+        <div class="cate-heading cate-heading4"> 
+            <i class="fa fa-envelope"></i> <?php echo Myclass::t('OR037', '', 'or') ?>
+                <?php echo CHtml::link(Myclass::t('OR038', '', 'or'), array('/optirep/newsManagement'), array('class' => 'topviewall')); ?> 
+        </div>
         <?php
         $latest_news = NewsManagement::model()->latest_rep()->findAll();
         if (!empty($latest_news)) {

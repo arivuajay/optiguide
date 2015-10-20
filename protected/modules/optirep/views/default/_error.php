@@ -5,10 +5,10 @@
                 <div class="inner-container eventslist-cont"> 
                     <div class="search-list">
                         <div class="news-thumbs news-details page">                            
-                            <h1>PAGE NOT FOUND</h1> 
+                            <h1><?php echo Myclass::t('OR509', '', 'or') ?></h1> 
                             <b> 404 </b>
                             <p> 
-                                <?php echo CHtml::link('Go to home page', array("/optirep"), array("class" => "btn btn-primary")); ?>
+                                <?php echo CHtml::link(Myclass::t('OR510', '', 'or'), array("/optirep"), array("class" => "btn btn-primary")); ?>
                             </p>
                         </div>
                     </div>

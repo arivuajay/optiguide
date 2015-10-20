@@ -5,8 +5,9 @@
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 landing-left"> 
-    <?php $image = CHtml::image("{$this->themeUrl}/images/site-screen.jpg", 'Site Screen', array("width" => "673", "height" => "434")); 
-          echo CHtml::link($image, array('/optirep/dashboard/'));
+    <?php 
+    $image = CHtml::image("{$this->themeUrl}/images/site-screen.jpg", 'Site Screen', array("width" => "673", "height" => "434")); 
+    echo CHtml::link($image, array('/optirep/dashboard/'));
     ?>
 </div>
 

@@ -1,18 +1,6 @@
 <?php
 
 return array(
-    //Login Box
-    'OR501' => 'Opti-rep Login',
-    'OR502' => 'Username',
-    'OR503' => 'Password',
-    'OR504' => 'Forgot Password?',
-    'OR505' => 'Login',
-    
-    'OR506' => 'Dont have account ? Signup !',
-    'OR507' => 'Register',
-    
-    
-    
     // Suppliers / categories
     'OR024' => 'Find',
     'OR037' => 'Latest News',
@@ -35,4 +23,26 @@ return array(
     'OR073' => 'Brand names / Products / Services',
     'OR077' => 'Find a supplier by category',
     'ORO78' => 'Find a brand',
+    
+    //views/default
+    'OR501' => 'Opti-Rep Login',
+    'OR502' => 'Username',
+    'OR503' => 'Password',
+    'OR504' => 'Forgot Password',
+    'OR505' => 'Login',
+    
+    'OR506' => 'Dont have account ? Signup !',
+    'OR507' => 'Register',
+    
+    'OR508' => 'Have account ? Log in !',
+    
+    'OR509' => 'PAGE NOT FOUND',
+    'OR510' => 'Go to home page',
+    
+    //views/dashboard
+    'OR511' => 'Hello',
+    'OR512' => "Welcome to your personalized dashboard! Here's some of the thing you can do starting from here:",
+    'OR513' => "My Reps",
+    'OR514' => "Favorites",
+    'OR515' => "You have no representative users right now.",
 );
