@@ -31,7 +31,7 @@ if ($urole == "admin") {
                     $my_usrs .= $uinfo['rep_username'] . "</div>";
                 }
             } else {
-                $my_usrs = "<p class='fav_message'>" . Myclass::t('OR515', '', 'or') . CHtml::link("Click", array('/optirep/repAccounts')) . " to add your users!!!.</p>";
+                $my_usrs = "<p class='fav_message'>" . Myclass::t('OR515', '', 'or') .  Myclass::t('OR516', array(':url'=>'/optirep/repAccounts'), 'or') . "</p>";
             }
             echo $my_usrs;
         } else {
@@ -51,7 +51,7 @@ if ($urole == "admin") {
                     $fav_rets .= CHtml::link($favinfo['NOM_UTILISATEUR'], array('/optirep/' . $viewpage . '/view', 'id' => $favinfo['ID_RELATION'])) . "<br/> <span> <b> Type : </b> " . $utype . "</span> </div>";
                 }
             } else {
-                $fav_rets = "<p class='fav_message'>You have no favorite users right now.See the retailers and professionals users and make it your favorite!!!.</p>";
+                $fav_rets = "<p class='fav_message'>" . Myclass::t('OR517', '', 'or') . "</p>";
             }
             echo $fav_rets;
         }

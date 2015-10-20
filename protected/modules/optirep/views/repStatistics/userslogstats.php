@@ -1,5 +1,5 @@
 <div class="cate-bg user-right">
-    <h2> Users log stats </h2>
+    <h2> <?php echo Myclass::t('OR586', '', 'or') ?> </h2>
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php

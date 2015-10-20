@@ -4,7 +4,7 @@
 /* @var $form CActiveForm */
 ?>
 <div class="cate-bg user-right">
-    <h2> <?php echo $model->isNewRecord ? 'Add Note' : 'Update Note'; ?></h2>
+    <h2> <?php echo $model->isNewRecord ? Myclass::t('OR567', '', 'or') : Myclass::t('OR568', '', 'or') ; ?> </h2>
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'rep-notes-form',
@@ -25,7 +25,10 @@
             <div id="reminder_datepicker" class="input-append date">
                 <?php echo $form->textField($model, 'alert_date', array("class" => "form-field")); ?>
                 <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
-                <small><b>NOTE:</b> If you choose any date in the above field, you will get the reminder email in that particular date.</small>
+                <small>
+                    <b><?php echo Myclass::t('OR569', '', 'or') ?> : </b> 
+                    <?php echo Myclass::t('OR570', '', 'or') ?>
+                </small>
             </div>
         </div>        
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -34,9 +37,9 @@
                 'name' => 'btnSubmit',
                 'type' => 'submit',
                 'class' => 'register-btn'
-                    ), 'Save');
+                    ), Myclass::t('APP25'));
 
-            echo CHtml::link('Back', '/optirep/repNotes/index', array('class' => 'back'))
+            echo CHtml::link(Myclass::t('OR571', '', 'or'), '/optirep/repNotes/index', array('class' => 'back'))
             ?>
         </div>
     </div>

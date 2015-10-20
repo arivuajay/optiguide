@@ -227,6 +227,8 @@ class RepAdminSubscriptions extends CActiveRecord {
         $total_no_of_accounts_used = $this->getTotalNoOfAccountsUsed();
         if ($total_no_of_accounts_purchased == $total_no_of_accounts_used) {
             return true;
+        }elseif (empty($this->getCurrentPlan())) {
+            return true;
         }
         return false;
     }

@@ -184,7 +184,7 @@ class RepCredentialController extends ORController {
     }
 
     public function actionPaypalCancel() {
-        Yii::app()->user->setFlash('danger', 'Your registration has been cancelled. Please try again.');
+        Yii::app()->user->setFlash('danger', Myclass::t("OR603", "", "or"));
         $this->redirect(array('step1'));
     }
 
@@ -192,12 +192,12 @@ class RepCredentialController extends ORController {
         $pstatus = $_POST["payment_status"];
         if (isset($_POST["txn_id"]) && isset($_POST["payment_status"])) {
             if ($pstatus == "Pending") {
-                Yii::app()->user->setFlash('info', "Your payment status is pending. Please contact Admin.");
+                Yii::app()->user->setFlash('info', Myclass::t("OR604", "", "or"));
             } else {
-                Yii::app()->user->setFlash('success', "Thanks for your registration!.");
+                Yii::app()->user->setFlash('success', Myclass::t("OR605", "", "or"));
             }
         } else {
-            Yii::app()->user->setFlash('danger', "Your registration payment is failed. Please try again later or contact admin.");
+            Yii::app()->user->setFlash('danger', Myclass::t("OR606", "", "or"));
         }
         $this->redirect(array('/optirep/default/index'));
     }
@@ -304,7 +304,7 @@ class RepCredentialController extends ORController {
                 $model->save(false);
                 $profile->save(false);
 
-                Yii::app()->user->setFlash('success', "Profile updated successfully!!!");
+                Yii::app()->user->setFlash('success', Myclass::t("OR607", "", "or"));
                 $this->redirect(array('editprofile'));
             }
         }
@@ -325,10 +325,10 @@ class RepCredentialController extends ORController {
             if ($valid) {
                 $model->rep_password = $model->new_password;
                 if ($model->save()) {
-                    Yii::app()->user->setFlash('success', "successfully changed password");
+                    Yii::app()->user->setFlash('success', Myclass::t("OR608", "", "or"));
                     $this->redirect(array('changepassword'));
                 } else {
-                    Yii::app()->user->setFlash('danger', "password not changed");
+                    Yii::app()->user->setFlash('danger', Myclass::t("OR609", "", "or"));
                     $this->redirect(array('changepassword'));
                 }
             }

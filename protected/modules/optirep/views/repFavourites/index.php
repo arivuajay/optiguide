@@ -1,5 +1,5 @@
 <div class="cate-bg user-right">
-    <h2> Favorite Users </h2>
+    <h2> <?php echo Myclass::t('OR565', '', 'or')?> </h2>
     <div class="row">     
         <?php
         $rep_id = Yii::app()->user->id;
@@ -14,10 +14,10 @@
             <div class="table-responsive">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
                     <tr>
-                        <th width="9%">S. No</th>
-                        <th width="20%"> Username</th>
-                        <th width="18%"> Type </th>
-                        <th width="16%"> Actions </th>
+                        <th width="9%">#</th>
+                        <th width="20%"> <?php echo Myclass::t('OR502', '', 'or')?> </th>
+                        <th width="18%"> <?php echo Myclass::t('OR566', '', 'or')?> </th>
+                        <th width="16%"> <?php echo Myclass::t('OR531', '', 'or')?> </th>
                     </tr>
                     <?php
                     $fav_rets = '';
@@ -38,16 +38,22 @@
                             ?>
                             <tr>
                                 <td><?php echo $i++; ?></td>
-                                <td><?php echo CHtml::link( $favinfo['NOM_UTILISATEUR'], array('/optirep/'.$viewpage.'/view', 'id' => $favinfo['ID_RELATION'])); ?></td>
+                                <td>
+                                    <?php 
+                                    echo CHtml::link( $favinfo['NOM_UTILISATEUR'], array('/optirep/'.$viewpage.'/view', 'id' => $favinfo['ID_RELATION'])); 
+                                    ?>
+                                </td>
                                 <td><?php echo $utype; ?></td>                               
                                 <td>
-                                    <div class="addfav-btn-listing"><input name="FAV" type="checkbox" checked=checked id="FAV" value="<?php echo $favinfo['ID_UTILISATEUR']; ?>"></div>
+                                    <div class="addfav-btn-listing">
+                                        <input name="FAV" type="checkbox" checked=checked id="FAV" value="<?php echo $favinfo['ID_UTILISATEUR']; ?>">
+                                    </div>
                                 </td>
                             </tr>
                         <?php } ?>
                     <?php } else { ?>
                         <tr>
-                            <td colspan="3"> No Records Found </td>
+                            <td colspan="4"> <?php echo Myclass::t('OR535', '', 'or')?> </td>
                         </tr>
                     <?php } ?>
                 </table>

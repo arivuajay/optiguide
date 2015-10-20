@@ -9,25 +9,30 @@ if ($step == 'step1') {
 }
 ?>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ad1">
+    <?php
+    $step1_name = "<h4>" . Myclass::t('OR547', '', 'or') . " 1 </h4> <span> " . Myclass::t('OR548', '', 'or') . " </span>";
+    $step2_name = "<h4>" . Myclass::t('OR547', '', 'or') . " 2 </h4> <span> " . Myclass::t('OR549', '', 'or') . " </span>";
+    $step3_name = "<h4>" . Myclass::t('OR547', '', 'or') . " 3 </h4> <span> " . Myclass::t('OR550', '', 'or') . " </span>";
+    ?>
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 steps-cont <?php echo $active_class_step1 ?>"> 
         <?php if (isset(Yii::app()->session['registration']['step1'])) { ?>
-            <?php echo CHtml::link('<h4> Step 1 </h4> <span> Select The Subscription  </span>', '/optirep/repCredential/step1') ?>
+            <?php echo CHtml::link($step1_name, '/optirep/repCredential/step1') ?>
         <?php } else { ?>
-            <h4> Step 1 </h4> <span> Select The Subscription  </span>
+            <?php echo $step1_name; ?>
         <?php } ?>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 steps-cont <?php echo $active_class_step2 ?>"> 
         <?php if (isset(Yii::app()->session['registration']['step2'])) { ?>
-            <?php echo CHtml::link('<h4> Step 2 </h4> <span> Basic Information  </span>', '/optirep/repCredential/step2') ?>
+            <?php echo CHtml::link($step2_name, '/optirep/repCredential/step2') ?>
         <?php } else { ?>
-            <h4> Step 2 </h4> <span> Basic Information  </span>
+            <?php echo $step2_name; ?>
         <?php } ?>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 steps-cont <?php echo $active_class_step3 ?>">  
         <?php if (isset(Yii::app()->session['registration']['step3'])) { ?>
-            <?php echo CHtml::link('<h4> Step 3 </h4> <span> Payment  </span>', '/optirep/repCredential/step3') ?>
+            <?php echo CHtml::link($step3_name, '/optirep/repCredential/step3') ?>
         <?php } else { ?>
-            <h4> Step 3 </h4> <span> Payment </span> 
+            <?php echo $step3_name; ?>
         <?php } ?>
     </div>
 </div>

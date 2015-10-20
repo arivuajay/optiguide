@@ -1,6 +1,12 @@
 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
     <div class="cate-bg"> 
-        <div class="cate-heading cate-heading3"> <i class="fa fa-calendar"></i> Calendar  <?php echo CHtml::link(Myclass::t('OG038', '', 'og'), array('/optirep/calenderEvent'), array('class' => 'topviewall')); ?> </div>
+        <div class="cate-heading cate-heading3"> 
+            <i class="fa fa-calendar"></i> 
+            <?php
+            echo Myclass::t('OR518', '', 'or');
+            echo CHtml::link(Myclass::t('OR038', '', 'or'), array('/optirep/calenderEvent'), array('class' => 'topviewall'));
+            ?> 
+        </div>
         <div class="calc-cont"> 
             <?php
             $events = CalenderEvent::model()->currentMonthYear()->findAll();
@@ -84,7 +90,9 @@ EOD;
             $criteria->limit = 3;
             $upcoming_events = CalenderEvent::model()->findAll($criteria);
             ?>
-            <h4 class="eventList"><?php echo Myclass::t('OGO167', '', 'og'); ?></h4>
+            <h4 class="eventList">
+                <?php echo Myclass::t('OR519', '', 'or'); ?>
+            </h4>
             <?php
             if (!empty($upcoming_events)) {
                 ?>    
@@ -100,13 +108,12 @@ EOD;
                     }
                     ?>
                 </ul>
-            <?php
+                <?php
             } else {
-                echo Myclass::t('OGO165', '', 'og');
+                echo Myclass::t('OR520', '', 'or');
             }
             ?> 
         </div>
-<!--         <div class="viewall"><?php //echo CHtml::link('View All', array('/optirep/calenderEvent'));  ?></div>-->
     </div>
 
 </div>

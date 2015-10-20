@@ -1,6 +1,6 @@
 <?php $this->renderPartial('_register_steps', array('step' => $step)); ?>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 landing-left">  
-    <h2> price & subscription  </h2>
+    <h2> <?php echo Myclass::t('OR555', '', 'or'); ?>  </h2>
     <div class="row">
         <?php
         $form = $this->beginWidget('CActiveForm', array(
@@ -26,7 +26,9 @@
                 <?php echo $form->radioButton($model, 'subscription_type_id', array('value' => $repSubscriptionType['rep_subscription_type_id'], 'uncheckValue' => null, 'class' => 'subscription_types', 'id' => $repSubsTypeId, 'checked' => $checked)); ?>
                 <label for="<?php echo $repSubsTypeId; ?>">
                     <div class="subscription-cont <?php echo $active_class ?>">
-                        <div class="subscription-heading subscription-heading<?php echo $repSubsTypeId+1?>">  <?php echo $repSubscriptionType['rep_subscription_name']; ?> </div>
+                        <div class="subscription-heading subscription-heading<?php echo $repSubsTypeId + 1 ?>">  
+                            <?php echo $repSubscriptionType['rep_subscription_name']; ?> 
+                        </div>
                         <div class="subscription-txt"> 
                             <p> 
                                 <span> 
@@ -36,7 +38,11 @@
                                 +  <br/>
                                 <?php echo $repSubscriptionType['rep_subscription_description']; ?>
                             </p>
-                            <p><a href="javascript:void()" class="subscribe-btn"> Subscribe </a></p>
+                            <p>
+                                <a href="javascript:void()" class="subscribe-btn"> 
+                                    <?php echo Myclass::t('OR556', '', 'or'); ?>
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </label>
@@ -48,7 +54,7 @@
                 'name' => 'btnSubmit',
                 'type' => 'submit',
                 'class' => 'register-btn'
-                    ), ' Next <i class="fa fa-angle-double-right"></i>');
+                    ), Myclass::t('OR557', '', 'or') . ' <i class="fa fa-angle-double-right"></i>');
             ?>
         </div>
         <?php $this->endWidget(); ?>

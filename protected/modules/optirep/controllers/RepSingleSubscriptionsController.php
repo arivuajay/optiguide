@@ -95,7 +95,7 @@ class RepSingleSubscriptionsController extends ORController {
     }
 
     public function actionPaypalRenewalCancel() {
-        Yii::app()->user->setFlash('danger', 'Your renewal has been cancelled. Please try again.');
+        Yii::app()->user->setFlash('danger', Myclass::t("OR613", "", "or"));
         $this->redirect(array('index'));
     }
 
@@ -103,12 +103,12 @@ class RepSingleSubscriptionsController extends ORController {
         $pstatus = $_POST["payment_status"];
         if (isset($_POST["txn_id"]) && isset($_POST["payment_status"])) {
             if ($pstatus == "Pending") {
-                Yii::app()->user->setFlash('info', "Your payment status is pending. Admin will verify your payment details.");
+                Yii::app()->user->setFlash('info', Myclass::t("OR597", "", "or"));
             } else {
-                Yii::app()->user->setFlash('success', "Thanks for your renewal!");
+                Yii::app()->user->setFlash('success', Myclass::t("OR601", "", "or"));
             }
         } else {
-            Yii::app()->user->setFlash('danger', "Your renewal payment is failed. Please try again later or contact admin.");
+            Yii::app()->user->setFlash('danger', Myclass::t("OR602", "", "or"));
         }
         $this->redirect(array('index'));
     }

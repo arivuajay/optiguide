@@ -231,7 +231,7 @@ class RepStatisticsController extends ORController {
         $stats_disp = Myclass::stats_display();
         if($stats_disp==0)
         {
-            Yii::app()->user->setFlash('info', "Kindly do the payment to see the statistics chart!!");
+            Yii::app()->user->setFlash('info', Myclass::t('OR614', '', 'or'));
             $this->redirect('payment');
         }    
         

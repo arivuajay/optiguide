@@ -1,5 +1,5 @@
 <div class="cate-bg user-right profile-pages">
-    <h2> Edit profile </h2>
+    <h2> <?php echo Myclass::t('OR552', '', 'or'); ?> </h2>
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'rep-credential-form',
@@ -45,7 +45,7 @@
             <?php echo $form->labelEx($profile, 'rep_profile_phone'); ?>
             <?php echo $form->textField($profile, 'rep_profile_phone', array('class' => 'form-field')); ?>                 
         </div>
-        
+
         <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
             <?php echo $form->labelEx($profile, 'rep_company'); ?>
             <?php echo $form->textField($profile, 'rep_company', array('class' => 'form-field')); ?>  
@@ -55,7 +55,7 @@
             <?php echo $form->labelEx($profile, 'rep_territories'); ?>
             <?php echo $form->textField($profile, 'rep_territories', array('class' => 'form-field')); ?>  
         </div>
-        
+
         <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
             <?php echo $form->labelEx($profile, 'rep_address'); ?>
             <?php echo $form->textField($profile, 'rep_address', array('class' => 'form-field')); ?>  
@@ -75,16 +75,18 @@
             <?php echo $form->labelEx($profile, 'ID_VILLE'); ?>
             <?php echo $form->dropDownList($profile, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
         </div>
-        
+
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
             <label class="required" for="#">&nbsp;</label>
-            <a class="mapgenrate" href="javascript:void(0);" id="genratemap">Click to View your location</a>
+            <a class="mapgenrate" href="javascript:void(0);" id="genratemap">
+                <?php echo Myclass::t('OR553', '', 'or'); ?>
+            </a>
         </div>
-        
+
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                                       
-                <div id="display_map" style="display:none;width:auto;height:350px;"></div>                                                   
+            <div id="display_map" style="display:none;width:auto;height:350px;"></div>                                    
         </div>
-        
+
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php echo $form->labelEx($profile, 'image'); ?>
@@ -98,7 +100,9 @@
                     <input type="text" class="search form-field" placeholder="Search brands">
                 </div>
                 <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 brand_search">
-                    <a href="javascript:void(0)" class="search_link btn btn-primary">Search</a>
+                    <a href="javascript:void(0)" class="search_link btn btn-primary">
+                        <?php echo Myclass::t('OR554', '', 'or'); ?>
+                    </a>
                     <span class="counter"></span>
                 </div>
             </div>
@@ -110,7 +114,7 @@
                     <div class="box" id="box1">
                         <table class="table table-bordered results">
                             <tr class="warning no-result">
-                                <td><i class="fa fa-warning"></i> No result</td>
+                                <td><i class="fa fa-warning"></i> <?php echo Myclass::t('OR043', '', 'or'); ?> </td>
                             </tr>
                             <tbody>
                                 <?php
@@ -146,7 +150,7 @@
                 'name' => 'btnSubmit',
                 'type' => 'submit',
                 'class' => 'register-btn'
-                    ), 'Update');
+                    ), Myclass::t('APP505'));
             ?>
         </div>
     </div>
@@ -157,12 +161,12 @@
 $ajaxRegionUrl = Yii::app()->createUrl('/optirep/repCredential/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/optirep/repCredential/getcities');
 
-$ajaxgetlocation   = Yii::app()->createUrl('/optirep/repCredential/generatelatlong');
+$ajaxgetlocation = Yii::app()->createUrl('/optirep/repCredential/generatelatlong');
 $cs = Yii::app()->getClientScript();
 $cs_pos_end = CClientScript::POS_END;
 $cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
 
-$lat  = $profile->rep_lat;
+$lat = $profile->rep_lat;
 $long = $profile->rep_long;
 $js = <<< EOD
     $(document).ready(function(){

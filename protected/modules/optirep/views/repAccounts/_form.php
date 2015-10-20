@@ -3,15 +3,15 @@ $form = $this->beginWidget('CActiveForm', array(
     'id' => 'create-rep-account-form',
         ));
 
-    $country = Myclass::getallcountries();
-    $regions = Myclass::getallregions($profile->country);
-    $cities = Myclass::getallcities($profile->region);
+$country = Myclass::getallcountries();
+$regions = Myclass::getallregions($profile->country);
+$cities = Myclass::getallcities($profile->region);
 ?>
 <div class="cate-bg user-right profile-pages">
     <?php if ($model->isNewRecord) { ?>
-        <h2> Create New Rep Account </h2>
+        <h2> <?php echo Myclass::t('OR527', '', 'or'); ?> </h2>
     <?php } else { ?>
-        <h2> Edit Rep Account </h2>
+        <h2> <?php echo Myclass::t('OR537', '', 'or'); ?> </h2>
     <?php } ?>
     <div class="row"> 
         <?php echo $form->errorSummary(array($model, $profile)); ?>
@@ -67,9 +67,9 @@ $form = $this->beginWidget('CActiveForm', array(
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php
-            $button = 'Edit';
+            $button = Myclass::t('APP505');
             if ($model->isNewRecord) {
-                $button = 'Create';
+                $button = Myclass::t('APP504');
             }
             echo CHtml::tag('button', array(
                 'name' => 'btnSubmit',

@@ -49,7 +49,7 @@ class RepAccountsController extends ORController {
                 Yii::app()->session['renewal'] = $renewal;
                 $this->redirect('renewalRepAccounts');
             } else {
-                Yii::app()->user->setFlash('danger', "Kindly select the rep accounts for Renewal");
+                Yii::app()->user->setFlash('danger', Myclass::t("OR589", "", "or"));
             }
         }
         $this->render('index');
@@ -58,7 +58,7 @@ class RepAccountsController extends ORController {
     public function actionCreate() {
         $current_plan = RepAdminSubscriptions::model()->getCurrentPlan();
         if (empty($current_plan)) {
-            Yii::app()->user->setFlash('danger', "Sorry, you can't create new rep account");
+            Yii::app()->user->setFlash('danger', Myclass::t("OR590", "", "or"));
             $this->redirect(array('index'));
         }
 
@@ -102,7 +102,7 @@ class RepAccountsController extends ORController {
                     $subscriber->rep_credential_id = $model->rep_credential_id;
                     $subscriber->save(false);
 
-                    Yii::app()->user->setFlash('success', "Rep account created successfully!!!");
+                    Yii::app()->user->setFlash('success', Myclass::t("OR591", "", "or"));
                     $this->redirect(array('index'));
                 }
             }
@@ -115,7 +115,7 @@ class RepAccountsController extends ORController {
         $profile = RepCredentialProfiles::model()->findByAttributes(array('rep_credential_id' => $model->rep_credential_id));
 
         if ($model->rep_parent_id != Yii::app()->user->id) {
-            Yii::app()->user->setFlash('danger', "Sorry, you don't have access to edit this account");
+            Yii::app()->user->setFlash('danger', Myclass::t("OR592", "", "or"));
             $this->redirect(array('index'));
         }
 
@@ -141,7 +141,7 @@ class RepAccountsController extends ORController {
                     }
 
                     $profile->save(false);
-                    Yii::app()->user->setFlash('success', "Rep account edited successfully!!!");
+                    Yii::app()->user->setFlash('success', Myclass::t("OR593", "", "or"));
                     $this->redirect(array('edit', 'id' => $id));
                 }
             }
@@ -201,7 +201,7 @@ class RepAccountsController extends ORController {
         //rep_view_counts - Delete
         RepViewCounts::model()->deleteAll("rep_credential_id ='" . $rep['rep_credential_id'] . "'");
 
-        Yii::app()->user->setFlash('success', "Rep account deleted successfully!!!");
+        Yii::app()->user->setFlash('success', Myclass::t("OR594", "", "or"));
         $this->redirect(array('index'));
     }
 
@@ -228,7 +228,7 @@ class RepAccountsController extends ORController {
     public function actionBuyMoreAccounts() {
         $can_buy = RepAdminSubscriptions::model()->canBuyMoreAccounts();
         if (!$can_buy) {
-            Yii::app()->user->setFlash('danger', "Sorry, you can not buy more accounts");
+            Yii::app()->user->setFlash('danger', Myclass::t("OR595", "", "or"));
             $this->redirect(array('index'));
         }
 
@@ -276,7 +276,7 @@ class RepAccountsController extends ORController {
     }
 
     public function actionPaypalCancel() {
-        Yii::app()->user->setFlash('danger', 'Your subscription has been cancelled. Please try again.');
+        Yii::app()->user->setFlash('danger', Myclass::t("OR596", "", "or"));
         $this->redirect(array('buyMoreAccounts'));
     }
 
@@ -284,12 +284,12 @@ class RepAccountsController extends ORController {
         $pstatus = $_POST["payment_status"];
         if (isset($_POST["txn_id"]) && isset($_POST["payment_status"])) {
             if ($pstatus == "Pending") {
-                Yii::app()->user->setFlash('info', "Your payment status is pending. Admin will verify your payment details.");
+                Yii::app()->user->setFlash('info', Myclass::t("OR597", "", "or"));
             } else {
-                Yii::app()->user->setFlash('success', "Thanks for your subscription! Now you can add more rep accounts");
+                Yii::app()->user->setFlash('success', Myclass::t("OR598", "", "or"));
             }
         } else {
-            Yii::app()->user->setFlash('danger', "Your subscription payment is failed. Please try again later or contact admin.");
+            Yii::app()->user->setFlash('danger', Myclass::t("OR599", "", "or"));
         }
         $this->redirect(array('buyMoreAccounts'));
     }
@@ -391,7 +391,7 @@ class RepAccountsController extends ORController {
     }
 
     public function actionPaypalRenewalCancel() {
-        Yii::app()->user->setFlash('danger', 'Your renewal has been cancelled. Please try again.');
+        Yii::app()->user->setFlash('danger', Myclass::t("OR600", "", "or"));
         $this->redirect(array('index'));
     }
 
@@ -399,12 +399,12 @@ class RepAccountsController extends ORController {
         $pstatus = $_POST["payment_status"];
         if (isset($_POST["txn_id"]) && isset($_POST["payment_status"])) {
             if ($pstatus == "Pending") {
-                Yii::app()->user->setFlash('info', "Your payment status is pending. Admin will verify your payment details.");
+                Yii::app()->user->setFlash('info', Myclass::t("OR597", "", "or"));
             } else {
-                Yii::app()->user->setFlash('success', "Thanks for your renewal!");
+                Yii::app()->user->setFlash('success', Myclass::t("OR601", "", "or"));
             }
         } else {
-            Yii::app()->user->setFlash('danger', "Your renewal payment is failed. Please try again later or contact admin.");
+            Yii::app()->user->setFlash('danger', Myclass::t("OR602", "", "or"));
         }
         $this->redirect(array('index'));
     }

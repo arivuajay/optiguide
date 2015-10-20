@@ -1,5 +1,5 @@
 <div class="cate-bg user-right">
-    <h2> Subscription Details </h2>
+    <h2> <?php echo Myclass::t('OR545', '', 'or'); ?> </h2>
 
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
@@ -7,7 +7,7 @@
                 <?php
                 $gridColumns = array(
                     array(
-                        'header' => 'S.No',
+                        'header' => '#',
                         'value' => '++$row',
                     ),
                     'purchase_type',

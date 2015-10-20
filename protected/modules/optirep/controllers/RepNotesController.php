@@ -73,7 +73,7 @@ class RepNotesController extends ORController {
                 $model->created_at = date('Y-m-d H:i:s');
                 $model->ID_UTILISATEUR = $ufrm_infos->ID_UTILISATEUR;
                 if ($model->save()) {
-                    Yii::app()->user->setFlash('success', 'Notes Created Successfully!!!');
+                    Yii::app()->user->setFlash('success', Myclass::t("OR610", "", "or"));
                     $this->redirect(array('index'));
                 }
             }
@@ -100,7 +100,7 @@ class RepNotesController extends ORController {
             $valid = $model->validate();
             if ($valid) {
                 if ($model->save()) {
-                    Yii::app()->user->setFlash('success', 'Notes Updated Successfully!!!');
+                    Yii::app()->user->setFlash('success', Myclass::t("OR611", "", "or"));
                     $this->redirect(array('index'));
                 }
             }
@@ -121,7 +121,7 @@ class RepNotesController extends ORController {
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax'])) {
-            Yii::app()->user->setFlash('success', 'Note deleted Successfully!!!');
+            Yii::app()->user->setFlash('success', Myclass::t("OR612", "", "or"));
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
         }
     }

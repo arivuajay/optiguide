@@ -1,5 +1,5 @@
 <div class="cate-bg user-right">
-    <h2> Statistics Payment </h2>
+    <h2> <?php echo Myclass::t('OR580', '', 'or') ?> </h2>
     <?php
     $repid = Yii::app()->user->id;
     $criteria1 = new CDbCriteria();
@@ -37,15 +37,15 @@
     ?>            
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h4> Subscription Fee (Per month): <?php echo $stats_price; ?> CAD <i class="fa fa-dollar"></i> </h4>
+            <h4> <?php echo Myclass::t('OR581', '', 'or'); ?>: <?php echo Myclass::currencyFormat($stats_price); ?> </h4>
         </div> 
         <?php
         if (!empty($get_transactions)) {
             echo CHtml::hiddenField('subscription_type', '4');
-            $btntxt = "RENEW NOW";
+            $btntxt = Myclass::t('OR582', '', 'or');
         } else {
             echo CHtml::hiddenField('subscription_type', '3');
-            $btntxt = "PAY NOW";
+            $btntxt = Myclass::t('OR583', '', 'or');
         }
         ?>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
@@ -62,7 +62,7 @@
     <?php $this->endWidget(); ?> 
     <?php if (!empty($get_transactions)) { ?>
 
-        <h2> Payment details</h2>
+        <h2> <?php echo Myclass::t('OR584', '', 'or'); ?> </h2>
         <div class="row">    
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">  
                 <div class="table-responsive">
@@ -86,7 +86,7 @@
                             </tr>
                         <?php } else { ?>
                             <tr>
-                                <td colspan="7"><?php echo Myclass::t('OGO143', '', 'og'); ?></td>
+                                <td colspan="6"><?php echo Myclass::t('OGO143', '', 'og'); ?></td>
                             </tr>
                         <?php } ?>
                     </table>

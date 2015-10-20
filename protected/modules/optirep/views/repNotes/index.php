@@ -1,23 +1,23 @@
 <div class="cate-bg user-right">
-    <h2> My Notes </h2>
+    <h2> <?php echo Myclass::t('OR521', '', 'or') ?> </h2>
     <div class="row"> 
         <?php if (Yii::app()->user->rep_role == "admin") { ?>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <?php echo CHtml::link('<i class="fa fa-plus"></i> Add Note', array('/optirep/repNotes/create'), array("class" => "pull-right")); ?>
+                <?php echo CHtml::link('<i class="fa fa-plus"></i> ' . Myclass::t('OR567', '', 'or'), array('/optirep/repNotes/create'), array("class" => "pull-right")); ?>
             </div>
         <?php } ?>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
             <div class="table-responsive">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
                     <tr>
-                        <th width="9%">S. No</th>
+                        <th width="9%">#</th>
                         <?php if (Yii::app()->user->rep_role != "admin") { ?>
-                            <th width="20%"> User</th>
+                            <th width="20%"> <?php echo Myclass::t('OR572', '', 'or') ?> </th>
                         <?php } ?>
-                        <th width="80%"> Notes</th>                       
-                        <th width="10%"> Reminder Date </th>
-                        <th width="10%"> Created </th>
-                        <th width="5%"> Actions </th>
+                        <th width="80%"> <?php echo Myclass::t('OR573', '', 'or') ?> </th>                       
+                        <th width="10%"> <?php echo Myclass::t('OR574', '', 'or') ?> </th>
+                        <th width="10%"> <?php echo Myclass::t('OR575', '', 'or') ?> </th>
+                        <th width="5%"> <?php echo Myclass::t('OR531', '', 'or') ?> </th>
                     </tr>
                     <?php
                     if (!empty($model)) {
@@ -41,7 +41,7 @@
                                 <td>
                                     <?php echo CHtml::link('<i class="fa fa-eye"></i>', array('#'), array("data-toggle" => "modal", "data-target" => "#viewmessage_" . $notes['id'])); ?>&nbsp;
                                     <?php echo CHtml::link('<i class="fa fa-pencil-square-o"></i>', array('/optirep/repNotes/update', 'id' => $notes['id'])); ?>&nbsp;
-                                    <?php echo CHtml::link('<i class="fa fa-trash"></i>', array('/optirep/repNotes/delete', 'id' => $notes['id']), array('confirm' => 'Are you sure?')); ?>
+                                    <?php echo CHtml::link('<i class="fa fa-trash"></i>', array('/optirep/repNotes/delete', 'id' => $notes['id']), array('confirm' => Myclass::t('OR534', '', 'or'))); ?>
                                 </td>
                             </tr>
                             <!-- Note Display Box-->
@@ -51,7 +51,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">Notes</h4>
+                                            <h4 class="modal-title"><?php echo Myclass::t('OR573', '', 'or') ?></h4>
                                         </div>                                       
                                         <div class="modal-body model-form">
                                             <div class="row"> 
@@ -67,7 +67,7 @@
                         <?php } ?>
                     <?php } else { ?>
                         <tr>
-                            <td colspan="5"> No records found. </td>
+                            <td colspan="6"> <?php echo Myclass::t('OR043', '', 'or') ?> </td>
                         </tr>
                     <?php } ?>
                 </table>

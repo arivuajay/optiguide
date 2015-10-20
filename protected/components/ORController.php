@@ -27,7 +27,7 @@ class ORController extends Controller {
             $app->language = $app->session['_lang'];
             Yii::app()->session['language'] = strtoupper($app->language);
         } else {
-            $app->language = 'fr';
+            $app->language = 'en';
             Yii::app()->session['language'] = strtoupper($app->language);
         }
         

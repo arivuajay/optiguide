@@ -1,5 +1,5 @@
 <div class="cate-bg user-right">
-    <h2> Subscription Details </h2>
+    <h2> <?php echo Myclass::t('OR545', '', 'or') ?> </h2>
 
     <?php
     $form = $this->beginWidget('CActiveForm', array(
@@ -8,9 +8,18 @@
     ?>            
     <div class="row"> 
         <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
-            <h4> Price:  <?php echo Myclass::currencyFormat($price_calculation['total_price']); ?></h4>
-            <h4> Tax:  <?php echo Myclass::currencyFormat($price_calculation['tax']); ?></h4>
-            <h4> Grand Total:  <?php echo Myclass::currencyFormat($price_calculation['grand_total']); ?></h4>
+            <h4> 
+                <?php echo Myclass::t('OR576', '', 'or') ?> : 
+                <?php echo Myclass::currencyFormat($price_calculation['total_price']); ?>
+            </h4>
+            <h4> 
+                <?php echo Myclass::t('OR540', '', 'or') ?> : 
+                <?php echo Myclass::currencyFormat($price_calculation['tax']); ?>
+            </h4>
+            <h4> 
+                <?php echo Myclass::t('OR541', '', 'or') ?> : 
+                <?php echo Myclass::currencyFormat($price_calculation['grand_total']); ?>
+            </h4>
         </div> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
             <?php
@@ -19,7 +28,7 @@
                 'value' => 'Payfee',
                 'type' => 'submit',
                 'class' => 'register-btn'
-                    ), '<i class="fa fa-arrow-circle-right"></i> Renewal');
+                    ), '<i class="fa fa-arrow-circle-right"></i> ' . Myclass::t('OR536', '', 'or'));
             ?>
         </div>  
     </div>            
@@ -31,55 +40,55 @@
                 <?php
                 $gridColumns = array(
                     array(
-                        'header' => 'S.No',
+                        'header' => '#',
                         'value' => '++$row',
                     ),
                     'purchase_type',
                     array(
-                        'header' => 'Price',
+                        'header' => Myclass::t('OR576', '', 'or'),
                         'name' => 'rep_single_price',
                         'value' => 'Myclass::currencyFormat($data->rep_single_price)'
                     ),
                     array(
-                        'header' => 'No Of Months',
+                        'header' => Myclass::t('OR559', '', 'or'),
                         'name' => 'rep_single_no_of_months',
                     ),
                     array(
-                        'header' => 'Total Month Price',
+                        'header' => Myclass::t('OR561', '', 'or'),
                         'name' => 'rep_single_total_month_price',
                         'value' => 'Myclass::currencyFormat($data->rep_single_total_month_price)'
                     ),
                     array(
-                        'header' => 'Offer (%)',
+                        'header' => Myclass::t('OR562', '', 'or') . ' (%)',
                         'name' => 'offer_in_percentage',
                     ),
                     array(
-                        'header' => 'Offer Price',
+                        'header' => Myclass::t('OR563', '', 'or'),
                         'name' => 'offer_price',
                         'value' => 'Myclass::currencyFormat($data->offer_price)'
                     ),
                     array(
-                        'header' => 'Total',
+                        'header' => Myclass::t('OR539', '', 'or'),
                         'name' => 'rep_single_total',
                         'value' => 'Myclass::currencyFormat($data->rep_single_total)'
                     ),
                     array(
-                        'header' => 'Tax',
+                        'header' => Myclass::t('OR540', '', 'or'),
                         'name' => 'rep_single_tax',
                         'value' => 'Myclass::currencyFormat($data->rep_single_tax)'
                     ),
                     array(
-                        'header' => 'Grand Total',
+                        'header' => Myclass::t('OR541', '', 'or'),
                         'name' => 'rep_single_grand_total',
                         'value' => 'Myclass::currencyFormat($data->rep_single_grand_total)'
                     ),
                     array(
-                        'header' => 'Subscription Start',
+                        'header' => Myclass::t('OR577', '', 'or'),
                         'name' => 'rep_single_subscription_start',
                         'value' => 'Myclass::dateFormat($data->rep_single_subscription_start)'
                     ),
                     array(
-                        'header' => 'Subscription End',
+                        'header' => Myclass::t('OR578', '', 'or'),
                         'name' => 'rep_single_subscription_end',
                         'value' => 'Myclass::dateFormat($data->rep_single_subscription_end)'
                     ),

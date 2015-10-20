@@ -4,7 +4,7 @@ $form = $this->beginWidget('CActiveForm', array(
         ));
 ?>
 <div class="cate-bg user-right">
-    <h2> Buy More Rep Accounts </h2>
+    <h2> <?php echo Myclass::t('OR528', '', 'or'); ?> </h2>
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">    
             <div class="form-group"> 
@@ -27,19 +27,19 @@ $form = $this->beginWidget('CActiveForm', array(
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 price-details">
                         <table class="table table-bordered">
                             <tr>
-                                <td>Price Per Account : </td>
+                                <td> <?php echo Myclass::t('OR538', '', 'or'); ?> : </td>
                                 <td><span id="per_acc_price"></span></td>
                             </tr>
                             <tr>
-                                <td>Total : </td>
+                                <td> <?php echo Myclass::t('OR539', '', 'or'); ?> : </td>
                                 <td><span id="total_price"></span></td>
                             </tr>
                             <tr>
-                                <td>Tax : </td>
+                                <td> <?php echo Myclass::t('OR540', '', 'or'); ?> : </td>
                                 <td><span id="tax_price"></span></td>
                             </tr>
                             <tr>
-                                <td>Grand Total : </td>
+                                <td> <?php echo Myclass::t('OR541', '', 'or'); ?> : </td>
                                 <td><span id="grand_total"></span></td>
                             </tr>
                         </table>
@@ -54,7 +54,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 'name' => 'btnSubmit',
                 'type' => 'submit',
                 'class' => 'register-btn'
-                    ), 'Buy');
+                    ), Myclass::t('OR542', '', 'or'));
             ?>
         </div>
     </div>

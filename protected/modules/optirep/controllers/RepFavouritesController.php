@@ -24,7 +24,7 @@ class RepFavouritesController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index','updatefav'),
+                'actions' => array('index', 'updatefav'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -40,29 +40,26 @@ class RepFavouritesController extends ORController {
     public function actionIndex() {
         $this->render('index');
     }
-    
-     public function actionUpdatefav()
-    {
-        $rep_id     = Yii::app()->user->id;
-        $retailerid = isset($_POST['id']) ? $_POST['id'] : '';        
-        $favstatus  = isset($_POST['favstatus']) ? $_POST['favstatus'] : '';
-        
-        if($favstatus!='' && $retailerid!='' && $rep_id!='')
-        {
-            if($favstatus=="removefav")
-            {
+
+    public function actionUpdatefav() {
+        $rep_id = Yii::app()->user->id;
+        $retailerid = isset($_POST['id']) ? $_POST['id'] : '';
+        $favstatus = isset($_POST['favstatus']) ? $_POST['favstatus'] : '';
+
+        if ($favstatus != '' && $retailerid != '' && $rep_id != '') {
+            if ($favstatus == "removefav") {
                 $criteria = new CDbCriteria;
-                $criteria->condition = 'rep_credential_id=:repid and ID_UTILISATEUR= :retid'; 
+                $criteria->condition = 'rep_credential_id=:repid and ID_UTILISATEUR= :retid';
                 $criteria->params = array(":repid" => $rep_id, ":retid" => $retailerid);
                 $favourites = RepFavourites::model()->find($criteria);
                 $favourites->delete();
-            }  else {
-               $favourites = new RepFavourites;
-               $favourites->rep_credential_id = $rep_id;
-               $favourites->ID_UTILISATEUR  = $retailerid;
-               $favourites->save();
-            }    
-        }    
-    }        
+            } else {
+                $favourites = new RepFavourites;
+                $favourites->rep_credential_id = $rep_id;
+                $favourites->ID_UTILISATEUR = $retailerid;
+                $favourites->save();
+            }
+        }
+    }
 
 }

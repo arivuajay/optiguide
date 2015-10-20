@@ -36,10 +36,10 @@ class DashboardController extends ORController {
             ),
         );
     }
-    
-    public function actionIndex(){
+
+    public function actionIndex() {
         $this->layout = '//layouts/column1';
-        
+
         $response = array();
 
         $dates = array();
@@ -61,8 +61,6 @@ class DashboardController extends ORController {
         }
 
         $this->render('index', array('response' => $response));
-    
     }
-
 
 }

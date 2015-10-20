@@ -1,6 +1,6 @@
 <?php $this->renderPartial('_register_steps', array('step' => $step)); ?>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 landing-left">  
-    <h2> Basic Information </h2>
+    <h2> <?php echo Myclass::t('OR549', '', 'or'); ?> </h2>
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'rep-credential-form',
@@ -48,7 +48,7 @@
                 <?php echo $form->labelEx($model, 'no_of_accounts_purchase'); ?>
                 <?php echo $form->numberField($model, 'no_of_accounts_purchase', array('class' => 'form-field', "min" => "1", "step" => "1")); ?>
             </div>            
-          
+
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <?php echo $form->labelEx($profile, 'rep_address'); ?>
@@ -69,15 +69,17 @@
                 <?php echo $form->labelEx($profile, 'ID_VILLE'); ?>
                 <?php echo $form->dropDownList($profile, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
             </div>
-            
-              <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <?php echo $form->labelEx($model, 'no_of_months'); ?>
                 <?php echo $form->dropDownList($model, 'no_of_months', $no_of_months, array('class' => 'selectpicker')); ?>  
             </div>
-            
-             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                        
-                <a class="mapgenrate" href="javascript:void(0);" id="genratemap">Click to View your location</a>
-                <div id="display_map" style="display:none;width:auto;height:350px;"></div>                                                   
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                        
+                <a class="mapgenrate" href="javascript:void(0);" id="genratemap">
+                    <?php echo Myclass::t('OR553', '', 'or'); ?>
+                </a>
+                <div id="display_map" style="display:none;width:auto;height:350px;"></div>                                   
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 pull-right steps-btn-cont"> 
@@ -86,7 +88,7 @@
                     'name' => 'btnSubmit',
                     'type' => 'submit',
                     'class' => 'register-btn'
-                        ), ' Next <i class="fa fa-angle-double-right"></i>');
+                        ), Myclass::t('OR557', '', 'or') . ' <i class="fa fa-angle-double-right"></i>');
                 ?>
             </div>
         </div>
@@ -99,7 +101,7 @@
 $ajaxRegionUrl = Yii::app()->createUrl('/optirep/repCredential/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/optirep/repCredential/getcities');
 
-$ajaxgetlocation   = Yii::app()->createUrl('/optirep/repCredential/generatelatlong');
+$ajaxgetlocation = Yii::app()->createUrl('/optirep/repCredential/generatelatlong');
 $cs = Yii::app()->getClientScript();
 $cs_pos_end = CClientScript::POS_END;
 $cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
