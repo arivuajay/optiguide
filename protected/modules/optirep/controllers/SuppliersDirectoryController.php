@@ -45,7 +45,7 @@ class SuppliersDirectoryController extends ORController {
      * @param integer $id the ID of the model to be displayed
      */
     public function actionView() {
-
+        
         $id = Yii::app()->request->getParam('id');
         $sectionid = Yii::app()->request->getParam('sectionid');
         $productid = Yii::app()->request->getParam('productid');
@@ -66,7 +66,7 @@ class SuppliersDirectoryController extends ORController {
 
             // Get all records list  with limit
             $results = Yii::app()->db->createCommand() //this query contains all the data
-                    ->select('rc.rep_credential_id , rc.rep_username, NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
+                    ->select('rc.rep_credential_id , rc.rep_username, NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
                     ->from(array('rep_credentials rc', 'rep_credential_profiles rcf', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
                     ->where("rc.rep_credential_id=rcf.rep_credential_id AND rcf.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and rc.rep_status='1' and rep_role='single' " . $rep_query)
                     ->order('rc.rep_username ASC')               
@@ -130,7 +130,7 @@ class SuppliersDirectoryController extends ORController {
     public function actionGetproducts() {
         $options = '';
         $sid = isset($_POST['id']) ? $_POST['id'] : '';
-        $options = "<option value=''>" . Myclass::t('OG066', '', 'og') . "</option>";
+        $options = "<option value=''>" . Myclass::t('OR066', '', 'or') . "</option>";
         if ($sid != '') {
             $criteria = new CDbCriteria;
             $criteria->order = 'NOM_PRODUIT_' . $this->lang . ' ASC';

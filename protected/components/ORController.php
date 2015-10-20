@@ -21,14 +21,17 @@ class ORController extends Controller {
         if (isset($_POST['_lang'])) {
             $app->language = $_POST['_lang'];
             $app->session['_lang'] = $app->language;
+            //
             Yii::app()->session['language'] = strtoupper($app->language);
         } else if (isset($app->session['_lang'])) {
             $app->language = $app->session['_lang'];
             Yii::app()->session['language'] = strtoupper($app->language);
         } else {
-            $app->language = 'en';
+            $app->language = 'fr';
             Yii::app()->session['language'] = strtoupper($app->language);
         }
+        
+        $this->lang = strtoupper($app->language);
     }
 
 }

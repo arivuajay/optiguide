@@ -42,7 +42,7 @@
         <!-- Contact information-->
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">  
             <div class="search-list">
-                <h2><i class="fa fa-map-marker"></i> <?php echo Myclass::t('OG071', '', 'og'); ?> </h2>
+                <h2><i class="fa fa-map-marker"></i> <?php echo Myclass::t('OR071', '', 'or'); ?> </h2>
                 <div class="clearfix"></div>
                 <p> 
                     <?php echo $model['ADRESSE']; ?>. <br/> 
@@ -52,18 +52,18 @@
                 </p>
                 <?php if ($disp == 1) { ?>
                     <p>
-                        <?php echo Myclass::t('OG041', '', 'og'); ?> : <?php echo $model['TELEPHONE']; ?><br>                       
+                        <?php echo Myclass::t('OR041', '', 'or'); ?> : <?php echo $model['TELEPHONE']; ?><br>                       
                         <?php
                         if ($model['TELECOPIEUR'] != '') {
-                            echo Myclass::t('OG042', '', 'og') . ' : ' . $model['TELECOPIEUR'] . '<br>';
+                            echo Myclass::t('OR042', '', 'or') . ' : ' . $model['TELECOPIEUR'] . '<br>';
                         }
 
                         if ($model['TEL_SANS_FRAIS'] != '') {
-                            echo Myclass::t('OG068', '', 'og') . ' : ' . $model['TEL_SANS_FRAIS'] . '<br>';
+                            echo Myclass::t('OR068', '', 'or') . ' : ' . $model['TEL_SANS_FRAIS'] . '<br>';
                         }
 
                         if ($model['TEL_SECONDAIRE'] != '') {
-                            echo Myclass::t('OG069', '', 'og') . ' : ' . $model['TEL_SECONDAIRE'] . '<br>';
+                            echo Myclass::t('OR069', '', 'or') . ' : ' . $model['TEL_SECONDAIRE'] . '<br>';
                         }
                         ?>                          
                     </p>                                                   
@@ -88,7 +88,7 @@
 
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">  
                 <div class="search-list">
-                    <h2><i class="fa fa-building-o"></i>  <?php echo Myclass::t('OG072', '', 'og'); ?> </h2>
+                    <h2><i class="fa fa-building-o"></i>  <?php echo Myclass::t('OR072', '', 'or'); ?> </h2>
                     <p><?php
                         if ($model['SUCCURSALES'] != '') {
                             echo "<b>" . Myclass::t('OG130') . "</b> : " . $model['SUCCURSALES'] . "<br/>";
@@ -141,7 +141,7 @@
 
                     <?php
                     if ($model['REGIONS_' . $lang] != '') {
-                        echo "<p><b>" . Myclass::t('OG070', '', 'og') . "</b> <br/>" . $model['REGIONS_' . $lang] . "</p>";
+                        echo "<p><b>" . Myclass::t('OR070', '', 'or') . "</b> <br/>" . $model['REGIONS_' . $lang] . "</p>";
                     }
                     ?>
                 </div>
@@ -150,7 +150,7 @@
           <?php
          if (!empty($supplierproducts)) {?>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
-                <h2> <i class="fa fa-cubes"></i> <?php echo Myclass::t('OG073', '', 'og'); ?> </h2> 
+                <h2> <i class="fa fa-cubes"></i> <?php echo Myclass::t('OR073', '', 'or'); ?> </h2> 
                 <div class="box" id="box1">
                     <div class="brands">
                         <p>
@@ -187,7 +187,7 @@
              <?php
              if (!empty($results)) {?>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
-                <h2> <i class="fa fa-users"></i> <?php echo Myclass::t('OGO181', '', 'og'); ?> </h2> 
+                <h2> <i class="fa fa-users"></i> <?php echo Myclass::t('ORO181', '', 'or'); ?> </h2> 
                 <div class="repbox" id="repbox">
                     <div class="brands">
                         <p>

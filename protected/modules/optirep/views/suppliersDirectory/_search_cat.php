@@ -1,6 +1,6 @@
 <div class="search-bg"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "> 
-        <div class="search-heading">  <i class="fa fa-users"></i>  <?php echo Myclass::t('OG077', '', 'og') ?> </div>
+        <div class="search-heading">  <i class="fa fa-users"></i>  <?php echo Myclass::t('OR077', '', 'or') ?> </div>
     </div>
     <?php
      $form = $this->beginWidget('CActiveForm', array(
@@ -18,16 +18,16 @@
     }    
     ?>
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'ID_SECTION', $sectiontypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG065', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'ID_SECTION', $sectiontypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OR065', '', 'or'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'PROD_SERVICE', $prod_services, array('class' => 'selectpicker', 'empty' => Myclass::t('OG066', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'PROD_SERVICE', $prod_services, array('class' => 'selectpicker', 'empty' => Myclass::t('OR066', '', 'or'))); ?> 
     </div>
    
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo CHtml::submitButton(Myclass::t('OG024', '', 'og'), array('class' => 'find-btn')); ?>
+        <?php echo CHtml::submitButton(Myclass::t('OR024', '', 'or'), array('class' => 'find-btn')); ?>
     </div>
     <?php $this->endWidget(); ?>
 </div>
