@@ -42,30 +42,30 @@ class InternalMessageController extends ORController {
     }
 
     public function actionCreatenew() {
-        
+
         $model = new InternalMessage;
-      
+
         if (isset($_POST['SendMessage'])) {
-            
-            $model->attributes = $_POST['InternalMessage'];          
-             
+
+            $model->attributes = $_POST['InternalMessage'];
+
             // Genreate the conversation id
-            $criteria=new CDbCriteria;
-            $criteria->select='max(id1) AS maxColumn';
+            $criteria = new CDbCriteria;
+            $criteria->select = 'max(id1) AS maxColumn';
             $row = InternalMessage::model()->find($criteria);
             $npm_count = $row['maxColumn'];
-            $id1 = $npm_count+1;              
+            $id1 = $npm_count + 1;
 
             // Get sender detail
-            $sess_id    = Yii::app()->user->id;
-            $condition  = " NOM_TABLE='rep_credentials' AND ID_RELATION='$sess_id' ";
+            $sess_id = Yii::app()->user->id;
+            $condition = " NOM_TABLE='rep_credentials' AND ID_RELATION='$sess_id' ";
             $ufrm_infos = UserDirectory::model()->find($condition);
 
             $model->message = nl2br($_POST['InternalMessage']['message']);
             // conversation id
-            $model->id1   = $id1;
+            $model->id1 = $id1;
             // New conversation start        
-            $model->id2   = 1;
+            $model->id2 = 1;
             // Sender
             $model->user1 = $ufrm_infos->ID_UTILISATEUR;
             // Receiver   (the value send through post)    
@@ -74,71 +74,68 @@ class InternalMessageController extends ORController {
             $model->user1read = "yes";
             $model->user2read = "no";
 
-            $model->save(false);     
+            $model->save(false);
 
             // Get user infos
             $ret_prof_id = $model->user2;
-            $ret_infos   = UserDirectory::model()->findByPk($ret_prof_id);
-            $ret_name    = $ret_infos->NOM_UTILISATEUR;
-            $ret_email   = $ret_infos->COURRIEL;
-            $todaydate   = date("d-m-Y");
-            
-            $redirect_id   = $ret_infos->ID_RELATION;
-            
-            $identy_user    = $ret_infos->NOM_TABLE;
-            if($identy_user=="Professionnels")
-            {
-                $directoryname = "professionalDirectory";
-            }else if($identy_user=="Detaillants")
-            {    
-                $directoryname = "retailerDirectory";
-            }    
-             
+            $ret_infos = UserDirectory::model()->findByPk($ret_prof_id);
+            $ret_name = $ret_infos->NOM_UTILISATEUR;
+            $ret_email = $ret_infos->COURRIEL;
+            $todaydate = date("d-m-Y");
 
-            if($ret_email!= '')
-            {    
+            $redirect_id = $ret_infos->ID_RELATION;
+
+            $identy_user = $ret_infos->NOM_TABLE;
+            if ($identy_user == "Professionnels") {
+                $directoryname = "professionalDirectory";
+            } else if ($identy_user == "Detaillants") {
+                $directoryname = "retailerDirectory";
+            }
+
+
+            if ($ret_email != '') {
                 /* Send notification mail to rep */
-                $mail         = new Sendmail();
-                $nextstep_url = GUIDEURL.'/optiguide/internalMessage/readmessage/convid/' .$model->id1;           
-                $subject      = SITENAME." - ".$ufrm_infos->NOM_UTILISATEUR." sent message for you ( ".$todaydate." )";
-                $trans_array  = array(
+                $mail = new Sendmail();
+                $nextstep_url = GUIDEURL . '/optiguide/internalMessage/readmessage/convid/' . $model->id1;
+                $subject = SITENAME . " - " . $ufrm_infos->NOM_UTILISATEUR . " sent message for you ( " . $todaydate . " )";
+                $trans_array = array(
                     "{SITENAME}" => SITENAME,
-                    "{NAME}"     => $ufrm_infos->NOM_UTILISATEUR,
-                    "{RNAME}"    => $ret_name,
-                    "{MESSAGE}"  => $conv_message,
+                    "{NAME}" => $ufrm_infos->NOM_UTILISATEUR,
+                    "{RNAME}" => $ret_name,
+                    "{MESSAGE}" => $conv_message,
                     "{NEXTSTEPURL}" => $nextstep_url,
                 );
                 $message = $mail->getMessage('internalmessage_notify', $trans_array);
                 $mail->send($ret_email, $subject, $message);
-            } 
+            }
 
-            Yii::app()->user->setFlash('success', "Message sent successfully!!!");
-            $this->redirect(array($directoryname.'/view','id'=>$redirect_id));
+            Yii::app()->user->setFlash('success', Myclass::t("OR615", "", "or"));
+            $this->redirect(array($directoryname . '/view', 'id' => $redirect_id));
         }
     }
-    
-     public function actionReadmessage() {
-        
+
+    public function actionReadmessage() {
+
         $model = new InternalMessage;
-        
-        $sess_id    = Yii::app()->user->id;
-        $condition  = " NOM_TABLE='rep_credentials' AND ID_RELATION='$sess_id' ";
+
+        $sess_id = Yii::app()->user->id;
+        $condition = " NOM_TABLE='rep_credentials' AND ID_RELATION='$sess_id' ";
         $ufrm_infos = UserDirectory::model()->find($condition);
         $session_userid = $ufrm_infos->ID_UTILISATEUR;
-        
+
         $convid = Yii::app()->getRequest()->getQuery('convid');
-        
-        
-         if (isset($_POST['btnSubmit'])) {
+
+
+        if (isset($_POST['btnSubmit'])) {
 
             $model->attributes = $_POST['InternalMessage'];
             $valid = $model->validate();
             if ($valid) {
-            
+
                 // conversation id
-                $conv_message   = nl2br($_POST['InternalMessage']['message']);
+                $conv_message = nl2br($_POST['InternalMessage']['message']);
                 $model->message = $conv_message;
-               
+
                 $model->id1 = $convid;
                 // Sender
                 $model->user1 = $session_userid;
@@ -147,87 +144,77 @@ class InternalMessageController extends ORController {
                 $model->timestamp = time();
                 $model->user1read = "yes";
                 $model->user2read = "no";
-                             
+
                 $model->save(false);
-                
+
                 // Get rep infos
                 $ret_prof_id = $model->user2;
-                $ret_infos   = UserDirectory::model()->findByPk($ret_prof_id);
-                $ret_name    = $ret_infos->NOM_UTILISATEUR;
-                $ret_email   = $ret_infos->COURRIEL;
-                $todaydate   = date("d-m-Y");
-              
-                if($ret_email!= '')
-                {    
+                $ret_infos = UserDirectory::model()->findByPk($ret_prof_id);
+                $ret_name = $ret_infos->NOM_UTILISATEUR;
+                $ret_email = $ret_infos->COURRIEL;
+                $todaydate = date("d-m-Y");
+
+                if ($ret_email != '') {
                     /* Send notification mail to rep */
-                    $mail         = new Sendmail();
-                    $nextstep_url = GUIDEURL.'optiguide/internalMessage/readmessage/convid/' .$model->id1;           
-                    $subject      = SITENAME." - ".$ufrm_infos->NOM_UTILISATEUR." sent message for you ( ".$todaydate." )";
-                    $trans_array  = array(
+                    $mail = new Sendmail();
+                    $nextstep_url = GUIDEURL . 'optiguide/internalMessage/readmessage/convid/' . $model->id1;
+                    $subject = SITENAME . " - " . $ufrm_infos->NOM_UTILISATEUR . " sent message for you ( " . $todaydate . " )";
+                    $trans_array = array(
                         "{SITENAME}" => SITENAME,
-                        "{NAME}"     => $ufrm_infos->NOM_UTILISATEUR,
-                        "{RNAME}"    => $ret_name,
-                        "{MESSAGE}"  => $conv_message,
+                        "{NAME}" => $ufrm_infos->NOM_UTILISATEUR,
+                        "{RNAME}" => $ret_name,
+                        "{MESSAGE}" => $conv_message,
                         "{NEXTSTEPURL}" => $nextstep_url,
                     );
                     $message = $mail->getMessage('internalmessage_notify', $trans_array);
                     $mail->send($ret_email, $subject, $message);
-                } 
+                }
 
-                Yii::app()->user->setFlash('success', "Message send successfully!!!");
+                Yii::app()->user->setFlash('success', Myclass::t("OR615", "", "or"));
                 $this->redirect(array('index'));
             }
         }
-        
+
         // Get the message conversations
         $mymessages = array();
-        if(isset($convid))
-        {          
-           $id1      = intval($convid);
-           $msginfo  = InternalMessage::model()->findAllByAttributes(array('id1'=> $id1 , 'id2'=>"1" ));
-           $msgcount = count($msginfo);
+        if (isset($convid)) {
+            $id1 = intval($convid);
+            $msginfo = InternalMessage::model()->findAllByAttributes(array('id1' => $id1, 'id2' => "1"));
+            $msgcount = count($msginfo);
             //We check if the discussion exists
-            if($msgcount==1)
-            {
-                 foreach($msginfo as $uids)
-                {    
-                   $u1 = $uids['user1'];
-                   $u2 = $uids['user2'];
-                }  
-                       
-                if($u1 == $session_userid ||  $u2 == $session_userid)
-                {                   
-                    
+            if ($msgcount == 1) {
+                foreach ($msginfo as $uids) {
+                    $u1 = $uids['user1'];
+                    $u2 = $uids['user2'];
+                }
+
+                if ($u1 == $session_userid || $u2 == $session_userid) {
+
                     $mymessages = Yii::app()->db->createCommand() //this query contains all the data
-                    ->select('pm.timestamp, pm.message, users.ID_UTILISATEUR as userid, users.NOM_UTILISATEUR')
-                    ->from(array('internal_message pm', 'repertoire_utilisateurs users'))
-                    ->where("pm.id1='$id1' and users.ID_UTILISATEUR=pm.user1")
-                    ->order('pm.id2')
-                    ->queryAll();   
-                    
-                    
+                            ->select('pm.timestamp, pm.message, users.ID_UTILISATEUR as userid, users.NOM_UTILISATEUR')
+                            ->from(array('internal_message pm', 'repertoire_utilisateurs users'))
+                            ->where("pm.id1='$id1' and users.ID_UTILISATEUR=pm.user1")
+                            ->order('pm.id2')
+                            ->queryAll();
                 } else {
-                    Yii::app()->user->setFlash('danger', 'You dont have the rights to access this page.!');
+                    Yii::app()->user->setFlash('danger', Myclass::t("OR616", "", "or"));
                     $this->redirect(array('index'));
                 }
-                            
-            }else
-            {
-                Yii::app()->user->setFlash('danger', 'This discussion does not exists!');
+            } else {
+                Yii::app()->user->setFlash('danger', Myclass::t("OR617", "", "or"));
                 $this->redirect(array('index'));
             }
-        
-        }else
-        {
-            Yii::app()->user->setFlash('danger', 'This discussion does not exists!');
+        } else {
+            Yii::app()->user->setFlash('danger', Myclass::t("OR617", "", "or"));
             $this->redirect(array('index'));
-        }    
-        
-         
-          $this->render('read_message',array('model'=>$model,'mymessages'=>$mymessages, 'user1_id'=>$u1 , 'user2_id'=>$u2 , 'uid' => $session_userid));;
-     }
-    
-        /**
+        }
+
+
+        $this->render('read_message', array('model' => $model, 'mymessages' => $mymessages, 'user1_id' => $u1, 'user2_id' => $u2, 'uid' => $session_userid));
+        ;
+    }
+
+    /**
      * Performs the AJAX validation.
      * @param ArchiveCategory $model the model to be validated
      */
@@ -237,6 +224,5 @@ class InternalMessageController extends ORController {
             Yii::app()->end();
         }
     }
-
 
 }

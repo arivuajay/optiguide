@@ -10,13 +10,13 @@
 
     $cur_date = strtotime("now");
     if ($model['profile_expirydate'] != '') {
-        $expdate = strtotime($model['profile_expirydate']);        
+        $expdate = strtotime($model['profile_expirydate']);
         $disp = ($expdate > $cur_date) ? 1 : 0;
     } else {
         $disp = 0;
     }
-    
-     if ($model['logo_expirydate'] != '') {
+
+    if ($model['logo_expirydate'] != '') {
         $l_expdate = strtotime($model['logo_expirydate']);
         $ldisp = ($l_expdate > $cur_date) ? 1 : 0;
     } else {
@@ -26,7 +26,7 @@
     <h2> <?php echo $model['COMPAGNIE']; ?> </h2>    
     <div class="row">
         <?php
-        if ($model['ID_CATEGORIE'] > 0 && $ldisp==1) {
+        if ($model['ID_CATEGORIE'] > 0 && $ldisp == 1) {
             $extypes = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
             $img_ext = $model['EXTENSION'];
             if (in_array($img_ext, $extypes)) {
@@ -146,17 +146,16 @@
                     ?>
                 </div>
             </div>
-            
-          <?php
-         if (!empty($supplierproducts)) {?>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
-                <h2> <i class="fa fa-cubes"></i> <?php echo Myclass::t('OR073', '', 'or'); ?> </h2> 
-                <div class="box" id="box1">
-                    <div class="brands">
-                        <p>
-                        </p>
-                        <ul>
-                            <?php                           
+
+            <?php if (!empty($supplierproducts)) { ?>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
+                    <h2> <i class="fa fa-cubes"></i> <?php echo Myclass::t('OR073', '', 'or'); ?> </h2> 
+                    <div class="box" id="box1">
+                        <div class="brands">
+                            <p>
+                            </p>
+                            <ul>
+                                <?php
                                 foreach ($supplierproducts as $pkey => $products) {
                                     $exp_key = explode('~', $pkey);
                                     ?>    
@@ -176,43 +175,43 @@
                                         ?>  
                                     </li>                                                        
                                     <?php
-                                }                           
-                            ?>
-                        </ul>
-                        <p></p>
-                    </div>
-                </div>
-            </div>
-        <?php       }    ?>
-             <?php
-             if (!empty($results)) {?>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
-                <h2> <i class="fa fa-users"></i> <?php echo Myclass::t('ORO181', '', 'or'); ?> </h2> 
-                <div class="repbox" id="repbox">
-                    <div class="brands">
-                        <p>
-                        </p>
-                        <ul>
-                            <?php foreach ($results as $info) { ?>
-                            <li>
-                                <?php
-                                $dispname = $info['rep_username'].",".$info['NOM_VILLE'].",".$info['ABREVIATION_EN'].",".$info['NOM_PAYS_EN'];;
-                                echo $dispname;
+                                }
                                 ?>
-                            </li>
-                            <?php } ?>                       
-                        </ul>              
-                        <p></p>
+                            </ul>
+                            <p></p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <?php } ?>
+            <?php if (!empty($results)) { ?>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
+                    <h2> <i class="fa fa-users"></i> <?php echo Myclass::t('ORO181', '', 'or'); ?> </h2> 
+                    <div class="repbox" id="repbox">
+                        <div class="brands">
+                            <p>
+                            </p>
+                            <ul>
+                                <?php foreach ($results as $info) { ?>
+                                    <li>
+                                        <?php
+                                        $dispname = $info['rep_username'] . "," . $info['NOM_VILLE'] . "," . $info['ABREVIATION_EN'] . "," . $info['NOM_PAYS_EN'];
+                                        ;
+                                        echo $dispname;
+                                        ?>
+                                    </li>
+                                <?php } ?>                       
+                            </ul>              
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
             <?php } ?>   
 
         <?php } ?>    
 
     </div>
 
-    <div class="viewall"> <?php //echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/suppliersDirectory'), array("class" => "pull-left")); ?> </div>  
+    <div class="viewall"> <?php //echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/suppliersDirectory'), array("class" => "pull-left"));      ?> </div>  
 </div>
 <?php
 $js = <<< EOD

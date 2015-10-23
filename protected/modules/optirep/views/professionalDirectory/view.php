@@ -24,20 +24,20 @@
                     if ($fav_user != '') {
                         echo "checked=checked";
                     }
-                    ?>>  Add to Favorites 
+                    ?>>  <?php echo Myclass::t('OR631', '', 'or'); ?>
                 </div>
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> Send message', array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#sendmessage")); ?>
+                <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> ' . Myclass::t('OR621', '', 'or'), array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#sendmessage")); ?>
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> Report a change', array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#reportchange")); ?>
+                <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> ' . Myclass::t('OR632', '', 'or'), array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#reportchange")); ?>
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                <?php echo CHtml::link('<i class="fa fa fa-edit"></i> Add Note', array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#preparenote")); ?>
+                <?php echo CHtml::link('<i class="fa fa fa-edit"></i> ' . Myclass::t('OR567', '', 'or'), array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#preparenote")); ?>
             </div>
 
         </div>
@@ -100,7 +100,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Send Report</h4>
+                <h4 class="modal-title"><?php echo Myclass::t('OR633', '', 'or'); ?></h4>
             </div>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
@@ -111,16 +111,18 @@
             <div class="modal-body model-form">
                 <div class="row"> 
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <label>Report as </label>
+                        <label><?php echo Myclass::t('OR634', '', 'or'); ?> </label>
                         <select class="selectpicker" name="report_reason">
-                            <option value="moved">Moved</option>
-                            <option value="closed">Closed</option>                         
+                            <option value="moved"><?php echo Myclass::t('OR635', '', 'or'); ?></option>
+                            <option value="closed"><?php echo Myclass::t('OR636', '', 'or'); ?></option>                         
                         </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <label>Comments </label>
+                        <label><?php echo Myclass::t('OR637', '', 'or'); ?> </label>
                         <textarea class="form-field-textarea" id="report_message" name="report_message"></textarea>
-                        <div style="display:none;" class="errorMessage" id="report_error">Comments required.</div>
+                        <div style="display:none;" class="errorMessage" id="report_error">
+                            <?php echo Myclass::t('OR638', '', 'or'); ?>.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -130,7 +132,7 @@
                     'name' => 'ReportSubmit',
                     'type' => 'submit',
                     'class' => 'register-btn'
-                        ), 'Send');
+                        ), Myclass::t('OR639', '', 'or'));
                 ?>
             </div>
             <?php $this->endWidget(); ?>
@@ -145,7 +147,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Create Note</h4>
+                <h4 class="modal-title"><?php echo Myclass::t('OR640', '', 'or') ?></h4>
             </div>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
@@ -156,19 +158,25 @@
             <div class="modal-body model-form">
                 <div class="row"> 
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <label>For: </label>   <?php echo $model['NOM_UTILISATEUR']; ?>                      
+                        <label><?php echo Myclass::t('OR641', '', 'or') ?>: </label>   
+                        <?php echo $model['NOM_UTILISATEUR']; ?>                      
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <label>Notes </label>
+                        <label><?php echo Myclass::t('OR573', '', 'or') ?>: </label>
                         <textarea class="form-field-textarea" id="note_message" name="message"></textarea>
-                        <div style="display:none;" class="errorMessage" id="note_error">Notes required.</div>
+                        <div style="display:none;" class="errorMessage" id="note_error">
+                            <?php echo Myclass::t('OR642', '', 'or') ?>
+                        </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <label>Reminder Date</label>
+                        <label><?php echo Myclass::t('OR574', '', 'or') ?></label>
                         <div id="reminder_datepicker" class="input-append date">
                             <input type="text" class="form-field" name="alert_date">
                             <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
-                            <small><b>NOTE:</b> If you choose any date in the above field, you will get the reminder email in that particular date.</small>
+                            <small>
+                                <b><?php echo Myclass::t('OR569', '', 'or') ?>:</b> 
+                                <?php echo Myclass::t('OR570', '', 'or') ?>
+                            </small>
                         </div>
                     </div>
                 </div>
@@ -179,7 +187,7 @@
                     'name' => 'NoteSubmit',
                     'type' => 'submit',
                     'class' => 'register-btn'
-                        ), 'Save');
+                        ), Myclass::t('APP25'));
                 ?>
             </div>
             <?php $this->endWidget(); ?>
@@ -194,7 +202,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Send Message</h4>
+                <h4 class="modal-title"><?php echo Myclass::t('OR621', '', 'or') ?></h4>
             </div>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
@@ -206,12 +214,15 @@
             <div class="modal-body model-form">
                 <div class="row"> 
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <label>To: </label>   <?php echo $model['NOM_UTILISATEUR']; ?>                      
+                        <label><?php echo Myclass::t('OR643', '', 'or') ?>: </label>   
+                        <?php echo $model['NOM_UTILISATEUR']; ?>                      
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <label>Message </label>                       
+                        <label><?php echo Myclass::t('OR624', '', 'or') ?> </label>                       
                         <?php echo $form->textArea($internalmodel, 'message', array('class' => 'form-field-textarea', "id" => "messageval", 'maxlength' => 1000, 'rows' => 5, 'cols' => 50)); ?> 
-                        <div style="display:none;" class="errorMessage" id="message_error">Message required.</div>
+                        <div style="display:none;" class="errorMessage" id="message_error">
+                            <?php echo Myclass::t('OR644', '', 'or') ?>
+                        </div>
                     </div>
                 </div>
             </div>            
@@ -222,7 +233,7 @@
                     'name' => 'SendMessage',
                     'type' => 'submit',
                     'class' => 'register-btn'
-                        ), 'Send');
+                        ), Myclass::t('OR639', '', 'or'));
                 ?>
             </div>
             <?php $this->endWidget(); ?>

@@ -1,6 +1,6 @@
 <?php
+
 class CalenderEventController extends ORController {
-  
 
     /**
      * @return array action filters
@@ -18,26 +18,25 @@ class CalenderEventController extends ORController {
      * @return array access control rules
      */
     public function accessRules() {
-       return array_merge(
-             parent::accessRules(), 
-                array(
-                   array('allow', // allow all users to perform 'index' and 'view' actions
-                       'actions' => array(),
-                       'users' => array('*'),
-                   ),
-                   array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                       'actions' => array('index', 'view'),
-                       'users' => array('@'),
-                   ),
-                   array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                       'actions' => array(''),
-                       'users' => array(''),
-                   ),
-                   array('deny', // deny all users
-                       'users' => array('*'),
-                   ), 
+        return array_merge(
+                parent::accessRules(), array(
+            array('allow', // allow all users to perform 'index' and 'view' actions
+                'actions' => array(),
+                'users' => array('*'),
+            ),
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions' => array('index', 'view'),
+                'users' => array('@'),
+            ),
+            array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                'actions' => array(''),
+                'users' => array(''),
+            ),
+            array('deny', // deny all users
+                'users' => array('*'),
+            ),
                 )
-            );
+        );
     }
 
     /**
@@ -62,9 +61,9 @@ class CalenderEventController extends ORController {
 
         $searchModel = new CalenderEvent('search');
         $searchModel->unsetAttributes();
-        
+
         $criteria = new CDbCriteria();
-        $criteria->addCondition('LANGUE = "'.$this->lang.'"');
+        $criteria->addCondition('LANGUE = "' . $this->lang . '"');
         if (isset($_REQUEST['CalenderEvent'])) {
             $searchModel->attributes = $_REQUEST['CalenderEvent'];
             $criteria->compare('TITRE', $searchModel->TITRE, true);

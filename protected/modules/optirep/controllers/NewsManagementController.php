@@ -80,7 +80,7 @@ class NewsManagementController extends ORController {
     public function actionView($id) {
         $searchModel = new NewsManagement('search');
         $searchModel->unsetAttributes();
-        
+
         $this->render('view', array(
             'model' => $this->loadModel($id),
             'searchModel' => $searchModel,

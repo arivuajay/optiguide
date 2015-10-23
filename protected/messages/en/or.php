@@ -167,4 +167,48 @@ return array(
     //controllers/RepStatisticsController
     'OR614' => "Kindly do the payment to see the statistics chart!!",
     
+    //controllers/InternalMessageController
+    'OR615' => "Message sent successfully!!!",
+    'OR616' => 'You dont have the rights to access this page.!',
+    'OR617' => 'This discussion does not exists!',
+    
+    //controllers/ProfessionalDirectoryController
+    'OR618' => 'Maximum 50 users ( professionals / retailers ) only able to view per day. Your limits are reached today!!',
+    'OR619' => "Report sent successfully to admin!!!",
+    'OR620' => "Note Created successfully!!!",
+    
+    //views/InternalMessage
+    'OR621' => "Send message",
+    'OR622' => "Send To",
+    'OR623' => "Internal Messages",
+    'OR624' => "Message",
+    'OR625' => "Date",
+    'OR626' => "Conversation",
+    'OR627' => "Name",
+    'OR628' => "Sent",
+    'OR629' => "Reply",
+    
+    //views/ProfessionalDirectory
+    'OR630' => "Per Page",
+    'OR631' => "Add to Favorites",
+    'OR632' => "Report a change",
+    'OR633' => "Send Report",
+    'OR634' => "Report as",
+    'OR635' => "Moved",
+    'OR636' => "Closed",
+    'OR637' => "Comments",
+    'OR638' => "Comments required",
+    'OR639' => "Send",
+    'OR640' => "Create Note",
+    'OR641' => "For",
+    'OR642' => "Notes required",
+    'OR643' => "To",
+    'OR644' => "Message required",
+    
+    //views/retailerDirectory
+    'OR645' => 'Other Informations',
+    
+    //OptirepModule
+    'OR646' => 'Your account has been expired. Please renewal and continue the site features.'
+    
 );

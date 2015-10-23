@@ -1,8 +1,6 @@
 <?php
 
 return array(
-    'OR001' => 'Opti-rep Login',
-    
     // Suppliers / categories
     'OR024' => 'Trouver',
     'OR037' => 'Dernières Nouvelles',
@@ -25,4 +23,191 @@ return array(
     'OR073' => 'Marques / Produits / Services',
     'OR077' => 'Trouver un fournisseur par catégorie',
     'ORO78' => 'Trouver une marque',
+    
+    //Nadesh
+    //views/default
+    'OR501' => 'Opti-Rep Login',
+    'OR502' => "Nom d'utilisateur",
+    'OR503' => 'Mot de passe',
+    'OR504' => 'Mot de passe oublié',
+    'OR505' => "S'identifier",
+    'OR506' => 'Ne pas avoir un compte ? Signer !',
+    'OR507' => 'Inscription',
+    'OR508' => "Avoir un compte ? S'identifier !",
+    'OR509' => 'PAGE NON TROUVÉE',
+    'OR510' => "Aller à la page d'accueil",
+    
+    //views/dashboard
+    'OR511' => 'Bonjour',
+    'OR512' => "Welcome to your personalized dashboard! Here's some of the thing you can do starting from here",
+    'OR513' => "My Reps",
+    'OR514' => "Favorites",
+    'OR515' => "You have no representative users right now.",
+    'OR516' => '<a href=":url">Click</a> to add your users',
+    'OR517' => 'You have no favorite users right now.See the retailers and professionals users and make it your favorite!!!.',
+    'OR518' => 'Calendar',
+    'OR519' => 'Upcoming events',
+    'OR520' => 'No Events',
+    'OR521' => 'My Notes',
+    'OR522' => 'You have no notes right now',
+    'OR523' => '<a href=":url">Click</a> to add your notes',
+    
+    //views/repAccounts
+    'OR524' => 'Manage Rep Accounts',
+    'OR525' => 'Total no.of accounts',
+    'OR526' => 'Used accounts',
+    'OR527' => 'Create New Rep Account',
+    'OR528' => 'Buy More Rep Accounts',
+    'OR529' => 'Expiry Date',
+    'OR530' => 'Status',
+    'OR531' => 'Actions',
+    'OR532' => 'ACTIVE',
+    'OR533' => 'BLOCK',
+    'OR534' => 'Are you sure?',
+    'OR535' => 'No Records Found',
+    'OR536' => 'Renewal',
+    'OR537' => 'Edit Rep Account',
+    'OR538' => 'Price Per Account',
+    'OR539' => 'Total',
+    'OR540' => 'Tax',
+    'OR541' => 'Grand Total',
+    'OR542' => 'Buy',
+    'OR543' => 'Renewal Rep Accounts',
+    'OR544' => 'No Of Accounts Renewal',
+    'OR545' => 'Subscription Details',
+    'OR546' => 'Payment Transactions',
+    
+    //views/repCredentials
+    'OR547' => 'Step',
+    'OR548' => 'Select The Subscription',
+    'OR549' => 'Basic Information',
+    'OR550' => 'Payment',
+    'OR551' => 'Change Password',
+    'OR552' => 'Edit profile',
+    'OR553' => 'Click to View your location',
+    'OR554' => 'Search',
+    'OR555' => 'Price & Subscription',
+    'OR556' => 'Subscribe',
+    'OR557' => 'Next',
+    'OR558' => 'No of Accounts Purchased',
+    'OR559' => 'No of Months',
+    'OR560' => 'Price Per Account / Per Month',
+    'OR561' => 'Total Months Price',
+    'OR562' => 'Offer',
+    'OR563' => 'Offer Price',
+    'OR564' => 'Make a payment',
+    
+    //views/repFavorites
+    'OR565' => 'Favorite Users',
+    'OR566' => 'Type',
+    
+    //views/repNotes
+    'OR567' => 'Add Note',
+    'OR568' => 'Update Note',
+    'OR569' => 'NOTE',
+    'OR570' => 'If you choose any date in the above field, you will get the reminder email in that particular date.',
+    'OR571' => 'Back',
+    'OR572' => 'User',
+    'OR573' => 'Notes',
+    'OR574' => 'Reminder Date',
+    'OR575' => 'Created',
+    
+    //views/repSingleSubscriptions
+    'OR576' => 'Price',
+    'OR577' => 'Subscription Start',
+    'OR578' => 'Subscription End',
+    
+    //views/repStatistics
+    'OR579' => 'My Logged in Activities',
+    'OR580' => 'Statistics Payment',
+    'OR581' => 'Subscription Fee (Per month)',
+    'OR582' => 'RENEW NOW',
+    'OR583' => 'PAY NOW',
+    'OR584' => 'Payment details',
+    'OR585' => 'Users profiles viewed stats',
+    'OR586' => 'Users log stats',
+    
+    //controllers/DefaultController
+    'OR587' => 'This Username Not Exists!!!',
+    'OR588' => 'New Password has been sent to your registered email. Please check your email',
+    
+    //controllers/RepAccountsController
+    'OR589' => 'Kindly select the rep accounts for Renewal',
+    'OR590' => 'Sorry, you can\'t create new rep account',
+    'OR591' => 'Rep account created successfully!!!',
+    'OR592' => "Sorry, you don't have access to edit this account",
+    'OR593' => "Rep account edited successfully!!!",
+    'OR594' => "Rep account deleted successfully!!!",
+    'OR595' => "Sorry, you can not buy more accounts",
+    'OR596' => 'Your subscription has been cancelled. Please try again.',
+    'OR597' => "Your payment status is pending. Admin will verify your payment details.",
+    'OR598' => "Thanks for your subscription! Now you can add more rep accounts",
+    'OR599' => "Your subscription payment is failed. Please try again later or contact admin.",
+    'OR600' => 'Your renewal has been cancelled. Please try again.',
+    'OR601' => "Thanks for your renewal!",
+    'OR602' => "Your renewal payment is failed. Please try again later or contact admin.",
+    
+    //controllers/RepCredentialController
+    'OR603' => 'Your registration has been cancelled. Please try again.',
+    'OR604' => "Your payment status is pending. Please contact Admin.",
+    'OR605' => "Thanks for your registration!.",
+    'OR606' => "Your registration payment is failed. Please try again later or contact admin.",
+    'OR607' => "Profile updated successfully!!!",
+    'OR608' => "Successfully changed password",
+    'OR609' => "Password not changed",
+    
+    //controllers/RepNotesController
+    'OR610' => 'Notes Created Successfully!!!',
+    'OR611' => 'Notes Updated Successfully!!!',
+    'OR612' => 'Note deleted Successfully!!!',
+    
+    //controllers/RepSingleSubscriptionsController
+    'OR613' => 'Your renewal has been cancelled. Please try again.',
+    
+    //controllers/RepStatisticsController
+    'OR614' => "Kindly do the payment to see the statistics chart!!",
+    
+    //controllers/InternalMessageController
+    'OR615' => "Message sent successfully!!!",
+    'OR616' => 'You dont have the rights to access this page.!',
+    'OR617' => 'This discussion does not exists!',
+    
+    //controllers/ProfessionalDirectoryController
+    'OR618' => 'Maximum 50 users ( professionals / retailers ) only able to view per day. Your limits are reached today!!',
+    'OR619' => "Report sent successfully to admin!!!",
+    'OR620' => "Note Created successfully!!!",
+    
+    //views/InternalMessage
+    'OR621' => "Send message",
+    'OR622' => "Send To",
+    'OR623' => "Internal Messages",
+    'OR624' => "Message",
+    'OR625' => "Date",
+    'OR626' => "Conversation",
+    'OR627' => "Name",
+    'OR628' => "Sent",
+    'OR629' => "Reply",
+    
+    //views/ProfessionalDirectory
+    'OR630' => "Per Page",
+    'OR631' => "Add to Favorites",
+    'OR632' => "Report a change",
+    'OR633' => "Send Report",
+    'OR634' => "Report as",
+    'OR635' => "Moved",
+    'OR636' => "Closed",
+    'OR637' => "Comments",
+    'OR638' => "Comments required",
+    'OR639' => "Send",
+    'OR640' => "Create Note",
+    'OR641' => "For",
+    'OR642' => "Notes required",
+    'OR643' => "To",
+    'OR644' => "Message required",
+    
+    //views/retailerDirectory
+    'OR645' => 'Other Informations',
+    
+    //OptirepModule
+    'OR646' => 'Your account has been expired. Please renewal and continue the site features.'
 );

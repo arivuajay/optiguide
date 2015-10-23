@@ -69,7 +69,7 @@ class ProfessionalDirectoryController extends ORController {
 
         }else  if($viewcounts>=50)
         {
-            Yii::app()->user->setFlash('info', 'Maximum 50 users ( professionals / retailers ) only able to view per day. Your limits are reached today!!');
+            Yii::app()->user->setFlash('info', Myclass::t("OR618", "", "or"));
             $this->redirect(array('index'));
         }         
         // Add the view count
@@ -136,7 +136,7 @@ class ProfessionalDirectoryController extends ORController {
             $message = $mail->getMessage('report_change', $trans_array);
             $mail->send(ADMIN_EMAIL, $subject, $message);
                     
-            Yii::app()->user->setFlash('success', "Report sent successfully to admin!!!");    
+            Yii::app()->user->setFlash('success', Myclass::t("OR619", "", "or"));    
             $this->redirect(array('view', 'id'=>$id));
         }
         
@@ -154,7 +154,7 @@ class ProfessionalDirectoryController extends ORController {
             $notemodel->ID_UTILISATEUR = $prof_query['ID_UTILISATEUR'];
             $notemodel->save(false);
              
-            Yii::app()->user->setFlash('success', "Note Created successfully!!!");    
+            Yii::app()->user->setFlash('success', Myclass::t("OR620", "", "or"));    
             $this->redirect(array('view', 'id'=>$id));
              
         }
