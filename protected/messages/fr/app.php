@@ -190,6 +190,9 @@ return array(
     
     'OG167' => 'Ajouter Produits & Services',
     'OG168' => 'S\'il vous plaît nous contacter si vous souhaitez ajouter une nouvelle catégorie .',
+    'OG169' => 'Sélectionnez Marques',
+    'OG170' => 'Êtes-vous sûr de vouloir supprimer ?',
+    'OG171' => 'Marques choisies',
     
 );
 ?>

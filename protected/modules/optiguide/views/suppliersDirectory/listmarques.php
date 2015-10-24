@@ -20,6 +20,10 @@ if (Yii::app()->user->hasState("product_ids")) {
 $currenturl = Yii::app()->request->url;
 $secondstep_url = Yii::app()->createUrl('/optiguide/suppliersDirectory/updateproducts/');
 $thirdstep_url  = Yii::app()->createUrl('/optiguide/suppliersDirectory/updatemarques/');
+
+$product_infos = ProductDirectory::model()->findByPk($pid);
+$pname = "NOM_PRODUIT_".Yii::app()->session['language'];
+
 ?> 
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subscribe-btncont"> 
@@ -51,7 +55,7 @@ $thirdstep_url  = Yii::app()->createUrl('/optiguide/suppliersDirectory/updatemar
             ));
             ?>
             <div class="forms-cont">  
-                <div class="forms-heading"><i class="fa fa-cubes"></i> <?php echo Myclass::t('OGO101', '', 'og'); ?></div>
+                <div class="forms-heading"><i class="fa fa-cubes"></i> <?php echo Myclass::t('OGO101', '', 'og'). " - " .$product_infos->$pname; ?></div>
                 <div class="row"> 
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">
                         <div class="box" id="box1">

@@ -33,11 +33,11 @@ class SuppliersDirectoryController extends OGController {
         return array_merge(
                 parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify', 'renewpaypalnotify'),
+                'actions' => array('create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify', 'renewpaypalnotify','delproducts'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('update', 'updateproducts','updatemarques', 'updatelogo' ,'transactions', 'mappingreps', 'listreps', 'renewsubscription','renewpaypalreturn','renewpaypalcancel', 'renewpaypalnotify'),
+                'actions' => array('update', 'updateproducts','updatemarques', 'updatelogo' ,'transactions', 'mappingreps', 'listreps', 'renewsubscription','renewpaypalreturn','renewpaypalcancel', 'renewpaypalnotify' ),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -639,11 +639,10 @@ class SuppliersDirectoryController extends OGController {
         if (!Yii::app()->user->isGuest) {
             $this->redirect(array('index'));
         }
-
-
+        
         $sess_product_ids = array();
         $data_products = array();
-
+      
         if (Yii::app()->user->hasState("mattributes")) {
             $sess_attr_m = Yii::app()->user->getState("mattributes");
         }
@@ -666,35 +665,7 @@ class SuppliersDirectoryController extends OGController {
             $sess_attr_u = Yii::app()->user->getState("uattributes");
             $umodel->attributes = $sess_attr_u;
         }
-
-        // Delete products from session
-        if (isset($_POST['yt0'])) {
-
-            $sess_product_ids = Yii::app()->user->getState("product_ids");
-
-            $pids = isset($_POST['productid']) ? $_POST['productid'] : '';
-            if ($pids != '') {
-                foreach ($pids as $pid) {
-                    if (($key = array_search($pid, $sess_product_ids)) !== FALSE) {
-                        // Remove from array
-                        unset($sess_product_ids[$key]);
-                    }
-
-                    if (Yii::app()->user->hasState("marque_ids")) {
-                        // UNset marque ids for the product                   
-                        $sess_marque_ids = Yii::app()->user->getState("marque_ids");
-                        if (array_key_exists($pid, $sess_marque_ids)) {
-                            // Remove from array                      
-                            unset($sess_marque_ids[$pid]);
-                        }
-                    }
-                }
-                Yii::app()->user->setState("product_ids", $sess_product_ids);
-                Yii::app()->user->setState("marque_ids", $sess_marque_ids);
-            }
-        }
-
-
+        
         if (Yii::app()->user->hasState("product_ids")) {
             $sess_product_ids = Yii::app()->user->getState("product_ids");
             $data_products = SuppliersDirectory::getproducts($sess_product_ids);
@@ -703,7 +674,7 @@ class SuppliersDirectoryController extends OGController {
                 Yii::app()->user->setState("marque_ids", null);
             }
         }
-
+        
         $tab = 3;
         $viewpage = '_products_marques_form';
         $this->render($viewpage, compact('model', 'tab', 'data_products'));
@@ -1384,8 +1355,8 @@ class SuppliersDirectoryController extends OGController {
             Yii::app()->user->setFlash('success', Myclass::t('OGO144', '', 'og'));
             $this->redirect(array('updatemarques'));
         }
-
-        // Delete products from session
+        
+         // Delete products from session
         if (isset($_POST['yt0'])) {
 
             $sess_product_ids = Yii::app()->user->getState("product_ids");
@@ -1412,7 +1383,6 @@ class SuppliersDirectoryController extends OGController {
             }
         }
 
-
         if (Yii::app()->user->hasState("product_ids")) {
             $sess_product_ids = Yii::app()->user->getState("product_ids");
         
@@ -1427,6 +1397,36 @@ class SuppliersDirectoryController extends OGController {
         $viewpage = '_update_products_marques_form';
         $this->render($viewpage, compact('model', 'tab', 'data_products'));
     }
+    
+    public function actionDelproducts($id)
+    {
+        $sess_product_ids = Yii::app()->user->getState("product_ids");
+
+        $pid = isset($id) ? $id : '';
+        
+        if ($pid != '') {
+           // foreach ($pids as $pid) {
+                if (($key = array_search($pid, $sess_product_ids)) !== FALSE) {
+                    // Remove from array
+                    unset($sess_product_ids[$key]);
+                }
+
+                if (Yii::app()->user->hasState("marque_ids")) {
+                    // UNset marque ids for the product                   
+                    $sess_marque_ids = Yii::app()->user->getState("marque_ids");
+                    if (array_key_exists($pid, $sess_marque_ids)) {
+                        // Remove from array                      
+                        unset($sess_marque_ids[$pid]);
+                    }
+                }
+           // }
+            Yii::app()->user->setState("product_ids", $sess_product_ids);
+            Yii::app()->user->setState("marque_ids", $sess_marque_ids);
+        }
+        
+        // redirect to success page        
+        $this->redirect(array('addmarques'));
+    }        
 
     public function actionTransactions() {
         

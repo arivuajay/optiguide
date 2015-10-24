@@ -369,8 +369,29 @@ and open the template in the editor.
 {
     background:none;
 }
+
 .paidmems
 {
      font-size: 15px;
      color:#337ab7;
+}
+
+.subscribe-btncont a.selectmarque
+{
+    display:inline;       
+    font-family: "Raleway",sans-serif;
+    font-size: 14px;
+    padding: 6px;
+    text-transform: none;
+}
+
+.subscribe-btncont a.selectmarque:hover
+{
+    background:#fff;
+}
+
+.dispmarques
+{
+   font-family: "Raleway",sans-serif;
+   font-size: 12px;   
 }

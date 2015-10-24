@@ -190,5 +190,8 @@ return array(
     
     'OG167' => 'Add Products & Services',
     'OG168' => 'Please contact us if you wish to add a new category.',
+    'OG169' => 'Select Brands',
+    'OG170' => 'Are you sure want to delete?',
+    'OG171' => 'Selected Brands',
 );
 ?>

@@ -7,6 +7,7 @@ $cs_pos_end = CClientScript::POS_END;
 $themeUrl = $this->themeUrl;
 $marids = Yii::app()->user->getState("marque_ids");
 $proids = Yii::app()->user->getState("product_ids");
+
 ?>
 
 <div class="row"> 
@@ -29,7 +30,8 @@ $proids = Yii::app()->user->getState("product_ids");
                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                          <table class="table table-bordered" id="bckrnd">
                             <tr>   
-                                <th><input type="checkbox" class="simple" name="checkall" id="selecctall"></th>
+<!--                            <th><input type="checkbox" class="simple" name="checkall" id="selecctall"></th>-->
+                                <th>&nbsp;</th>
                                 <th><?php echo Myclass::t('OGO89', '', 'og'); ?></th>
                                 <th><?php echo Myclass::t('APP84');?></th>
                                 <th>&nbsp;</th>
@@ -39,12 +41,36 @@ $proids = Yii::app()->user->getState("product_ids");
                             if (!empty($data_products)) {
                                 foreach ($data_products as $info) {
                                     $listmarques = Yii::app()->createUrl('/optiguide/suppliersDirectory/listmarques/', array('id' => $info->ID_PRODUIT));
+                                    $delproducts = Yii::app()->createUrl('/optiguide/suppliersDirectory/delproducts/', array('id' => $info->ID_PRODUIT));
+                                    
+                                    $mnames = array();
+                                    $marque_names = '';
+                                    $prd_id = $info->ID_PRODUIT;
+                                    
+                                    if(isset($marids[$prd_id]))
+                                    { 
+                                        $prd_marque_ids = $marids[$prd_id];
+                                        $marqueinfos = MarqueDirectory::model()->findAll(array('condition'=>"ID_MARQUE IN ($prd_marque_ids)",'order'=>'NOM_MARQUE ASC'));
+
+                                        foreach ($marqueinfos as $minfo)
+                                        {
+                                           $mnames[] = $minfo->NOM_MARQUE;
+                                        }  
+
+                                        if(!empty($mnames))
+                                        {
+                                            $marque_names = implode(',',$mnames);
+                                        }     
+                                    }        
                                     ?>
                                     <tr>
-                                        <td><input type="checkbox" name="productid[]" class="simple checkbox1" value="<?php echo $info->ID_PRODUIT; ?>"></td>
-                                        <td><?php if(Yii::app()->session['language']== "EN") { echo $info->NOM_PRODUIT_EN; }else{ echo $info->NOM_PRODUIT_FR;} ?></td>
+<!--                                    <td><input type="checkbox" name="productid[]" class="simple checkbox1" value="<?php //echo $info->ID_PRODUIT; ?>"></td>-->
+                                        <td><a href="<?php echo $delproducts;?>" class="sendrequest" onclick="return confirm('<?php echo Myclass::t('OG170'); ?>');"><i class="glyphicon glyphicon-trash"></i></a></td>
+                                        <td><?php if(Yii::app()->session['language']== "EN") { echo $info->NOM_PRODUIT_EN; }else{ echo $info->NOM_PRODUIT_FR;} ?> <br>
+                                            <?php echo "<span class='dispmarques'> <strong>".Myclass::t('OG171')."</strong>: ".$marque_names."</span>"; ?>
+                                        </td>
                                         <td><?php if(Yii::app()->session['language']== "EN") { echo $info->sectionDirectory->NOM_SECTION_EN; }else{ echo $info->sectionDirectory->NOM_SECTION_FR;} ?></td>
-                                        <td><a href="<?php echo $listmarques; ?>"><?php echo Myclass::t('OG010', '', 'og'); ?></a></td>                                  
+                                        <td><a href="<?php echo $listmarques; ?>" class="selectmarque"><?php echo Myclass::t('OG169'); ?></a></td>                                  
                                     </tr>    
                                     <?php
                                 }
@@ -66,13 +92,13 @@ $proids = Yii::app()->user->getState("product_ids");
                         ?>
                     </div>   
                     <?php
-                    if (!empty($data_products)) {
+                    //if (!empty($data_products)) {
                         ?>
 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                         <?php   echo CHtml::submitButton(Myclass::t('OGO100', '', 'og') , array('class' => 'btn btn-danger')); ?>
+                         <?php  // echo CHtml::submitButton(Myclass::t('OGO100', '', 'og') , array('class' => 'btn btn-danger')); ?>
                         </div>     
-                    <?php }
+                    <?php //}
                     ?>
                 </div>
             </div>
