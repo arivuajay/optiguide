@@ -50,8 +50,15 @@ class CalenderEventController extends OGController {
     public function actionView($id) {
         $searchModel = new CalenderEvent('search');
         $searchModel->unsetAttributes();
+        
+         $calender_query = Yii::app()->db->createCommand()
+        ->select('c.* , af.ID_CATEGORIE , af.FICHIER , af.EXTENSION')
+        ->from(array('calendrier_calendrier c', 'archive_fichier af'))
+        ->where("c.iId_fichier=af.ID_FICHIER and AFFICHER_SITE='1' and ID_EVENEMENT=" . $id)
+        ->queryRow();
+        
         $this->render('view', array(
-            'model' => $this->loadModel($id),
+            'model' => $calender_query,
             'searchModel' => $searchModel,
         ));
     }

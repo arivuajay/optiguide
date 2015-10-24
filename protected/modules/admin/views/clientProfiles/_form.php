@@ -11,7 +11,7 @@
             $category_names = array();
             $cat_types = CHtml::listData(ClientCategoryTypes::model()->findAll(array("order"=>"cat_type asc")), 'cat_type_id', 'cat_type');
             if($model->cat_type_id){
-                $category_names = CHtml::listData(ClientCategory::model()->findAll(array("order"=>"cat_name asc","condition"=>"cat_type_id=".$model->cat_type_id)), 'category', 'cat_name');
+                $category_names = CHtml::listData(ClientCategory::model()->findAll(array("order"=>"category asc","condition"=>"cat_type_id=".$model->cat_type_id)), 'category', 'cat_name');
             }
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'client-profiles-form',

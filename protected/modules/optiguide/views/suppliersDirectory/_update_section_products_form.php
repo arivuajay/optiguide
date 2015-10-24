@@ -44,6 +44,7 @@ if($currenturl==$secondstep_url)
             ?>
             <div class="forms-cont"> 
                 <div class="forms-heading"><i class="fa fa-cubes"></i> <?php echo Myclass::t('OGO88', '', 'og'); ?></div>
+                
                 <div class="row"> 
 
                     <div class="form-row1"> 

@@ -25,7 +25,7 @@
  */
 class NewsManagement extends CActiveRecord {
 
-    public $archivecat;
+    public $archivecat,$Year;
 
     /**
      * @return string the associated database table name
@@ -47,7 +47,7 @@ class NewsManagement extends CActiveRecord {
             array('TITRE, LIEN_URL, LIEN_TITRE', 'length', 'max' => 255),
             array('SYNOPSYS', 'length', 'max' => 500),
             array('TEXTE', 'length', 'max' => 5000),
-            array('DATE_AJOUT2,archivecat', 'safe'),
+            array('DATE_AJOUT2,archivecat,Year', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('ID_NOUVELLE, LANGUE, TITRE, SYNOPSYS, TEXTE, ID_FICHIER, LIEN_URL, LIEN_TITRE, HIERARCHIE, DATE_AJOUT1, AFFICHER_SITE, AFFICHER_SECTION, AFFICHER_ACCUEIL, DATE_AJOUT2', 'safe', 'on' => 'search'),
@@ -115,7 +115,7 @@ class NewsManagement extends CActiveRecord {
         $criteria->compare('LIEN_URL', $this->LIEN_URL, true);
         $criteria->compare('LIEN_TITRE', $this->LIEN_TITRE, true);
         $criteria->compare('HIERARCHIE', $this->HIERARCHIE);
-        $criteria->compare('DATE_AJOUT1', $this->DATE_AJOUT1, true);
+        $criteria->compare('DATE_AJOUT1', $this->Year, true);
         $criteria->compare('AFFICHER_SITE', $this->AFFICHER_SITE);
         $criteria->compare('AFFICHER_SECTION', $this->AFFICHER_SECTION);
         $criteria->compare('AFFICHER_ACCUEIL', $this->AFFICHER_ACCUEIL);
@@ -123,6 +123,9 @@ class NewsManagement extends CActiveRecord {
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+            'sort'=>array(
+             'defaultOrder'=>'DATE_AJOUT1 ASC',
+             ),
             'pagination' => array(
                 'pageSize' => PAGE_SIZE,
             )

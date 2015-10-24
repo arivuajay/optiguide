@@ -21,7 +21,7 @@
  */
 class CalenderEvent extends CActiveRecord {
     
-    public $EVENT_MONTH;
+    public $EVENT_MONTH,$archivecat;
     public $EVENT_YEAR;
     public $Year,$Emplacement,$keyword,$region,$country,$city;
 
@@ -40,12 +40,12 @@ class CalenderEvent extends CActiveRecord {
         // will receive user inputs.
         return array(
           //  array('DATE_AJOUT1, DATE_AJOUT2, TITRE, AFFICHER_ACCUEIL, AFFICHER_ARCHIVE', 'required'),
-             array('DATE_AJOUT1, DATE_AJOUT2, TITRE, TEXTE', 'required'),
+            array('DATE_AJOUT1, DATE_AJOUT2, TITRE, TEXTE', 'required'),
             array('AFFICHER_SITE, AFFICHER_ACCUEIL, AFFICHER_ARCHIVE, ID_PAYS, ID_REGION, ID_VILLE', 'numerical', 'integerOnly' => true),
             array('LANGUE', 'length', 'max' => 2),
             array('TITRE, LIEN_URL, LIEN_TITRE', 'length', 'max' => 255),
             array('TEXTE', 'length', 'max' => 5000),
-            array('EVENT_MONTH, EVENT_YEAR,region,country,city', 'safe'),
+            array('EVENT_MONTH, EVENT_YEAR,region,country,city,iId_fichier,archivecat', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('Year,Emplacement,keyword', 'safe'),
@@ -84,7 +84,9 @@ class CalenderEvent extends CActiveRecord {
             'ID_REGION' => Myclass::t('Region'),
             'ID_VILLE' => Myclass::t('Ville'),
             'Year'      => Myclass::t('Année'),
-            'Keyword'   =>  Myclass::t('Mot clé')
+            'Keyword'   =>  Myclass::t('Mot clé'),
+            'iId_fichier' => Myclass::t('Fichier'),
+            'archivecat'  => Myclass::t('Archive category'),
         );
     }
 
@@ -127,7 +129,7 @@ class CalenderEvent extends CActiveRecord {
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort'=>array(
-             'defaultOrder'=>'DATE_AJOUT1 DESC',
+             'defaultOrder'=>'DATE_AJOUT1 ASC',
              ),
             'pagination' => array(
                 'pageSize' => PAGE_SIZE,

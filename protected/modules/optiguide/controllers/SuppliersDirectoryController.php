@@ -1171,7 +1171,8 @@ class SuppliersDirectoryController extends OGController {
 
         $relid = Yii::app()->user->relationid;
         $model = $this->loadModel($relid);
-
+        Yii::app()->user->setState("product_ids", NULL);
+        
         // Set and intialize session from existing database records.         
         if (Yii::app()->user->hasState("product_ids") == FALSE) {
             $fid = $relid;
@@ -1414,6 +1415,7 @@ class SuppliersDirectoryController extends OGController {
 
         if (Yii::app()->user->hasState("product_ids")) {
             $sess_product_ids = Yii::app()->user->getState("product_ids");
+        
             $data_products = SuppliersDirectory::getproducts($sess_product_ids);
 
             if (empty($sess_product_ids)) {

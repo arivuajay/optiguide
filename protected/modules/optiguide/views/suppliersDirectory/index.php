@@ -14,6 +14,7 @@ if($actionpage == "index")
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
         <div class="inner-container eventslist-cont"> 
             <h2> <?php echo Myclass::t('OG040', '', 'og'); ?> </h2>
+            <i class='fa fa-eye paidmems'></i> Opti-Guide Members
             <div class="search-list">
              <?php  
              $sectionid = ($searchModel->ID_SECTION!='')?"'sectionid' => ".$searchModel->ID_SECTION:'';

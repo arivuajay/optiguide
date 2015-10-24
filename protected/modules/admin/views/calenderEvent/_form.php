@@ -36,7 +36,29 @@ $enddate = $model->DATE_AJOUT2;
 
 $country = Myclass::getallcountries();
 $regions = Myclass::getallregions($model->ID_PAYS);
-$cities = Myclass::getallcities($model->ID_REGION);
+$cities  = Myclass::getallcities($model->ID_REGION);
+$archivecats = CHtml::listData(ArchiveCategory::model()->findAll(array("order"=>'NOM_CATEGORIE_FR')), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
+
+$ficherid    = $model->iId_fichier;
+
+$categoryid  = 0;     
+$ficherimage = '';
+if($ficherid>0)
+{
+   $fichres = ArchiveFichier::model()->find("ID_FICHIER=$ficherid"); 
+   $categoryid  = $fichres->ID_CATEGORIE;     
+   $ficherfile = $fichres->FICHIER;    
+  // $fileurl     =  $themeUrl.'/img/archivage/'.$categoryid.'/'.$ficherfile; 
+   $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$categoryid."/".$ficherfile);
+
+   if (!file_exists(YiiBase::getPathOfAlias('webroot').'/uploads/archivage/'.$categoryid.'/'.$ficherfile))
+    {
+        $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/noimage.png");    
+    }  
+}else
+{
+    $fileurl     = "javascript:void(0);";
+}  
 ?>
 
 <div class="row">
@@ -110,6 +132,24 @@ $cities = Myclass::getallcities($model->ID_REGION);
                     <div class="col-sm-5">
                         <?php echo $form->textField($model, 'LIEN_TITRE', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
                         <?php echo $form->error($model, 'LIEN_TITRE'); ?>
+                    </div>
+                </div>
+                
+                 <div class="form-group">
+                    <?php echo $form->labelEx($model, 'archivecat', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                    <?php echo $form->dropDownList($model, 'archivecat', $archivecats, array('class' => 'form-control','options' => array($categoryid => array('selected'=>true)))); ?>                          
+                    <?php echo $form->error($model, 'archivecat'); ?>
+                     </div>
+                </div>
+
+                <div class="form-group">
+                    <?php $fichercats = array("0"=> "Aucune");?>
+                    <?php echo $form->labelEx($model, 'iId_fichier', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                    <?php echo $form->dropDownList($model, 'iId_fichier', $fichercats, array('class' => 'form-control','options' => array($ficherid => array('selected'=>true)))); ?>    
+                    <a href="<?php echo $fileurl;?>" class="viewficherfile"><img src="<?php echo $themeUrl.'/img/preview.gif'; ?>"></a>
+                    <?php echo $form->error($model, 'iId_fichier'); ?>
                     </div>
                 </div>
 
@@ -186,6 +226,8 @@ $cities = Myclass::getallcities($model->ID_REGION);
 <?php
 $ajaxRegionUrl  = Yii::app()->createUrl('/admin/calenderEvent/getregions');
 $ajaxCityUrl    = Yii::app()->createUrl('/admin/calenderEvent/getcities');
+$ajaxFicherUrl = Yii::app()->createUrl('/admin/suppliersDirectory/getfichers');
+$ajaxFetchimage = Yii::app()->createUrl('/admin/suppliersDirectory/getficherimage');
 $js = <<< EOD
 $(document).ready(function(){
         
@@ -200,37 +242,37 @@ if(startdate=='' || enddate=='')
    $( "#CalenderEvent_DATE_AJOUT1" ).datepicker( "setDate" , new Date())
    $( "#CalenderEvent_DATE_AJOUT2" ).datepicker( "setDate" , new Date())    
 }
-    
-var firstradio = $('input[name="CalenderEvent\\[AFFICHER_SITE\\]"]:checked').val();
-if(firstradio=="0")
-{
-     $('#AFFICHER_OPTIONS').hide();
-     $('input[name="CalenderEvent\\[AFFICHER_ARCHIVE\\]"]').attr('disabled',true);       
-     $('input[name="CalenderEvent\\[AFFICHER_ACCUEIL\\]"]').attr('disabled',true);      
-}else
-{
-     $('#AFFICHER_OPTIONS').show();
-     $('input[name="CalenderEvent\\[AFFICHER_ARCHIVE\\]"]').attr('disabled',true);       
-     $('input[name="CalenderEvent\\[AFFICHER_ACCUEIL\\]"]').attr('disabled',true);      
-}
+//    
+//var firstradio = $('input[name="CalenderEvent\\[AFFICHER_SITE\\]"]:checked').val();
+//if(firstradio=="0")
+//{
+//     $('#AFFICHER_OPTIONS').hide();
+//     $('input[name="CalenderEvent\\[AFFICHER_ARCHIVE\\]"]').attr('disabled',true);       
+//     $('input[name="CalenderEvent\\[AFFICHER_ACCUEIL\\]"]').attr('disabled',true);      
+//}else
+//{
+//     $('#AFFICHER_OPTIONS').show();
+//     $('input[name="CalenderEvent\\[AFFICHER_ARCHIVE\\]"]').attr('disabled',true);       
+//     $('input[name="CalenderEvent\\[AFFICHER_ACCUEIL\\]"]').attr('disabled',true);      
+//}
 
 
         
-$('input[name="CalenderEvent\\[AFFICHER_SITE\\]"]').on('ifChecked', function(event){
-    var chkval = $('input[name="CalenderEvent\\[AFFICHER_SITE\\]"]:checked').val();
-
-   if(chkval=="1")
-   {
-        $('#AFFICHER_OPTIONS').show();
-        $('input[name="CalenderEvent\\[AFFICHER_ARCHIVE\\]"]').attr('disabled',false);       
-        $('input[name="CalenderEvent\\[AFFICHER_ACCUEIL\\]"]').attr('disabled',false);      
-   }else if(chkval=="0")
-   {
-         $('#AFFICHER_OPTIONS').hide();
-        $('input[name="CalenderEvent\\[AFFICHER_ARCHIVE\\]"]').attr('disabled',true);       
-        $('input[name="CalenderEvent\\[AFFICHER_ACCUEIL\\]"]').attr('disabled',true);      
-   }    
-});
+//$('input[name="CalenderEvent\\[AFFICHER_SITE\\]"]').on('ifChecked', function(event){
+//    var chkval = $('input[name="CalenderEvent\\[AFFICHER_SITE\\]"]:checked').val();
+//
+//   if(chkval=="1")
+//   {
+//        $('#AFFICHER_OPTIONS').show();
+//        $('input[name="CalenderEvent\\[AFFICHER_ARCHIVE\\]"]').attr('disabled',false);       
+//        $('input[name="CalenderEvent\\[AFFICHER_ACCUEIL\\]"]').attr('disabled',false);      
+//   }else if(chkval=="0")
+//   {
+//         $('#AFFICHER_OPTIONS').hide();
+//        $('input[name="CalenderEvent\\[AFFICHER_ARCHIVE\\]"]').attr('disabled',true);       
+//        $('input[name="CalenderEvent\\[AFFICHER_ACCUEIL\\]"]').attr('disabled',true);      
+//   }    
+//});
 
  $("#CalenderEvent_ID_PAYS").change(function(){
         var id=$(this).val();
@@ -262,6 +304,53 @@ $('input[name="CalenderEvent\\[AFFICHER_SITE\\]"]').on('ifChecked', function(eve
          });
 
     });
+            
+   // Get the fichers list based on selected ficher category
+   var vficherid = {$ficherid};
+   var vcatid = {$categoryid}; 
+   
+     $("#CalenderEvent_archivecat").change(function(e){
+        var id=$(this).val();
+        var dataString = 'id='+ id;
+        $.ajax({
+            type: "POST",
+            url: '{$ajaxFicherUrl}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#CalenderEvent_iId_fichier").html(html);
+                if(e.isTrigger)
+                $("#CalenderEvent_iId_fichier").val(vficherid);                
+            }
+         });
+    }); 
+
+    // Trigger the dropdown event on form load if the catid value exist   
+        if(vcatid > 0)
+        {
+            $('#CalenderEvent_archivecat').trigger('change');           
+        }
+
+    // Get the ficher file on select the ficher dropdown.
+        $("#CalenderEvent_iId_fichier").change(function(e){
+            var id=$(this).val();
+            var dataString = 'id='+ id;
+            $.ajax({
+                type: "POST",
+                url: '{$ajaxFetchimage}',
+                data: dataString,
+                cache: false,
+                success: function(html){             
+                    $(".viewficherfile").attr("href", html);                         
+                }
+             });
+        }); 
+
+    // Click to preview the ficher file in popup window   
+     $('.viewficherfile').click(function(event) {
+            event.preventDefault();           
+            window.open($(this).attr("href"), "popupWindow", "width=600,height=600,scrollbars=yes");
+        });         
 
                 
 });

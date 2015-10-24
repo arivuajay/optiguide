@@ -187,5 +187,8 @@ return array(
     
     'OG165' => 'Yes, I wish to receive the Envue Print Edition:',
     'OG166' => 'Yes, I wish to receive the Envision Print Edition:',    
+    
+    'OG167' => 'Add Products & Services',
+    'OG168' => 'Please contact us if you wish to add a new category.',
 );
 ?>

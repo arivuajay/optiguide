@@ -55,7 +55,7 @@ class ClientProfilesController extends Controller {
         $val = "<option value=''>Select Category</option>";
         $id = isset($_POST['id']) ? $_POST['id'] : '';
         if ($id != '') {
-            $data_cats = CHtml::listData(ClientCategory::model()->findAll(array("order" => "cat_name asc", "condition" => "cat_type_id=" . $id)), 'category', 'cat_name');           
+            $data_cats = CHtml::listData(ClientCategory::model()->findAll(array("order" => "category asc", "condition" => "cat_type_id=" . $id)), 'category', 'cat_name');           
             foreach ($data_cats as $k => $info) {
                 $val .= "<option value='" . $k . "'>" . $info . "</option>";
             }
@@ -135,7 +135,7 @@ class ClientProfilesController extends Controller {
                     }                   
                 }
                 Yii::app()->user->setFlash('success', 'Client profile updated successfully!!!');
-                $this->redirect(array('index'));
+                $this->redirect(array('update',"id"=>$id));
             }
         }
         

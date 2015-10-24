@@ -9,7 +9,7 @@
         $parampage = "category";
     }
     ?>
-    <h2><?php echo Myclass::t('OR040', '', 'or'); ?> </h2>
+    <h2><?php echo Myclass::t('OR040', '', 'or'); ?> </h2>    
     <div class="search-list">        
         <?php
         $sectionid = ($searchModel->ID_SECTION != '') ? "'sectionid' => " . $searchModel->ID_SECTION : '';

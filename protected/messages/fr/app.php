@@ -188,5 +188,8 @@ return array(
     'OG165' => 'Oui , je souhaite recevoir la Envue Imprimer édition:',
     'OG166' => 'Oui , je souhaite recevoir la Envision Imprimer édition:',
     
+    'OG167' => 'Ajouter Produits & Services',
+    'OG168' => 'S\'il vous plaît nous contacter si vous souhaitez ajouter une nouvelle catégorie .',
+    
 );
 ?>

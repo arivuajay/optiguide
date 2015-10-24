@@ -15,8 +15,9 @@ $sectiontypes = CHtml::listData(SectionDirectory::model()->findAll(array("order"
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subscribe-btncont"> 
         <div class="inner-container"> 
             <h2> <?php echo Myclass::t('OGO81', '', 'og'); ?> </h2>
-
+            
             <?php  $this->renderPartial('_menu_steps', array());?>
+            <p><?php echo Myclass::t('OG168'); ?></p>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'suppliers-directory-form',
@@ -26,7 +27,7 @@ $sectiontypes = CHtml::listData(SectionDirectory::model()->findAll(array("order"
             <div class="forms-cont"> 
                 <div class="forms-heading"><i class="fa fa-cubes"></i> <?php echo Myclass::t('OGO88', '', 'og');?></div>
                 <div class="row"> 
-
+                   
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                             <?php echo $form->labelEx($model, 'IDSECTION', array()); ?> 
