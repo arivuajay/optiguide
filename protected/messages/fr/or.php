@@ -209,5 +209,16 @@ return array(
     'OR645' => 'autres Informations',
     
     //OptirepModule
-    'OR646' => 'Votre compte a été expiré. Please renouvellement et poursuivre les fonctionnalités du site.'
+    'OR646' => 'Votre compte a été expiré. Please renouvellement et poursuivre les fonctionnalités du site.',
+    
+    'OR647' => 'renouvellement de détails',
+    'OR648' => "votre processus de renouvellement a été achevée avec succès",
+    'OR649' => "votre transaction est échoué, s'il vous plaît essayer à nouveau",
+    
+    'OR650' => "Information de Paiement",
+    'OR651' => "la, de façon plus sécuritaire plus rapide pour payer",
+    'OR652' => "payer par carte de débit ou carte de crédit",
+    'OR653' => "date d'expiration",
+    'OR654' => "mois carte de crédit d'expiration est invalide",
+    'OR655' => "année carte de crédit d'expiration est invalide",
 );

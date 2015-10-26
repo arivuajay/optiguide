@@ -209,6 +209,18 @@ return array(
     'OR645' => 'Other Informations',
     
     //OptirepModule
-    'OR646' => 'Your account has been expired. Please renewal and continue the site features.'
+    'OR646' => 'Your account has been expired. Please renewal and continue the site features.',
+    
+    'OR647' => 'Renewal Details',
+    'OR648' => "Your renewal process has been completed successfully",
+    'OR649' => "Your transaction is Failure, Please try again",
+    
+    'OR650' => "Payment Information",
+    'OR651' => "The Faster, Safer way to pay",
+    'OR652' => "Pay with debit card or credit card",
+    'OR653' => "Expiration Date",
+    'OR654' => "Credit card expiration month is invalid",
+    'OR655' => "Credit card expiration year is invalid",
+    
     
 );

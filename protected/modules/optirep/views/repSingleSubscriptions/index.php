@@ -1,38 +1,13 @@
 <div class="cate-bg user-right">
     <h2> <?php echo Myclass::t('OR545', '', 'or') ?> </h2>
 
-    <?php
-    $form = $this->beginWidget('CActiveForm', array(
-        'htmlOptions' => array('role' => 'form'),
-    ));
-    ?>            
     <div class="row"> 
-        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
-            <h4> 
-                <?php echo Myclass::t('OR576', '', 'or') ?> : 
-                <?php echo Myclass::currencyFormat($price_calculation['total_price']); ?>
-            </h4>
-            <h4> 
-                <?php echo Myclass::t('OR540', '', 'or') ?> : 
-                <?php echo Myclass::currencyFormat($price_calculation['tax']); ?>
-            </h4>
-            <h4> 
-                <?php echo Myclass::t('OR541', '', 'or') ?> : 
-                <?php echo Myclass::currencyFormat($price_calculation['grand_total']); ?>
-            </h4>
-        </div> 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 viewall">
             <?php
-            echo CHtml::tag('button', array(
-                'name' => 'btnSubmit',
-                'value' => 'Payfee',
-                'type' => 'submit',
-                'class' => 'register-btn'
-                    ), '<i class="fa fa-arrow-circle-right"></i> ' . Myclass::t('OR536', '', 'or'));
+            echo CHtml::link('<i class="fa fa-arrow-circle-right"></i> ' . Myclass::t('OR536', '', 'or'), '/optirep/repSingleSubscriptions/renewal', array('class' => 'pull-left'));
             ?>
-        </div>  
+        </div>
     </div>            
-    <?php $this->endWidget(); ?> 
 
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">  

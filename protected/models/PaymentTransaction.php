@@ -29,7 +29,7 @@
  */
 class PaymentTransaction extends CActiveRecord {
 
-    public $COMPAGNIE, $rep_username;
+    public $COMPAGNIE, $rep_username, $credit_card, $exp_month, $exp_year, $cvv2;
 
     /**
      * Returns the static model of the specified AR class.
@@ -53,12 +53,47 @@ class PaymentTransaction extends CActiveRecord {
     public function rules() {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
+        Yii::import('ext.validators.ECCValidator');
+
         return array(
             array('user_id,total_price,tax,subscription_price,payment_status,payer_email,verify_sign', 'safe'),
-            array('txn_type,item_name,ipn_track_id,created_at,updated_at', 'safe'),
+            array('txn_type,item_name,ipn_track_id,created_at,updated_at, credit_card, exp_date, cvv2', 'safe'),
             array('txn_id,payment_type,receiver_email,NOMTABLE,expirydate,invoice_number,total,pay_type,subscription_type, rep_temp_id', 'safe'),
+            array('credit_card, exp_month, exp_year, cvv2', 'required', 'on' => 'paypal_advance'),
+            array('credit_card', 'ext.validators.ECCValidator'),
+            array('exp_month', 'validateMonth', 'on' => 'paypal_advance'),
+            array('exp_year', 'validateYear', 'on' => 'paypal_advance'),
+            array('cvv2', 'numerical', 'integerOnly' => true),
+            array('cvv2', 'length', 'max' => 3),
             array('COMPAGNIE', 'safe', 'on' => 'search')
         );
+    }
+
+    public function validateMonth($attribute, $params) {
+        if ($this->$attribute != '') {
+            if (is_scalar($this->exp_month))
+                $creditCardExpiredMonth = intval($this->exp_month);
+
+            if (is_integer($creditCardExpiredMonth) && $creditCardExpiredMonth >= 1 && $creditCardExpiredMonth <= 12) {
+                return true;
+            } else {
+                $this->addError($attribute, Myclass::t('OR654', '', 'or'));
+            }
+        }
+    }
+
+    public function validateYear($attribute, $params) {
+        if ($this->$attribute != '') {
+            $currentYear = intval(date('Y'));
+            if (is_scalar($this->exp_year))
+                $creditCardExpiredYear = intval($this->exp_year);
+
+            if (is_integer($creditCardExpiredYear) && $creditCardExpiredYear > $currentYear && $creditCardExpiredYear < $currentYear + 10) {
+                return true;
+            } else {
+                $this->addError($attribute, Myclass::t('OR655', '', 'or'));
+            }
+        }
     }
 
     /**
@@ -94,6 +129,10 @@ class PaymentTransaction extends CActiveRecord {
             'NOMTABLE' => 'Type d\'utilisateur',
             'expirydate' => Myclass::t('OG143'),
             'invoice_number' => Myclass::t('OG144'),
+            'credit_card' => Myclass::t('Credit Card'),
+            'exp_month' => Myclass::t('Exp Month'),
+            'exp_year' => Myclass::t('Exp Year'),
+            'cvv2' => Myclass::t('CVV'),
         );
     }
 

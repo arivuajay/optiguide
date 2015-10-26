@@ -234,7 +234,7 @@ span.input-group-btn {
     -webkit-border-radius : 3px;
     -moz-border-radius    : 3px;
     border-radius         : 3px;
-  
+
 }
 
 .form-field-textarea {
@@ -245,10 +245,10 @@ span.input-group-btn {
     width: 100%;
 }
 
- /*------Model Form CSS--------*/
+/*------Model Form CSS--------*/
 .model-form .form-field,.model-form .form-field-textarea  {
-  background: #f0f0f0 none repeat scroll 0 0;
-  margin-bottom: 15px;
+    background: #f0f0f0 none repeat scroll 0 0;
+    margin-bottom: 15px;
 }
 
 .model-form .btn-default {
@@ -267,54 +267,54 @@ span.input-group-btn {
 
 
 .small-box {
-  border-radius: 2px;
-  display: block;
-  margin-bottom: 15px;
-  position: relative;
-  color: #ffffff;
+    border-radius: 2px;
+    display: block;
+    margin-bottom: 15px;
+    position: relative;
+    color: #ffffff;
 }
 
 .small-box > .inner {
-  padding: 10px;
+    padding: 10px;
 }
 
 .small-box > .small-box-footer {
-  background: rgba(0, 0, 0, 0.1) none repeat scroll 0 0;
-  color: rgba(255, 255, 255, 0.8);
-  display: block;
-  padding: 3px 0;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  z-index: 10;
+    background: rgba(0, 0, 0, 0.1) none repeat scroll 0 0;
+    color: rgba(255, 255, 255, 0.8);
+    display: block;
+    padding: 3px 0;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    z-index: 10;
 }
 
 .bg-aqua {
-  background-color: #00c0ef !important;
+    background-color: #00c0ef !important;
 }
 
 
 .small-box h3 {
-  font-size: 38px;
-  font-weight: bold;
-  margin: 0 0 10px;
-  padding: 0;
-  white-space: nowrap;
+    font-size: 38px;
+    font-weight: bold;
+    margin: 0 0 10px;
+    padding: 0;
+    white-space: nowrap;
 }
 
 
 .small-box .icon {
-  bottom: 5px;
-  color: rgba(0, 0, 0, 0.15);
-  font-size: 80px;
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  z-index: 0;
+    bottom: 5px;
+    color: rgba(0, 0, 0, 0.15);
+    font-size: 80px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    z-index: 0;
 }
 
 .bg-green {
-  background-color: #00a65a !important;
+    background-color: #00a65a !important;
 }
 
 .addfav-btn{
@@ -322,8 +322,8 @@ span.input-group-btn {
 }
 
 .bg-yellow {
-  background-color: #f39c12 !important;
-  padding: 7px;
+    background-color: #f39c12 !important;
+    padding: 7px;
 }
 
 .small-box a
@@ -382,66 +382,66 @@ span.input-group-btn {
     font-size: 13px;
     font-weight: bold;
     padding-top: 13px;
-   text-transform:none;
+    text-transform:none;
 }
 
 .topviewall:hover
 {
-	color: #ffffff;
-	text-decoration:underline;
+    color: #ffffff;
+    text-decoration:underline;
 }
 
 .cate-bg ul
 {
-	margin:0px;
-	padding:0px;
+    margin:0px;
+    padding:0px;
 }
 
 .cate-bg ul li
 {
-	list-style:none;
-	font-size:14px;
+    list-style:none;
+    font-size:14px;
 }
 
 .cate-bg .eventList
 {
-	font-size:15px;
-	text-transform:uppercase;
-	margin-bottom:5px;
+    font-size:15px;
+    text-transform:uppercase;
+    margin-bottom:5px;
 }
 
 .login {
-  border-left: 1px solid #d9d9d9;
-  padding: 11px 18px;
+    border-left: 1px solid #d9d9d9;
+    padding: 11px 18px;
 }
 
 .no_of_accounts .btn-default {
-  background: #f0f0f0 none repeat scroll 0 0;
-  font-size: 35px;
-  line-height: 28px;
+    background: #f0f0f0 none repeat scroll 0 0;
+    font-size: 35px;
+    line-height: 28px;
 }
 .no_of_accounts_input {
-  border-bottom: 1px solid #f0f0f0;
-  border-left: medium none;
-  border-top: 1px solid #f0f0f0;
-  font-size: 20px;
-  padding: 5px;
-  width:110px;
+    border-bottom: 1px solid #f0f0f0;
+    border-left: medium none;
+    border-top: 1px solid #f0f0f0;
+    font-size: 20px;
+    padding: 5px;
+    width:110px;
 }
 
 .paidmems
 {
-     font-size: 15px;
-     color:#337ab7;
+    font-size: 15px;
+    color:#337ab7;
 }
 
 .results tr[visible='false'],
 .no-result{
-  display:none;
+    display:none;
 }
 
 .results tr[visible='true']{
-  display:table-row;
+    display:table-row;
 }
 
 .brand_search{
@@ -449,10 +449,51 @@ span.input-group-btn {
 }
 
 a.back {
-  background: #231f20 none repeat scroll 0 0;
-  color: #ffffff;
-  font-size: 20px;
-  padding: 10px 25px;
-  margin: 0 10px;
-  text-transform: uppercase;
+    background: #231f20 none repeat scroll 0 0;
+    color: #ffffff;
+    font-size: 20px;
+    padding: 10px 25px;
+    margin: 0 10px;
+    text-transform: uppercase;
+}
+
+/*payment style*/
+.card-details-cont
+{
+    border:#F0F0F0 solid 1px;
+    width:100%;
+    float:left;
+    margin-bottom:25px;
+    padding-bottom:25px;
+}
+
+.card-details-cont span
+{
+    float:left;
+    line-height:29px;
+}
+
+.card-details-cont a
+{
+    text-transform:none;
+    font-size:12px;
+    text-decoration:underline;
+    font-weight:normal;
+    padding:0px;
+    text-align:left;
+}
+
+.card-details-cont a:hover
+{
+    background:none;
+}
+
+.paypal_btn {
+  border: medium none;
+  width: 200px;
+  background: none;
+}
+
+.pay-icon{
+    margin-bottom: 20px;
 }
