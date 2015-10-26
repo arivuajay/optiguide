@@ -57,7 +57,9 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div><!-- /.box -->
             </div><!-- /.col -->                       
         </div><!-- /.row -->
-         <?php echo CHtml::submitButton('Terminé', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+         <?php 
+         $buttontxt = ($model->isNewRecord)?'Suivant':'Terminé';
+         echo CHtml::submitButton($buttontxt, array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
         <?php
         if(!empty($data_products))
         {

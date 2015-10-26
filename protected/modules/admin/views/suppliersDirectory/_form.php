@@ -50,13 +50,24 @@
         }else
         {
             $fileurl     = "javascript:void(0);";
-        }    
+        } 
+        
+        $paymentcounts = 0;
+        if($model->ID_FOURNISSEUR)
+        {  
+            $paymentcounts  = PaymentTransaction::model()->count("NOMTABLE='suppliers' AND user_id=".$model->ID_FOURNISSEUR);
+        }
+        
         ?>
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active"><a id="a_tab_1" href="#tab_1" data-toggle="tab">Renseignements généraux</a></li>
                 <li><a id="a_tab_2" href="#tab_2" <?php if(Yii::app()->user->hasState("secondtab")){ echo 'data-toggle="tab"';}elseif($model->ID_FOURNISSEUR){ echo 'data-toggle="tab"';} ?>>Sélection des produits</a></li>
                 <li><a id="a_tab_3" href="#tab_3" <?php if(Yii::app()->user->hasState("thirdtab")){ echo 'data-toggle="tab"';}elseif($model->ID_FOURNISSEUR){ echo 'data-toggle="tab"';} ?>>Sélection des marques</a></li>
+                <li><a id="a_tab_4" href="#tab_4" <?php if(Yii::app()->user->hasState("fourthtab")){ echo 'data-toggle="tab"';}elseif($model->ID_FOURNISSEUR){ echo 'data-toggle="tab"';} ?>>Subscription Payment</a></li>
+                <?php if($paymentcounts>0){?>
+                <li><a id="a_tab_5" href="#tab_5" data-toggle="tab">Payment Transactions</a></li>
+                <?php }?>
             </ul>
 
             <div class="tab-content">                
@@ -336,6 +347,18 @@
                         $this->renderPartial('_products_marques_form', array('model' => $model, 'form' => $form , 'data_products'=>$data_products));                    
                     ?>
                 </div>  
+                
+                 <div class="tab-pane" id="tab_4">
+                    <?php   
+                        $this->renderPartial('_payment_form', array('model' => $model, 'form' => $form , 'data_products'=>$data_products , 'pmodel'=>$pmodel));                    
+                    ?>
+                </div>  
+                
+                 <div class="tab-pane" id="tab_5">
+                    <?php   
+                        $this->renderPartial('_payment_transactions', array('model' => $model, 'form' => $form , 'data_products'=>$data_products , 'pmodel'=>$pmodel));                    
+                    ?>
+                </div>  
 
             </div>
 
@@ -359,6 +382,8 @@ $jsoncde = array();
  }                
 
 $ajaxproducts = Yii::app()->createUrl('/admin/suppliersDirectory/getproducts');
+
+$pay_type = isset($pmodel->pay_type)?$pmodel->pay_type:1;
 $js = <<< EOD
     $(document).ready(function(){
    
@@ -499,7 +524,32 @@ $js = <<< EOD
                 this.checked = false; //deselect all checkboxes with class "checkbox1"                      
             });        
         }
-    });         
+    });  
+        
+// Check to change check payment type
+    $('input[name="PaymentCheques\\[pay_type\\]"]').on('ifChecked', function(event){
+     var chkval = $('input[name="PaymentCheques\\[pay_type\\]"]:checked').val();
+     
+      $("#by_cheque").hide();
+      $("#by_free").hide() ; 
+      if(chkval=="2")            
+      {
+          $("#by_cheque").show() ; 
+      }else
+      {
+          $("#by_free").show() ;                 
+      }    
+            
+    });  
+            
+    var pay_type = {$pay_type};        
+    if(pay_type==2)
+    {
+       $("#by_cheque").show() ;  
+    }else
+    {
+        $("#by_free").show() ;                 
+    }  
             
 });
 EOD;

@@ -30,7 +30,7 @@ class SuppliersDirectoryController extends Controller {
                         'users' => array('*'),
                     ),
                     array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                        'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getproducts', 'addproducts', 'addmarques', 'listmarques', 'getfichers','getficherimage'),
+                        'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getproducts', 'addproducts', 'addmarques', 'listmarques', 'payment', 'renewpayment', 'getfichers','getficherimage'),
                         'users' => array('@'),
                     ),
                     array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -49,8 +49,10 @@ class SuppliersDirectoryController extends Controller {
      * @param integer $id the ID of the model to be displayed
      */
     public function actionView($id) {
+        
+        $pmodel =  PaymentTransaction::model()->findByPk($id);
         $this->render('view', array(
-            'model' => $this->loadModel($id),
+            'pmodel' => $pmodel,
         ));
     }
         
@@ -112,6 +114,8 @@ class SuppliersDirectoryController extends Controller {
 
         $model = $this->loadModel($id);
         $model->scenario = 'backend';
+        
+        $pmodel = new PaymentCheques;
        // $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
 
         // Uncomment the following line if AJAX validation is needed
@@ -222,7 +226,7 @@ class SuppliersDirectoryController extends Controller {
         }   
 
         $tab = 1;
-        $this->render('update', compact('model', 'tab','data_products'));
+        $this->render('update', compact('model', 'tab','data_products','pmodel'));
     }
 
     /**
@@ -252,10 +256,11 @@ class SuppliersDirectoryController extends Controller {
         
         
 
-        $model = new SuppliersDirectory('backend');
+        $model  = new SuppliersDirectory('backend');
+        $pmodel = new PaymentCheques;
    //     $umodel = new UserDirectory();
-
-        if(Yii::app()->user->hasState("secondtab") || Yii::app()->user->hasState("thirdtab"))
+        
+        if(Yii::app()->user->hasState("secondtab") || Yii::app()->user->hasState("thirdtab") || Yii::app()->user->hasState("fourthtab"))
         {    
             //check if session exists
             if (Yii::app()->user->hasState("mattributes")) {
@@ -276,6 +281,7 @@ class SuppliersDirectoryController extends Controller {
             Yii::app()->user->setState("marque_ids", null);
             // unset Session marqueids 
             Yii::app()->user->setState("thirdtab", null);
+            Yii::app()->user->setState("fourthtab", null);
             // unset Session marqueids  
             Yii::app()->user->setState("secondtab", null);
             // unset Session scountry  
@@ -341,14 +347,14 @@ class SuppliersDirectoryController extends Controller {
             }    
         }
         $tab = 1;
-        $this->render('create', compact('model', 'tab'));
+        $this->render('create', compact('model', 'tab','pmodel'));
     }
 
     //TAB 2
     public function actionAddproducts() {
 
         $data_products = array();
-        
+        $pmodel = new PaymentCheques;
         
         
         if (Yii::app()->user->hasState("mattributes")) {
@@ -429,15 +435,16 @@ class SuppliersDirectoryController extends Controller {
         } else {
             $viewpage = 'create';
         }
-        $this->render($viewpage, compact('model', 'tab','data_products'));
+        $this->render($viewpage, compact('model', 'tab','data_products','pmodel'));
     }
 
     public function actionAddmarques() {
         // Yii::app()->user->setState("marque_ids", null);
         
-        
         $sess_product_ids = array();
         $data_products = array();
+        
+        $pmodel = new PaymentCheques;
         
         if (Yii::app()->user->hasState("mattributes")) {
             $sess_attr_m = Yii::app()->user->getState("mattributes");
@@ -465,28 +472,20 @@ class SuppliersDirectoryController extends Controller {
           //  $umodel->attributes = $sess_attr_u;
         }
         
-        // Save products in to database        
+          // Save products in to database        
         if (isset($_POST['yt2'])) 
-        {          
-            // Session supplier model attribute    
-            $sess_attr_m = Yii::app()->user->getState("mattributes");
-            // Session user model attribute
-          //  $sess_attr_u = Yii::app()->user->getState("uattributes");
-            // Session productids 
-            $sess_productids = Yii::app()->user->getState("product_ids");
-            // Session marqueids 
-            $sess_marqueids = Yii::app()->user->getState("marque_ids");
+        {   
+           Yii::app()->user->setState("fourthtab", "4");
+           
+           // Update products and marques
+            if (isset($sess_attr_m['ID_FOURNISSEUR'])) {
+                
+                $supplierid = $sess_attr_m['ID_FOURNISSEUR'];
+                // Session productids 
+                $sess_productids = Yii::app()->user->getState("product_ids");
+                // Session marqueids 
+                $sess_marqueids = Yii::app()->user->getState("marque_ids");
 
-            if (Yii::app()->user->hasState("mattributes")) {
-                $model->attributes = $sess_attr_m;    
-              //  $model->ID_CLIENT  = $sess_attr_m['ID_CLIENT'];
-                $model->CREATED_DATE = date("Y-m-d");
-                $model->save(false);              
-             //   $umodel->attributes  = $sess_attr_u;
-             //   $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
-             //   $umodel->save(false);                
-                $supplierid = $model->ID_FOURNISSEUR;
-             
                 SupplierProducts::model()->deleteAll("ID_FOURNISSEUR ='" . $supplierid . "'");
 
                 if (Yii::app()->user->hasState("product_ids")) {
@@ -515,27 +514,15 @@ class SuppliersDirectoryController extends Controller {
                         }
                     }
                 }
+                
+                Yii::app()->user->setFlash('success', 'Informations fournisseur ajouter / jour avec succès!!!');
+                $this->redirect(array('update',"id"=>$sess_attr_m['ID_FOURNISSEUR']));
+            }else
+            {
+             // redirect to payment page on regsitration time
+                $this->redirect(array('payment'));
             }
-
-            // unset Session supplier model attribute    
-            Yii::app()->user->setState("mattributes", null);
-            // unset Session user model attribute
-          //  Yii::app()->user->setState("uattributes", null);
-            // unset Session productids 
-            Yii::app()->user->setState("product_ids", null);
-            // unset Session marqueids 
-            Yii::app()->user->setState("marque_ids", null);
-            // unset Session marqueids 
-            Yii::app()->user->setState("thirdtab", null);
-            // unset Session marqueids  
-            Yii::app()->user->setState("secondtab", null);
-            // unset Session scountry  
-            Yii::app()->user->setState("scountry", null);
-            // unset Session sregion  
-            Yii::app()->user->setState("sregion", null);
-
-            Yii::app()->user->setFlash('success', 'Informations fournisseur ajouter / jour avec succès!!!');
-            $this->redirect(array('index'));
+        
         }
 
         // Delete products from session
@@ -566,7 +553,6 @@ class SuppliersDirectoryController extends Controller {
                 Yii::app()->user->setFlash('danger', 'S\'il vous plaît sélectionner tous les produits à supprimer!!!');
             }
         }
-        
        
         if (Yii::app()->user->hasState("product_ids")) 
         {
@@ -587,8 +573,400 @@ class SuppliersDirectoryController extends Controller {
             $viewpage = 'create';
         }
        
-        $this->render($viewpage, compact('model', 'tab', 'data_products'));
+        $this->render($viewpage, compact('model', 'tab', 'data_products','pmodel'));
     }
+    
+    public function actionPayment()
+    {
+        $tab    = 4;
+        $pmodel = new PaymentCheques;
+          
+        if (Yii::app()->user->hasState("mattributes")) {
+            $sess_attr_m = Yii::app()->user->getState("mattributes");
+        }
+     
+        if (!empty($sess_attr_m))
+        {
+            //Check for update form
+            if (isset($sess_attr_m['ID_FOURNISSEUR'])) 
+            {
+                $fid = $sess_attr_m['ID_FOURNISSEUR'];
+                $model = $this->loadModel($fid);
+              //  $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
+            } else {
+                $model = new SuppliersDirectory;              
+              //  $umodel = new UserDirectory();
+            }
+        }   
+        
+        //check if session exists
+        if (Yii::app()->user->hasState("mattributes")) 
+        {
+            //get session variable
+            $model->attributes = $sess_attr_m;
+        }    
+        
+         // Save products in to database        
+        if (isset($_POST['PaymentCheques'])) 
+        { 
+            $pmodel->attributes = $_POST['PaymentCheques'];
+            $pmodel->profile    = $_POST['PaymentCheques']['profile'];
+            $pmodel->logo       = $_POST['PaymentCheques']['logo'];
+            $pmodel->pay_type   = $_POST['PaymentCheques']['pay_type'];
+            
+            if($pmodel->pay_type==2)
+            {    
+              $pmodel->scenario = 'bycheque';
+            }
+            
+            if($pmodel->validate())
+            {
+                
+                $sett_infos = SupplierSubscriptionPrice::model()->findByPk(1);
+                if($_POST['PaymentCheques']['pay_type']=="2")
+                {    
+                    $paytype      = "Cheque";
+                    $expirydate   = date("Y-m-d", strtotime('+1 year'));
+                    $payment_type = "3";   
+
+                }elseif($_POST['PaymentCheques']['pay_type']=="1")
+                {
+                    $paytype = "Free";  
+                    $expdays = $sett_infos->expire_days;
+                    $expirydate = date("Y-m-d", strtotime("+$expdays days"));
+                    $payment_type = "4";
+                }  
+                
+                $profile_price = $sett_infos->profile_price;
+                $profile_logo_price = $sett_infos->profile_logo_price;
+                $logo_price = ( $profile_logo_price - $profile_price );
+
+                $sub_type_profile = $_POST['PaymentCheques']['profile'];
+                $sub_type_logo    = $_POST['PaymentCheques']['logo'];
+                
+                // Session supplier model attribute    
+                $sess_attr_m = Yii::app()->user->getState("mattributes");
+                // Session user model attribute
+                // $sess_attr_u = Yii::app()->user->getState("uattributes");
+                // Session productids 
+                $sess_productids = Yii::app()->user->getState("product_ids");
+                // Session marqueids 
+                $sess_marqueids = Yii::app()->user->getState("marque_ids");
+
+                if (Yii::app()->user->hasState("mattributes")) {
+                    $model->attributes = $sess_attr_m;    
+                  //  $model->ID_CLIENT  = $sess_attr_m['ID_CLIENT'];
+                    
+                    if($sub_type_profile==1 && $sub_type_logo==1)
+                    {
+                        $subscriptiontype = "2";
+                        $amount = $profile_logo_price;    
+                        $model->profile_expirydate = $expirydate;
+                        $model->logo_expirydate = $expirydate;
+                        $item_name = "Suppliers Subscription - Profile & logo";
+
+                    }else if($sub_type_profile==1 && $sub_type_logo==0)
+                    {
+                        $subscriptiontype = "1";
+                        $amount = $profile_price;
+                        $model->profile_expirydate = $expirydate;
+                        $item_name = "Suppliers Subscription - Profile only";
+
+                    }else if($sub_type_profile==0 && $sub_type_logo==1)
+                    {
+                        $subscriptiontype = "3";
+                        $amount = $logo_price;
+                        $model->logo_expirydate = $expirydate;
+                        $item_name = "Suppliers Subscription - Logo only";
+                    }  
+                    
+                    $model->CREATED_DATE = date("Y-m-d");
+                    $model->save(false);              
+                 //   $umodel->attributes  = $sess_attr_u;
+                 //   $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
+                 //   $umodel->save(false);                
+                    $supplierid = $model->ID_FOURNISSEUR;
+
+                    SupplierProducts::model()->deleteAll("ID_FOURNISSEUR ='" . $supplierid . "'");
+
+                    if (Yii::app()->user->hasState("product_ids")) {
+                        foreach ($sess_productids as $pids) {
+                            $productid = $pids;
+                            if (array_key_exists($productid, $sess_marqueids)) {
+                                $allmarqid = $sess_marqueids[$productid];
+                                $exp_marid = explode(',', $allmarqid);
+
+                                foreach ($exp_marid as $mid) {
+                                    $marqid = $mid;
+
+                                    $criteria1 = new CDbCriteria();
+                                    $criteria1->condition = 'ID_PRODUIT=:pid and ID_MARQUE=:mid';
+                                    $criteria1->params = array(':pid' => $productid, ':mid' => $marqid);
+                                    $get_product_marques = ProductMarqueDirectory::model()->find($criteria1);
+
+                                    if ($get_product_marques->ID_LIEN_MARQUE) {
+                                        $prd_mar_id = $get_product_marques->ID_LIEN_MARQUE;
+                                        $spmodel = new SupplierProducts();
+                                        $spmodel->ID_FOURNISSEUR = $supplierid;
+                                        $spmodel->ID_LIEN_PRODUIT_MARQUE = $prd_mar_id;
+                                        $spmodel->save(false);
+                                    }
+                                }
+                            }
+                        }
+                    }         
+                    
+                    // Save the payment details                                   
+                    $ptmodel = new PaymentTransaction;
+                    $ptmodel->user_id = $supplierid;    // need to assign acutal user id
+                    $ptmodel->total_price = $amount;
+                    $ptmodel->subscription_price = $amount;
+                    $ptmodel->payment_status = 'Completed';
+                    $ptmodel->payer_email = '';
+                    $ptmodel->verify_sign = '';
+                    $ptmodel->txn_id = '';
+                    $ptmodel->payment_type   = $paytype;
+                    $ptmodel->receiver_email = '';
+                    $ptmodel->txn_type   = '';
+                    $ptmodel->item_name  = $item_name;
+                    $ptmodel->NOMTABLE   = 'suppliers';
+                    $ptmodel->expirydate = $expirydate;
+                    $ptmodel->invoice_number = Myclass::getRandomString();
+                    $ptmodel->pay_type   = $payment_type;
+                    $ptmodel->subscription_type = $subscriptiontype;
+                    $ptmodel->save();
+                    
+                    if($_POST['PaymentCheques']['pay_type']=="2")
+                    { 
+                        $pmodel->payment_transaction_id = $ptmodel->id;
+                        $pmodel->save();
+                    }
+                        
+                }
+
+                // unset Session supplier model attribute    
+                Yii::app()->user->setState("mattributes", null);
+                // unset Session user model attribute
+                //  Yii::app()->user->setState("uattributes", null);
+                // unset Session productids 
+                Yii::app()->user->setState("product_ids", null);
+                // unset Session marqueids 
+                Yii::app()->user->setState("marque_ids", null);
+                // unset Session marqueids 
+                Yii::app()->user->setState("thirdtab", null);
+                // unset Session marqueids  
+                Yii::app()->user->setState("secondtab", null);
+                // unset Session 
+                Yii::app()->user->setState("fourthtab", null);
+                // unset Session scountry  
+                Yii::app()->user->setState("scountry", null);
+                // unset Session sregion  
+                Yii::app()->user->setState("sregion", null);
+
+                Yii::app()->user->setFlash('success', 'Informations fournisseur ajouter / jour avec succès!!!');
+                $this->redirect(array('index'));
+            }    
+            
+        }
+        
+         if (Yii::app()->user->hasState("product_ids")) 
+        {
+            $sess_product_ids = Yii::app()->user->getState("product_ids");
+            $data_products   = SuppliersDirectory::getproducts($sess_product_ids);
+            
+            if(empty($sess_product_ids))
+            {
+                Yii::app()->user->setState("marque_ids", null); 
+            }    
+        }
+        
+        if (isset($sess_attr_m['ID_FOURNISSEUR'])) {
+            $viewpage = 'update';
+        } else {
+            $viewpage = 'create';
+        }
+        
+        $this->render($viewpage, compact('model', 'tab', 'data_products','pmodel'));
+    }  
+    
+    
+    public function actionRenewpayment()
+    {
+        $tab    = 4;
+        $pmodel = new PaymentCheques;
+          
+        if (Yii::app()->user->hasState("mattributes")) 
+        {
+            $sess_attr_m = Yii::app()->user->getState("mattributes");
+            $fid = $sess_attr_m['ID_FOURNISSEUR'];
+            $model = $this->loadModel($fid); 
+            $model->attributes = $sess_attr_m;
+        }     
+       
+         // Save products in to database        
+        if (isset($_POST['PaymentCheques'])) 
+        { 
+            $pmodel->attributes = $_POST['PaymentCheques'];
+            $pmodel->profile    = $_POST['PaymentCheques']['profile'];
+            $pmodel->logo       = $_POST['PaymentCheques']['logo'];
+            $pmodel->pay_type   = $_POST['PaymentCheques']['pay_type'];
+            
+            if($pmodel->pay_type==2)
+            {    
+              $pmodel->scenario = 'bycheque';
+            }
+            
+            if($pmodel->validate())
+            {
+                
+                $sett_infos = SupplierSubscriptionPrice::model()->findByPk(1);
+                if($_POST['PaymentCheques']['pay_type']=="2")
+                {    
+                    $paytype      = "Cheque";
+                    $payment_type = "3";   
+                    $expirydate   = date("Y-m-d", strtotime('+1 year'));                    
+                   
+                    // get existing profile expiry date
+                    $profile_expirydate = $model->profile_expirydate;
+                    $logo_expirydate    = $model->logo_expirydate;
+
+                    $p_expdate = date("Y-m-d", strtotime($profile_expirydate));
+                    if ($p_expdate > date("Y-m-d")) {
+                         $time = strtotime($profile_expirydate);
+                         $profile_expirydate = date("Y-m-d", strtotime("+1 year", $time));
+                    } else {
+                         $profile_expirydate = date('Y-m-d', strtotime('+1 year'));
+                    }
+
+                     $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
+                    if ($l_expdate > date("Y-m-d")) {
+                        $time = strtotime($logo_expirydate);
+                        $logo_expirydate = date("Y-m-d", strtotime("+1 year", $time));
+                    } else {
+                        $logo_expirydate = date('Y-m-d', strtotime('+1 year'));
+                    }
+
+                }elseif($_POST['PaymentCheques']['pay_type']=="1")
+                {
+                    $paytype = "Free";  
+                    $expdays = $sett_infos->expire_days;
+                    $expirydate = date("Y-m-d", strtotime("+$expdays days"));
+                    $payment_type = "4";
+                    
+                    // get existing profile expiry date
+                    $profile_expirydate = $model->profile_expirydate;
+                    $logo_expirydate    = $model->logo_expirydate;
+
+                    $p_expdate = date("Y-m-d", strtotime($profile_expirydate));
+                    if ($p_expdate > date("Y-m-d")) {
+                         $time = strtotime($profile_expirydate);
+                         $profile_expirydate = date("Y-m-d", strtotime("+$expdays days", $time));
+                    } else {
+                         $profile_expirydate = date('Y-m-d', strtotime("+$expdays days"));
+                    }
+
+                     $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
+                    if ($l_expdate > date("Y-m-d")) {
+                        $time = strtotime($logo_expirydate);
+                        $logo_expirydate = date("Y-m-d", strtotime("+$expdays days", $time));
+                    } else {
+                        $logo_expirydate = date('Y-m-d', strtotime("+$expdays days"));
+                    }            
+                    
+                }  
+                
+                $profile_price = $sett_infos->profile_price;
+                $profile_logo_price = $sett_infos->profile_logo_price;
+                $logo_price = ( $profile_logo_price - $profile_price );
+
+                $sub_type_profile = $_POST['PaymentCheques']['profile'];
+                $sub_type_logo    = $_POST['PaymentCheques']['logo'];
+                
+                // Session supplier model attribute    
+                $sess_attr_m = Yii::app()->user->getState("mattributes");
+    
+                if (Yii::app()->user->hasState("mattributes")) {
+                                    
+                    if($sub_type_profile==1 && $sub_type_logo==1)
+                    {
+                        $subscriptiontype = "2";
+                        $amount = $profile_logo_price;    
+                        $model->profile_expirydate = $profile_expirydate;
+                        $model->logo_expirydate = $logo_expirydate;
+                        $item_name = "Suppliers Subscription - Profile & logo";
+
+                    }else if($sub_type_profile==1 && $sub_type_logo==0)
+                    {
+                        $subscriptiontype = "1";
+                        $amount = $profile_price;
+                        $model->profile_expirydate = $profile_expirydate;
+                        $item_name = "Suppliers Subscription - Profile only";
+
+                    }else if($sub_type_profile==0 && $sub_type_logo==1)
+                    {
+                        $subscriptiontype = "3";
+                        $amount = $logo_price;
+                        $model->logo_expirydate = $logo_expirydate;
+                        $item_name = "Suppliers Subscription - Logo only";
+                    }   
+                    
+                    $model->save(false);
+                                
+                    $supplierid = $model->ID_FOURNISSEUR;
+                    
+                    // Save the payment details                                   
+                    $ptmodel = new PaymentTransaction;
+                    $ptmodel->user_id = $supplierid;    // need to assign acutal user id
+                    $ptmodel->total_price = $amount;
+                    $ptmodel->subscription_price = $amount;
+                    $ptmodel->payment_status = 'Completed';
+                    $ptmodel->payer_email = '';
+                    $ptmodel->verify_sign = '';
+                    $ptmodel->txn_id = '';
+                    $ptmodel->payment_type   = $paytype;
+                    $ptmodel->receiver_email = '';
+                    $ptmodel->txn_type   = '';
+                    $ptmodel->item_name  = $item_name;
+                    $ptmodel->NOMTABLE   = 'suppliers';
+                    $ptmodel->expirydate = $expirydate;
+                    $ptmodel->invoice_number = Myclass::getRandomString();
+                    $ptmodel->pay_type   = $payment_type;
+                    if (isset($sess_attr_m['ID_FOURNISSEUR'])) 
+                    {
+                       $ptmodel->supp_renew_status = "1";
+                    }
+                    $ptmodel->subscription_type = $subscriptiontype;
+                    $ptmodel->save();
+                    
+                    if($_POST['PaymentCheques']['pay_type']=="2")
+                    { 
+                        $pmodel->payment_transaction_id = $ptmodel->id;
+                        $pmodel->save();
+                    }
+                        
+                }
+ 
+               Yii::app()->user->setFlash('success', 'Abonnement renouveler avec succès !!!');
+                $this->redirect(array('renewpayment'));
+            }    
+            
+        }
+        
+         if (Yii::app()->user->hasState("product_ids")) 
+        {
+            $sess_product_ids = Yii::app()->user->getState("product_ids");
+            $data_products   = SuppliersDirectory::getproducts($sess_product_ids);
+            
+            if(empty($sess_product_ids))
+            {
+                Yii::app()->user->setState("marque_ids", null); 
+            }    
+        }
+      
+       $viewpage = 'update';
+       
+        $this->render($viewpage, compact('model', 'tab', 'data_products','pmodel'));
+    }  
 
     public function actionListmarques() {
         $pid = Yii::app()->getRequest()->getQuery('id');

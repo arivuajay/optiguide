@@ -20,15 +20,16 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
     <div class="row">
         <?php
         $gridColumns = array(
-        'profile_price',
-        'profile_logo_price',
-        array(
-            'header' => 'Actes',
-            'class' => 'booster.widgets.TbButtonColumn',
-            'updateButtonUrl'=>'Yii::app()->createUrl("/admin/supplierSubscriptionPrice/update/", array("id"=>$data->id,"type"=>"supplier"))',
-            'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-            'template' => '{update}',
-        )
+            'profile_price',
+            'profile_logo_price',
+            'expire_days',    
+            array(
+                'header' => 'Actes',
+                'class' => 'booster.widgets.TbButtonColumn',
+                'updateButtonUrl'=>'Yii::app()->createUrl("/admin/supplierSubscriptionPrice/update/", array("id"=>$data->id,"type"=>"supplier"))',
+                'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                'template' => '{update}',
+            )
         );
 
         $this->widget('booster.widgets.TbExtendedGridView', array(       

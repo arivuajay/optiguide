@@ -47,6 +47,17 @@
                         <?php echo $form->error($model, 'profile_logo_price'); ?>
                     </div>
                 </div>
+                
+                 <div class="form-group">
+                    <?php echo $form->labelEx($model, 'expire_days', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($model, 'expire_days', array('class' => 'form-control')); ?> 
+                        <?php echo $form->error($model, 'expire_days'); ?>
+                    </div>
+                     <div class="col-sm-5">
+                         (in days)
+                     </div>     
+                </div>
                 <?php }
                   echo CHtml::hiddenField('disp_type' , $disptype);
                 ?>

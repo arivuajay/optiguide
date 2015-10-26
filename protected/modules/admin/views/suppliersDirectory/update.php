@@ -10,4 +10,4 @@ $this->breadcrumbs=array(
 ?>
 
 <div class="user-create">
-    <?php $this->renderPartial('_form', compact('model','tab', 'data_products')); ?></div>
+    <?php $this->renderPartial('_form', compact('model','tab', 'data_products','pmodel')); ?></div>
