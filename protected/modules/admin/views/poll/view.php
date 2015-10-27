@@ -7,8 +7,14 @@ $this->breadcrumbs = array(
     'Gérer les sondages' => array('index'),
     $this->title,
 );
+
+$expurl = $this->createUrl('poll/view/id/'.$model->id,array("exportresult"=>"1"));
 ?>
+
+   
+
 <div class="box box-info">
+    
     <div class="box-header">
         <i class="fa fa-line-chart"></i>
         <h3 class="box-title"><?php echo CHtml::encode($model->title); ?></h3>
@@ -18,11 +24,14 @@ $this->breadcrumbs = array(
             <p class="description"><?php echo CHtml::encode($model->description); ?></p>
         <?php endif; ?>
         <?php $this->renderPartial('_results', array('model' => $model)); ?>
+            <p><a href="<?php echo $expurl;?>" class="btn btn-info"> <span class="glyphicon glyphicon-download"></span> Export  </a></p>
     </div><!-- /.box-body -->
 </div>
 <?php
 if($model->usertype=='1')
 {    ?>
+
+
 <div class="col-lg-12 col-md-12">&nbsp;</div>
 
 <div class="col-lg-12 col-md-12">

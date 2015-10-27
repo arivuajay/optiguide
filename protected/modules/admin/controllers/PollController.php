@@ -26,7 +26,7 @@ class PollController extends Controller
         'users'=>array('*'),
       ),
       array('allow',
-        'actions'=>array('index','view','create','update','admin','delete','export'),
+        'actions'=>array('index','view','create','update','admin','delete','export','Print'),
         'users'=>array('admin'),
       ),
       array('deny',
@@ -34,6 +34,23 @@ class PollController extends Controller
       ),
     );
   }
+  
+  function actionPrint()
+        {
+
+                $data = Vouchers::model()->findAll('status=:status', array(':status'=>1));
+
+                $fields = array(
+                                'voucher_no',
+                                'first_name',
+                                'last_name',
+                                'purchase_date',
+                                'date_used',
+                                'barcode'
+                );
+                
+                ExcelExporter::sendAsXLS('Vouchers', $data, 'List of Vouchers', true, $fields); 
+        }
 
   /**
    * Displays a particular model.
@@ -46,10 +63,16 @@ class PollController extends Controller
     if (Yii::app()->getModule('poll')->forceVote && $model->userCanVote()) {
       $this->redirect(array('vote', 'id' => $model->id)); 
     }
-    else {
-        
+    else {        
       $userVote = $this->loadVote($model);
       $userChoice = $this->loadChoice($model, $userVote->choice_id);
+      
+      $exportresult = Yii::app()->request->getQuery('exportresult','0'); 
+      if($exportresult=="1")
+      {    
+        $exportForm = new PollExportForm($model);       
+        $exportForm->export(); 
+      }   
       
       // define the variable to “LIMIT” the query        
 //        $page = Yii::app()->request->getParam('page');
@@ -99,6 +122,8 @@ class PollController extends Controller
       ));
     }
   }
+  
+  
 
   /**
    * Vote on a poll.

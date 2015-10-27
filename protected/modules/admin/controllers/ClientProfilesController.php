@@ -15,6 +15,15 @@ class ClientProfilesController extends Controller {
                 //'postOnly + delete', // we only allow deletion via POST request
         );
     }
+    
+    public function behaviors() {
+        return array(
+            'exportableGrid' => array(
+                'class' => 'application.components.ExportableGridBehavior',
+                'filename' => "Clients_" . time() . ".csv",
+//                'csvDelimiter' => ',', //i.e. Excel friendly csv delimiter
+        ));
+    }
 
     /**
      * Specifies the access control rules.
@@ -218,6 +227,13 @@ class ClientProfilesController extends Controller {
         $model->unsetAttributes();  // clear any default values
         if (isset($_GET['ClientProfiles']))
             $model->attributes = $_GET['ClientProfiles'];
+        
+        
+//        if ($this->isExportRequest()) {
+//            $model->unsetAttributes();
+//            $this->exportCSV(array('Client Accounts:'), null, false);
+//            $this->exportCSV($model->search(), array('name', 'company', 'address', 'country'));
+//        }
 
         $this->render('index', array(
             'model' => $model,

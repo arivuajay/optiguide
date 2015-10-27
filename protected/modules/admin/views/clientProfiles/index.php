@@ -67,13 +67,17 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
             )
         );
+                   
+        //$export_btn = $this->renderExportGridButton('client-base-grid', '<i class="fa fa-file-excel-o"></i> Export', array('class' => 'btn btn-xs btn-danger  pull-right'));
 
         $this->widget('booster.widgets.TbExtendedGridView', array(
+            'id' => 'client-base-grid',
             'filter' => $model,
             'type' => 'striped bordered datatable',
             'dataProvider' => $model->search(),
             'responsiveTable' => true,
-            'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Les profils des clients</h3></div><div class="panel-body">{items}{pager}</div></div>',
+           // 'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}&nbsp;' . $export_btn . '</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Les profils des clients</h3></div><div class="panel-body">{items}{pager}</div></div>',
+             'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary} </div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Les profils des clients</h3></div><div class="panel-body">{items}{pager}</div></div>',
             'columns' => $gridColumns
                 )
         );
