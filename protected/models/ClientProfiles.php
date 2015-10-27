@@ -65,6 +65,8 @@ class ClientProfiles extends CActiveRecord
 	 */
 	public function relations()
 	{
+             $cur_day = date("Y-m-d");
+          
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
@@ -75,7 +77,7 @@ class ClientProfiles extends CActiveRecord
                                      self::HAS_ONE, 
                                     'ClientMessages', 
                                     'client_id',                                      
-                                    'on'     => 'clientMessages2.status = :type', 
+                                    'on'     => "clientMessages2.status = :type and DATE(clientMessages2.date_remember)>'$cur_day'", 
                                     'params' => array(':type' => 1),
                                     'order'  => 'date_remember ASC',  
                                     ),                                        

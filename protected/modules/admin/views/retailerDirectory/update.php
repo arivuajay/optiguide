@@ -10,4 +10,4 @@ $this->breadcrumbs=array(
 ?>
 
 <div class="user-create">
-    <?php $this->renderPartial('_form', compact('model','rmodel','rsearchmodel')); ?></div>
+    <?php $this->renderPartial('_form', compact('model','rmodel','rexpiremodel','rcurrentmodel')); ?></div>

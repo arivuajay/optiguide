@@ -115,6 +115,7 @@ class RetailerDirectory extends CActiveRecord
 	 */
 	public function relations()
 	{
+            $cur_day = date("Y-m-d");
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
@@ -127,7 +128,7 @@ class RetailerDirectory extends CActiveRecord
                              self::HAS_ONE, 
                             'RetailerMessages', 
                             'ID_RETAILER',                                      
-                            'on'     => 'retailerMessages2.status = :type', 
+                            'on'     => "retailerMessages2.status = :type and DATE(retailerMessages2.date_remember)>'$cur_day'", 
                             'params' => array(':type' => 1),
                             'order'  => 'date_remember ASC',  
                         ),  

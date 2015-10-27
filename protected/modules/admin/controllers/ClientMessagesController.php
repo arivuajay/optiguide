@@ -68,6 +68,8 @@ class ClientMessagesController extends Controller {
                 $message = $info->message;
                 $employee_email = $info->employeeProfiles->employee_email;
                 $employee_name = $info->employeeProfiles->employee_name;
+                
+                $alertf_name = ($info->alertfile!='')? Yii::getPathOfAlias('webroot').'/'.ATTACH_PATH.'/'.$info->alertfile : '';
 
                 $clientdetail_url = GUIDEURL . "optiguide/default/clientprofile/id/" . $randkey;
 
@@ -82,7 +84,7 @@ class ClientMessagesController extends Controller {
                     "{NEXTSTEPURL}" => $clientdetail_url
                 );
                 $message = $mail->getMessage('meetingalert', $trans_array);
-                $mail->send($employee_email, $subject, $message);
+                $mail->send($employee_email, $subject, $message,'','',$alertf_name);
 
                 $model = $this->loadModel($meetid);
                 if ($model->mail_sent_counts == 1) {
@@ -120,7 +122,9 @@ class ClientMessagesController extends Controller {
                 $message = $info->message;
                 $employee_email = $info->employeeProfiles->employee_email;
                 $employee_name = $info->employeeProfiles->employee_name;
-
+                
+                $alertf_name = ($info->alertfile!='')? Yii::getPathOfAlias('webroot').'/'.ATTACH_PATH.'/'.$info->alertfile : '';
+                
                 $clientdetail_url = GUIDEURL . "optiguide/default/professionalprofile/id/" . $randkey;
 
                 /* Send mail to admin for confirmation */
@@ -134,7 +138,9 @@ class ClientMessagesController extends Controller {
                     "{NEXTSTEPURL}" => $clientdetail_url
                 );
                 $message = $mail->getMessage('meetingalert', $trans_array);
-                $mail->send($employee_email, $subject, $message);
+                
+               
+                $mail->send($employee_email, $subject, $message,'','',$alertf_name);
 
                 $model = ProfessionalMessages::model()->findByPk($meetid);
                 if ($model->mail_sent_counts == 1) {
@@ -172,6 +178,8 @@ class ClientMessagesController extends Controller {
                 $message = $info->message;
                 $employee_email = $info->employeeProfiles->employee_email;
                 $employee_name = $info->employeeProfiles->employee_name;
+                
+                $alertf_name = ($info->alertfile!='')? Yii::getPathOfAlias('webroot').'/'.ATTACH_PATH.'/'.$info->alertfile : '';
                
                 $clientdetail_url = GUIDEURL . "optiguide/default/retailerprofile/id/" . $randkey;
 
@@ -186,7 +194,7 @@ class ClientMessagesController extends Controller {
                     "{NEXTSTEPURL}" => $clientdetail_url
                 );
                 $message = $mail->getMessage('meetingalert', $trans_array);
-                $mail->send($employee_email, $subject, $message);
+                $mail->send($employee_email, $subject, $message,'','',$alertf_name);
 
                 $model = RetailerMessages::model()->findByPk($meetid);
                 if ($model->mail_sent_counts == 1) {

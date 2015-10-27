@@ -5,7 +5,7 @@
  */
 
 class Sendmail {
-    function send($to, $subject, $body, $fromName = '', $from = '', $attachment = null) {       
+    function send($to, $subject, $body, $fromName = '', $from = '', $attachment = null, $path=null) {       
         if (MAILSENDBY == 'phpmail'):
             $this->sendPhpmail($to, $subject, $body, $attachment);
         elseif (MAILSENDBY == 'smtp'):
@@ -30,6 +30,11 @@ class Sendmail {
             // $mailer->
 
             $mailer->Subject = $subject;
+            
+            if($attachment!='')
+            {    
+                $mailer->AddAttachment($attachment);
+            }    
 
             $mailer->MsgHTML($body);
 
@@ -76,15 +81,45 @@ class Sendmail {
     }
 
     function sendPhpmail($to, $subject, $body, $attachment = null) {
-        $headers = 'MIME-Version: 1.0' . "\r\n";
-        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+       // $headers = 'MIME-Version: 1.0' . "\r\n";
+       // $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 
         // Additional headers
-        $headers .= 'From: ' . SITENAME . ' <' . NOREPLYMAIL . '>' . "\r\n";
-
-        mail($to, $subject, $body, $headers);
+      //  $headers .= 'From: ' . SITENAME . ' <' . NOREPLYMAIL . '>' . "\r\n";
+        
+        $uid = md5(uniqid(time()));
+        if($attachment!='')
+        {   
+            $filename = basename($attachment);            
+            $file = $attachment;
+            $file_size = filesize($file);
+            $handle = fopen($file, "r");
+            $content = fread($handle, $file_size);
+            fclose($handle);
+            $content = chunk_split(base64_encode($content));
+        }    
+        
+       
+        $header = "From: ".SITENAME." <".NOREPLYMAIL.">\r\n";        
+        $header .= "MIME-Version: 1.0\r\n";
+        $header .= "Content-Type: multipart/mixed; boundary=\"".$uid."\"\r\n\r\n";
+    
+        $nmessage = "--".$uid."\r\n";
+        $nmessage .= "Content-type:text/html; charset=iso-8859-1\r\n";
+        $nmessage .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+        $nmessage .= $body."\r\n\r\n";
+        if($attachment!='')
+        { 
+            $nmessage .= "--".$uid."\r\n";
+            $nmessage .= "Content-Type: application/octet-stream; name=\"".$filename."\"\r\n"; 
+            $nmessage .= "Content-Transfer-Encoding: base64\r\n";
+            $nmessage .= "Content-Disposition: attachment; filename=\"".$filename."\"\r\n\r\n";
+            $nmessage .= $content."\r\n\r\n";
+            $nmessage .= "--".$uid."--";
+        }
+        
+        mail($to, $subject, $nmessage, $header);
     }
-
 }
 
 ?>

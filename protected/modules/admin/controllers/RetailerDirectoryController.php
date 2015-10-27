@@ -134,6 +134,19 @@ class RetailerDirectoryController extends Controller {
                     $rmodel->date_remember  = date("Y-m-d", strtotime($_POST['RetailerMessages']['date_remember']));
                     $rmodel->created_date   = date("Y-m-d");
                     $rmodel->randkey        = Myclass::getGuid();
+                    //save attachment
+                    $rmodel->afile = CUploadedFile::getInstance($rmodel,'afile');      
+                    if($rmodel->afile)
+                    { 
+                        $filename = time() . '_' . $rmodel->afile->name;                    
+                        $rmodel->alertfile = $filename;
+                        $attach_path = Yii::getPathOfAlias('webroot').'/'.ATTACH_PATH.'/';                    
+                        if (!is_dir($attach_path)) {
+                            mkdir($attach_path, 0777, true);
+                        }
+                        $rmodel->afile->saveAs($attach_path . $filename);
+                    } 
+                    
                     if($rmodel->date_remember!='' && $rmodel->employee_id!='' && $rmodel->message!='')
                     {     
                         $rmodel->save();
@@ -226,6 +239,19 @@ class RetailerDirectoryController extends Controller {
                     $rmodel->date_remember  = date("Y-m-d", strtotime($_POST['RetailerMessages']['date_remember']));
                     $rmodel->created_date   = date("Y-m-d");
                     $rmodel->randkey        = Myclass::getGuid();
+                     //save attachment
+                    $rmodel->afile = CUploadedFile::getInstance($rmodel,'afile');                   
+                    if($rmodel->afile)
+                    { 
+                        $filename = time() . '_' . $rmodel->afile->name;                    
+                        $rmodel->alertfile = $filename;
+                        $attach_path = Yii::getPathOfAlias('webroot').'/'.ATTACH_PATH.'/';                    
+                        if (!is_dir($attach_path)) {
+                            mkdir($attach_path, 0777, true);
+                        }
+                        $rmodel->afile->saveAs($attach_path . $filename);
+                    }    
+                    
                     if($rmodel->date_remember!='' && $rmodel->employee_id!='' && $rmodel->message!='')
                     {     
                         $rmodel->save();
@@ -233,15 +259,16 @@ class RetailerDirectoryController extends Controller {
                 }
                 
                 Yii::app()->user->setFlash('success', 'Détaillant correctement mis à jour!!!');
-                $this->redirect(array('index'));
+                $this->redirect(array('update',"id"=>$id));
             }
         }
         
           // Get the alert history for the client
-        $rmodel = new RetailerMessages('search');
-        $rsearchmodel = $rmodel->search($id);
+        $rmodel = new RetailerMessages('search');      
+        $rexpiremodel  = $rmodel->search_expirealerts($id);
+        $rcurrentmodel = $rmodel->search_currentalerts($id);
 
-        $this->render('update', compact( 'model','rmodel','rsearchmodel'));
+        $this->render('update', compact( 'model','rmodel','rexpiremodel','rcurrentmodel'));
     }
     
     

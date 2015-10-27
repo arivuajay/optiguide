@@ -122,6 +122,19 @@ class ProfessionalDirectoryController extends Controller {
                     $pmodel->date_remember  = date("Y-m-d", strtotime($_POST['ProfessionalMessages']['date_remember']));
                     $pmodel->created_date   = date("Y-m-d");
                     $pmodel->randkey        = Myclass::getGuid();
+                    //save attachment
+                    $pmodel->afile = CUploadedFile::getInstance($pmodel,'afile');                   
+                    if($pmodel->afile)
+                    { 
+                        $filename = time() . '_' . $pmodel->afile->name;                    
+                        $pmodel->alertfile = $filename;
+                        $attach_path = Yii::getPathOfAlias('webroot').'/'.ATTACH_PATH.'/';                    
+                        if (!is_dir($attach_path)) {
+                            mkdir($attach_path, 0777, true);
+                        }
+                        $pmodel->afile->saveAs($attach_path . $filename);
+                    }    
+                    
                     if($pmodel->date_remember!='' && $pmodel->employee_id!='' && $pmodel->message!='')
                     {     
                         $pmodel->save();
@@ -198,22 +211,36 @@ class ProfessionalDirectoryController extends Controller {
                     $pmodel->date_remember  = date("Y-m-d", strtotime($_POST['ProfessionalMessages']['date_remember']));
                     $pmodel->created_date   = date("Y-m-d");
                     $pmodel->randkey        = Myclass::getGuid();
+                    //save attachment
+                    $pmodel->afile = CUploadedFile::getInstance($pmodel,'afile');                   
+                    if($pmodel->afile)
+                    { 
+                        $filename = time() . '_' . $pmodel->afile->name;                    
+                        $pmodel->alertfile = $filename;
+                        $attach_path = Yii::getPathOfAlias('webroot').'/'.ATTACH_PATH.'/';                    
+                        if (!is_dir($attach_path)) {
+                            mkdir($attach_path, 0777, true);
+                        }
+                        $pmodel->afile->saveAs($attach_path . $filename);
+                    }    
+                    
                     if($pmodel->date_remember!='' && $pmodel->employee_id!='' && $pmodel->message!='')
                     {     
-                        $pmodel->save();
+                        $pmodel->save(false);
                     }                   
                 }
                 
                 Yii::app()->user->setFlash('success', 'professionnelle mis à jour avec succès!!!');
-                $this->redirect(array('index'));
+                $this->redirect(array('update',"id"=>$id));
             }
         }
             
          // Get the alert history for the client
         $pmodel = new ProfessionalMessages('search');
-        $psearchmodel = $pmodel->search($id);
+        $pexpiremodel  = $pmodel->search_expirealerts($id);
+        $pcurrentmodel = $pmodel->search_currentalerts($id);
         
-        $this->render('update', compact('model','pmodel','psearchmodel'));
+        $this->render('update', compact('model','pmodel','pexpiremodel','pcurrentmodel'));
     }
     
     public function actionGetmessage()

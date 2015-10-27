@@ -59,6 +59,9 @@ return array(
     // Proof uploaded path
     'PROOF_PATH' => 'uploads/user_proofs/',
     
+    // Professional Alert files
+    'ATTACH_PATH' => 'uploads/alerts_attachments/',
+    
     //REP PROFILE PICTURE
     'REP_PROFILE_PICTURE' => 'uploads/rep_profile_pictures/',
     

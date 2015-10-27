@@ -67,6 +67,8 @@ class ProfessionalDirectory extends CActiveRecord {
      * @return array relational rules.
      */
     public function relations() {
+        
+        $cur_day = date("Y-m-d");
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
@@ -78,7 +80,7 @@ class ProfessionalDirectory extends CActiveRecord {
                              self::HAS_ONE, 
                             'ProfessionalMessages', 
                             'ID_SPECIALISTE',                                      
-                            'on'     => 'professionalMessages2.status = :type', 
+                            'on'     => "professionalMessages2.status = :type and DATE(professionalMessages2.date_remember)>'$cur_day'", 
                             'params' => array(':type' => 1),
                             'order'  => 'date_remember ASC',  
                             ),                                        

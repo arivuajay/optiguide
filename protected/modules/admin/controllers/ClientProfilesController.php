@@ -88,6 +88,19 @@ class ClientProfilesController extends Controller {
                     $cmodel->date_remember = date("Y-m-d", strtotime($_POST['ClientMessages']['date_remember']));
                     $cmodel->created_date  = date("Y-m-d");
                     $cmodel->randkey       = Myclass::getGuid();
+                    //save attachment
+                    $cmodel->afile = CUploadedFile::getInstance($cmodel,'afile');                   
+                    if($cmodel->afile)
+                    { 
+                        $filename = time() . '_' . $cmodel->afile->name;                    
+                        $cmodel->alertfile = $filename;
+                        $attach_path = Yii::getPathOfAlias('webroot').'/'.ATTACH_PATH.'/';                    
+                        if (!is_dir($attach_path)) {
+                            mkdir($attach_path, 0777, true);
+                        }
+                        $cmodel->afile->saveAs($attach_path . $filename);
+                    }                        
+                    
                     if($cmodel->date_remember!='' && $cmodel->employee_id!='' && $cmodel->message!='')
                     {     
                         $cmodel->save();
@@ -129,6 +142,19 @@ class ClientProfilesController extends Controller {
                     $cmodel->date_remember = date("Y-m-d", strtotime($_POST['ClientMessages']['date_remember']));
                     $cmodel->created_date  = date("Y-m-d");
                     $cmodel->randkey       = Myclass::getGuid();
+                    //save attachment
+                    $cmodel->afile = CUploadedFile::getInstance($cmodel,'afile');                   
+                    if($cmodel->afile)
+                    { 
+                        $filename = time() . '_' . $cmodel->afile->name;                    
+                        $cmodel->alertfile = $filename;
+                        $attach_path = Yii::getPathOfAlias('webroot').'/'.ATTACH_PATH.'/';                    
+                        if (!is_dir($attach_path)) {
+                            mkdir($attach_path, 0777, true);
+                        }
+                        $cmodel->afile->saveAs($attach_path . $filename);
+                    }      
+                    
                     if($cmodel->date_remember!='' && $cmodel->employee_id!='' && $cmodel->message!='')
                     {     
                         $cmodel->save();
@@ -141,12 +167,14 @@ class ClientProfilesController extends Controller {
         
         // Get the alert history for the client
         $cmodel = new ClientMessages('search_client');
-        $csearchmodel = $cmodel->search_client($id);
+        $cexpiremodel  = $cmodel->search_expirealerts($id);
+        $ccurrentmodel = $cmodel->search_currentalerts($id);
 
         $this->render('update', array(
-            'model' => $model,
+            'model'  => $model,
             'cmodel' => $cmodel,
-            'csearchmodel' => $csearchmodel
+            'cexpiremodel'  => $cexpiremodel,
+            'ccurrentmodel' => $ccurrentmodel,
         ));
     }
     

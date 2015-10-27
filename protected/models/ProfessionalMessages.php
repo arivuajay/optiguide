@@ -17,6 +17,7 @@
  */
 class ProfessionalMessages extends CActiveRecord
 {
+    public $afile;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -35,10 +36,11 @@ class ProfessionalMessages extends CActiveRecord
 		return array(
 			array('ID_SPECIALISTE, employee_id, user_view_status, status, mail_sent_counts', 'numerical', 'integerOnly'=>true),
 			array('randkey', 'length', 'max'=>255),
-			array('message, date_remember, created_date', 'safe'),
+			array('message, date_remember, created_date,alertfile', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('message_id, ID_SPECIALISTE, employee_id, message, date_remember, user_view_status, status, created_date, randkey, mail_sent_counts', 'safe', 'on'=>'search'),
+                        array('afile', 'file', 'allowEmpty'=>true, 'safe' => false),
 		);
 	}
 
@@ -71,6 +73,7 @@ class ProfessionalMessages extends CActiveRecord
 			'created_date' => Myclass::t('Created Date'),
 			'randkey' => Myclass::t('Randkey'),
 			'mail_sent_counts' => Myclass::t('Mail Sent Counts'),
+                        'afile' => Myclass::t('Attachment File'),
 		);
 	}
 
@@ -86,12 +89,38 @@ class ProfessionalMessages extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search($id)
+	public function search_expirealerts($id)
+	{
+            // @todo Please modify the following code to remove attributes that should not be searched.
+            $criteria=new CDbCriteria;
+            $cur_day = date("Y-m-d");
+            $criteria->addCondition("t.ID_SPECIALISTE='$id'");
+            $criteria->addCondition("DATE(t.date_remember)<'$cur_day'");
+
+            $criteria->with = array(
+                "employeeProfiles" => array(
+                  'alias' => 'employeeProfiles',
+                  'select' => 'employee_name,employee_email',
+                ),
+              );
+            $criteria->order = 'date_remember DESC';
+
+            return new CActiveDataProvider($this, array(
+                    'criteria'=>$criteria,
+                    'pagination' => array(
+                        'pageSize' => 5,
+                    )
+            ));
+	}
+        
+        public function search_currentalerts($id)
 	{
             // @todo Please modify the following code to remove attributes that should not be searched.
             $criteria=new CDbCriteria;
 
+            $cur_day = date("Y-m-d");
             $criteria->addCondition("t.ID_SPECIALISTE='$id'");
+            $criteria->addCondition("DATE(t.date_remember)>='$cur_day'");
 
             $criteria->with = array(
                 "employeeProfiles" => array(
