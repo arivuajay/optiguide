@@ -103,12 +103,15 @@ class Myclass extends CController {
         $criteria_reg = new CDbCriteria;
         $criteria_reg->order = 'NOM_VILLE ASC';
         if (!is_null($id)) {
+            
             $criteria_reg->condition = 'ID_REGION=:id';
             $criteria_reg->params = array(':id' => $id);
-            $cities = CityDirectory::model()->findAll($criteria_reg);
-            $cities = CHtml::listData($cities, 'ID_VILLE', 'NOM_VILLE');
+            $cities_result = CityDirectory::model()->findAll($criteria_reg);
+            $cities1["-1"] =  Myclass::t('OG173');
+            $cities2 = CHtml::listData($cities_result, 'ID_VILLE', 'NOM_VILLE');
+            $cities = $cities1+$cities2;
+            
         }
-
         return $cities;
     }
 

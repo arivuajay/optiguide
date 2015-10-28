@@ -165,6 +165,16 @@
                             <?php echo $form->error($model, 'ID_VILLE'); ?>
                         </div>
                     </div>
+                    
+                    <div class="form-row1" id="other_city" style="display:none;"> 
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                            <?php echo $form->labelEx($model, 'autre_ville'); ?>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
+                            <?php echo $form->textField($model, 'autre_ville', array('class' => 'form-txtfield')); ?>      
+                            <?php echo $form->error($model, 'autre_ville'); ?>
+                        </div>
+                    </div>
 
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
@@ -340,6 +350,9 @@ $cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
 
 $lat  = $model->map_lat;
 $long = $model->map_long;
+
+
+$ctyval = isset($model->ID_VILLE)?$model->ID_VILLE:'';
 $js = <<< EOD
    
     $(document).ready(function(){
@@ -457,6 +470,23 @@ $js = <<< EOD
          });
 
     });
+            
+    var ctyval = "{$ctyval}";
+    if(ctyval=="-1")
+    {    
+        $("#other_city").show();
+    }     
+            
+   $("#ProfessionalDirectory_ID_VILLE").change(function(){
+        var id=$(this).val();
+            
+        $("#other_city").hide();
+        if(id=="-1")
+        {    
+            $("#other_city").show();
+        }    
+    });        
+            
 });
 EOD;
 Yii::app()->clientScript->registerScript('_form_prof', $js);

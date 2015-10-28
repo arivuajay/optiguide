@@ -193,5 +193,8 @@ return array(
     'OG169' => 'Select Brands',
     'OG170' => 'Are you sure want to delete?',
     'OG171' => 'Selected Brands',
+    
+    'OG172' => "Specific City",
+    'OG173' => "Other",
 );
 ?>

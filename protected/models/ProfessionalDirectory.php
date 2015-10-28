@@ -29,7 +29,7 @@ class ProfessionalDirectory extends CActiveRecord {
 
     public $country;
     public $TYPESPECIALISTEFR;
-    public $region,$pfile,$listperpage;
+    public $region,$pfile,$listperpage,$autre_ville;
     static $NOM_TABLE = 'Professionnels';
     
 
@@ -48,13 +48,14 @@ class ProfessionalDirectory extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('ID_TYPE_SPECIALISTE, PRENOM, NOM ,country, region, ID_VILLE,ADRESSE,TELEPHONE', 'required'),
+            array('autre_ville', 'required','on'=>"otherCity"),
             array('ID_TYPE_SPECIALISTE, country, region, ID_VILLE, age', 'numerical', 'integerOnly' => true),
             array('ID_CLIENT', 'length', 'max' => 8 ),
             array('PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, SITE_WEB, COURRIEL', 'length', 'max' => 255),
             array('CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2', 'length', 'max' => 20),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('country,region,age,sex,map_lat,map_long,proof_file,listperpage,CREATED_DATE', 'safe'),
+            array('country,region,age,sex,map_lat,map_long,proof_file,listperpage,CREATED_DATE,autre_ville', 'safe'),            
             array('COURRIEL','email'),
             array('SITE_WEB','url'),
             array('ID_SPECIALISTE, TYPESPECIALISTEFR , ID_CLIENT, PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, ID_TYPE_SPECIALISTE, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, SITE_WEB, COURRIEL, DATE_MODIFICATION', 'safe', 'on' => 'search'),
@@ -72,7 +73,7 @@ class ProfessionalDirectory extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'cityDirectory'       => array(self::BELONGS_TO, 'CityDirectory', 'ID_VILLE'),            
+            'cityDirectory'    => array(self::BELONGS_TO, 'CityDirectory', 'ID_VILLE'),            
             'professionalType' => array(self::BELONGS_TO, 'ProfessionalType', 'ID_TYPE_SPECIALISTE'),
             'userDirectory'    => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION'),
             'cntUsr'           => array(self::STAT, 'UserDirectory',  'ID_RELATION', 'condition' => 'NOM_TABLE = "Professionnels"'),           
@@ -86,6 +87,15 @@ class ProfessionalDirectory extends CActiveRecord {
                             ),                                        
             );        
     }
+    
+    public function otherCity($attribute,$params='')
+    {
+        // check the specific city is empty
+        if($this->$attribute=='' && $this->ID_VILLE=="-1")
+        {        
+            $this->addError($attribute,'Please give city name.' );
+        }    
+    }        
     
     /** 
     * check the format of the phone number entered
@@ -129,7 +139,8 @@ class ProfessionalDirectory extends CActiveRecord {
             'age'    => Myclass::t('OG145'),
             'sex'    => Myclass::t('OG146'),            
             'TYPE_AUTRE'  => 'Note',
-            'pfile' => 'Proof File'
+            'pfile' => 'Proof File',
+            'autre_ville' => Myclass::t('OG172')
             
         );
     }

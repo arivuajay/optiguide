@@ -253,8 +253,7 @@ class ProfessionalDirectoryController extends OGController {
         $sname_qry = '';
         $scntry_qry = '';
         $sregion_qry = '';
-        $scity_qry = '';
-       
+        $scity_qry = '';       
 
         $searchModel = new ProfessionalDirectory();
         $searchModel->unsetAttributes();
@@ -379,10 +378,35 @@ class ProfessionalDirectoryController extends OGController {
             $umodel->LANGUE = Yii::app()->session['language'];
             $umodel->MUST_VALIDATE = 0;
 
+            if($model->ID_VILLE=="-1")
+            {
+                $model->scenario = "otherCity";
+            }    
+                
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
 
             if ($valid) {
+                
+                // save the other city informations and get cityid
+                if($model->ID_VILLE=="-1")
+                {
+                    $regionid   = $model->region;
+                    $othercity  = $model->autre_ville;
+                    $condition  = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $city_exist = CityDirectory::model()->find($condition);
+                    if(!empty($city_exist))
+                    {    
+                       $model->ID_VILLE = $city_exist->ID_VILLE;
+                    }else {
+                       $cinfo = new CityDirectory;
+                       $cinfo->ID_REGION = $regionid;
+                       $cinfo->NOM_VILLE = $othercity;
+                       $cinfo->country   = $model->country;
+                       $cinfo->save(false); 
+                       $model->ID_VILLE  = $cinfo->ID_VILLE;
+                    }    
+                }
                    
                 $address = $model->ADRESSE;
                 $country = $model->country;
@@ -446,10 +470,36 @@ class ProfessionalDirectoryController extends OGController {
             $model->attributes = $_POST['ProfessionalDirectory'];
             $umodel->attributes = $_POST['UserDirectory'];
             $umodel->NOM_UTILISATEUR = $model->PRENOM . " " . $model->NOM;
+            
+            if($model->ID_VILLE=="-1")
+            {
+                $model->scenario = "otherCity";
+            }   
+            
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
 
             if ($valid) {
+                
+                 // save the other city informations and get cityid
+                if($model->ID_VILLE=="-1")
+                {
+                    $regionid   = $model->region;
+                    $othercity  = $model->autre_ville;
+                    $condition  = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $city_exist = CityDirectory::model()->find($condition);
+                    if(!empty($city_exist))
+                    {    
+                       $model->ID_VILLE = $city_exist->ID_VILLE;
+                    }else {
+                       $cinfo = new CityDirectory;
+                       $cinfo->ID_REGION = $regionid;
+                       $cinfo->NOM_VILLE = $othercity;
+                       $cinfo->country   = $model->country;
+                       $cinfo->save(false); 
+                       $model->ID_VILLE  = $cinfo->ID_VILLE;
+                    }    
+                }
                 
                 $address = $model->ADRESSE;
                 $country = $model->country;
