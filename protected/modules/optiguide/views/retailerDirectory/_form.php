@@ -176,6 +176,16 @@
                     </div>
                 </div>
 
+                <div class="form-row1" id="other_city" style="display:none;"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                        <?php echo $form->labelEx($model, 'autre_ville'); ?>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
+                        <?php echo $form->textField($model, 'autre_ville', array('class' => 'form-txtfield')); ?>      
+                        <?php echo $form->error($model, 'autre_ville'); ?>
+                    </div>
+                </div>
+
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                         <?php echo $form->labelEx($model, 'CODE_POSTAL'); ?>
@@ -305,18 +315,18 @@
                         <?php echo $form->error($model, 'image'); ?>
                     </div>
                 </div>
-                <?php if($model->FICHIER!='')
-                {
-                     $img_url  = Yii::app()->getBaseUrl(true).'/uploads/retailer_logos/'.$model->FICHIER; 
+                <?php
+                if ($model->FICHIER != '') {
+                    $img_url = Yii::app()->getBaseUrl(true) . '/uploads/retailer_logos/' . $model->FICHIER;
                     ?>   
-                <div class="form-row1"> 
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> &nbsp;</div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">     
-                        <img src="<?php echo $img_url;?>" width="100" height="100">
+                    <div class="form-row1"> 
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> &nbsp;</div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">     
+                            <img src="<?php echo $img_url; ?>" width="100" height="100">
+                        </div>
                     </div>
-                </div>
-                <?php                 
-                }?>
+                <?php }
+                ?>
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                         <?php
@@ -365,7 +375,7 @@
                         <?php echo $form->error($model, 'facebooklink'); ?>  
                     </div>     
                 </div>
-                
+
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                         <?php echo $form->labelEx($model, 'twitterlink', array()); ?>     
@@ -375,7 +385,7 @@
                         <?php echo $form->error($model, 'twitterlink'); ?>  
                     </div>     
                 </div>
-                
+
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                         <?php echo $form->labelEx($model, 'linkedinlink', array()); ?>     
@@ -385,9 +395,9 @@
                         <?php echo $form->error($model, 'linkedinlink'); ?>  
                     </div>     
                 </div>
-                
+
             </div>
-            
+
             <div class="forms-cont"> 
                 <div class="forms-heading"><i class="fa fa-user"></i>  <?php echo Myclass::t('OG113'); ?></div>
                 <div class="form-row1"> 
@@ -413,8 +423,8 @@
                         <?php echo $form->radioButtonList($umodel, 'bSubscription_envue', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                     </div>
                 </div>
-                
-                 <div class="form-row1"> 
+
+                <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo Myclass::t('OG165'); ?>  </label>  </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                         <?php echo $form->radioButtonList($umodel, 'print_envision', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
@@ -474,6 +484,9 @@ $cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
 
 $lat = $model->map_lat;
 $long = $model->map_long;
+
+$ctyval = isset($model->ID_VILLE) ? $model->ID_VILLE : '';
+
 $js = <<< EOD
     $(document).ready(function(){
         
@@ -604,7 +617,23 @@ $js = <<< EOD
                 $("#RetailerDirectory_ID_GROUPE").html(html).selectpicker('refresh');
             }
          });
-    });         
+    });
+        
+    var ctyval = "{$ctyval}";
+    if(ctyval=="-1")
+    {    
+        $("#other_city").show();
+    }     
+            
+   $("#RetailerDirectory_ID_VILLE").change(function(){
+        var id=$(this).val();
+            
+        $("#other_city").hide();
+        if(id=="-1")
+        {    
+            $("#other_city").show();
+        }    
+    });
             
 });
 EOD;

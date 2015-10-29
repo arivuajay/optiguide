@@ -23,7 +23,7 @@ $cities = Myclass::getallcities($model->region);
 ?>
 
 <div class="row"> 
-    
+
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subscribe-btncont"> 
         <div class="inner-container"> 
             <h2> <?php echo $model->isNewRecord ? Myclass::t('OGO81', '', 'og') : Myclass::t('OG034', '', 'og'); ?> </h2>
@@ -150,6 +150,16 @@ $cities = Myclass::getallcities($model->region);
                             <?php echo $form->dropDownList($model, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => Myclass::t('APP59'))); ?>  
                             <?php echo $form->error($model, 'ID_VILLE'); ?>
                         </div>    
+                    </div>
+
+                    <div class="form-row1" id="other_city" style="display:none;"> 
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                            <?php echo $form->labelEx($model, 'autre_ville'); ?>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
+                            <?php echo $form->textField($model, 'autre_ville', array('class' => 'form-txtfield')); ?>      
+                            <?php echo $form->error($model, 'autre_ville'); ?>
+                        </div>
                     </div>
 
                     <div class="form-row1"> 
@@ -468,71 +478,73 @@ $cities = Myclass::getallcities($model->region);
             <?php $this->endWidget(); ?> 
         </div>
     </div>
-    
-    <?php
-            if (!$model->isNewRecord) {
-                $supplierproducts = array();
-                $supp_id = Yii::app()->user->relationid;
-                //this query contains get all products with marques list for the supplier
-                $products_query = Yii::app()->db->createCommand() //this query contains all the data
-                        ->select('rp.ID_PRODUIT , rm.ID_MARQUE , rp.NOM_PRODUIT_' . $this->lang . ' , rm.NOM_MARQUE')
-                        ->from(array('repertoire_fournisseur_produit rfp', 'repertoire_produit_marque rpm', 'repertoire_produit AS rp', 'repertoire_marque AS rm'))
-                        ->where("rfp.ID_LIEN_PRODUIT_MARQUE = rpm.ID_LIEN_MARQUE AND rpm.ID_PRODUIT = rp.ID_PRODUIT AND rpm.ID_MARQUE = rm.ID_MARQUE AND rfp.ID_FOURNISSEUR =" . $supp_id)
-                        ->order('rp.NOM_PRODUIT_' . $this->lang . ',rm.NOM_MARQUE')
-                        ->queryAll();
 
-                $result = array();
-                foreach ($products_query as $infos) {
-                    $pid = $infos['ID_PRODUIT'];
-                    $prod = $pid . '~' . $infos['NOM_PRODUIT_' . $this->lang . ''];
-                    $supplierproducts[$prod][] = $infos;
-                }
-                
-                if (!empty($supplierproducts)) {
-                    ?>
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
-                        <h2> <?php echo Myclass::t('OG073', '', 'og'); ?> </h2> 
-                        <div class="box" id="box1">
-                            <div class="brands">                         
-                                <ul>
-                                    <?php
-                                    foreach ($supplierproducts as $pkey => $products) {
-                                        $exp_key = explode('~', $pkey);
-                                        ?>    
-                                        <li class="noBorder"><?php echo $exp_key[1]; ?>
-                                            <?php
-                                            if (!empty($products)) {
-                                                ?>    
-                                                <ul>
-                                                    <?php
-                                                    foreach ($products as $brand) {
-                                                        ?>
-                                                        <li class="noBorder"><?php echo $brand['NOM_MARQUE']; ?></li>       
-                                                    <?php }
-                                                    ?>
-                                                </ul>    
-                                            <?php }
-                                            ?>  
-                                        </li>                                                        
-                                        <?php
-                                    }
-                                    ?>
-                                </ul>
-                                <p>&nbsp;</p>
-                            </div>
-                        </div>
-                    </div>   
-                    <?php
-                }
-            }
+    <?php
+    if (!$model->isNewRecord) {
+        $supplierproducts = array();
+        $supp_id = Yii::app()->user->relationid;
+        //this query contains get all products with marques list for the supplier
+        $products_query = Yii::app()->db->createCommand() //this query contains all the data
+                ->select('rp.ID_PRODUIT , rm.ID_MARQUE , rp.NOM_PRODUIT_' . $this->lang . ' , rm.NOM_MARQUE')
+                ->from(array('repertoire_fournisseur_produit rfp', 'repertoire_produit_marque rpm', 'repertoire_produit AS rp', 'repertoire_marque AS rm'))
+                ->where("rfp.ID_LIEN_PRODUIT_MARQUE = rpm.ID_LIEN_MARQUE AND rpm.ID_PRODUIT = rp.ID_PRODUIT AND rpm.ID_MARQUE = rm.ID_MARQUE AND rfp.ID_FOURNISSEUR =" . $supp_id)
+                ->order('rp.NOM_PRODUIT_' . $this->lang . ',rm.NOM_MARQUE')
+                ->queryAll();
+
+        $result = array();
+        foreach ($products_query as $infos) {
+            $pid = $infos['ID_PRODUIT'];
+            $prod = $pid . '~' . $infos['NOM_PRODUIT_' . $this->lang . ''];
+            $supplierproducts[$prod][] = $infos;
+        }
+
+        if (!empty($supplierproducts)) {
             ?>
-    
-    
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
+                <h2> <?php echo Myclass::t('OG073', '', 'og'); ?> </h2> 
+                <div class="box" id="box1">
+                    <div class="brands">                         
+                        <ul>
+                            <?php
+                            foreach ($supplierproducts as $pkey => $products) {
+                                $exp_key = explode('~', $pkey);
+                                ?>    
+                                <li class="noBorder"><?php echo $exp_key[1]; ?>
+                                    <?php
+                                    if (!empty($products)) {
+                                        ?>    
+                                        <ul>
+                                            <?php
+                                            foreach ($products as $brand) {
+                                                ?>
+                                                <li class="noBorder"><?php echo $brand['NOM_MARQUE']; ?></li>       
+                                                <?php }
+                                                ?>
+                                        </ul>    
+                                    <?php }
+                                    ?>  
+                                </li>                                                        
+                                <?php
+                            }
+                            ?>
+                        </ul>
+                        <p>&nbsp;</p>
+                    </div>
+                </div>
+            </div>   
+            <?php
+        }
+    }
+    ?>
+
+
 </div>
 <?php
 $cs = Yii::app()->getClientScript();
 $ajaxRegionUrl = Yii::app()->createUrl('/optiguide/suppliersDirectory/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/optiguide/suppliersDirectory/getcities');
+
+$ctyval = isset($model->ID_VILLE) ? $model->ID_VILLE : '';
 
 $js = <<< EOD
 $(document).ready(function(){
@@ -570,7 +582,23 @@ $(document).ready(function(){
 
     });   
         
- $('.repbox').lionbars();           
+ $('.repbox').lionbars();   
+     
+    var ctyval = "{$ctyval}";
+    if(ctyval=="-1")
+    {    
+        $("#other_city").show();
+    }     
+            
+   $("#SuppliersDirectory_ID_VILLE").change(function(){
+        var id=$(this).val();
+            
+        $("#other_city").hide();
+        if(id=="-1")
+        {    
+            $("#other_city").show();
+        }    
+    });
             
 });
 EOD;

@@ -47,7 +47,7 @@
  */
 class SuppliersDirectory extends CActiveRecord {
 
-    public $country, $region, $archivecat,$IDSECTION,$Products1,$Products2,$ID_SECTION,$PROD_SERVICE,$pfile;
+    public $country, $region, $archivecat, $IDSECTION, $Products1, $Products2, $ID_SECTION, $PROD_SERVICE, $pfile, $autre_ville;
     static $NOM_TABLE = 'Fournisseurs';
 
     /**
@@ -56,24 +56,21 @@ class SuppliersDirectory extends CActiveRecord {
     public function tableName() {
         return 'repertoire_fournisseurs';
     }
-    
-    public static function getproducts($sess_product_ids)
-    {        
+
+    public static function getproducts($sess_product_ids) {
         $lang = Yii::app()->session['language'];
-        if($lang=="EN")
-        {
+        if ($lang == "EN") {
             $lstr = "EN";
-        }else
-        {
+        } else {
             $lstr = "FR";
-        }    
+        }
         $criteria = new CDbCriteria;
         $criteria->addInCondition("ID_PRODUIT", $sess_product_ids);
-        $criteria->order = "NOM_PRODUIT_".$lstr." ASC";
+        $criteria->order = "NOM_PRODUIT_" . $lstr . " ASC";
         $data_products = ProductDirectory::model()->with("sectionDirectory")->findAll($criteria);
 
         return $data_products;
-    }        
+    }
 
     /**
      * @return array validation rules for model attributes.
@@ -83,20 +80,21 @@ class SuppliersDirectory extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('ID_TYPE_FOURNISSEUR,COMPAGNIE, ADRESSE,ID_VILLE,CODE_POSTAL,TELEPHONE,country,region', 'required'),
+            array('autre_ville', 'checkOtherCityChoosen'),
             array('ID_TYPE_FOURNISSEUR, ID_VILLE, bAfficher_site, iId_fichier,country,region,ETABLI_DEPUIS,NB_EMPLOYES', 'numerical', 'integerOnly' => true),
             array('COMPAGNIE, ADRESSE, ADRESSE2, TITRE_TEL_SANS_FRAIS, TITRE_TEL_SANS_FRAIS_EN, TITRE_TEL_SECONDAIRE, TITRE_TEL_SECONDAIRE_EN, COURRIEL, SITE_WEB, SUCCURSALES, PERSONNEL_NOM1, PERSONNEL_TITRE1, PERSONNEL_TITRE1_EN, PERSONNEL_NOM2, PERSONNEL_TITRE2, PERSONNEL_TITRE2_EN, PERSONNEL_NOM3, PERSONNEL_TITRE3, PERSONNEL_TITRE3_EN', 'length', 'max' => 255),
             array('ID_CLIENT', 'length', 'max' => 8),
             array('CODE_POSTAL, TELEPHONE, TELECOPIEUR, TEL_SANS_FRAIS, TEL_SECONDAIRE, ETABLI_DEPUIS', 'length', 'max' => 20),
             array('NB_EMPLOYES', 'length', 'max' => 10),
             array('REGIONS_FR, REGIONS_EN', 'length', 'max' => 1000),
-            array('COURRIEL','email'),
-            array('SITE_WEB','url'),
+            array('COURRIEL', 'email'),
+            array('SITE_WEB', 'url'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('country,region,archivecat,IDSECTION,Products1,Products2,ID_SECTION,PROD_SERVICE,subscription_type,expirydate,pfile,proof_file,CREATED_DATE', 'safe'),
+            array('country,region,archivecat,IDSECTION,Products1,Products2,ID_SECTION,PROD_SERVICE,subscription_type,expirydate,pfile,proof_file,CREATED_DATE, autre_ville', 'safe'),
             array('ID_FOURNISSEUR, COMPAGNIE, ID_CLIENT, ID_TYPE_FOURNISSEUR, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELECOPIEUR, TITRE_TEL_SANS_FRAIS, TITRE_TEL_SANS_FRAIS_EN, TEL_SANS_FRAIS, TITRE_TEL_SECONDAIRE, TITRE_TEL_SECONDAIRE_EN, TEL_SECONDAIRE, COURRIEL, SITE_WEB, SUCCURSALES, ETABLI_DEPUIS, NB_EMPLOYES, PERSONNEL_NOM1, PERSONNEL_TITRE1, PERSONNEL_TITRE1_EN, PERSONNEL_NOM2, PERSONNEL_TITRE2, PERSONNEL_TITRE2_EN, PERSONNEL_NOM3, PERSONNEL_TITRE3, PERSONNEL_TITRE3_EN, DATE_MODIFICATION, REGIONS_FR, REGIONS_EN, bAfficher_site, iId_fichier', 'safe', 'on' => 'search'),
             array('TELEPHONE, TELECOPIEUR, TEL_SANS_FRAIS, TEL_SECONDAIRE', 'phoneNumber'),
-            array('pfile', 'file', 'types'=>'jpg, jpeg, doc, pdf', 'allowEmpty'=>true, 'safe' => false , 'on'=>'backend'),
+            array('pfile', 'file', 'types' => 'jpg, jpeg, doc, pdf', 'allowEmpty' => true, 'safe' => false, 'on' => 'backend'),
         );
     }
 
@@ -112,22 +110,26 @@ class SuppliersDirectory extends CActiveRecord {
             'archiveFichier' => array(self::BELONGS_TO, 'ArchiveFichier', 'iId_fichier'),
             'userDirectory' => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION'),
             'paymentTransaction' => array(self::HAS_MANY, 'PaymentTransaction', 'user_id'),
-            
         );
     }
-    
-     /** 
-        * check the format of the phone number entered
-        * @param string $attribute the name of the attribute to be validated
-        * @param array $params options specified in the validation rule
-        */
-        public function phoneNumber($attribute,$params='')
-        {
-          if($this->$attribute!='' && preg_match("/[A-Za-z]+/",$this->$attribute)==1)
-          {            
-                $this->addError($attribute,'Invalid Format.' );          
-          }        
+
+    /**
+     * check the format of the phone number entered
+     * @param string $attribute the name of the attribute to be validated
+     * @param array $params options specified in the validation rule
+     */
+    public function phoneNumber($attribute, $params = '') {
+        if ($this->$attribute != '' && preg_match("/[A-Za-z]+/", $this->$attribute) == 1) {
+            $this->addError($attribute, 'Invalid Format.');
         }
+    }
+
+    public function checkOtherCityChoosen($attributes, $params) {
+        if ($this->ID_VILLE == -1) {
+            if($this->autre_ville == '')
+                $this->addError($attributes, 'City cannot be blank.');
+        }
+    }
 
     /**
      * @return array customized attribute labels (name=>label)
@@ -135,7 +137,7 @@ class SuppliersDirectory extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'ID_FOURNISSEUR' => Myclass::t('Id Fournisseur'),
-            'COMPAGNIE' => Myclass::t('OG063','','og'),
+            'COMPAGNIE' => Myclass::t('OG063', '', 'og'),
             'ID_CLIENT' => Myclass::t('ID'),
             'ID_TYPE_FOURNISSEUR' => Myclass::t('OG102'),
             'ADRESSE' => Myclass::t('APP66'),
@@ -146,10 +148,10 @@ class SuppliersDirectory extends CActiveRecord {
             'TELECOPIEUR' => Myclass::t('APP73'),
             'TITRE_TEL_SANS_FRAIS' => Myclass::t('Titre Tel Sans Frais'),
             'TITRE_TEL_SANS_FRAIS_EN' => Myclass::t('Titre Tel Sans Frais En'),
-            'TEL_SANS_FRAIS' => Myclass::t('OG068','','og'),
+            'TEL_SANS_FRAIS' => Myclass::t('OG068', '', 'og'),
             'TITRE_TEL_SECONDAIRE' => Myclass::t('Titre Tel Secondaire'),
             'TITRE_TEL_SECONDAIRE_EN' => Myclass::t('Titre Tel Secondaire En'),
-            'TEL_SECONDAIRE' => Myclass::t('OG069','','og'),
+            'TEL_SECONDAIRE' => Myclass::t('OG069', '', 'og'),
             'COURRIEL' => Myclass::t('APP75'),
             'SITE_WEB' => Myclass::t('APP76'),
             'SUCCURSALES' => Myclass::t('OG130'),
@@ -169,14 +171,15 @@ class SuppliersDirectory extends CActiveRecord {
             'REGIONS_EN' => Myclass::t('En anglais'),
             'bAfficher_site' => Myclass::t('Afficher sur le site'),
             'iId_fichier' => Myclass::t('Fichier'),
-            'archivecat'  => Myclass::t('Archive category'),
-            'country'     => Myclass::t('APP68'),
-            'region'      => Myclass::t('APP48'),
-            'IDSECTION'  => Myclass::t('APP84'),
-            'Products'   => Myclass::t('Products'),
-            'USR'       => Myclass::t('ID'),
-            'pfile' => 'Proof File'
-           // 'paymenttype' => Myclass::t('OG137'),
+            'archivecat' => Myclass::t('Archive category'),
+            'country' => Myclass::t('APP68'),
+            'region' => Myclass::t('APP48'),
+            'IDSECTION' => Myclass::t('APP84'),
+            'Products' => Myclass::t('Products'),
+            'USR' => Myclass::t('ID'),
+            'pfile' => 'Proof File',
+            'autre_ville' => Myclass::t('OG172')
+                // 'paymenttype' => Myclass::t('OG137'),
         );
     }
 
@@ -232,11 +235,11 @@ class SuppliersDirectory extends CActiveRecord {
         $criteria->compare('REGIONS_EN', $this->REGIONS_EN, true);
         $criteria->compare('bAfficher_site', $this->bAfficher_site);
         $criteria->compare('iId_fichier', $this->iId_fichier);
-        
-        $criteria->with  = 'supplierType';
+
+        $criteria->with = 'supplierType';
         $criteria->order = 'supplierType.TYPE_FOURNISSEUR_FR ASC, t.COMPAGNIE ASC';
 
-        return new CActiveDataProvider($this, array(           
+        return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'pagination' => array(
                 'pageSize' => PAGE_SIZE,
@@ -261,8 +264,8 @@ class SuppliersDirectory extends CActiveRecord {
             )
         ));
     }
-    
-      protected function afterFind() {
+
+    protected function afterFind() {
         /* Get selected region for current category information */
         $this->region = CityDirectory::model()->findByPk($this->ID_VILLE)->ID_REGION;
         $this->country = RegionDirectory::model()->findByPk($this->region)->ID_PAYS;

@@ -29,9 +29,8 @@ class ProfessionalDirectory extends CActiveRecord {
 
     public $country;
     public $TYPESPECIALISTEFR;
-    public $region,$pfile,$listperpage,$autre_ville;
+    public $region, $pfile, $listperpage, $autre_ville;
     static $NOM_TABLE = 'Professionnels';
-    
 
     /**
      * @return string the associated database table name
@@ -48,19 +47,19 @@ class ProfessionalDirectory extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('ID_TYPE_SPECIALISTE, PRENOM, NOM ,country, region, ID_VILLE,ADRESSE,TELEPHONE', 'required'),
-            array('autre_ville', 'required','on'=>"otherCity"),
+            array('autre_ville', 'checkOtherCityChoosen'),
             array('ID_TYPE_SPECIALISTE, country, region, ID_VILLE, age', 'numerical', 'integerOnly' => true),
-            array('ID_CLIENT', 'length', 'max' => 8 ),
+            array('ID_CLIENT', 'length', 'max' => 8),
             array('PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, SITE_WEB, COURRIEL', 'length', 'max' => 255),
             array('CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2', 'length', 'max' => 20),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('country,region,age,sex,map_lat,map_long,proof_file,listperpage,CREATED_DATE,autre_ville', 'safe'),            
-            array('COURRIEL','email'),
-            array('SITE_WEB','url'),
+            array('country,region,age,sex,map_lat,map_long,proof_file,listperpage,CREATED_DATE,autre_ville', 'safe'),
+            array('COURRIEL', 'email'),
+            array('SITE_WEB', 'url'),
             array('ID_SPECIALISTE, TYPESPECIALISTEFR , ID_CLIENT, PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, ID_TYPE_SPECIALISTE, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, SITE_WEB, COURRIEL, DATE_MODIFICATION', 'safe', 'on' => 'search'),
             array('TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2', 'phoneNumber'),
-            array('pfile', 'file', 'types'=>'jpg, jpeg, doc, pdf', 'allowEmpty'=>true, 'safe' => false , 'on'=>'backend'),
+            array('pfile', 'file', 'types' => 'jpg, jpeg, doc, pdf', 'allowEmpty' => true, 'safe' => false, 'on' => 'backend'),
         );
     }
 
@@ -68,46 +67,42 @@ class ProfessionalDirectory extends CActiveRecord {
      * @return array relational rules.
      */
     public function relations() {
-        
+
         $cur_day = date("Y-m-d");
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'cityDirectory'    => array(self::BELONGS_TO, 'CityDirectory', 'ID_VILLE'),            
+            'cityDirectory' => array(self::BELONGS_TO, 'CityDirectory', 'ID_VILLE'),
             'professionalType' => array(self::BELONGS_TO, 'ProfessionalType', 'ID_TYPE_SPECIALISTE'),
-            'userDirectory'    => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION'),
-            'cntUsr'           => array(self::STAT, 'UserDirectory',  'ID_RELATION', 'condition' => 'NOM_TABLE = "Professionnels"'),           
+            'userDirectory' => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION'),
+            'cntUsr' => array(self::STAT, 'UserDirectory', 'ID_RELATION', 'condition' => 'NOM_TABLE = "Professionnels"'),
             'professionalMessages2' => array(
-                             self::HAS_ONE, 
-                            'ProfessionalMessages', 
-                            'ID_SPECIALISTE',                                      
-                            'on'     => "professionalMessages2.status = :type and DATE(professionalMessages2.date_remember)>'$cur_day'", 
-                            'params' => array(':type' => 1),
-                            'order'  => 'date_remember ASC',  
-                            ),                                        
-            );        
+                self::HAS_ONE,
+                'ProfessionalMessages',
+                'ID_SPECIALISTE',
+                'on' => "professionalMessages2.status = :type and DATE(professionalMessages2.date_remember)>'$cur_day'",
+                'params' => array(':type' => 1),
+                'order' => 'date_remember ASC',
+            ),
+        );
     }
-    
-    public function otherCity($attribute,$params='')
-    {
-        // check the specific city is empty
-        if($this->$attribute=='' && $this->ID_VILLE=="-1")
-        {        
-            $this->addError($attribute,'Please give city name.' );
-        }    
-    }        
-    
-    /** 
-    * check the format of the phone number entered
-    * @param string $attribute the name of the attribute to be validated
-    * @param array $params options specified in the validation rule
-    */
-    public function phoneNumber($attribute,$params='')
-    {
-      if($this->$attribute!='' && preg_match("/[A-Za-z]+/",$this->$attribute)==1)
-      {            
-              $this->addError($attribute,'Invalid Format.' );
-      }        
+
+    public function checkOtherCityChoosen($attributes, $params) {
+        if ($this->ID_VILLE == -1) {
+            if ($this->autre_ville == '')
+                $this->addError($attributes, 'City cannot be blank.');
+        }
+    }
+
+    /**
+     * check the format of the phone number entered
+     * @param string $attribute the name of the attribute to be validated
+     * @param array $params options specified in the validation rule
+     */
+    public function phoneNumber($attribute, $params = '') {
+        if ($this->$attribute != '' && preg_match("/[A-Za-z]+/", $this->$attribute) == 1) {
+            $this->addError($attribute, 'Invalid Format.');
+        }
     }
 
     /**
@@ -116,32 +111,31 @@ class ProfessionalDirectory extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'ID_SPECIALISTE' => Myclass::t('Id Specialiste'),
-            'ID_TYPE_SPECIALISTE' => Myclass::t('OG062','','og'),
+            'ID_TYPE_SPECIALISTE' => Myclass::t('OG062', '', 'og'),
             'ID_CLIENT' => Myclass::t('ID'),
             'PREFIXE_FR' => Myclass::t('Préfixe en français'),
             'PREFIXE_EN' => Myclass::t('Préfixe en anglais'),
-            'PRENOM' => Myclass::t('OG060','','og'),
-            'NOM' => Myclass::t('OG061','','og'),
-            'BUREAU' => Myclass::t('OG063','','og'),
-            'ID_VILLE' =>  Myclass::t('APP70'),
+            'PRENOM' => Myclass::t('OG060', '', 'og'),
+            'NOM' => Myclass::t('OG061', '', 'og'),
+            'BUREAU' => Myclass::t('OG063', '', 'og'),
+            'ID_VILLE' => Myclass::t('APP70'),
             'ADRESSE' => Myclass::t('APP66'),
-	    'ADRESSE2' => Myclass::t('APP67'),
-            'CODE_POSTAL' => Myclass::t('APP71'),           
+            'ADRESSE2' => Myclass::t('APP67'),
+            'CODE_POSTAL' => Myclass::t('APP71'),
             'TELEPHONE' => Myclass::t('APP72'),
-            'TELEPHONE2' => Myclass::t('APP72')." #2",
-            'TELECOPIEUR' => Myclass::t('APP73')." #1",
-            'TELECOPIEUR2' => Myclass::t('APP73')." #2",
+            'TELEPHONE2' => Myclass::t('APP72') . " #2",
+            'TELECOPIEUR' => Myclass::t('APP73') . " #1",
+            'TELECOPIEUR2' => Myclass::t('APP73') . " #2",
             'SITE_WEB' => Myclass::t('OG103'),
             'COURRIEL' => Myclass::t('APP75'),
             'DATE_MODIFICATION' => Myclass::t('Date Modification'),
-            'region'     => Myclass::t('APP48'),
-            'country'    => Myclass::t('APP68'),
-            'age'    => Myclass::t('OG145'),
-            'sex'    => Myclass::t('OG146'),            
-            'TYPE_AUTRE'  => 'Note',
+            'region' => Myclass::t('APP48'),
+            'country' => Myclass::t('APP68'),
+            'age' => Myclass::t('OG145'),
+            'sex' => Myclass::t('OG146'),
+            'TYPE_AUTRE' => 'Note',
             'pfile' => 'Proof File',
             'autre_ville' => Myclass::t('OG172')
-            
         );
     }
 
@@ -161,8 +155,8 @@ class ProfessionalDirectory extends CActiveRecord {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
-        
-        
+
+
         $criteria->compare('ID_SPECIALISTE', $this->ID_SPECIALISTE);
         $criteria->compare('ID_CLIENT', $this->ID_CLIENT, true);
         $criteria->compare('PREFIXE_FR', $this->PREFIXE_FR, true);
@@ -183,23 +177,23 @@ class ProfessionalDirectory extends CActiveRecord {
         $criteria->compare('SITE_WEB', $this->SITE_WEB, true);
         $criteria->compare('COURRIEL', $this->COURRIEL, true);
         $criteria->compare('DATE_MODIFICATION', $this->DATE_MODIFICATION, true);
-     
-        $criteria->with  = 'professionalType';
+
+        $criteria->with = 'professionalType';
         $criteria->order = 'professionalType.TYPE_SPECIALISTE_FR ASC, t.NOM ASC';
 
-        return new CActiveDataProvider($this, array(  
+        return new CActiveDataProvider($this, array(
             'sort' => array(
-                            'defaultOrder' => array(
-                            'NOM' => CSort::SORT_ASC
-                            ),
-                         ),
+                'defaultOrder' => array(
+                    'NOM' => CSort::SORT_ASC
+                ),
+            ),
             'criteria' => $criteria,
             'pagination' => array(
                 'pageSize' => PAGE_SIZE,
             )
         ));
     }
-    
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -217,7 +211,7 @@ class ProfessionalDirectory extends CActiveRecord {
             )
         ));
     }
-    
+
     protected function afterFind() {
         /* Get selected region for current category information */
         $this->region = CityDirectory::model()->findByPk($this->ID_VILLE)->ID_REGION;

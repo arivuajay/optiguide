@@ -40,11 +40,11 @@ class ProfessionalDirectoryController extends OGController {
         return array_merge(
                 parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('create','generatelatlong'),
+                'actions' => array('create', 'generatelatlong'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view', 'update', 'mappingretailers', 'getretailers','listretailers','retailersrequest'),
+                'actions' => array('index', 'view', 'update', 'mappingretailers', 'getretailers', 'listretailers', 'retailersrequest'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -54,23 +54,21 @@ class ProfessionalDirectoryController extends OGController {
             array('deny', // deny all users
                 'users' => array('*'),
             ),
-           )
+                )
         );
     }
-    
-    
-    public function actionGeneratelatlong()
-    {
+
+    public function actionGeneratelatlong() {
         $geo_values = '';
-        $address  = $_POST['ProfessionalDirectory']['ADRESSE'];
-        $country  = $_POST['ProfessionalDirectory']['country'];
-        $region   = $_POST['ProfessionalDirectory']['region'];
-        $cty      = $_POST['ProfessionalDirectory']['ID_VILLE'];      
-        $geo_values = Myclass::generatemaplocation($address,$country,$region,$cty);
+        $address = $_POST['ProfessionalDirectory']['ADRESSE'];
+        $country = $_POST['ProfessionalDirectory']['country'];
+        $region = $_POST['ProfessionalDirectory']['region'];
+        $cty = $_POST['ProfessionalDirectory']['ID_VILLE'];
+        $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
         echo $geo_values;
-        exit;        
-    }   
-    
+        exit;
+    }
+
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
@@ -79,16 +77,14 @@ class ProfessionalDirectoryController extends OGController {
 
         $searchModel = new ProfessionalDirectory();
         $searchModel->unsetAttributes();
-        $results    = array();
-        
+        $results = array();
+
         $profil_id = $id;
-       
+
         $mappingresult = MappingRetailers::model()->findAll("ID_SPECIALISTE=" . $profil_id);
 
-        if (!empty($mappingresult)) 
-        {
-            foreach ($mappingresult as $info2) 
-            {
+        if (!empty($mappingresult)) {
+            foreach ($mappingresult as $info2) {
                 $ret_arr[] = $info2->ID_RETAILER;
             }
             $imp_ret = (count($ret_arr) > 1) ? implode(',', $ret_arr) : $ret_arr[0];
@@ -97,7 +93,7 @@ class ProfessionalDirectoryController extends OGController {
             // Get retailers records for this professional
             $results = Yii::app()->db->createCommand() //this query contains all the data
                     ->select('ID_RETAILER , COMPAGNIE , NOM_TYPE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                    ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                    ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                     ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' " . $ret_query)
                     ->order('COMPAGNIE ASC')
                     ->queryAll();
@@ -116,48 +112,46 @@ class ProfessionalDirectoryController extends OGController {
             'results' => $results,
         ));
     }
-    
-    public function actionRetailersrequest()
-    {
-        $baseurl = Yii::app()->request->getBaseUrl(true); 
-        $model   = new RetailersRequest();
+
+    public function actionRetailersrequest() {
+        $baseurl = Yii::app()->request->getBaseUrl(true);
+        $model = new RetailersRequest();
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation(array($model));
-      
+
         // Mapping the user to the current professional.
         if (isset($_POST['RetailersRequest'])) {
-            
+
             $encryptval = Yii::app()->user->encryptval;
-             
-            $retailername   = $_POST['RetailersRequest']['retailername'];
-            $retaileremail  = $_POST['RetailersRequest']['retaileremail'];
-            $message        = $_POST['RetailersRequest']['message'];
-            
-            
+
+            $retailername = $_POST['RetailersRequest']['retailername'];
+            $retaileremail = $_POST['RetailersRequest']['retaileremail'];
+            $message = $_POST['RetailersRequest']['message'];
+
+
             /* Send mail to admin for confirmation */
-            $mail         = new Sendmail();
-            $nextstep_url = $baseurl . '/optiguide/retailerDirectory/create/profid/' .$encryptval;           
-            $subject      = Yii::app()->user->name." professional user send request to join in ". SITENAME;
-            $trans_array  = array(
+            $mail = new Sendmail();
+            $nextstep_url = $baseurl . '/optiguide/retailerDirectory/create/profid/' . $encryptval;
+            $subject = Yii::app()->user->name . " professional user send request to join in " . SITENAME;
+            $trans_array = array(
                 "{SITENAME}" => SITENAME,
-                "{NAME}"     => $retailername,
-                "{MESSAGE}"  => $message,
+                "{NAME}" => $retailername,
+                "{MESSAGE}" => $message,
                 "{NEXTSTEPURL}" => $nextstep_url,
             );
             $message = $mail->getMessage('retailerrequest', $trans_array);
             $mail->send($retaileremail, $subject, $message);
-          
-          
+
+
             Yii::app()->user->setFlash('success', Myclass::t('OGO164', '', 'og'));
             $this->redirect(array('retailersrequest'));
-            
         }
 
         $this->render('retailersrequest', array('model' => $model));
-    }        
+    }
 
     public function actionMappingretailers() {
-        
+
         $imp_ret = '';
         $ret_query = '';
         $model = new RetailerDirectory('mapping');
@@ -197,7 +191,7 @@ class ProfessionalDirectoryController extends OGController {
         // Get all records list  with limit
         $results = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('ID_RETAILER , COMPAGNIE , NOM_TYPE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                 ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' " . $ret_query)
                 ->order('COMPAGNIE ASC')
                 ->queryAll();
@@ -206,23 +200,22 @@ class ProfessionalDirectoryController extends OGController {
     }
 
     public function actionListretailers() {
-        
+
         $model = new MappingRetailers();
         $profil_id = Yii::app()->user->relationid;
         $results = array();
-        
-        if (isset($_POST['btnSubmit'])) 
-        {    
-            $retailers  = $_POST['retailerid'];
-            
+
+        if (isset($_POST['btnSubmit'])) {
+            $retailers = $_POST['retailerid'];
+
             $criteria = new CDbCriteria;
-            $criteria->addCondition("ID_SPECIALISTE = ".$profil_id);
+            $criteria->addCondition("ID_SPECIALISTE = " . $profil_id);
             $criteria->addInCondition("ID_RETAILER", $retailers);
             MappingRetailers::model()->deleteAll($criteria);
-            
+
             Yii::app()->user->setFlash('success', Myclass::t('OGO151', '', 'og'));
             $this->redirect(array('listretailers'));
-        }    
+        }
 
         $mappingresult = MappingRetailers::model()->findAll("ID_SPECIALISTE=" . $profil_id);
 
@@ -236,7 +229,7 @@ class ProfessionalDirectoryController extends OGController {
             // Get all records list  with limit
             $results = Yii::app()->db->createCommand() //this query contains all the data
                     ->select('ID_RETAILER , COMPAGNIE , NOM_TYPE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                    ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp' ,'repertoire_utilisateurs as ru'))
+                    ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                     ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' " . $ret_query)
                     ->order('COMPAGNIE ASC')
                     ->queryAll();
@@ -249,15 +242,15 @@ class ProfessionalDirectoryController extends OGController {
      * Lists all models.
      */
     public function actionIndex() {
-        
+
         $sname_qry = '';
         $scntry_qry = '';
         $sregion_qry = '';
-        $scity_qry = '';       
+        $scity_qry = '';
 
         $searchModel = new ProfessionalDirectory();
         $searchModel->unsetAttributes();
-        
+
         $searchModel->country = isset($searchModel->country) ? $searchModel->country : DEFAULTPAYS;
         $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country;
 
@@ -279,10 +272,10 @@ class ProfessionalDirectoryController extends OGController {
             $search_name = isset($_GET['ProfessionalDirectory']['NOM']) ? $_GET['ProfessionalDirectory']['NOM'] : '';
             $search_country = isset($_GET['ProfessionalDirectory']['country']) ? $_GET['ProfessionalDirectory']['country'] : '';
             $search_region = isset($_GET['ProfessionalDirectory']['region']) ? $_GET['ProfessionalDirectory']['region'] : '';
-            $search_ville  = isset($_GET['ProfessionalDirectory']['ID_VILLE']) ? $_GET['ProfessionalDirectory']['ID_VILLE'] : '';
-            $search_type   = isset($_GET['ProfessionalDirectory']['ID_TYPE_SPECIALISTE']) ? $_GET['ProfessionalDirectory']['ID_TYPE_SPECIALISTE'] : '';
-            $search_postal   = isset($_GET['ProfessionalDirectory']['CODE_POSTAL'])?$_GET['ProfessionalDirectory']['CODE_POSTAL']:'';
-            
+            $search_ville = isset($_GET['ProfessionalDirectory']['ID_VILLE']) ? $_GET['ProfessionalDirectory']['ID_VILLE'] : '';
+            $search_type = isset($_GET['ProfessionalDirectory']['ID_TYPE_SPECIALISTE']) ? $_GET['ProfessionalDirectory']['ID_TYPE_SPECIALISTE'] : '';
+            $search_postal = isset($_GET['ProfessionalDirectory']['CODE_POSTAL']) ? $_GET['ProfessionalDirectory']['CODE_POSTAL'] : '';
+
 
             if ($search_name != '') {
                 $searchModel->NOM = $search_name;
@@ -303,24 +296,23 @@ class ProfessionalDirectoryController extends OGController {
                 $searchModel->ID_VILLE = $search_ville;
                 $scity_qry = " AND rs.ID_VILLE = " . $search_ville;
             }
-            
-            if( $search_postal != '')
-             {
-                 $searchModel->CODE_POSTAL =  $search_postal;
-                 $spostal_qry    = " AND CODE_POSTAL = ". $search_postal;
-             }
-            
-             if ($search_type != '') {
+
+            if ($search_postal != '') {
+                $searchModel->CODE_POSTAL = $search_postal;
+                $spostal_qry = " AND CODE_POSTAL = " . $search_postal;
+            }
+
+            if ($search_type != '') {
                 $searchModel->ID_TYPE_SPECIALISTE = $search_type;
                 $stype_qry = " AND rs.ID_TYPE_SPECIALISTE = " . $search_type;
             }
-        }       
+        }
 
         // Get all records list  with limit
         $prof_query = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
+                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $spostal_qry . $stype_qry)
                 ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
                 ->limit(LISTPERPAGE, $limit) // the trick is here!
                 ->queryAll();
@@ -328,8 +320,8 @@ class ProfessionalDirectoryController extends OGController {
         // Get total counts of records    
         $item_count = Yii::app()->db->createCommand() // this query get the total number of items,
                 ->select('count(*) as count')
-                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
+                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $spostal_qry . $stype_qry)
                 ->queryScalar(); // do not LIMIT it, this must count all items!
         // the pagination itself      
         $pages = new CPagination($item_count);
@@ -357,7 +349,6 @@ class ProfessionalDirectoryController extends OGController {
      */
     public function actionCreate() {
 
-
         if (!Yii::app()->user->isGuest) {
             $this->redirect(array('index'));
         }
@@ -378,48 +369,40 @@ class ProfessionalDirectoryController extends OGController {
             $umodel->LANGUE = Yii::app()->session['language'];
             $umodel->MUST_VALIDATE = 0;
 
-            if($model->ID_VILLE=="-1")
-            {
-                $model->scenario = "otherCity";
-            }    
-                
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
 
             if ($valid) {
-                
+
                 // save the other city informations and get cityid
-                if($model->ID_VILLE=="-1")
-                {
-                    $regionid   = $model->region;
-                    $othercity  = $model->autre_ville;
-                    $condition  = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                if ($model->ID_VILLE == "-1") {
+                    $regionid = $model->region;
+                    $othercity = $model->autre_ville;
+                    $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
                     $city_exist = CityDirectory::model()->find($condition);
-                    if(!empty($city_exist))
-                    {    
-                       $model->ID_VILLE = $city_exist->ID_VILLE;
-                    }else {
-                       $cinfo = new CityDirectory;
-                       $cinfo->ID_REGION = $regionid;
-                       $cinfo->NOM_VILLE = $othercity;
-                       $cinfo->country   = $model->country;
-                       $cinfo->save(false); 
-                       $model->ID_VILLE  = $cinfo->ID_VILLE;
-                    }    
+                    if (!empty($city_exist)) {
+                        $model->ID_VILLE = $city_exist->ID_VILLE;
+                    } else {
+                        $cinfo = new CityDirectory;
+                        $cinfo->ID_REGION = $regionid;
+                        $cinfo->NOM_VILLE = $othercity;
+                        $cinfo->country = $model->country;
+                        $cinfo->save(false);
+                        $model->ID_VILLE = $cinfo->ID_VILLE;
+                    }
                 }
-                   
+
                 $address = $model->ADRESSE;
                 $country = $model->country;
-                $region  = $model->region;
-                $cty     = $model->ID_VILLE;
+                $region = $model->region;
+                $cty = $model->ID_VILLE;
                 $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
-                if($geo_values!='')
-                {
-                    $exp_latlong = explode('~',$geo_values);
-                    $model->map_lat  = $exp_latlong[0];
-                    $model->map_long = $exp_latlong[1];        
-                }    
-                
+                if ($geo_values != '') {
+                    $exp_latlong = explode('~', $geo_values);
+                    $model->map_lat = $exp_latlong[0];
+                    $model->map_long = $exp_latlong[1];
+                }
+
                 $model->CREATED_DATE = date("Y-m-d");
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_SPECIALISTE;
@@ -427,7 +410,7 @@ class ProfessionalDirectoryController extends OGController {
 
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
-                $professional_url = ADMIN_URL.'/admin/userDirectory/update/id/'.$umodel->ID_UTILISATEUR;
+                $professional_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
                 $enc_url = Myclass::refencryption($professional_url);
                 $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
                 $subject = SITENAME . "- New professional registration notification - " . $model->NOM . " " . $model->PRENOM;
@@ -470,49 +453,41 @@ class ProfessionalDirectoryController extends OGController {
             $model->attributes = $_POST['ProfessionalDirectory'];
             $umodel->attributes = $_POST['UserDirectory'];
             $umodel->NOM_UTILISATEUR = $model->PRENOM . " " . $model->NOM;
-            
-            if($model->ID_VILLE=="-1")
-            {
-                $model->scenario = "otherCity";
-            }   
-            
+
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
 
             if ($valid) {
-                
-                 // save the other city informations and get cityid
-                if($model->ID_VILLE=="-1")
-                {
-                    $regionid   = $model->region;
-                    $othercity  = $model->autre_ville;
-                    $condition  = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+
+                // save the other city informations and get cityid
+                if ($model->ID_VILLE == "-1") {
+                    $regionid = $model->region;
+                    $othercity = $model->autre_ville;
+                    $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
                     $city_exist = CityDirectory::model()->find($condition);
-                    if(!empty($city_exist))
-                    {    
-                       $model->ID_VILLE = $city_exist->ID_VILLE;
-                    }else {
-                       $cinfo = new CityDirectory;
-                       $cinfo->ID_REGION = $regionid;
-                       $cinfo->NOM_VILLE = $othercity;
-                       $cinfo->country   = $model->country;
-                       $cinfo->save(false); 
-                       $model->ID_VILLE  = $cinfo->ID_VILLE;
-                    }    
+                    if (!empty($city_exist)) {
+                        $model->ID_VILLE = $city_exist->ID_VILLE;
+                    } else {
+                        $cinfo = new CityDirectory;
+                        $cinfo->ID_REGION = $regionid;
+                        $cinfo->NOM_VILLE = $othercity;
+                        $cinfo->country = $model->country;
+                        $cinfo->save(false);
+                        $model->ID_VILLE = $cinfo->ID_VILLE;
+                    }
                 }
-                
+
                 $address = $model->ADRESSE;
                 $country = $model->country;
-                $region  = $model->region;
-                $cty     = $model->ID_VILLE;
+                $region = $model->region;
+                $cty = $model->ID_VILLE;
                 $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
-                if($geo_values!='')
-                {
-                    $exp_latlong = explode('~',$geo_values);
-                    $model->map_lat  = $exp_latlong[0];
-                    $model->map_long = $exp_latlong[1];        
-                }   
-                
+                if ($geo_values != '') {
+                    $exp_latlong = explode('~', $geo_values);
+                    $model->map_lat = $exp_latlong[0];
+                    $model->map_long = $exp_latlong[1];
+                }
+
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_SPECIALISTE;
                 $umodel->save(false);

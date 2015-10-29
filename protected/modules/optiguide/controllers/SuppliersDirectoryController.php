@@ -33,11 +33,11 @@ class SuppliersDirectoryController extends OGController {
         return array_merge(
                 parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify', 'renewpaypalnotify','delproducts'),
+                'actions' => array('create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify', 'renewpaypalnotify', 'delproducts'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('update', 'updateproducts','updatemarques', 'updatelogo' ,'transactions', 'mappingreps', 'listreps', 'renewsubscription','renewpaypalreturn','renewpaypalcancel', 'renewpaypalnotify' ),
+                'actions' => array('update', 'updateproducts', 'updatemarques', 'updatelogo', 'transactions', 'mappingreps', 'listreps', 'renewsubscription', 'renewpaypalreturn', 'renewpaypalcancel', 'renewpaypalnotify'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -89,13 +89,13 @@ class SuppliersDirectoryController extends OGController {
             $imp_rep = (count($rep_arr) > 1) ? implode(',', $rep_arr) : $rep_arr[0];
             $rep_query = " and rc.rep_credential_id NOT IN (" . $imp_rep . ") ";
         }
-       
-         // Get all records list  with limit
+
+        // Get all records list  with limit
         $results = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('rc.rep_credential_id , rc.rep_username, NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
                 ->from(array('rep_credentials rc', 'rep_credential_profiles rcf', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
                 ->where("rc.rep_credential_id=rcf.rep_credential_id AND rcf.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and rc.rep_status='1' and rep_role='single' " . $rep_query)
-                ->order('rc.rep_username ASC')               
+                ->order('rc.rep_username ASC')
                 ->queryAll();
 
 
@@ -130,12 +130,12 @@ class SuppliersDirectoryController extends OGController {
             $imp_rep = (count($rep_arr) > 1) ? implode(',', $rep_arr) : $rep_arr[0];
             $rep_query = " and rc.rep_credential_id IN (" . $imp_rep . ") ";
 
-             // Get all records list  with limit
+            // Get all records list  with limit
             $results = Yii::app()->db->createCommand() //this query contains all the data
                     ->select('rc.rep_credential_id , rc.rep_username, NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
                     ->from(array('rep_credentials rc', 'rep_credential_profiles rcf', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
                     ->where("rc.rep_credential_id=rcf.rep_credential_id AND rcf.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and rc.rep_status='1' and rep_role='single' " . $rep_query)
-                    ->order('rc.rep_username ASC')               
+                    ->order('rc.rep_username ASC')
                     ->queryAll();
         }
 
@@ -170,7 +170,7 @@ class SuppliersDirectoryController extends OGController {
                     ->select('rc.rep_credential_id , rc.rep_username, NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
                     ->from(array('rep_credentials rc', 'rep_credential_profiles rcf', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
                     ->where("rc.rep_credential_id=rcf.rep_credential_id AND rcf.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and rc.rep_status='1' and rep_role='single' " . $rep_query)
-                    ->order('rc.rep_username ASC')               
+                    ->order('rc.rep_username ASC')
                     ->queryAll();
         }
 
@@ -246,7 +246,7 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function Detect_supplier() {
-        
+
         // Get all records list  with limit
         $supplier_query1 = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('ID_FOURNISSEUR')
@@ -432,7 +432,7 @@ class SuppliersDirectoryController extends OGController {
                     $criteria->condition = 't.ID_PRODUIT=:pid';
                     $criteria->params = array(':pid' => $search_product);
                 }
-                
+
                 $data_products_marques = ProductDirectory::model()->findAll($criteria);
 
                 foreach ($data_products_marques as $infos) {
@@ -555,6 +555,24 @@ class SuppliersDirectoryController extends OGController {
             $valid = $model->validate() && $valid;
 
             if ($valid) {
+                // save the other city informations and get cityid
+                if ($model->ID_VILLE == "-1") {
+                    $regionid = $model->region;
+                    $othercity = $model->autre_ville;
+                    $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $city_exist = CityDirectory::model()->find($condition);
+                    if (!empty($city_exist)) {
+                        $model->ID_VILLE = $city_exist->ID_VILLE;
+                    } else {
+                        $cinfo = new CityDirectory;
+                        $cinfo->ID_REGION = $regionid;
+                        $cinfo->NOM_VILLE = $othercity;
+                        $cinfo->country = $model->country;
+                        $cinfo->save(false);
+                        $model->ID_VILLE = $cinfo->ID_VILLE;
+                    }
+                }
+                
                 //set session variable
                 $scountry = $_POST['SuppliersDirectory']['country'];
                 $sregion = $_POST['SuppliersDirectory']['region'];
@@ -639,10 +657,10 @@ class SuppliersDirectoryController extends OGController {
         if (!Yii::app()->user->isGuest) {
             $this->redirect(array('index'));
         }
-        
+
         $sess_product_ids = array();
         $data_products = array();
-      
+
         if (Yii::app()->user->hasState("mattributes")) {
             $sess_attr_m = Yii::app()->user->getState("mattributes");
         }
@@ -665,7 +683,7 @@ class SuppliersDirectoryController extends OGController {
             $sess_attr_u = Yii::app()->user->getState("uattributes");
             $umodel->attributes = $sess_attr_u;
         }
-        
+
         if (Yii::app()->user->hasState("product_ids")) {
             $sess_product_ids = Yii::app()->user->getState("product_ids");
             $data_products = SuppliersDirectory::getproducts($sess_product_ids);
@@ -674,7 +692,7 @@ class SuppliersDirectoryController extends OGController {
                 Yii::app()->user->setState("marque_ids", null);
             }
         }
-        
+
         $tab = 3;
         $viewpage = '_products_marques_form';
         $this->render($viewpage, compact('model', 'tab', 'data_products'));
@@ -811,7 +829,7 @@ class SuppliersDirectoryController extends OGController {
         $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optiguide/suppliersDirectory/paypalreturn'));
         $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optiguide/suppliersDirectory/paypalcancel'));
         $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optiguide/suppliersDirectory/paypalnotify'));
-        
+
         if ($subscription_type == 1) {
             $itemname = 'Suppliers Subscription - Profile only';
         } else if ($subscription_type == 2) {
@@ -842,7 +860,7 @@ class SuppliersDirectoryController extends OGController {
         } else {
             Yii::app()->user->setFlash('danger', Myclass::t('OGO133', '', 'og'));
         }
-        
+
         $this->redirect(array('create'));
     }
 
@@ -861,18 +879,16 @@ class SuppliersDirectoryController extends OGController {
 
             $paymentinfos = PaymentTransaction::model()->find("invoice_number ='" . $invoice_number . "'");
             // Check the transation already exists
-            if (!empty($paymentinfos)) 
-            {
+            if (!empty($paymentinfos)) {
 
                 $suppid = $paymentinfos->user_id;
                 $subscription_type = $paymentinfos->subscription_type;
-                
-                if ($_POST['payment_status'] == "Completed")
-                {                    
+
+                if ($_POST['payment_status'] == "Completed") {
                     /* Update user status 1 in user table */
                     $userinfos = UserDirectory::model()->find("NOM_TABLE='Fournisseurs' AND ID_REALTION = " . $suppid);
                     $userinfos->status = 1;
-                    $userinfos->save(false);                 
+                    $userinfos->save(false);
 
                     /* Update supplier expiry date in supplier table */
                     $supp_model = SuppliersDirectory::model()->findByPk($suppid);
@@ -884,9 +900,8 @@ class SuppliersDirectoryController extends OGController {
 
                     /* Update supplier expiry date in payment transation table */
                     $paymentinfos->expirydate = date("Y-m-d", strtotime('+1 year'));
-                    $paymentinfos->save(false);                
+                    $paymentinfos->save(false);
                 }
-                
             } else {
 
                 $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");
@@ -927,20 +942,19 @@ class SuppliersDirectoryController extends OGController {
                             }
                         }
 
-                        $model  = new SuppliersDirectory;
+                        $model = new SuppliersDirectory;
                         $umodel = new UserDirectory('frontend');
 
                         // Save supplier in user and supplier table
-                        $model->attributes  = $sess_attr_m;
-                        $model->ID_CLIENT   = $sess_attr_m['ID_CLIENT'];
+                        $model->attributes = $sess_attr_m;
+                        $model->ID_CLIENT = $sess_attr_m['ID_CLIENT'];
                         $model->iId_fichier = $ficherid;
-                        if ($_POST['payment_status'] == "Completed")
-                        {
+                        if ($_POST['payment_status'] == "Completed") {
                             $model->profile_expirydate = date("Y-m-d", strtotime('+1 year'));
                             if ($pdetails['subscription_type'] == 2) {
                                 $model->logo_expirydate = date("Y-m-d", strtotime('+1 year'));
                             }
-                         }
+                        }
                         $model->CREATED_DATE = date("Y-m-d");
                         $model->save(false);
 
@@ -1000,10 +1014,10 @@ class SuppliersDirectoryController extends OGController {
                         $ptmodel->pay_type = $pdetails['payment_type'];
                         $ptmodel->subscription_type = $pdetails['subscription_type'];
                         $ptmodel->save();
-                        
+
                         if ($_POST['payment_status'] == "Completed") {
                             SupplierTemp::model()->deleteAll("invoice_number = '" . $_POST['custom'] . "'");
-                         }    
+                        }
 
                         /* Send mail to admin for confirmation */
                         $mail = new Sendmail();
@@ -1123,6 +1137,24 @@ class SuppliersDirectoryController extends OGController {
             $valid = $model->validate() && $valid;
 
             if ($valid) {
+                
+                // save the other city informations and get cityid
+                if ($model->ID_VILLE == "-1") {
+                    $regionid = $model->region;
+                    $othercity = $model->autre_ville;
+                    $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $city_exist = CityDirectory::model()->find($condition);
+                    if (!empty($city_exist)) {
+                        $model->ID_VILLE = $city_exist->ID_VILLE;
+                    } else {
+                        $cinfo = new CityDirectory;
+                        $cinfo->ID_REGION = $regionid;
+                        $cinfo->NOM_VILLE = $othercity;
+                        $cinfo->country = $model->country;
+                        $cinfo->save(false);
+                        $model->ID_VILLE = $cinfo->ID_VILLE;
+                    }
+                }
 
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
@@ -1143,7 +1175,7 @@ class SuppliersDirectoryController extends OGController {
         $relid = Yii::app()->user->relationid;
         $model = $this->loadModel($relid);
         Yii::app()->user->setState("product_ids", NULL);
-        
+
         // Set and intialize session from existing database records.         
         if (Yii::app()->user->hasState("product_ids") == FALSE) {
             $fid = $relid;
@@ -1234,79 +1266,71 @@ class SuppliersDirectoryController extends OGController {
 
         $this->render($viewpage, compact('model', 'tab', 'data_products'));
     }
-    
-     public function actionUpdatelogo() {  
-        
-        $relid  = Yii::app()->user->relationid;
+
+    public function actionUpdatelogo() {
+
+        $relid = Yii::app()->user->relationid;
         $pmodel = $this->loadModel($relid);
-        
+
         // Check expiry date and redirect to renew page for expired logos
         $logo_expirydate = $pmodel->logo_expirydate;
-        $l_expdate = date("Y-m-d", strtotime($logo_expirydate));        
+        $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
         if ($l_expdate < date("Y-m-d")) {
-          Yii::app()->user->setFlash('info', Myclass::t('OGO186', '', 'og')); 
-          Yii::app()->request->redirect("/optiguide/suppliersDirectory/renewsubscription/");       
-        } 
-        
-        
-        if($pmodel->iId_fichier==0)
-        {    
-            $fmodel = new ArchiveFichier('create');
-        }else{    
-            $fichid = $pmodel->iId_fichier;
-            $fmodel = ArchiveFichier::model()->findByPk($fichid);            
+            Yii::app()->user->setFlash('info', Myclass::t('OGO186', '', 'og'));
+            Yii::app()->request->redirect("/optiguide/suppliersDirectory/renewsubscription/");
         }
-        
-        if (isset($_POST['ArchiveFichier'])) 
-        {        
-            $fmodel->attributes = $_POST['ArchiveFichier'];     
-            
+
+
+        if ($pmodel->iId_fichier == 0) {
+            $fmodel = new ArchiveFichier('create');
+        } else {
+            $fichid = $pmodel->iId_fichier;
+            $fmodel = ArchiveFichier::model()->findByPk($fichid);
+        }
+
+        if (isset($_POST['ArchiveFichier'])) {
+            $fmodel->attributes = $_POST['ArchiveFichier'];
+
             $fmodel->TITRE_FICHIER_FR = $_POST['ArchiveFichier']['TITRE_FICHIER_EN'];
-                              
-            if($fmodel->validate())
-            {    
+
+            if ($fmodel->validate()) {
                 //Upload image and get the name
                 $path = Yii::getPathOfAlias('webroot') . '/' . ARCHIVE_IMG_PATH;
-                    
-                $fmodel->image     = CUploadedFile::getInstance($fmodel,'image');
-                
-                if( $fmodel->image )
-                {    
-                    $imgname = time().'_'.$fmodel->image->name;
-                    $fmodel->FICHIER   = $imgname;
+
+                $fmodel->image = CUploadedFile::getInstance($fmodel, 'image');
+
+                if ($fmodel->image) {
+                    $imgname = time() . '_' . $fmodel->image->name;
+                    $fmodel->FICHIER = $imgname;
                     $fmodel->EXTENSION = $fmodel->image->extensionName;
 
-                    $catid =  $_POST['ArchiveFichier']['ID_CATEGORIE'];
-                    $cat_img_path =  $path.$catid.'/';
+                    $catid = $_POST['ArchiveFichier']['ID_CATEGORIE'];
+                    $cat_img_path = $path . $catid . '/';
 
-                    if (!is_dir($cat_img_path)) 
-                    {
-                        mkdir($cat_img_path,0777, true);        
+                    if (!is_dir($cat_img_path)) {
+                        mkdir($cat_img_path, 0777, true);
                     }
-                   
-                    $fmodel->image->saveAs($cat_img_path .$imgname); 
-                 
+
+                    $fmodel->image->saveAs($cat_img_path . $imgname);
                 }
-                
+
                 $fmodel->DISPONIBLE = 1;
-                
-                if($fmodel->save())
-                {   
-                    
+
+                if ($fmodel->save()) {
+
                     $pmodel->iId_fichier = $fmodel->ID_FICHIER;
                     $pmodel->save(false);
-                    
+
                     // redirect to success page
                     Yii::app()->user->setFlash('success', 'Logo Updated Successfully!!!');
                     $this->redirect(array('updatelogo'));
                 }
             }
-        
         }
-        
+
         $viewpage = '_update_logo';
-        $this->render($viewpage, compact('pmodel','fmodel'));
-    }    
+        $this->render($viewpage, compact('pmodel', 'fmodel'));
+    }
 
     public function actionUpdatemarques() {
 
@@ -1355,8 +1379,8 @@ class SuppliersDirectoryController extends OGController {
             Yii::app()->user->setFlash('success', Myclass::t('OGO144', '', 'og'));
             $this->redirect(array('updatemarques'));
         }
-        
-         // Delete products from session
+
+        // Delete products from session
         if (isset($_POST['yt0'])) {
 
             $sess_product_ids = Yii::app()->user->getState("product_ids");
@@ -1385,7 +1409,7 @@ class SuppliersDirectoryController extends OGController {
 
         if (Yii::app()->user->hasState("product_ids")) {
             $sess_product_ids = Yii::app()->user->getState("product_ids");
-        
+
             $data_products = SuppliersDirectory::getproducts($sess_product_ids);
 
             if (empty($sess_product_ids)) {
@@ -1397,44 +1421,43 @@ class SuppliersDirectoryController extends OGController {
         $viewpage = '_update_products_marques_form';
         $this->render($viewpage, compact('model', 'tab', 'data_products'));
     }
-    
-    public function actionDelproducts($id)
-    {
+
+    public function actionDelproducts($id) {
         $sess_product_ids = Yii::app()->user->getState("product_ids");
 
         $pid = isset($id) ? $id : '';
-        
-        if ($pid != '') {
-           // foreach ($pids as $pid) {
-                if (($key = array_search($pid, $sess_product_ids)) !== FALSE) {
-                    // Remove from array
-                    unset($sess_product_ids[$key]);
-                }
 
-                if (Yii::app()->user->hasState("marque_ids")) {
-                    // UNset marque ids for the product                   
-                    $sess_marque_ids = Yii::app()->user->getState("marque_ids");
-                    if (array_key_exists($pid, $sess_marque_ids)) {
-                        // Remove from array                      
-                        unset($sess_marque_ids[$pid]);
-                    }
+        if ($pid != '') {
+            // foreach ($pids as $pid) {
+            if (($key = array_search($pid, $sess_product_ids)) !== FALSE) {
+                // Remove from array
+                unset($sess_product_ids[$key]);
+            }
+
+            if (Yii::app()->user->hasState("marque_ids")) {
+                // UNset marque ids for the product                   
+                $sess_marque_ids = Yii::app()->user->getState("marque_ids");
+                if (array_key_exists($pid, $sess_marque_ids)) {
+                    // Remove from array                      
+                    unset($sess_marque_ids[$pid]);
                 }
-           // }
+            }
+            // }
             Yii::app()->user->setState("product_ids", $sess_product_ids);
             Yii::app()->user->setState("marque_ids", $sess_marque_ids);
         }
-        
+
         // redirect to success page        
         $this->redirect(array('addmarques'));
-    }        
+    }
 
     public function actionTransactions() {
-        
-        $relid     = Yii::app()->user->relationid; 
-        
-        $criteria = new CDbCriteria();   
+
+        $relid = Yii::app()->user->relationid;
+
+        $criteria = new CDbCriteria();
         $criteria->addCondition('NOMTABLE="suppliers"');
-        $criteria->addCondition('user_id = '.$relid);
+        $criteria->addCondition('user_id = ' . $relid);
         $criteria->order = 'id DESC';
 
         $count = PaymentTransaction::model()->count($criteria);
@@ -1449,7 +1472,6 @@ class SuppliersDirectoryController extends OGController {
             'model' => $model,
             'pages' => $pages,
         ));
-        
     }
 
     public function actionRenewsubscription() {
@@ -1473,43 +1495,41 @@ class SuppliersDirectoryController extends OGController {
                 $amount = $logo_price;
             }
 
-            $invoice_number =  Myclass::getRandomString();
+            $invoice_number = Myclass::getRandomString();
 
             $payment_details = array();
             $payment_details['payment_type'] = '1';
             $payment_details['subscription_type'] = $subscriptiontype;
 
-            $relid  = Yii::app()->user->relationid;
+            $relid = Yii::app()->user->relationid;
             $fmodel = $this->loadModel($relid);
             $profile_expirydate = $fmodel->profile_expirydate;
-            $logo_expirydate    = $fmodel->logo_expirydate;
-            
+            $logo_expirydate = $fmodel->logo_expirydate;
+
             $payment_details['user_id'] = $relid;
-            
+
             $cur_date = strtotime("now");
 
             if ($subscriptiontype == "1" || $subscriptiontype == "2") {
-              
-                    $p_expdate = date("Y-m-d", strtotime($profile_expirydate));
-                    if ($p_expdate > date("Y-m-d")) {
-                        $time = strtotime($profile_expirydate);
-                        $payment_details['profile_expirydate'] = date("Y-m-d", strtotime("+1 year", $time));
-                    } else {
-                        $payment_details['profile_expirydate'] = date('Y-m-d', strtotime('+1 year'));
-                    }
-               
+
+                $p_expdate = date("Y-m-d", strtotime($profile_expirydate));
+                if ($p_expdate > date("Y-m-d")) {
+                    $time = strtotime($profile_expirydate);
+                    $payment_details['profile_expirydate'] = date("Y-m-d", strtotime("+1 year", $time));
+                } else {
+                    $payment_details['profile_expirydate'] = date('Y-m-d', strtotime('+1 year'));
+                }
             }
 
             if ($subscriptiontype == "3" || $subscriptiontype == "2") {
-               
-                    $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
-                    if ($l_expdate > date("Y-m-d")) {
-                        $time = strtotime($logo_expirydate);
-                        $payment_details['logo_expirydate'] = date("Y-m-d", strtotime("+1 year", $time));
-                    } else {
-                        $payment_details['logo_expirydate'] = date('Y-m-d', strtotime('+1 year'));
-                    }
-               
+
+                $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
+                if ($l_expdate > date("Y-m-d")) {
+                    $time = strtotime($logo_expirydate);
+                    $payment_details['logo_expirydate'] = date("Y-m-d", strtotime("+1 year", $time));
+                } else {
+                    $payment_details['logo_expirydate'] = date('Y-m-d', strtotime('+1 year'));
+                }
             }
 
             $pdetails = serialize($payment_details);
@@ -1551,80 +1571,76 @@ class SuppliersDirectoryController extends OGController {
         //$paypalManager->dumpFields();   // for printing paypal form fields
         $paypalManager->submitPaypalPost();
     }
-    
-     public function actionRenewpaypalnotify() {
-         
+
+    public function actionRenewpaypalnotify() {
+
         $paypalManager = new Paypal;
-               
+
 
         if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
 
-            $invoice_number = $_POST['custom'];              
+            $invoice_number = $_POST['custom'];
             $paymentinfos = PaymentTransaction::model()->find("invoice_number ='" . $invoice_number . "'");
             $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");
-            
+
             if (!empty($paymentinfos)) {
 
                 $suppid = $paymentinfos->user_id;
                 $subscription_type = $paymentinfos->subscription_type;
-                
-               if (!empty($result)) {
-                   
-                    $pdetails = $result->paymentdetails;
-                    $pdetails = unserialize($pdetails);
-                    /* Update supplier expiry date in supplier table */
-                    $smodel = SuppliersDirectory::model()->findByPk($suppid);  
-                    if($_POST['payment_status'] == "Completed")
-                    {                                               
 
-                        if ($subtype == "1" || $subtype == "2") {
-                            $smodel->profile_expirydate = $pdetails['profile_expirydate']; 
-                        }
-                        if ($subtype == "3" || $subtype == "2") {
-                            $smodel->logo_expirydate = $pdetails['logo_expirydate']; 
-                        }
-                        $smodel->save(false);
-                        
-                        /* Update supplier expiry date in payment transation table */
-                        if ($subscription_type == "1" || $subscription_type == "2") {
-                           $paymentinfos->expirydate = $pdetails['profile_expirydate'];
-                        }else if ($subscription_type == "3"){
-                           $paymentinfos->expirydate = $pdetails['logo_expirydate'];
-                        }    
-                        $paymentinfos->save(false);
-                        
-                        SupplierTemp::model()->deleteAll("invoice_number = '" . $invoice_number . "'");   
-                    } 
-                           
-               }    
-                
-            } else {
-               
-              
                 if (!empty($result)) {
 
                     $pdetails = $result->paymentdetails;
                     $pdetails = unserialize($pdetails);
-                        
+                    /* Update supplier expiry date in supplier table */
+                    $smodel = SuppliersDirectory::model()->findByPk($suppid);
+                    if ($_POST['payment_status'] == "Completed") {
+
+                        if ($subtype == "1" || $subtype == "2") {
+                            $smodel->profile_expirydate = $pdetails['profile_expirydate'];
+                        }
+                        if ($subtype == "3" || $subtype == "2") {
+                            $smodel->logo_expirydate = $pdetails['logo_expirydate'];
+                        }
+                        $smodel->save(false);
+
+                        /* Update supplier expiry date in payment transation table */
+                        if ($subscription_type == "1" || $subscription_type == "2") {
+                            $paymentinfos->expirydate = $pdetails['profile_expirydate'];
+                        } else if ($subscription_type == "3") {
+                            $paymentinfos->expirydate = $pdetails['logo_expirydate'];
+                        }
+                        $paymentinfos->save(false);
+
+                        SupplierTemp::model()->deleteAll("invoice_number = '" . $invoice_number . "'");
+                    }
+                }
+            } else {
+
+
+                if (!empty($result)) {
+
+                    $pdetails = $result->paymentdetails;
+                    $pdetails = unserialize($pdetails);
+
                     if (!empty($pdetails)) {
-                           
-                        $supplierid = $pdetails['user_id'];   
-                        $subtype    = $pdetails['subscription_type']; 
-                        
+
+                        $supplierid = $pdetails['user_id'];
+                        $subtype = $pdetails['subscription_type'];
+
                         // Update the expiry date in supplier table once the payment is suceess (Completed)
-                         $model = SuppliersDirectory::model()->findByPk($supplierid);  
-                        if($_POST['payment_status'] == "Completed")
-                        {                                               
-                            
+                        $model = SuppliersDirectory::model()->findByPk($supplierid);
+                        if ($_POST['payment_status'] == "Completed") {
+
                             if ($subtype == "1" || $subtype == "2") {
-                                $model->profile_expirydate = $pdetails['profile_expirydate']; 
+                                $model->profile_expirydate = $pdetails['profile_expirydate'];
                             }
                             if ($subtype == "3" || $subtype == "2") {
-                                $model->logo_expirydate = $pdetails['logo_expirydate']; 
+                                $model->logo_expirydate = $pdetails['logo_expirydate'];
                             }
                             $model->save(false);
-                        }    
-                       
+                        }
+
                         // Save the payment details                                   
                         $ptmodel = new PaymentTransaction;
                         $ptmodel->user_id = $supplierid;    // need to assign acutal user id
@@ -1641,30 +1657,29 @@ class SuppliersDirectoryController extends OGController {
                         $ptmodel->NOMTABLE = 'suppliers';
                         if ($subtype == "1" || $subtype == "2") {
                             $ptmodel->expirydate = $pdetails['profile_expirydate'];
-                        }else if ($subtype == "3"){
+                        } else if ($subtype == "3") {
                             $ptmodel->expirydate = $pdetails['logo_expirydate'];
-                        }    
+                        }
                         $ptmodel->invoice_number = $_POST['custom'];
                         $ptmodel->pay_type = $pdetails['payment_type'];
                         $ptmodel->subscription_type = $pdetails['subscription_type'];
                         $ptmodel->supp_renew_status = 1;
                         $ptmodel->save();
-                        
-                        
+
+
 
                         // Remove the temp   
-                        if($_POST['payment_status'] != "Completed")
-                        {  
+                        if ($_POST['payment_status'] != "Completed") {
                             SupplierTemp::model()->deleteAll("invoice_number = '" . $_POST['custom'] . "'");
-                        }    
+                        }
 
                         /* Send mail to admin for confirmation */
-                        $mail = new Sendmail();                       
+                        $mail = new Sendmail();
                         $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
-                        $enc_url2    = Myclass::refencryption($invoice_url);
+                        $enc_url2 = Myclass::refencryption($invoice_url);
                         $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
 
-                        $subject = SITENAME . $_POST['item_name']." notification with invoice details - " . $model->COMPAGNIE;
+                        $subject = SITENAME . $_POST['item_name'] . " notification with invoice details - " . $model->COMPAGNIE;
                         $trans_array = array(
                             "{NAME}" => $model->COMPAGNIE,
                             "{UTYPE}" => 'suppliers',
