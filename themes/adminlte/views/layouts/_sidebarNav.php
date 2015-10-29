@@ -76,7 +76,9 @@
                 array('label' => '<i class="fa fa-bell"></i> <span> Client Profiles</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
-                    'items' => array(      
+                    'items' => array(    
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Category Types </span>', 'url' => array('/admin/clientCategoryTypes/index'), 'active' => ($_controller == 'clientCategoryTypes')),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Category Names </span>', 'url' => array('/admin/clientCategory/index'), 'active' => ($_controller == 'clientCategory')),
                         array('label' => '<i class="fa fa-angle-double-right"></i> <span>Profils D\'employés </span>', 'url' => array('/admin/employeeProfiles/index'), 'active' => ($_controller == 'employeeProfiles')),
                         array('label' => '<i class="fa fa-angle-double-right"></i> <span>Les profils des clients</span>', 'url' => array('/admin/clientProfiles/index'), 'active' => ($_controller == 'clientProfiles')),
                        // array('label' => '<i class="fa fa-angle-double-right"></i> <span>Rappelez-vous des alertes</span>', 'url' => array('/admin/clientMessages/index'), 'active' => ( $_controller == 'clientMessages')),
