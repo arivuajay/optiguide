@@ -30,8 +30,8 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                     'filter' => CHtml::activeTextField($model, 'COMPAGNIE' , array('class'=>'form-control')),                    
                  ), 
                 array(
-                    'name' => 'subscription_price',
-                    'value' => $data->subscription_price,    
+                    'name' => 'total_price',
+                    'value' => $data->total_price,    
                     'filter' =>false,                    
                  ),
 		array(

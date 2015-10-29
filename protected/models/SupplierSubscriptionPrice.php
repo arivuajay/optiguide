@@ -26,10 +26,10 @@ class SupplierSubscriptionPrice extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('profile_price, profile_logo_price,rep_statistics_price,expire_days', 'numerical'),
+			array('profile_price, profile_logo_price,rep_statistics_price,expire_days,tax', 'numerical'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, profile_price, profile_logo_price,rep_statistics_price,expire_days', 'safe', 'on'=>'search'),
+			array('id, profile_price, profile_logo_price,rep_statistics_price,expire_days,tax', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,6 +55,7 @@ class SupplierSubscriptionPrice extends CActiveRecord
 			'profile_logo_price' => Myclass::t('Profil & Logo Prix'),
                         'rep_statistics_price' => Myclass::t('Statistiques Prix'),
                         'expire_days' => Myclass::t('Expirera jours pour les membres gratuits'),
+                        'tax'  => Myclass::t('impôt'),
 		);
 	}
 

@@ -22,7 +22,8 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         $gridColumns = array(
             'profile_price',
             'profile_logo_price',
-            'expire_days',    
+            'expire_days', 
+            'tax',
             array(
                 'header' => 'Actes',
                 'class' => 'booster.widgets.TbButtonColumn',

@@ -723,16 +723,35 @@ class SuppliersDirectoryController extends OGController {
                 $subprices = SupplierSubscriptionPrice::model()->findByPk(1);
                 $profile_price = $subprices->profile_price;
                 $profile_logo_price = $subprices->profile_logo_price;
-
-                if ($_POST['SuppliersSubscription']['subscription_type'] == 2) {
-                    $pmodel->amount = $profile_logo_price;
-                } else {
-                    $pmodel->amount = $profile_price;
-                }
+                $tax_price = $subprices->tax;
 
                 $invoice_number = Myclass::getRandomString();
 
                 $payment_details = array();
+                
+                if ($_POST['SuppliersSubscription']['subscription_type'] == 2) {
+                    // Tax calculation and grand total
+                    $taxval_profile_logo = $profile_logo_price*($tax_price/100);
+                    $grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo);
+                    
+                    $pmodel->amount = $grandtotal_profile_logo;
+                    
+                    $payment_details['subscription_price'] = $profile_logo_price;
+                    $payment_details['tax'] =  $taxval_profile_logo;
+                    $payment_details['total_price'] = $grandtotal_profile_logo;
+                            
+
+                } else {
+                    // Tax calculation and grand total
+                    $taxval_profile     = $profile_price*($tax_price/100);
+                    $grandtotal_profile = ( $profile_price + $taxval_profile);
+                    
+                    $pmodel->amount = $grandtotal_profile;                    
+                    
+                    $payment_details['subscription_price'] = $profile_price;
+                    $payment_details['tax'] =  $taxval_profile;
+                    $payment_details['total_price'] = $grandtotal_profile;
+                }
 
                 $payment_details['payment_type'] = $pmodel->payment_type;
                 $payment_details['subscription_type'] = $pmodel->subscription_type;
@@ -998,8 +1017,9 @@ class SuppliersDirectoryController extends OGController {
                         // Save the payment details                                   
                         $ptmodel = new PaymentTransaction;
                         $ptmodel->user_id = $supplierid;    // need to assign acutal user id
-                        $ptmodel->total_price = $_POST['mc_gross'];
-                        $ptmodel->subscription_price = $_POST['mc_gross'];
+                        $ptmodel->total_price = $pdetails['total_price'];
+                        $ptmodel->tax = $pdetails['tax'];
+                        $ptmodel->subscription_price = $pdetails['subscription_price'];
                         $ptmodel->payment_status = $_POST['payment_status'];
                         $ptmodel->payer_email = $_POST['payer_email'];
                         $ptmodel->verify_sign = $_POST['verify_sign'];
@@ -1036,7 +1056,7 @@ class SuppliersDirectoryController extends OGController {
                             "{UTYPE}" => 'suppliers',
                             "{NEXTSTEPURL}" => $nextstep_url,
                             "{item_name}" => $_POST['item_name'],
-                            "{total_price}" => $_POST['mc_gross'],
+                            "{total_price}" => $pdetails['total_price'],
                             "{payment_status}" => $_POST['payment_status'],
                             "{txn_id}" => $_POST['txn_id'],
                             "{INVOICEURL}" => $nextstep_url2

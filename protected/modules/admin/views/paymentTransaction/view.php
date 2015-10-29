@@ -17,6 +17,8 @@ if($model->pay_type==1 ||$model->pay_type==2)
                         'NOMTABLE',		
                         'invoice_number',
                         'subscription_price',
+                        'tax',
+                        'total_price',
                         'txn_id',
                         'payment_status',
                         'payer_email',
@@ -33,7 +35,9 @@ if($model->pay_type==1 ||$model->pay_type==2)
                         'item_name',
                         'NOMTABLE',		
                         'invoice_number',
-                        'subscription_price',          
+                        'subscription_price', 
+                        'tax',
+                        'total_price',
                         'created_at',
 		);
     

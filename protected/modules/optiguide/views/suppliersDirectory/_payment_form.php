@@ -9,7 +9,7 @@ $themeUrl = $this->themeUrl;
 $subprices     = SupplierSubscriptionPrice::model()->findByPk(1);
 $profile_price = $subprices->profile_price;
 $profile_logo_price = $subprices->profile_logo_price;
-
+$tax_price = $subprices->tax;
 ?>
 
 <div class="row"> 
@@ -89,14 +89,32 @@ $profile_logo_price = $subprices->profile_logo_price;
                     </div>  
 
                     <div id="price">
+                        
                         <div class="form-row1"> 
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                                <?php echo $form->labelEx($pmodel, 'amount', array()); ?>
+                                 <?php echo $form->labelEx($pmodel, 'amount', array()); ?>  
+                            </div>  
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">    
+                                 <div id="sprice"> </div>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">            
-                                <div id="sprice"></div>
+                        </div>   
+                        <div class="form-row1"> 
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                                <label>Tax</label> 
+                            </div>  
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">    
+                                <div id="stax"></div>
                             </div>
-                        </div>
+                        </div>      
+                       <div class="form-row1"> 
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                                <label>Grand Total</label>
+                            </div>  
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">    
+                                <div id="stotalprice"></div> 
+                            </div>
+                        </div> 
+                        
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 pull-right"> 
@@ -116,14 +134,28 @@ $profile_logo_price = $subprices->profile_logo_price;
     </div> 
 </div>   
 <?php
+$taxval_profile      = $profile_price*($tax_price/100);
+$taxval_profile_logo = $profile_logo_price*($tax_price/100);
+
+$grandtotal_profile = ( $profile_price + $taxval_profile);
+$grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo);
+
 $currency  = CURRENCY;
 $p_price   = $profile_price.' '.$currency;
 $p_l_price = $profile_logo_price.' '.$currency;
+
 $js = <<< EOD
 $(document).ready(function(){ 
         
+    var currency           = '{$currency}';     
     var profile_price      = '{$p_price}';   
     var profile_logo_price = '{$p_l_price}';  
+    
+    var tax_profile = '{$taxval_profile}';
+    var tax_profile_logo = '{$taxval_profile_logo}';
+    
+    var grandtotal_profile = '{$grandtotal_profile}';
+    var grandtotal_profile_logo = '{$grandtotal_profile_logo}';
         
      var subval=$("#SuppliersSubscription_subscription_type").val();
      chnagedrop(subval);    
@@ -144,11 +176,15 @@ $(document).ready(function(){
             $('#catlogo').show();
             $('#price').show();
             $('#sprice').html(profile_logo_price);
+            $('#stax').html(tax_profile_logo+" "+currency);
+            $('#stotalprice').html(grandtotal_profile_logo+" "+currency);
         }else  if(subval==1)
         {
             $('#catlogo').hide();
             $('#price').show();
             $('#sprice').html(profile_price);
+            $('#stax').html(tax_profile+" "+currency);
+            $('#stotalprice').html(grandtotal_profile+" "+currency);
         }
     }              
 });
