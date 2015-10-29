@@ -500,9 +500,9 @@ $cities = Myclass::getallcities($model->region);
 
         if (!empty($supplierproducts)) {
             ?>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">  
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands forms-cont">  
                 <h2> <?php echo Myclass::t('OG073', '', 'og'); ?> </h2> 
-                <div class="box" id="box1">
+                <div class="box" id="box1" style="background: none">
                     <div class="brands">                         
                         <ul>
                             <?php
