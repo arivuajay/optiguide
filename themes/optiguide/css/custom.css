@@ -395,3 +395,9 @@ and open the template in the editor.
    font-family: "Raleway",sans-serif;
    font-size: 12px;   
 }
+
+.paypal_btn {
+    border: medium none;
+    width: 200px;
+    background: none;
+}

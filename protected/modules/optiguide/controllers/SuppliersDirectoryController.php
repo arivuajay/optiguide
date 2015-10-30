@@ -705,19 +705,28 @@ class SuppliersDirectoryController extends OGController {
         }
 
         $pmodel = new SuppliersSubscription;
+        $model_paypaladvance = new PaymentTransaction('paypal_advance');
 
         $this->performAjaxValidation(array($pmodel));
 
         if (isset($_POST['SuppliersSubscription'])) {
+            
             $pmodel->attributes = $_POST['SuppliersSubscription'];
 
             $pmodel->scenario = ($_POST['SuppliersSubscription']['subscription_type'] == 2) ? "type2" : "";
 
-            $pmodel->ID_CATEGORIE = $_POST['SuppliersSubscription']['ID_CATEGORIE'];
+            $pmodel->ID_CATEGORIE  = $_POST['SuppliersSubscription']['ID_CATEGORIE'];
             $pmodel->TITRE_FICHIER = $_POST['SuppliersSubscription']['TITRE_FICHIER'];
-            $pmodel->image = CUploadedFile::getInstance($pmodel, 'image');
+            $pmodel->image         = CUploadedFile::getInstance($pmodel, 'image');
+            
+            $card_validdate = true;
+            if($_POST['SuppliersSubscription']['payment_type'] == 2)
+            {
+                $model_paypaladvance->attributes = $_POST['PaymentTransaction'];
+                $card_validdate = $model_paypaladvance->validate();
+            }    
 
-            if ($pmodel->validate()) {
+            if ($pmodel->validate() && $card_validdate) {
 
                 // Set subscriptino price
                 $subprices = SupplierSubscriptionPrice::model()->findByPk(1);
@@ -729,6 +738,7 @@ class SuppliersDirectoryController extends OGController {
 
                 $payment_details = array();
                 
+                // Price calculation
                 if ($_POST['SuppliersSubscription']['subscription_type'] == 2) {
                     // Tax calculation and grand total
                     $taxval_profile_logo = $profile_logo_price*($tax_price/100);
@@ -739,8 +749,7 @@ class SuppliersDirectoryController extends OGController {
                     $payment_details['subscription_price'] = $profile_logo_price;
                     $payment_details['tax'] =  $taxval_profile_logo;
                     $payment_details['total_price'] = $grandtotal_profile_logo;
-                            
-
+                    
                 } else {
                     // Tax calculation and grand total
                     $taxval_profile     = $profile_price*($tax_price/100);
@@ -755,6 +764,18 @@ class SuppliersDirectoryController extends OGController {
 
                 $payment_details['payment_type'] = $pmodel->payment_type;
                 $payment_details['subscription_type'] = $pmodel->subscription_type;
+                
+                // For pay with credit card
+                if($_POST['SuppliersSubscription']['payment_type'] == 2)
+                {
+                    $response = $this->pay_with_creditcard($model_paypaladvance, $pmodel->amount); 
+                    if ($response['RESULT'] != 0 || $response['RESPMSG'] != 'Approved') 
+                    {
+                         Yii::app()->user->setFlash('danger', 'Your card details not corret , please try again!!!');
+                         $this->redirect(array('payment'));
+                    }    
+                }
+                
 
                 if ($pmodel->scenario == "type2") {
                     //Upload image and get the name
@@ -793,14 +814,27 @@ class SuppliersDirectoryController extends OGController {
                 // Session productids 
                 $sess_productids = Yii::app()->user->getState("product_ids");
                 // Session marqueids 
-                $sess_marqueids = Yii::app()->user->getState("marque_ids");
-
+                $sess_marqueids = Yii::app()->user->getState("marque_ids");                
+                
+                // For pay with credit card
+                if($_POST['SuppliersSubscription']['payment_type'] == 2)
+                {
+                    if ($response['RESPMSG'] == 'Approved')
+                    {
+                        $payment_details['PNREF'] = $response['PNREF'];
+                                
+                        $this->savecreditcard_response($sess_attr_m , $sess_attr_u , $sess_productids, $sess_marqueids, $payment_details,$invoice_number);
+                        $this->unset_sessionvals();
+                        Yii::app()->user->setFlash('success', Myclass::t('OG044', '', 'og'));
+                        $this->redirect(array('create'));
+                    }    
+                }
 
                 $serial_attr_m = serialize($sess_attr_m);
                 $serial_attr_u = serialize($sess_attr_u);
-                $serial_pids = serialize($sess_productids);
-                $serial_mids = serialize($sess_marqueids);
-                $pdetails = serialize($payment_details);
+                $serial_pids   = serialize($sess_productids);
+                $serial_mids   = serialize($sess_marqueids);
+                $pdetails      = serialize($payment_details);
 
                 $stmodel = new SupplierTemp;
                 $stmodel->umodel = $serial_attr_u;
@@ -812,7 +846,23 @@ class SuppliersDirectoryController extends OGController {
 
                 $stmodel->save(false);
 
-                // unset Session supplier model attribute    
+                // unset Session vals 
+                $this->unset_sessionvals();
+
+                // Save products in to database        
+                // $this->paypal_ipn($invoice_number);    
+                
+                 $this->paypaltest($pmodel->subscription_type, $pmodel->amount, $invoice_number);
+                
+            }
+        }
+        $tab = 4;
+        $viewpage = '_payment_form';
+        $this->render($viewpage, compact('pmodel', 'tab','model_paypaladvance'));
+    }
+    
+    protected function unset_sessionvals()
+    {
                 Yii::app()->user->setState("mattributes", null);
                 // unset Session user model attribute
                 Yii::app()->user->setState("uattributes", null);
@@ -830,17 +880,129 @@ class SuppliersDirectoryController extends OGController {
                 Yii::app()->user->setState("scountry", null);
                 // unset Session sregion  
                 Yii::app()->user->setState("sregion", null);
+        
+    }  
+    
+    protected function savecreditcard_response($sess_attr_m , $sess_attr_u , $sess_productids, $sess_marqueids, $pdetails,$invoice_number)
+    {
+        
+        if (!empty($sess_attr_m)) {
+           $ficherid = 0;
 
-                // Save products in to database        
-                // $this->paypal_ipn($invoice_number);                
-                $this->paypaltest($pmodel->subscription_type, $pmodel->amount, $invoice_number);
+            //Save the  supplier ficher (logo)
+            if (!empty($pdetails)) {
+                if ($pdetails['subscription_type'] == 2) {
+                    $afmodel = new ArchiveFichier('create');
+                    $afmodel->ID_CATEGORIE = $pdetails['ID_CATEGORIE'];
+                    $afmodel->TITRE_FICHIER_FR = $pdetails['TITRE_FICHIER'];
+                    $afmodel->TITRE_FICHIER_EN = $pdetails['TITRE_FICHIER'];
+                    $afmodel->FICHIER = $pdetails['FICHIER'];
+                    $afmodel->EXTENSION = $pdetails['EXTENSION'];
+                    $afmodel->DISPONIBLE = 1;
+
+                    $afmodel->save(false);
+
+                    $ficherid = $afmodel->ID_FICHIER;
+                }
             }
-        }
+            
+            if ($pdetails['subscription_type'] == 1) {
+                $itemname = 'Suppliers Subscription - Profile only';
+            } else if ($pdetails['subscription_type'] == 2) {
+                $itemname = 'Suppliers Subscription - Profile & logo';
+            }
 
-        $tab = 4;
-        $viewpage = '_payment_form';
-        $this->render($viewpage, compact('pmodel', 'tab'));
-    }
+            $model = new SuppliersDirectory;
+            $umodel = new UserDirectory('frontend');
+
+            // Save supplier in user and supplier table
+            $model->attributes = $sess_attr_m;
+            $model->ID_CLIENT = $sess_attr_m['ID_CLIENT'];
+            $model->iId_fichier = $ficherid;
+            $model->profile_expirydate = date("Y-m-d", strtotime('+1 year'));
+            if ($pdetails['subscription_type'] == 2) {
+                $model->logo_expirydate = date("Y-m-d", strtotime('+1 year'));
+            }            
+            $model->CREATED_DATE = date("Y-m-d");
+            $model->save(false);
+
+            $umodel->attributes = $sess_attr_u;
+            $umodel->ID_RELATION = $model->ID_FOURNISSEUR;            
+            $umodel->status = 1;           
+            $umodel->save(false);
+
+            $supplierid = $model->ID_FOURNISSEUR;
+
+            // Save products and brands for the supplier
+            if (!empty($sess_productids)) {
+                foreach ($sess_productids as $pids) {
+                    $productid = $pids;
+                    if (array_key_exists($productid, $sess_marqueids)) {
+                        $allmarqid = $sess_marqueids[$productid];
+                        $exp_marid = explode(',', $allmarqid);
+
+                        foreach ($exp_marid as $mid) {
+                            $marqid = $mid;
+
+                            $criteria1 = new CDbCriteria();
+                            $criteria1->condition = 'ID_PRODUIT=:pid and ID_MARQUE=:mid';
+                            $criteria1->params = array(':pid' => $productid, ':mid' => $marqid);
+                            $get_product_marques = ProductMarqueDirectory::model()->find($criteria1);
+
+                            if ($get_product_marques->ID_LIEN_MARQUE) {
+                                $prd_mar_id = $get_product_marques->ID_LIEN_MARQUE;
+                                $spmodel = new SupplierProducts();
+                                $spmodel->ID_FOURNISSEUR = $supplierid;
+                                $spmodel->ID_LIEN_PRODUIT_MARQUE = $prd_mar_id;
+                                $spmodel->save(false);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Save the payment details                                   
+            $ptmodel = new PaymentTransaction;
+            $ptmodel->user_id        = $model->ID_FOURNISSEUR;
+            $ptmodel->total_price    = $pdetails['total_price'];
+            $ptmodel->subscription_price = $pdetails['subscription_price'];
+            $ptmodel->tax            = $pdetails['tax'];
+            $ptmodel->payment_status = 'Completed';
+            $ptmodel->txn_id         = $pdetails['PNREF'];
+            $ptmodel->payment_type   = 'ppa';
+            $ptmodel->item_name      = $itemname;
+            $ptmodel->NOMTABLE       = 'suppliers';
+            $ptmodel->subscription_type = $pdetails['subscription_type'];
+            $ptmodel->invoice_number = $invoice_number;
+            $ptmodel->pay_type       = '2';
+            $ptmodel->save(false);
+        }                
+        
+    }        
+    
+    
+    protected function pay_with_creditcard($model_paypalAdvance, $amount) 
+    {
+        $paypalAdv = new PaypalAdvance;
+        $request = array(
+            "PARTNER" => $paypalAdv::PARTNER,
+            "VENDOR" => $paypalAdv::VENDOR,
+            "USER" => $paypalAdv::USER,
+            "PWD" => $paypalAdv::PWD,
+            "TENDER" => "C",
+            "TRXTYPE" => "S",
+            "CURRENCY" => "CAD",
+            "AMT" => $amount,
+            "ACCT" => $model_paypalAdvance->credit_card,
+            "EXPDATE" => $model_paypalAdvance->exp_month . $model_paypalAdvance->exp_year,
+            "CVV2" => $model_paypalAdvance->cvv2,
+        );
+                
+        //Run request and get the response
+        $response = $paypalAdv->run_payflow_call($request);
+        return $response;
+       
+    }        
 
     public function paypaltest($subscription_type = '', $price = '', $invoice = '') {
         $paypalManager = new Paypal;

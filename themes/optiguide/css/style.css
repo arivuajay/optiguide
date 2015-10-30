@@ -1630,3 +1630,37 @@ a:focus
   width: 100%;
     margin-top: 4px;
 }
+
+
+/*payment style*/
+
+
+.card-details-cont
+{
+	border:#ffffff solid 1px;
+	width:100%;
+	float:left;
+	margin-bottom:25px;
+	padding-bottom:25px;
+}
+
+.card-details-cont span
+{
+	float:left;
+	line-height:29px;
+}
+
+.card-details-cont a
+{
+	text-transform:none;
+	font-size:12px;
+	text-decoration:underline;
+	font-weight:normal;
+	padding:0px;
+	text-align:left;
+}
+
+.card-details-cont a:hover
+{
+	background:none;
+}
