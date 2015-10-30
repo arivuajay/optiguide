@@ -24,26 +24,10 @@
                 <div class="row"> 
 
                     <div id="catlogo">
-                        <div class="form-row1"> 
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                                <?php echo $form->labelEx($fmodel, 'ID_CATEGORIE', array()); ?>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">             
-                                <?php echo $form->dropDownList($fmodel, 'ID_CATEGORIE', $getallcat, array('class' => 'form-control', 'empty' => Myclass::t('APP60'))); ?>         
-                                <?php echo $form->error($fmodel, 'ID_CATEGORIE'); ?>
-                            </div>
-                        </div>
-
-                        <div class="form-row1"> 
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                                <?php echo $form->labelEx($fmodel, 'TITRE_FICHIER_EN', array()); ?>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">            
-                                <?php echo $form->textField($fmodel, 'TITRE_FICHIER_EN', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
-                                <?php echo $form->error($fmodel, 'TITRE_FICHIER_EN'); ?>
-                            </div>
-                        </div>
-
+                        <?php                       
+                        echo $form->hiddenField($fmodel, 'ID_CATEGORIE');                       
+                        echo $form->hiddenField($fmodel, 'TITRE_FICHIER_EN');
+                        ?>
                         <div class="form-row1"> 
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                                 <?php echo $form->labelEx($fmodel, 'image', array()); ?>

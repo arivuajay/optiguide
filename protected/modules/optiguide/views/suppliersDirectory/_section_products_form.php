@@ -92,19 +92,18 @@ $sectiontypes = CHtml::listData(SectionDirectory::model()->findAll(array("order"
 $cs = Yii::app()->getClientScript();
 $cs->registerScriptFile($themeUrl . '/js/pair-select.min.js', $cs_pos_end);
 $jsoncde = array();
-
+$imp_sess_prods = '';
 if (Yii::app()->user->hasState("product_ids")) {
-    $sess_product_ids = Yii::app()->user->getState("product_ids");
+    $sess_product_ids = Yii::app()->user->getState("product_ids");  
     $jsoncde = json_encode($sess_product_ids);
 }
-
 $ajaxproducts = Yii::app()->createUrl('/optiguide/suppliersDirectory/getproducts');
 $js = <<< EOD
 $(document).ready(function(){
    
 // Display the products in multiselect box based on slected category     
    var varray = {$jsoncde}; 
-    
+ 
     $("#SuppliersDirectory_IDSECTION").change(function(){
         var id=$(this).val();
         var dataString = 'id='+ id;

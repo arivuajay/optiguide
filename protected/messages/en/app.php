@@ -196,5 +196,9 @@ return array(
     
     'OG172' => "Specific City",
     'OG173' => "Other",
+    'OG174' => "Please select at least one brand for selected products.",
+    'OG175' => "Please select at least one brand.",
+    'OG176' => "Tax",
+    'OG177' => "Grand Total"
 );
 ?>

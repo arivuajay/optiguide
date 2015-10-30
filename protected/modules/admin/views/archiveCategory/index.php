@@ -47,6 +47,11 @@ $createtitle= 'Ajouter une catégorie';
                 'class' => 'booster.widgets.TbButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
                 'template' => '{update}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{delete}',
+                 'buttons'=> array(
+                    'delete'=>array(                                    
+                              'visible'=>'$data->ID_CATEGORIE!="300"',
+                                ),                                  
+                     ),
             )
         );
 

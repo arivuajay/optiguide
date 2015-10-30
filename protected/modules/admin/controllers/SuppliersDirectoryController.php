@@ -64,7 +64,7 @@ class SuppliersDirectoryController extends Controller {
         $options = "<option value=''>Aucune</option>";
         if($cid!='')
         {     
-            $exts = array('jpg','png','gif');
+            $exts = array('jpg','png','gif','jpeg');
             $criteria = new CDbCriteria;
             $criteria->condition = 'ID_CATEGORIE=:id and DISPONIBLE=1';
             $criteria->params    = array(':id' => $cid); 

@@ -204,7 +204,7 @@ class SuppliersDirectoryController extends OGController {
         $products_query = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('rp.ID_PRODUIT , rm.ID_MARQUE , rp.NOM_PRODUIT_' . $this->lang . ' , rm.NOM_MARQUE')
                 ->from(array('repertoire_fournisseur_produit rfp', 'repertoire_produit_marque rpm', 'repertoire_produit AS rp', 'repertoire_marque AS rm'))
-                ->where("rfp.ID_LIEN_PRODUIT_MARQUE = rpm.ID_LIEN_MARQUE AND rpm.ID_PRODUIT = rp.ID_PRODUIT AND rpm.ID_MARQUE = rm.ID_MARQUE AND rfp.ID_FOURNISSEUR =" . $id . $sectionqry . $productqry . $marqueqry)
+                ->where("rfp.ID_LIEN_PRODUIT_MARQUE = rpm.ID_LIEN_MARQUE AND rpm.ID_PRODUIT = rp.ID_PRODUIT AND rpm.ID_MARQUE = rm.ID_MARQUE AND rm.ID_MARQUE != 0 AND rfp.ID_FOURNISSEUR =" . $id . $sectionqry . $productqry . $marqueqry)
                 ->order('rp.NOM_PRODUIT_' . $this->lang . ',rm.NOM_MARQUE')
                 ->queryAll();
 
@@ -230,7 +230,7 @@ class SuppliersDirectoryController extends OGController {
     public function actionGetproducts() {
         $options = '';
         $sid = isset($_POST['id']) ? $_POST['id'] : '';
-        $options = "<option value=''>" . Myclass::t('OG066', '', 'og') . "</option>";
+     //   $options = "<option value=''>" . Myclass::t('OG066', '', 'og') . "</option>";
         if ($sid != '') {
             $criteria = new CDbCriteria;
             $criteria->order = 'NOM_PRODUIT_' . $this->lang . ' ASC';
@@ -620,7 +620,7 @@ class SuppliersDirectoryController extends OGController {
 
                 // Set default 0 (All brands) value to marques for newly added products only
                 foreach ($product_ids as $key => $info) {
-                    $marque_ids[$info] = 0;
+                    $marque_ids[$info] = '';
                 }
 
                 $marque_result = $marque_ids;
@@ -1084,7 +1084,9 @@ class SuppliersDirectoryController extends OGController {
 
             if (isset($_POST['yt0'])) {
                 $marque_ids = array();
+                
                 if (isset($_POST['marqueid'])) {
+                    
                     $imp_vals = implode(',', $_POST['marqueid']);
                     $marque_ids[$pid] = $imp_vals;
                     $result = $marque_ids;
@@ -1098,22 +1100,26 @@ class SuppliersDirectoryController extends OGController {
                     Yii::app()->user->setState("marque_ids", $result);
                 } else {
                     // unset product id
-                    if (Yii::app()->user->hasState("product_ids")) {
-                        $sess_product_ids = Yii::app()->user->getState("product_ids");
-                        if (($key = array_search($pid, $sess_product_ids)) !== FALSE) {
-                            // Remove from array
-                            unset($sess_product_ids[$key]);
-                        }
-                        Yii::app()->user->setState("product_ids", $sess_product_ids);
-
-                        // UNset marque ids for the product                   
-                        $sess_marque_ids = Yii::app()->user->getState("marque_ids");
-                        if (array_key_exists($pid, $sess_marque_ids)) {
-                            // Remove from array                      
-                            unset($sess_marque_ids[$pid]);
-                        }
-                        Yii::app()->user->setState("marque_ids", $sess_marque_ids);
-                    }
+//                    if (Yii::app()->user->hasState("product_ids")) {
+//                        $sess_product_ids = Yii::app()->user->getState("product_ids");
+//                        if (($key = array_search($pid, $sess_product_ids)) !== FALSE) {
+//                            // Remove from array
+//                            unset($sess_product_ids[$key]);
+//                        }
+//                        Yii::app()->user->setState("product_ids", $sess_product_ids);
+//
+//                        // UNset marque ids for the product                   
+//                        $sess_marque_ids = Yii::app()->user->getState("marque_ids");
+//                        if (array_key_exists($pid, $sess_marque_ids)) {
+//                            // Remove from array                      
+//                            unset($sess_marque_ids[$pid]);
+//                        }
+//                        Yii::app()->user->setState("marque_ids", $sess_marque_ids);
+//                    }
+                    
+                     Yii::app()->user->setFlash('danger', 'Please select any brand.');
+                     $this->redirect(array('listmarques',"id"=>$pid));
+                    
                 }
 
 
@@ -1194,7 +1200,7 @@ class SuppliersDirectoryController extends OGController {
 
         $relid = Yii::app()->user->relationid;
         $model = $this->loadModel($relid);
-        Yii::app()->user->setState("product_ids", NULL);
+        //Yii::app()->user->setState("product_ids", NULL);
 
         // Set and intialize session from existing database records.         
         if (Yii::app()->user->hasState("product_ids") == FALSE) {
@@ -1255,7 +1261,7 @@ class SuppliersDirectoryController extends OGController {
 
                 // Set default 0 (All brands) value to marques for newly added products only
                 foreach ($product_ids as $key => $info) {
-                    $marque_ids[$info] = 0;
+                    $marque_ids[$info] = '';
                 }
 
                 $marque_result = $marque_ids;
@@ -1277,7 +1283,7 @@ class SuppliersDirectoryController extends OGController {
         }
 
         if (Yii::app()->user->hasState("product_ids")) {
-            $proids = Yii::app()->user->getState("product_ids");
+            $proids = Yii::app()->user->getState("product_ids");          
             $data_products = SuppliersDirectory::getproducts($proids);
         }
 
@@ -1450,10 +1456,12 @@ class SuppliersDirectoryController extends OGController {
         if ($pid != '') {
             // foreach ($pids as $pid) {
             if (($key = array_search($pid, $sess_product_ids)) !== FALSE) {
-                // Remove from array
+                // Remove from array            
                 unset($sess_product_ids[$key]);
-            }
-
+            }            
+            $sess_product_ids = array_values($sess_product_ids);
+           
+            
             if (Yii::app()->user->hasState("marque_ids")) {
                 // UNset marque ids for the product                   
                 $sess_marque_ids = Yii::app()->user->getState("marque_ids");
@@ -1462,13 +1470,21 @@ class SuppliersDirectoryController extends OGController {
                     unset($sess_marque_ids[$pid]);
                 }
             }
-            // }
+            // }         
+           
             Yii::app()->user->setState("product_ids", $sess_product_ids);
             Yii::app()->user->setState("marque_ids", $sess_marque_ids);
+   
         }
 
-        // redirect to success page        
-        $this->redirect(array('addmarques'));
+        // redirect to success page    
+        if(isset(Yii::app()->user->relationid))
+        {
+            $this->redirect(array('updatemarques'));
+        }else{
+            $this->redirect(array('addmarques'));
+        }    
+            
     }
 
     public function actionTransactions() {

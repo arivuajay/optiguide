@@ -13,8 +13,8 @@ if (Yii::app()->user->hasState("product_ids")) {
         }
     }
 } else {
-    $exp_str = array();
-    $mval = 0;
+    $exp_str = array();  
+    //$mval = 0;
 }
 
 $currenturl = Yii::app()->request->url;
@@ -56,16 +56,16 @@ $pname = "NOM_PRODUIT_".Yii::app()->session['language'];
             ?>
             <div class="forms-cont">  
                 <div class="forms-heading"><i class="fa fa-cubes"></i> <?php echo Myclass::t('OGO101', '', 'og'). " - " .$product_infos->$pname; ?></div>
-                <div class="row"> 
+                <div class="row">                     
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">
+                        <p id="error_brand" class="errorMessage"><?php echo Myclass::t('OG175');?></p> 
                         <div class="box" id="box1">
                             <table class="table table-bordered">    
-                                <tr>
-                                    <td><input type="checkbox" name="marqueid[]" id="group1" class="simple" value="0" <?php if ($mval == 0) { ?> checked <?php } ?>> All brands/Toutes les marques</td>
-                                </tr>
+<!--                            <tr>
+                                    <td><input type="checkbox" name="marqueid[]" id="group1" class="simple" value="0" <?php //if ($mval == 0) { ?> checked <?php //} ?>> All brands/Toutes les marques</td>
+                                </tr>-->
                                 <?php
                                 if (!empty($get_selected_marques)) {
-
 
                                     foreach ($get_selected_marques as $k => $info) {
 
@@ -100,22 +100,35 @@ $pname = "NOM_PRODUIT_".Yii::app()->session['language'];
 </div>  
 <?php
 $js = <<< EOD
-    $(document).ready(function(){
-        var allbrand = '{$mval}';
-        if(allbrand==0)
-        {
-            $("input.checkbox1").attr("disabled", true);       
+$(document).ready(function(){
+
+//       var allbrand = '{$mval}';
+//        if(allbrand==0)
+//        {
+//            $("input.checkbox1").attr("disabled", true);       
+//        }
+//        $("#group1").click(enable_cb);        
+   
+   $("#error_brand").hide();
+   $("#list-marques-form").submit(function(e) {       
+
+    if(!$('input[type=checkbox]:checked').length) {
+            $("#error_brand").show();        
+            return false;
         }
-        $("#group1").click(enable_cb);         
+        return true;
+    });   
 });
-function enable_cb() {     
-  if (this.checked) {   
-   $("input.checkbox1").attr("disabled", true);   
-  }else
-  {
-   $("input.checkbox1").removeAttr("disabled");
-  }      
-}
+
+//function enable_cb() {     
+//  if (this.checked) {   
+//   $("input.checkbox1").attr("disabled", true);   
+//  }else
+//  {
+//   $("input.checkbox1").removeAttr("disabled");
+//  }      
+//}
+
 EOD;
 Yii::app()->clientScript->registerScript('_form_marqueslist', $js);
 ?>

@@ -10,6 +10,9 @@ $subprices     = SupplierSubscriptionPrice::model()->findByPk(1);
 $profile_price = $subprices->profile_price;
 $profile_logo_price = $subprices->profile_logo_price;
 $tax_price = $subprices->tax;
+
+$user_infos = Yii::app()->user->getState("uattributes");
+$logo_name  =  $user_infos['USR'];
 ?>
 
 <div class="row"> 
@@ -55,27 +58,12 @@ $tax_price = $subprices->tax;
                     </div> 
 
                     <div id="catlogo">
-
-                        <div class="form-row1"> 
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                                <?php echo $form->labelEx($pmodel, 'ID_CATEGORIE', array()); ?>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">             
-                                <?php echo $form->dropDownList($pmodel, 'ID_CATEGORIE', $getallcat, array('class' => 'form-control', 'empty' => Myclass::t('APP60'))); ?>         
-                                <?php echo $form->error($pmodel, 'ID_CATEGORIE'); ?>
-                            </div>
-                        </div>
-
-                        <div class="form-row1"> 
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                                <?php echo $form->labelEx($pmodel, 'TITRE_FICHIER', array()); ?>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">            
-                                <?php echo $form->textField($pmodel, 'TITRE_FICHIER', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
-                                <?php echo $form->error($pmodel, 'TITRE_FICHIER'); ?>
-                            </div>
-                        </div>
-
+                        <?php 
+                        $pmodel->ID_CATEGORIE  = '300';
+                        echo $form->hiddenField($pmodel, 'ID_CATEGORIE'); 
+                        $pmodel->TITRE_FICHIER = $logo_name;
+                        echo $form->hiddenField($pmodel, 'TITRE_FICHIER');
+                        ?>
                         <div class="form-row1"> 
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                                 <?php echo $form->labelEx($pmodel, 'image', array()); ?>
@@ -100,7 +88,7 @@ $tax_price = $subprices->tax;
                         </div>   
                         <div class="form-row1"> 
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                                <label>Tax</label> 
+                                <label><?php echo Myclass::t('OG176'); ?></label> 
                             </div>  
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">    
                                 <div id="stax"></div>
@@ -108,7 +96,7 @@ $tax_price = $subprices->tax;
                         </div>      
                        <div class="form-row1"> 
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                                <label>Grand Total</label>
+                                <label><?php echo Myclass::t('OG177'); ?></label>
                             </div>  
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">    
                                 <div id="stotalprice"></div> 

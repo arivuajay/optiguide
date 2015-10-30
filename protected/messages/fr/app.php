@@ -196,5 +196,9 @@ return array(
     
     'OG172' => "Spécifiez la ville",
     'OG173' => "Autre",
+    'OG174' => "S'il vous plaît sélectionner au moins une marque pour les produits sélectionnés.",
+    'OG175' => "S'il vous plaît sélectionner au moins une marque .",
+    'OG176' => "impôt",
+    'OG177' => "Total"
 );
 ?>
