@@ -460,7 +460,7 @@ a.back {
 /*payment style*/
 .card-details-cont
 {
-    border:#F0F0F0 solid 1px;
+    border:#ddd solid 1px;
     width:100%;
     float:left;
     margin-bottom:25px;
@@ -505,4 +505,8 @@ a.back {
     float:left;
     margin-bottom:25px;
     padding-bottom:25px;
+}
+
+.buy_more.price-details{
+    font-size: 18px;
 }
