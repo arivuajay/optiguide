@@ -104,7 +104,7 @@ class SuppliersDirectoryController extends ORController {
         $products_query = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('rp.ID_PRODUIT , rm.ID_MARQUE , rp.NOM_PRODUIT_' . $this->lang . ' , rm.NOM_MARQUE')
                 ->from(array('repertoire_fournisseur_produit rfp', 'repertoire_produit_marque rpm', 'repertoire_produit AS rp', 'repertoire_marque AS rm'))
-                ->where("rfp.ID_LIEN_PRODUIT_MARQUE = rpm.ID_LIEN_MARQUE AND rpm.ID_PRODUIT = rp.ID_PRODUIT AND rpm.ID_MARQUE = rm.ID_MARQUE AND rfp.ID_FOURNISSEUR =" . $id . $sectionqry . $productqry . $marqueqry)
+                ->where("rfp.ID_LIEN_PRODUIT_MARQUE = rpm.ID_LIEN_MARQUE AND rpm.ID_PRODUIT = rp.ID_PRODUIT AND rpm.ID_MARQUE = rm.ID_MARQUE AND rm.ID_MARQUE != 0 AND rfp.ID_FOURNISSEUR =" . $id . $sectionqry . $productqry . $marqueqry)
                 ->order('rp.NOM_PRODUIT_' . $this->lang . ',rm.NOM_MARQUE')
                 ->queryAll();
 

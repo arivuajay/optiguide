@@ -406,7 +406,7 @@ and open the template in the editor.
  text-align: right;   
 }
 
-.creditcardtbl{
+.creditcardtbl , #creditcard{
  margin-top: 20px;   
 }
 

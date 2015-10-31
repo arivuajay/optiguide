@@ -1696,11 +1696,13 @@ class SuppliersDirectoryController extends OGController {
             if ($pmodel->validate() && $card_validdate) {
               
                 $subprices = SupplierSubscriptionPrice::model()->findByPk(1);
-                $tax_price = $tax;
+                $tax_price = $subprices->tax;
                 $profile_price = $subprices->profile_price;
                 $profile_logo_price = $subprices->profile_logo_price;
                 $logo_price = ( $profile_logo_price - $profile_price );
-
+                
+                $payment_details = array();
+                
                 if (count($sub_types) > 1) {
                     
                     $subscriptiontype = "2";                    
@@ -1748,7 +1750,7 @@ class SuppliersDirectoryController extends OGController {
                     }    
                 }
 
-                $payment_details = array();
+                
                 $payment_details['payment_type'] = $_POST['SuppliersSubscription']['payment_type'];
                 $payment_details['subscription_type'] = $subscriptiontype;
 

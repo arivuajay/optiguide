@@ -36,6 +36,16 @@ $logo_name = $user_infos['USR'];
             <div class="forms-cont"> 
                 <div class="forms-heading"><i class="fa fa-cubes"></i> <?php echo Myclass::t('OGO104', '', 'og'); ?></div>
                 <div class="row"> 
+                    
+                      <div class="form-row1"> 
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                            <?php echo $form->labelEx($pmodel, 'subscription_type', array()); ?> 
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">                                                                                     
+                            <?php echo $form->dropDownList($pmodel, 'subscription_type', array('1' => Myclass::t('OGO110', '', 'og'), '2' => Myclass::t('OGO111', '', 'og')), array('class' => 'selectpicker', "empty" => Myclass::t('OG118'))); ?>                          
+                            <?php echo $form->error($pmodel, 'subscription_type'); ?>
+                        </div>
+                    </div> 
 
                     <div class="form-row1"> 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
@@ -46,16 +56,6 @@ $logo_name = $user_infos['USR'];
                             <?php echo $form->error($pmodel, 'payment_type'); ?>
                         </div>
                     </div>    
-
-                    <div class="form-row1"> 
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                            <?php echo $form->labelEx($pmodel, 'subscription_type', array()); ?> 
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">                                                                                     
-                            <?php echo $form->dropDownList($pmodel, 'subscription_type', array('1' => Myclass::t('OGO110', '', 'og'), '2' => Myclass::t('OGO111', '', 'og')), array('class' => 'selectpicker', "empty" => Myclass::t('OG118'))); ?>                          
-                            <?php echo $form->error($pmodel, 'subscription_type'); ?>
-                        </div>
-                    </div> 
 
                     <div id="catlogo">
                         <?php
