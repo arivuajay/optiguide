@@ -66,7 +66,7 @@ $logo_name = $user_infos['USR'];
                         ?>
                         <div class="form-row1"> 
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                                <?php echo $form->labelEx($pmodel, 'image', array()); ?>
+                                <?php echo $form->labelEx($pmodel, 'image', array()); ?>&nbsp;<span class="required">*</span>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">     
                                 <?php echo $form->fileField($pmodel, 'image'); ?>                         
@@ -124,7 +124,7 @@ $logo_name = $user_infos['USR'];
                                 <div class="col-xs-12 col-sm-7 col-md-6 col-lg-4">  <?php echo CHtml::image($this->themeUrl . '/images/payment-icons.jpg', '', array("class" => 'pay-icon')); ?></div>
                             </div>
                             <div class="form-row1"> 
-                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4"><label><span class="required">*</span><?php echo Myclass::t('OR653', '', 'or') ?></label> </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4"><label><?php echo Myclass::t('OR653', '', 'or') ?>&nbsp;<span class="required">*</span></label> </div>
                                 <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2">  <?php echo $form->textField($model_paypaladvance, 'exp_month', array('class' => "form-txtfield", "placeholder" => "MM")); ?> 
                                 </div>
                                 <span> / </span>

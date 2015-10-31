@@ -976,6 +976,31 @@ class SuppliersDirectoryController extends OGController {
             $ptmodel->invoice_number = $invoice_number;
             $ptmodel->pay_type       = '2';
             $ptmodel->save(false);
+            
+            /* Send mail to admin for confirmation */
+            $mail = new Sendmail();
+            $suppliers_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
+            $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
+
+            $enc_url = Myclass::refencryption($suppliers_url);
+            $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
+
+            $enc_url2 = Myclass::refencryption($invoice_url);
+            $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
+
+            $subject = SITENAME . "- New suppliers registration notification with invoice details - " . $model->COMPAGNIE;
+            $trans_array = array(
+                "{NAME}" => $model->COMPAGNIE,
+                "{UTYPE}" => 'suppliers',
+                "{NEXTSTEPURL}" => $nextstep_url,
+                "{item_name}" => $itemname,
+                "{total_price}" => $pdetails['total_price'],
+                "{payment_status}" => 'Completed',
+                "{txn_id}" => $pdetails['PNREF'],
+                "{INVOICEURL}" => $nextstep_url2
+            );
+            $message = $mail->getMessage('supplier_registration', $trans_array);
+            $mail->send(ADMIN_EMAIL, $subject, $message);
         }                
         
     }        
@@ -1852,6 +1877,26 @@ class SuppliersDirectoryController extends OGController {
             $ptmodel->invoice_number = $invoice_number;
             $ptmodel->pay_type       = '2';
             $ptmodel->save(false);
+            
+            /* Send mail to admin for confirmation */
+            $mail = new Sendmail();
+            $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
+            $enc_url2 = Myclass::refencryption($invoice_url);
+            $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
+
+            $subject = SITENAME . $itemname . " notification with invoice details - " . $model->COMPAGNIE;
+            $trans_array = array(
+                "{NAME}" => $model->COMPAGNIE,
+                "{UTYPE}" => 'suppliers',
+                "{NEXTSTEPURL}" => $nextstep_url,
+                "{item_name}" => $itemname,
+                "{total_price}" => $pdetails['total_price'],
+                "{payment_status}" => 'Completed',
+                "{txn_id}" => $pdetails['PNREF'],
+                "{INVOICEURL}" => $nextstep_url2
+            );
+            $message = $mail->getMessage('supplier_renew_subscription', $trans_array);
+            $mail->send(ADMIN_EMAIL, $subject, $message);
             
         }            
         
