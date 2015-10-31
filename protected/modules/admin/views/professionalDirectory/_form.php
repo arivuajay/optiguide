@@ -2,8 +2,6 @@
 /* @var $this ProfessionalDirectoryController */
 /* @var $model ProfessionalDirectory */
 /* @var $form CActiveForm */
-
-
 ?>
 
 <div class="row">
@@ -12,7 +10,7 @@
             <?php
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'professional-directory-form',
-                'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'),   
+                'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'),
                 'clientOptions' => array(
                     'validateOnSubmit' => true,
                 ),
@@ -20,10 +18,10 @@
             ));
 
             $proftypes = CHtml::listData(ProfessionalType::model()->findAll(), 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_FR');
-            $country   = Myclass::getallcountries();               
-            $regions   = Myclass::getallregions($model->country);
-            $cities    = Myclass::getallcities($model->region);
-        ?>
+            $country = Myclass::getallcountries();
+            $regions = Myclass::getallregions($model->country);
+            $cities = Myclass::getallcities($model->region);
+            ?>
 
             <div class="box-body">
                 <div class="form-group">
@@ -33,7 +31,7 @@
                         <?php echo $form->error($model, 'ID_TYPE_SPECIALISTE'); ?>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'ID_CLIENT', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
@@ -73,11 +71,11 @@
                         <?php echo $form->error($model, 'NOM'); ?>
                     </div>
                 </div>
-                
+
                 <div class="form-group">                        
                     <?php echo $form->labelEx($model, 'age', array('class' => 'col-sm-2 control-label')); ?>                       
                     <div class="col-sm-5"> 
-                        <?php echo $form->textField($model, 'age', array('class' => 'form-control', 'size' => 2, )); ?>
+                        <?php echo $form->textField($model, 'age', array('class' => 'form-control', 'size' => 2,)); ?>
                         <?php echo $form->error($model, 'age'); ?>
                     </div>
                 </div>
@@ -97,30 +95,30 @@
                     </div>
                 </div>
 
-                
-                 <div class="form-group">
-                        <?php echo $form->labelEx($model,'country',  array('class' => 'col-sm-2 control-label')); ?>
-                        <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'country', $country, array('class' => 'form-control','empty'=>Myclass::t('APP43'))); ?>                          
-                        <?php echo $form->error($model,'country'); ?>
-                        </div>
-                    </div>
-                
-                     <div class="form-group">
-                        <?php echo $form->labelEx($model,'region',  array('class' => 'col-sm-2 control-label')); ?>
-                        <div class="col-sm-5">                       
-                        <?php echo $form->dropDownList($model, 'region', $regions , array('class' => 'form-control','empty'=>Myclass::t('APP44'))); ?>                          
-                        <?php echo $form->error($model,'region'); ?>
-                        </div>
-                    </div>
 
-                    <div class="form-group">
-                        <?php echo $form->labelEx($model,'ID_VILLE',  array('class' => 'col-sm-2 control-label')); ?>
-                        <div class="col-sm-5">                       
-                             <?php echo $form->dropDownList($model, 'ID_VILLE', $cities  ,array('class'=>'form-control','empty'=>Myclass::t('APP59'))); ?>   
-                        <?php echo $form->error($model,'ID_VILLE'); ?>
-                        </div>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'country', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">                       
+                        <?php echo $form->dropDownList($model, 'country', $country, array('class' => 'form-control', 'empty' => Myclass::t('APP43'))); ?>                          
+                        <?php echo $form->error($model, 'country'); ?>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'region', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">                       
+                        <?php echo $form->dropDownList($model, 'region', $regions, array('class' => 'form-control', 'empty' => Myclass::t('APP44'))); ?>                          
+                        <?php echo $form->error($model, 'region'); ?>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'ID_VILLE', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">                       
+                        <?php echo $form->dropDownList($model, 'ID_VILLE', $cities, array('class' => 'form-control', 'empty' => Myclass::t('APP59'))); ?>   
+                        <?php echo $form->error($model, 'ID_VILLE'); ?>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'ADRESSE', array('class' => 'col-sm-2 control-label')); ?>
@@ -186,27 +184,27 @@
                         <?php echo $form->error($model, 'COURRIEL'); ?>
                     </div>
                 </div>
-                
-                 <div class="form-group"> 
+
+                <div class="form-group"> 
                     <?php echo $form->labelEx($model, 'pfile', array('class' => 'col-sm-2 control-label')); ?>                   
                     <div class="col-sm-5">     
                         <?php echo $form->fileField($model, 'pfile'); ?>                         
                         <?php echo $form->error($model, 'pfile'); ?>
                     </div>
                 </div>
-                <?php if($model->proof_file!='')
-                {
-                     $file_url  = Yii::app()->getBaseUrl(true).'/uploads/user_proofs/'.$model->proof_file; 
+                <?php
+                if ($model->proof_file != '') {
+                    $file_url = Yii::app()->getBaseUrl(true) . '/uploads/user_proofs/' . $model->proof_file;
                     ?>   
-               <div class="form-group"> 
-                   <label for="ProfessionalDirectory_prooffile" class="col-sm-2 control-label">&nbsp;</label>
-                   <div class="col-sm-5">     
-                    <a href="<?php echo $file_url;?>" target="_blank">Click to view the proof</a>  
-                   </div> 
-                </div>
-                <?php                 
-                }?>
-                
+                    <div class="form-group"> 
+                        <label for="ProfessionalDirectory_prooffile" class="col-sm-2 control-label">&nbsp;</label>
+                        <div class="col-sm-5">     
+                            <a href="<?php echo $file_url; ?>" target="_blank">Click to view the proof</a>  
+                        </div> 
+                    </div>
+                <?php }
+                ?>
+
                 <div class="box-header">
                     <h3 class="box-title">Réglez l'alerte à l'employé</h3>
                 </div>
@@ -217,12 +215,14 @@
 
                 $cs->registerCssFile($themeUrl . '/css/datepicker/datepicker3.css');
                 $cs->registerScriptFile($themeUrl . '/js/datepicker/bootstrap-datepicker.js', $cs_pos_end);
-                
+
                 $cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
                 $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
 
-                if(!$pmodel->status){ $pmodel->status=0;}                
-                $employees = CHtml::listData(EmployeeProfiles::model()->findall(array("order"=>"employee_name asc")), 'employee_id', 'employee_name');           
+                if (!$pmodel->status) {
+                    $pmodel->status = 0;
+                }
+                $employees = CHtml::listData(EmployeeProfiles::model()->findall(array("order" => "employee_name asc")), 'employee_id', 'employee_name');
                 ?>
 
                 <div class="form-group">
@@ -232,7 +232,7 @@
                         <?php echo $form->error($pmodel, 'employee_id'); ?>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <?php echo $form->labelEx($pmodel, 'date_remember', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
@@ -248,8 +248,8 @@
                         <?php echo $form->error($pmodel, 'message'); ?>
                     </div>
                 </div>
-                
-                 <div class="form-group"> 
+
+                <div class="form-group"> 
                     <?php echo $form->labelEx($pmodel, 'afile', array('class' => 'col-sm-2 control-label')); ?>                   
                     <div class="col-sm-5">     
                         <?php echo $form->fileField($pmodel, 'afile'); ?>                         
@@ -265,14 +265,13 @@
                     </div>
                 </div>
                 <?php
-                if(!$model->isNewRecord)
-                {
-                ?>
-                <div class="box-header">
-                    <h3 class="box-title">L'historique des alertes</h3>
-                </div>   
-                
-                 <div class="nav-tabs-custom">
+                if (!$model->isNewRecord) {
+                    ?>
+                    <div class="box-header">
+                        <h3 class="box-title">L'historique des alertes</h3>
+                    </div>   
+
+                    <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
                             <li class="active"><a id="a_tab_1" href="#tab_1" data-toggle="tab">Active Alerts</a></li>
                             <li><a id="a_tab_2" href="#tab_2"  data-toggle="tab">Expire Alerts</a></li>                                                       
@@ -281,154 +280,164 @@
                         <div class="tab-content">                
                             <div class="tab-pane active" id="tab_1">    
                                 <div class="row">
-                                  <?php
-                                        $gridColumns = array(  
-                                                array('header' => 'SN.',
-                                                    'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
-                                                ), 
-                                                array(
-                                               'name'    => 'employeeProfiles.employee_name',
-                                               'value'   => $data->employeeProfiles->employee_name,
-                                                ), 		
-                                                array('name' => 'date_remember',
-                                                   'type' => 'raw',
-                                                   'value' => function($data){
-                                                       echo date("d-m-Y",strtotime($data->date_remember));
-                                                   },
-                                                   'filter' => false,
-                                                ),
-                                                array('name' => 'status',
-                                                   'type' => 'raw',
-                                                   'value' => function($data){
-                                                       echo ($data->status == "1") ? '<span class="label label-success">Enable</span>' : '<span class="label label-warning">Disable</span>';
-                                                   },
-                                                   'filter' => false,
-                                                ),  
-                                                array(
-                                                    'name' => 'user_view_status',
-                                                    'type' => 'HTML',
-                                                    'value' => function($data){
-                                                         echo  ($data->user_view_status == "1") ? '<span class="label label-success">User saw the infos.</span>' : '<span class="label label-warning">User not yet see the alert.</span>';
-                                                    }
-                                                ) ,
-                                                array('header' => 'message',
-                                                    'type' => 'raw',
-                                                    'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                                    'filter' => false,
-                                                      //call the method 'gridDataColumn' from the controller
-                                                    'value' => array($this, 'gridDataColumn'),
-                                                ),              
-                                                array(
-                                                'header' => 'Actes',
-                                                'class' => 'booster.widgets.TbButtonColumn',
-                                                'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                                'template' => '{delete}',
-                                                'buttons'=>array
+                                    <?php
+                                    $gridColumns = array(
+                                        array('header' => 'SN.',
+                                            'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
+                                        ),
+                                        array(
+                                            'name' => 'employeeProfiles.employee_name',
+                                            'value' => $data->employeeProfiles->employee_name,
+                                        ),
+                                        array('name' => 'date_remember',
+                                            'type' => 'raw',
+                                            'value' => function($data) {
+                                                echo date("d-m-Y", strtotime($data->date_remember));
+                                            },
+                                            'filter' => false,
+                                        ),
+                                        array('name' => 'status',
+                                            'type' => 'raw',
+                                            'value' => function($data) {
+                                                echo ($data->status == "1") ? '<span class="label label-success">Enable</span>' : '<span class="label label-warning">Disable</span>';
+                                            },
+                                            'filter' => false,
+                                        ),
+                                        array(
+                                            'name' => 'user_view_status',
+                                            'type' => 'HTML',
+                                            'value' => function($data) {
+                                                echo ($data->user_view_status == "1") ? '<span class="label label-success">User saw the infos.</span>' : '<span class="label label-warning">User not yet see the alert.</span>';
+                                            }
+                                        ),
+                                        array('header' => 'message',
+                                            'type' => 'raw',
+                                            'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                                            'filter' => false,
+                                            //call the method 'gridDataColumn' from the controller
+                                            'value' => array($this, 'gridDataColumn'),
+                                        ),
+                                        array(
+                                            'header' => 'Actes',
+                                            'class' => 'ButtonColumn',
+                                            'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                                            'template' => '{update}{delete}',
+                                            'evaluateID' => true,
+                                            'buttons' => array
+                                                (
+                                                'delete' => array
                                                     (
-                                                        'delete' => array
-                                                        (
-                                                            'label'=>'Delete',                                            
-                                                            'url'=>'Yii::app()->createUrl("admin/professionalDirectory/deleteMessage", array("id"=>$data->message_id))',
-                                                        ),                                   
+                                                    'label' => 'Delete',
+                                                    'url' => 'Yii::app()->createUrl("admin/professionalDirectory/deleteMessage", array("id"=>$data->message_id))',
+                                                ),
+                                                'update' => array(
+                                                    'label' => 'Update',
+                                                    'url' => '"javascript:void(0)"',
+                                                    'options' => array(
+                                                        "id" => '\'messageid_\'.$data->message_id',
+                                                        'data-target' => '#prof-message-update-modal',
+                                                        'data-toggle' => 'modal',
+                                                        'class' => 'prof_message_update_popup',
                                                     ),
                                                 )
-                                        );
+                                            ),
+                                        )
+                                    );
 
-                                        $this->widget('booster.widgets.TbExtendedGridView', array(
-                                                'type' => 'striped bordered datatable',
-                                                'enableSorting' => false,
-                                                'dataProvider' => $pcurrentmodel,
-                                                'responsiveTable' => true,
-                                                'template' => '  <div id="histrydisp" tabindex="-1" class="col-md-7"><div class="box"> <div class="box-body">{items}</div> <div class="box-footer clearfix">{pager}</div> </div></div>',
-                                                'columns' => $gridColumns
+                                    $this->widget('booster.widgets.TbExtendedGridView', array(
+                                        'type' => 'striped bordered datatable',
+                                        'enableSorting' => false,
+                                        'dataProvider' => $pcurrentmodel,
+                                        'responsiveTable' => true,
+                                        'template' => '  <div id="histrydisp" tabindex="-1" class="col-md-7"><div class="box"> <div class="box-body">{items}</div> <div class="box-footer clearfix">{pager}</div> </div></div>',
+                                        'columns' => $gridColumns
                                             )
-                                        );
-                                        ?>
-                               </div>
+                                    );
+                                    ?>
+                                </div>
                             </div> 
                             <div class="tab-pane" id="tab_2">
-                             <div class="row">
-                                  <?php
-                                        $gridColumns = array(  
-                                                array('header' => 'SN.',
-                                                    'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
-                                                ), 
-                                                array(
-                                               'name'    => 'employeeProfiles.employee_name',
-                                               'value'   => $data->employeeProfiles->employee_name,
-                                                ), 		
-                                                array('name' => 'date_remember',
-                                                   'type' => 'raw',
-                                                   'value' => function($data){
-                                                       echo date("d-m-Y",strtotime($data->date_remember));
-                                                   },
-                                                   'filter' => false,
-                                                ),
-                                                array('name' => 'status',
-                                                   'type' => 'raw',
-                                                   'value' => function($data){
-                                                       echo ($data->status == "1") ? '<span class="label label-success">Enable</span>' : '<span class="label label-warning">Disable</span>';
-                                                   },
-                                                   'filter' => false,
-                                                ), 
-                                                array(
-                                                    'name' => 'user_view_status',
-                                                    'type' => 'HTML',
-                                                    'value' => function($data){
-                                                         echo  ($data->user_view_status == "1") ? '<span class="label label-success">User saw the infos.</span>' : '<span class="label label-warning">User not yet see the alert.</span>';
-                                                    }
-                                                ), 
-                                                array('header' => 'message',
-                                                    'type' => 'raw',
-                                                    'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                                    'filter' => false,
-                                                      //call the method 'gridDataColumn' from the controller
-                                                    'value' => array($this, 'gridDataColumn'),
-                                                ),  
-                                                       
-                                                array(
-                                                'header' => 'Actes',
-                                                'class' => 'booster.widgets.TbButtonColumn',
-                                                'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                                'template' => '{delete}',
-                                                'buttons'=>array
+                                <div class="row">
+                                    <?php
+                                    $gridColumns = array(
+                                        array('header' => 'SN.',
+                                            'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
+                                        ),
+                                        array(
+                                            'name' => 'employeeProfiles.employee_name',
+                                            'value' => $data->employeeProfiles->employee_name,
+                                        ),
+                                        array('name' => 'date_remember',
+                                            'type' => 'raw',
+                                            'value' => function($data) {
+                                                echo date("d-m-Y", strtotime($data->date_remember));
+                                            },
+                                            'filter' => false,
+                                        ),
+                                        array('name' => 'status',
+                                            'type' => 'raw',
+                                            'value' => function($data) {
+                                                echo ($data->status == "1") ? '<span class="label label-success">Enable</span>' : '<span class="label label-warning">Disable</span>';
+                                            },
+                                            'filter' => false,
+                                        ),
+                                        array(
+                                            'name' => 'user_view_status',
+                                            'type' => 'HTML',
+                                            'value' => function($data) {
+                                                echo ($data->user_view_status == "1") ? '<span class="label label-success">User saw the infos.</span>' : '<span class="label label-warning">User not yet see the alert.</span>';
+                                            }
+                                        ),
+                                        array('header' => 'message',
+                                            'type' => 'raw',
+                                            'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                                            'filter' => false,
+                                            //call the method 'gridDataColumn' from the controller
+                                            'value' => array($this, 'gridDataColumn'),
+                                        ),
+                                        array(
+                                            'header' => 'Actes',
+                                            'class' => 'booster.widgets.TbButtonColumn',
+                                            'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                                            'template' => '{delete}',
+                                            'buttons' => array
+                                                (
+                                                'delete' => array
                                                     (
-                                                        'delete' => array
-                                                        (
-                                                            'label'=>'Delete',                                            
-                                                            'url'=>'Yii::app()->createUrl("admin/professionalDirectory/deleteMessage", array("id"=>$data->message_id))',
-                                                        ),                                   
-                                                    ),
-                                                )
-                                        );
+                                                    'label' => 'Delete',
+                                                    'url' => 'Yii::app()->createUrl("admin/professionalDirectory/deleteMessage", array("id"=>$data->message_id))',
+                                                ),
+                                            ),
+                                        )
+                                    );
 
-                                        $this->widget('booster.widgets.TbExtendedGridView', array(
-                                                'type' => 'striped bordered datatable',
-                                                'enableSorting' => false,
-                                                'dataProvider' => $pexpiremodel,
-                                                'responsiveTable' => true,
-                                                'template' => '  <div id="histrydisp" tabindex="-1" class="col-md-7"><div class="box"> <div class="box-body">{items}</div> <div class="box-footer clearfix">{pager}</div> </div></div>',
-                                                'columns' => $gridColumns
+                                    $this->widget('booster.widgets.TbExtendedGridView', array(
+                                        'type' => 'striped bordered datatable',
+                                        'enableSorting' => false,
+                                        'dataProvider' => $pexpiremodel,
+                                        'responsiveTable' => true,
+                                        'template' => '  <div id="histrydisp" tabindex="-1" class="col-md-7"><div class="box"> <div class="box-body">{items}</div> <div class="box-footer clearfix">{pager}</div> </div></div>',
+                                        'columns' => $gridColumns
                                             )
-                                        );
-                                        ?>
-                               </div>
+                                    );
+                                    ?>
+                                </div>
                             </div>    
                         </div>  
-                 </div>   
-                <?php 
-                }?>
-                
-<!--                <div class="form-group">
-                    <?php //echo $form->labelEx($umodel, 'MUST_VALIDATE', array('class' => 'col-sm-2 control-label')); ?>       
-                    <div class="col-sm-5">
-                    <?php //echo $form->radioButtonList($umodel, 'MUST_VALIDATE', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
-                    </div>
-                </div>-->
-                
-                <?php // echo $form->hiddenField($umodel,'bSubscription_envision');?>
-                <?php // echo $form->hiddenField($umodel,'bSubscription_envue');?>
-                <?php // echo $form->hiddenField($umodel,'ABONNE_MAILING');?>
+                    </div>   
+                <?php }
+                ?>
+
+                <!--                <div class="form-group">
+                <?php //echo $form->labelEx($umodel, 'MUST_VALIDATE', array('class' => 'col-sm-2 control-label')); ?>       
+                                    <div class="col-sm-5">
+                <?php //echo $form->radioButtonList($umodel, 'MUST_VALIDATE', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' '));  ?> 
+                                    </div>
+                                </div>-->
+
+                <?php // echo $form->hiddenField($umodel,'bSubscription_envision'); ?>
+                <?php // echo $form->hiddenField($umodel,'bSubscription_envue'); ?>
+                <?php // echo $form->hiddenField($umodel,'ABONNE_MAILING'); ?>
                 <?php // echo $form->hiddenField($umodel,'ABONNE_PROMOTION');?>
 
 
@@ -445,6 +454,18 @@
     </div><!-- ./col -->
 </div>
 
+<div class="modal fade" id="prof-message-update-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"> Update Alerts </h4>
+                <div id="prof_message_contents"></div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
 <div class="modal fade" id="products-disp-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -453,18 +474,20 @@
                 <h4 class="modal-title"><i class="fa fa-folder-open-o"></i> Message</h4>
                 <div id="product_contents"></div>
             </div>
-            
+
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php
-$alerthistory = Yii::app()->request->getQuery('alerthistory','0'); 
+$alerthistory = Yii::app()->request->getQuery('alerthistory', '0');
 $ajaxRegionUrl = Yii::app()->createUrl('/admin/professionalDirectory/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/admin/professionalDirectory/getcities');
-$ajax_getmessage  = Yii::app()->createUrl('/admin/professionalDirectory/getmessage');
+$ajax_getmessage = Yii::app()->createUrl('/admin/professionalDirectory/getmessage');
+
+$ajax_get_prof_mess_update = Yii::app()->createUrl('/admin/professionalDirectory/updateMessage');
 $js = <<< EOD
     $(document).ready(function(){
-    
+        
     if({$alerthistory}=='1')
     {
         $('#histrydisp').css('outline', 0).focus();
@@ -519,7 +542,23 @@ $js = <<< EOD
             }
          });
        
-    });        
+    }); 
+        
+    $('.prof_message_update_popup').live('click',function(event){
+        event.preventDefault();
+        var professional_message_id = $(this).attr("id");
+        var dataString = 'message_id='+professional_message_id;
+
+        $.ajax({
+            type: "GET",
+            url: '{$ajax_get_prof_mess_update}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#prof_message_contents").html(html);               
+            }
+         });
+    });
             
 });
 EOD;
