@@ -401,3 +401,39 @@ and open the template in the editor.
     width: 200px;
     background: none;
 }
+
+#price, #paypal_align{
+ text-align: right;   
+}
+
+.creditcardtbl{
+ margin-top: 20px;   
+}
+
+#creditcard .required {
+    float: none !important;
+}
+
+.inner-container ul{
+    margin: 0px;
+    padding: 0px;
+}
+
+.ui-datepicker-inline.ui-datepicker.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all {
+    margin-bottom: 20px;
+}
+
+.inner-container ul li {
+  background: url(../images/icon.png) 0px 11px no-repeat;
+  list-style-type: none;
+  padding: 10px 0 10px 22px;
+}
+
+.inner-container ul{
+      margin-bottom: 20px;    
+}
+
+.dropdown-menu ul li {
+    background: none;
+    padding: 0px;
+}

@@ -9,15 +9,15 @@ $this->breadcrumbs=array(
 );
 
 $attrbs = array();
-// FREE 
-if($pmodel->pay_type==1 ||$pmodel->pay_type==2)   
+if($pmodel->pay_type==1)   
 { 
 // PAYPAL    
     $attrbs =    array(				
                         'item_name',
-                        'NOMTABLE',		
                         'invoice_number',
                         'subscription_price',
+                        'tax',
+                        'total_price',
                         'txn_id',
                         'payment_status',
                         'payer_email',
@@ -27,13 +27,30 @@ if($pmodel->pay_type==1 ||$pmodel->pay_type==2)
                         'txn_type',
                         'created_at',
                 );
+}elseif($pmodel->pay_type==2)
+{
+// PAYPAL  Advance
+    $attrbs =    array(				
+                        'item_name',                       		
+                        'invoice_number',
+                        'subscription_price',
+                        'tax',
+                        'total_price',
+                        'txn_id',
+                        'payment_status',
+                        'payment_type',
+                        'created_at',
+		);
+    
 }elseif($pmodel->pay_type==3 || $pmodel->pay_type==4)
 {
+    // CHEQUE and FREE 
     $attrbs =    array(				
                         'item_name',
-                        'NOMTABLE',		
                         'invoice_number',
-                        'subscription_price',          
+                        'subscription_price',  
+                        'tax',
+                        'total_price',
                         'created_at',
 		);
     

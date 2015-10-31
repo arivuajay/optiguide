@@ -1674,73 +1674,186 @@ class SuppliersDirectoryController extends OGController {
 
     public function actionRenewsubscription() {
 
-        if (isset($_POST['btnSubmit']) && $_POST['btnSubmit'] == "subscriptionpay") {
+       $pmodel = new SuppliersSubscription;
+       $model_paypaladvance = new PaymentTransaction('paypal_advance');
+
+        $this->performAjaxValidation(array($pmodel));
+
+        if (isset($_POST['SuppliersSubscription'])) {
+           
             $sub_types = $_POST['subvals'];
+            
+            $pmodel->attributes = $_POST['SuppliersSubscription'];
+            
+            $card_validdate = true;
+            if($_POST['SuppliersSubscription']['payment_type'] == 2)
+            {
+                $model_paypaladvance->attributes = $_POST['PaymentTransaction'];
+                $card_validdate = $model_paypaladvance->validate();
+            }    
+            
+            
+            if ($pmodel->validate() && $card_validdate) {
+              
+                $subprices = SupplierSubscriptionPrice::model()->findByPk(1);
+                $tax_price = $tax;
+                $profile_price = $subprices->profile_price;
+                $profile_logo_price = $subprices->profile_logo_price;
+                $logo_price = ( $profile_logo_price - $profile_price );
 
-            $subprices = SupplierSubscriptionPrice::model()->findByPk(1);
-            $profile_price = $subprices->profile_price;
-            $profile_logo_price = $subprices->profile_logo_price;
-            $logo_price = ( $profile_logo_price - $profile_price );
-
-            if (count($sub_types) > 1) {
-                $subscriptiontype = "2";
-                $amount = $profile_logo_price;
-            } else if ($sub_types[0] == "1") {
-                $subscriptiontype = $sub_types[0];
-                $amount = $profile_price;
-            } else if ($sub_types[0] == "3") {
-                $subscriptiontype = $sub_types[0];
-                $amount = $logo_price;
-            }
-
-            $invoice_number = Myclass::getRandomString();
-
-            $payment_details = array();
-            $payment_details['payment_type'] = '1';
-            $payment_details['subscription_type'] = $subscriptiontype;
-
-            $relid = Yii::app()->user->relationid;
-            $fmodel = $this->loadModel($relid);
-            $profile_expirydate = $fmodel->profile_expirydate;
-            $logo_expirydate = $fmodel->logo_expirydate;
-
-            $payment_details['user_id'] = $relid;
-
-            $cur_date = strtotime("now");
-
-            if ($subscriptiontype == "1" || $subscriptiontype == "2") {
-
-                $p_expdate = date("Y-m-d", strtotime($profile_expirydate));
-                if ($p_expdate > date("Y-m-d")) {
-                    $time = strtotime($profile_expirydate);
-                    $payment_details['profile_expirydate'] = date("Y-m-d", strtotime("+1 year", $time));
-                } else {
-                    $payment_details['profile_expirydate'] = date('Y-m-d', strtotime('+1 year'));
+                if (count($sub_types) > 1) {
+                    
+                    $subscriptiontype = "2";                    
+                    $taxval_profile_logo = $profile_logo_price*($tax_price/100);
+                    $grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo);
+                    $amount = $grandtotal_profile_logo;
+                    
+                    $payment_details['subscription_price'] = $profile_logo_price;
+                    $payment_details['tax'] =  $taxval_profile_logo;
+                    $payment_details['total_price'] = $grandtotal_profile_logo;
+                    
+                } else if ($sub_types[0] == "1") {
+                    
+                    $subscriptiontype   = $sub_types[0];
+                    $taxval_profile     = $profile_price*($tax_price/100);
+                    $grandtotal_profile = ( $profile_price + $taxval_profile);
+                    $amount = $grandtotal_profile;
+                    
+                    $payment_details['subscription_price'] = $profile_price;
+                    $payment_details['tax'] =  $taxval_profile;
+                    $payment_details['total_price'] = $grandtotal_profile;
+                    
+                } else if ($sub_types[0] == "3") {
+                    
+                    $subscriptiontype = $sub_types[0];
+                    $taxval_logo = $logo_price*($tax_price/100);
+                    $grandtotal_logo = ( $logo_price + $taxval_logo);
+                    $amount = $grandtotal_logo;
+                    
+                    $payment_details['subscription_price'] = $logo_price;
+                    $payment_details['tax'] =  $taxval_logo;
+                    $payment_details['total_price'] = $grandtotal_logo;
                 }
-            }
 
-            if ($subscriptiontype == "3" || $subscriptiontype == "2") {
-
-                $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
-                if ($l_expdate > date("Y-m-d")) {
-                    $time = strtotime($logo_expirydate);
-                    $payment_details['logo_expirydate'] = date("Y-m-d", strtotime("+1 year", $time));
-                } else {
-                    $payment_details['logo_expirydate'] = date('Y-m-d', strtotime('+1 year'));
+                $invoice_number = Myclass::getRandomString();
+                
+                 // For pay with credit card
+                if($_POST['SuppliersSubscription']['payment_type'] == 2)
+                {
+                    $response = $this->pay_with_creditcard($model_paypaladvance, $amount); 
+                    if ($response['RESULT'] != 0 || $response['RESPMSG'] != 'Approved') 
+                    {
+                         Yii::app()->user->setFlash('danger', 'Your card details not corret , please try again!!!');
+                         $this->redirect(array('renewsubscription'));
+                    }    
                 }
-            }
 
-            $pdetails = serialize($payment_details);
+                $payment_details = array();
+                $payment_details['payment_type'] = $_POST['SuppliersSubscription']['payment_type'];
+                $payment_details['subscription_type'] = $subscriptiontype;
 
-            $stmodel = new SupplierTemp;
-            $stmodel->paymentdetails = $pdetails;
-            $stmodel->invoice_number = $invoice_number;
-            $stmodel->save(false);
+                $relid = Yii::app()->user->relationid;
+                $fmodel = $this->loadModel($relid);
+                $profile_expirydate = $fmodel->profile_expirydate;
+                $logo_expirydate = $fmodel->logo_expirydate;
 
-            $this->renewpaypaltest($subscriptiontype, $amount, $invoice_number);
+                $payment_details['user_id'] = $relid;
+
+                $cur_date = strtotime("now");
+
+                if ($subscriptiontype == "1" || $subscriptiontype == "2") {
+
+                    $p_expdate = date("Y-m-d", strtotime($profile_expirydate));
+                    if ($p_expdate > date("Y-m-d")) {
+                        $time = strtotime($profile_expirydate);
+                        $payment_details['profile_expirydate'] = date("Y-m-d", strtotime("+1 year", $time));
+                    } else {
+                        $payment_details['profile_expirydate'] = date('Y-m-d', strtotime('+1 year'));
+                    }
+                }
+
+                if ($subscriptiontype == "3" || $subscriptiontype == "2") {
+
+                    $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
+                    if ($l_expdate > date("Y-m-d")) {
+                        $time = strtotime($logo_expirydate);
+                        $payment_details['logo_expirydate'] = date("Y-m-d", strtotime("+1 year", $time));
+                    } else {
+                        $payment_details['logo_expirydate'] = date('Y-m-d', strtotime('+1 year'));
+                    }
+                }
+                
+                // For pay with credit card
+                if($_POST['SuppliersSubscription']['payment_type'] == 2)
+                {
+                    if ($response['RESPMSG'] == 'Approved')
+                    {
+                        $payment_details['PNREF'] = $response['PNREF'];
+                                
+                        $this->savecreditcard_response_renew($model_paypaladvance, $payment_details,$invoice_number);                       
+                        Yii::app()->user->setFlash('success', Myclass::t('OGO188', '', 'og'));
+                        $this->redirect(array('renewsubscription'));
+                    }    
+                }
+                
+                $pdetails = serialize($payment_details);
+
+                $stmodel = new SupplierTemp;
+                $stmodel->paymentdetails = $pdetails;
+                $stmodel->invoice_number = $invoice_number;
+                $stmodel->save(false);
+
+                $this->renewpaypaltest($subscriptiontype, $amount, $invoice_number);
+            }    
         }
-        $this->render('_renewsubscription');
+        $this->render('_renewsubscription',  compact('model_paypaladvance','sub_types','pmodel'));
     }
+    
+    protected function savecreditcard_response_renew($model_paypaladvance, $pdetails,$invoice_number)
+    {
+        
+        if (!empty($pdetails)) {
+
+            $supplierid = $pdetails['user_id'];
+            $subtype    = $pdetails['subscription_type'];
+
+            if ($subtype == 1) {
+                $itemname = 'Renew Supplier Subscription - Profile only';
+            } else if ($subtype == 2) {
+                $itemname = 'Renew Supplier Subscription - Profile & logo';
+            } else if ($subtype == 3) {
+                $itemname = 'Renew Supplier Subscription - Logo only';
+            }
+        
+            // Update the expiry date in supplier table once the payment is suceess (Completed)
+            $model = SuppliersDirectory::model()->findByPk($supplierid);     
+            if ($subtype == "1" || $subtype == "2") {
+                $model->profile_expirydate = $pdetails['profile_expirydate'];
+            }
+            if ($subtype == "3" || $subtype == "2") {
+                $model->logo_expirydate = $pdetails['logo_expirydate'];
+            }
+            $model->save(false);
+            
+            // Save the payment details                                   
+            $ptmodel = new PaymentTransaction;
+            $ptmodel->user_id        = $supplierid;
+            $ptmodel->total_price    = $pdetails['total_price'];
+            $ptmodel->subscription_price = $pdetails['subscription_price'];
+            $ptmodel->tax            = $pdetails['tax'];
+            $ptmodel->payment_status = 'Completed';
+            $ptmodel->txn_id         = $pdetails['PNREF'];
+            $ptmodel->payment_type   = 'ppa';
+            $ptmodel->item_name      = $itemname;
+            $ptmodel->NOMTABLE       = 'suppliers';
+            $ptmodel->subscription_type = $pdetails['subscription_type'];
+            $ptmodel->invoice_number = $invoice_number;
+            $ptmodel->pay_type       = '2';
+            $ptmodel->save(false);
+            
+        }            
+        
+    }        
 
     public function renewpaypaltest($subscription_type = '', $price = '', $invoice = '') {
         $paypalManager = new Paypal;
@@ -1842,8 +1955,9 @@ class SuppliersDirectoryController extends OGController {
                         // Save the payment details                                   
                         $ptmodel = new PaymentTransaction;
                         $ptmodel->user_id = $supplierid;    // need to assign acutal user id
-                        $ptmodel->total_price = $_POST['mc_gross'];
-                        $ptmodel->subscription_price = $_POST['mc_gross'];
+                        $ptmodel->total_price    = $pdetails['total_price'];
+                        $ptmodel->subscription_price = $pdetails['subscription_price'];
+                        $ptmodel->tax            = $pdetails['tax'];
                         $ptmodel->payment_status = $_POST['payment_status'];
                         $ptmodel->payer_email = $_POST['payer_email'];
                         $ptmodel->verify_sign = $_POST['verify_sign'];
@@ -1883,7 +1997,7 @@ class SuppliersDirectoryController extends OGController {
                             "{UTYPE}" => 'suppliers',
                             "{NEXTSTEPURL}" => $nextstep_url,
                             "{item_name}" => $_POST['item_name'],
-                            "{total_price}" => $_POST['mc_gross'],
+                            "{total_price}" => $pdetails['total_price'],
                             "{payment_status}" => $_POST['payment_status'],
                             "{txn_id}" => $_POST['txn_id'],
                             "{INVOICEURL}" => $nextstep_url2

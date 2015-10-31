@@ -8,13 +8,13 @@ $this->breadcrumbs=array(
 	'Voir transaction',
 );
 
+
 $attrbs = array();
-if($model->pay_type==1 ||$model->pay_type==2)   
+if($model->pay_type==1)   
 { 
 // PAYPAL    
     $attrbs =    array(				
                         'item_name',
-                        'NOMTABLE',		
                         'invoice_number',
                         'subscription_price',
                         'tax',
@@ -28,14 +28,28 @@ if($model->pay_type==1 ||$model->pay_type==2)
                         'txn_type',
                         'created_at',
                 );
+}elseif($model->pay_type==2)
+{
+// PAYPAL  Advance
+    $attrbs =    array(				
+                        'item_name',                       		
+                        'invoice_number',
+                        'subscription_price',
+                        'tax',
+                        'total_price',
+                        'txn_id',
+                        'payment_status',
+                        'payment_type',
+                        'created_at',
+		);
+    
 }elseif($model->pay_type==3 || $model->pay_type==4)
 {
-    // Free and cheque
+    // CHEQUE and FREE 
     $attrbs =    array(				
                         'item_name',
-                        'NOMTABLE',		
                         'invoice_number',
-                        'subscription_price', 
+                        'subscription_price',  
                         'tax',
                         'total_price',
                         'created_at',

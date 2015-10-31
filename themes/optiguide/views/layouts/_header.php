@@ -15,7 +15,7 @@ if (!Yii::app()->user->isGuest) {
     <div class="header-row1"> 
         <div class="container"> 
 
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-4">
                  <?php
                     $form = $this->beginWidget('CActiveForm', array(
                         'id' => 'search-form',
@@ -34,7 +34,7 @@ if (!Yii::app()->user->isGuest) {
             </div>
 
 
-            <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">  <ul class="orion-menu red">
+            <div class="col-xs-12 col-sm-6 col-md-9 col-lg-8">  <ul class="orion-menu red">
                     <li>
                         <?php echo CHtml::link(Myclass::t('OG001', '', 'og'), array('/optiguide/')); ?>
                     </li>  

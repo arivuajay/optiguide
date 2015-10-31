@@ -209,6 +209,22 @@ display:none!important
   margin-top: 4px;
 }
 
+.search-field4 {
+
+  width: 85%;
+}
+
+.nav > li > a {
+  padding: 10px 7px;
+}
+
+.fr .nav > li > a {
+  padding: 10px 2px;
+}
+
+.fr .orion-menu li {
+  padding: 0 0px;
+}
 
 }
 @media (min-width:1200px) {

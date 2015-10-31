@@ -73,42 +73,26 @@ $logo_name = $user_infos['USR'];
                                 <?php echo $form->error($pmodel, 'image'); ?>
                             </div>
                         </div>
-
                     </div>  
 
-                    <div id="price">
-
-                        <div class="form-row1"> 
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                                <?php echo $form->labelEx($pmodel, 'amount', array()); ?>  
-                            </div>  
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">    
-                                <div id="sprice"> </div>
-                            </div>
-                        </div>   
-                        <div class="form-row1"> 
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                                <label><?php echo Myclass::t('OG176'); ?></label> 
-                            </div>  
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">    
-                                <div id="stax"></div>
-                            </div>
-                        </div>      
-                        <div class="form-row1"> 
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                                <label><?php echo Myclass::t('OG177'); ?></label>
-                            </div>  
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">    
-                                <div id="stotalprice"></div> 
-                            </div>
-                        </div> 
+                    <div id="price" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        
+                        <p> <b>Total : </b>
+                            <span id="sprice"><?php echo $p_l_price;?></span>
+                        </p>               
+                        <p> <b><?php echo Myclass::t('OG176'); ?> : </b>
+                            <span id="stax"><?php echo $taxval_profile_logo;?></span>
+                        </p>
+                        <p> <b><?php echo Myclass::t('OG177'); ?>: </b>
+                            <span id="stotalprice"><?php echo $grandtotal_profile_logo;?></span>
+                        </p>
 
                     </div>
 
                     <div class="form-row1" id="paypal" style="display:none;"> 
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
                             <div class="card-details-cont"> 
-                                <div class="col-xs-12 col-sm-11 col-md-7 col-lg-5">  <h4> &nbsp; The Faster, Safer way to pay </h4> 
+                                <div class="col-xs-12 col-sm-11 col-md-7 col-md-offset-5 col-lg-5 col-lg-offset-7" id="paypal_align">  <h4> &nbsp; The Faster, Safer way to pay </h4> 
                                     <?php
                                     $paypal_buttton = CHtml::image($this->themeUrl . "/images/express-checkout-hero.png", "paypal", array('img-responsive'));
                                     echo CHtml::tag('button', array(
@@ -145,16 +129,23 @@ $logo_name = $user_infos['USR'];
                                 </div>
                                 <span> / </span>
                                 <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2">  <?php echo $form->textField($model_paypaladvance, 'exp_year', array('class' => "form-txtfield", "placeholder" => "YYYY")); ?> </div>
-                                <?php echo $form->error($model_paypaladvance, 'exp_month'); ?>
-                                <?php echo $form->error($model_paypaladvance, 'exp_year'); ?>
+                               <div class="clearfix"></div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">&nbsp;</div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                    <?php echo $form->error($model_paypaladvance, 'exp_month'); ?>
+                                    <?php echo $form->error($model_paypaladvance, 'exp_year'); ?>
+                                </div>
                             </div>
                             <div class="form-row1"> 
-                                <div class="col-xs-12 col-sm-5 col-md-6 col-lg-4"> <?php echo $form->labelEx($model_paypaladvance, 'cvv2'); ?> <br/> 
-                                    <a href="#">What is this ?</a></div>
+                                <div class="col-xs-12 col-sm-5 col-md-6 col-lg-4"> <?php echo $form->labelEx($model_paypaladvance, 'cvv2'); ?></div>
                                 <div class="col-xs-12 col-sm-6 col-md-2 col-lg-2">  
                                     <?php echo $form->textField($model_paypaladvance, 'cvv2', array('class' => "form-txtfield")); ?>                                    
                                 </div>
-                                <?php echo $form->error($model_paypaladvance, 'cvv2'); ?>
+                                <div class="clearfix"></div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">&nbsp;</div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                    <?php echo $form->error($model_paypaladvance, 'cvv2'); ?>
+                                </div>
                             </div>
                             <div class="form-row1"> 
                                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 pull-right"> 

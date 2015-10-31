@@ -26,7 +26,16 @@
                             <tr>
                                 <td><?php echo $get_transactions['item_name']; ?></td>
                                 <td><?php echo $get_transactions['total_price']; ?></td>
-                                <td><?php echo ($get_transactions['pay_type']==1)?"Paypal":""; ?></td>
+                                <td><?php 
+                                 if($get_transactions['pay_type'] == 1) 
+                                    echo "Standard Paypal";
+                                elseif($get_transactions['pay_type'] == 2) 
+                                    echo "Advance Paypal";
+                                elseif($get_transactions['pay_type'] == 3) 
+                                    echo "Cheque";
+                                elseif($get_transactions['pay_type'] == 4) 
+                                    echo "Free";
+                                ?></td>
                                 <td><?php echo $get_transactions['payment_status']; ?></td>
                                 <td><?php echo $get_transactions['txn_id']; ?></td>                                
                                 <td><?php echo $get_transactions['created_at']; ?></td>
