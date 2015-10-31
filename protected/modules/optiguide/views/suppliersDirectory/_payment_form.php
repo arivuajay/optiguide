@@ -77,7 +77,7 @@ $logo_name = $user_infos['USR'];
 
                     <div id="price" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         
-                        <p> <b>Total : </b>
+                        <p> <b><?php echo Myclass::t('OG138'); ?>  : </b>
                             <span id="sprice"><?php echo $p_l_price;?></span>
                         </p>               
                         <p> <b><?php echo Myclass::t('OG176'); ?> : </b>

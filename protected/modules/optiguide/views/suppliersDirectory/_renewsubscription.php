@@ -111,7 +111,7 @@ $grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo) . $curr
                     </div> 
                     
                     <div id="price" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="display:none;">   
-                        <p> <b>Total : </b>
+                        <p> <b><?php echo Myclass::t('OG138'); ?> : </b>
                             <span id="sprice_profile" style="display:none;"><?php echo $p_price;?></span>
                             <span id="sprice_logo" style="display:none;"><?php echo $l_price;?></span>
                             <span id="sprice_profile_logo" style="display:none;"><?php echo $p_l_price;?></span>
