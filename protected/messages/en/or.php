@@ -23,7 +23,6 @@ return array(
     'OR073' => 'Brand names / Products / Services',
     'OR077' => 'Find a supplier by category',
     'ORO78' => 'Find a brand',
-    
     //Nadesh
     //views/default
     'OR501' => 'Opti-Rep Login',
@@ -36,7 +35,6 @@ return array(
     'OR508' => 'Have account ? Log in !',
     'OR509' => 'PAGE NOT FOUND',
     'OR510' => 'Go to home page',
-    
     //views/dashboard
     'OR511' => 'Hello',
     'OR512' => "Welcome to your personalized dashboard! Here's some of the thing you can do starting from here:",
@@ -51,7 +49,6 @@ return array(
     'OR521' => 'My Notes',
     'OR522' => 'You have no notes right now',
     'OR523' => '<a href=":url">Click</a> to add your notes',
-    
     //views/repAccounts
     'OR524' => 'Manage Rep Accounts',
     'OR525' => 'Total no.of accounts',
@@ -76,7 +73,6 @@ return array(
     'OR544' => 'No Of Accounts Renewal',
     'OR545' => 'Subscription Details',
     'OR546' => 'Payment Transactions',
-    
     //views/repCredentials
     'OR547' => 'Step',
     'OR548' => 'Select The Subscription',
@@ -96,11 +92,9 @@ return array(
     'OR562' => 'Offer',
     'OR563' => 'Offer Price',
     'OR564' => 'Make a payment',
-    
     //views/repFavorites
     'OR565' => 'Favorite Users',
     'OR566' => 'Type',
-    
     //views/repNotes
     'OR567' => 'Add Note',
     'OR568' => 'Update Note',
@@ -111,12 +105,10 @@ return array(
     'OR573' => 'Notes',
     'OR574' => 'Reminder Date',
     'OR575' => 'Created',
-    
     //views/repSingleSubscriptions
     'OR576' => 'Price',
     'OR577' => 'Subscription Start',
     'OR578' => 'Subscription End',
-    
     //views/repStatistics
     'OR579' => 'My Logged in Activities',
     'OR580' => 'Statistics Payment',
@@ -126,11 +118,9 @@ return array(
     'OR584' => 'Payment details',
     'OR585' => 'Users profiles viewed stats',
     'OR586' => 'Users log stats',
-    
     //controllers/DefaultController
     'OR587' => 'This Username Not Exists!!!',
     'OR588' => 'New Password has been sent to your registered email. Please check your email',
-    
     //controllers/RepAccountsController
     'OR589' => 'Kindly select the rep accounts for Renewal',
     'OR590' => 'Sorry, you can\'t create new rep account',
@@ -146,7 +136,6 @@ return array(
     'OR600' => 'Your renewal has been cancelled. Please try again.',
     'OR601' => "Thanks for your renewal!",
     'OR602' => "Your renewal payment is failed. Please try again later or contact admin.",
-    
     //controllers/RepCredentialController
     'OR603' => 'Your registration has been cancelled. Please try again.',
     'OR604' => "Your payment status is pending. Please contact Admin.",
@@ -155,28 +144,22 @@ return array(
     'OR607' => "Profile updated successfully!!!",
     'OR608' => "Successfully changed password",
     'OR609' => "Password not changed",
-    
     //controllers/RepNotesController
     'OR610' => 'Notes Created Successfully!!!',
     'OR611' => 'Notes Updated Successfully!!!',
     'OR612' => 'Note deleted Successfully!!!',
-    
     //controllers/RepSingleSubscriptionsController
     'OR613' => 'Your renewal has been cancelled. Please try again.',
-    
     //controllers/RepStatisticsController
     'OR614' => "Kindly do the payment to see the statistics chart!!",
-    
     //controllers/InternalMessageController
     'OR615' => "Message sent successfully!!!",
     'OR616' => 'You dont have the rights to access this page.!',
     'OR617' => 'This discussion does not exists!',
-    
     //controllers/ProfessionalDirectoryController
     'OR618' => 'Maximum 50 users ( professionals / retailers ) only able to view per day. Your limits are reached today!!',
     'OR619' => "Report sent successfully to admin!!!",
     'OR620' => "Note Created successfully!!!",
-    
     //views/InternalMessage
     'OR621' => "Send message",
     'OR622' => "Send To",
@@ -187,7 +170,6 @@ return array(
     'OR627' => "Name",
     'OR628' => "Sent",
     'OR629' => "Reply",
-    
     //views/ProfessionalDirectory
     'OR630' => "Per Page",
     'OR631' => "Add to Favorites",
@@ -204,39 +186,31 @@ return array(
     'OR642' => "Notes required",
     'OR643' => "To",
     'OR644' => "Message required",
-    
     //views/retailerDirectory
     'OR645' => 'Other Informations',
-    
     //OptirepModule
     'OR646' => 'Your account has been expired. Please renewal and continue the site features.',
-    
     'OR647' => 'Renewal Details',
     'OR648' => "Your renewal process has been completed successfully",
     'OR649' => "Your transaction is Failure, Please try again",
-    
     'OR650' => "Payment Information",
     'OR651' => "The Faster, Safer way to pay",
     'OR652' => "Pay with debit card or credit card",
     'OR653' => "Expiration Date",
     'OR654' => "Credit card expiration month is invalid",
     'OR655' => "Credit card expiration year is invalid",
-    
     //column2
     'OR656' => 'Transaction Details',
     'OR657' => 'My Stats',
     'OR658' => 'Stats Payment/Infos',
     'OR659' => 'Logout',
-    
     //models
     'OR660' => 'Created At',
     'OR661' => 'Modified At',
-    
     //models/RepAdminSubscribers
     'OR662' => 'Rep Admin Subscriber',
     'OR663' => 'Rep Admin Subscription',
     'OR664' => 'Rep Credential',
-    
     //models/RepAdminSubscriptions
     'OR665' => 'Rep Subscription Type',
     'OR666' => 'Purchase Type',
@@ -248,7 +222,6 @@ return array(
     'OR672' => 'Total Month Price',
     'OR673' => 'Offer In Percentage',
     'OR674' => 'Total Price',
-    
     //models/RepCredentialProfiles
     'OR675' => 'Invalid phone number',
     'OR676' => 'Rep Profile',
@@ -264,19 +237,15 @@ return array(
     'OR686' => 'Company',
     'OR687' => 'Territories',
     'OR688' => 'Brands',
-    
     //models/RepCredentials
     'OR689' => 'Old password is incorrect',
     'OR690' => 'Rep Role',
     'OR691' => 'Rep Parent',
-    
     //models/RepFavourites
     'OR692' => 'Id Retailer',
-    
     //models/RepLoggedinActivities
     'OR693' => 'Loggedin Date',
     'OR694' => 'Loggedin Ip',
-    
     //models/RepSingleSubscriptions
     'OR695' => 'Rep Single Subscription',
     'OR696' => 'Rep Single Price',
@@ -287,17 +256,16 @@ return array(
     'OR701' => 'Rep Single Grand Total',
     'OR702' => 'Rep Single Subscription Start',
     'OR703' => 'Rep Single Subscription End',
-    
     //models/RepSubscriptionTypes
     'OR704' => 'Rep Subscription Name',
     'OR705' => 'Rep Subscription Price',
     'OR706' => 'Rep Subscription Description',
     'OR707' => 'Rep Subscription Min',
     'OR708' => 'Rep Subscription Max',
-    
     //models/RepViewCounts
     'OR709' => 'Id Specialist',
     'OR710' => 'View Date',
-    
-    
+    'OR711' => 'Old Password',
+    'OR712' => 'New Password',
+    'OR713' => 'Confirm Password',
 );

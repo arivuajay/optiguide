@@ -23,7 +23,6 @@ return array(
     'OR073' => 'Marques / Produits / Services',
     'OR077' => 'Trouver un fournisseur par catégorie',
     'ORO78' => 'Trouver une marque',
-    
     //Nadesh
     //views/default
     'OR501' => 'Opti-Rep Login',
@@ -36,7 +35,6 @@ return array(
     'OR508' => "Avoir un compte ? S'identifier !",
     'OR509' => 'PAGE NON TROUVÉE',
     'OR510' => "Aller à la page d'accueil",
-    
     //views/dashboard
     'OR511' => 'Bonjour',
     'OR512' => "accueillir à votre tableau de bord personnalisé ! voici quelques-unes des choses que vous pouvez faire à partir d'ici",
@@ -51,7 +49,6 @@ return array(
     'OR521' => 'Mes notes',
     'OR522' => 'Vous avez pas de notes dès maintenant',
     'OR523' => '<a href=":url">Cliquez</a> à ajouter vos notes',
-    
     //views/repAccounts
     'OR524' => 'Gérer les comptes Rep',
     'OR525' => 'Total des comptes Nbr',
@@ -76,7 +73,6 @@ return array(
     'OR544' => 'Pas de comptes Renouvellement',
     'OR545' => "Détails de l'abonnement",
     'OR546' => 'Opérations de paiement',
-    
     //views/repCredentials
     'OR547' => 'pas',
     'OR548' => "Sélectionnez l'abonnement",
@@ -96,11 +92,9 @@ return array(
     'OR562' => 'Offre',
     'OR563' => "Prix ​​de l'offre",
     'OR564' => 'Faire un paiement',
-    
     //views/repFavorites
     'OR565' => 'utilisateurs favoris',
     'OR566' => 'type',
-    
     //views/repNotes
     'OR567' => 'Ajouter une note',
     'OR568' => 'Mise à jour de la note',
@@ -111,12 +105,10 @@ return array(
     'OR573' => 'Remarques',
     'OR574' => 'rappel date de',
     'OR575' => 'Créé',
-    
     //views/repSingleSubscriptions
     'OR576' => 'cours',
     'OR577' => 'Démarrer abonnement',
     'OR578' => 'Fin de la souscription',
-    
     //views/repStatistics
     'OR579' => 'Mon connectés Activités',
     'OR580' => 'Statistiques paiement',
@@ -126,11 +118,9 @@ return array(
     'OR584' => 'Détails de paiement',
     'OR585' => 'Profils utilisateurs consulté stats',
     'OR586' => 'Les utilisateurs se connectent stats',
-    
     //controllers/DefaultController
     'OR587' => "Ce nom d'utilisateur ne Existe !!!",
     'OR588' => 'Nouveau mot de passe a été envoyé à votre e-mail enregistrée . Merci de consulter vos emails',
-    
     //controllers/RepAccountsController
     'OR589' => 'Veuillez sélectionner les comptes de rep pour le renouveau',
     'OR590' => "Désolé , vous pouvez \ 't Créer un nouveau compte rep",
@@ -146,7 +136,6 @@ return array(
     'OR600' => 'Votre renouvellement a été annulé . Veuillez réessayer',
     'OR601' => "Merci pour votre renouvellement !",
     'OR602' => "Votre paiement de renouvellement est échoué. S'il vous plaît réessayer plus tard ou contactez administrateur",
-    
     //controllers/RepCredentialController
     'OR603' => 'Votre inscription a été annulée . Veuillez réessayer',
     'OR604' => "Votre statut de paiement est en attente . S'il vous plaît contacter l'administrateur",
@@ -155,28 +144,22 @@ return array(
     'OR607' => "Profil mis à jour avec succès !!!",
     'OR608' => "Réussi à changer le mot de passe",
     'OR609' => "Mot de passe ne change pas",
-    
     //controllers/RepNotesController
     'OR610' => 'Remarques créé avec succès !!!',
     'OR611' => 'Remarques correctement mis à jour !!!',
     'OR612' => 'Remarque supprimé avec succès !!!',
-    
     //controllers/RepSingleSubscriptionsController
     'OR613' => 'Votre renouvellement a été annulé . Veuillez réessayer',
-    
     //controllers/RepStatisticsController
     'OR614' => "Veuillez faire le paiement pour voir le tableau des statistiques !!",
-    
     //controllers/InternalMessageController
     'OR615' => "Message envoyé avec succès!!!",
     'OR616' => 'Vous ne devez pas les droits pour accéder à cette page . !',
     'OR617' => 'Cette discussion ne existe pas!',
-    
     //controllers/ProfessionalDirectoryController
     'OR618' => "Maximum de 50 utilisateurs (professionnels / détaillants) seulement capable de voir et par jour. Vos limites sont atteintes aujourd'hui !!",
     'OR619' => "Rapport envoyé avec succès à l'admin !!!",
     'OR620' => "Remarque créé avec succès !!!",
-    
     //views/InternalMessage
     'OR621' => "Envoyer le message",
     'OR622' => "Envoyer à",
@@ -187,7 +170,6 @@ return array(
     'OR627' => "nom",
     'OR628' => "Envoyé",
     'OR629' => "répondre",
-    
     //views/ProfessionalDirectory
     'OR630' => "Par page",
     'OR631' => "Ajouter aux Favoris",
@@ -204,39 +186,31 @@ return array(
     'OR642' => "Remarques nécessaires",
     'OR643' => "À",
     'OR644' => "message requis",
-    
     //views/retailerDirectory
     'OR645' => 'autres Informations',
-    
     //OptirepModule
     'OR646' => 'Votre compte a été expiré. Please renouvellement et poursuivre les fonctionnalités du site.',
-    
     'OR647' => 'renouvellement de détails',
     'OR648' => "votre processus de renouvellement a été achevée avec succès",
     'OR649' => "votre transaction est échoué, s'il vous plaît essayer à nouveau",
-    
     'OR650' => "Information de Paiement",
     'OR651' => "la, de façon plus sécuritaire plus rapide pour payer",
     'OR652' => "payer par carte de débit ou carte de crédit",
     'OR653' => "date d'expiration",
     'OR654' => "mois carte de crédit d'expiration est invalide",
     'OR655' => "année carte de crédit d'expiration est invalide",
-    
-     //column2
+    //column2
     'OR656' => 'détails de la transaction',
     'OR657' => 'mes stats',
     'OR658' => 'stats paiement / infos',
     'OR659' => 'Logout',
-    
     //models
     'OR660' => 'créé au',
     'OR661' => 'modifié à',
-    
     //models/RepAdminSubscribers
     'OR662' => 'rep abonné administrateur',
     'OR663' => 'rep abonnement administrateur',
     'OR664' => 'représentant des titres de compétences',
-    
     //models/RepAdminSubscriptions
     'OR665' => "rep type d'abonnement",
     'OR666' => "Type d'achat",
@@ -248,7 +222,6 @@ return array(
     'OR672' => 'prix total de mois',
     'OR673' => 'offre pourcentage',
     'OR674' => 'prix total',
-    
     //models/RepCredentialProfiles
     'OR675' => 'numero de telephone invalide',
     'OR676' => 'profil rep',
@@ -264,19 +237,15 @@ return array(
     'OR686' => 'compagnie',
     'OR687' => 'territoires',
     'OR688' => 'marques',
-    
     //models/RepCredentials
     'OR689' => 'Ancien mot de passe est incorrect',
     'OR690' => 'rôle rep',
     'OR691' => 'parent rep',
-    
     //models/RepFavourites
     'OR692' => 'id détaillant',
-    
     //models/RepLoggedinActivities
     'OR693' => 'Date connecté',
     'OR694' => 'connecté IP',
-    
     //models/RepSingleSubscriptions
     'OR695' => 'rep seul abonnement',
     'OR696' => 'rep prix unique',
@@ -287,15 +256,16 @@ return array(
     'OR701' => 'représentant unique grand total',
     'OR702' => "représentant unique début de l'abonnement",
     'OR703' => 'rep seule extrémité de souscription',
-    
     //models/RepSubscriptionTypes
     'OR704' => "rep nom de l'abonnement",
     'OR705' => 'rep prix de souscription',
     'OR706' => "représentant de description d'abonnement",
     'OR707' => 'rep abonnement min',
     'OR708' => 'rep abonnement max',
-    
     //models/RepViewCounts
     'OR709' => 'spécialiste de id',
     'OR710' => 'vue la date',
+    'OR711' => 'Ancien mot de passe',
+    'OR712' => 'nouveau mot de passe',
+    'OR713' => 'Confirmez le mot de passe',
 );

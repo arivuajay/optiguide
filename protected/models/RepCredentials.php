@@ -101,6 +101,9 @@ class RepCredentials extends CActiveRecord {
             'rep_expiry_date' => Myclass::t('OR529', '', 'or'),
             'created_at' => Myclass::t('OR660', '', 'or'),
             'modified_at' => Myclass::t('OR661', '', 'or'),
+            'old_password' => Myclass::t('OR711', '', 'or'),
+            'new_password' => Myclass::t('OR712', '', 'or'),
+            'confirm_password' => Myclass::t('OR713', '', 'or'),
         );
     }
 
