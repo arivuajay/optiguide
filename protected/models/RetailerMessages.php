@@ -36,6 +36,7 @@ class RetailerMessages extends CActiveRecord
 		return array(
 			array('ID_RETAILER, employee_id, user_view_status, status, mail_sent_counts', 'numerical', 'integerOnly'=>true),
 			array('randkey', 'length', 'max'=>255),
+                        array('message', 'required', 'on' => 'update'),
 			array('message, date_remember, created_date, alertfile', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

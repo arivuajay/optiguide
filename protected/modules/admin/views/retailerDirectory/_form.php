@@ -455,16 +455,28 @@
                                                 ),              
                                                 array(
                                                 'header' => 'Actes',
-                                                'class' => 'booster.widgets.TbButtonColumn',
+                                               // 'class' => 'booster.widgets.TbButtonColumn',
+                                                'class' => 'ButtonColumn',
                                                 'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                                'template' => '{delete}',
+                                                'template' => '{update}&nbsp;&nbsp;{delete}',
+                                                'evaluateID' => true,
                                                 'buttons'=>array
                                                     (
                                                         'delete' => array
                                                         (
                                                             'label'=>'Delete',                                            
                                                             'url'=>'Yii::app()->createUrl("admin/retailerDirectory/deleteMessage", array("id"=>$data->message_id))',
-                                                        ),                                   
+                                                        ),   
+                                                       'update' => array(
+                                                            'label' => 'Update',
+                                                            'url' => '"javascript:void(0)"',
+                                                            'options' => array(
+                                                                "id" => '\'messageid_\'.$data->message_id',
+                                                                'data-target' => '#ret-message-update-modal',
+                                                                'data-toggle' => 'modal',
+                                                                'class' => 'ret_message_update_popup',
+                                                            ),
+                                                        )
                                                     ),
                                                 )
                                         );
@@ -580,6 +592,17 @@
     </div><!-- ./col -->
 </div>
 
+<div class="modal fade" id="ret-message-update-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"> Update Alerts </h4>
+                <div id="ret_message_contents"></div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
 
 <div class="modal fade" id="products-disp-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
@@ -599,6 +622,9 @@ $ajaxRegionUrl = Yii::app()->createUrl('/admin/retailerDirectory/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/admin/retailerDirectory/getcities');
 $ajaxGroupUrl = Yii::app()->createUrl('/admin/retailerDirectory/getgroups');
 $ajax_getmessage  = Yii::app()->createUrl('/admin/retailerDirectory/getmessage');
+
+
+$ajax_get_ret_mess_update = Yii::app()->createUrl('/admin/retailerDirectory/updateMessage');
 $js = <<< EOD
     $(document).ready(function(){
     
@@ -671,7 +697,23 @@ $js = <<< EOD
             }
          });
        
-    });        
+    }); 
+        
+    $('.ret_message_update_popup').live('click',function(event){
+        event.preventDefault();
+        var retailer_message_id = $(this).attr("id");
+        var dataString = 'message_id='+retailer_message_id;
+
+        $.ajax({
+            type: "GET",
+            url: '{$ajax_get_ret_mess_update}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#ret_message_contents").html(html);               
+            }
+         });
+    });
             
 });
 EOD;

@@ -321,7 +321,7 @@
                                             'header' => 'Actes',
                                             'class' => 'ButtonColumn',
                                             'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                            'template' => '{update}{delete}',
+                                            'template' => '{update}&nbsp;&nbsp;{delete}',
                                             'evaluateID' => true,
                                             'buttons' => array
                                                 (

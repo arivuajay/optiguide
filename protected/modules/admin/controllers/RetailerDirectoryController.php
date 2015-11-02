@@ -31,7 +31,7 @@ class RetailerDirectoryController extends Controller {
                     'users' => array('*'),
                 ),
                 array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                    'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getgroups','getmessage','deleteMessage'),
+                    'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getgroups','getmessage','deleteMessage', 'updateMessage'),
                     'users' => array('@'),
                 ),
                 array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -53,6 +53,39 @@ class RetailerDirectoryController extends Controller {
         $this->render('view', array(
             'model' => $this->loadModel($id),
         ));
+    }
+    
+    public function actionUpdateMessage() {
+        $message_id = $_GET['message_id'];
+        $message_id_array = explode('_', $message_id);
+
+        $model = RetailerMessages::model()->findByPk($message_id_array[1]);
+        $model->scenario = 'update';
+
+        // Uncomment the following line if AJAX validation is needed
+        $this->performAjaxValidation($model);
+
+        if (isset($_POST['RetailerMessages'])) {
+            $model->attributes = $_POST['RetailerMessages'];
+
+            //save attachment
+            $model->afile = CUploadedFile::getInstance($model, 'afile');
+            if ($model->afile) {
+                $filename = time() . '_' . $model->afile->name;
+                $model->alertfile = $filename;
+                $attach_path = Yii::getPathOfAlias('webroot') . '/' . ATTACH_PATH . '/';
+                if (!is_dir($attach_path)) {
+                    mkdir($attach_path, 0777, true);
+                }
+                $model->afile->saveAs($attach_path . $filename);
+            }
+            if ($model->save()) {                
+                Yii::app()->user->setFlash('success', 'Alert Message Updated Successfully!!!');
+                $this->redirect(array('update', 'id' => $model->ID_RETAILER));
+            }
+        }
+
+        $this->renderPartial('update_message', array('model' => $model), false, true);
     }
 
     /**
@@ -384,7 +417,7 @@ class RetailerDirectoryController extends Controller {
      * @param RetailerDirectory $model the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'retailer-directory-form') {
+        if (isset($_POST['ajax']) && ( $_POST['ajax'] === 'retailer-directory-form' || $_POST['ajax'] === 'retailer-message-form')) {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

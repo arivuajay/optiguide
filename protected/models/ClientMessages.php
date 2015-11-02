@@ -36,6 +36,7 @@ class ClientMessages extends CActiveRecord
                         //array('client_id, employee_id,message,date_remember' , 'required'),
 			array('client_id, employee_id, user_view_status, mail_sent_counts, status', 'numerical', 'integerOnly'=>true),
 			array('message, date_remember, created_date,randkey,alertfile', 'safe'),
+                        array('message', 'required', 'on' => 'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('message_id, client_id, employee_id, message, date_remember, user_view_status, mail_sent_counts, status, created_date', 'safe', 'on'=>'search'),

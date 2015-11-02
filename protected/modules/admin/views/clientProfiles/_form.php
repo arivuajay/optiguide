@@ -303,16 +303,27 @@
                                                 ),              
                                                 array(
                                                 'header' => 'Actes',
-                                                'class' => 'booster.widgets.TbButtonColumn',
+                                                'class' => 'ButtonColumn',
                                                 'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                                'template' => '{delete}',
+                                                'template' => '{update}&nbsp;&nbsp;{delete}',
+                                                'evaluateID' => true,
                                                 'buttons'=>array
                                                     (
                                                         'delete' => array
                                                         (
                                                             'label'=>'Delete',                                            
                                                              'url'=>'Yii::app()->createUrl("admin/clientMessages/delete", array("id"=>$data->message_id))',
-                                                        ),                                   
+                                                        ),
+                                                        'update' => array(
+                                                            'label' => 'Update',
+                                                            'url' => '"javascript:void(0)"',
+                                                            'options' => array(
+                                                                "id" => '\'messageid_\'.$data->message_id',
+                                                                'data-target' => '#client-message-update-modal',
+                                                                'data-toggle' => 'modal',
+                                                                'class' => 'client_message_update_popup',
+                                                            ),
+                                                        )                                   
                                                     ),
                                                 )
                                         );
@@ -417,6 +428,20 @@
         </div>
         <?php $this->endWidget(); ?>
     </div>
+
+
+<div class="modal fade" id="client-message-update-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"> Update Alerts </h4>
+                <div id="client_message_contents"></div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
 <div class="modal fade" id="products-disp-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -432,6 +457,8 @@
 <?php
 $ajaxCatUrl = Yii::app()->createUrl('/admin/clientProfiles/getcategories');
 $ajax_getmessage  = Yii::app()->createUrl('/admin/clientProfiles/getmessage');
+
+$ajax_get_client_mess_update = Yii::app()->createUrl('/admin/clientProfiles/updateMessage');
 $js = <<< EOD
 
    $(document).ready(function(){
@@ -470,6 +497,22 @@ $js = <<< EOD
          });
        
     });
+            
+     $('.client_message_update_popup').live('click',function(event){
+        event.preventDefault();
+        var client_message_id = $(this).attr("id");
+        var dataString = 'message_id='+client_message_id;
+
+        $.ajax({
+            type: "GET",
+            url: '{$ajax_get_client_mess_update}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#client_message_contents").html(html);               
+            }
+         });
+    });        
   
 });
 EOD;
