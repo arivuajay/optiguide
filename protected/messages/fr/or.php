@@ -227,4 +227,75 @@ return array(
     'OR657' => 'mes stats',
     'OR658' => 'stats paiement / infos',
     'OR659' => 'Logout',
+    
+    //models
+    'OR660' => 'créé au',
+    'OR661' => 'modifié à',
+    
+    //models/RepAdminSubscribers
+    'OR662' => 'rep abonné administrateur',
+    'OR663' => 'rep abonnement administrateur',
+    'OR664' => 'représentant des titres de compétences',
+    
+    //models/RepAdminSubscriptions
+    'OR665' => "rep type d'abonnement",
+    'OR666' => "Type d'achat",
+    'OR667' => 'vieux comptes actifs',
+    'OR668' => 'aucune des comptes utilisé',
+    'OR669' => "pas d' autres comptes",
+    'OR670' => 'par compte Prix',
+    'OR671' => 'pas de mois',
+    'OR672' => 'prix total de mois',
+    'OR673' => 'offre pourcentage',
+    'OR674' => 'prix total',
+    
+    //models/RepCredentialProfiles
+    'OR675' => 'numero de telephone invalide',
+    'OR676' => 'profil rep',
+    'OR677' => 'Prénom',
+    'OR678' => 'nom de famille',
+    'OR679' => 'email',
+    'OR680' => 'téléphone',
+    'OR681' => 'région',
+    'OR682' => 'pays',
+    'OR683' => 'ville',
+    'OR684' => 'adresse',
+    'OR685' => 'Photo de profil',
+    'OR686' => 'compagnie',
+    'OR687' => 'territoires',
+    'OR688' => 'marques',
+    
+    //models/RepCredentials
+    'OR689' => 'Ancien mot de passe est incorrect',
+    'OR690' => 'rôle rep',
+    'OR691' => 'parent rep',
+    
+    //models/RepFavourites
+    'OR692' => 'id détaillant',
+    
+    //models/RepLoggedinActivities
+    'OR693' => 'Date connecté',
+    'OR694' => 'connecté IP',
+    
+    //models/RepSingleSubscriptions
+    'OR695' => 'rep seul abonnement',
+    'OR696' => 'rep prix unique',
+    'OR697' => 'représentant pas un seul mois',
+    'OR698' => 'représentant unique prix total de mois',
+    'OR699' => 'rep totale unique',
+    'OR700' => 'représentant fiscal unique',
+    'OR701' => 'représentant unique grand total',
+    'OR702' => "représentant unique début de l'abonnement",
+    'OR703' => 'rep seule extrémité de souscription',
+    
+    //models/RepSubscriptionTypes
+    'OR704' => "rep nom de l'abonnement",
+    'OR705' => 'rep prix de souscription',
+    'OR706' => "représentant de description d'abonnement",
+    'OR707' => 'rep abonnement min',
+    'OR708' => 'rep abonnement max',
+    
+    //models/RepViewCounts
+    'OR709' => 'spécialiste de id',
+    'OR710' => 'vue la date',
 );

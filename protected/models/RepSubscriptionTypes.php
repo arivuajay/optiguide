@@ -60,14 +60,14 @@ class RepSubscriptionTypes extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'rep_subscription_type_id' => Myclass::t('Rep Subscription Type'),
-            'rep_subscription_name' => Myclass::t('Rep Subscription Name'),
-            'rep_subscription_price' => Myclass::t('Rep Subscription Price'),
-            'rep_subscription_description' => Myclass::t('Rep Subscription Description'),
-            'rep_subscription_min' => Myclass::t('Rep Subscription Min'),
-            'rep_subscription_max' => Myclass::t('Rep Subscription Max'),
-            'created_at' => Myclass::t('Created At'),
-            'modified_at' => Myclass::t('Modified At'),
+            'rep_subscription_type_id' => Myclass::t('OR665', '', 'or'),
+            'rep_subscription_name' => Myclass::t('OR704', '', 'or'),
+            'rep_subscription_price' => Myclass::t('OR705', '', 'or'),
+            'rep_subscription_description' => Myclass::t('OR706', '', 'or'),
+            'rep_subscription_min' => Myclass::t('OR707', '', 'or'),
+            'rep_subscription_max' => Myclass::t('OR708', '', 'or'),
+            'created_at' => Myclass::t('OR660', '', 'or'),
+            'modified_at' => Myclass::t('OR661', '', 'or'),
         );
     }
 

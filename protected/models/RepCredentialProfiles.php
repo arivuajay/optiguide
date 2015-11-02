@@ -75,7 +75,7 @@ class RepCredentialProfiles extends CActiveRecord {
      */
     public function phoneNumber($attribute, $params = '') {
         if ($this->$attribute != '' && preg_match("/[A-Za-z]+/", $this->$attribute) == 1) {
-            $this->addError($attribute, 'Invalid phone number.');
+            $this->addError($attribute, Myclass::t('OR675', '', 'or'));
         }
     }
 
@@ -84,22 +84,22 @@ class RepCredentialProfiles extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'rep_profile_id' => Myclass::t('Rep Profile'),
-            'rep_credential_id' => Myclass::t('Rep Credential'),
-            'rep_profile_firstname' => Myclass::t('Firstname'),
-            'rep_profile_lastname' => Myclass::t('Lastname'),
-            'rep_profile_email' => Myclass::t('Email'),
-            'rep_profile_phone' => Myclass::t('Phone'),
-            'region' => Myclass::t('Region'),
-            'country' => Myclass::t('Country'),
-            'ID_VILLE' => Myclass::t('City'),
-            'rep_address' => Myclass::t('Address'),
-            'image' => Myclass::t('Profile Picture'),
-            'rep_company' => Myclass::t('Company'),
-            'rep_territories' => Myclass::t('Territories'),
-            'rep_brands' => Myclass::t('Brands'),
-            'created_at' => Myclass::t('Created At'),
-            'modified_at' => Myclass::t('Modified At'),
+            'rep_profile_id' => Myclass::t('OR676', '', 'or'),
+            'rep_credential_id' => Myclass::t('OR664', '', 'or'),
+            'rep_profile_firstname' => Myclass::t('OR677', '', 'or'),
+            'rep_profile_lastname' => Myclass::t('OR678', '', 'or'),
+            'rep_profile_email' => Myclass::t('OR679', '', 'or'),
+            'rep_profile_phone' => Myclass::t('OR680', '', 'or'),
+            'region' => Myclass::t('OR681', '', 'or'),
+            'country' => Myclass::t('OR682', '', 'or'),
+            'ID_VILLE' => Myclass::t('OR683', '', 'or'),
+            'rep_address' => Myclass::t('OR684', '', 'or'),
+            'image' => Myclass::t('OR685', '', 'or'),
+            'rep_company' => Myclass::t('OR686', '', 'or'),
+            'rep_territories' => Myclass::t('OR687', '', 'or'),
+            'rep_brands' => Myclass::t('OR688', '', 'or'),
+            'created_at' => Myclass::t('OR660', '', 'or'),
+            'modified_at' => Myclass::t('OR661', '', 'or'),
         );
     }
 

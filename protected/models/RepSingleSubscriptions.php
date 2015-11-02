@@ -71,22 +71,22 @@ class RepSingleSubscriptions extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'rep_single_subscription_id' => Myclass::t('Rep Single Subscription'),
-            'rep_credential_id' => Myclass::t('Rep Credential'),
-            'rep_subscription_type_id' => Myclass::t('Rep Subscription Type'),
-            'purchase_type' => Myclass::t('Purchase Type'),
-            'rep_single_price' => Myclass::t('Rep Single Price'),
-            'rep_single_no_of_months' => Myclass::t('Rep Single No Of Months'),
-            'rep_single_total_month_price' => Myclass::t('Rep Single Total Month Price'),
-            'offer_in_percentage' => Myclass::t('Offer In Percentage'),
-            'offer_price' => Myclass::t('Offer Price'),
-            'rep_single_total' => Myclass::t('Rep Single Total'),
-            'rep_single_tax' => Myclass::t('Rep Single Tax'),
-            'rep_single_grand_total' => Myclass::t('Rep Single Grand Total'),
-            'rep_single_subscription_start' => Myclass::t('Rep Single Subscription Start'),
-            'rep_single_subscription_end' => Myclass::t('Rep Single Subscription End'),
-            'created_at' => Myclass::t('Created At'),
-            'modified_at' => Myclass::t('Modified At'),
+            'rep_single_subscription_id' => Myclass::t('OR695', '', 'or'),
+            'rep_credential_id' => Myclass::t('OR664', '', 'or'),
+            'rep_subscription_type_id' => Myclass::t('OR665', '', 'or'),
+            'purchase_type' => Myclass::t('OR666', '', 'or'),
+            'rep_single_price' => Myclass::t('OR696', '', 'or'),
+            'rep_single_no_of_months' => Myclass::t('OR697', '', 'or'),
+            'rep_single_total_month_price' => Myclass::t('OR698', '', 'or'),
+            'offer_in_percentage' => Myclass::t('OR673', '', 'or'),
+            'offer_price' => Myclass::t('OR563', '', 'or'),
+            'rep_single_total' => Myclass::t('OR699', '', 'or'),
+            'rep_single_tax' => Myclass::t('OR700', '', 'or'),
+            'rep_single_grand_total' => Myclass::t('OR701', '', 'or'),
+            'rep_single_subscription_start' => Myclass::t('OR702', '', 'or'),
+            'rep_single_subscription_end' => Myclass::t('OR703', '', 'or'),
+            'created_at' => Myclass::t('OR660', '', 'or'),
+            'modified_at' => Myclass::t('OR661', '', 'or'),
         );
     }
 

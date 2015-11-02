@@ -50,10 +50,10 @@ class RepNotes extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => Myclass::t('ID'),
-            'rep_credential_id' => Myclass::t('Rep Credential'),
-            'message' => Myclass::t('Message'),
-            'created_at' => Myclass::t('Created At'),
-            'alert_date' => Myclass::t('Reminder Date'),
+            'rep_credential_id' => Myclass::t('OR664', '', 'or'),
+            'message' => Myclass::t('OR624', '', 'or'),
+            'created_at' => Myclass::t('OR660', '', 'or'),
+            'alert_date' => Myclass::t('OR574', '', 'or'),
         );
     }
 

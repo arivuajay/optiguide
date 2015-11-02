@@ -55,11 +55,11 @@ class RepAdminSubscribers extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'rep_admin_subscriber_id' => Myclass::t('Rep Admin Subscriber'),
-            'rep_admin_subscription_id' => Myclass::t('Rep Admin Subscription'),
-            'rep_credential_id' => Myclass::t('Rep Credential'),
-            'created_at' => Myclass::t('Created At'),
-            'modified_at' => Myclass::t('Modified At'),
+            'rep_admin_subscriber_id' => Myclass::t('OR662', '', 'or'),
+            'rep_admin_subscription_id' => Myclass::t('OR663', '', 'or'),
+            'rep_credential_id' => Myclass::t('OR664', '', 'or'),
+            'created_at' => Myclass::t('OR660', '', 'or'),
+            'modified_at' => Myclass::t('OR661', '', 'or'),
         );
     }
 

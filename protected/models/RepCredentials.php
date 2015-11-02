@@ -69,7 +69,7 @@ class RepCredentials extends CActiveRecord {
     public function findPasswords($attribute, $params) {
         $user = $this->model()->findByPk(Yii::app()->user->id);
         if ($user->rep_password != $this->old_password)
-            $this->addError($attribute, 'Old password is incorrect.');
+            $this->addError($attribute, Myclass::t('OR689', '', 'or'));
     }
 
     /**
@@ -92,15 +92,15 @@ class RepCredentials extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'rep_credential_id' => Myclass::t('Rep Credential'),
-            'rep_username' => Myclass::t('Username'),
-            'rep_password' => Myclass::t('Password'),
-            'rep_role' => Myclass::t('Rep Role'),
-            'rep_parent_id' => Myclass::t('Rep Parent'),
-            'rep_status' => Myclass::t('Rep Status'),
-            'rep_expiry_date' => Myclass::t('Rep Expiry Date'),
-            'created_at' => Myclass::t('Created At'),
-            'modified_at' => Myclass::t('Modified At'),
+            'rep_credential_id' => Myclass::t('OR664', '', 'or'),
+            'rep_username' => Myclass::t('OR502', '', 'or'),
+            'rep_password' => Myclass::t('OR503', '', 'or'),
+            'rep_role' => Myclass::t('OR690', '', 'or'),
+            'rep_parent_id' => Myclass::t('OR691', '', 'or'),
+            'rep_status' => Myclass::t('OR530', '', 'or'),
+            'rep_expiry_date' => Myclass::t('OR529', '', 'or'),
+            'created_at' => Myclass::t('OR660', '', 'or'),
+            'modified_at' => Myclass::t('OR661', '', 'or'),
         );
     }
 

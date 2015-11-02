@@ -228,5 +228,76 @@ return array(
     'OR658' => 'Stats Payment/Infos',
     'OR659' => 'Logout',
     
+    //models
+    'OR660' => 'Created At',
+    'OR661' => 'Modified At',
+    
+    //models/RepAdminSubscribers
+    'OR662' => 'Rep Admin Subscriber',
+    'OR663' => 'Rep Admin Subscription',
+    'OR664' => 'Rep Credential',
+    
+    //models/RepAdminSubscriptions
+    'OR665' => 'Rep Subscription Type',
+    'OR666' => 'Purchase Type',
+    'OR667' => 'Old active accounts',
+    'OR668' => 'No Of Accounts Used',
+    'OR669' => 'No Of Accounts Remaining',
+    'OR670' => 'Per Account Price',
+    'OR671' => 'No Of Months',
+    'OR672' => 'Total Month Price',
+    'OR673' => 'Offer In Percentage',
+    'OR674' => 'Total Price',
+    
+    //models/RepCredentialProfiles
+    'OR675' => 'Invalid phone number',
+    'OR676' => 'Rep Profile',
+    'OR677' => 'Firstname',
+    'OR678' => 'Lastname',
+    'OR679' => 'Email',
+    'OR680' => 'Phone',
+    'OR681' => 'Region',
+    'OR682' => 'Country',
+    'OR683' => 'City',
+    'OR684' => 'Address',
+    'OR685' => 'Profile Picture',
+    'OR686' => 'Company',
+    'OR687' => 'Territories',
+    'OR688' => 'Brands',
+    
+    //models/RepCredentials
+    'OR689' => 'Old password is incorrect',
+    'OR690' => 'Rep Role',
+    'OR691' => 'Rep Parent',
+    
+    //models/RepFavourites
+    'OR692' => 'Id Retailer',
+    
+    //models/RepLoggedinActivities
+    'OR693' => 'Loggedin Date',
+    'OR694' => 'Loggedin Ip',
+    
+    //models/RepSingleSubscriptions
+    'OR695' => 'Rep Single Subscription',
+    'OR696' => 'Rep Single Price',
+    'OR697' => 'Rep Single No Of Months',
+    'OR698' => 'Rep Single Total Month Price',
+    'OR699' => 'Rep Single Total',
+    'OR700' => 'Rep Single Tax',
+    'OR701' => 'Rep Single Grand Total',
+    'OR702' => 'Rep Single Subscription Start',
+    'OR703' => 'Rep Single Subscription End',
+    
+    //models/RepSubscriptionTypes
+    'OR704' => 'Rep Subscription Name',
+    'OR705' => 'Rep Subscription Price',
+    'OR706' => 'Rep Subscription Description',
+    'OR707' => 'Rep Subscription Min',
+    'OR708' => 'Rep Subscription Max',
+    
+    //models/RepViewCounts
+    'OR709' => 'Id Specialist',
+    'OR710' => 'View Date',
+    
     
 );

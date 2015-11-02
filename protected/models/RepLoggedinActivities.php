@@ -55,12 +55,12 @@ class RepLoggedinActivities extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'loggedin_id' => Myclass::t('Loggedin'),
-            'loggedin_date' => Myclass::t('Loggedin Date'),
-            'rep_credential_id' => Myclass::t('Rep Credential'),
-            'loggedin_ip' => Myclass::t('Loggedin Ip'),
-            'created_at' => Myclass::t('Created At'),
-            'modified_at' => Myclass::t('Modified At'),
+            'loggedin_id' => Myclass::t('Loggedin', '', 'or'),
+            'loggedin_date' => Myclass::t('OR693', '', 'or'),
+            'rep_credential_id' => Myclass::t('OR664', '', 'or'),
+            'loggedin_ip' => Myclass::t('OR694', '', 'or'),
+            'created_at' => Myclass::t('OR660', '', 'or'),
+            'modified_at' => Myclass::t('OR661', '', 'or'),
         );
     }
 
@@ -121,8 +121,8 @@ class RepLoggedinActivities extends CActiveRecord {
         $this->modified_at = new CDbExpression('NOW()');
         return parent::beforeSave();
     }
-    
-    public function insertLoggedinActivity(){
+
+    public function insertLoggedinActivity() {
         $this->setIsNewRecord(true);
         $this->rep_credential_id = Yii::app()->user->id;
         $this->loggedin_date = new CDbExpression('NOW()');
