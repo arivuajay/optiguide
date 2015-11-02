@@ -2,7 +2,10 @@
     <div class="header-row1"> 
         <div class="container">
             <div class="row"> 
-                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 col-lg-offset-4 welcome-user">                    
+                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                    <?php echo CHtml::link($displang, 'javascript:void(0);', array('onclick' => "document.getElementById('langform').submit();")); ?>
+                </div>
+                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 col-lg-offset-2 welcome-user">                    
                     <?php 
                     if( Yii::app()->user->rep_role == "single")
                     {                         

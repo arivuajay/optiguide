@@ -29,10 +29,24 @@
         $cs->registerCssFile($themeUrl . '/css/nanoscroller.css');
         $cs->registerCssFile($themeUrl . '/css/custom.css');
         ?>
+        <?php
+        $currentLang = Yii::app()->language;
+        if ($currentLang == 'en') {
+            $displang = 'Français';
+            $changelang = 'fr';
+        } else {
+            $displang = 'English';
+            $changelang = 'en';
+        }
+        ?>
     </head>
-    <body>
-        <?php $this->renderPartial("//layouts/_header"); ?>
-        
+    <body class="<?php echo $currentLang; ?>">
+        <?php $this->renderPartial("//layouts/_header", array('displang'=>$displang)); ?>
+        <?php
+            echo CHtml::beginForm('', 'post', array('id' => 'langform'));
+            echo CHtml::hiddenField('_lang', $changelang, array());
+            echo CHtml::endForm();
+        ?>
         <?php echo $content; ?>
 
         <?php $this->renderPartial("//layouts/_footer"); ?>
@@ -41,14 +55,13 @@
         $cs_pos_end = CClientScript::POS_END;
         $cs->registerCoreScript('jquery');
 
-      //  $cs->registerScriptFile($themeUrl . '/js/bootstrap.min.js', $cs_pos_end);
+        //  $cs->registerScriptFile($themeUrl . '/js/bootstrap.min.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-select.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-switch.min.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-number-input.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/icheck.min.js', $cs_pos_end);
-        $cs->registerScriptFile($themeUrl . '/js/jquery.lionbars.0.3.js', $cs_pos_end); 
+        $cs->registerScriptFile($themeUrl . '/js/jquery.lionbars.0.3.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/jquery.nanoscroller.min.js', $cs_pos_end);
-        
         ?>
 
         <?php
