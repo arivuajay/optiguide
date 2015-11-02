@@ -42,11 +42,11 @@
                         <?php if (Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE) { ?>
                             <?php $rep_expiry_date = $rep_credential['rep_expiry_date']; ?>
                             <p>
-                                Expiry Date :
+                                <?php echo Myclass::t('OR529', '', 'or')?> :
                                 <b><?php echo Myclass::dateFormat($rep_expiry_date) ?></b>
                             </p>
                         <?php } ?>
-                        <p> <i class="fa fa-sign-out"></i> <?php echo CHtml::link('Logout', '/optirep/default/logout') ?></p>
+                        <p> <i class="fa fa-sign-out"></i> <?php echo CHtml::link(Myclass::t('OR659', '', 'or'), '/optirep/default/logout') ?></p>
                     </div>
                     <?php
                     $stats_disp = Myclass::stats_display();
@@ -55,20 +55,20 @@
                         'encodeLabel' => false,
                         'activeCssClass' => 'active',
                         'items' => array(
-                            array('label' => '<i class="fa fa-pencil-square-o"></i> Edit Profile', 'url' => array('/optirep/repCredential/editprofile')),
-                            array('label' => '<i class="fa fa-money"></i> Subscription Details', 'url' => array('/optirep/repAccounts/subscriptions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN),
-                            array('label' => '<i class="fa fa-exchange"></i> Transaction Details', 'url' => array('/optirep/repAccounts/transactions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN),
-                            array('label' => '<i class="fa fa-briefcase"></i> Manage Rep Accounts', 'url' => array('/optirep/repAccounts/index'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN)),
-                            array('label' => '<i class="fa fa-money"></i> Subscription Details', 'url' => array('/optirep/repSingleSubscriptions/index'), 'visible' => (Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE && Yii::app()->user->rep_parent_id == 0)),
-                            array('label' => '<i class="fa fa-exchange"></i> Transaction Details', 'url' => array('/optirep/repSingleSubscriptions/transactions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE && Yii::app()->user->rep_parent_id == 0),
-                            array('label' => '<i class="fa fa-envelope"></i> Internal Messages', 'url' => array('/optirep/internalMessage/index'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE)),
-                            array('label' => '<i class="fa fa-heart"></i> Favorite Users', 'url' => array('/optirep/repFavourites/index'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE),
-                            array('label' => '<i class="fa fa-file-text-o"></i> My Notes', 'url' => array('/optirep/repNotes/index')),
-                            array('label' => '<i class="fa fa-line-chart"></i> My Stats', 'url' => array('/optirep/repStatistics/index'), 'visible' => ($stats_disp == "1")),
-                            array('label' => ' <i class="fa fa-users"></i> Users log stats', 'url' => array('/optirep/repStatistics/userslogstats'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN && $stats_disp == "1")),
-                            array('label' => '<i class="fa fa-eye"></i> Users profile viewed stats', 'url' => array('/optirep/repStatistics/profileviewstats'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN && $stats_disp == "1")),
-                            array('label' => '<i class="fa fa-credit-card"></i> Stats Payment/Infos', 'url' => array('/optirep/repStatistics/payment')),
-                            array('label' => '<i class="fa fa-key"></i> Change Password', 'url' => array('/optirep/repCredential/changePassword')),
+                            array('label' => '<i class="fa fa-pencil-square-o"></i> ' . Myclass::t('OR552', '', 'or'), 'url' => array('/optirep/repCredential/editprofile')),
+                            array('label' => '<i class="fa fa-money"></i> ' . Myclass::t('OR545', '', 'or'), 'url' => array('/optirep/repAccounts/subscriptions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN),
+                            array('label' => '<i class="fa fa-exchange"></i> ' . Myclass::t('OR656', '', 'or'), 'url' => array('/optirep/repAccounts/transactions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN),
+                            array('label' => '<i class="fa fa-briefcase"></i> ' . Myclass::t('OR524', '', 'or'), 'url' => array('/optirep/repAccounts/index'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN)),
+                            array('label' => '<i class="fa fa-money"></i> ' . Myclass::t('OR545', '', 'or'), 'url' => array('/optirep/repSingleSubscriptions/index'), 'visible' => (Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE && Yii::app()->user->rep_parent_id == 0)),
+                            array('label' => '<i class="fa fa-exchange"></i> ' . Myclass::t('OR656', '', 'or'), 'url' => array('/optirep/repSingleSubscriptions/transactions'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE && Yii::app()->user->rep_parent_id == 0),
+                            array('label' => '<i class="fa fa-envelope"></i> ' . Myclass::t('OR623', '', 'or'), 'url' => array('/optirep/internalMessage/index'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE)),
+                            array('label' => '<i class="fa fa-heart"></i> ' . Myclass::t('OR565', '', 'or'), 'url' => array('/optirep/repFavourites/index'), 'visible' => Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE),
+                            array('label' => '<i class="fa fa-file-text-o"></i> ' . Myclass::t('OR521', '', 'or'), 'url' => array('/optirep/repNotes/index')),
+                            array('label' => '<i class="fa fa-line-chart"></i> ' . Myclass::t('OR657', '', 'or'), 'url' => array('/optirep/repStatistics/index'), 'visible' => ($stats_disp == "1")),
+                            array('label' => ' <i class="fa fa-users"></i> ' . Myclass::t('OR586', '', 'or'), 'url' => array('/optirep/repStatistics/userslogstats'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN && $stats_disp == "1")),
+                            array('label' => '<i class="fa fa-eye"></i> ' . Myclass::t('OR585', '', 'or'), 'url' => array('/optirep/repStatistics/profileviewstats'), 'visible' => (isset(Yii::app()->user->rep_role) && Yii::app()->user->rep_role == RepCredentials::ROLE_ADMIN && $stats_disp == "1")),
+                            array('label' => '<i class="fa fa-credit-card"></i> ' . Myclass::t('OR658', '', 'or'), 'url' => array('/optirep/repStatistics/payment')),
+                            array('label' => '<i class="fa fa-key"></i> ' . Myclass::t('OR551', '', 'or'), 'url' => array('/optirep/repCredential/changePassword')),
                         ),
                     ));
                     ?>

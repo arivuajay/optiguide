@@ -222,5 +222,11 @@ return array(
     'OR654' => "Credit card expiration month is invalid",
     'OR655' => "Credit card expiration year is invalid",
     
+    //column2
+    'OR656' => 'Transaction Details',
+    'OR657' => 'My Stats',
+    'OR658' => 'Stats Payment/Infos',
+    'OR659' => 'Logout',
+    
     
 );

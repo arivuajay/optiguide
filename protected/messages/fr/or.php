@@ -221,4 +221,10 @@ return array(
     'OR653' => "date d'expiration",
     'OR654' => "mois carte de crédit d'expiration est invalide",
     'OR655' => "année carte de crédit d'expiration est invalide",
+    
+     //column2
+    'OR656' => 'détails de la transaction',
+    'OR657' => 'mes stats',
+    'OR658' => 'stats paiement / infos',
+    'OR659' => 'Logout',
 );
