@@ -43,10 +43,18 @@ return array(
     'COPYRIGHT' => '&copy; 2015 Optiguide.',
     'EMAILHEADERIMAGE' => '/themes/site/css/frontend/img/logos/header-logo.png',
     
-    'LISTPERPAGE' => 15,
     'DEFAULTPAYS' => 1,    
     'REPURL' => $repurl,
     'GUIDEURL' => $guideurl,
+    
+    'CALANDERLISTPERPAGE' => 14,
+    'LISTPERPAGE' => 15,
+    'GROUPSLISTPERPAGE' => 20,
+    'SUPPLIERSLISTPERPAGE' => 21,
+    'CATEGORIESLISTPERPAGE' => 22,
+    'MARQUESLISTPERPAGE' => 23,
+    'PROFESSIONALLISTPERPAGE' => 26,
+    'RETAILERSLISTPERPAGE' => 27,
     
     //Paypal values
     'SANDBOXVALUE'  => TRUE,

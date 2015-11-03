@@ -100,7 +100,7 @@ class CalenderEventController extends OGController {
         $pages = new CPagination($count);
 
         // results per page
-        $pages->pageSize = 10;
+        $pages->pageSize = CALANDERLISTPERPAGE;
         $pages->applyLimit($criteria);
         $model = CalenderEvent::model()->findAll($criteria);
 

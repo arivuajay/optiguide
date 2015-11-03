@@ -63,7 +63,7 @@ class GroupInformationController extends OGController {
         $limit = 0;
         if ($page > 1) {
             $offset = $page - 1;
-            $limit = LISTPERPAGE * $offset;
+            $limit = GROUPSLISTPERPAGE * $offset;
         }
 
         $from_table_array = array();
@@ -110,7 +110,7 @@ class GroupInformationController extends OGController {
                 ->from($from_table_array)
                 ->where($where_conditions)
                 ->order('rc.CATEGORIE_' . $this->lang . ', rs.SECTION_' . $this->lang . ', rg.NOM_GROUPE')
-                ->limit(LISTPERPAGE, $limit)
+                ->limit(GROUPSLISTPERPAGE, $limit)
                 ->queryAll();
 
         // Get total counts of records    
@@ -121,7 +121,7 @@ class GroupInformationController extends OGController {
                 ->queryScalar(); // do not LIMIT it, this must count all items!
         // the pagination itself      
         $pages = new CPagination($item_count);
-        $pages->setPageSize(LISTPERPAGE);
+        $pages->setPageSize(GROUPSLISTPERPAGE);
 
         $result = array();
         foreach ($group_query as $group) {
@@ -135,7 +135,7 @@ class GroupInformationController extends OGController {
             'searchModel' => $searchModel,
             'model' => $result,
             'item_count' => $item_count,
-            'page_size' => LISTPERPAGE,
+            'page_size' => GROUPSLISTPERPAGE,
             'pages' => $pages,
         ));
     }

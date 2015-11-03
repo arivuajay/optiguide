@@ -55,7 +55,7 @@ $grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo) . $curr
             <p><?php echo Myclass::t('OGO193','','og');?></p>
 
             <h4><?php echo Myclass::t('OGO194','','og');?></h4>
-            <ul>
+            <ul class="renewal">
                 <li><?php echo Myclass::t('OGO195','','og');?></li>
                 <li><?php echo Myclass::t('OGO196','','og');?></li>
                 <li><?php echo Myclass::t('OGO197','','og');?></li>

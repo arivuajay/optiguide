@@ -139,7 +139,7 @@ class MarqueDirectoryController extends OGController {
        
         if($page>1){
          $offset = $page-1;   
-         $limit  = LISTPERPAGE * $offset;
+         $limit  = MARQUESLISTPERPAGE * $offset;
         }   
         
                
@@ -184,7 +184,7 @@ class MarqueDirectoryController extends OGController {
         ->where("rpm.ID_PRODUIT=rp.ID_PRODUIT AND rpm.ID_MARQUE=rm.ID_MARQUE AND rfp.ID_LIEN_PRODUIT_MARQUE=rpm.ID_LIEN_MARQUE AND rfp.ID_FOURNISSEUR=f.ID_FOURNISSEUR AND f.bAfficher_site=1".$sname_qry.$section_qry.$products_qry)
         ->group("rpm.ID_MARQUE")        
         ->order('NOM_MARQUE')                
-        ->limit( LISTPERPAGE , $limit) // the trick is here!
+        ->limit( MARQUESLISTPERPAGE , $limit) // the trick is here!
         ->queryAll();
          
       //Get total counts
@@ -198,14 +198,14 @@ class MarqueDirectoryController extends OGController {
         
         // the pagination itself      
         $pages = new CPagination($item_count);
-        $pages->setPageSize(LISTPERPAGE);
+        $pages->setPageSize(MARQUESLISTPERPAGE);
          
         // render
         $this->render('index',array(
             'searchModel' => $searchModel,
             'model'=>$marque_result,
             'item_count'=>$item_count,
-            'page_size'=>LISTPERPAGE,
+            'page_size'=>MARQUESLISTPERPAGE,
             'pages'=>$pages,             
        ));    
     
@@ -224,7 +224,7 @@ class MarqueDirectoryController extends OGController {
        
         if($page>1){
          $offset = $page-1;   
-         $limit  = LISTPERPAGE * $offset;
+         $limit  = MARQUESLISTPERPAGE * $offset;
         }  
         
         $search_marque   = Yii::app()->request->getParam('marqueid');
@@ -291,7 +291,7 @@ class MarqueDirectoryController extends OGController {
         ->from(array('repertoire_fournisseurs f','repertoire_fournisseur_type ft','repertoire_ville AS rv' ,  'repertoire_region AS rr','repertoire_pays AS rp'))
         ->where("f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and bAfficher_site=1 ".$sname_qry.$section_product_qry)
         ->order('ft.TYPE_FOURNISSEUR_'.$this->lang.',COMPAGNIE')
-        ->limit( LISTPERPAGE , $limit) // the trick is here!
+        ->limit( MARQUESLISTPERPAGE , $limit) // the trick is here!
         ->queryAll();
       
        // Get total counts of records    
@@ -303,7 +303,7 @@ class MarqueDirectoryController extends OGController {
         
         // the pagination itself      
         $pages = new CPagination($item_count);
-        $pages->setPageSize(LISTPERPAGE);
+        $pages->setPageSize(MARQUESLISTPERPAGE);
         
          $result = array();
         foreach ($supplier_query as $users) {
@@ -316,7 +316,7 @@ class MarqueDirectoryController extends OGController {
             'searchModel' => $searchModel,
             'model'=>$result,
             'item_count'=>$item_count,
-            'page_size'=>LISTPERPAGE,
+            'page_size'=>MARQUESLISTPERPAGE,
             'pages'=>$pages,             
        ));    
         

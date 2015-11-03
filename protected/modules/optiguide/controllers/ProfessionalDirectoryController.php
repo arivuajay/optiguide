@@ -261,7 +261,7 @@ class ProfessionalDirectoryController extends OGController {
 
         if ($page > 1) {
             $offset = $page - 1;
-            $limit = LISTPERPAGE * $offset;
+            $limit = PROFESSIONALLISTPERPAGE * $offset;
         }
 
         // $searchModel->unsetAttributes();
@@ -314,7 +314,7 @@ class ProfessionalDirectoryController extends OGController {
                 ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                 ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $spostal_qry . $stype_qry)
                 ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
-                ->limit(LISTPERPAGE, $limit) // the trick is here!
+                ->limit(PROFESSIONALLISTPERPAGE, $limit) // the trick is here!
                 ->queryAll();
 
         // Get total counts of records    
@@ -325,7 +325,7 @@ class ProfessionalDirectoryController extends OGController {
                 ->queryScalar(); // do not LIMIT it, this must count all items!
         // the pagination itself      
         $pages = new CPagination($item_count);
-        $pages->setPageSize(LISTPERPAGE);
+        $pages->setPageSize(PROFESSIONALLISTPERPAGE);
 
         $result = array();
         foreach ($prof_query as $users) {
@@ -338,7 +338,7 @@ class ProfessionalDirectoryController extends OGController {
             'searchModel' => $searchModel,
             'model' => $result,
             'item_count' => $item_count,
-            'page_size' => LISTPERPAGE,
+            'page_size' => PROFESSIONALLISTPERPAGE,
             'pages' => $pages,
         ));
     }

@@ -94,7 +94,7 @@ class RetailerDirectoryController extends OGController {
                     ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                     ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $prof_query)
                     ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
-                    ->limit(LISTPERPAGE, $limit) // the trick is here!
+                    ->limit(RETAILERSLISTPERPAGE, $limit) // the trick is here!
                     ->queryAll();
         }
 
@@ -137,7 +137,7 @@ class RetailerDirectoryController extends OGController {
 
         if ($page > 1) {
             $offset = $page - 1;
-            $limit = LISTPERPAGE * $offset;
+            $limit = RETAILERSLISTPERPAGE * $offset;
         }
 
         // $searchModel->unsetAttributes();
@@ -202,7 +202,7 @@ class RetailerDirectoryController extends OGController {
                 ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                 ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $scat_query . $spostal_qry . $srettype_qry . $sgroup_qry)
                 ->order('COMPAGNIE')
-                ->limit(LISTPERPAGE, $limit) // the trick is here!
+                ->limit(RETAILERSLISTPERPAGE, $limit) // the trick is here!
                 ->queryAll();
 
         // Get total counts of records    
@@ -213,14 +213,14 @@ class RetailerDirectoryController extends OGController {
                 ->queryScalar(); // do not LIMIT it, this must count all items!
         // the pagination itself      
         $pages = new CPagination($item_count);
-        $pages->setPageSize(LISTPERPAGE);
+        $pages->setPageSize(RETAILERSLISTPERPAGE);
 
         // render
         $this->render('index', array(
             'searchModel' => $searchModel,
             'model' => $retail_query,
             'item_count' => $item_count,
-            'page_size' => LISTPERPAGE,
+            'page_size' => RETAILERSLISTPERPAGE,
             'pages' => $pages,
         ));
     }

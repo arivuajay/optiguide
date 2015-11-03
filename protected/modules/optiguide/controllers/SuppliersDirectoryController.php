@@ -289,7 +289,7 @@ class SuppliersDirectoryController extends OGController {
 
         if ($page > 1) {
             $offset = $page - 1;
-            $limit = LISTPERPAGE * $offset;
+            $limit = SUPPLIERSLISTPERPAGE * $offset;
         }
 
         $sname_qry = '';
@@ -363,7 +363,7 @@ class SuppliersDirectoryController extends OGController {
                 ->from(array('repertoire_fournisseurs f', 'repertoire_fournisseur_type ft', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                 ->where("f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and bAfficher_site=1 AND ru.NOM_TABLE ='Fournisseurs' and ru.status=1 " . $sname_qry . $stype_qry . $section_product_qry)
                 ->order('ft.TYPE_FOURNISSEUR_' . $this->lang . ' ASC , profile_expirydate DESC')
-                ->limit(LISTPERPAGE, $limit) // the trick is here!
+                ->limit(SUPPLIERSLISTPERPAGE, $limit) // the trick is here!
                 ->queryAll();
 
         // Get total counts of records    
@@ -374,7 +374,7 @@ class SuppliersDirectoryController extends OGController {
                 ->queryScalar(); // do not LIMIT it, this must count all items!
         // the pagination itself      
         $pages = new CPagination($item_count);
-        $pages->setPageSize(LISTPERPAGE);
+        $pages->setPageSize(SUPPLIERSLISTPERPAGE);
 
         $result = array();
         foreach ($supplier_query as $users) {
@@ -387,7 +387,7 @@ class SuppliersDirectoryController extends OGController {
             'searchModel' => $searchModel,
             'model' => $result,
             'item_count' => $item_count,
-            'page_size' => LISTPERPAGE,
+            'page_size' => SUPPLIERSLISTPERPAGE,
             'pages' => $pages,
         ));
     }
@@ -405,7 +405,7 @@ class SuppliersDirectoryController extends OGController {
 
         if ($page > 1) {
             $offset = $page - 1;
-            $limit = LISTPERPAGE * $offset;
+            $limit = CATEGORIESLISTPERPAGE * $offset;
         }
 
         $section_product_qry = '';
@@ -466,7 +466,7 @@ class SuppliersDirectoryController extends OGController {
                 ->from(array('repertoire_fournisseurs f', 'repertoire_fournisseur_type ft', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
                 ->where("f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and bAfficher_site=1 " . $section_product_qry)
                 ->order('ft.TYPE_FOURNISSEUR_' . $this->lang . ',COMPAGNIE')
-                ->limit(LISTPERPAGE, $limit) // the trick is here!
+                ->limit(CATEGORIESLISTPERPAGE, $limit) // the trick is here!
                 ->queryAll();
 
         // Get total counts of records    
@@ -477,7 +477,7 @@ class SuppliersDirectoryController extends OGController {
                 ->queryScalar(); // do not LIMIT it, this must count all items!
         // the pagination itself      
         $pages = new CPagination($item_count);
-        $pages->setPageSize(LISTPERPAGE);
+        $pages->setPageSize(CATEGORIESLISTPERPAGE);
 
         $result = array();
         foreach ($supplier_query as $users) {
@@ -490,7 +490,7 @@ class SuppliersDirectoryController extends OGController {
             'searchModel' => $searchModel,
             'model' => $result,
             'item_count' => $item_count,
-            'page_size' => LISTPERPAGE,
+            'page_size' => CATEGORIESLISTPERPAGE,
             'pages' => $pages,
         ));
     }
@@ -1687,7 +1687,7 @@ class SuppliersDirectoryController extends OGController {
         $pages = new CPagination($count);
 
         // results per page
-        $pages->pageSize = LISTPERPAGE;
+        $pages->pageSize = SUPPLIERSLISTPERPAGE;
         $pages->applyLimit($criteria);
         $model = PaymentTransaction::model()->findAll($criteria);
 

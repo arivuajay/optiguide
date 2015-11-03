@@ -358,11 +358,11 @@ and open the template in the editor.
 }
 
 .subscribe-btncont a.sendrequest{
-        display:inline;       
-        font-family: "Raleway",sans-serif;
-        font-size: 14px;
-        padding: 6px;
-        text-transform: none;
+    display:inline;       
+    font-family: "Raleway",sans-serif;
+    font-size: 14px;
+    padding: 6px;
+    text-transform: none;
 }
 
 .subscribe-btncont a.sendrequest:hover
@@ -372,8 +372,8 @@ and open the template in the editor.
 
 .paidmems
 {
-     font-size: 15px;
-     color:#337ab7;
+    font-size: 15px;
+    color:#337ab7;
 }
 
 .subscribe-btncont a.selectmarque
@@ -392,8 +392,8 @@ and open the template in the editor.
 
 .dispmarques
 {
-   font-family: "Raleway",sans-serif;
-   font-size: 12px;   
+    font-family: "Raleway",sans-serif;
+    font-size: 12px;   
 }
 
 .paypal_btn {
@@ -403,11 +403,11 @@ and open the template in the editor.
 }
 
 #price, #paypal_align{
- text-align: right;   
+    text-align: right;   
 }
 
 .creditcardtbl , #creditcard{
- margin-top: 20px;   
+    margin-top: 20px;   
 }
 
 #creditcard .required {
@@ -423,14 +423,14 @@ and open the template in the editor.
     margin-bottom: 20px;
 }
 
-.inner-container ul li {
-  background: url(../images/icon.png) 0px 11px no-repeat;
-  list-style-type: none;
-  padding: 10px 0 10px 22px;
+.inner-container ul.renewal li {
+    background: url(../images/icon.png) 0px 11px no-repeat;
+    list-style-type: none;
+    padding: 10px 0 10px 22px;
 }
 
-.inner-container ul{
-      margin-bottom: 20px;    
+.inner-container ul.renewal{
+    margin-bottom: 20px;    
 }
 
 .dropdown-menu ul li {
