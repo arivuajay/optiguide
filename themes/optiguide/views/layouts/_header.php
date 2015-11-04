@@ -49,7 +49,10 @@ if (!Yii::app()->user->isGuest) {
                             echo CHtml::link(Myclass::t('OG033', '', 'og'), array($profileurl));
                         }
                         ?>
-                    </li>    
+                    </li> 
+                    <li>
+                        <?php echo CHtml::link(Myclass::t('OGO206', '', 'og'), array('/optiguide/default/classifieds')); ?>
+                    </li>
                     <li>
                         <?php echo CHtml::link(Myclass::t('OG004', '', 'og'), array('/optiguide/default/contactus')); ?>
                     </li>     
