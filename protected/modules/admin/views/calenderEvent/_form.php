@@ -20,10 +20,10 @@ $cs->registerScript(
      ["Bold", "Italic","Underline", "-", "NumberedList", "BulletedList", "-" ],  
      ["UIColor"],["TextColor"],["Undo","Redo","Link"],
      ["JustifyLeft","JustifyCenter","JustifyRight","JustifyBlock"],
-     ["NumberedList","BulletedList","FontSize","Font","Preview"]
+     ["NumberedList","BulletedList","FontSize","Font"]
     ],
     height:150,
-    width:510
+//    width:510
     };
     $("#CalenderEvent_TEXTE").ckeditor(config);
   ', CClientScript::POS_LOAD

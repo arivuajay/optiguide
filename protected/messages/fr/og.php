@@ -241,4 +241,17 @@ return array(
     'OGO200' => 'Indisponible',
     'OGO201' => 'Renouveler maintenant!!!',
     'OGO202' => 'Choisissez Types',
+    
+    //Classifieds
+    'OGO203' => 'classé créé avec succès!!!',
+    'OGO204' => 'classés correctement mis à jour!!!',
+    'OGO205' => 'classé supprimé avec succès!!!',
+    'OGO206' => 'Petites annonces',
+    'OGO207' => 'créer classé',
+    'OGO208' => "catégorie de l'Annonce",
+    'OGO209' => 'Update Classified',
+    'OGO210' => 'Voir classé',
+    'OGO211' => 'un message annonce',
+    'OGO212' => 'classifiées nom de la catégorie',
+    'OGO213' => 'titre annonce',
 );

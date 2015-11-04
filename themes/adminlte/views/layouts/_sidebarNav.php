@@ -40,7 +40,7 @@
                     ),
                 ),
                 array('label' => '<i class="fa fa-users"></i> <span>Détaillants</span>', 'url' => array('/admin/retailerDirectory/index'), 'active' => $_controller == 'retailerdirectory'),
-                array('label' => '<i class="fa fa-folder"></i> <span> Fournisseurs</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
+                array('label' => '<i class="fa fa-group"></i> <span> Fournisseurs</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
@@ -84,7 +84,8 @@
                        // array('label' => '<i class="fa fa-angle-double-right"></i> <span>Rappelez-vous des alertes</span>', 'url' => array('/admin/clientMessages/index'), 'active' => ( $_controller == 'clientMessages')),
                     ),
                 ),
-                array('label' => '<i class="fa fa-folder"></i> <span> Opti-rep</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
+                array('label' => '<i class="fa fa-folder"></i> <span>Classifieds</span>', 'url' => array('/admin/classifieds/index'), 'active' => $_controller == 'classifieds'),
+                array('label' => '<i class="fa fa-user"></i> <span> Opti-rep</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
                     'itemOptions' => array('class' => 'treeview'),
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(      

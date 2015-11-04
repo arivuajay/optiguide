@@ -246,4 +246,17 @@ return array(
     'OGO201' => 'Renew it now!!!',
     'OGO202' => 'Choose Types',
     
+    //Classifieds
+    'OGO203' => 'Classifieds Created Successfully!!!',
+    'OGO204' => 'Classifieds Updated Successfully!!!',
+    'OGO205' => 'Classifieds Deleted Successfully!!!',
+    'OGO206' => 'Classifieds',
+    'OGO207' => 'Create Classified',
+    'OGO208' => 'Classified Category',
+    'OGO209' => 'Update Classified',
+    'OGO210' => 'View Classified',
+    'OGO211' => 'Classified Message',
+    'OGO212' => 'Classified category name',
+    'OGO213' => 'Classified Title',
+    
 );
