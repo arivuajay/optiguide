@@ -437,3 +437,12 @@ and open the template in the editor.
     background: none;
     padding: 0px;
 }
+
+.classified a{
+    background: none !important;
+}
+
+.classified .active a{
+    color: #555 !important;
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0 !important;
+}

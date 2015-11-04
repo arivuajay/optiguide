@@ -192,6 +192,10 @@ class DefaultController extends OGController {
             exit;
         }
     }
+    
+    public function actionClassifieds(){
+        $this->render('classified');
+    }
 
     /**
      * Performs the AJAX validation.
