@@ -34,7 +34,7 @@
                         array('label' => Myclass::t('OG011', '', 'og'), 'url' => array('/optiguide/newsManagement'), 'active' => $_controller == 'newsManagement'),
                         array('label' => Myclass::t('OG012', '', 'og'), 'url' => array('/optiguide/calenderEvent'), 'active' => $_controller == 'calenderEvent'),
                         array('label' => Myclass::t('OG013', '', 'og'), 'url' => array('/optiguide/groupInformation'), 'active' => $_controller == 'groupInformation'),
-                        array('label' => Myclass::t('OGO206', '', 'og'), 'url' => array('/optiguide/default/classifieds'), 'active' => $_controller == 'classifieds'),
+                        array('label' => Myclass::t('OGO206', '', 'og'), 'url' => array('/optiguide/default/classifieds'), 'active' => $_controller == 'default' && $_action == "classifieds"),
                     ),
                     'htmlOptions' => array('class' => 'nav navbar-nav')
                 ));
