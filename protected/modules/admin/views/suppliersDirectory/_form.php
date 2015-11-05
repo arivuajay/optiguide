@@ -7,16 +7,13 @@
 <div class="row">
     <div class="col-lg-12 col-xs-12">
         <?php
-        
         $cs_pos_end = CClientScript::POS_END;
         $themeUrl = $this->themeUrl;
-      
-        if($model->ID_FOURNISSEUR)
-        {    
-            $actn_url =  Yii::app()->createUrl('/admin/suppliersDirectory/update',array('id'=>$model->ID_FOURNISSEUR));
-        }else
-        {    
-            $actn_url =  Yii::app()->createUrl('/admin/suppliersDirectory/create/');
+
+        if ($model->ID_FOURNISSEUR) {
+            $actn_url = Yii::app()->createUrl('/admin/suppliersDirectory/update', array('id' => $model->ID_FOURNISSEUR));
+        } else {
+            $actn_url = Yii::app()->createUrl('/admin/suppliersDirectory/create/');
         }
         //check if session exists
         if (Yii::app()->user->hasState("scountry")) {
@@ -29,45 +26,58 @@
         $suppliertypes = CHtml::listData(SupplierType::model()->findAll(), 'ID_TYPE_FOURNISSEUR', 'TYPE_FOURNISSEUR_FR');
         $country = Myclass::getallcountries();
         $regions = Myclass::getallregions($model->country);
-        $cities = Myclass::getallcities($model->region);        
-        $archivecats = CHtml::listData(ArchiveCategory::model()->findAll(array("order"=>'NOM_CATEGORIE_FR')), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
-       
-        $ficherid    = $model->iId_fichier;
-        $categoryid  = 0;     
+        $cities = Myclass::getallcities($model->region);
+        $archivecats = CHtml::listData(ArchiveCategory::model()->findAll(array("order" => 'NOM_CATEGORIE_FR')), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
+
+        $ficherid = $model->iId_fichier;
+        $categoryid = 0;
         $ficherimage = '';
-        if($ficherid>0)
-        {
-           $fichres = ArchiveFichier::model()->find("ID_FICHIER=$ficherid"); 
-           $categoryid  = $fichres->ID_CATEGORIE;     
-           $ficherfile = $fichres->FICHIER;    
-          // $fileurl     =  $themeUrl.'/img/archivage/'.$categoryid.'/'.$ficherfile; 
-           $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$categoryid."/".$ficherfile);
-          
-           if (!file_exists(YiiBase::getPathOfAlias('webroot').'/uploads/archivage/'.$categoryid.'/'.$ficherfile))
-            {
-                $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/noimage.png");    
-            }  
-        }else
-        {
-            $fileurl     = "javascript:void(0);";
-        } 
-        
-        $paymentcounts = 0;
-        if($model->ID_FOURNISSEUR)
-        {  
-            $paymentcounts  = PaymentTransaction::model()->count("NOMTABLE='suppliers' AND user_id=".$model->ID_FOURNISSEUR);
+        if ($ficherid > 0) {
+            $fichres = ArchiveFichier::model()->find("ID_FICHIER=$ficherid");
+            $categoryid = $fichres->ID_CATEGORIE;
+            $ficherfile = $fichres->FICHIER;
+            // $fileurl     =  $themeUrl.'/img/archivage/'.$categoryid.'/'.$ficherfile; 
+            $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/" . $categoryid . "/" . $ficherfile);
+
+            if (!file_exists(YiiBase::getPathOfAlias('webroot') . '/uploads/archivage/' . $categoryid . '/' . $ficherfile)) {
+                $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/noimage.png");
+            }
+        } else {
+            $fileurl = "javascript:void(0);";
         }
-        
+
+        $paymentcounts = 0;
+        if ($model->ID_FOURNISSEUR) {
+            $paymentcounts = PaymentTransaction::model()->count("NOMTABLE='suppliers' AND user_id=" . $model->ID_FOURNISSEUR);
+        }
         ?>
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active"><a id="a_tab_1" href="#tab_1" data-toggle="tab">Renseignements généraux</a></li>
-                <li><a id="a_tab_2" href="#tab_2" <?php if(Yii::app()->user->hasState("secondtab")){ echo 'data-toggle="tab"';}elseif($model->ID_FOURNISSEUR){ echo 'data-toggle="tab"';} ?>>Sélection des produits</a></li>
-                <li><a id="a_tab_3" href="#tab_3" <?php if(Yii::app()->user->hasState("thirdtab")){ echo 'data-toggle="tab"';}elseif($model->ID_FOURNISSEUR){ echo 'data-toggle="tab"';} ?>>Sélection des marques</a></li>
-                <li><a id="a_tab_4" href="#tab_4" <?php if(Yii::app()->user->hasState("fourthtab")){ echo 'data-toggle="tab"';}elseif($model->ID_FOURNISSEUR){ echo 'data-toggle="tab"';} ?>>Subscription Payment</a></li>
-                <?php if($paymentcounts>0){?>
-                <li><a id="a_tab_5" href="#tab_5" data-toggle="tab">Payment Transactions</a></li>
-                <?php }?>
+                <li><a id="a_tab_2" href="#tab_2" <?php
+                    if (Yii::app()->user->hasState("secondtab")) {
+                        echo 'data-toggle="tab"';
+                    } elseif ($model->ID_FOURNISSEUR) {
+                        echo 'data-toggle="tab"';
+                    }
+                    ?>>Sélection des produits</a></li>
+                <li><a id="a_tab_3" href="#tab_3" <?php
+                    if (Yii::app()->user->hasState("thirdtab")) {
+                        echo 'data-toggle="tab"';
+                    } elseif ($model->ID_FOURNISSEUR) {
+                        echo 'data-toggle="tab"';
+                    }
+                    ?>>Sélection des marques</a></li>
+                <li><a id="a_tab_4" href="#tab_4" <?php
+                    if (Yii::app()->user->hasState("fourthtab")) {
+                        echo 'data-toggle="tab"';
+                    } elseif ($model->ID_FOURNISSEUR) {
+                        echo 'data-toggle="tab"';
+                    }
+                    ?>>Subscription Payment</a></li>
+                    <?php if ($paymentcounts > 0) { ?>
+                    <li><a id="a_tab_5" href="#tab_5" data-toggle="tab">Payment Transactions</a></li>
+                <?php } ?>
             </ul>
 
             <div class="tab-content">                
@@ -75,12 +85,12 @@
                     <?php
                     $form = $this->beginWidget('CActiveForm', array(
                         'id' => 'suppliers-directory-form',
-                        'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'), 
-                        'action' => $actn_url ,
+                        'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'),
+                        'action' => $actn_url,
                         'clientOptions' => array(
                             'validateOnSubmit' => true,
                         ),
-                       'enableAjaxValidation' => true,
+                        'enableAjaxValidation' => true,
                     ));
                     ?>
                     <div class="box box-primary">                        
@@ -104,7 +114,7 @@
                                 <div class="form-group">                                   
                                     <?php echo $form->labelEx($model, 'ID_CLIENT', array()); ?>                                                            
                                     <?php echo $form->textField($model, 'ID_CLIENT', array('class' => 'form-control', 'size' => 10, 'maxlength' => 10)); ?>
-                                    <?php //echo $form->error($umodel, 'USR'); ?>      
+                                    <?php //echo $form->error($umodel, 'USR');  ?>      
                                     <?php echo $form->error($model, 'ID_CLIENT'); ?>
                                 </div>
 
@@ -172,16 +182,16 @@
 
                                 <div class="form-group">
                                     <?php echo $form->labelEx($model, 'archivecat', array()); ?>
-                                    <?php echo $form->dropDownList($model, 'archivecat', $archivecats, array('class' => 'form-control','options' => array($categoryid => array('selected'=>true)))); ?>                          
+                                    <?php echo $form->dropDownList($model, 'archivecat', $archivecats, array('class' => 'form-control', 'options' => array($categoryid => array('selected' => true)))); ?>                          
                                     <?php echo $form->error($model, 'archivecat'); ?>
 
                                 </div>
 
                                 <div class="form-group">
-                                    <?php $fichercats = array("0"=> "Aucune");?>
+                                    <?php $fichercats = array("0" => "Aucune"); ?>
                                     <?php echo $form->labelEx($model, 'iId_fichier', array()); ?>                                   
-                                    <?php echo $form->dropDownList($model, 'iId_fichier', $fichercats, array('class' => 'form-control','options' => array($ficherid => array('selected'=>true)))); ?>    
-                                    <a href="<?php echo $fileurl;?>" class="viewficherfile"><img src="<?php echo $themeUrl.'/img/preview.gif'; ?>"></a>
+                                    <?php echo $form->dropDownList($model, 'iId_fichier', $fichercats, array('class' => 'form-control', 'options' => array($ficherid => array('selected' => true)))); ?>    
+                                    <a href="<?php echo $fileurl; ?>" class="viewficherfile"><img src="<?php echo $themeUrl . '/img/preview.gif'; ?>"></a>
                                     <?php echo $form->error($model, 'iId_fichier'); ?>
                                 </div>
 
@@ -196,22 +206,26 @@
                                     <?php echo $form->textField($model, 'TEL_SECONDAIRE', array('class' => 'form-control', 'size' => 20, 'maxlength' => 20)); ?>
                                     <?php echo $form->error($model, 'TEL_SECONDAIRE'); ?>
                                 </div>
-                                
+
                                 <div class="form-group"> 
                                     <?php echo $form->labelEx($model, 'pfile', array()); ?>                  
                                     <?php echo $form->fileField($model, 'pfile'); ?>                         
                                     <?php echo $form->error($model, 'pfile'); ?>                                    
                                 </div>
-                                <?php if($model->proof_file!='')
-                                {
-                                     $file_url  = Yii::app()->getBaseUrl(true).'/uploads/user_proofs/'.$model->proof_file; 
+                                <?php
+                                if ($model->proof_file != '') {
+                                    $file_url = Yii::app()->getBaseUrl(true) . '/uploads/user_proofs/' . $model->proof_file;
                                     ?>   
-                                <div class="form-group">    
-                                     <a href="<?php echo $file_url;?>" target="_blank">Click to view the proof</a>                                    
-                                 </div>
-                                <?php                 
-                                }?>
-                                
+                                    <div class="form-group">    
+                                        <a href="<?php echo $file_url; ?>" target="_blank">Click to view the proof</a> 
+                                        &nbsp;&nbsp;
+                                        <?php
+                                        echo CHtml::link('( <i class="fa fa-remove"></i> )', array('/admin/suppliersDirectory/deleteProof', 'id' => $model->ID_FOURNISSEUR, 'file_name' => $model->proof_file), array('confirm' => 'Are you sure?'));
+                                        ?>
+                                    </div>
+                                <?php }
+                                ?>
+
                                 <div class="box-header">
                                     <h3 class="box-title">Visualisation</h3>
                                 </div>
@@ -220,14 +234,14 @@
                                         <?php echo $form->labelEx($model, 'bAfficher_site', array()); ?>                                    
                                         <?php echo $form->radioButtonList($model, 'bAfficher_site', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
                                     </div>
-<!--                                      <div class="form-group">
-                                        <?php //echo $form->labelEx($umodel, 'MUST_VALIDATE', array()); ?>      
-                                        <?php //echo $form->radioButtonList($umodel, 'MUST_VALIDATE', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' ')); ?> 
-                                    </div>-->
-                                    <?php  //echo $form->hiddenField($umodel,'bSubscription_envision');?>
-                                    <?php  //echo $form->hiddenField($umodel,'bSubscription_envue');?>
-                                    <?php  //echo $form->hiddenField($umodel,'ABONNE_MAILING');?>
-                                    <?php  //echo $form->hiddenField($umodel,'ABONNE_PROMOTION');?>
+                                    <!--                                      <div class="form-group">
+                                    <?php //echo $form->labelEx($umodel, 'MUST_VALIDATE', array()); ?>      
+                                    <?php //echo $form->radioButtonList($umodel, 'MUST_VALIDATE', array('1' => 'Oui', '0' => 'Non'), array('separator' => ' '));  ?> 
+                                                                        </div>-->
+                                    <?php //echo $form->hiddenField($umodel,'bSubscription_envision');  ?>
+                                    <?php //echo $form->hiddenField($umodel,'bSubscription_envue');  ?>
+                                    <?php //echo $form->hiddenField($umodel,'ABONNE_MAILING');  ?>
+                                    <?php //echo $form->hiddenField($umodel,'ABONNE_PROMOTION');  ?>
                                 </div>    
                             </div>
                         </div>
@@ -338,25 +352,25 @@
                     <?php $this->endWidget(); ?>
                 </div>
                 <div class="tab-pane" id="tab_2">
-                    <?php                  
-                        $this->renderPartial('_section_products_form', array('model' => $model, 'form' => $form));                   
+                    <?php
+                    $this->renderPartial('_section_products_form', array('model' => $model, 'form' => $form));
                     ?>
                 </div>
                 <div class="tab-pane" id="tab_3">
-                    <?php   
-                        $this->renderPartial('_products_marques_form', array('model' => $model, 'form' => $form , 'data_products'=>$data_products));                    
+                    <?php
+                    $this->renderPartial('_products_marques_form', array('model' => $model, 'form' => $form, 'data_products' => $data_products));
                     ?>
                 </div>  
-                
-                 <div class="tab-pane" id="tab_4">
-                    <?php   
-                        $this->renderPartial('_payment_form', array('model' => $model, 'form' => $form , 'data_products'=>$data_products , 'pmodel'=>$pmodel));                    
+
+                <div class="tab-pane" id="tab_4">
+                    <?php
+                    $this->renderPartial('_payment_form', array('model' => $model, 'form' => $form, 'data_products' => $data_products, 'pmodel' => $pmodel));
                     ?>
                 </div>  
-                
-                 <div class="tab-pane" id="tab_5">
-                    <?php   
-                        $this->renderPartial('_payment_transactions', array('model' => $model, 'form' => $form , 'data_products'=>$data_products , 'pmodel'=>$pmodel));                    
+
+                <div class="tab-pane" id="tab_5">
+                    <?php
+                    $this->renderPartial('_payment_transactions', array('model' => $model, 'form' => $form, 'data_products' => $data_products, 'pmodel' => $pmodel));
                     ?>
                 </div>  
 
@@ -375,15 +389,14 @@ $ajaxFicherUrl = Yii::app()->createUrl('/admin/suppliersDirectory/getfichers');
 $ajaxFetchimage = Yii::app()->createUrl('/admin/suppliersDirectory/getficherimage');
 $jsoncde = array();
 
- if (Yii::app()->user->hasState("product_ids")) 
- {     
-      $sess_product_ids = Yii::app()->user->getState("product_ids");     
-      $jsoncde = json_encode($sess_product_ids);
- }                
+if (Yii::app()->user->hasState("product_ids")) {
+    $sess_product_ids = Yii::app()->user->getState("product_ids");
+    $jsoncde = json_encode($sess_product_ids);
+}
 
 $ajaxproducts = Yii::app()->createUrl('/admin/suppliersDirectory/getproducts');
 
-$pay_type = isset($pmodel->pay_type)?$pmodel->pay_type:1;
+$pay_type = isset($pmodel->pay_type) ? $pmodel->pay_type : 1;
 $js = <<< EOD
     $(document).ready(function(){
    

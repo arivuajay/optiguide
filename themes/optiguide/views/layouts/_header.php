@@ -51,9 +51,6 @@ if (!Yii::app()->user->isGuest) {
                         ?>
                     </li> 
                     <li>
-                        <?php echo CHtml::link(Myclass::t('OGO206', '', 'og'), array('/optiguide/default/classifieds')); ?>
-                    </li>
-                    <li>
                         <?php echo CHtml::link(Myclass::t('OG004', '', 'og'), array('/optiguide/default/contactus')); ?>
                     </li>     
                     <li>

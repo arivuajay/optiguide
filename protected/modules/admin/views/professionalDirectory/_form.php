@@ -199,7 +199,11 @@
                     <div class="form-group"> 
                         <label for="ProfessionalDirectory_prooffile" class="col-sm-2 control-label">&nbsp;</label>
                         <div class="col-sm-5">     
-                            <a href="<?php echo $file_url; ?>" target="_blank">Click to view the proof</a>  
+                            <a href="<?php echo $file_url; ?>" target="_blank">Click to view the proof</a> 
+                            &nbsp;&nbsp;
+                            <?php 
+                            echo CHtml::link('( <i class="fa fa-remove"></i> )', array('/admin/professionalDirectory/deleteProof', 'id' => $model->ID_SPECIALISTE, 'file_name' => $model->proof_file), array('confirm' => 'Are you sure?'));
+                            ?>
                         </div> 
                     </div>
                 <?php }

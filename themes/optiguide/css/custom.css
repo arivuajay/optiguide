@@ -446,3 +446,9 @@ and open the template in the editor.
     color: #555 !important;
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0 !important;
 }
+
+.nav > li > a {
+  display: block;
+  padding: 10px 13px;
+  position: relative;
+}

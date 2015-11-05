@@ -31,7 +31,7 @@ class RetailerDirectoryController extends Controller {
                     'users' => array('*'),
                 ),
                 array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                    'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getgroups','getmessage','deleteMessage', 'updateMessage'),
+                    'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getgroups','getmessage','deleteMessage', 'updateMessage', 'deleteProof'),
                     'users' => array('@'),
                 ),
                 array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -382,6 +382,24 @@ class RetailerDirectoryController extends Controller {
         }
         echo $options;
         exit;
+    }
+    
+    public function actionDeleteProof($id, $file_name) {
+        if (Yii::app()->user->role == 'admin') {
+            $model = $this->loadModel($id);
+            $file_url = dirname(Yii::app()->request->scriptFile) . '/uploads/user_proofs/' . $file_name;
+            if (file_exists($file_url)) {
+                unlink($file_url);
+                $model->proof_file = '';
+                $model->save(false);
+                Yii::app()->user->setFlash('success', 'Proof file deleted successfully!!!');
+                $this->redirect(array('update', 'id' => $id));
+            } else {
+                $this->redirect(array('index'));
+            }
+        } else {
+            $this->redirect(array('index'));
+        }
     }
 
     /**
