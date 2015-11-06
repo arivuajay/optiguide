@@ -510,3 +510,7 @@ a.back {
 .buy_more.price-details{
     font-size: 18px;
 }
+
+.nav-tabs li {
+    padding: unset !important;
+}
