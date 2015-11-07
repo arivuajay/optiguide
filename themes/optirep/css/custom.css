@@ -514,3 +514,11 @@ a.back {
 .nav-tabs li {
     padding: unset !important;
 }
+
+.landing-left.step2 .btn-default {
+  border-radius: 0;
+  color: #333;
+  font-family: "Lato",sans-serif;
+  height: 40px;
+  margin-top: 0;
+}

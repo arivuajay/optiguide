@@ -95,6 +95,26 @@ class RepCredentialController extends ORController {
             $valid = $model->validate();
             $valid = $profile->validate() && $valid;
             if ($valid) {
+                // save the other city informations and get cityid
+                if ($profile->ID_VILLE == "-1") {
+                    $regionid = $profile->region;
+                    $othercity = $profile->autre_ville;
+                    $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $city_exist = CityDirectory::model()->find($condition);
+                    if (!empty($city_exist)) {
+                        $profile->ID_VILLE = $city_exist->ID_VILLE;
+                    } else {
+                        $cinfo = new CityDirectory;
+                        $cinfo->ID_REGION = $regionid;
+                        $cinfo->NOM_VILLE = $othercity;
+                        $cinfo->country = $profile->country;
+                        $cinfo->save(false);
+                        $profile->ID_VILLE = $cinfo->ID_VILLE;
+                    }
+                    $_POST['RepCredentialProfiles']['ID_VILLE'] = $profile->ID_VILLE;
+                    $_POST['RepCredentialProfiles']['autre_ville'] = '';
+                }
+
                 $address = $profile->rep_address;
                 $country = $profile->country;
                 $region = $profile->region;
@@ -106,6 +126,7 @@ class RepCredentialController extends ORController {
                     $_POST['RepCredentialProfiles']['rep_long'] = $exp_latlong[1];
                 }
                 $registration = Yii::app()->session['registration'];
+
                 $registration['step2']['RepCredentials'] = $_POST['RepCredentials'];
                 $registration['step2']['RepCredentialProfiles'] = $_POST['RepCredentialProfiles'];
                 Yii::app()->session['registration'] = $registration;
@@ -375,6 +396,24 @@ class RepCredentialController extends ORController {
             $valid = $profile->validate() && $valid;
 
             if ($valid) {
+                // save the other city informations and get cityid
+                if ($profile->ID_VILLE == "-1") {
+                    $regionid = $profile->region;
+                    $othercity = $profile->autre_ville;
+                    $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $city_exist = CityDirectory::model()->find($condition);
+                    if (!empty($city_exist)) {
+                        $profile->ID_VILLE = $city_exist->ID_VILLE;
+                    } else {
+                        $cinfo = new CityDirectory;
+                        $cinfo->ID_REGION = $regionid;
+                        $cinfo->NOM_VILLE = $othercity;
+                        $cinfo->country = $profile->country;
+                        $cinfo->save(false);
+                        $profile->ID_VILLE = $cinfo->ID_VILLE;
+                    }
+                }
+                
                 $address = $profile->rep_address;
                 $country = $profile->country;
                 $region = $profile->region;

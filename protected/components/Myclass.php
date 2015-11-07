@@ -2,7 +2,7 @@
 
 class Myclass extends CController {
 
-    const TAX = 5;
+    const TAX = 5; // In Percentage
 
     public static function encrypt($value) {
         return hash("sha512", $value);
@@ -382,7 +382,8 @@ class Myclass extends CController {
         $subscription_type_id = $findSubscriptionType['rep_subscription_type_id'];
         $per_account_price = $findSubscriptionType['rep_subscription_price'];
         $total_price = $no_of_accounts_purchased * $per_account_price;
-        $tax = self::TAX;
+        $tax_percentage = self::TAX;
+        $tax = $total_price * $tax_percentage / 100;
         $grand_total = $total_price + $tax;
         $result = array();
         $result['subscription_type_id'] = $subscription_type_id;
@@ -408,7 +409,8 @@ class Myclass extends CController {
             $offer_price = 0;
             $total = $total_month_price;
         }
-        $tax = self::TAX;
+        $tax_percentage = self::TAX;
+        $tax = $total * $tax_percentage / 100;
         $grand_total = $total + $tax;
 
         $result = array();
@@ -432,7 +434,8 @@ class Myclass extends CController {
 
         $total_month_price = $no_of_accounts_purchase * $per_account_price * $months;
         $total_price = $total_month_price;
-        $tax = self::TAX;
+        $tax_percentage = self::TAX;
+        $tax = $total_price * $tax_percentage / 100;
         $grand_total = $total_price + $tax;
 
         $result = array();

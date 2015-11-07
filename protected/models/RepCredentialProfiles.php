@@ -27,6 +27,7 @@ class RepCredentialProfiles extends CActiveRecord {
     public $country;
     public $region;
     public $image;
+    public $autre_ville;
 
     /**
      * @return string the associated database table name
@@ -43,14 +44,15 @@ class RepCredentialProfiles extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('rep_profile_firstname, rep_profile_email, country, region, ID_VILLE, rep_address', 'required', 'on' => 'step2'),
+            array('autre_ville', 'checkOtherCityChoosen'),
             array('rep_profile_firstname, rep_profile_email, country, region, ID_VILLE, rep_address', 'required', 'on' => 'update'),
             array('rep_profile_email', 'email'),
             array('rep_credential_id, country, region, ID_VILLE', 'numerical', 'integerOnly' => true),
             array('rep_profile_firstname, rep_profile_email, rep_profile_phone, rep_address, rep_company, rep_territories, rep_brands', 'length', 'max' => 255),
             array('rep_profile_lastname', 'length', 'max' => 100),
             array('rep_profile_phone', 'phoneNumber'),
-            array('country, region, rep_lat, rep_long, rep_company, rep_profile_picture, rep_territories, rep_brands', 'safe'),
-            array('image', 'file', 'types'=>'jpg, gif, png, jpeg', 'allowEmpty'=>true ,'safe' => false),
+            array('country, region, rep_lat, rep_long, rep_company, rep_profile_picture, rep_territories, rep_brands, autre_ville', 'safe'),
+            array('image', 'file', 'types' => 'jpg, gif, png, jpeg', 'allowEmpty' => true, 'safe' => false),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('rep_profile_id, rep_credential_id, rep_profile_firstname, rep_profile_lastname, rep_profile_email, rep_profile_phone, ID_VILLE, rep_address, created_at, modified_at', 'safe', 'on' => 'search'),
@@ -79,6 +81,13 @@ class RepCredentialProfiles extends CActiveRecord {
         }
     }
 
+    public function checkOtherCityChoosen($attributes, $params) {
+        if ($this->ID_VILLE == -1) {
+            if ($this->autre_ville == '')
+                $this->addError($attributes, 'City cannot be blank.');
+        }
+    }
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -100,6 +109,7 @@ class RepCredentialProfiles extends CActiveRecord {
             'rep_brands' => Myclass::t('OR688', '', 'or'),
             'created_at' => Myclass::t('OR660', '', 'or'),
             'modified_at' => Myclass::t('OR661', '', 'or'),
+            'autre_ville' => Myclass::t('OG172')
         );
     }
 

@@ -31,7 +31,10 @@
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <?php
                         $form = $this->beginWidget('CActiveForm', array(
-                            'htmlOptions' => array('role' => 'form'),
+                            'htmlOptions' => array(
+                                'role' => 'form',
+                                "autocomplete" => "off"
+                            ),
                         ));
                         ?>
                         <div class="row">
@@ -65,8 +68,8 @@
 
                             <div class="col-xs-12 col-sm-4 col-md-6 col-lg-4"> 
                                 <?php echo $form->labelEx($model_paypaladvance, 'cvv2'); ?>
-                                <br/> 
-                                <a href="#">What is this ?</a>
+                                <!--                                <br/> 
+                                                                <a href="#">What is this ?</a>-->
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-2 col-lg-2"> 
                                 <?php echo $form->textField($model_paypaladvance, 'cvv2', array('class' => "form-field")); ?>

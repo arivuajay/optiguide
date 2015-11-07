@@ -1,5 +1,5 @@
 <?php $this->renderPartial('_register_steps', array('step' => $step)); ?>
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 landing-left">  
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 landing-left step2">  
     <h2> <?php echo Myclass::t('OR549', '', 'or'); ?> </h2>
     <?php
     $form = $this->beginWidget('CActiveForm', array(
@@ -69,6 +69,11 @@
                 <?php echo $form->labelEx($profile, 'ID_VILLE'); ?>
                 <?php echo $form->dropDownList($profile, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
             </div>
+            
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3" id="other_city" style="display:none;">
+                <?php echo $form->labelEx($profile, 'autre_ville'); ?>
+                <?php echo $form->textField($profile, 'autre_ville', array('class' => 'form-field')); ?>  
+            </div>
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <?php echo $form->labelEx($model, 'no_of_months'); ?>
@@ -105,6 +110,8 @@ $ajaxgetlocation = Yii::app()->createUrl('/optirep/repCredential/generatelatlong
 $cs = Yii::app()->getClientScript();
 $cs_pos_end = CClientScript::POS_END;
 $cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
+
+$ctyval = isset($profile->ID_VILLE) ? $profile->ID_VILLE : '';
 
 $js = <<< EOD
     $(document).ready(function(){
@@ -181,7 +188,23 @@ $js = <<< EOD
                 }        
             }
         });
-     });        
+     });   
+         
+    var ctyval = "{$ctyval}";
+    if(ctyval=="-1")
+    {    
+        $("#other_city").show();
+    }     
+            
+    $("#RepCredentialProfiles_ID_VILLE").change(function(){
+        var id=$(this).val();
+            
+        $("#other_city").hide();
+        if(id=="-1")
+        {    
+            $("#other_city").show();
+        }    
+    }); 
                 
 });
 EOD;

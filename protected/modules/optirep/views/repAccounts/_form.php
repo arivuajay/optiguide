@@ -64,6 +64,11 @@ $cities = Myclass::getallcities($profile->region);
             <?php echo $form->labelEx($profile, 'ID_VILLE'); ?>
             <?php echo $form->dropDownList($profile, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
         </div>
+        
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" id="other_city" style="display:none;">
+            <?php echo $form->labelEx($profile, 'autre_ville'); ?>
+            <?php echo $form->textField($profile, 'autre_ville', array('class' => 'form-field')); ?>  
+        </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php
@@ -84,6 +89,8 @@ $cities = Myclass::getallcities($profile->region);
 <?php
 $ajaxRegionUrl = Yii::app()->createUrl('/optirep/repCredential/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/optirep/repCredential/getcities');
+
+$ctyval = isset($profile->ID_VILLE) ? $profile->ID_VILLE : '';
 
 $js = <<< EOD
     $(document).ready(function(){
@@ -116,6 +123,22 @@ $js = <<< EOD
                 }
              });
 
+        });
+                
+        var ctyval = "{$ctyval}";
+        if(ctyval=="-1")
+        {    
+            $("#other_city").show();
+        }     
+
+        $("#RepCredentialProfiles_ID_VILLE").change(function(){
+            var id=$(this).val();
+
+            $("#other_city").hide();
+            if(id=="-1")
+            {    
+                $("#other_city").show();
+            }    
         });
 });
 EOD;
