@@ -100,11 +100,11 @@
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="row">
-                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
                     <?php echo $form->labelEx($profile, 'rep_brands'); ?>
                     <input type="text" class="search form-field" placeholder="Search brands">
                 </div>
-                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 brand_search">
+                <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3 brand_search">
                     <a href="javascript:void(0)" class="search_link btn btn-primary">
                         <?php echo Myclass::t('OR554', '', 'or'); ?>
                     </a>
