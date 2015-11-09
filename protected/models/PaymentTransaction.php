@@ -167,8 +167,8 @@ class PaymentTransaction extends CActiveRecord {
             'criteria' => $criteria,
         ));
     }
-    
-     public function search_supplier($id) {
+
+    public function search_supplier($id) {
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
@@ -256,6 +256,13 @@ class PaymentTransaction extends CActiveRecord {
             $rep['rep_credential_profile'] = $user_info['step2']['RepCredentialProfiles'];
         }
         return $rep;
+    }
+
+    public function getTransactionPayTypeName($pay_type) {
+        if ($pay_type == 1)
+            return "Standard Paypal";
+        elseif ($pay_type == 2)
+            return "Advance Paypal";
     }
 
 }

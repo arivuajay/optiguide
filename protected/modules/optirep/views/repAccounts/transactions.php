@@ -11,7 +11,10 @@
                     ),
                     'item_name',
                     'payment_status',
-                    'payer_email',
+                    array(
+                        'name' => 'pay_type',
+                        'value' => '$data->getTransactionPayTypeName($data->pay_type)'
+                    ),
                     'txn_id',
                     array(
                         'name' => 'total_price',
@@ -19,7 +22,7 @@
                     ),
                     'created_at',
                 );
-                $this->widget('zii.widgets.grid.CGridView', array(
+                    $this->widget('zii.widgets.grid.CGridView', array(
                     'dataProvider' => $model,
                     'itemsCssClass' => 'table table-bordered',
                     'columns' => $gridColumns
