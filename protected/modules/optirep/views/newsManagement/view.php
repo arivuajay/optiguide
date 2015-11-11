@@ -11,6 +11,7 @@
                         </h4> 
                         <div class="clearfix"></div>
                         <?php
+                        $img_url = '';
                         if ($model['ID_FICHIER'] > 0) {
                             $pk = $model['ID_FICHIER'];
                             $imageresult = ArchiveFichier::model()->findByPk($pk);
@@ -32,7 +33,33 @@
                         <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/newsManagement'), array("class" => "pull-left")); ?> </div>  
                     </div>
                 </div>
+                <?php
+                $share_url = Yii::app()->createAbsoluteUrl('/optiguide/newsManagement/view', array('id' => $model['ID_NOUVELLE']));
+                $share_title = $model['TITRE'];
+                $share_summary = $model['SYNOPSYS'];
+                $share_image = $img_url;
+                ?>
+
+                <span class='st_facebook_large' displayText='Facebook' st_url="<?php echo $share_url ?>" st_title="<?php echo $share_title ?>" st_summary="<?php echo $share_summary ?>" st_image="<?php echo $share_image ?>"></span>
+
+                <span class='st_twitter_large' displayText='Tweet' st_url="<?php echo $share_url ?>" st_title="<?php echo $share_title ?>" st_summary="<?php echo $share_summary ?>" st_image="<?php echo $share_image ?>"></span>
+
+                <span class='st_linkedin_large' displayText='LinkedIn' st_url="<?php echo $share_url ?>" st_title="<?php echo $share_title ?>" st_summary="<?php echo $share_summary ?>" st_image="<?php echo $share_image ?>"></span>
+
+                <span class='st_pinterest_large' displayText='Pinterest' st_url="<?php echo $share_url ?>" st_title="<?php echo $share_title ?>" st_summary="<?php echo $share_summary ?>" st_image="<?php echo $share_image ?>"></span>
+
+                <span class='st_email_large' displayText='Email' st_url="<?php echo $share_url ?>" st_title="<?php echo $share_title ?>" st_summary="<?php echo $share_summary ?>" st_image="<?php echo $share_image ?>"></span>
+
+                <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+                <script type="text/javascript">
+                    stLight.options({
+                        publisher: "db446c76-416b-452e-8de5-7bdc02fae4d5",
+                        doNotHash: false,
+                        doNotCopy: false,
+                        hashAddressBar: false
+                    });
+                </script>
             </div>
         </div>
     </div>    
-</div>    
+</div>   
