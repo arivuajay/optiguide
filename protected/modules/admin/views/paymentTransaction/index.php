@@ -43,7 +43,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                          if($data->pay_type == 1) 
                              echo "Standard Paypal";
                          elseif($data->pay_type == 2) 
-                             echo "Advance Paypal";
+                             echo "Credit Card";
                          elseif($data->pay_type == 3) 
                              echo "Cheque";
                          elseif($data->pay_type == 4) 

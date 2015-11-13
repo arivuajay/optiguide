@@ -9,6 +9,46 @@ $this->breadcrumbs = array(
 );
 $rep_user_detail = PaymentTransaction::model()->getTransactionUserDetails($model->id);
 
+if($model->pay_type=="1")   
+{ 
+// PAYPAL    
+    $attrbs =    array(				
+                        'item_name',
+                        'invoice_number',
+                        'subscription_price',
+                        'tax',
+                        'total_price',
+                        'txn_id',
+                         array('name' => 'payment_status',
+                            'type' => 'raw',
+                            'value' => (($model->payment_status === "Pending") ? '<span class="label label-warning">Pending</span>' : '<span class="label label-success">Completed</span>'),
+                        ),
+                        'payer_email',
+                        'verify_sign',		
+                        'payment_type',
+                        'receiver_email',
+                        'txn_type',
+                        'created_at',
+                );
+}elseif($model->pay_type=="2")
+{
+// PAYPAL  Advance
+    $attrbs =    array(				
+                        'item_name',                       		
+                        'invoice_number',
+                        'subscription_price',
+                        'tax',
+                        'total_price',
+                        'txn_id',
+                         array('name' => 'payment_status',
+                            'type' => 'raw',
+                            'value' => (($model->payment_status === "Pending") ? '<span class="label label-warning">Pending</span>' : '<span class="label label-success">Completed</span>'),
+                        ),
+                        'payment_type',
+                        'created_at',
+		);
+    
+}
 ?>
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -53,24 +93,7 @@ $rep_user_detail = PaymentTransaction::model()->getTransactionUserDetails($model
                 $this->widget('zii.widgets.CDetailView', array(
                     'data' => $model,
                     'htmlOptions' => array('class' => 'table table-striped table-bordered'),
-                    'attributes' => array(
-                        'item_name',
-                        'invoice_number',
-                        'total_price',
-                        'subscription_price',
-                        'tax',
-                        'txn_id',
-                        array('name' => 'payment_status',
-                            'type' => 'raw',
-                            'value' => (($model->payment_status === "Pending") ? '<span class="label label-warning">Pending</span>' : '<span class="label label-success">Completed</span>'),
-                        ),
-                        'payer_email',
-                        'verify_sign',
-                        'payment_type',
-                        'receiver_email',
-                        'txn_type',
-                        'created_at',
-                    ),
+                    'attributes' => $attrbs
                 ));
                 ?>
             </div><!-- /.box-body -->

@@ -45,8 +45,13 @@ class RepStatisticsController extends ORController {
     public function actionPayment() {
         $paypalManager = new Paypal;
         $payment_details = array();
+        
+        $model_paypal = new PaymentTransaction();
+        $model_paypalAdvance = new PaymentTransaction('paypal_advance');
 
-        if (isset($_POST['btnSubmit'])) {
+        if (isset($_POST['btnSubmit'])) {            
+            
+            $pay_type = $_POST['PaymentTransaction']['pay_type'];
 
             $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repStatistics/paypalreturn'));
             $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repStatistics/paypalcancel'));
@@ -85,27 +90,76 @@ class RepStatisticsController extends ORController {
            
             $payment_details['rep_credential_id'] = Yii::app()->user->id;
             $payment_details['rep_user_name']     = Yii::app()->user->rep_username;
-            $payment_details['pay_type'] = '1';
+            $payment_details['pay_type'] = $pay_type;
             $payment_details['subscription_type'] = $_POST['subscription_type'];
             $pdetails = serialize($payment_details);
 
-            $stmodel = new SupplierTemp;
-            $stmodel->paymentdetails = $pdetails;
-            $stmodel->invoice_number = $invoice;
-            $stmodel->save(false);
+            if($pay_type==1)
+            {
+                
+                $stmodel = new SupplierTemp;
+                $stmodel->paymentdetails = $pdetails;
+                $stmodel->invoice_number = $invoice;
+                $stmodel->save(false);
 
-            $paypalManager->addField('item_name', $itemname);
-            $paypalManager->addField('amount', $price);
-            $paypalManager->addField('custom', $invoice);
-            $paypalManager->addField('return', $returnUrl);
-            $paypalManager->addField('cancel_return', $cancelUrl);
-            $paypalManager->addField('notify_url', $notifyUrl);
+                $paypalManager->addField('item_name', $itemname);
+                $paypalManager->addField('amount', $price);
+                $paypalManager->addField('custom', $invoice);
+                $paypalManager->addField('return', $returnUrl);
+                $paypalManager->addField('cancel_return', $cancelUrl);
+                $paypalManager->addField('notify_url', $notifyUrl);
 
-            //$paypalManager->dumpFields();   // for printing paypal form fields
-            $paypalManager->submitPaypalPost();
+                //$paypalManager->dumpFields();   // for printing paypal form fields
+                $paypalManager->submitPaypalPost();
+                
+            } else if($pay_type==2){
+            //Pay by credit card    
+                $model_paypalAdvance->attributes = $_POST['PaymentTransaction'];
+                $valid = $model_paypalAdvance->validate();
+               
+                if ($valid) {
+                    
+                    $paypalAdv = new PaypalAdvance;
+                    $request   = array(
+                        "PARTNER" => $paypalAdv::PARTNER,
+                        "VENDOR" => $paypalAdv::VENDOR,
+                        "USER" => $paypalAdv::USER,
+                        "PWD" => $paypalAdv::PWD,
+                        "TENDER" => "C",
+                        "TRXTYPE" => "S",
+                        "CURRENCY" => "CAD",
+                        "AMT" => $price,
+                        "ACCT" => $model_paypalAdvance->credit_card,
+                        "EXPDATE" => $model_paypalAdvance->exp_month . $model_paypalAdvance->exp_year,
+                        "CVV2" => $model_paypalAdvance->cvv2,
+                    );
+                    
+                     $payment_details['subscriptionprice'] = $price;
+                     $payment_details['itemname'] =  $itemname;
+
+                    //Run request and get the response
+                    $response = $paypalAdv->run_payflow_call($request);
+                    if ($response['RESULT'] == 0 && $response['RESPMSG'] == 'Approved') {
+                        
+                        $this->creditcardnotify($invoice, $response,$payment_details);
+                        
+                        Yii::app()->user->setFlash('success', Myclass::t('OR648', '', 'or'));
+                        $this->redirect(array('payment'));
+                    } else {
+                        Yii::app()->user->setFlash('danger', Myclass::t('OR649', '', 'or'));
+                        $this->redirect(array('payment'));
+                    }
+
+                }
+            }    
+            
+            
         }
 
-        $this->render('payment');
+        $this->render('payment', array(
+            'model_paypal' => $model_paypal,
+            'model_paypaladvance' => $model_paypalAdvance,
+        ));
     }
 
     public function actionPaypalreturn() {
@@ -186,7 +240,7 @@ class RepStatisticsController extends ORController {
                     $ptmodel->receiver_email = $_POST['receiver_email'];
                     $ptmodel->txn_type = $_POST['txn_type'];
                     $ptmodel->item_name = $_POST['item_name'];
-                    $ptmodel->NOMTABLE = 'rep_credentials';
+                    $ptmodel->NOMTABLE = RepCredentials::NAME_TABLE;
                     $ptmodel->expirydate = $pdetails['expirydate'];
                     $ptmodel->invoice_number = $_POST['custom'];
                     $ptmodel->pay_type = $pdetails['pay_type'];
@@ -224,6 +278,54 @@ class RepStatisticsController extends ORController {
             }
         }
     }
+    
+    protected  function creditcardnotify($invoice,$response,$pdetails)
+    {
+        
+        // Set the expiry date
+        $repid = $pdetails['rep_credential_id'];
+        $get_repinfos = RepCredentials::model()->findByPk($repid);
+        $get_repinfos->stat_expiry_date = $pdetails['expirydate'];
+        $get_repinfos->save(false);
+
+         $ptmodel = new PaymentTransaction;
+        $ptmodel->user_id = $repid;
+        $ptmodel->total_price = $pdetails['subscriptionprice'];
+        $ptmodel->subscription_price = $pdetails['subscriptionprice'];
+        $ptmodel->payment_status = 'Completed';
+        $ptmodel->txn_id = $response['PNREF'];
+        $ptmodel->payment_type = 'ppa';
+        $ptmodel->item_name = $pdetails['itemname'];
+        $ptmodel->NOMTABLE = RepCredentials::NAME_TABLE;
+        $ptmodel->invoice_number = $invoice;
+        $ptmodel->pay_type = '2';
+        $ptmodel->subscription_type = $pdetails['subscription_type'];
+        $ptmodel->save(false);
+                
+        $repname = $pdetails['rep_user_name'];  
+
+        /* Send mail to admin for confirmation */
+        $mail = new Sendmail();
+
+        $invoice_url   = ADMIN_URL . '/admin/paymentTransaction/repview/id/' . $ptmodel->id;
+        $enc_url2      = Myclass::refencryption($invoice_url);
+        $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
+
+        $subject = SITENAME . "- Statistics subscription notification with invoice details - " . $repname;
+        $trans_array = array(
+        "{NAME}" => $repname,
+        "{UTYPE}" => 'Opti-Rep',               
+        "{item_name}" => $pdetails['itemname'],
+        "{total_price}" => $pdetails['subscriptionprice'],
+        "{payment_status}" => 'Completed',
+        "{txn_id}" => $pdetails['PNREF'],
+        "{INVOICEURL}" => $nextstep_url2
+        );
+        
+        $message = $mail->getMessage('optirep_stats_subscription', $trans_array);
+        $mail->send(ADMIN_EMAIL, $subject, $message);
+        
+    }        
 
     //Particular Rep Logged in Activities
     public function actionIndex() {

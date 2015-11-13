@@ -522,3 +522,19 @@ a.back {
   height: 40px;
   margin-top: 0;
 }
+
+.stats-table th{
+    background: #f0f0f0 none repeat scroll 0 0;    
+}
+
+.nav > li > a {
+    display: block;
+    padding: 10px 10px;
+    position: relative;
+}
+
+.fr .nav > li > a {
+    display: block;
+    padding: 10px 5px;
+    position: relative;
+}

@@ -32,7 +32,7 @@ $this->breadcrumbs = array(
                 'name' => 'pay_type',
                 'type' => 'raw',
                 'value' => function($data) {
-                    echo ($data->pay_type == 1) ? "Paypal" : "Strype";
+                    echo ($data->pay_type == 1) ? "Paypal" : "Credit Card";
                 },
                 'filter' => false,
             ),
