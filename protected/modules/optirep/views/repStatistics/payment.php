@@ -16,18 +16,18 @@
     ?>
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 stats-tips">
-            <p>Here the following features are you get after the payment.</p>
-            <b>For representative user</b>
+            <p><?php echo Myclass::t('OR724', '', 'or') ?></p>
+            <b><?php echo Myclass::t('OR725', '', 'or') ?></b>
             <ul>
-                <li><i class="fa fa-check-square-o"></i> Track your own login statistics.</li>
+                <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR726', '', 'or') ?></li>
             </ul>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 stats-tips">
-            <b>For admin user</b>
+            <b><?php echo Myclass::t('OR727', '', 'or') ?></b>
             <ul>
-                <li><i class="fa fa-check-square-o"></i> Track your own login statistics.</li>
-                <li><i class="fa fa-check-square-o"></i> Track your owned users login statistics.</li>
-                <li><i class="fa fa-check-square-o"></i> Track your owned users viewed the user profiles (professional / retailer).</li>
+                <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR728', '', 'or') ?></li>
+                <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR729', '', 'or') ?></li>
+                <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR730', '', 'or') ?></li>
             </ul>
         </div>
     </div>            
@@ -152,7 +152,7 @@
                     <div class="table-responsive">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered stats-table">
                             <tr>
-                                <th>Statistics expiry date</th>
+                                <th><?php echo Myclass::t('OR731', '', 'or') ?></th>
                             </tr>
                             <tr>
                                 <td><?php echo ($statexpirydate=="0000-00-00 00:00:00")?"-":  Myclass::dateFormat($statexpirydate); ?></td>

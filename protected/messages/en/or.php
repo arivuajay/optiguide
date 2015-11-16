@@ -268,4 +268,25 @@ return array(
     'OR711' => 'Old Password',
     'OR712' => 'New Password',
     'OR713' => 'Confirm Password',
+    //Others
+    'OR714' => 'Home',
+    'OR715' => 'About',
+    'OR716' => 'Legend',
+    'OR717' => 'Welcome',
+    'OR718' => 'Professionals',
+    'OR719' => 'Suppliers',
+    'OR720' => 'Retailers',
+    'OR721' => 'Search brands',
+    'OR722' => 'City cannot be blank.',
+    'OR723' => 'News',
+    //Statistics
+    'OR724' => 'Here the following features are you get after the payment.',
+    'OR725' => 'For representative user',
+    'OR726' => 'Track your own login statistics.',
+    'OR727' => 'For admin user',
+    'OR728' => 'Track your own login statistics.',
+    'OR729' => 'Track your owned users login statistics.',
+    'OR730' => 'Track your owned users viewed the user profiles (professional / retailer).',
+    'OR731' => 'Statistics expiry date'
+    
 );

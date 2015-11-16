@@ -203,7 +203,7 @@ return array(
     'OR656' => 'détails de la transaction',
     'OR657' => 'mes stats',
     'OR658' => 'stats paiement / infos',
-    'OR659' => 'Logout',
+    'OR659' => 'Se déconnecter',
     //models
     'OR660' => 'créé au',
     'OR661' => 'modifié à',
@@ -268,4 +268,25 @@ return array(
     'OR711' => 'Ancien mot de passe',
     'OR712' => 'nouveau mot de passe',
     'OR713' => 'Confirmez le mot de passe',
+    //Others
+    'OR714' => 'Accueil',
+    'OR715' => 'Sur',
+    'OR716' => 'Légende',
+    'OR717' => 'Bienvenue',
+    'OR718' => 'Professionnels',
+    'OR719' => 'Fournisseurs',
+    'OR720' => 'Les détaillants',
+    'OR721' => 'recherche marques',
+    'OR722' => 'Ville ne peut pas être vide.',
+    'OR723' => 'Nouvelles',
+    //Statistics
+    'OR724' => 'Voici les caractéristiques suivantes sont que vous obtenez après le paiement.',
+    'OR725' => 'Pour les utilisateurs de représentant',
+    'OR726' => 'Suivez vos propres statistiques de connexion.',
+    'OR727' => 'Pour l\'utilisateur admin',
+    'OR728' => 'Suivez vos propres statistiques de connexion.',
+    'OR729' => 'Suivez vos utilisateurs appartenant à connecter les statistiques.',
+    'OR730' => 'Suivez vos utilisateurs appartenant consulté les profils d\'utilisateurs ( professionnels / détaillant ).',
+    'OR731' => 'Statistiques de la date d\'expiration'
+    
 );

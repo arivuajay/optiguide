@@ -4,7 +4,7 @@
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
             <div class="inner-container eventslist-cont"> 
-                <h2>  <?php echo CHtml::image("{$this->themeUrl}/images/title_optinews.gif", 'Opti News'); ?></h2>
+                <h2>  <?php echo CHtml::image("{$this->themeUrl}/images/title_optinews.gif", 'Opti '.Myclass::t('OR723', '', 'or')); ?></h2>
                 <div class="search-list">
                     <?php foreach ($model as $news) { ?>
                         <div class="news-thumbs"> 

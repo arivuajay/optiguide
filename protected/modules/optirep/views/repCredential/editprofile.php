@@ -81,7 +81,7 @@
             <?php echo $form->textField($profile, 'autre_ville', array('class' => 'form-field')); ?>  
         </div>
 
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <label class="required" for="#">&nbsp;</label>
             <a class="mapgenrate" href="javascript:void(0);" id="genratemap">
                 <?php echo Myclass::t('OR553', '', 'or'); ?>
@@ -102,7 +102,7 @@
             <div class="row">
                 <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
                     <?php echo $form->labelEx($profile, 'rep_brands'); ?>
-                    <input type="text" class="search form-field" placeholder="Search brands">
+                    <input type="text" class="search form-field" placeholder="<?php echo Myclass::t('OR721', '', 'or'); ?>">
                 </div>
                 <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3 brand_search">
                     <a href="javascript:void(0)" class="search_link btn btn-primary">

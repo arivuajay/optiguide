@@ -2,10 +2,17 @@
     <div class="header-row1"> 
         <div class="container">
             <div class="row"> 
-                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                    <?php echo CHtml::link($displang, 'javascript:void(0);', array('onclick' => "document.getElementById('langform').submit();")); ?>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 flagicons">                 
+                    <?php   
+                    $frimage = CHtml::image($this->themeUrl . '/images/fr.png', 'Translate to FR');
+                    echo CHtml::link($frimage, 'javascript:void(0);', array("id"=>"FR","class"=>"",'onclick' => "document.getElementById('langform').submit();") ); 
+                    echo "&nbsp";
+                    $enimage = CHtml::image($this->themeUrl . '/images/en1.png', 'Translate to En');
+                    echo CHtml::link($enimage, 'javascript:void(0);', array("id"=>"EN","class"=>"",'onclick' => "document.getElementById('langform').submit();")); 
+                    ?>                    
+                    
                 </div>
-                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 col-lg-offset-2 welcome-user">                    
+                <div class="col-xs-8 col-sm-8 col-md-4 col-lg-4 welcome-user">                    
                     <?php 
                     if( Yii::app()->user->rep_role == "single")
                     {                         
@@ -27,10 +34,10 @@
                         
                     }    ?>
                     &nbsp;
-                    Welcome, <?php echo CHtml::link(Yii::app()->user->getState('rep_username'), array('/optirep/repCredential/editprofile')); ?>
+                   <?php echo Myclass::t('OR717', '', 'or');?>, <?php echo CHtml::link(Yii::app()->user->getState('rep_username'), array('/optirep/repCredential/editprofile')); ?>
                 </div>
                 <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2 login"> 
-                    <?php echo CHtml::link('<i class="fa fa-sign-out"></i> Logout', '/optirep/default/logout') ?>
+                    <?php echo CHtml::link('<i class="fa fa-sign-out"></i> '.Myclass::t('OR659', '', 'or'), '/optirep/default/logout') ?>
                 </div>
             </div>
         </div>
@@ -67,9 +74,9 @@
                                     'encodeLabel' => false,
                                     'activateItems' => true,
                                     'items' => array(
-                                        array('label' => 'Home', 'url' => array('/optirep/dashboard'), 'active' => ($_controller == 'default' && $_action == 'index')),
-                                        array('label' => 'About', 'url' => array('/optirep/default/aboutus'), 'active' => ($_controller == 'default' && $_action == 'aboutus')),
-                                        array('label' => 'Legend', 'url' => array('/optirep/default/legend'), 'active' => ($_controller == 'default' && $_action == 'legend')),
+                                        array('label' => Myclass::t('OR714', '', 'or'), 'url' => array('/optirep/dashboard'), 'active' => ($_controller == 'default' && $_action == 'index')),
+                                        array('label' => Myclass::t('OR715', '', 'or'), 'url' => array('/optirep/default/aboutus'), 'active' => ($_controller == 'default' && $_action == 'aboutus')),
+                                        array('label' => Myclass::t('OR716', '', 'or'), 'url' => array('/optirep/default/legend'), 'active' => ($_controller == 'default' && $_action == 'legend')),
                                         array('label' => 'Contact', 'url' => array('/optirep/default/contactus'), 'active' => ($_controller == 'default' && $_action == 'contactus')),
                                     ),
                                     'htmlOptions' => array('class' => 'nav navbar-nav')

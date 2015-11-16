@@ -84,7 +84,7 @@ class RepCredentialProfiles extends CActiveRecord {
     public function checkOtherCityChoosen($attributes, $params) {
         if ($this->ID_VILLE == -1) {
             if ($this->autre_ville == '')
-                $this->addError($attributes, 'City cannot be blank.');
+                $this->addError($attributes, Myclass::t('OR722', '', 'or'));
         }
     }
 
