@@ -25,25 +25,58 @@
             <?php
             }
             
-            if (isset(Yii::app()->user->role) && Yii::app()->user->role == "Professionnels") 
+            if (isset(Yii::app()->user->role)) 
             {
-                 $profil_id = Yii::app()->user->relationid;
-               
-                 // Get professional detail
-                 $prof_query = Yii::app()->db->createCommand() //this query contains all the data
-                ->select('rs.ID_TYPE_SPECIALISTE , rs.ID_VILLE, rr.ID_REGION')
-                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr'))
-                ->where("rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND ID_SPECIALISTE=$profil_id")
-                ->queryRow();
-                 
-                 $ID_TYPE_SPECIALISTE = $prof_query['ID_TYPE_SPECIALISTE'];
-                 $ID_VILLE  = $prof_query['ID_VILLE'];
-                 $ID_REGION = $prof_query['ID_REGION'];
-                 
-                 echo $form->hiddenField($userVote, 'region' , array('value'=>$ID_REGION));
-                 echo $form->hiddenField($userVote, 'ID_VILLE', array('value'=>$ID_VILLE));
-                 echo $form->hiddenField($userVote, 'ID_TYPE_SPECIALISTE' , array('value'=>$ID_TYPE_SPECIALISTE));
-             }
+                $uid   = Yii::app()->user->relationid;
+                $urole = Yii::app()->user->role;
+                
+                if($urole == "Professionnels")
+                {  
+                    // Get professional detail
+                    $result_query = Yii::app()->db->createCommand() //this query contains all the data
+                   ->select('rs.ID_TYPE_SPECIALISTE , rs.ID_VILLE, rr.ID_REGION')
+                   ->from(array('repertoire_specialiste rs', 'repertoire_ville AS rv', 'repertoire_region AS rr'))
+                   ->where("rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND ID_SPECIALISTE=$uid")
+                   ->queryRow();
+
+                    $ID_TYPE_SPECIALISTE = $result_query['ID_TYPE_SPECIALISTE'];
+                    echo $form->hiddenField($userVote, 'ID_TYPE_SPECIALISTE' , array('value'=>$ID_TYPE_SPECIALISTE));
+                    
+                }else if($urole == "Fournisseurs")
+                {                    
+                     //Get supplier informations
+                    $result_query = Yii::app()->db->createCommand()
+                    ->select('f.ID_TYPE_FOURNISSEUR , f.ID_VILLE, rr.ID_REGION')
+                    ->from(array('repertoire_fournisseurs f', 'repertoire_ville AS rv', 'repertoire_region AS rr'))
+                    ->where("f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION and ID_FOURNISSEUR=".$uid)
+                    ->queryRow();
+                    
+                    $ID_TYPE_FOURNISSEUR = $result_query['ID_TYPE_FOURNISSEUR'];
+                    echo $form->hiddenField($userVote, 'ID_TYPE_FOURNISSEUR' , array('value'=>$ID_TYPE_FOURNISSEUR));
+                    
+                }else if($urole == "Detaillants")
+                {  
+                     // Get retailer information
+                    $result_query = Yii::app()->db->createCommand() //this query contains all the data
+                    ->select("rs.ID_RETAILER_TYPE, rs.ID_VILLE, rr.ID_REGION")
+                    ->from(array('repertoire_retailer rs', 'repertoire_ville AS rv', 'repertoire_region AS rr'))
+                    ->where("rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND ID_RETAILER=$uid")
+                    ->queryRow();
+                    
+                    $ID_RETAILER_TYPE= $result_query['ID_RETAILER_TYPE'];
+                    echo $form->hiddenField($userVote, 'ID_RETAILER_TYPE' , array('value'=>$ID_RETAILER_TYPE));
+
+                }
+                
+                $ID_VILLE  = $result_query['ID_VILLE'];
+                $ID_REGION = $result_query['ID_REGION'];                    
+                    
+                echo $form->hiddenField($userVote, 'region' , array('value'=>$ID_REGION));
+                echo $form->hiddenField($userVote, 'ID_VILLE', array('value'=>$ID_VILLE));
+            }
+             
+             
+             
             ?>
             <br>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

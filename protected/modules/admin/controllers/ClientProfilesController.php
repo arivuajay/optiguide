@@ -94,7 +94,7 @@ class ClientProfilesController extends Controller {
     }
 
     public function actionGetcategories() {
-        $val = "<option value=''>Select Category</option>";
+        $val = "";
         $id = isset($_POST['id']) ? $_POST['id'] : '';
         if ($id != '') {
             $data_cats = CHtml::listData(ClientCategory::model()->findAll(array("order" => "category asc", "condition" => "cat_type_id=" . $id)), 'category', 'cat_name');           
@@ -113,12 +113,17 @@ class ClientProfilesController extends Controller {
     public function actionCreate() {
         $model  = new ClientProfiles;
         $cmodel = new ClientMessages;
+        
+        $selected_sections = array();
 
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
        
         if (isset($_POST['ClientProfiles'])) {
             $model->attributes = $_POST['ClientProfiles'];
+            
+            $cat_vals = implode(',',$_POST['ClientProfiles']['category']);
+            $model->category = $cat_vals;
             $model->created_date  = date("Y-m-d");
             $model->modified_date = date("Y-m-d");
             if ($model->save()) {                
@@ -153,10 +158,11 @@ class ClientProfilesController extends Controller {
                 $this->redirect(array('index'));
             }  
         }
-
+   
         $this->render('create', array(
             'model' => $model,
-            'cmodel' => $cmodel
+            'cmodel' => $cmodel,   
+            'selected_sections' => $selected_sections
         ));
     }
 
@@ -174,6 +180,9 @@ class ClientProfilesController extends Controller {
 
         if (isset($_POST['ClientProfiles'])) {
             $model->attributes = $_POST['ClientProfiles'];
+            
+            $cat_vals = implode(',',$_POST['ClientProfiles']['category']);
+            $model->category = $cat_vals;
             $model->modified_date = date("Y-m-d");
             if ($model->save()) {
                  // save the alert message         
@@ -211,12 +220,25 @@ class ClientProfilesController extends Controller {
         $cmodel = new ClientMessages('search_client');
         $cexpiremodel  = $cmodel->search_expirealerts($id);
         $ccurrentmodel = $cmodel->search_currentalerts($id);
+        
+        $selected_sections = array();
+        $qry_selected_category = $model->category;                      
+        if($qry_selected_category!='')
+        {    
+            $expcats = explode(',', $qry_selected_category);
+            foreach($expcats as $catinfo)
+            {
+                $pubcatid =  $catinfo;  
+                $selected_sections[$pubcatid]['selected'] =  'selected';               
+            }            
+        } 
 
         $this->render('update', array(
             'model'  => $model,
             'cmodel' => $cmodel,
             'cexpiremodel'  => $cexpiremodel,
             'ccurrentmodel' => $ccurrentmodel,
+            'selected_sections' => $selected_sections
         ));
     }
     

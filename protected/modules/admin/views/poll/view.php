@@ -9,6 +9,13 @@ $this->breadcrumbs = array(
 );
 
 $expurl = $this->createUrl('poll/view/id/'.$model->id,array("exportresult"=>"1"));
+
+$themeUrl = $this->themeUrl;
+$cs = Yii::app()->getClientScript();
+$cs_pos_end = CClientScript::POS_END;
+
+$cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
+$cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
 ?>
 
    
@@ -27,10 +34,6 @@ $expurl = $this->createUrl('poll/view/id/'.$model->id,array("exportresult"=>"1")
             <p><a href="<?php echo $expurl;?>" class="btn btn-info"> <span class="glyphicon glyphicon-download"></span> Export  </a></p>
     </div><!-- /.box-body -->
 </div>
-<?php
-if($model->usertype=='1')
-{    ?>
-
 
 <div class="col-lg-12 col-md-12">&nbsp;</div>
 
@@ -38,6 +41,35 @@ if($model->usertype=='1')
     <div class="row">
         <?php      
        
+        if($model->usertype=='1')
+        {
+            //professional
+            $ptype = array(
+                'header'  => 'Professional Type',    
+                'name'    => 'professionalType.TYPE_SPECIALISTE_FR',
+                'value'   => $data->professionalType->TYPE_SPECIALISTE_FR,                
+                );
+        }else if($model->usertype=='2')
+        {
+            //supplier
+            $ptype = array(
+                'header'  => 'Supplier Type',    
+                'name'    => 'supplierType.TYPE_FOURNISSEUR_FR',
+                'value'   => $data->supplierType->TYPE_FOURNISSEUR_FR,                
+                );
+        }else if($model->usertype=='3')
+        {
+            //retailer
+            $ptype = array(
+                'header'  => 'Retailer Type',    
+                'name'    => 'retailerType.NOM_TYPE_FR',
+                'value'   => $data->retailerType->NOM_TYPE_FR,                
+                );
+        }else
+        {
+             $ptype = array();
+        }    
+        
         $gridColumns = array(  
                 array('header' => 'SN.',
                  'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
@@ -47,11 +79,8 @@ if($model->usertype=='1')
                 'name'    => 'pollChoice.label',
                 'value'   => $data->pollChoice->label,                
                 ),
-                array(
-                'header'  => 'Professional Type',    
-                'name'    => 'professionalType.TYPE_SPECIALISTE_FR',
-                'value'   => $data->professionalType->TYPE_SPECIALISTE_FR,                
-                ),
+                $ptype
+                ,
                 array(
                 'header'  => 'Province',    
                 'name'    => 'regionDirectory.NOM_REGION_FR',
@@ -81,5 +110,3 @@ if($model->usertype=='1')
         ?>
     </div>
 </div>
-<?php
-}?>

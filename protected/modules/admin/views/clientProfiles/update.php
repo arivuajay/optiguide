@@ -10,4 +10,4 @@ $this->breadcrumbs=array(
 ?>
 
 <div class="user-create">
-    <?php $this->renderPartial('_form', array('model'=>$model,'cmodel'=>$cmodel,  'cexpiremodel'  => $cexpiremodel,'ccurrentmodel' => $ccurrentmodel)); ?></div>
+    <?php $this->renderPartial('_form', array('model'=>$model,'cmodel'=>$cmodel,  'cexpiremodel'  => $cexpiremodel,'ccurrentmodel' => $ccurrentmodel,  'selected_sections' => $selected_sections)); ?></div>

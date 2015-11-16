@@ -6,6 +6,13 @@ $this->title = 'Client Categories';
 $this->breadcrumbs = array(
     'Client Categories',
 );
+
+$themeUrl = $this->themeUrl;
+$cs = Yii::app()->getClientScript();
+$cs_pos_end = CClientScript::POS_END;
+
+$cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
+$cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
 ?>
 
 <div class="col-lg-12 col-md-12">

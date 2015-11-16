@@ -73,6 +73,8 @@ class EPoll extends CWidget {
         $userVote->choice_id = $_POST['PortletPollVote_choice_id'];
         $userVote->poll_id = $model->id;
         $userVote->ID_TYPE_SPECIALISTE = isset($_POST['PollVote']['ID_TYPE_SPECIALISTE'])?$_POST['PollVote']['ID_TYPE_SPECIALISTE']:'0';
+        $userVote->ID_TYPE_FOURNISSEUR = isset($_POST['PollVote']['ID_TYPE_FOURNISSEUR'])?$_POST['PollVote']['ID_TYPE_FOURNISSEUR']:'0';
+        $userVote->ID_RETAILER_TYPE    = isset($_POST['PollVote']['ID_RETAILER_TYPE'])?$_POST['PollVote']['ID_RETAILER_TYPE']:'0';
         $userVote->region = isset($_POST['PollVote']['region'])?$_POST['PollVote']['region']:'0';
         $userVote->ID_VILLE = isset($_POST['PollVote']['ID_VILLE'])?$_POST['PollVote']['ID_VILLE']:'0';
         if ($userVote->save()) {

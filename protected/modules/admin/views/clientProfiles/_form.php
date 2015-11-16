@@ -12,7 +12,11 @@
             $cat_types = CHtml::listData(ClientCategoryTypes::model()->findAll(array("order"=>"cat_type_id asc")), 'cat_type_id', 'cat_type');
             if($model->cat_type_id){
                 $category_names = CHtml::listData(ClientCategory::model()->findAll(array("order"=>"category asc","condition"=>"cat_type_id=".$model->cat_type_id)), 'category', 'cat_name');
-            }
+            }else
+            {
+                $category_names = CHtml::listData(ClientCategory::model()->findAll(array("order"=>"category asc","condition"=>"cat_type_id=2")), 'category', 'cat_name');
+            }    
+            
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'client-profiles-form',
                 'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'), 
@@ -58,14 +62,19 @@
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'cat_type_id', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php echo $form->dropDownList($model, 'cat_type_id', $cat_types, array('class' => 'form-control',"empty"=>"Select category type")); ?> 
+                        <?php echo $form->dropDownList($model, 'cat_type_id', $cat_types, array('class' => 'form-control')); ?> 
                     </div>
                 </div>
                 
                  <div class="form-group">
                     <?php echo $form->labelEx($model, 'category', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php echo $form->dropDownList($model, 'category', $category_names, array('class' => 'form-control',"empty"=>"Select category")); ?> 
+                        <?php 
+                        $options_sections = $selected_sections;                        
+                        $htmlOptions = array('size' => '7', 'multiple' => 'true', 'id' => 'ClientProfiles_category', 'class' => 'form-control','options'=>$options_sections);
+                        echo $form->listBox($model, 'category', $category_names, $htmlOptions);
+                        echo $form->error($model, 'category');
+                        ?> 
                     </div>
                 </div>
 

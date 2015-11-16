@@ -12,5 +12,5 @@ $this->breadcrumbs=array(
 <div class="user-create">
     <?php 
     $csearchmodel = '';
-    $this->renderPartial('_form', array('model'=>$model,'cmodel'=>$cmodel ,'csearchmodel' => $csearchmodel)); ?>
+    $this->renderPartial('_form', array('model'=>$model,'cmodel'=>$cmodel ,'csearchmodel' => $csearchmodel, 'selected_sections' => $selected_sections)); ?>
 </div>

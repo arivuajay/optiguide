@@ -18,7 +18,7 @@
  */
 class PollVote extends CActiveRecord
 {
-    public  $ID_TYPE_SPECIALISTE,$region,$ID_VILLE,$NOM_REGION_FR;
+    public  $ID_RETAILER_TYPE,$ID_TYPE_FOURNISSEUR,$ID_TYPE_SPECIALISTE,$region,$ID_VILLE,$NOM_REGION_FR;
     /**
    * Returns the static model of the specified AR class.
    * @return PollVote the static model class
@@ -46,7 +46,7 @@ class PollVote extends CActiveRecord
       array('region,ID_VILLE', 'required','message'=> Myclass::t('OG152')),
       array('choice_id, poll_id, user_id, timestamp', 'length', 'max'=>11),
       array('ip_address', 'length', 'max'=>16),
-      array('ID_TYPE_SPECIALISTE,region,ID_VILLE,NOM_REGION_FR','safe'),  
+      array('ID_TYPE_SPECIALISTE,ID_RETAILER_TYPE,ID_TYPE_FOURNISSEUR,region,ID_VILLE,NOM_REGION_FR','safe'),  
     );
   }
 
@@ -61,6 +61,8 @@ class PollVote extends CActiveRecord
       'regionDirectory' => array(self::BELONGS_TO, 'RegionDirectory', 'region'),      
       'cityDirectory' => array(self::BELONGS_TO, 'CityDirectory', 'ID_VILLE'),  
       'professionalType' => array(self::BELONGS_TO, 'ProfessionalType', 'ID_TYPE_SPECIALISTE'),
+      'retailerType' => array(self::BELONGS_TO, 'RetailerType', 'ID_RETAILER_TYPE'),
+      'supplierType' => array(self::BELONGS_TO, 'SupplierType', 'ID_TYPE_FOURNISSEUR'),
       'poll' => array(self::BELONGS_TO, 'Poll', 'poll_id'),
     );
   }
@@ -68,9 +70,28 @@ class PollVote extends CActiveRecord
    public function search($id) {
         // @todo Please modify the following code to remove attributes that should not be searched.
 //echo $id; exit;
+       
+        $usrtype = Poll::model()->findByPk($id)->usertype;
+        
+       
         $criteria = new CDbCriteria;
         $criteria->addCondition("poll_id='$id'");
-        $criteria->with  = array('regionDirectory','cityDirectory','professionalType');
+        if($usrtype=="1")
+        {    
+            // Professional
+            $criteria->with  = array('regionDirectory','cityDirectory','professionalType');
+        }else if($usrtype=="2")
+        {
+            // Supplier
+            $criteria->with  = array('regionDirectory','cityDirectory','supplierType');
+        }else if($usrtype=="3")
+        {
+            // Retailer
+            $criteria->with  = array('regionDirectory','cityDirectory','retailerType');
+        }else
+        {
+             $criteria->with  = array('regionDirectory','cityDirectory');
+        }    
         //$criteria->together = true;
         $criteria->order = 'timestamp ASC';
 

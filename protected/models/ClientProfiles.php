@@ -45,9 +45,9 @@ class ClientProfiles extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                        array('name,phonenumber1,email,address,country, region, ville,',"required"),
+                        array('name,phonenumber1,email,address,country, region, ville,category',"required"),
                         array('email',"email"),
-			array('category,cat_type_id', 'numerical', 'integerOnly'=>true),
+			array('cat_type_id', 'numerical', 'integerOnly'=>true),
 			array('name, company, job_title, member_type, address, local_number', 'length', 'max'=>255),
 			array('country, region, ville, phonenumber1, phonenumber2, mobile_number, tollfree_number, fax, email, site_address', 'length', 'max'=>55),
 			array('created_date, modified_date,cname,ctype', 'safe'),
@@ -95,6 +95,20 @@ class ClientProfiles extends CActiveRecord
           {            
                 $this->addError($attribute,'Invalid Format.' );          
           }        
+        }
+        
+        public function getCatNames($catids) {
+            $catname = array();
+            $cat_results = ClientCategory::model()->findAll(" category IN ($catids)");
+            if ($cat_results) {
+                foreach($cat_results as $infos)
+                {    
+                    $catname[] = $infos->cat_name;                    
+                }
+                $cnames = implode(' , ', $catname);
+                return $cnames;
+            }
+            return null;
         }
 
 
@@ -198,10 +212,13 @@ class ClientProfiles extends CActiveRecord
             ));
         }
         
-         protected function afterFind() {
+        protected function afterFind() {
+        
         /* Get selected region for current category information */
         $this->ctype = ClientCategoryTypes::model()->findByPk($this->cat_type_id)->cat_type;
-        $this->cname = ClientCategory::model()->findByPk($this->category)->cat_name;
+        //$this->cname = ClientCategory::model()->findByPk($this->category)->cat_name;
+        $this->cname = isset($this->category)? $this->getCatNames($this->category) : '';
+        
         return parent::afterFind();
     }
 }

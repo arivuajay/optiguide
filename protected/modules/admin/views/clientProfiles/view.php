@@ -34,9 +34,9 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'value' => $model->clientCategoryTypes->cat_type
             ),
             array(
-                'name' => 'clientCategory.cat_name',
-                'type' => 'HTML',
-                'value' => $model->clientCategory->cat_name
+                'name' => 'category',
+                'type' => 'raw',
+                'value' => $model->getCatNames($model->category)
             ),
             'address',
             'local_number',
