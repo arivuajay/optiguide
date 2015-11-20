@@ -63,7 +63,7 @@ class RetailerDirectory extends CActiveRecord {
             // @todo Please remove those attributes that should not be searched.    
             array('CATEGORY_1,CATEGORY_2,CATEGORY_3,CATEGORY_4,CATEGORY_5', 'Checkatleast'),
             array('Categories,uaccess_search,searchcat,Retailers1,Retailers2,services_offered,description,classification,turnover', 'safe'),
-            array('language,contact_person,facebooklink,twitterlink,linkedinlink,pfile,listperpage,CREATED_DATE, autre_ville', 'safe'),
+            array('contact_person,facebooklink,twitterlink,linkedinlink,pfile,listperpage,CREATED_DATE, autre_ville', 'safe'),
             array('COURRIEL', 'email'),
             array('URL', 'url'),
             array('uaccess_search,ID_RETAILER, ID_CLIENT, COMPAGNIE, ID_VILLE, ADRESSE, ADRESSE2, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, URL, COURRIEL, TEL_1800, DATE_MODIFICATION, ID_RETAILER_TYPE, ID_GROUPE, GROUPE, HEAD_OFFICE_NAME, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5', 'safe', 'on' => 'search'),

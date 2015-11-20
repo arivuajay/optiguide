@@ -104,7 +104,7 @@ class UserDirectory extends CActiveRecord
 	{
 		return array(
 			'ID_UTILISATEUR' => Myclass::t('Id Utilisateur'),
-			'LANGUE' => Myclass::t('Langue'),
+			'LANGUE' => Myclass::t('OG159'),
 			'PREFIXE' => Myclass::t('Préfixe'),
 			'NOM_UTILISATEUR' => Myclass::t('Nom du destinataire '),
 			'USR' => Myclass::t('APP3'),

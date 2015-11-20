@@ -277,19 +277,7 @@
                         <?php echo $form->error($model, 'classification'); ?>  
                     </div>     
                 </div>
-
-                <div class="form-group">                    
-                    <?php
-                    $language['EN'] = "English";
-                    $language['FR'] = "French";
-                    echo $form->labelEx($model, 'language', array('class' => 'col-sm-2 control-label'));
-                    ?>   
-                    <div class="col-sm-5">        
-                        <?php echo $form->dropDownList($model, 'language', $language, array('class' => 'form-control')); ?>    
-                        <?php echo $form->error($model, 'language'); ?>  
-                    </div>     
-                </div>
-
+                
                 <div class="form-group">                    
                     <?php echo $form->labelEx($model, 'contact_person', array('class' => 'col-sm-2 control-label')); ?>    
                     <div class="col-sm-5">        

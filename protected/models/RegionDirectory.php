@@ -19,6 +19,7 @@
  */
 class RegionDirectory extends CActiveRecord {
 
+    public $fullname;
     /**
      * @return string the associated database table name
      */
@@ -40,7 +41,7 @@ class RegionDirectory extends CActiveRecord {
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('NOM_PAYS_FR', 'safe'),
-            array('ID_REGION, ID_PAYS, NOM_REGION_FR, NOM_REGION_EN, ABREVIATION_FR, ABREVIATION_EN', 'safe', 'on' => 'search'),
+            array('ID_REGION, ID_PAYS, NOM_REGION_FR, NOM_REGION_EN, ABREVIATION_FR, ABREVIATION_EN, fullname', 'safe', 'on' => 'search'),
         );
     }
 

@@ -344,20 +344,6 @@
 
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                        <?php
-                        $language['EN'] = "English";
-                        $language['FR'] = "French";
-                        echo $form->labelEx($model, 'language', array());
-                        ?>     
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
-                        <?php echo $form->dropDownList($model, 'language', $language, array('class' => 'selectpicker')); ?>    
-                        <?php echo $form->error($model, 'language'); ?>  
-                    </div>     
-                </div>
-
-                <div class="form-row1"> 
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                         <?php echo $form->labelEx($model, 'contact_person', array()); ?>     
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
@@ -400,6 +386,21 @@
 
             <div class="forms-cont"> 
                 <div class="forms-heading"><i class="fa fa-user"></i>  <?php echo Myclass::t('OG113'); ?></div>
+                
+                <div class="form-row1"> 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
+                        <?php
+                        $language['EN'] = "English";
+                        $language['FR'] = "French";
+                        echo $form->labelEx($umodel, 'LANGUE', array());
+                        ?>     
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">        
+                        <?php echo $form->dropDownList($umodel, 'LANGUE', $language, array('class' => 'selectpicker')); ?>    
+                        <?php echo $form->error($model, 'LANGUE'); ?>  
+                    </div>     
+                </div>
+                
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                         <?php echo $form->labelEx($umodel, 'COURRIEL'); ?>

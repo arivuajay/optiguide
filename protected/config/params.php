@@ -73,6 +73,9 @@ return array(
     //REP PROFILE PICTURE
     'REP_PROFILE_PICTURE' => 'uploads/rep_profile_pictures/',
     
+     //Export datas
+    'EXPORTDATAS' => 'uploads/export_datas/',
+    
     'ADMINSITENAME' => 'Optiguide Admin',
     'OPTIGUIDESITENAME' => 'Optiguide',
     'OPTIREPSITENAME' => 'Optirep',

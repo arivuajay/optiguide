@@ -248,7 +248,7 @@ class RetailerDirectoryController extends OGController {
             $umodel->NOM_TABLE = $model::$NOM_TABLE;
             $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
             $umodel->sGuid = Myclass::getGuid();
-            $umodel->LANGUE = Yii::app()->session['language'];
+            //$umodel->LANGUE = Yii::app()->session['language'];
             $umodel->MUST_VALIDATE = 0;
 
             $model->image = CUploadedFile::getInstance($model, 'image');
