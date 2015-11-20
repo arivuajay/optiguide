@@ -60,44 +60,59 @@ class ExportDatasController extends Controller
             $this->performAjaxValidation($model);
 
             if(isset($_POST['ExportDatas']))
-            {
-                $query_str = "";
-                
+            {   
                 $model->attributes=$_POST['ExportDatas'];
 
+                // Language filter
+                $lang_str  = "";
+                
                 $lang_en = $_POST['ExportDatas']['EN'];
                 $lang_fr = $_POST['ExportDatas']['FR'];
                 
-                $sub_optipromo = $_POST['ExportDatas']['Optipromo'];
-                $sub_optinews  = $_POST['ExportDatas']['Optinews'];
+                $lang_str = $this->getlanguage_filter($lang_en,$lang_fr);                        
+                
+                // Subscription filter
+                $subscription_str  = '';
+                
+                $sub_optipromo     = $_POST['ExportDatas']['Optipromo'];
+                $sub_optinews      = $_POST['ExportDatas']['Optinews'];
                 $sub_envision_print   =  $_POST['ExportDatas']['Envision_print'];
                 $sub_envision_digital =  $_POST['ExportDatas']['Envision_digital'];
                 $sub_envue_print   =  $_POST['ExportDatas']['Envue_print'];
                 $sub_envue_digital =  $_POST['ExportDatas']['Envue_digital'];
+           
+                $subscription_str = $this->getsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital);
+              
+                // Provience filter               
+                $province_str = '';
+                $provinces    = $_POST['ExportDatas']['province'];
                 
+                $province_str = $this->getprovince_filter($provinces);
                 
+                // Professional Type
+                $type_str  = '';
+                $professional_type = $_POST['ExportDatas']['professional_type'];     
                 
-                $provinces = $_POST['ExportDatas']['province'];
-//                        (
-//                            [0] => 125
-//                            [1] => 1
-//                        )
-
-                $professional_type = $_POST['ExportDatas']['professional_type'];
-//                        (
-//                            [0] => 9
-//                        )
-
+                $type_str  = $this->gettype_filter($professional_type);
+                
+                echo $lang_str;
+                echo "<br>";
+                echo $subscription_str;
+                echo "<br>";
+                echo $province_str;
+                echo "<br>";
+                echo $type_str;
+                exit;
+                
+                // Export type    
                 $export_type = $_POST['ExportDatas']['export_type'];
                
-                
-                //$dati = Yii::app()->db->createCommand("SELECT ID_CLIENT,COMPAGNIE FROM repertoire_retailer LIMIT 0,10");
-                 // Get all records list  with limit
+                // Get all records list  with limit
                 $prof_result = Yii::app()->db->createCommand(
-                        "SELECT USR , PWD , LANGUE , NOM , PRENOM , TYPE_SPECIALISTE_EN ,  NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN 
+                        "SELECT NOM , PRENOM , TYPE_SPECIALISTE_EN , USR , PWD , LANGUE , NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN 
                          FROM  repertoire_specialiste as rs, repertoire_specialiste_type as rst, repertoire_ville as rv, repertoire_region as rr, repertoire_pays as rp, repertoire_utilisateurs as ru
                          WHERE rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.NOM_TABLE ='Professionnels'
-                         ORDER BY NOM");             
+                         ORDER BY NOM limit 0,10");             
                 
                  // File name and path
                 $randstr  = Myclass::getRandomString(4);
@@ -129,7 +144,105 @@ class ExportDatasController extends Controller
             $csv->convertActiveDataProvider=false;
             $csv->setOutputFile($outputFile);
             $output = $csv->toCSV();               
-        }       
+        }  
+        
+        public function getlanguage_filter($lang_en,$lang_fr)
+        {
+            $lang_str = "";
+            
+            if($lang_en=="1" && $lang_fr=="1")
+            {
+                $lang_str .= " AND ( ru.LANGUE='EN' || ru.LANGUE='FR' ) ";
+            }else if($lang_en=="1")
+            {
+                $lang_str .= " AND ru.LANGUE='EN' ";                    
+            }else if($lang_fr=="1")
+            {
+                $lang_str .= " AND ru.LANGUE='FR' ";
+            } 
+            
+            return $lang_str;
+        }
+        
+        public function getsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital)
+        {
+            $subscription_arr = array();
+            $subscription_str = '';
+                
+            if($sub_optipromo=="1")
+            {
+                $subscription_arr[] = " ru.ABONNE_PROMOTION=1 ";
+            }  
+
+            if($sub_optinews=="1")
+            {
+                $subscription_arr[] = " ru.ABONNE_MAILING=1 ";
+            }   
+
+            if($sub_envision_print=="1")
+            {
+                $subscription_arr[] = " ru.print_envision=1 ";
+            }   
+
+            if($sub_envision_digital=="1")
+            {
+                $subscription_arr[] = " ru.bSubscription_envision=1 ";
+            }  
+
+            if($sub_envue_print=="1")
+            {
+                $subscription_arr[] = " ru.print_envue=1 ";
+            }  
+
+            if($sub_envue_digital=="1")
+            {
+                $subscription_arr[] = " ru.bSubscription_envue=1 ";
+            } 
+                
+                
+            if(!empty($subscription_arr))
+            {
+                if(count($subscription_arr)>1)
+                {
+                   $imp_substr =  implode(" || ",$subscription_arr);
+                   $subscription_str = " AND  ( $imp_substr )  ";
+                }else
+                {
+                   $subscription_str = " AND $subscription_arr[0] ";
+                }    
+            }  
+
+            return $subscription_str;
+        }    
+        
+        public function getprovince_filter($provinces)
+        {
+            $province_str = "";
+            
+            if(!empty($provinces))
+            {    
+               $imp_prov     = implode(",",$provinces);
+               $condition    = " ID_REGION IN ($imp_prov) ";
+               $city_results = CHtml::listData( CityDirectory::model()->findAll($condition) , 'ID_VILLE' , 'ID_VILLE');
+               $cities_str   = implode(',',$city_results);               
+               $province_str = " AND rs.ID_VILLE IN ($cities_str) ";              
+            }
+            
+            return $province_str;
+        }  
+        
+        public function gettype_filter($professional_type)
+        {
+            $type_str = "";
+            
+            if(!empty($professional_type))
+            {    
+               $imp_types     = implode(",",$professional_type);
+               $type_str = " AND rs.ID_TYPE_SPECIALISTE IN ($imp_types) ";              
+            }
+            
+            return $type_str;
+        }        
 	
 	/**
 	 * Deletes a particular model.
