@@ -99,8 +99,7 @@
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(      
                         array('label' => '<i class="fa fa-angle-double-right"></i> <span>Professional</span>', 'url' => array('/admin/exportDatas/index'), 'active' => ($_controller == 'exportDatas' && $_action=="index")),
-                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Retailer</span>', 'url' => array('/admin/exportDatas/retailerindex'), 'active' => ($_controller == 'exportDatas' && $_action=="retailerindex")),
-                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Supplier</span>', 'url' => array('/admin/exportDatas/supplierindex'), 'active' => $_controller == 'exportDatas' && $_action=="supplierindex"),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Retailer</span>', 'url' => array('/admin/exportDatas/retailerIndex'), 'active' => ($_controller == 'exportDatas' && $_action=="retailerIndex")),                       
                     ),
                 ),
             ),

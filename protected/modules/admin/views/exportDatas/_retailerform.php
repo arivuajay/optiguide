@@ -3,9 +3,9 @@
 /* @var $model ExportDatas */
 /* @var $form CActiveForm */
 
-$this->title='Export professional user datas';
+$this->title='Export retailer user datas';
 $this->breadcrumbs=array(
-	'Export professional datas'=>array('index'),
+	'Export retailer datas'=>array('index'),
 	$this->title,
 );
 
@@ -16,8 +16,8 @@ $criteria2->order  = "countryDirectory.NOM_PAYS_EN ASC,NOM_REGION_EN ASC";
 $province_datas    = CHtml::listData(RegionDirectory::model()->findAll($criteria2), 'ID_REGION', 'fullname');
 
 $criteria3 = new CDbCriteria();
-$criteria3->order  = "TYPE_SPECIALISTE_EN ASC";
-$professionaltype_datas = CHtml::listData(ProfessionalType::model()->findAll($criteria3) , 'ID_TYPE_SPECIALISTE' , 'TYPE_SPECIALISTE_EN');
+$criteria3->order  = "NOM_TYPE_EN ASC";
+$retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3) , 'ID_RETAILER_TYPE' , 'NOM_TYPE_EN');
 ?>
 <div class="user-create">
     <div class="row">
@@ -125,11 +125,11 @@ $professionaltype_datas = CHtml::listData(ProfessionalType::model()->findAll($cr
                     </div>
                     
                      <div class="form-group">
-                        <?php echo $form->labelEx($model, 'P_type', array('class' => 'col-sm-2 control-label')); ?>
+                        <?php echo $form->labelEx($model, 'R_type', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">
                             <?php
-                            $htmlOptions = array('size' => '8', 'multiple' => 'true', 'class' => 'form-control');
-                            echo $form->listBox($model, 'ptype', $professionaltype_datas, $htmlOptions);
+                            $htmlOptions = array('size' => '4', 'multiple' => 'true', 'class' => 'form-control');
+                            echo $form->listBox($model, 'ptype', $retailertype_datas, $htmlOptions);
                             echo $form->error($model, 'ptype'); 
                             ?> 
                         </div>  
@@ -147,7 +147,7 @@ $professionaltype_datas = CHtml::listData(ProfessionalType::model()->findAll($cr
                               echo $form->radioButtonList($model, 'export_type',
                                         array(  1 => 'Single File',
                                                 2 => 'By selected Province',
-                                                3 => 'By selected Professional Type' 
+                                                3 => 'By selected retailer Type' 
                                              ),
                                         array(
                                                 'labelOptions'=>array('style'=>'display:inline'), // add this code

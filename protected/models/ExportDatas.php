@@ -12,7 +12,7 @@
 class ExportDatas extends CActiveRecord
 {
         
-        public $language,$EN,$FR,$subscriptions,$Optipromo,$Optinews,$Envision_print,$Envision_digital,$Envue_print,$Envue_digital,$province,$professional_type,$export_type;
+        public $P_type,$R_type,$language,$EN,$FR,$subscriptions,$Optipromo,$Optinews,$Envision_print,$Envision_digital,$Envue_print,$Envue_digital,$province,$ptype,$export_type;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -31,10 +31,11 @@ class ExportDatas extends CActiveRecord
 		return array(			
 			array('attachment_file', 'length', 'max'=>255),
 			array('user_type', 'length', 'max'=>55),
-                        array('Optipromo , Optinews , Envision_print ,Envision_digital,Envue_print,Envue_digital,province,professional_type' , 'safe'),
+                        array('Optipromo , Optinews , Envision_print ,Envision_digital,Envue_print,Envue_digital,province,ptype' , 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, attachment_file, user_type, created, language, EN, FR,subscriptions,export_type', 'safe', 'on'=>'search'),
+                        array('export_type', 'checknotempty'),
 		);
 	}
 
@@ -48,6 +49,25 @@ class ExportDatas extends CActiveRecord
 		return array(
 		);
 	}
+        
+        public function checknotempty($attribute_name, $params) 
+        {
+            if ($this->export_type == 2 && $this->province == '') 
+            {
+                $this->addError('province', "Please choose any province.");
+                return false;
+            }
+            
+            if ($this->export_type == 3 && $this->ptype == '') 
+            {
+                $this->addError('ptype', "Please choose any type.");
+                return false;
+            }
+            
+            return true;
+        }
+        
+    
 
 	/**
 	 * @return array customized attribute labels (name=>label)
@@ -60,7 +80,9 @@ class ExportDatas extends CActiveRecord
 			'user_type' => Myclass::t('User Type'),
 			'created' => Myclass::t('Created'),
                         'EN' => 'English',
-                        'FR' => 'Français'
+                        'FR' => 'Français',
+                        'P_type' => 'Professional Type',
+                        'R_type' => 'Retailer Type'
 		);
 	}
 
@@ -84,7 +106,29 @@ class ExportDatas extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('attachment_file',$this->attachment_file,true);
-		$criteria->compare('user_type',$this->user_type,true);
+		$criteria->condition = 'user_type = "Professional"';
+		$criteria->compare('created',$this->created,true);
+
+		return new CActiveDataProvider($this, array(
+                    'sort'=>array(
+                        'defaultOrder'=>'id DESC',
+                      ),
+                    'criteria'=>$criteria,
+                    'pagination' => array(
+                        'pageSize' => PAGE_SIZE,
+                    )
+		));
+	}
+        
+       public  function search_retailer()
+       {
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('id',$this->id);
+		$criteria->compare('attachment_file',$this->attachment_file,true);
+		$criteria->condition = 'user_type = "Retailer"';
 		$criteria->compare('created',$this->created,true);
 
 		return new CActiveDataProvider($this, array(
