@@ -199,6 +199,10 @@ return array(
     'OG174' => "Please select at least one brand for selected products.",
     'OG175' => "Please select at least one brand.",
     'OG176' => "Tax",
-    'OG177' => "Grand Total"
+    'OG177' => "Grand Total",
+    'OG178' => "Username is already in use",
+    'OG179' => "Email is already in use",
+    'OG180' => "Your account is activated now. Please do login.",
+    'OG181' => "Your account is already activated. Please do login.",
 );
 ?>

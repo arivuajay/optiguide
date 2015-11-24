@@ -199,6 +199,10 @@ return array(
     'OG174' => "S'il vous plaît sélectionner au moins une marque pour les produits sélectionnés.",
     'OG175' => "S'il vous plaît sélectionner au moins une marque .",
     'OG176' => "impôt",
-    'OG177' => "Total"
+    'OG177' => "Total",    
+    'OG178' => "Nom d'utilisateur est déjà utilisé.",
+    'OG179' => "Cet email est déjà utilisé.",    
+    'OG180' => "Votre compte est activé maintenant . S'il vous plaît ne vous connectez.",
+    'OG181' => "Votre compte est déjà activé . S'il vous plaît ne vous connectez.",
 );
 ?>

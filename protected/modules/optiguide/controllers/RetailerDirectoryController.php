@@ -302,18 +302,6 @@ class RetailerDirectoryController extends OGController {
                 $umodel->ID_RELATION = $model->ID_RETAILER;
                 $umodel->save(false);
 
-                /* Send mail to retailer for confirmation */
-//                $mail    = new Sendmail();
-//                $retailer_url = Yii::app()->createAbsoluteUrl('/optiguide/default/access',array('id'=>$umodel->sGuid));
-//                $subject      =  SITENAME." - Registration Confirmation Email";
-//                $trans_array  = array(
-//                    "{NAME}"    => $model->COMPAGNIE,                    
-//                    "{UTYPE}"   => 'optical retailer',
-//                    "{NEXTSTEPURL}" => $retailer_url,
-//                );
-//                $message = $mail->getMessage('confirm_registration', $trans_array);
-//                $mail->send($model->COURRIEL, $subject, $message);
-
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
                 $retailer_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
@@ -328,6 +316,17 @@ class RetailerDirectoryController extends OGController {
                 $message = $mail->getMessage('registration', $trans_array);
                 $mail->send(ADMIN_EMAIL, $subject, $message);
 
+                /* Send activatoin link to the user */
+                $mail2 = new Sendmail();
+                $confirmation_url = GUIDEURL . '/optiguide/default/confirmation/id/' . $umodel->sGuid;                               
+                $subject = SITENAME . " - Subscription confirmation mail";
+                $trans_array = array(
+                    "{NAME}" => $model->NOM,
+                    "{NEXTSTEPURL}" => $confirmation_url,
+                );
+                $message = $mail2->getMessage('subscription_confirmation', $trans_array);
+                $mail2->send($umodel->COURRIEL, $subject, $message);
+                
                 // mapping the retailer to the reference professional
                 $profid = Yii::app()->request->getParam('profid');
                 if ($profid != '') {

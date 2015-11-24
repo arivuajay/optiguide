@@ -43,15 +43,16 @@ class UserDirectory extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
             return array(
-                    array('LANGUE,NOM_UTILISATEUR,USR, PWD', 'required'),
-                    array('USR', 'unique', 'message'=>'This Nom d\'usager is already in use'),                  
+                    array('LANGUE,NOM_UTILISATEUR,USR, PWD,COURRIEL', 'required'),
+                    array('USR', 'unique', 'message'=> Myclass::t('OG178')),      
+                    array('COURRIEL', 'unique', 'message'=> Myclass::t('OG179')),      
                     array('ABONNE_MAILING, ABONNE_PROMOTION, ABONNE_TRANSITION, IS_FIRST_LOG, ID_RELATION, MUST_VALIDATE, bSubscription_envision, bSubscription_envue', 'numerical', 'integerOnly'=>true),
                     array('PREFIXE, NOM_TABLE', 'length', 'max'=>50),
-                   // array('USR', 'length', 'max'=>8),
+                    // array('USR', 'length', 'max'=>8),
                     array('NOM_UTILISATEUR, USR, PWD, COURRIEL, sGuid', 'length', 'max'=>255),
                     // The following rule is used by search().
                     // @todo Please remove those attributes that should not be searched.
-                   // array('USR', 'safe', 'readOnly'=>true , 'on'=>'update'),
+                    // array('USR', 'safe', 'readOnly'=>true , 'on'=>'update'),
                     array('COURRIEL','email'),
                     array('bSubscription_envision,bSubscription_envue,ABONNE_MAILING,ABONNE_PROMOTION,COURRIEL,print_envision,print_envue','Checksubscriptionmail' , 'on'=>'frontend'),        
                     array('ID_UTILISATEUR, LANGUE, PREFIXE, NOM_UTILISATEUR, USR, PWD, COURRIEL, ABONNE_MAILING, ABONNE_PROMOTION, ABONNE_TRANSITION, IS_FIRST_LOG, NOM_TABLE, ID_RELATION, MUST_VALIDATE, sGuid, bSubscription_envision, bSubscription_envue,print_envision,print_envue', 'safe', 'on'=>'search'),

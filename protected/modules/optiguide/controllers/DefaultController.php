@@ -1,6 +1,66 @@
 <?php
 
 class DefaultController extends OGController {
+    
+    public function actionForgetpassword()
+    {
+        
+        $model = new Advertise;
+
+        $this->performAjaxValidation(array($model));
+
+        if (isset($_POST['Advertise'])) 
+        {
+            $model->attributes = $_POST['Advertise'];
+
+            /* Send request mail to admin for advertise */
+            $mail = new Sendmail();
+            $subject = SITENAME . " - Forget password request from " . $model->name;
+            $trans_array = array(
+                "{SITE}" => SITENAME,
+                "{NAME}" => $model->name,
+                "{EMAIL}" => $model->email,
+                "{TELEPHONE}" => $model->telephone,
+                "{MESSAGE}" => $model->informations,
+            );
+            $message = $mail->getMessage('advertise', $trans_array);
+            $mail->send(ADMIN_EMAIL, $subject, $message, $model->name, $model->email);
+
+            Yii::app()->user->setFlash('success', Myclass::t('OGO79', '', 'og'));
+            $this->redirect(array('advertise'));
+        }
+
+       // $this->render('_forgetpassword', compact('model'));
+        
+    }    
+    
+    public function actionConfirmation($id)
+    {
+        
+        if ($id != '')
+        {            
+            $criteria = new CDbCriteria;
+            $criteria->condition = "status='0' AND sGuid='" . $id . "'";           
+
+            $userinfos = UserDirectory::model()->find($criteria);
+
+            if (!empty($userinfos)) 
+            {
+                $userinfos->status = 1;
+                $userinfos->save(false);
+                
+                Yii::app()->user->setFlash('success', Myclass::t('OG180'));
+                $this->redirect(array('index'));
+            } else {
+                Yii::app()->user->setFlash('info', Myclass::t('OG181'));
+                $this->redirect(array('index'));
+            }
+            
+        } else {
+            $this->redirect(array('index'));
+        }
+        
+    }        
 
     public function actionIndex() {
         $searchModel = new SuppliersDirectory();

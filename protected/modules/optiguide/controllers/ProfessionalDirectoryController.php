@@ -421,7 +421,18 @@ class ProfessionalDirectoryController extends OGController {
                 );
                 $message = $mail->getMessage('registration', $trans_array);
                 $mail->send(ADMIN_EMAIL, $subject, $message);
-
+                
+                /* Send activatoin link to the user */
+                $mail2 = new Sendmail();
+                $confirmation_url = GUIDEURL . '/optiguide/default/confirmation/id/' . $umodel->sGuid;                               
+                $subject = SITENAME . " - Subscription confirmation mail";
+                $trans_array = array(
+                    "{NAME}" => $model->NOM,
+                    "{NEXTSTEPURL}" => $confirmation_url,
+                );
+                $message = $mail2->getMessage('subscription_confirmation', $trans_array);
+                $mail2->send($umodel->COURRIEL, $subject, $message);
+                
                 Yii::app()->user->setFlash('success', Myclass::t('OG044', '', 'og'));
                 $this->redirect(array('create'));
             } else {
