@@ -50,6 +50,7 @@ class ProfessionalDirectory extends CActiveRecord {
             array('autre_ville', 'checkOtherCityChoosen'),
             array('ID_TYPE_SPECIALISTE, country, region, ID_VILLE, age', 'numerical', 'integerOnly' => true),
             array('ID_CLIENT', 'length', 'max' => 8),
+            array('ID_CLIENT', 'unique'),
             array('PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, SITE_WEB, COURRIEL', 'length', 'max' => 255),
             array('CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2', 'length', 'max' => 20),
             // The following rule is used by search().
@@ -112,7 +113,7 @@ class ProfessionalDirectory extends CActiveRecord {
         return array(
             'ID_SPECIALISTE' => Myclass::t('Id Specialiste'),
             'ID_TYPE_SPECIALISTE' => Myclass::t('OG062', '', 'og'),
-            'ID_CLIENT' => Myclass::t('ID'),
+            'ID_CLIENT' => Myclass::t('Client ID'),
             'PREFIXE_FR' => Myclass::t('Préfixe en français'),
             'PREFIXE_EN' => Myclass::t('Préfixe en anglais'),
             'PRENOM' => Myclass::t('OG060', '', 'og'),
@@ -218,5 +219,24 @@ class ProfessionalDirectory extends CActiveRecord {
         $this->country = RegionDirectory::model()->findByPk($this->region)->ID_PAYS;
         return parent::afterFind();
     }
+    
+    public function beforeSave() {
+        if ($this->isNewRecord)
+        {  
+            $this->ID_CLIENT = $this->generate_clientid();
+        }    
+        return parent::beforeSave();
+    }
+    
+    public function generate_clientid() 
+    {
+        $code = Myclass::getRandomNUmbers(); 
+        $exist_code = ProfessionalDirectory::model()->count("ID_CLIENT='$code'");
+        if($exist_code>0)
+        {
+            $this->generate_clientid();
+        }    
+        return $code;        
+    }    
 
 }

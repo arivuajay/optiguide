@@ -48,6 +48,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         },
                 'filter' => CHtml::activeDropDownList($model, 'bAfficher_site', array("1" => "Activés", "0" => "Désactivés"), array('class' => 'form-control', 'prompt' => 'Tous')),
             ),
+            'ID_CLIENT',
 //            array(
 //                'header' => "Accès",
 //                'type' => 'raw',

@@ -30,16 +30,14 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             array('header' => 'SN.',
                 'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
             ),
-            'COMPAGNIE',
-            //  'ID_CLIENT',
-            //  'ADRESSE',
-            //   'CODE_POSTAL',           
+            'COMPAGNIE',                             
             array(
                 'header' => 'Type de retailer',
                 'name' => 'retailerType.NOM_TYPE_FR',
                 'value' => $data->retailerType->NOM_TYPE_FR,
                 'filter' => CHtml::activeDropDownList($model, 'ID_RETAILER_TYPE', CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR'), array('class' => 'form-control', 'prompt' => 'Tous')),
             ),
+            'ID_CLIENT',  
             array(
                 'name' => 'DATE_MODIFICATION',
                 'filter' => false

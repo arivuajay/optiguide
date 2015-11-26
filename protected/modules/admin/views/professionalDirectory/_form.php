@@ -2,6 +2,7 @@
 /* @var $this ProfessionalDirectoryController */
 /* @var $model ProfessionalDirectory */
 /* @var $form CActiveForm */
+
 ?>
 
 <div class="row">
@@ -32,13 +33,13 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <?php echo $form->labelEx($model, 'ID_CLIENT', array('class' => 'col-sm-2 control-label')); ?>
+<!--                <div class="form-group">
+                    <?php //echo $form->labelEx($model, 'ID_CLIENT', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php echo $form->textField($model, 'ID_CLIENT', array('class' => 'form-control', 'size' => 8, 'maxlength' => 8)); ?>                       
-                        <?php echo $form->error($model, 'ID_CLIENT'); ?>
+                        <?php //echo $form->textField($model, 'ID_CLIENT', array('class' => 'form-control', 'size' => 8, 'maxlength' => 8)); ?>                       
+                        <?php //echo $form->error($model, 'ID_CLIENT'); ?>
                     </div>
-                </div>
+                </div>-->
 
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'PREFIXE_FR', array('class' => 'col-sm-2 control-label')); ?>

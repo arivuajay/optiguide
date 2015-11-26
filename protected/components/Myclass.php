@@ -28,6 +28,15 @@ class Myclass extends CController {
         }
         return $final_rand;
     }
+    
+    public static function getRandomNUmbers($length = 8) {
+        $chars = "1234567890";
+        $final_rand = '';
+        for ($i = 0; $i < $length; $i++) {
+            $final_rand .= $chars[rand(0, strlen($chars) - 1)];
+        }
+        return $final_rand;
+    }
 
     public static function slugify($text) {
         // replace non letter or digits by -

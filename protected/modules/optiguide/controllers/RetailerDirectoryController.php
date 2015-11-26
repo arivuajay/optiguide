@@ -244,7 +244,7 @@ class RetailerDirectoryController extends OGController {
             $model->attributes = $_POST['RetailerDirectory'];
             $umodel->attributes = $_POST['UserDirectory'];
 
-            $model->ID_CLIENT = $umodel->USR;
+           // $model->ID_CLIENT = $umodel->USR;
             $umodel->NOM_TABLE = $model::$NOM_TABLE;
             $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
             $umodel->sGuid = Myclass::getGuid();
@@ -321,7 +321,7 @@ class RetailerDirectoryController extends OGController {
                 $confirmation_url = GUIDEURL . '/optiguide/default/confirmation/id/' . $umodel->sGuid;                               
                 $subject = SITENAME . " - Subscription confirmation mail";
                 $trans_array = array(
-                    "{NAME}" => $model->NOM,
+                    "{NAME}" => $model->COMPAGNIE,
                     "{NEXTSTEPURL}" => $confirmation_url,
                 );
                 $message = $mail2->getMessage('subscription_confirmation', $trans_array);

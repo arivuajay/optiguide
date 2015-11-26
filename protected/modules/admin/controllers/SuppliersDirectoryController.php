@@ -30,7 +30,7 @@ class SuppliersDirectoryController extends Controller {
                         'users' => array('*'),
                     ),
                     array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                        'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getproducts', 'addproducts', 'addmarques', 'listmarques', 'payment', 'renewpayment', 'getfichers','getficherimage', 'deleteProof'),
+                        'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getproducts', 'addproducts', 'addmarques', 'listmarques', 'payment', 'renewpayment', 'getfichers','getficherimage', 'deleteProof','generateclients'),
                         'users' => array('@'),
                     ),
                     array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -43,6 +43,7 @@ class SuppliersDirectoryController extends Controller {
                  )        
         );
     }
+       
 
     /**
      * Displays a particular model.

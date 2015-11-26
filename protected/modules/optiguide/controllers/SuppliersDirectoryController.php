@@ -544,7 +544,7 @@ class SuppliersDirectoryController extends OGController {
 
             $model->attributes = $_POST['SuppliersDirectory'];
             $umodel->attributes = $_POST['UserDirectory'];
-            $model->ID_CLIENT = $umodel->USR;
+           // $model->ID_CLIENT = $umodel->USR;
             $umodel->NOM_TABLE = $model::$NOM_TABLE;
             $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
             $umodel->sGuid = Myclass::getGuid();

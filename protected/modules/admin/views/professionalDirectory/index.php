@@ -32,13 +32,14 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
             ),
             'NOM',
-            'PRENOM',
+            'PRENOM',            
             array(
                 'header' => 'Type de professionnel',
                 'name' => 'professionalType.TYPE_SPECIALISTE_FR',
                 'value' => $data->professionalType->TYPE_SPECIALISTE_FR,
                 'filter' => CHtml::activeDropDownList($model, 'ID_TYPE_SPECIALISTE', CHtml::listData($gettypes, 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_FR'), array('class' => 'form-control', 'prompt' => 'Tous')),
             ),
+            'ID_CLIENT',
             array(
                 'name' => 'DATE_MODIFICATION',
                 'filter' => false

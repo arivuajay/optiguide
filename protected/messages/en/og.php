@@ -69,7 +69,7 @@ return array(
     'OG043' => 'No results found',
     
     
-    'OG044' => 'Thanks for your subscription! Kindly check your email , click the activation url to activate your account.',
+    'OG044' => 'Thanks for your subscription! Kindly check your email , click the activation link to activate your account.',
 
     'OG045' => 'Register',
     'OG046' => 'Toll Free',

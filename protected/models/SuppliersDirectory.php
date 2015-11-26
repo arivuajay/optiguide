@@ -84,6 +84,7 @@ class SuppliersDirectory extends CActiveRecord {
             array('ID_TYPE_FOURNISSEUR, ID_VILLE, bAfficher_site, iId_fichier,country,region,ETABLI_DEPUIS,NB_EMPLOYES', 'numerical', 'integerOnly' => true),
             array('COMPAGNIE, ADRESSE, ADRESSE2, TITRE_TEL_SANS_FRAIS, TITRE_TEL_SANS_FRAIS_EN, TITRE_TEL_SECONDAIRE, TITRE_TEL_SECONDAIRE_EN, COURRIEL, SITE_WEB, SUCCURSALES, PERSONNEL_NOM1, PERSONNEL_TITRE1, PERSONNEL_TITRE1_EN, PERSONNEL_NOM2, PERSONNEL_TITRE2, PERSONNEL_TITRE2_EN, PERSONNEL_NOM3, PERSONNEL_TITRE3, PERSONNEL_TITRE3_EN', 'length', 'max' => 255),
             array('ID_CLIENT', 'length', 'max' => 8),
+            array('ID_CLIENT', 'unique'),
             array('CODE_POSTAL, TELEPHONE, TELECOPIEUR, TEL_SANS_FRAIS, TEL_SECONDAIRE, ETABLI_DEPUIS', 'length', 'max' => 20),
             array('NB_EMPLOYES', 'length', 'max' => 10),
             array('REGIONS_FR, REGIONS_EN', 'length', 'max' => 1000),
@@ -138,7 +139,7 @@ class SuppliersDirectory extends CActiveRecord {
         return array(
             'ID_FOURNISSEUR' => Myclass::t('Id Fournisseur'),
             'COMPAGNIE' => Myclass::t('OG063', '', 'og'),
-            'ID_CLIENT' => Myclass::t('ID'),
+            'ID_CLIENT' => Myclass::t('Client ID'),
             'ID_TYPE_FOURNISSEUR' => Myclass::t('OG102'),
             'ADRESSE' => Myclass::t('APP66'),
             'ADRESSE2' => Myclass::t('APP67'),
@@ -271,5 +272,24 @@ class SuppliersDirectory extends CActiveRecord {
         $this->country = RegionDirectory::model()->findByPk($this->region)->ID_PAYS;
         return parent::afterFind();
     }
+    
+    public function beforeSave() {
+        if ($this->isNewRecord)
+        {  
+            $this->ID_CLIENT = $this->generate_clientid();
+        }    
+        return parent::beforeSave();
+    }
+    
+    public function generate_clientid() 
+    {
+        $code = Myclass::getRandomNUmbers(); 
+        $exist_code = SuppliersDirectory::model()->count("ID_CLIENT='$code'");
+        if($exist_code>0)
+        {
+            $this->generate_clientid();
+        }    
+        return $code;        
+    }    
 
 }

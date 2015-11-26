@@ -342,7 +342,7 @@ class ProfessionalDirectoryController extends OGController {
             'pages' => $pages,
         ));
     }
-
+    
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -362,7 +362,7 @@ class ProfessionalDirectoryController extends OGController {
         if (isset($_POST['ProfessionalDirectory'])) {
             $model->attributes = $_POST['ProfessionalDirectory'];
             $umodel->attributes = $_POST['UserDirectory'];
-            $model->ID_CLIENT = $umodel->USR;
+            //$model->ID_CLIENT = $umodel->USR;
             $umodel->NOM_TABLE = $model::$NOM_TABLE;
             $umodel->NOM_UTILISATEUR = $model->PRENOM . " " . $model->NOM;
             $umodel->sGuid = Myclass::getGuid();

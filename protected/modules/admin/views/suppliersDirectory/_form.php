@@ -111,12 +111,12 @@
                                     <?php echo $form->error($model, 'COMPAGNIE'); ?>
                                 </div>
 
-                                <div class="form-group">                                   
-                                    <?php echo $form->labelEx($model, 'ID_CLIENT', array()); ?>                                                            
-                                    <?php echo $form->textField($model, 'ID_CLIENT', array('class' => 'form-control', 'size' => 10, 'maxlength' => 10)); ?>
+<!--                                <div class="form-group">                                   
+                                    <?php //echo $form->labelEx($model, 'ID_CLIENT', array()); ?>                                                            
+                                    <?php //echo $form->textField($model, 'ID_CLIENT', array('class' => 'form-control', 'size' => 10, 'maxlength' => 10)); ?>
                                     <?php //echo $form->error($umodel, 'USR');  ?>      
-                                    <?php echo $form->error($model, 'ID_CLIENT'); ?>
-                                </div>
+                                    <?php //echo $form->error($model, 'ID_CLIENT'); ?>
+                                </div>-->
 
 
                                 <div class="form-group">

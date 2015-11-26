@@ -66,7 +66,7 @@ return array(
     'OG042' => 'Télécopieur',
     'OG043' => 'Aucun résultat trouvé',
     
-    'OG044' => 'Merci pour votre abonnement ! Veuillez consulter votre courrier électronique , cliquez sur l\'URL d\'activation pour activer votre compte .',
+    'OG044' => 'Merci pour votre abonnement ! Veuillez consulter votre courrier électronique , cliquez sur le lien d\'activation pour activer votre compte.',
     'OG045' => 'Inscription',
     'OG046' => 'Sans frais',
     

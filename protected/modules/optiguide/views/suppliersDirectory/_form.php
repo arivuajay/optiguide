@@ -79,8 +79,7 @@ $cities = Myclass::getallcities($model->region);
                             <?php if ($model->isNewRecord) {
                                 ?> 
                                 <?php echo $form->textField($umodel, 'USR', array('class' => 'form-txtfield')); ?>
-                                <?php echo $form->error($umodel, 'USR'); ?>
-                                <?php echo $form->error($model, 'ID_CLIENT'); ?>
+                                <?php echo $form->error($umodel, 'USR'); ?>                                
                                 <?php
                             } else {
                                 echo $umodel->USR;

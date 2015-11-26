@@ -194,7 +194,7 @@ return array(
     'OG170' => 'Are you sure want to delete?',
     'OG171' => 'Selected Brands',
     
-    'OG172' => "Specific City",
+    'OG172' => "Specify your city",
     'OG173' => "Other",
     'OG174' => "Please select at least one brand for selected products.",
     'OG175' => "Please select at least one brand.",

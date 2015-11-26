@@ -57,6 +57,7 @@ class RetailerDirectory extends CActiveRecord {
             array('Retailers2', 'required', 'on' => 'mapping', 'message' => Myclass::t('OGO159', '', 'og')),
             array('ID_VILLE, ID_RETAILER_TYPE, ID_GROUPE, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5,established,no_of_employee', 'numerical', 'integerOnly' => true),
             array('ID_CLIENT', 'length', 'max' => 10),
+            array('ID_CLIENT', 'unique'),
             array('COMPAGNIE, ADRESSE, ADRESSE2, URL, COURRIEL, GROUPE, HEAD_OFFICE_NAME', 'length', 'max' => 255),
             array('CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, TEL_1800', 'length', 'max' => 20),
             // The following rule is used by search().
@@ -137,7 +138,7 @@ class RetailerDirectory extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'ID_RETAILER' => Myclass::t('Type'),
-            'ID_CLIENT' => Myclass::t('ID'),
+            'ID_CLIENT' => Myclass::t('Client ID'),
             'COMPAGNIE' => Myclass::t('OG101'),
             'ID_VILLE' => Myclass::t('APP70'),
             'ADRESSE' => Myclass::t('APP66'),
@@ -263,5 +264,24 @@ class RetailerDirectory extends CActiveRecord {
         $this->country = RegionDirectory::model()->findByPk($this->region)->ID_PAYS;
         return parent::afterFind();
     }
+    
+    public function beforeSave() {
+        if ($this->isNewRecord)
+        {  
+            $this->ID_CLIENT = $this->generate_clientid();
+        }    
+        return parent::beforeSave();
+    }
+    
+    public function generate_clientid() 
+    {
+        $code = Myclass::getRandomNUmbers(); 
+        $exist_code = RetailerDirectory::model()->count("ID_CLIENT='$code'");
+        if($exist_code>0)
+        {
+            $this->generate_clientid();
+        }    
+        return $code;        
+    }    
 
 }

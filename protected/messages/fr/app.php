@@ -194,7 +194,7 @@ return array(
     'OG170' => 'Êtes-vous sûr de vouloir supprimer ?',
     'OG171' => 'Marques choisies',
     
-    'OG172' => "Spécifiez la ville",
+    'OG172' => "Indiquez votre ville",
     'OG173' => "Autre",
     'OG174' => "S'il vous plaît sélectionner au moins une marque pour les produits sélectionnés.",
     'OG175' => "S'il vous plaît sélectionner au moins une marque .",
