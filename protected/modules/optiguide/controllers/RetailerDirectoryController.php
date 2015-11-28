@@ -249,7 +249,7 @@ class RetailerDirectoryController extends OGController {
             $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
             $umodel->sGuid = Myclass::getGuid();
             //$umodel->LANGUE = Yii::app()->session['language'];
-            $umodel->MUST_VALIDATE = 0;
+            $umodel->MUST_VALIDATE = 1;
 
             $model->image = CUploadedFile::getInstance($model, 'image');
 
@@ -416,6 +416,7 @@ class RetailerDirectoryController extends OGController {
 
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_RETAILER;
+                $umodel->MUST_VALIDATE = 1;
                 $umodel->save(false);
 
                 Yii::app()->user->setFlash('success', Myclass::t('OG036', '', 'og'));

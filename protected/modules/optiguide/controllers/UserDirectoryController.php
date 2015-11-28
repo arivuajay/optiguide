@@ -32,7 +32,7 @@ class UserDirectoryController extends OGController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('update','changepassword'),
+                'actions' => array('update','changepassword','confirmation'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -45,6 +45,45 @@ class UserDirectoryController extends OGController {
          )
         );
     }
+    
+    public function actionConfirmation()
+    {        
+        $id     = Yii::app()->user->id;
+        $model  = $this->loadModel($id);
+        
+        $pk     = Yii::app()->user->relationid;
+        
+        if (Yii::app()->user->role == "Professionnels") {
+        
+            $pmodel = ProfessionalDirectory::model()->findByPk($pk);
+            $profileurl = '/optiguide/professionalDirectory/update';
+            $view = '_professionalprofile';
+
+        } else if (Yii::app()->user->role == "Detaillants") {
+
+            $pmodel = RetailerDirectory::model()->findByPk($pk);
+            $profileurl = '/optiguide/retailerDirectory/update';
+            $view = '_retailerprofile';
+              
+        } else if (Yii::app()->user->role == "Fournisseurs") {
+            
+            $pmodel = SuppliersDirectory::model()->findByPk($pk);
+            $profileurl = '/optiguide/suppliersDirectory/update';
+            $view = '_supplierprofile';
+        }
+
+        if (isset($_POST['UserDirectory'])) {
+                      
+            $model->attributes = $_POST['UserDirectory'];
+            
+            if ($model->save(false)) {                
+                Yii::app()->user->setFlash('success', Myclass::t('OGO220','','og'));
+                $this->redirect($profileurl);
+            }
+        }
+
+        $this->render($view, compact('model','pmodel','profileurl'));        
+    }        
 
     /**
      * Updates a particular model.

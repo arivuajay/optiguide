@@ -254,4 +254,12 @@ return array(
     'OGO211' => 'un message annonce',
     'OGO212' => 'classifiées nom de la catégorie',
     'OGO213' => 'titre annonce',
+    
+    'OGO214' => 'Validation de vos informations',
+    'OGO215' => 'SVP, veuillez confirmer que les renseignements présentés ci-dessous sont valides :',
+    'OGO216' => 'les renseignements sont valides et complets.',
+    'OGO217' => 'je veux faire des ajustements à mon profil.',
+    'OGO218' => 'Oui',
+    'OGO219' => 'Non',
+    'OGO220' => 'Merci d’avoir mis à jour vos données! Vous pouvez maintenant poursuivre votre visite sur notre site.'
 );

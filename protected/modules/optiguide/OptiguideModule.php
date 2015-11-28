@@ -35,7 +35,27 @@ class OptiguideModule extends CWebModule {
     }
 
     public function beforeControllerAction($controller, $action) {
-               
+        
+        // Set condition to redirect for user confirmation
+        if (!Yii::app()->user->isGuest) 
+        {
+            $mustvalidate = UserDirectory::model()->findByPk(Yii::app()->user->id)->MUST_VALIDATE;
+            
+            $_controller = $controller->id;
+            $_action     = $action->id;
+                    
+            if($mustvalidate==0)
+            {
+                if(($_controller=="userDirectory" || $_controller=="default" || $_controller=="professionalDirectory" || $_controller=="retailerDirectory") && ( $_action=="confirmation" || $_action=="logout" || $_action=="update"))
+                { 
+                    
+                }else{
+                    Yii::app()->request->redirect('/optiguide/userDirectory/confirmation');
+                }                        
+            }    
+
+        }
+      
         // Check the expiry date for suppliers login and redirect to renew page       
         if(isset(Yii::app()->user->id) && Yii::app()->user->id!='')
         {
@@ -74,5 +94,34 @@ class OptiguideModule extends CWebModule {
         } else
             return false;
     }
+    
+//    public function afterControllerAction($controller, $action) {
+//        
+//        if (!Yii::app()->user->isGuest) 
+//        {
+//            if (Yii::app()->user->role == "Professionnels") {
+//
+//                $mustvalidate = UserDirectory::model()->findByPk(Yii::app()->user->id)->MUST_VALIDATE;
+//                if($mustvalidate==0)
+//                {
+//                    Yii::app()->request->redirect('/optiguide/professionalDirectory/update');
+//                }    
+//
+//            } else if (Yii::app()->user->role == "Detaillants") {
+//
+//                $profileurl = '/optiguide/retailerDirectory/update';
+//            } else if (Yii::app()->user->role == "Fournisseurs") {
+//
+//                $profileurl = '/optiguide/suppliersDirectory/update';
+//            }
+//        }
+//        
+//        if (parent::afterControllerAction($controller, $action)) {
+//            // this method is called before any module controller action is performed
+//            // you may place customized code here
+//            return true;
+//        } else
+//            return false;
+//    }    
 
 }

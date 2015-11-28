@@ -1,16 +1,39 @@
 <?php
 $profileurl = '';
 if (!Yii::app()->user->isGuest) {
+    
+    $mustvalidate = UserDirectory::model()->findByPk(Yii::app()->user->id)->MUST_VALIDATE;
+    if($mustvalidate==0)
+    {
+        $popupdisp = "true";
+    }else {
+        $popupdisp = "false";
+    }
 
     if (Yii::app()->user->role == "Professionnels") {
+        
         $profileurl = '/optiguide/professionalDirectory/update';
+        
     } else if (Yii::app()->user->role == "Detaillants") {
+   
         $profileurl = '/optiguide/retailerDirectory/update';
     } else if (Yii::app()->user->role == "Fournisseurs") {
+        
         $profileurl = '/optiguide/suppliersDirectory/update';
     }
 }
 ?>
+
+<!-- Popup Modal for alert notification -->
+<div id="myModal" data-return="<?php echo $popupdisp;?>" class="modal fade bs-example-modal-sm homepage-popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <img src="<?php echo Yii::app()->createAbsoluteUrl("/uploads/archivage/warning-updated-required.jpg");?>">          
+    </div>    
+  </div>
+</div>
+
 <div class="header"> 
     <div class="header-row1"> 
         <div class="container"> 
@@ -93,6 +116,12 @@ Yii::app()->clientScript->registerScript('search', "
          return false;
        }   
        $('#search-form').submit();       
+    });
+    
+    $('#myModal').modal({
+       show : $('#myModal').data('return'),
+       backdrop: 'static',
+       keyboard: false
     });
 ");
 ?>

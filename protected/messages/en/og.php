@@ -259,4 +259,13 @@ return array(
     'OGO212' => 'Classified category name',
     'OGO213' => 'Classified Title',
     
+    'OGO214' => 'Validating your credentials',
+    'OGO215' => 'Please, confirm that the information presented below are valid',
+    'OGO216' => ' the information is valid and complete.',
+    'OGO217' => ' i want to make adjustments to my profile.',
+    'OGO218' => 'Yes',
+    'OGO219' => 'No',
+    'OGO220' => 'Thank you for having updated your data! Now you can continue your visit to our website.'
+    
+    
 );

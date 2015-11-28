@@ -549,7 +549,7 @@ class SuppliersDirectoryController extends OGController {
             $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
             $umodel->sGuid = Myclass::getGuid();
             $umodel->LANGUE = Yii::app()->session['language'];
-            $umodel->MUST_VALIDATE = 0;
+            $umodel->MUST_VALIDATE = 1;
 
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
@@ -1345,6 +1345,8 @@ class SuppliersDirectoryController extends OGController {
             $model->attributes = $_POST['SuppliersDirectory'];
             $umodel->attributes = $_POST['UserDirectory'];
             $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
+            $umodel->MUST_VALIDATE = 1;
+
 
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;

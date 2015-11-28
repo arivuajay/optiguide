@@ -366,8 +366,8 @@ class ProfessionalDirectoryController extends OGController {
             $umodel->NOM_TABLE = $model::$NOM_TABLE;
             $umodel->NOM_UTILISATEUR = $model->PRENOM . " " . $model->NOM;
             $umodel->sGuid = Myclass::getGuid();
-            //$umodel->LANGUE = Yii::app()->session['language'];
-            $umodel->MUST_VALIDATE = 0;
+            // $umodel->LANGUE = Yii::app()->session['language'];
+            $umodel->MUST_VALIDATE = 1;
 
             $valid = $umodel->validate();
             $valid = $model->validate() && $valid;
@@ -501,6 +501,7 @@ class ProfessionalDirectoryController extends OGController {
 
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_SPECIALISTE;
+                $umodel->MUST_VALIDATE = 1;
                 $umodel->save(false);
 
                 Yii::app()->user->setFlash('success', Myclass::t('OG036', '', 'og'));

@@ -449,6 +449,26 @@ and open the template in the editor.
 
 .nav > li > a {
   display: block;
-  padding: 10px 13px;
+  padding: 10px 8px;
   position: relative;
+}
+
+.homepage-popup{
+    top:30%;
+}
+
+.confirmation-cont {
+    background: #f0f0f0 none repeat scroll 0 0;    
+    padding: 4px;
+}
+
+.confirmation-cont.nolink a {
+    background:#961B1D none repeat scroll 0 0;  
+}
+
+.confirmation-cont a {
+    background: #74C374 none repeat scroll 0 0;
+    color: #ffffff;
+    padding: 8px 21px;
+    width: auto !important;
 }
