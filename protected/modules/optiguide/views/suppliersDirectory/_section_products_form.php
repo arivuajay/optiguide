@@ -17,6 +17,7 @@ $sectiontypes = CHtml::listData(SectionDirectory::model()->findAll(array("order"
             <h2> <?php echo Myclass::t('OGO81', '', 'og'); ?> </h2>
             
             <?php  $this->renderPartial('_menu_steps', array());?>
+            <div class="clear"></div>
             <p><?php echo Myclass::t('OG168'); ?></p>
             <?php
             $form = $this->beginWidget('CActiveForm', array(

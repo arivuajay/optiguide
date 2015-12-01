@@ -5,17 +5,35 @@
         <div class="inner-container eventslist-cont"> 
             <div class="search-list">
                 <div class="news-thumbs news-details"> 
-                    <h4>  ContactUs </h4> 
+                    <h4>  <?php echo Myclass::t('OR732', '', 'or') ?> </h4> 
                     <div class="clearfix"></div>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
-                       Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. 
-                       Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>
-                     <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
-                       Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. 
-                       Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>
-                      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
-                       Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. 
-                       Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>
+                    <?php if (Yii::app()->language == 'en') { ?>
+                    <p><?php echo Myclass::t('OGO131', '', 'og'); ?></p>
+                    <p>
+                        <strong>Breton Communications</strong><br>
+                        495 St-Martin Blvd, local 202<br>
+                        Laval, Quebec<br>
+                        H7M 1Y9
+                    </p>
+                    <p><?php echo Myclass::t('OG041', '', 'og'); ?>. : 450 629-6005<br>
+                        <?php echo Myclass::t('OG046', '', 'og'); ?> : 1 888 462-2112<br>
+                        <?php echo Myclass::t('OG042', '', 'og'); ?> : 450 629-6044<br>
+                        <?php echo Myclass::t('APP6'); ?> : <a href="mailto:info@bretoncom.com">info@bretoncom.com</a><br>                
+                    </p>
+                      <?php } else { ?>
+                    <p><?php echo Myclass::t('OGO131', '', 'og'); ?></p>
+                    <p>
+                        <strong>Breton Communications</strong><br>
+                        495 St-Martin Blvd, local 202<br>
+                        Laval, Quebec<br>
+                        H7M 1Y9
+                    </p>
+                    <p><?php echo Myclass::t('OG041', '', 'og'); ?>. : 450 629-6005<br>
+                        <?php echo Myclass::t('OG046', '', 'og'); ?> : 1 888 462-2112<br>
+                        <?php echo Myclass::t('OG042', '', 'og'); ?> : 450 629-6044<br>
+                        <?php echo Myclass::t('APP6'); ?> : <a href="mailto:info@bretoncom.com">info@bretoncom.com</a><br>                
+                    </p>
+                    <?php } ?>
                 </div>
             </div>
         </div>

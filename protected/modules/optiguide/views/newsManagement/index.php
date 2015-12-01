@@ -5,7 +5,7 @@
         <div class="inner-container eventslist-cont"> 
             <h2>  
                 <?php // echo CHtml::image("{$this->themeUrl}/images/title_optinews.gif", 'Opti News'); ?>
-                News
+                <?php echo Myclass::t('OG189');?>
             </h2>
             <div class="search-list">
                 <?php if (!empty($model)) {

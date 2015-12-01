@@ -4,7 +4,7 @@
         <h2> <?php echo Myclass::t('OG037', '', 'og'); ?>  </h2>
         <?php foreach ($latest_news as $latest_new) { ?>
             <div class="news-cont"> 
-                <div class="news-date"> <?php echo date("M", strtotime($latest_new['DATE_AJOUT1'])) . ' ' . date("d", strtotime($latest_new['DATE_AJOUT1'])) ?> </div> 
+                <div class="news-date"> <?php if(Yii::app()->language == "en"){ echo date("M", strtotime($latest_new['DATE_AJOUT1'])) . ' ' . date("d", strtotime($latest_new['DATE_AJOUT1'])); }else{ echo date("d", strtotime($latest_new['DATE_AJOUT1'])) . ' ' . date("M", strtotime($latest_new['DATE_AJOUT1'])); } ?> </div> 
                 <div class="news-txt">
                     <?php echo CHtml::link($latest_new['TITRE'], array('/optiguide/newsManagement/view', 'id' => $latest_new['ID_NOUVELLE'])); ?>
                 </div>

@@ -287,6 +287,8 @@ return array(
     'OR728' => 'Track your own login statistics.',
     'OR729' => 'Track your owned users login statistics.',
     'OR730' => 'Track your owned users viewed the user profiles (professional / retailer).',
-    'OR731' => 'Statistics expiry date'
-    
+    'OR731' => 'Statistics expiry date',
+    //add by nachi
+    'OR732' => 'Contact',
+    'OR733' => 'Pay Now',
 );

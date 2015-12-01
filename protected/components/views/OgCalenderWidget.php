@@ -1,5 +1,5 @@
 <div class="optinews-left" id="calendar"> 
-    <div class="optinews-left-heading"> Calendar Of Events </div>
+    <div class="optinews-left-heading"> <?php echo Myclass::t('OG017', '', 'og') ?> </div>
     <div class="optinews-left-bg"> 
         <?php
         $events = CalenderEvent::model()->currentMonthYear()->findAll();
@@ -85,16 +85,29 @@ EOD;
         <h4 class="eventList"><?php echo Myclass::t('OGO167','','og');?></h4>
         <?php
         if(!empty($upcoming_events))
-        {?>    
+        { ?>    
         <ul class="eventList">
-           <?php
-           foreach($upcoming_events as $einfo)
-           {?>   
-            <li class="li-1">
-                <span class="date start"><?php echo date("F d Y",strtotime($einfo->DATE_AJOUT1)); ?></span>
-               <?php echo CHtml::link($einfo->TITRE, array('/optiguide/calenderEvent/view', 'id' => $einfo->ID_EVENEMENT));?> 
-            </li>
-           <?php
+           <?php if(Yii::app()->language == "fr"){ 
+                foreach($upcoming_events as $einfo)
+                {?>   
+                 <li class="li-1">
+                     <span class="date start"><?php $m= date("n", strtotime($einfo->DATE_AJOUT1));
+                     $month = Myclass::getMonths_Fr($m);
+                     echo date("d ",strtotime($einfo->DATE_AJOUT1)).$month.date(" Y",strtotime($einfo->DATE_AJOUT1)); ?></span>
+                    <?php echo CHtml::link($einfo->TITRE, array('/optiguide/calenderEvent/view', 'id' => $einfo->ID_EVENEMENT));?> 
+                 </li>
+                <?php
+                }
+           }else{
+               foreach($upcoming_events as $einfo)
+                {?>   
+                 <li class="li-1">
+                     <span class="date start"><?php 
+                     echo date("F d Y",strtotime($einfo->DATE_AJOUT1)); ?></span>
+                    <?php echo CHtml::link($einfo->TITRE, array('/optiguide/calenderEvent/view', 'id' => $einfo->ID_EVENEMENT));?> 
+                 </li>
+                <?php
+                }
            }
            ?>
         </ul>

@@ -52,7 +52,7 @@ $logo_name = $user_infos['USR'];
                             <?php echo $form->labelEx($pmodel, 'payment_type', array()); ?> 
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">                                                                                     
-                            <?php echo $form->dropDownList($pmodel, 'payment_type', array('1' => 'Paypal', '2' => 'Pay with credit card'), array('class' => 'selectpicker', "empty" => Myclass::t('OG118'))); ?>                          
+                            <?php echo $form->dropDownList($pmodel, 'payment_type', array('1' => 'Paypal', '2' => Myclass::t('OG183')), array('class' => 'selectpicker', "empty" => Myclass::t('OG182'))); ?>                          
                             <?php echo $form->error($pmodel, 'payment_type'); ?>
                         </div>
                     </div>    
@@ -111,7 +111,7 @@ $logo_name = $user_infos['USR'];
                         <div class="card-details-cont"> 
                             <div class="form-row1"> 
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <h4> Pay with debit card or credit card </h4>
+                                    <h4> <?php echo Myclass::t('OR652', '', 'or') ?></h4>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4"> <?php echo $form->labelEx($model_paypaladvance, 'credit_card'); ?>  </div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">  

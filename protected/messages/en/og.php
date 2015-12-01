@@ -79,7 +79,7 @@ return array(
     'OG049' => '(enter last name only)',
     'OG050' => 'Categories',
 
-    'OG051' => 'Welcome',
+    'OG051' => 'Welcome To OptiGuide',
 
     'OG052'=> 'Find an optical Supplier',
     'OG053'=> 'All Optical Supplier',
@@ -116,7 +116,7 @@ return array(
     'OG077' => 'Find a supplier by category',
     'OGO78' => 'Find a brand',
    
-    'OGO79' => 'Your request sent succesfully. Admin will contact you soon!!!',
+    'OGO79' => 'Your request sent successfully. Admin will contact you soon!!!',
     
     'OGO80'  => 'Next',
     'OGO81'  => 'Subscription of a supplier',

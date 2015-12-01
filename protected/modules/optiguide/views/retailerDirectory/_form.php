@@ -198,7 +198,7 @@
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">&nbsp;  </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-                        <a class="mapgenrate" href="javascript:void(0);" id="genratemap">Click to View your location</a>
+                        <a class="mapgenrate" href="javascript:void(0);" id="genratemap"><?php echo Myclass::t('OR553', '', 'or') ?></a>
                         <div id="display_map" style="display:none;width:450px;height:350px; "></div> 
                         <?php echo $form->hiddenField($model, 'map_lat', array('id' => 'latid')); ?>
                         <?php echo $form->hiddenField($model, 'map_long', array('id' => 'longid')); ?>                           
@@ -329,9 +329,9 @@
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                         <?php
-                        $classificationtypes['Upscale'] = "Upscale (high priced)";
-                        $classificationtypes['Midscale'] = "Midscale (medium priced)";
-                        $classificationtypes['DownRange'] = "Down range (low priced)";
+                        $classificationtypes['Upscale'] = Myclass::t('OG185');
+                        $classificationtypes['Midscale'] = Myclass::t('OG186');
+                        $classificationtypes['DownRange'] = Myclass::t('OG187');
                         echo $form->labelEx($model, 'classification', array());
                         ?>     
                     </div>
@@ -409,46 +409,46 @@
                         <?php echo $form->error($umodel, 'COURRIEL'); ?>
                     </div>
                 </div> 
-
+                <?php $no=Myclass::t('OGO219', '', 'og');  $yes=Myclass::t('OGO218', '', 'og'); ?>
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label> <?php echo Myclass::t('OG114'); ?></label></div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                        <?php echo $form->radioButtonList($umodel, 'bSubscription_envision', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
+                        <?php echo $form->radioButtonList($umodel, 'bSubscription_envision', array('0' => $no, '1' => $yes), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                     </div>
                 </div>
 
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo Myclass::t('OG115'); ?> </label>  </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                        <?php echo $form->radioButtonList($umodel, 'bSubscription_envue', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
+                        <?php echo $form->radioButtonList($umodel, 'bSubscription_envue', array('0' => $no, '1' => $yes), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                     </div>
                 </div>
 
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo Myclass::t('OG165'); ?>  </label>  </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                        <?php echo $form->radioButtonList($umodel, 'print_envision', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
+                        <?php echo $form->radioButtonList($umodel, 'print_envision', array('0' => $no, '1' => $yes), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                     </div>
                 </div>
 
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo Myclass::t('OG166'); ?>  </label>  </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                        <?php echo $form->radioButtonList($umodel, 'print_envue', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
+                        <?php echo $form->radioButtonList($umodel, 'print_envue', array('0' => $no, '1' => $yes), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                     </div>
                 </div>
 
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo Myclass::t('OG116'); ?>  </label>  </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                        <?php echo $form->radioButtonList($umodel, 'ABONNE_MAILING', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
+                        <?php echo $form->radioButtonList($umodel, 'ABONNE_MAILING', array('0' => $no, '1' => $yes), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                     </div>
                 </div>
 
                 <div class="form-row1"> 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"> <label><?php echo Myclass::t('OG117'); ?>  </label>  </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
-                        <?php echo $form->radioButtonList($umodel, 'ABONNE_PROMOTION', array('0' => 'No', '1' => 'Yes'), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
+                        <?php echo $form->radioButtonList($umodel, 'ABONNE_PROMOTION', array('0' => $no, '1' => $yes), array('separator' => '&nbsp;&nbsp;&nbsp;')); ?>
                     </div>
                 </div>
 

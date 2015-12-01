@@ -148,7 +148,7 @@ class RetailerDirectory extends CActiveRecord {
             'TELEPHONE2' => Myclass::t('APP72') . " #2",
             'TELECOPIEUR' => Myclass::t('APP73'),
             'TELECOPIEUR2' => Myclass::t('Telecopieur2'),
-            'URL' => Myclass::t('OG103'),
+            'URL' => Myclass::t('APP76'),
             'COURRIEL' => Myclass::t('APP75'),
             'TEL_1800' => Myclass::t('Téléphone sans frais'),
             'DATE_MODIFICATION' => Myclass::t('Date Modification'),

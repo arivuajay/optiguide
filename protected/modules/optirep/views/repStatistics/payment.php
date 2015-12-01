@@ -131,7 +131,7 @@
                                 'value' => 'Payfee',
                                 'type' => 'submit',
                                 'class' => 'register-btn'
-                                    ), '<i class="fa fa-check-circle"></i>' . ' Pay Now');
+                                    ), '<i class="fa fa-check-circle"></i>' . Myclass::t('OR733', '', 'or'));
                             ?>
                         </div>
                     </div>

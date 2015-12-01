@@ -72,11 +72,11 @@ class Advertise extends CActiveRecord
 	{
 		return array(
 			'id' => Myclass::t('ID'),
-			'name' => Myclass::t('Name'),
-			'telephone' => Myclass::t('Telephone'),
-			'informations' => Myclass::t('Informations'),
+			'name' => Myclass::t('OG190'),
+			'telephone' => Myclass::t('OG192'),
+			'informations' => Myclass::t('OG193'),
 			'position' => Myclass::t('Position'),
-			'email' => Myclass::t('Email'),
+			'email' => Myclass::t('OG191'),
 		);
 	}
 

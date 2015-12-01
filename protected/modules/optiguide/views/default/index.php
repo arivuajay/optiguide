@@ -3,7 +3,7 @@
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7"> 
         <div class="welcome-cont"> 
-            <h2>  <?php echo Myclass::t('OG051', '', 'og'); ?> <?php echo SITENAME; ?> </h2>
+            <h2>  <?php echo Myclass::t('OG051', '', 'og'); ?></h2>
             <?php echo Myclass::t('OG057', '', 'og'); ?>
             <?php if (Yii::app()->user->isGuest) { ?>
                 <p><?php echo Myclass::t('OG058', '', 'og'); ?>  <?php echo CHtml::link(Myclass::t('OG045', '', 'og'), array('/optiguide/default/subscribe')); ?></p>

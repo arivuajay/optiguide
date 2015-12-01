@@ -10,11 +10,11 @@
                     $dstr = '';
                     if($event['city']!='')
                     {
-                        $dstr =  $event['city'].' ,';
+                        $dstr =  $event['city'].', ';
                     } 
                     if($event['region']!='')
                     {
-                        $dstr .=  $event['region'].' ,';
+                        $dstr .=  $event['region'].', ';
                     } 
                     if($event['country']!='')
                     {

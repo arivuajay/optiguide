@@ -204,5 +204,21 @@ return array(
     'OG179' => "Email is already in use",
     'OG180' => "Your account is activated now. Please do login.",
     'OG181' => "Your account is already activated. Please do login.",
+    
+    //add by nachi
+    'OG182' => 'Select the type',
+    'OG183' =>'Pay with credit card',
+    'OG184' =>'Credit Card',
+    'OG185' =>'Upscale (high priced)',
+    'OG186' =>'Midscale (medium priced)',
+    'OG187' =>'Down range (low priced)',
+    'OG188' =>'Opti-Guide Members',
+    'OG189' =>'News',
+    'OG190' =>'Name',
+    'OG191' =>'Email',
+    'OG192' =>'Telephone',
+    'OG193' =>'Informations',
+    'OG194' =>'Welcome to Opti-rep.com',
+    'OG195' =>'Reçu le',
 );
 ?>

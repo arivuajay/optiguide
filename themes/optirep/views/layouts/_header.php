@@ -77,7 +77,7 @@
                                         array('label' => Myclass::t('OR714', '', 'or'), 'url' => array('/optirep/dashboard'), 'active' => ($_controller == 'default' && $_action == 'index')),
                                         array('label' => Myclass::t('OR715', '', 'or'), 'url' => array('/optirep/default/aboutus'), 'active' => ($_controller == 'default' && $_action == 'aboutus')),
                                        // array('label' => Myclass::t('OR716', '', 'or'), 'url' => array('/optirep/default/legend'), 'active' => ($_controller == 'default' && $_action == 'legend')),
-                                        array('label' => 'Contact', 'url' => array('/optirep/default/contactus'), 'active' => ($_controller == 'default' && $_action == 'contactus')),
+                                        array('label' => Myclass::t('OR732', '', 'or'), 'url' => array('/optirep/default/contactus'), 'active' => ($_controller == 'default' && $_action == 'contactus')),
                                     ),
                                     'htmlOptions' => array('class' => 'nav navbar-nav')
                                 ));

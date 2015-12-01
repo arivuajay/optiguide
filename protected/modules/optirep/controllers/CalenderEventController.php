@@ -94,12 +94,23 @@ class CalenderEventController extends ORController {
         $model = CalenderEvent::model()->findAll($criteria);
 
         $result = array();
-        foreach ($model as $events) {
-            $time = strtotime($events['DATE_AJOUT1']);
-            $month = date("F", $time);
-            $year = date("Y", $time);
-            $result[$month . ' ' . $year][] = $events;
+        if (Yii::app()->session['language'] == 'FR') { 
+            foreach ($model as $events) {
+                $time = strtotime($events['DATE_AJOUT1']);
+                $m= date("n", $time);
+                $month = Myclass::getMonths_Fr($m);
+                $year = date("Y", $time);
+                $result[$month . ' ' . $year][] = $events;
+            }
+        }else{
+            foreach ($model as $events) {
+                $time = strtotime($events['DATE_AJOUT1']);
+                $month = date("F", $time);
+                $year = date("Y", $time);
+                $result[$month . ' ' . $year][] = $events;
+            }
         }
+        
 
         $this->render('index', array(
             'model' => $result,

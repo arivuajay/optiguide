@@ -12,7 +12,7 @@ return array(
     //_submenu.php
     'OG007' => 'Submenu',
     'OG008' => 'Fournisseurs',
-    'OG009' => 'Catégorie',
+    'OG009' => 'Catégories',
     'OG010' => 'Marques',
     'OG011' => 'Nouvelles',
     'OG012' => 'Calendrier',
@@ -28,7 +28,7 @@ return array(
     //CalenderEvent/index.php
     'OG017' => 'Calendrier des événements',
     'OG018' => 'Du',
-    'OG019' => 'En',
+    'OG019' => 'Au',
     'OG020' => 'Trouver un événement',
     'OG021' => 'Tous',
     'OG022' => 'Mois',
@@ -38,14 +38,14 @@ return array(
     'OG025' => 'Se Déconnecter',
     
     //newsManagement/_search.php
-    'OG026' => 'Trouver un Nouvelles',
+    'OG026' => 'Trouver Une Nouvelle',
     'OG027' => 'Mot-clé',
     
      'OG028' => 's\'inscrire',
-    'OG029' => '<p> Nouveaux magazines numériques ! Inscrivez-vous et obtenir votre Souscription numérique GRATUIT pour ENVISION et Envue . </p>
-                <p> De plus, recevez votre abonnement OPTI- NOUVELLES et vos codes d\'accès à l\'OPTI - GUIDE . </p>
-                <p> S\'il vous plaît remplir l\'une des formes suivantes . Il ne devrait vous prendre quelques minutes . </p>',
-    'OG030' => 'Professionnal',
+    'OG029' => '<p> Nouveaux magazines numériques ! Inscrivez-vous afin d’obtenir un abonnement numérique GRATUIT aux revues ENVISION et ENVUE. </p>
+                <p> Vous serez de plus abonnés à l’Opti-News et recevrez vos codes d\'accès pour OPTI-GUIDE. </p>
+                <p> Pour vous inscrire, veuillez compléter l’un des formulaires suivants. Il ne vous faudra que quelques minutes pour finaliser votre inscription.</p>',
+    'OG030' => 'Professionnel',
     'OG031' => 'Fournisseur',
     'OG032' => 'Détaillant optique',
     
@@ -66,8 +66,8 @@ return array(
     'OG042' => 'Télécopieur',
     'OG043' => 'Aucun résultat trouvé',
     
-    'OG044' => 'Merci pour votre abonnement ! Veuillez consulter votre courrier électronique , cliquez sur le lien d\'activation pour activer votre compte.',
-    'OG045' => 'Inscription',
+    'OG044' => 'Merci de vous être inscrit ! Vous pouvez vous connecter sur le site dès maintenant.',
+    'OG045' => 'Vous inscrire',
     'OG046' => 'Sans frais',
     
     'OG047' => 'Trouver un détaillant',
@@ -75,7 +75,7 @@ return array(
     'OG049' => '(entrez nom de famille seulement )',
     'OG050' => 'Catégories',
     
-    'OG051' => 'Bienvenue',
+    'OG051' => 'BIENVENUE sur le site d’OPTI-GUIDE',
     
     'OG052'=> 'Trouver un Fournisseur optique',
     'OG053'=> 'Toutes Fournisseur Optique',
@@ -83,8 +83,8 @@ return array(
     'OG055'=> 'Se connecter!',
     'OG056'=> 'Mot de passe oublié?',
     
-    'OG057'=> '<p>Vous cherchez un bureau d\'optique ? Rechercher dans le moteur et de trouver ce dont vous avez besoin!</p>
-    <p>Vous êtes un professionnel dans cette industrie? Utilisez vos codes d\'accès et visitez la zone sécurisée pour trouver les fournisseurs canadiens , les produits et les noms de marque , un calendrier des événements à venir et à lire des nouvelles fraîches de l\'industrie grâce à la newsletter e -mail Opti- Nouvelles.</p>',
+    'OG057'=> '<p>Vous êtes à la recherche d’un bureau d\'optique ? Utilisez notre moteur de recherche pour trouver ce dont vous avez besoin!</p>
+    <p>Vous êtes un professionnel de l’industrie? Utilisez vos codes d\'accès afin d’accéder à la zone sécurisée pour trouver les fournisseurs canadiens, les produits et les marques. Découvrez de plus le calendrier des événements à venir et consultez les dernières nouvelles de l\'industrie en vous abonnant à la liste d’envoi de l’Opti-News.</p>',
     'OG058'=> 'Besoin d\'un code d\'accès ? Cliquez ici pour',
     'OG059'=> 'Produits et services',
 
@@ -95,12 +95,12 @@ return array(
 
     'OG064'=> 'Tous les types',
     'OG065'=> 'Toutes les sections',
-    'OG066'=> 'Toutes Produits et services',
+    'OG066'=> 'Toutes les produits et services',
     'OG067'=> 'Trouver un fournisseur',
     'OG068'=> 'Téléphone sans frais',
     'OG069'=> 'Télécopieur sans frais',
     'OG070'=> 'Produits & services offerts dans les régions suivantes :',
-    'OG071' => 'Information de contact',
+    'OG071' => 'Coordonnées',
     'OG072' => 'Information sur la compagnie',
     'OG073' => 'Marques / Produits / Services',
     
@@ -112,7 +112,7 @@ return array(
     'OG077' => 'Trouver un fournisseur par catégorie',
     'OGO78' => 'Trouver une marque',
     
-    'OGO79' => 'Votre demande envoyé avec succès . Admin vous contacter bientôt !!!',
+    'OGO79' => 'Votre demande a été envoyée. Nous vous contacterons dès que possible pour discuter de tous les détails!!!',
     
     'OGO80' => 'Suivant',
     'OGO81' => 'Abonnement d\'un fournisseur',

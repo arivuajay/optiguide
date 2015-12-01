@@ -5,7 +5,7 @@
                 <p>Our classified ad section is a free service for all optical practioners in the Canadian optical industry. All submitted classified ads will also be printed in Envision: seeing beyond. Please send your text (maximum 50 words) to info@bretoncom.com or fax it to 450 629-6044.
                 </p>
             <?php } else { ?>
-                <p>Vous désirez placer une petite annonce? Communiquez avec nous par courriel à info@bretoncom.com ou par télécopieur au 450 629-6044. Les petites annonces sont gratuites pour les professionnels de l’optique et sont aussi imprimée dans Envue : voir plus loin.
+                <p>Vous désirez placer une petite annonce? Contactez-nous par courriel à info@bretoncom.com ou par télécopieur au 450 629-6044. Les petites annonces sont gratuites pour les professionnels de l’optique et sont aussi imprimées dans Envue : voir plus loin.
                 </p>
             <?php } ?>
 

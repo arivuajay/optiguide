@@ -24,7 +24,7 @@
                               $param_array['disppage'] = 'home';
                                      
                             echo CHtml::link($dispname,$param_array) . ' ';   
-                            echo $info['NOM_VILLE'].",".$info['ABREVIATION_'.$this->lang].",".$info['NOM_PAYS_'.$this->lang];
+                            echo $info['NOM_VILLE'].", ".$info['ABREVIATION_'.$this->lang].", ".$info['NOM_PAYS_'.$this->lang];
                             ?>
                         </li>
                         <?php } ?>
