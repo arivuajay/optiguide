@@ -27,6 +27,8 @@ class UserDirectory extends CActiveRecord
          public $old_password;
          public $new_password;
          public $repeat_password;
+         public $username;
+         public $email;
     
 	/**
 	 * @return string the associated database table name
@@ -61,6 +63,13 @@ class UserDirectory extends CActiveRecord
                     array('old_password, new_password, repeat_password', 'required', 'on' => 'changePwd'),
                     array('old_password', 'findPasswords', 'on' => 'changePwd'),
                     array('repeat_password', 'compare', 'compareAttribute'=>'new_password', 'on'=>'changePwd'),
+                    array('reset_pwd_code', 'length', 'max'=>50),
+                    array('username, email,', 'required', 'on' => 'forgot'),
+                    array('username', 'findUser', 'on' => 'forgot'),
+                    array('email', 'findEmail', 'on' => 'forgot'),
+                    array('new_password, repeat_password', 'required', 'on' => 'resetPwd'),
+                    array('repeat_password', 'compare', 'compareAttribute'=>'new_password', 'on'=>'resetPwd'),
+//                    array('COURRIEL', 'findEmail', 'on' => 'forgot'),
             );
 	}
         
@@ -71,7 +80,18 @@ class UserDirectory extends CActiveRecord
             if ($user->PWD != $this->old_password)
                 $this->addError($attribute, Myclass::t('OGO117','','og') );
         }
-        
+        public function findUser($attribute, $params) 
+        {
+            $model = UserDirectory::model()->findByAttributes(array('USR'=> $this->username));
+            if (empty($model))
+                $this->addError($attribute, 'Please Enter correct user name');
+        }
+        public function findEmail($attribute, $params) 
+        {
+            $model = UserDirectory::model()->findByAttributes(array('COURRIEL'=> $this->email));
+            if (empty($model))
+                $this->addError($attribute, 'Invalid Email Address');
+        }
         public function Checksubscriptionmail()
         {
             if($this->bSubscription_envision==1 || $this->bSubscription_envue==1 || $this->ABONNE_MAILING==1 || $this->ABONNE_PROMOTION==1)
@@ -125,6 +145,8 @@ class UserDirectory extends CActiveRecord
                         'new_password' => Myclass::t('OGO115', '', 'og'),
                         'repeat_password' => Myclass::t('OGO116', '', 'og'),
                         'status' => Myclass::t('Statut de l\'utilisateur'),
+                        'username' => Myclass::t('APP3'),
+                        'email' => Myclass::t('APP6'),
 			
 		);
 	}

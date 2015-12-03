@@ -28,7 +28,7 @@ class UserDirectoryController extends OGController {
          parent::accessRules(),
          array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array(''),
+                'actions' => array('forgotpassword','resetpassword'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -108,13 +108,90 @@ class UserDirectoryController extends OGController {
 
         $this->render('update', compact('model','id'));
     }
+    public function actionForgotpassword(){
+        $baseurl = Yii::app()->request->getBaseUrl(true);
+        $model = new UserDirectory('forgot');
+        
+        // Uncomment the following line if AJAX validation is needed
+        $this->performAjaxValidation($model);
+        if (isset($_POST['UserDirectory'])) 
+        {
+            
+            $model = UserDirectory::model()->findByAttributes(array('USR' => $_POST['UserDirectory']['username'],'COURRIEL' => $_POST['UserDirectory']['email']));
+            if (empty($model)) {
+                Yii::app()->user->setFlash('danger', Myclass::t("OR587", "", "or"));
+                
+            }  else {
+                $model->attributes = $_POST['UserDirectory'];
+                $valid = $model->validate();
+            
+            if($valid)
+            {
+                    
+//                    $rep_profile = $model->COURRIEL;
+                    $model->reset_pwd_code = Myclass::getRandomString(5);
+//                    echo "<pre>";
+//                    print_r($model->attributes);exit;
+                    $model->save(false);
+
+                    if (!empty($model->COURRIEL)):
+                        //$loginlink = Yii::app()->createAbsoluteUrl('/site/default/login');
+                        
+                        $mail = new Sendmail;
+                        $nextstep_url = $baseurl . '/optiguide/userDirectory/resetpassword/cnfrm/'.$model->reset_pwd_code;
+                        $trans_array = array(
+                            "{NEXTSTEPURL}"=>$nextstep_url,
+                            "{USERNAME}" => $model->NOM_UTILISATEUR,
+                        );
+                        $message = $mail->getMessage('guide_forgot_password', $trans_array);
+                        $Subject = $mail->translate('Reset Password');
+                        $mail->send($model->COURRIEL, $Subject, $message);
+                    endif;
+
+                    Yii::app()->user->setFlash('success', Myclass::t("OR737", "", "or"));
+                }
+            }
+                $this->refresh();
+            }
+              
+        $this->render('forgotpassword', array('model' => $model));
+    }
+    public function actionResetpassword($cnfrm){
+        $baseurl = Yii::app()->request->getBaseUrl(true);
+        $model = UserDirectory::model()->findByAttributes(array('reset_pwd_code' => $cnfrm));
+        if (empty($model)) {
+            $this->redirect($baseurl);
+        }
+        $model->scenario = 'resetPwd';
+        
+        // Uncomment the following line if AJAX validation is needed
+        $this->performAjaxValidation($model);
+        if (isset($_POST['UserDirectory'])) 
+        {
+//            $model = UserDirectory::model()->findByAttributes(array('USR' => $usr,'reset_pwd_code' => $pwd_code));
+            
+            $model->attributes = $_POST['UserDirectory'];
+            
+            $valid = $model->validate();
+            
+            if($valid)
+            {
+                    $model->PWD = $_POST['UserDirectory']['new_password'];
+                    $model->reset_pwd_code = '';
+                    $model->save(false);
+                       Yii::app()->user->setFlash('success', Myclass::t('OGO113', '', 'og'));    
+            }
+                $this->refresh();
+        }
+        $this->render('resetpassword', array('model' => $model));
+    }
     
     public function actionchangepassword()
     {
         $id=Yii::app()->user->id;
         $model = UserDirectory::model()->findByPk($id);
         $model->scenario = 'changePwd';       
-
+        
          // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
 

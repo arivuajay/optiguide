@@ -18,7 +18,7 @@
     <?php echo $form->passwordField($model, 'password', array('class' => 'login-field','placeholder'=> Myclass::t('APP4'))); ?>
     <?php echo $form->error($model, 'password'); ?>
     
-    <span> <a href="#"> <?php echo  Myclass::t('OG056', '', 'og');?></a> </span> <br/>
+    <span> <?php echo CHtml::link(Myclass::t('OG056', '', 'og'), array('/optiguide/userDirectory/forgotpassword')); ?> </span> <br/>
     <div class="signin-btn-cont"> 
         <?php echo CHtml::submitButton( Myclass::t('OG055', '', 'og') , array('name' => 'sign_in', 'class' => 'signin-btn')); ?>
     </div>

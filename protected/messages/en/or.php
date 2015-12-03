@@ -293,5 +293,6 @@ return array(
     'OR733' => 'Pay Now',
     'OR734' => 'About Us',
     'OR735' => 'Change Password',
-    
+    'OR736' => 'Please Check the Username or Email.',
+    'OR737' => 'Reset password URL has been sent to your registered email. Please check your email',
 );

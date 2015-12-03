@@ -265,7 +265,8 @@ return array(
     'OGO217' => ' i want to make adjustments to my profile.',
     'OGO218' => 'Yes',
     'OGO219' => 'No',
-    'OGO220' => 'Thank you for having updated your data! Now you can continue your visit to our website.'
-    
+    'OGO220' => 'Thank you for having updated your data! Now you can continue your visit to our website.',
+    'OGO221' => 'Forgot Password',
+    'OGO222' => 'Reset Password',
     
 );

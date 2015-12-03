@@ -293,4 +293,5 @@ return array(
     'OR733' => 'Payez Maintenant',
     'OR734' => 'À propos d’Opti-Rep',
     'OR735' => 'Mettre votre mot de passe à jour',
+    'OR736' => "S'il vous plaît Vérifiez le nom d'utilisateur ou e-mail",
 );
