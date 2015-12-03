@@ -30,7 +30,10 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             array('header' => 'SN.',
                 'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
             ),
-            'COMPAGNIE',                             
+            array(
+                'name' => 'COMPAGNIE',
+                'sortable' => false
+            ),
             array(
                 'header' => 'Type de retailer',
                 'name' => 'retailerType.NOM_TYPE_FR',

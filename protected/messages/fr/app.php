@@ -82,7 +82,7 @@ return array(
     'APP72' => 'Téléphone',
     'APP73' => 'Télécopieur',
     'APP74' => 'Tel Sans Frais',
-    'APP75' => 'Courriel du magasin',
+    'APP75' => 'Courriel',
     'APP76' => 'Site Internet',
     'APP77' => 'Prefix Représentant Fr',
     'APP78' => 'Prefix Représentant En',
@@ -220,5 +220,6 @@ return array(
     'OG193' =>'Détails supplémentaires',
     'OG194' =>'Bienvenue Sur Opti-rep.com',
     'OG195' =>'Créé Le',
+    'OG196' => 'Type de paiement',
 );
 ?>

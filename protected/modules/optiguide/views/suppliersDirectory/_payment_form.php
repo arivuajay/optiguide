@@ -168,10 +168,11 @@ $logo_name = $user_infos['USR'];
 </div>   
 <?php
 $taxval_profile = $profile_price * ($tax_price / 100);
-$taxval_profile_logo = $profile_logo_price * ($tax_price / 100);
-
+//$taxval_profile_logo = $profile_logo_price * ($tax_price / 100);
+$taxval_profile_logo=Myclass::numberFormat($profile_logo_price * ($tax_price / 100));
 $grandtotal_profile = ( $profile_price + $taxval_profile);
-$grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo);
+$grandtotal_profile_logo =Myclass::numberFormat($profile_logo_price + $taxval_profile_logo);
+//$grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo);
 
 $currency = CURRENCY;
 $p_price = $profile_price . ' ' . $currency;

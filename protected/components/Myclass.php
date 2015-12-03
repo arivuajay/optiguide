@@ -395,12 +395,17 @@ class Myclass extends CController {
     }
 
     public static function currencyFormat($number) {
+        
         $result = self::numberFormat($number);
-        return $result . ' CAD';
+        return $result . ' CAD'.$c;
     }
-
+    
     public static function numberFormat($number) {
-        return number_format($number, 2);
+        if (Yii::app()->session['language'] == 'FR') { 
+            return number_format($number, 2, ","," ");
+        }  else {
+            return number_format($number, 2);
+        }
     }
 
     public static function priceCalculation($no_of_accounts_purchased) {

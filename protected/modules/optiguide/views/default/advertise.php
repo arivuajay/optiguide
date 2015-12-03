@@ -14,7 +14,7 @@
             <?php } else {
                 ?>
                 <h2>Annoncer avec nous </h2>
-                <p>Nous vous invitons à contacter Martine Breton ou Aurélie Vasseur  aux coordonnées suivantes :</p>           
+                <p>Nous vous invitons à contacter Martine Breton ou Aurélie Vasseur :</p>           
                 <p>Tél. : 450 629-6005<br>
                     Sans frais : 1 888 462-2112<br>
                     Téléc : 450 629-6044<br>

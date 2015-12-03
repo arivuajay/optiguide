@@ -1,5 +1,5 @@
 <div class="cate-bg user-right">
-    <h2> <?php echo Myclass::t('OR551', '', 'or'); ?> </h2>
+    <h2> <?php echo Myclass::t('OR735', '', 'or'); ?> </h2>
 
     <?php
     $form = $this->beginWidget('CActiveForm', array(
@@ -32,7 +32,7 @@
                 'name' => 'btnSubmit',
                 'type' => 'submit',
                 'class' => 'register-btn'
-                    ), Myclass::t('OR551', '', 'or'));
+                    ), Myclass::t('OR735', '', 'or'));
             ?>
         </div>
     </div>

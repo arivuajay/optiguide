@@ -164,7 +164,9 @@ class ProfessionalDirectory extends CActiveRecord {
         $criteria->compare('PREFIXE_EN', $this->PREFIXE_EN, true);
         $criteria->compare('PRENOM', $this->PRENOM, true);
         $criteria->compare('NOM', $this->NOM, true);
-        $criteria->compare('t.ID_TYPE_SPECIALISTE', $this->ID_TYPE_SPECIALISTE, true);
+        if($this->ID_TYPE_SPECIALISTE>0){
+            $criteria->addCondition("t.ID_TYPE_SPECIALISTE='".$this->ID_TYPE_SPECIALISTE."'");
+        }
         $criteria->compare('TYPE_AUTRE', $this->TYPE_AUTRE, true);
         $criteria->compare('BUREAU', $this->BUREAU, true);
         $criteria->compare('ADRESSE', $this->ADRESSE, true);

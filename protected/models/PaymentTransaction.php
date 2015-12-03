@@ -121,6 +121,7 @@ class PaymentTransaction extends CActiveRecord {
             'verify_sign' => 'Vérifiez Connexion',
             'txn_id' => 'Txn Id',
             'payment_type' => Myclass::t('OG142'),
+            'pay_type' => Myclass::t('OG196'),
             'receiver_email' => 'Récepteur Email',
             'txn_type' => 'Type de Txn',
             'item_name' => 'Nom de l\'abonnement',

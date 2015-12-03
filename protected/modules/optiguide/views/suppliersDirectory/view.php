@@ -49,7 +49,7 @@ if ($model['logo_expirydate'] != '') {
                         <h2><?php echo Myclass::t('OG071', '', 'og'); ?> </h2>
                         <div class="clearfix"></div>                     
                         <p> 
-                            <?php echo $model['ADRESSE']; ?>. <br/> 
+                            <?php echo $model['ADRESSE']; ?> <br/> 
                             <?php echo $model['NOM_VILLE']; ?>,  <?php echo $model['NOM_REGION_' . $lang]; ?><br/> 
                             <?php echo $model['NOM_PAYS_' . $this->lang]; ?><br/> 
                             <?php echo $model['CODE_POSTAL']; ?>

@@ -220,5 +220,6 @@ return array(
     'OG193' =>'Informations',
     'OG194' =>'Welcome to Opti-rep.com',
     'OG195' =>'Reçu le',
+    'OG196' => 'Pay Type',
 );
 ?>

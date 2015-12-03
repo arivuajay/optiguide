@@ -17,7 +17,7 @@
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">  
                     <div class="search-list">       
                         <h2><?php echo Myclass::t('OG071', '', 'og'); ?> </h2>
-                        <p> <?php echo $model['ADRESSE']; ?>. <br/> 
+                        <p> <?php echo $model['ADRESSE']; ?> <br/> 
                             <?php echo $model['NOM_VILLE']; ?>,  <?php echo $model['NOM_REGION_' . $this->lang]; ?><br/> 
                             <?php echo $model['NOM_PAYS_' . $this->lang]; ?><br/> 
                             <?php echo $model['CODE_POSTAL']; ?>

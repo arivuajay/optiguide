@@ -291,4 +291,7 @@ return array(
     //add by nachi
     'OR732' => 'Contact',
     'OR733' => 'Pay Now',
+    'OR734' => 'About Us',
+    'OR735' => 'Change Password',
+    
 );

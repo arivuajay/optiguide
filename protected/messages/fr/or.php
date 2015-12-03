@@ -78,7 +78,7 @@ return array(
     'OR548' => "Sélectionnez l'abonnement",
     'OR549' => 'Informations de base',
     'OR550' => 'paiement',
-    'OR551' => 'Mettre Le Mot De Passe À Jour',
+    'OR551' => 'Changer mon mot de passe',
     'OR552' => 'Modifier le profil',
     'OR553' => 'Cliquez Ici Pour Afficher Votre Position',
     'OR554' => 'Recherche',
@@ -291,5 +291,6 @@ return array(
     //add by nachi
     'OR732' => 'Nous Joindre',
     'OR733' => 'Payez Maintenant',
-    
+    'OR734' => 'À propos d’Opti-Rep',
+    'OR735' => 'Mettre votre mot de passe à jour',
 );

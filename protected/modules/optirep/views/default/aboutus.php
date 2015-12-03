@@ -5,7 +5,7 @@
         <div class="inner-container eventslist-cont"> 
             <div class="search-list">
                 <div class="news-thumbs news-details"> 
-                    <h4>  <?php echo Myclass::t('OR715', '', 'or') ?> </h4> 
+                    <h4>  <?php echo Myclass::t('OR734', '', 'or') ?> </h4> 
                     <div class="clearfix"></div>
                     <?php if (Yii::app()->language == 'en') { ?>
                     <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 

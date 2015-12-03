@@ -31,8 +31,14 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             array('header' => 'SN.',
                 'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
             ),
-            'NOM',
-            'PRENOM',            
+            array(
+                'name' => 'NOM',
+                'sortable' => false
+            ),
+            array(
+                'name' => 'PRENOM',
+                'sortable' => false
+            ),
             array(
                 'header' => 'Type de professionnel',
                 'name' => 'professionalType.TYPE_SPECIALISTE_FR',
