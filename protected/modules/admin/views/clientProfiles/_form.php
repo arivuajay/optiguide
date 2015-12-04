@@ -17,6 +17,10 @@
                 $category_names = CHtml::listData(ClientCategory::model()->findAll(array("order"=>"category asc","condition"=>"cat_type_id=2")), 'category', 'cat_name');
             }    
             
+            $country = Myclass::getallcountries();
+            $regions = Myclass::getallregions($model->country);
+            $cities = Myclass::getallcities($model->region);
+            
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'client-profiles-form',
                 'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'), 
@@ -55,7 +59,6 @@
                     <?php echo $form->labelEx($model, 'member_type', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
                          <?php echo $form->dropDownList($model, 'member_type', array("free_member"=>'Free member','advertiser'=>'Advertiser'), array('class' => 'form-control')); ?> 
-                        
                     </div>
                 </div>
 
@@ -94,26 +97,26 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+               <div class="form-group">
                     <?php echo $form->labelEx($model, 'country', array('class' => 'col-sm-2 control-label')); ?>
-                    <div class="col-sm-5">
-                        <?php echo $form->textField($model, 'country', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
+                    <div class="col-sm-5">                       
+                        <?php echo $form->dropDownList($model, 'country', $country, array('class' => 'form-control', 'empty' => Myclass::t('APP43'))); ?>                          
                         <?php echo $form->error($model, 'country'); ?>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'region', array('class' => 'col-sm-2 control-label')); ?>
-                    <div class="col-sm-5">
-                        <?php echo $form->textField($model, 'region', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
+                    <div class="col-sm-5">                       
+                        <?php echo $form->dropDownList($model, 'region', $regions, array('class' => 'form-control', 'empty' => Myclass::t('APP44'))); ?>                          
                         <?php echo $form->error($model, 'region'); ?>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'ville', array('class' => 'col-sm-2 control-label')); ?>
-                    <div class="col-sm-5">
-                        <?php echo $form->textField($model, 'ville', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
+                    <div class="col-sm-5">                       
+                        <?php echo $form->dropDownList($model, 'ville', $cities, array('class' => 'form-control', 'empty' => Myclass::t('APP59'))); ?>   
                         <?php echo $form->error($model, 'ville'); ?>
                     </div>
                 </div>
@@ -467,6 +470,9 @@
 $ajaxCatUrl = Yii::app()->createUrl('/admin/clientProfiles/getcategories');
 $ajax_getmessage  = Yii::app()->createUrl('/admin/clientProfiles/getmessage');
 
+$ajaxRegionUrl = Yii::app()->createUrl('/admin/professionalDirectory/getregions');
+$ajaxCityUrl = Yii::app()->createUrl('/admin/professionalDirectory/getcities');
+
 $ajax_get_client_mess_update = Yii::app()->createUrl('/admin/clientProfiles/updateMessage');
 $js = <<< EOD
 
@@ -521,7 +527,38 @@ $js = <<< EOD
                 $("#client_message_contents").html(html);               
             }
          });
-    });        
+    });  
+        
+    $("#ClientProfiles_country").change(function(){
+        var id=$(this).val();
+        var dataString = 'id='+ id;
+            
+        $.ajax({
+            type: "POST",
+            url: '{$ajaxRegionUrl}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#ClientProfiles_region").html(html);
+            }
+         });
+    });
+   
+   $("#ClientProfiles_region").change(function(){
+        var id=$(this).val();
+        var dataString = 'id='+ id;
+            
+        $.ajax({
+            type: "POST",
+            url: '{$ajaxCityUrl}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#ClientProfiles_ville").html(html);
+            }
+         });
+
+    });         
   
 });
 EOD;

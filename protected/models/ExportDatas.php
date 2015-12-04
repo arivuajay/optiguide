@@ -13,7 +13,7 @@ class ExportDatas extends CActiveRecord
 {
         
         public $P_type,$R_type,$S_type,$language,$EN,$FR,$subscriptions,$Optipromo,$Optinews,$Envision_print,$Envision_digital,$Envue_print,$Envue_digital,$province,$ptype,$export_type;
-        public $country,$region;
+        public $country,$region,$cat_type_id,$category;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -32,7 +32,7 @@ class ExportDatas extends CActiveRecord
 		return array(			
 			array('attachment_file', 'length', 'max'=>255),
 			array('user_type', 'length', 'max'=>55),
-                        array('Optipromo , Optinews , Envision_print ,Envision_digital,Envue_print,Envue_digital,province,ptype' , 'safe'),
+                        array('Optipromo , Optinews , Envision_print ,Envision_digital,Envue_print,Envue_digital,province,ptype,cat_type_id,category' , 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, attachment_file, user_type, created, language, EN, FR,subscriptions,export_type', 'safe', 'on'=>'search'),
@@ -76,15 +76,17 @@ class ExportDatas extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => Myclass::t('ID'),
-			'attachment_file' => Myclass::t('Exported File'),
-			'user_type' => Myclass::t('User Type'),
-			'created' => Myclass::t('Created'),
-                        'EN' => 'English',
-                        'FR' => 'Français',
-                        'P_type' => 'Professional Type',
-                        'R_type' => 'Retailer Type',
-                        'S_type' => 'Supplier Type'
+                    'id' => Myclass::t('ID'),
+                    'attachment_file' => Myclass::t('Exported File'),
+                    'user_type' => Myclass::t('User Type'),
+                    'created' => Myclass::t('Created'),
+                    'EN' => 'English',
+                    'FR' => 'Français',
+                    'P_type' => 'Professional Type',
+                    'R_type' => 'Retailer Type',
+                    'S_type' => 'Supplier Type',                    
+                    'C_type' => Myclass::t('Catégorie Type'),
+                    'category' => Myclass::t('Catégorie Nom'),
 		);
 	}
 

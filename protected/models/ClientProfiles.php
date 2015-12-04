@@ -110,6 +110,27 @@ class ClientProfiles extends CActiveRecord
             }
             return null;
         }
+        
+         public function getName($type,$ids) {
+             
+           if($type=="city")
+           {    
+            $str = CityDirectory::model()->findByPk($ids)->NOM_VILLE;
+           } 
+           
+           if($type=="region")
+           {  
+            $str = RegionDirectory::model()->findByPk($ids)->NOM_REGION_EN;
+           }
+           
+           if($type=="country")
+           {  
+            $str = CountryDirectory::model()->findByPk($ids)->NOM_PAYS_EN;
+           }
+           
+           return $str;
+             
+         }
 
 
 	/**
@@ -218,6 +239,10 @@ class ClientProfiles extends CActiveRecord
         $this->ctype = ClientCategoryTypes::model()->findByPk($this->cat_type_id)->cat_type;
         //$this->cname = ClientCategory::model()->findByPk($this->category)->cat_name;
         $this->cname = isset($this->category)? $this->getCatNames($this->category) : '';
+        
+        $this->region = CityDirectory::model()->findByPk($this->ville)->ID_REGION;
+        $this->country = RegionDirectory::model()->findByPk($this->region)->ID_PAYS;
+      
         
         return parent::afterFind();
     }

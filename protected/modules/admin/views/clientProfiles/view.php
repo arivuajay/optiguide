@@ -40,9 +40,20 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             ),
             'address',
             'local_number',
-            'country',
-            'region',
-            'ville',
+             array(
+                'name' => 'country',
+                'type' => 'raw',
+                'value' => $model->getName("country",$model->country)
+            ),
+            array(
+                'name' => 'region',
+                'type' => 'raw',
+                'value' => $model->getName("region",$model->region)
+            ),array(
+                'name' => 'ville',
+                'type' => 'raw',
+                'value' => $model->getName("city",$model->ville)
+            ),
             'phonenumber1',
             'phonenumber2',
             'mobile_number',
