@@ -472,3 +472,7 @@ and open the template in the editor.
     padding: 8px 21px;
     width: auto !important;
 }
+
+.eventList .li-1 a{
+     color: #337ab7;
+}

@@ -33,7 +33,7 @@ class SuppliersDirectoryController extends OGController {
         return array_merge(
                 parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify', 'renewpaypalnotify', 'delproducts'),
+                'actions' => array('detect_supplier','create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify', 'renewpaypalnotify', 'delproducts'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -245,7 +245,7 @@ class SuppliersDirectoryController extends OGController {
         exit;
     }
 
-    public function Detect_supplier() {
+    public function actionDetect_supplier() {
 
         // Get all records list  with limit
         $supplier_query1 = Yii::app()->db->createCommand() //this query contains all the data
@@ -274,6 +274,7 @@ class SuppliersDirectoryController extends OGController {
                 $k++;
             }
         }
+        exit;
     }
 
     /**
