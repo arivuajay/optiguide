@@ -291,6 +291,8 @@ class RetailerDirectoryController extends Controller {
                     {     
                         $rmodel->save();
                         Yii::app()->user->setFlash('success', 'Alarme correctement mis à jour !!!');
+                    }else{
+                        Yii::app()->user->setFlash('danger', Myclass::t("OG200"));
                     }                   
                 }
                 

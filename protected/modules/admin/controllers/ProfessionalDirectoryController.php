@@ -215,7 +215,9 @@ class ProfessionalDirectoryController extends Controller {
                     if ($pmodel->date_remember != '' && $pmodel->employee_id != '' && $pmodel->message != '') {
                         $pmodel->save(false);
                         Yii::app()->user->setFlash('success', 'Alarme correctement mis à jour !!!');
-                    }
+                    }else{
+                        Yii::app()->user->setFlash('danger', Myclass::t("OG200"));
+                    }                   
                 }
 
 //                Yii::app()->user->setFlash('success', 'professionnelle mis à jour avec succès!!!');

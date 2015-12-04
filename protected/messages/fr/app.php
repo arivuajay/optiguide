@@ -224,5 +224,6 @@ return array(
     'OG197' => 'Remarque : Si vous avez des difficultés à accéder à vos moyens de mot de passe , S\'il vous plaît',
     'OG198' => ' contactez ',
     'OG199' => 'admin et obtenir votre mot de passe.',
+    'OG200' =>'S\'il vous plaît entrer toutes les valeurs pour recevoir une alerte de l\'employé . ( Employés , message et date)',
 );
 ?>

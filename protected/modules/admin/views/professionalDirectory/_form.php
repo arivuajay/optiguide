@@ -463,7 +463,7 @@
                 <div class="form-group">
                     <div class="col-sm-0 col-sm-offset-2">
                         <?php echo CHtml::submitButton($model->isNewRecord ? 'Ajouter ce professionnel' : 'Modifier ce professionnel', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','name' => $model->isNewRecord ? 'create-professional' : 'modified-professional')); ?>                       
-                        <?php if (!$model->isNewRecord) {echo CHtml::submitButton('Mise à jour des alertes', array('class' => 'btn btn-primary','name'=>'update-professional-alerts')); }?>
+                        <?php if (!$model->isNewRecord) {echo CHtml::submitButton('Mise à jour des alertes', array('class' => 'btn btn-success','name'=>'update-professional-alerts')); }?>
                     </div>
                 </div>
             </div>

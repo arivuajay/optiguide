@@ -224,5 +224,6 @@ return array(
     'OG197' => 'Note: If you have any difficulties to access your password means , please',
     'OG198' => ' contact ',
     'OG199' => 'admin and get your password.',
+    'OG200' =>'Please enter all values for employee alert.  (Employee , message and date)',
 );
 ?>
