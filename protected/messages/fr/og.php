@@ -261,5 +261,7 @@ return array(
     'OGO217' => 'je veux faire des ajustements à mon profil.',
     'OGO218' => 'Oui',
     'OGO219' => 'Non',
-    'OGO220' => 'Merci d’avoir mis à jour vos données! Vous pouvez maintenant poursuivre votre visite sur notre site.'
+    'OGO220' => 'Merci d’avoir mis à jour vos données! Vous pouvez maintenant poursuivre votre visite sur notre site.',
+    'OGO221' => 'Mot de passe oublié',
+    'OGO222' => 'Réinitialiser le mot de passe',
 );

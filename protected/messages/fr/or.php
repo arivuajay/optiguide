@@ -294,4 +294,5 @@ return array(
     'OR734' => 'À propos d’Opti-Rep',
     'OR735' => 'Mettre votre mot de passe à jour',
     'OR736' => "S'il vous plaît Vérifiez le nom d'utilisateur ou e-mail",
+    'OR737' => 'Réinitialiser le mot de passe URL épreuve à votre e-mail enregistrée . Merci de consulter vos emails',
 );
