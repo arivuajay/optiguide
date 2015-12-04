@@ -12,7 +12,8 @@
 class ExportDatas extends CActiveRecord
 {
         
-        public $P_type,$R_type,$language,$EN,$FR,$subscriptions,$Optipromo,$Optinews,$Envision_print,$Envision_digital,$Envue_print,$Envue_digital,$province,$ptype,$export_type;
+        public $P_type,$R_type,$S_type,$language,$EN,$FR,$subscriptions,$Optipromo,$Optinews,$Envision_print,$Envision_digital,$Envue_print,$Envue_digital,$province,$ptype,$export_type;
+        public $country,$region;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -52,7 +53,7 @@ class ExportDatas extends CActiveRecord
         
         public function checknotempty($attribute_name, $params) 
         {
-            if ($this->export_type == 2 && $this->province == '') 
+            if ($this->export_type == 2 && $this->country == '') 
             {
                 $this->addError('province', "Please choose any province.");
                 return false;
@@ -82,7 +83,8 @@ class ExportDatas extends CActiveRecord
                         'EN' => 'English',
                         'FR' => 'Français',
                         'P_type' => 'Professional Type',
-                        'R_type' => 'Retailer Type'
+                        'R_type' => 'Retailer Type',
+                        'S_type' => 'Supplier Type'
 		);
 	}
 
@@ -98,7 +100,7 @@ class ExportDatas extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
+	public function search($utype)
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
@@ -106,7 +108,7 @@ class ExportDatas extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('attachment_file',$this->attachment_file,true);
-		$criteria->condition = 'user_type = "Professional"';
+		$criteria->condition = "user_type = '$utype'";
 		$criteria->compare('created',$this->created,true);
 
 		return new CActiveDataProvider($this, array(
@@ -120,27 +122,12 @@ class ExportDatas extends CActiveRecord
 		));
 	}
         
-       public  function search_retailer()
-       {
-		// @todo Please modify the following code to remove attributes that should not be searched.
-
-		$criteria=new CDbCriteria;
-
-		$criteria->compare('id',$this->id);
-		$criteria->compare('attachment_file',$this->attachment_file,true);
-		$criteria->condition = 'user_type = "Retailer"';
-		$criteria->compare('created',$this->created,true);
-
-		return new CActiveDataProvider($this, array(
-                    'sort'=>array(
-                        'defaultOrder'=>'id DESC',
-                      ),
-                    'criteria'=>$criteria,
-                    'pagination' => array(
-                        'pageSize' => PAGE_SIZE,
-                    )
-		));
-	}
+        
+        protected function afterFind() {
+            /* Get selected region for current category information */
+            $this->country = RegionDirectory::model()->findByPk($this->region)->ID_PAYS;
+            return parent::afterFind();
+        }
 
 	/**
 	 * Returns the static model of the specified AR class.

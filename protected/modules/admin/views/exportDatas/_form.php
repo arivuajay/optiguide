@@ -9,12 +9,16 @@ $this->breadcrumbs=array(
 	$this->title,
 );
 
+/*
 $criteria2 = new CDbCriteria();
 $criteria2->select = array('CONCAT(countryDirectory.NOM_PAYS_EN , " - " , NOM_REGION_EN) AS fullname');
 $criteria2->with   = 'countryDirectory';
 $criteria2->order  = "countryDirectory.NOM_PAYS_EN ASC,NOM_REGION_EN ASC";
 $province_datas    = CHtml::listData(RegionDirectory::model()->findAll($criteria2), 'ID_REGION', 'fullname');
-
+*/
+$country = Myclass::getallcountries();
+$regions = Myclass::getallregions($model->country);
+            
 $criteria3 = new CDbCriteria();
 $criteria3->order  = "TYPE_SPECIALISTE_EN ASC";
 $professionaltype_datas = CHtml::listData(ProfessionalType::model()->findAll($criteria3) , 'ID_TYPE_SPECIALISTE' , 'TYPE_SPECIALISTE_EN');
@@ -109,16 +113,31 @@ $professionaltype_datas = CHtml::listData(ProfessionalType::model()->findAll($cr
                         <h3 class="page-header">Step 2</h3>
                     </div>
                     
-                    <div class="form-group">
-                        <?php echo $form->labelEx($model, 'province', array('class' => 'col-sm-2 control-label')); ?>
+<!--                <div class="form-group">
+                        <?php //echo $form->labelEx($model, 'province', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">
                             <?php
-                            $htmlOptions = array('size' => '10', 'multiple' => 'true', 'class' => 'form-control');
-                            echo $form->listBox($model, 'province', $province_datas, $htmlOptions);
-                            echo $form->error($model, 'province'); 
+                           // $htmlOptions = array('size' => '10', 'multiple' => 'true', 'class' => 'form-control');
+                           // echo $form->listBox($model, 'province', $province_datas, $htmlOptions);
+                           // echo $form->error($model, 'province'); 
                             ?> 
                         </div>  
-                    </div>  
+                    </div>  -->
+                    <div class="form-group">
+                        <?php echo $form->labelEx($model, 'country', array('class' => 'col-sm-2 control-label')); ?>
+                        <div class="col-sm-5">                       
+                            <?php echo $form->dropDownList($model, 'country', $country, array('class' => 'form-control', 'empty' => Myclass::t('APP43'))); ?>                          
+                            <?php echo $form->error($model, 'country'); ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <?php echo $form->labelEx($model, 'region', array('class' => 'col-sm-2 control-label')); ?>
+                        <div class="col-sm-5">                       
+                            <?php echo $form->dropDownList($model, 'region', $regions, array('class' => 'form-control', 'empty' => Myclass::t('APP44'))); ?>                          
+                            <?php echo $form->error($model, 'region'); ?>
+                        </div>
+                    </div>
                     
                      <div class="box-header">
                         <h3 class="page-header">Step 3</h3>
@@ -146,7 +165,7 @@ $professionaltype_datas = CHtml::listData(ProfessionalType::model()->findAll($cr
                               $model->export_type = 1;
                               echo $form->radioButtonList($model, 'export_type',
                                         array(  1 => 'Single File',
-                                                2 => 'By selected Province',
+                                               // 2 => 'By selected Province',
                                                 3 => 'By selected Professional Type' 
                                              ),
                                         array(
@@ -159,10 +178,15 @@ $professionaltype_datas = CHtml::listData(ProfessionalType::model()->findAll($cr
                     </div>
                     
                 </div><!-- /.box-body -->
+                
                 <div class="box-footer">
                     <div class="form-group">
                         <div class="col-sm-0 col-sm-offset-2">
-                            <?php echo CHtml::submitButton('Export', array('class' => 'btn btn-success')); ?>
+                            <?php echo CHtml::submitButton('Export', array('class' => 'btn btn-success')); 
+                                  echo CHtml::hiddenField('utype' , 'professional');
+                            ?>
+                            <a href="javascript:void(0);" id="calculateusers" class="btn btn-primary">Calculate</a>
+                            <p id="filtercounts" style="display: none;"><b>Filtered users count </b>: <span id="totalcounts">&nbsp;</span></p>
                         </div>
                     </div>
                 </div>
@@ -171,3 +195,45 @@ $professionaltype_datas = CHtml::listData(ProfessionalType::model()->findAll($cr
         </div><!-- ./col -->
     </div>
 </div>    
+<?php
+$ajaxRegionUrl = Yii::app()->createUrl('/admin/professionalDirectory/getregions');
+$ajaxCityUrl = Yii::app()->createUrl('/admin/professionalDirectory/getcities');
+
+$filteruser_url = Yii::app()->createUrl('/admin/exportDatas/calculate_usercounts');
+
+$js = <<< EOD
+    $(document).ready(function(){
+        
+    $("#ExportDatas_country").change(function(){
+        var id=$(this).val();
+        var dataString = 'id='+ id;
+            
+        $.ajax({
+            type: "POST",
+            url: '{$ajaxRegionUrl}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#ExportDatas_region").html(html);
+            }
+         });
+    }); 
+            
+    $("#calculateusers").click(function(){
+            
+        $.ajax({
+            type: "POST",
+            url: '{$filteruser_url}',
+            data: $('#export-datas-form').serialize(),
+            cache: false,
+            success: function(html){             
+                $("#totalcounts").html(html);
+                $("#filtercounts").show();
+            }
+         });
+    });         
+            
+});
+EOD;
+Yii::app()->clientScript->registerScript('_form', $js);
+?>

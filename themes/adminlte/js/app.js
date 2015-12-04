@@ -156,21 +156,21 @@ $(function() {
         }
     });
 
-    if($('.table-datatable').length > 0){
-        var baseTable;
-        baseTable = $(".table-datatable").dataTable({
-            sDom: '<"search-box"r>ltip',
-            "bPaginate": false,
-            "bLengthChange": false,
-            "bSort": true,
-            "bInfo": false,
-            "iDisplayLength": 100
-        });
-
-        $('#base_table_search').keyup(function(){
-             baseTable.fnFilter( $(this).val() );
-        });
-    }
+//    if($('.table-datatable').length > 0){
+//        var baseTable;
+//        baseTable = $(".table-datatable").dataTable({
+//            sDom: '<"search-box"r>ltip',
+//            "bPaginate": false,
+//            "bLengthChange": false,
+//            "bSort": true,
+//            "bInfo": false,
+//            "iDisplayLength": 100
+//        });
+//
+//        $('#base_table_search').keyup(function(){
+//             baseTable.fnFilter( $(this).val() );
+//        });
+//    }
 });
 
 function setHeight(){

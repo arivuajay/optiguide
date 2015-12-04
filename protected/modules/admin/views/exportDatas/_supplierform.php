@@ -3,9 +3,9 @@
 /* @var $model ExportDatas */
 /* @var $form CActiveForm */
 
-$this->title='Export retailer user datas';
+$this->title='Export supplier user datas';
 $this->breadcrumbs=array(
-	'Export retailer datas'=>array('index'),
+	'Export supplier datas'=>array('index'),
 	$this->title,
 );
 //
@@ -20,8 +20,8 @@ $country = Myclass::getallcountries();
 $regions = Myclass::getallregions($model->country);
 
 $criteria3 = new CDbCriteria();
-$criteria3->order  = "NOM_TYPE_EN ASC";
-$retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3) , 'ID_RETAILER_TYPE' , 'NOM_TYPE_EN');
+$criteria3->order  = "TYPE_FOURNISSEUR_EN ASC";
+$suppliertype_datas = CHtml::listData(SupplierType::model()->findAll($criteria3) , 'ID_TYPE_FOURNISSEUR' , 'TYPE_FOURNISSEUR_EN');
 ?>
 <div class="user-create">
     <div class="row">
@@ -145,11 +145,11 @@ $retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3)
                     </div>
                     
                      <div class="form-group">
-                        <?php echo $form->labelEx($model, 'R_type', array('class' => 'col-sm-2 control-label')); ?>
+                        <?php echo $form->labelEx($model, 'S_type', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">
                             <?php
                             $htmlOptions = array('size' => '4', 'multiple' => 'true', 'class' => 'form-control');
-                            echo $form->listBox($model, 'ptype', $retailertype_datas, $htmlOptions);
+                            echo $form->listBox($model, 'ptype', $suppliertype_datas, $htmlOptions);
                             echo $form->error($model, 'ptype'); 
                             ?> 
                         </div>  
@@ -167,7 +167,7 @@ $retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3)
                               echo $form->radioButtonList($model, 'export_type',
                                         array(  1 => 'Single File',
                                               //  2 => 'By selected Province',
-                                                3 => 'By selected retailer Type' 
+                                                3 => 'By selected supplier Type' 
                                              ),
                                         array(
                                                 'labelOptions'=>array('style'=>'display:inline'), // add this code
@@ -184,7 +184,7 @@ $retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3)
                         <div class="col-sm-0 col-sm-offset-2">
                             <?php
                                 echo CHtml::submitButton('Export', array('class' => 'btn btn-success'));
-                                echo CHtml::hiddenField('utype' , 'retailer');  
+                                echo CHtml::hiddenField('utype' , 'supplier');  
                             ?>
                             <a href="javascript:void(0);" id="calculateusers" class="btn btn-primary">Calculate</a>
                             <p id="filtercounts" style="display: none;"><b>Filtered users count </b>: <span id="totalcounts">&nbsp;</span></p>
@@ -198,8 +198,8 @@ $retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3)
 </div>    
   
 <?php
-$ajaxRegionUrl = Yii::app()->createUrl('/admin/retailerDirectory/getregions');
-$ajaxCityUrl = Yii::app()->createUrl('/admin/retailerDirectory/getcities');
+$ajaxRegionUrl = Yii::app()->createUrl('/admin/suppliersDirectory/getregions');
+$ajaxCityUrl = Yii::app()->createUrl('/admin/suppliersDirectory/getcities');
 
 $filteruser_url = Yii::app()->createUrl('/admin/exportDatas/calculate_usercounts');
 

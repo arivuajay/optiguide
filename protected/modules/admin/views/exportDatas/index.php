@@ -45,7 +45,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
         $this->widget('booster.widgets.TbExtendedGridView', array(       
         'type' => 'striped bordered datatable',
-        'dataProvider' => $model->search(),
+        'dataProvider' => $model->search("Professional"),
         'responsiveTable' => true,
         'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Professional Datas</h3></div><div class="panel-body">{items}{pager}</div></div>',
         'columns' => $gridColumns
