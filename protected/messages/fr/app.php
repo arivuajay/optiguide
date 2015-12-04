@@ -221,5 +221,8 @@ return array(
     'OG194' =>'Bienvenue Sur Opti-rep.com',
     'OG195' =>'Créé Le',
     'OG196' => 'Type de paiement',
+    'OG197' => 'Remarque : Si vous avez des difficultés à accéder à vos moyens de mot de passe , S\'il vous plaît',
+    'OG198' => ' contactez ',
+    'OG199' => 'admin et obtenir votre mot de passe.',
 );
 ?>

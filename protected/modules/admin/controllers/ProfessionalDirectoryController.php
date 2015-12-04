@@ -187,8 +187,11 @@ class ProfessionalDirectoryController extends Controller {
                 }
 
                 //   $umodel->save(false);
-                $model->save(false);
-
+                if(isset($_POST['modified-professional'])){
+                    $model->DATE_MODIFICATION=date("Y-m-d H:m:s");
+                    $model->save(false);
+                    Yii::app()->user->setFlash('success', 'professionnelle mis à jour avec succès!!!');
+                }
                 // save the alert message         
                 if (isset($_POST['ProfessionalMessages'])) {
                     $pmodel->attributes = $_POST['ProfessionalMessages'];
@@ -211,10 +214,11 @@ class ProfessionalDirectoryController extends Controller {
 
                     if ($pmodel->date_remember != '' && $pmodel->employee_id != '' && $pmodel->message != '') {
                         $pmodel->save(false);
+                        Yii::app()->user->setFlash('success', 'Alarme correctement mis à jour !!!');
                     }
                 }
 
-                Yii::app()->user->setFlash('success', 'professionnelle mis à jour avec succès!!!');
+//                Yii::app()->user->setFlash('success', 'professionnelle mis à jour avec succès!!!');
                 $this->redirect(array('update', "id" => $id));
             }
         }

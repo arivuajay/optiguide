@@ -210,7 +210,6 @@ class RetailerDirectoryController extends Controller {
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation(array($model));
         
-
         if (isset($_POST['RetailerDirectory'])) {
             $model->attributes = $_POST['RetailerDirectory'];
              $model->image=CUploadedFile::getInstance($model,'image');
@@ -261,8 +260,11 @@ class RetailerDirectoryController extends Controller {
                 }   
                 
              //   $umodel->save(false);
-                $model->save(false);
-                
+                if(isset($_POST['modified-retailer'])){
+                    $model->DATE_MODIFICATION=date("Y-m-d H:m:s");
+                    $model->save();
+                    Yii::app()->user->setFlash('success', 'Détaillant correctement mis à jour!!!');
+                }
                   // save the alert message         
                 if (isset($_POST['RetailerMessages'])) 
                 {  
@@ -288,10 +290,11 @@ class RetailerDirectoryController extends Controller {
                     if($rmodel->date_remember!='' && $rmodel->employee_id!='' && $rmodel->message!='')
                     {     
                         $rmodel->save();
+                        Yii::app()->user->setFlash('success', 'Alarme correctement mis à jour !!!');
                     }                   
                 }
                 
-                Yii::app()->user->setFlash('success', 'Détaillant correctement mis à jour!!!');
+//                Yii::app()->user->setFlash('success', 'Détaillant correctement mis à jour!!!');
                 $this->redirect(array('update',"id"=>$id));
             }
         }

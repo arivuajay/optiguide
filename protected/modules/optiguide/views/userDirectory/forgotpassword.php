@@ -51,7 +51,7 @@
                             </div>
                             <div class="form-row1"> 
                                 <div class="col-xs-12 col-sm-8 col-md-12 col-lg-12">
-                                    <h4>If you have any difficulty – please contact us for <?php echo CHtml::link('Admin', array('/optiguide/default/contactus')); ?></h4>
+                                    <h6><strong><?php echo Myclass::t('OG197'); ?> <?php echo CHtml::link(Myclass::t('OG198'), array('/optiguide/default/contactus'),array("class"=>"sendrequest")); ?><?php echo Myclass::t('OG199'); ?></strong></h6>
                                 </div>
                             </div>
                             <?php $this->endWidget(); ?>

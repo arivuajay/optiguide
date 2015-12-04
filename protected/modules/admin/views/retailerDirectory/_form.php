@@ -332,7 +332,21 @@
                         </div> 
                     </div>
                 <?php } ?>
-
+                <?php
+                if (!$model->isNewRecord) {
+                    ?>
+                <div class="form-group"> 
+                    <?php echo $form->labelEx($model, 'DATE_MODIFICATION', array('class' => 'col-sm-2 control-label')); ?> 
+                    <div class="col-sm-5">        
+                        <?php echo $model->DATE_MODIFICATION; ?>
+                    </div>     
+                </div>
+                <div class="form-group"> 
+                    <?php echo $form->labelEx($model, 'CREATED_DATE', array('class' => 'col-sm-2 control-label')); ?> 
+                    <div class="col-sm-5">        
+                        <?php echo $model->CREATED_DATE; ?>
+                    </div>     
+                </div>
                 <div class="box-header">
                     <h3 class="box-title">Réglez l'alerte à l'employé</h3>
                 </div>
@@ -392,9 +406,7 @@
                         <?php echo $form->error($rmodel, 'status'); ?>
                     </div>
                 </div>
-                <?php
-                if (!$model->isNewRecord) {
-                    ?>
+                
                     <div class="box-header">
                         <h3 class="box-title">L'historique des alertes</h3>
                     </div>   
@@ -574,7 +586,8 @@
             <div class="box-footer">
                 <div class="form-group">
                     <div class="col-sm-0 col-sm-offset-2">
-                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Ajouter ce détaillant' : 'Modifier ce détaillant', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+                        <?php echo CHtml::submitButton($model->isNewRecord ? 'Ajouter ce détaillant' : 'Modifier ce détaillant', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','name' => $model->isNewRecord ? 'create-retailer' : 'modified-retailer')); ?>                       
+                        <?php if (!$model->isNewRecord) {echo CHtml::submitButton('Mise à jour des alertes', array('class' => 'btn btn-primary','name'=>'update-alerts')); }?>
                     </div>
                 </div>
             </div>

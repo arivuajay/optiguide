@@ -221,5 +221,8 @@ return array(
     'OG194' =>'Welcome to Opti-rep.com',
     'OG195' =>'Reçu le',
     'OG196' => 'Pay Type',
+    'OG197' => 'Note: If you have any difficulties to access your password means , please',
+    'OG198' => ' contact ',
+    'OG199' => 'admin and get your password.',
 );
 ?>
