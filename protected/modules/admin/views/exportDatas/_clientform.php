@@ -3,9 +3,9 @@
 /* @var $model ExportDatas */
 /* @var $form CActiveForm */
 
-$this->title='Export client user datas';
+$this->title='Données utilisateur client à l\'export';
 $this->breadcrumbs=array(
-	'Export client datas'=>array('index'),
+	'Données des clients à l\'export'=>array('index'),
 	$this->title,
 );
 //
@@ -153,9 +153,9 @@ $cat_types = CHtml::listData(ClientCategoryTypes::model()->findAll(array("order"
                             <?php
                               $model->export_type = 1;
                               echo $form->radioButtonList($model, 'export_type',
-                                        array(  1 => 'Single File',
+                                        array(  1 => 'Fichier unique',
                                               //  2 => 'By selected Province',
-                                                3 => 'By selected category' 
+                                                3 => 'Par catégorie sélectionnée' 
                                              ),
                                         array(
                                                 'labelOptions'=>array('style'=>'display:inline'), // add this code
@@ -171,11 +171,11 @@ $cat_types = CHtml::listData(ClientCategoryTypes::model()->findAll(array("order"
                     <div class="form-group">
                         <div class="col-sm-0 col-sm-offset-2">
                             <?php
-                                echo CHtml::submitButton('Export', array('class' => 'btn btn-success'));
+                                echo CHtml::submitButton('Exporter', array('class' => 'btn btn-success'));
                                 echo CHtml::hiddenField('utype' , 'client');  
                             ?>
-                            <a href="javascript:void(0);" id="calculateusers" class="btn btn-primary">Calculate</a>
-                            <p id="filtercounts" style="display: none;"><b>Filtered users count </b>: <span id="totalcounts">&nbsp;</span></p>
+                            <a href="javascript:void(0);" id="calculateusers" class="btn btn-primary">Calculer</a>
+                            <p id="filtercounts" style="display: none;"><b>Compter les utilisateurs filtrés </b>: <span id="totalcounts">&nbsp;</span></p>
                         </div>
                     </div>
                 </div>

@@ -13,7 +13,7 @@ class ExportDatas extends CActiveRecord
 {
         
         public $P_type,$R_type,$S_type,$language,$EN,$FR,$subscriptions,$Optipromo,$Optinews,$Envision_print,$Envision_digital,$Envue_print,$Envue_digital,$province,$ptype,$export_type;
-        public $country,$region,$cat_type_id,$category;
+        public $country,$region,$cat_type_id,$category,$ID_GROUPE;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -32,7 +32,7 @@ class ExportDatas extends CActiveRecord
 		return array(			
 			array('attachment_file', 'length', 'max'=>255),
 			array('user_type', 'length', 'max'=>55),
-                        array('Optipromo , Optinews , Envision_print ,Envision_digital,Envue_print,Envue_digital,province,ptype,cat_type_id,category' , 'safe'),
+                        array('Optipromo , Optinews , Envision_print ,Envision_digital,Envue_print,Envue_digital,province,ptype,cat_type_id,category,ID_GROUPE' , 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, attachment_file, user_type, created, language, EN, FR,subscriptions,export_type', 'safe', 'on'=>'search'),
@@ -55,13 +55,13 @@ class ExportDatas extends CActiveRecord
         {
             if ($this->export_type == 2 && $this->country == '') 
             {
-                $this->addError('province', "Please choose any province.");
+                $this->addError('province', "S'il vous plaît choisir une province.");
                 return false;
             }
             
             if ($this->export_type == 3 && $this->ptype == '') 
             {
-                $this->addError('ptype', "Please choose any type.");
+                $this->addError('ptype', "S'il vous plaît choisir un type");
                 return false;
             }
             
@@ -76,16 +76,20 @@ class ExportDatas extends CActiveRecord
 	{
 		return array(
                     'id' => Myclass::t('ID'),
-                    'attachment_file' => Myclass::t('Exported File'),
-                    'user_type' => Myclass::t('User Type'),
-                    'created' => Myclass::t('Created'),
+                    'attachment_file' => Myclass::t('Fichier exporté'),
+                    'user_type' => Myclass::t('Type d\'utilisateur'),
+                    'created' => Myclass::t('date de création'),
                     'EN' => 'English',
                     'FR' => 'Français',
-                    'P_type' => 'Professional Type',
-                    'R_type' => 'Retailer Type',
-                    'S_type' => 'Supplier Type',                    
+                    'P_type' => 'Type de professionnel',
+                    'R_type' => 'Type de détaillant',
+                    'S_type' => 'Fournisseur Type',                    
                     'C_type' => Myclass::t('Catégorie'),
                     'category' => Myclass::t('Catégorie Nom'),
+                    'export_type' => 'Type d\'exportation',
+                    'country' => "Pays",
+                    'region' => "Province",
+                    'ID_GROUPE' => 'Regroupement'
 		);
 	}
 

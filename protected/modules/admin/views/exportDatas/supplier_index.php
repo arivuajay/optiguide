@@ -2,7 +2,7 @@
 /* @var $this ExportDatasController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title='Export Supplier Datas';
+$this->title='Datas exportation de fournisseurs';
 $themeUrl = $this->themeUrl;
 $cs = Yii::app()->getClientScript();
 $cs_pos_end = CClientScript::POS_END;
@@ -13,7 +13,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Generate Data', array('/admin/exportDatas/generate_suppliers'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp; Générer les données', array('/admin/exportDatas/generate_suppliers'), array('class' => 'btn btn-success pull-right')); ?>
     </div>
 </div>
 
@@ -29,7 +29,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             'attachment_file',           
             'created',
             array(
-            'header' => 'Actions',
+            'header' => 'Actes',
             'class' => 'booster.widgets.TbButtonColumn',
             'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
             'template' => '{download}&nbsp;&nbsp;&nbsp;{delete}',
@@ -47,7 +47,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         'type' => 'striped bordered datatable',
         'dataProvider' => $model->search("Supplier"),
         'responsiveTable' => true,
-        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Supplier Datas</h3></div><div class="panel-body">{items}{pager}</div></div>',
+        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Datas de fournisseurs</h3></div><div class="panel-body">{items}{pager}</div></div>',
         'columns' => $gridColumns
         )
         );

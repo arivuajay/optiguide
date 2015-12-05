@@ -3,9 +3,9 @@
 /* @var $model ExportDatas */
 /* @var $form CActiveForm */
 
-$this->title='Export supplier user datas';
+$this->title='Exporter Fournisseur Datas de l\'utilisateur';
 $this->breadcrumbs=array(
-	'Export supplier datas'=>array('index'),
+	'Données des fournisseurs d\'exportation'=>array('index'),
 	$this->title,
 );
 //
@@ -127,7 +127,7 @@ $suppliertype_datas = CHtml::listData(SupplierType::model()->findAll($criteria3)
                     <div class="form-group">
                         <?php echo $form->labelEx($model, 'country', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'country', $country, array('class' => 'form-control', 'empty' => Myclass::t('APP43'))); ?>                          
+                            <?php echo $form->dropDownList($model, 'country', $country, array('class' => 'form-control', 'empty' => "Tous les pays")); ?>                          
                             <?php echo $form->error($model, 'country'); ?>
                         </div>
                     </div>
@@ -135,7 +135,7 @@ $suppliertype_datas = CHtml::listData(SupplierType::model()->findAll($criteria3)
                     <div class="form-group">
                         <?php echo $form->labelEx($model, 'region', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'region', $regions, array('class' => 'form-control', 'empty' => Myclass::t('APP44'))); ?>                          
+                            <?php echo $form->dropDownList($model, 'region', $regions, array('class' => 'form-control', 'empty' => "toutes les régions")); ?>                          
                             <?php echo $form->error($model, 'region'); ?>
                         </div>
                     </div>
@@ -148,8 +148,9 @@ $suppliertype_datas = CHtml::listData(SupplierType::model()->findAll($criteria3)
                         <?php echo $form->labelEx($model, 'S_type', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">
                             <?php
-                            $htmlOptions = array('size' => '4', 'multiple' => 'true', 'class' => 'form-control');
-                            echo $form->listBox($model, 'ptype', $suppliertype_datas, $htmlOptions);
+                            //$htmlOptions = array('size' => '4', 'multiple' => 'true', 'class' => 'form-control');
+                            //echo $form->listBox($model, 'ptype', $suppliertype_datas, $htmlOptions);
+                            echo $form->dropDownList($model, 'ptype', $suppliertype_datas, array('class' => 'form-control', 'empty' => "Tout types"));             
                             echo $form->error($model, 'ptype'); 
                             ?> 
                         </div>  
@@ -165,9 +166,9 @@ $suppliertype_datas = CHtml::listData(SupplierType::model()->findAll($criteria3)
                             <?php
                               $model->export_type = 1;
                               echo $form->radioButtonList($model, 'export_type',
-                                        array(  1 => 'Single File',
+                                        array(  1 => 'Fichier unique',
                                               //  2 => 'By selected Province',
-                                                3 => 'By selected supplier Type' 
+                                                3 => 'Par type de fournisseur sélectionné' 
                                              ),
                                         array(
                                                 'labelOptions'=>array('style'=>'display:inline'), // add this code
@@ -183,11 +184,11 @@ $suppliertype_datas = CHtml::listData(SupplierType::model()->findAll($criteria3)
                     <div class="form-group">
                         <div class="col-sm-0 col-sm-offset-2">
                             <?php
-                                echo CHtml::submitButton('Export', array('class' => 'btn btn-success'));
+                                echo CHtml::submitButton('Exporter', array('class' => 'btn btn-success'));
                                 echo CHtml::hiddenField('utype' , 'supplier');  
                             ?>
-                            <a href="javascript:void(0);" id="calculateusers" class="btn btn-primary">Calculate</a>
-                            <p id="filtercounts" style="display: none;"><b>Filtered users count </b>: <span id="totalcounts">&nbsp;</span></p>
+                            <a href="javascript:void(0);" id="calculateusers" class="btn btn-primary">Calculer</a>
+                            <p id="filtercounts" style="display: none;"><b>Compter les utilisateurs filtrés </b>: <span id="totalcounts">&nbsp;</span></p>
                         </div>
                     </div>
                 </div>

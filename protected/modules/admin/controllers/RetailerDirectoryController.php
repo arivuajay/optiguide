@@ -375,7 +375,12 @@ class RetailerDirectoryController extends Controller {
     public function actionGetGroups() {
         $options = '';
         $cid = isset($_POST['id']) ? $_POST['id'] : '';
-        $options = "<option value=''>Sélectionnez le groupe</option>";
+        $ajxcall = isset($_POST['ajxcall']) ? $_POST['ajxcall'] : '';
+        
+        if($ajxcall=="")
+        {    
+            $options = "<option value=''>Sélectionnez le groupe</option>";
+        }    
         if ($cid != '') {
             $criteria = new CDbCriteria;
             $criteria->order = 'NOM_GROUPE ASC';

@@ -3,9 +3,9 @@
 /* @var $model ExportDatas */
 /* @var $form CActiveForm */
 
-$this->title='Export retailer user datas';
+$this->title='Données d\'utilisateur à l\'exportation détaillant';
 $this->breadcrumbs=array(
-	'Export retailer datas'=>array('index'),
+	'Données d\'exportation des détaillants'=>array('index'),
 	$this->title,
 );
 //
@@ -127,7 +127,7 @@ $retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3)
                     <div class="form-group">
                         <?php echo $form->labelEx($model, 'country', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'country', $country, array('class' => 'form-control', 'empty' => Myclass::t('APP43'))); ?>                          
+                           <?php echo $form->dropDownList($model, 'country', $country, array('class' => 'form-control', 'empty' => "Tous les pays")); ?>                          
                             <?php echo $form->error($model, 'country'); ?>
                         </div>
                     </div>
@@ -135,7 +135,7 @@ $retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3)
                     <div class="form-group">
                         <?php echo $form->labelEx($model, 'region', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'region', $regions, array('class' => 'form-control', 'empty' => Myclass::t('APP44'))); ?>                          
+                            <?php echo $form->dropDownList($model, 'region', $regions, array('class' => 'form-control', 'empty' => "Toutes les régions")); ?>                          
                             <?php echo $form->error($model, 'region'); ?>
                         </div>
                     </div>
@@ -143,13 +143,21 @@ $retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3)
                      <div class="box-header">
                         <h3 class="page-header">Step 3</h3>
                     </div>
+
+                    <div class="form-group">
+                        <?php echo $form->labelEx($model, 'R_type', array('class' => 'col-sm-2 control-label')); ?>
+                        <div class="col-sm-5">                       
+                            <?php echo $form->dropDownList($model, 'ptype', $retailertype_datas, array('class' => 'form-control', 'empty' => "Tout types")); ?>                                                     
+                        </div>
+                    </div>
                     
                      <div class="form-group">
-                        <?php echo $form->labelEx($model, 'R_type', array('class' => 'col-sm-2 control-label')); ?>
+                        <?php echo $form->labelEx($model, 'ID_GROUPE', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">
                             <?php
+                            $group_datas = array();
                             $htmlOptions = array('size' => '4', 'multiple' => 'true', 'class' => 'form-control');
-                            echo $form->listBox($model, 'ptype', $retailertype_datas, $htmlOptions);
+                            echo $form->listBox($model, 'ID_GROUPE', $group_datas, $htmlOptions);
                             echo $form->error($model, 'ptype'); 
                             ?> 
                         </div>  
@@ -165,9 +173,9 @@ $retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3)
                             <?php
                               $model->export_type = 1;
                               echo $form->radioButtonList($model, 'export_type',
-                                        array(  1 => 'Single File',
+                                        array(  1 => 'Fichier unique',
                                               //  2 => 'By selected Province',
-                                                3 => 'By selected retailer Type' 
+                                                3 => 'Par type de détaillant sélectionné' 
                                              ),
                                         array(
                                                 'labelOptions'=>array('style'=>'display:inline'), // add this code
@@ -183,11 +191,11 @@ $retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3)
                     <div class="form-group">
                         <div class="col-sm-0 col-sm-offset-2">
                             <?php
-                                echo CHtml::submitButton('Export', array('class' => 'btn btn-success'));
+                                echo CHtml::submitButton('Exporter', array('class' => 'btn btn-success'));
                                 echo CHtml::hiddenField('utype' , 'retailer');  
                             ?>
-                            <a href="javascript:void(0);" id="calculateusers" class="btn btn-primary">Calculate</a>
-                            <p id="filtercounts" style="display: none;"><b>Filtered users count </b>: <span id="totalcounts">&nbsp;</span></p>
+                            <a href="javascript:void(0);" id="calculateusers" class="btn btn-primary">Calculer</a>
+                            <p id="filtercounts" style="display: none;"><b>Compter les utilisateurs filtrés </b>: <span id="totalcounts">&nbsp;</span></p>
                         </div>
                     </div>
                 </div>
@@ -201,6 +209,8 @@ $retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3)
 $ajaxRegionUrl = Yii::app()->createUrl('/admin/retailerDirectory/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/admin/retailerDirectory/getcities');
 
+
+$ajaxGroupUrl = Yii::app()->createUrl('/admin/retailerDirectory/getgroups');
 $filteruser_url = Yii::app()->createUrl('/admin/exportDatas/calculate_usercounts');
 
 $js = <<< EOD
@@ -220,6 +230,21 @@ $js = <<< EOD
             }
          });
     }); 
+            
+     $("#ExportDatas_ptype").change(function(){
+        var id=$(this).val();
+        var dataString = 'id='+ id +'&ajxcall=1';
+            
+        $.ajax({
+            type: "POST",
+            url: '{$ajaxGroupUrl}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+                $("#ExportDatas_ID_GROUPE").html(html);
+            }
+         });
+    });           
             
     $("#calculateusers").click(function(){
             

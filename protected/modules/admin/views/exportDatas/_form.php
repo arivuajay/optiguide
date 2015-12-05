@@ -3,9 +3,9 @@
 /* @var $model ExportDatas */
 /* @var $form CActiveForm */
 
-$this->title='Export professional user datas';
+$this->title="les données de l'utilisateur professionnel de l'exportation";
 $this->breadcrumbs=array(
-	'Export professional datas'=>array('index'),
+	'Export de données professionnelles'=>array('index'),
 	$this->title,
 );
 
@@ -126,7 +126,7 @@ $professionaltype_datas = CHtml::listData(ProfessionalType::model()->findAll($cr
                     <div class="form-group">
                         <?php echo $form->labelEx($model, 'country', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'country', $country, array('class' => 'form-control', 'empty' => Myclass::t('APP43'))); ?>                          
+                           <?php echo $form->dropDownList($model, 'country', $country, array('class' => 'form-control', 'empty' => "Tous les pays")); ?>                          
                             <?php echo $form->error($model, 'country'); ?>
                         </div>
                     </div>
@@ -134,7 +134,7 @@ $professionaltype_datas = CHtml::listData(ProfessionalType::model()->findAll($cr
                     <div class="form-group">
                         <?php echo $form->labelEx($model, 'region', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'region', $regions, array('class' => 'form-control', 'empty' => Myclass::t('APP44'))); ?>                          
+                            <?php echo $form->dropDownList($model, 'region', $regions, array('class' => 'form-control', 'empty' => "Toutes les régions")); ?>                          
                             <?php echo $form->error($model, 'region'); ?>
                         </div>
                     </div>
@@ -164,9 +164,9 @@ $professionaltype_datas = CHtml::listData(ProfessionalType::model()->findAll($cr
                             <?php
                               $model->export_type = 1;
                               echo $form->radioButtonList($model, 'export_type',
-                                        array(  1 => 'Single File',
+                                        array(  1 => 'Fichier unique',
                                                // 2 => 'By selected Province',
-                                                3 => 'By selected Professional Type' 
+                                                3 => 'Selon certaines catégories professionnelles' 
                                              ),
                                         array(
                                                 'labelOptions'=>array('style'=>'display:inline'), // add this code
@@ -182,11 +182,11 @@ $professionaltype_datas = CHtml::listData(ProfessionalType::model()->findAll($cr
                 <div class="box-footer">
                     <div class="form-group">
                         <div class="col-sm-0 col-sm-offset-2">
-                            <?php echo CHtml::submitButton('Export', array('class' => 'btn btn-success')); 
+                            <?php echo CHtml::submitButton('Exporter', array('class' => 'btn btn-success')); 
                                   echo CHtml::hiddenField('utype' , 'professional');
                             ?>
-                            <a href="javascript:void(0);" id="calculateusers" class="btn btn-primary">Calculate</a>
-                            <p id="filtercounts" style="display: none;"><b>Filtered users count </b>: <span id="totalcounts">&nbsp;</span></p>
+                            <a href="javascript:void(0);" id="calculateusers" class="btn btn-primary">Calculer</a>
+                            <p id="filtercounts" style="display: none;"><b>Compter les utilisateurs filtrés </b>: <span id="totalcounts">&nbsp;</span></p>
                         </div>
                     </div>
                 </div>
