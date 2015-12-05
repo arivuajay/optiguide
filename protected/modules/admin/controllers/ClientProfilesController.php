@@ -177,14 +177,20 @@ class ClientProfilesController extends Controller {
 
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
-
+        
+        
         if (isset($_POST['ClientProfiles'])) {
+
             $model->attributes = $_POST['ClientProfiles'];
-            
+            if ($model->validate()) {
             $cat_vals = implode(',',$_POST['ClientProfiles']['category']);
             $model->category = $cat_vals;
             $model->modified_date = date("Y-m-d");
-            if ($model->save()) {
+            if(isset($_POST['modified-profile'])){
+                    $model->save(false);
+                    Yii::app()->user->setFlash('success', 'Client profile updated successfully!!!');
+                    $this->redirect(array('update', "id" => $id));
+                }
                  // save the alert message         
                 if (isset($_POST['ClientMessages'])) 
                 {  
@@ -209,10 +215,13 @@ class ClientProfilesController extends Controller {
                     if($cmodel->date_remember!='' && $cmodel->employee_id!='' && $cmodel->message!='')
                     {     
                         $cmodel->save();
-                    }                   
+                        Yii::app()->user->setFlash('success', 'Alarme correctement mis à jour !!!');
+                    }else{
+                        Yii::app()->user->setFlash('danger', Myclass::t("OG200"));
+                    }   
+                    $this->redirect(array('update', "id" => $id));
                 }
-                Yii::app()->user->setFlash('success', 'Client profile updated successfully!!!');
-                $this->redirect(array('update',"id"=>$id));
+                
             }
         }
         

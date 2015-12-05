@@ -5,9 +5,21 @@
 ?>
 
 <div class="row">
+    <?php 
+    $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'client-profiles-form',
+                'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'), 
+                'clientOptions' => array(
+                    'validateOnSubmit' => true,
+                ),
+                'enableAjaxValidation' => true,
+            ));
+    ?>
     <div class="col-lg-12 col-xs-12">
         <div class="box box-primary">
-            <?php
+            <?php          
+            
+            
             $category_names = array();
             $cat_types = CHtml::listData(ClientCategoryTypes::model()->findAll(array("order"=>"cat_type_id asc")), 'cat_type_id', 'cat_type');
             if($model->cat_type_id){
@@ -20,15 +32,6 @@
             $country = Myclass::getallcountries();
             $regions = Myclass::getallregions($model->country);
             $cities = Myclass::getallcities($model->region);
-            
-            $form = $this->beginWidget('CActiveForm', array(
-                'id' => 'client-profiles-form',
-                'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'), 
-                'clientOptions' => array(
-                    'validateOnSubmit' => true,
-                ),
-                'enableAjaxValidation' => true,
-            ));
             ?>
             <div class="box-body">
                 <div class="form-group">
@@ -201,6 +204,21 @@
                             <?php echo $form->labelEx($model, 'Envue_digital'); ?>
                     </div>         
                     </div>
+                <?php
+                if (!$model->isNewRecord) {
+                    ?>
+                <div class="form-group"> 
+                    <?php echo $form->labelEx($model, 'modified_date', array('class' => 'col-sm-2 control-label')); ?> 
+                    <div class="col-sm-5">        
+                        <?php echo $model->modified_date; ?>
+                    </div>     
+                </div>
+                <div class="form-group"> 
+                    <?php echo $form->labelEx($model, 'created_date', array('class' => 'col-sm-2 control-label')); ?> 
+                    <div class="col-sm-5">        
+                        <?php echo $model->created_date; ?>
+                    </div>     
+                </div>
                  <div class="box-header">
                     <h3 class="box-title">Réglez l'alerte à l'employé</h3>
                 </div>
@@ -259,10 +277,7 @@
                         <?php echo $form->error($cmodel, 'status'); ?>
                     </div>
                 </div>
-                <?php
-                if(!$model->isNewRecord)
-                {
-                ?>
+                
                 <div class="box-header">
                     <h3 class="box-title">L'historique des alertes</h3>
                 </div>   
@@ -434,7 +449,8 @@
         <div class="box-footer">
             <div class="form-group">
                 <div class="col-sm-0 col-sm-offset-2">
-                    <?php echo CHtml::submitButton($model->isNewRecord ? 'créer' : 'modifier', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
+                    <?php echo CHtml::submitButton($model->isNewRecord ? 'créer' : 'modifier', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','name' => $model->isNewRecord ? 'create-profile' : 'modified-profile')); ?>
+                    <?php if (!$model->isNewRecord) {echo CHtml::submitButton('Mise à jour des alertes', array('class' => 'btn btn-success','name'=>'client_alerts')); }?>
                 </div>
             </div>
         </div>
