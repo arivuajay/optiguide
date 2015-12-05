@@ -145,12 +145,12 @@ class ExportDatasController extends Controller
                 // Get all records list  with limit
                 $ret_result = Yii::app()->db->createCommand(
                 "SELECT COMPAGNIE as Company_Name, TYPE_FOURNISSEUR_FR as Supplier_Type, ru.COURRIEL as Email, ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
-                (CASE WHEN bSubscription_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
-                (CASE WHEN bSubscription_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
-                (CASE WHEN print_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Print ,
-                (CASE WHEN print_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Print ,
-                (CASE WHEN ABONNE_MAILING <> 0 THEN 'no' ELSE 'yes' END) As Opti_News ,
-                (CASE WHEN ABONNE_PROMOTION <> 0 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
+                (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
+                (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
+                (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
+                (CASE WHEN print_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
+                (CASE WHEN ABONNE_MAILING <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
+                (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
                 f.CREATED_DATE as Created_Date , f.DATE_MODIFICATION as Modified_Date
                 FROM repertoire_fournisseurs f, repertoire_fournisseur_type ft, repertoire_ville AS rv, repertoire_region AS rr, repertoire_pays AS rp, repertoire_utilisateurs as ru
                 WHERE f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.status=1 AND ru.NOM_TABLE ='Fournisseurs' 
@@ -190,12 +190,12 @@ class ExportDatasController extends Controller
                             // Get all records list  with limit
                             $ret_result = Yii::app()->db->createCommand(
                                  "SELECT COMPAGNIE as Company_Name, TYPE_FOURNISSEUR_FR as Supplier_Type, ru.COURRIEL as Email, ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
-                                (CASE WHEN bSubscription_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
-                                (CASE WHEN bSubscription_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
-                                (CASE WHEN print_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Print ,
-                                (CASE WHEN print_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Print ,
-                                (CASE WHEN ABONNE_MAILING <> 0 THEN 'no' ELSE 'yes' END) As Opti_News ,
-                                (CASE WHEN ABONNE_PROMOTION <> 0 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
+                                (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
+                                (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
+                                (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
+                                (CASE WHEN print_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
+                                (CASE WHEN ABONNE_MAILING <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
+                                (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
                                 rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date
                                 FROM repertoire_fournisseurs f, repertoire_fournisseur_type ft, repertoire_ville AS rv, repertoire_region AS rr, repertoire_pays AS rp, repertoire_utilisateurs as ru
                                 WHERE f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS  AND ru.status=1 AND ru.NOM_TABLE ='Fournisseurs' 
@@ -236,12 +236,12 @@ class ExportDatasController extends Controller
                             // Get all records list  with limit
                             $ret_result = Yii::app()->db->createCommand(
                                 "SELECT COMPAGNIE as Company_Name, TYPE_FOURNISSEUR_FR as Supplier_Type, ru.COURRIEL as Email, ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
-                                (CASE WHEN bSubscription_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
-                                (CASE WHEN bSubscription_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
-                                (CASE WHEN print_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Print ,
-                                (CASE WHEN print_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Print ,
-                                (CASE WHEN ABONNE_MAILING <> 0 THEN 'no' ELSE 'yes' END) As Opti_News ,
-                                (CASE WHEN ABONNE_PROMOTION <> 0 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
+                                (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
+                                (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
+                                (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
+                                (CASE WHEN print_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
+                                (CASE WHEN ABONNE_MAILING <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
+                                (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
                                 f.CREATED_DATE as Created_Date , f.DATE_MODIFICATION as Modified_Date
                                 FROM repertoire_fournisseurs f, repertoire_fournisseur_type ft, repertoire_ville AS rv, repertoire_region AS rr, repertoire_pays AS rp, repertoire_utilisateurs as ru
                                 WHERE f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.status=1 AND ru.NOM_TABLE ='Fournisseurs' 
@@ -365,12 +365,12 @@ class ExportDatasController extends Controller
                 // Get all records list  with limit
                 $ret_result = Yii::app()->db->createCommand(
                 "SELECT COMPAGNIE as Company_Name, NOM_TYPE_EN as Reatlier_Type, ru.COURRIEL as Email, HEAD_OFFICE_NAME as Head_office , ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
-                (CASE WHEN bSubscription_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
-                (CASE WHEN bSubscription_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
-                (CASE WHEN print_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Print ,
-                (CASE WHEN print_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Print ,
-                (CASE WHEN ABONNE_MAILING <> 0 THEN 'no' ELSE 'yes' END) As Opti_News ,
-                (CASE WHEN ABONNE_PROMOTION <> 0 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
+                (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
+                (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
+                (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
+                (CASE WHEN print_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
+                (CASE WHEN ABONNE_MAILING <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
+                (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
                 rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date
                  FROM repertoire_retailer as rs , repertoire_retailer_type as rst , repertoire_ville as rv, repertoire_region as rr, repertoire_pays as rp, repertoire_utilisateurs as ru
                  WHERE rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.NOM_TABLE ='Detaillants' 
@@ -410,12 +410,12 @@ class ExportDatasController extends Controller
                             // Get all records list  with limit
                             $ret_result = Yii::app()->db->createCommand(
                                 "SELECT COMPAGNIE as Company_Name, NOM_TYPE_EN as Reatlier_Type, ru.COURRIEL as Email, HEAD_OFFICE_NAME as Head_office , ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
-                                 (CASE WHEN bSubscription_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
-                                 (CASE WHEN bSubscription_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
-                                 (CASE WHEN print_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Print ,
-                                 (CASE WHEN print_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Print ,
-                                 (CASE WHEN ABONNE_MAILING <> 0 THEN 'no' ELSE 'yes' END) As Opti_News ,
-                                 (CASE WHEN ABONNE_PROMOTION <> 0 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
+                                 (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
+                                 (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
+                                 (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
+                                 (CASE WHEN print_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
+                                 (CASE WHEN ABONNE_MAILING <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
+                                 (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
                                  rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date   
                                  FROM repertoire_retailer as rs , repertoire_retailer_type as rst , repertoire_ville as rv, repertoire_region as rr, repertoire_pays as rp, repertoire_utilisateurs as ru
                                  WHERE rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.NOM_TABLE ='Detaillants' 
@@ -456,12 +456,12 @@ class ExportDatasController extends Controller
                             // Get all records list  with limit
                             $ret_result = Yii::app()->db->createCommand(
                                 "SELECT COMPAGNIE as Company_Name, NOM_TYPE_EN as Reatlier_Type, ru.COURRIEL as Email, HEAD_OFFICE_NAME as Head_office , ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
-                                (CASE WHEN bSubscription_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
-                                (CASE WHEN bSubscription_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
-                                (CASE WHEN print_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Print ,
-                                (CASE WHEN print_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Print ,
-                                (CASE WHEN ABONNE_MAILING <> 0 THEN 'no' ELSE 'yes' END) As Opti_News ,
-                                (CASE WHEN ABONNE_PROMOTION <> 0 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
+                                (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
+                                (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
+                                (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
+                                (CASE WHEN print_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
+                                (CASE WHEN ABONNE_MAILING <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
+                                (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
                                  rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date   
                                  FROM repertoire_retailer as rs , repertoire_retailer_type as rst , repertoire_ville as rv, repertoire_region as rr, repertoire_pays as rp, repertoire_utilisateurs as ru
                                  WHERE rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.NOM_TABLE ='Detaillants' 
@@ -577,12 +577,12 @@ class ExportDatasController extends Controller
                 // Get all records list  with limit
                 $prof_result = Yii::app()->db->createCommand(
                     "SELECT NOM AS First_Name , PRENOM AS Last_Name , TYPE_SPECIALISTE_EN AS Professional_Type, ru.COURRIEL as Email, BUREAU as Bureau, ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax, USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
-                    (CASE WHEN bSubscription_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
-                    (CASE WHEN bSubscription_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
-                    (CASE WHEN print_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Print ,
-                    (CASE WHEN print_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Print ,
-                    (CASE WHEN ABONNE_MAILING <> 0 THEN 'no' ELSE 'yes' END) As Opti_News ,
-                    (CASE WHEN ABONNE_PROMOTION <> 0 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
+                    (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
+                    (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
+                    (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
+                    (CASE WHEN print_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
+                    (CASE WHEN ABONNE_MAILING <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
+                    (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
                     rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date
                     FROM  repertoire_specialiste as rs, repertoire_specialiste_type as rst, repertoire_ville as rv, repertoire_region as rr, repertoire_pays as rp, repertoire_utilisateurs as ru
                     WHERE rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.NOM_TABLE ='Professionnels'
@@ -620,12 +620,12 @@ class ExportDatasController extends Controller
                             // Get all records list  with limit
                             $prof_result = Yii::app()->db->createCommand(
                             "SELECT NOM AS First_Name , PRENOM AS Last_Name , TYPE_SPECIALISTE_EN AS Professional_Type, ru.COURRIEL as Email, BUREAU as Bureau, ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax, USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
-                            (CASE WHEN bSubscription_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
-                            (CASE WHEN bSubscription_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
-                            (CASE WHEN print_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Print ,
-                            (CASE WHEN print_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Print ,
-                            (CASE WHEN ABONNE_MAILING <> 0 THEN 'no' ELSE 'yes' END) As Opti_News ,
-                            (CASE WHEN ABONNE_PROMOTION <> 0 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
+                            (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
+                            (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
+                            (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
+                            (CASE WHEN print_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
+                            (CASE WHEN ABONNE_MAILING <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
+                            (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
                             rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date
                             FROM  repertoire_specialiste as rs, repertoire_specialiste_type as rst, repertoire_ville as rv, repertoire_region as rr, repertoire_pays as rp, repertoire_utilisateurs as ru
                             WHERE rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.NOM_TABLE ='Professionnels'
@@ -665,12 +665,12 @@ class ExportDatasController extends Controller
                             // Get all records list  with limit
                             $prof_result = Yii::app()->db->createCommand(
                                "SELECT NOM AS First_Name , PRENOM AS Last_Name , TYPE_SPECIALISTE_EN AS Professional_Type, ru.COURRIEL as Email, BUREAU as Bureau, ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax, USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
-                                 (CASE WHEN bSubscription_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
-                                 (CASE WHEN bSubscription_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
-                                 (CASE WHEN print_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Print ,
-                                 (CASE WHEN print_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Print ,                                 
-                                 (CASE WHEN ABONNE_MAILING <> 0 THEN 'no' ELSE 'yes' END) As Opti_News ,
-                                 (CASE WHEN ABONNE_PROMOTION <> 0 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
+                                 (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
+                                 (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
+                                 (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
+                                 (CASE WHEN print_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,                                 
+                                 (CASE WHEN ABONNE_MAILING <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
+                                 (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
                                  rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date
                                  FROM  repertoire_specialiste as rs, repertoire_specialiste_type as rst, repertoire_ville as rv, repertoire_region as rr, repertoire_pays as rp, repertoire_utilisateurs as ru
                                  WHERE rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.NOM_TABLE ='Professionnels'
@@ -726,7 +726,16 @@ class ExportDatasController extends Controller
                 ->from(array('repertoire_fournisseurs f', 'repertoire_fournisseur_type ft', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                 ->where("f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.status=1 AND ru.NOM_TABLE ='Fournisseurs' " . $querystr)
                 ->queryScalar(); // do not LIMIT it, this must count all items!
-            }    
+            } 
+            
+            if($type=="client")
+            {
+                 $item_count = Yii::app()->db->createCommand() //this query contains all the data
+                ->select('count(*) as count')
+                ->from(array('client_profiles ru' ,'client_category_types ct' , 'repertoire_pays  rp' , 'repertoire_region rr' , 'repertoire_ville rv'))
+                ->where("ru.cat_type_id=ct.cat_type_id AND ru.country=rp.ID_PAYS AND ru.region=rr.ID_REGION AND ru.ville=rv.ID_VILLE " . $querystr)
+                ->queryScalar(); // do not LIMIT it, this must count all items!
+            }
                 
            return  $item_count;
         }   
@@ -759,27 +768,50 @@ class ExportDatasController extends Controller
                 $sub_envue_print   =  $_POST['ExportDatas']['Envue_print'];
                 $sub_envue_digital =  $_POST['ExportDatas']['Envue_digital'];
            
-                $subscription_str = $this->getsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital);
+                if($usertype=="client")
+                {
+                    $subscription_str  = $this->getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital); 
+                }else
+                {
+                    $subscription_str = $this->getsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital);
+                }
+                
               
                 // Provience filter               
                 $province_str = '';
-                //$provinces    = $_POST['ExportDatas']['province'];
-                $search_country = isset($_POST['ExportDatas']['country'])?$_POST['ExportDatas']['country']:'';
-                $search_region  = isset($_POST['ExportDatas']['region'])?$_POST['ExportDatas']['region']:'';
+                //$provinces    = $_POST['ExportDatas']['province'];                
+                //$province_str = $this->getprovince_filter($provinces);  
+                 $search_country = isset($_POST['ExportDatas']['country'])?$_POST['ExportDatas']['country']:'';
+                 $search_region  = isset($_POST['ExportDatas']['region'])?$_POST['ExportDatas']['region']:'';
+                if($usertype=="client")
+                {
                 
-                //$province_str = $this->getprovince_filter($provinces);
-                $province_str = $this->getprovince_filter($search_country,$search_region);
-                
+                    if ($search_country != '') {                
+                        $scntry_qry = " AND ru.country = " . $search_country;
+                    }
+
+                    if ($search_region != '') {                
+                        $sregion_qry = " AND ru.region = " . $search_region;
+                    }
+
+                    $province_str = $scntry_qry.$sregion_qry;
+                }else{  
+                    $province_str   = $this->getprovince_filter($search_country,$search_region);
+                }
+                    
+              
                 $type_str  = '';
                 // Type                
                 $u_type   = isset($_POST['ExportDatas']['ptype'])?$_POST['ExportDatas']['ptype']:array();                     
                 $type_str = $this->gettype_filter($u_type,$usertype);
+            
                     
                 // Export type    
                 $export_type = $_POST['ExportDatas']['export_type'];
                 
                 // Get user counts           
                 $querystr   = $lang_str.$subscription_str.$province_str.$type_str;
+              
                 $item_count = $this->countusers($querystr,$usertype);
             }      
               
@@ -922,12 +954,205 @@ class ExportDatasController extends Controller
                   $imp_types  = implode(",",$type_vlas);
                   $type_str   = " AND f.ID_TYPE_FOURNISSEUR IN ($imp_types) "; 
                 }
-            }   
+            }  
+           
+            if($type=="client")
+            {  
+                if($type_vlas!='')
+                {
+                     $type_str   = " AND ru.cat_type_id = $type_vlas "; 
+                }
+                  
+            }
             
             return $type_str;
         }        
-	
-	/**
+	       
+         /**
+	 * Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionGenerate_clients()
+	{
+            
+            $model=new ExportDatas;           
+
+            // Uncomment the following line if AJAX validation is needed
+            $this->performAjaxValidation($model);
+            
+
+            if(isset($_POST['ExportDatas']))
+            {   
+              
+                $model->attributes=$_POST['ExportDatas'];
+                
+                //if($model->validate()){                              
+                
+                // Subscription filter
+                $subscription_str  = '';
+                
+                $sub_optipromo     = $_POST['ExportDatas']['Optipromo'];
+                $sub_optinews      = $_POST['ExportDatas']['Optinews'];
+                $sub_envision_print   =  $_POST['ExportDatas']['Envision_print'];
+                $sub_envision_digital =  $_POST['ExportDatas']['Envision_digital'];
+                $sub_envue_print   =  $_POST['ExportDatas']['Envue_print'];
+                $sub_envue_digital =  $_POST['ExportDatas']['Envue_digital'];
+           
+                $subscription_str  = $this->getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital);
+              
+                 // Provience filter               
+                $province_str = ''; $scntry_qry=''; $sregion_qry='';
+                //$provinces    = $_POST['ExportDatas']['province'];
+                $search_country = isset($_POST['ExportDatas']['country'])?$_POST['ExportDatas']['country']:'';
+                $search_region  = isset($_POST['ExportDatas']['region'])?$_POST['ExportDatas']['region']:'';
+                
+                if ($search_country != '') {                
+                    $scntry_qry = " AND ru.country = " . $search_country;
+                }
+
+                if ($search_region != '') {                
+                    $sregion_qry = " AND ru.region = " . $search_region;
+                }
+
+                $province_str = $scntry_qry.$sregion_qry;
+                
+                // Client category Type
+                $type_str  = '';
+                
+                $category_type = $_POST['ExportDatas']['ptype'];      
+                $type_str      = $this->gettype_filter($category_type,"client");
+     
+                // Export type    
+                $export_type = $_POST['ExportDatas']['export_type'];
+                
+                // Get user counts           
+                $querystr   = $subscription_str.$province_str.$type_str;
+                $item_count = $this->countusers($querystr,'client');
+                
+                if($item_count>0)
+                {   
+                   // Export data and save the files
+                    $this->exportfiles_client( $export_type , $subscription_str , $province_str , $type_str , $category_type);
+                 
+                    Yii::app()->user->setFlash('success', 'Datas export successfully!!!');
+                    $this->redirect(array('clientIndex'));
+                    
+                }else
+                {               
+                    Yii::app()->user->setFlash('danger', 'No records to generate!!!');
+                    $this->redirect(array('generate_clients'));
+                }  
+                
+//            } else {
+//                echo '<pre>';
+//                print_r($model->getErrors()); exit;
+//            }
+               
+            }
+
+            $this->render('_clientform',array(
+                    'model'=>$model,
+            ));
+	}          
+         
+        public function exportfiles_client( $export_type , $subscription_str , $province_str , $type_str, $category_type)
+        {
+            Yii::import('ext.ECSVExport');
+            $attach_path = Yii::getPathOfAlias('webroot').'/'.EXPORTDATAS;   
+            $randstr  = Myclass::getRandomString(4);
+           
+            // Single file
+              
+                
+                
+                // Get all records list  with limit
+                $ret_result = Yii::app()->db->createCommand(
+                "SELECT name as Client_Name, company ,job_title,ct.cat_type as Category_Type ,address, local_number, rp.NOM_PAYS_EN as Country, rr.NOM_REGION_EN as Region,rv.NOM_VILLE as City,phonenumber1,phonenumber2,mobile_number,tollfree_number,
+                fax,email,site_address,    
+                (CASE WHEN Envision_digital <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
+                (CASE WHEN Envue_digital <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
+                (CASE WHEN Envision_print <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
+                (CASE WHEN Envue_print <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
+                (CASE WHEN Optinews <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
+                (CASE WHEN Optipromo <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
+                ru.created_date as Created_Date , ru.modified_date as Modified_Date
+                FROM client_profiles ru ,client_category_types ct , repertoire_pays  rp , repertoire_region rr , repertoire_ville rv
+                WHERE ru.cat_type_id=ct.cat_type_id AND ru.country=rp.ID_PAYS AND ru.region=rr.ID_REGION AND ru.ville=rv.ID_VILLE                                 
+                ".$subscription_str.$province_str.$type_str." ORDER BY Client_Name");  
+                
+                // File name and path      
+                if($export_type==1)
+                { 
+                    $filename = "Client_data_".date("Y_m_d")."_".$randstr.".csv";                
+                    $outputFile_path = $attach_path.$filename;
+                }else if($export_type==3)  {                                              
+                    $cattype_name = ClientCategoryTypes::model()->findByPk($category_type)->cat_type;
+                    $filename = "Client_data_".date("Y_m_d")."_".$cattype_name."_".$randstr.".csv";                
+                    $outputFile_path = $attach_path.$filename;
+
+                }                    
+
+                // Export as csv file
+                $this->Exceldownload($ret_result,$outputFile_path);
+                $model=new ExportDatas;   
+                $model->attachment_file = $filename;
+                $model->user_type = "Client";
+                $model->save();
+  
+        } 
+        
+        public function getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital)
+        {
+            $subscription_arr = array();
+            $subscription_str = '';
+                
+            if($sub_optipromo=="1")
+            {
+                $subscription_arr[] = " ru.Optipromo=1 ";
+            }  
+
+            if($sub_optinews=="1")
+            {
+                $subscription_arr[] = " ru.Optinews=1 ";
+            }   
+
+            if($sub_envision_print=="1")
+            {
+                $subscription_arr[] = " ru.Envision_print=1 ";
+            }   
+
+            if($sub_envision_digital=="1")
+            {
+                $subscription_arr[] = " ru.Envision_digital=1 ";
+            }  
+
+            if($sub_envue_print=="1")
+            {
+                $subscription_arr[] = " ru.Envue_print=1 ";
+            }  
+
+            if($sub_envue_digital=="1")
+            {
+                $subscription_arr[] = " ru.Envue_digital=1 ";
+            } 
+                
+                
+            if(!empty($subscription_arr))
+            {
+                if(count($subscription_arr)>1)
+                {
+                   $imp_substr =  implode(" || ",$subscription_arr);
+                   $subscription_str = " AND  ( $imp_substr )  ";
+                }else
+                {
+                   $subscription_str = " AND $subscription_arr[0] ";
+                }    
+            }  
+
+            return $subscription_str;
+        }  
+        
+        /**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
@@ -1005,186 +1230,6 @@ class ExportDatasController extends Controller
                     'model'=>$model,
             ));
 	}
-        
-         /**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionGenerate_clients()
-	{
-            
-            $model=new ExportDatas;           
-
-            // Uncomment the following line if AJAX validation is needed
-            $this->performAjaxValidation($model);
-            
-
-            if(isset($_POST['ExportDatas']))
-            {   
-                echo "<pre>";
-                print_r($_POST['ExportDatas']);
-                exit;
-                $model->attributes=$_POST['ExportDatas'];
-                
-                //if($model->validate()){                              
-                
-                // Subscription filter
-                $subscription_str  = '';
-                
-                $sub_optipromo     = $_POST['ExportDatas']['Optipromo'];
-                $sub_optinews      = $_POST['ExportDatas']['Optinews'];
-                $sub_envision_print   =  $_POST['ExportDatas']['Envision_print'];
-                $sub_envision_digital =  $_POST['ExportDatas']['Envision_digital'];
-                $sub_envue_print   =  $_POST['ExportDatas']['Envue_print'];
-                $sub_envue_digital =  $_POST['ExportDatas']['Envue_digital'];
-           
-                $subscription_str = $this->getsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital);
-              
-                 // Provience filter               
-                $province_str = ''; $scntry_qry=''; $sregion_qry='';
-                //$provinces    = $_POST['ExportDatas']['province'];
-                $search_country = isset($_POST['ExportDatas']['country'])?$_POST['ExportDatas']['country']:'';
-                $search_region  = isset($_POST['ExportDatas']['region'])?$_POST['ExportDatas']['region']:'';
-                
-                if ($search_country != '') {                
-                    $scntry_qry = " AND ru.country = " . $search_country;
-                }
-
-                if ($search_region != '') {                
-                    $sregion_qry = " AND ru.region = " . $search_region;
-                }
-
-                $province_str = $scntry_qry.$sregion_qry;
-                
-                // Client category Type
-                $type_str  = '';
-                $client_type = $_POST['ExportDatas']['ptype'];                     
-                $type_str    = $this->getclienttype_filter($client_type);
-     
-                // Export type    
-                $export_type = $_POST['ExportDatas']['export_type'];
-                
-                // Get user counts           
-                $querystr   = $lang_str.$subscription_str.$province_str.$type_str;
-                $item_count = $this->countclients($querystr,"client");
-                
-                if($item_count>0)
-                {   
-                   // Export data and save the files
-                    $this->exportfiles_client( $export_type , $subscription_str , $province_str , $type_str , $client_type);
-                 
-                    Yii::app()->user->setFlash('success', 'Datas export successfully!!!');
-                    $this->redirect(array('clientIndex'));
-                    
-                }else
-                {               
-                    Yii::app()->user->setFlash('danger', 'No records to generate!!!');
-                    $this->redirect(array('generate_clients'));
-                }  
-                
-//            } else {
-//                echo '<pre>';
-//                print_r($model->getErrors()); exit;
-//            }
-               
-            }
-
-            $this->render('_clientform',array(
-                    'model'=>$model,
-            ));
-	}
-        
-        public function getclienttype_filter($client_type)
-        {
-            
-        }
-        
-         
-        public function exportfiles_client( $export_type , $subscription_str , $province_str , $type_str , $supplier_type)
-        {
-            Yii::import('ext.ECSVExport');
-            $attach_path = Yii::getPathOfAlias('webroot').'/'.EXPORTDATAS;   
-            $randstr  = Myclass::getRandomString(4);
-           
-            // Single file
-            if($export_type==1)
-            {    
-                
-                // Get all records list  with limit
-                $ret_result = Yii::app()->db->createCommand(
-                "SELECT COMPAGNIE as Company_Name, TYPE_FOURNISSEUR_FR as Supplier_Type, ru.COURRIEL as Email, ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
-                (CASE WHEN bSubscription_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
-                (CASE WHEN bSubscription_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
-                (CASE WHEN print_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Print ,
-                (CASE WHEN print_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Print ,
-                (CASE WHEN ABONNE_MAILING <> 0 THEN 'no' ELSE 'yes' END) As Opti_News ,
-                (CASE WHEN ABONNE_PROMOTION <> 0 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
-                f.CREATED_DATE as Created_Date , f.DATE_MODIFICATION as Modified_Date
-                FROM repertoire_fournisseurs f, repertoire_fournisseur_type ft, repertoire_ville AS rv, repertoire_region AS rr, repertoire_pays AS rp, repertoire_utilisateurs as ru
-                WHERE f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.status=1 AND ru.NOM_TABLE ='Fournisseurs' 
-                ".$lang_str.$subscription_str.$province_str.$type_str." ORDER BY Company_Name");  
-                
-                // File name and path                
-                $filename = "Client_data_".date("Y_m_d")."_".$randstr.".csv";                
-                $outputFile_path = $attach_path.$filename;
-
-                // Export as csv file
-                $this->Exceldownload($ret_result,$outputFile_path);
-                $model=new ExportDatas;   
-                $model->attachment_file = $filename;
-                $model->user_type = "Client";
-                $model->save();
-            }
-            
-            
-
-            // Professional types
-            if($export_type==3)
-            {
-                if(!empty($supplier_type))
-                {    
-                    foreach($supplier_type as $typeval)
-                    {
-                        $type_str = " AND f.ID_TYPE_FOURNISSEUR = $typeval "; 
-                        
-                        $qry_str       = $lang_str.$subscription_str.$province_str.$type_str;
-                        
-                        $records_exist = $this->countusers($qry_str,"supplier");
-                        
-                        if($records_exist>0)
-                        {    
-                            // Get all records list  with limit
-                            $ret_result = Yii::app()->db->createCommand(
-                                "SELECT COMPAGNIE as Company_Name, TYPE_FOURNISSEUR_FR as Supplier_Type, ru.COURRIEL as Email, ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
-                                (CASE WHEN bSubscription_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
-                                (CASE WHEN bSubscription_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
-                                (CASE WHEN print_envision <> 0 THEN 'no' ELSE 'yes' END) As Envision_Print ,
-                                (CASE WHEN print_envue <> 0 THEN 'no' ELSE 'yes' END) As Envue_Print ,
-                                (CASE WHEN ABONNE_MAILING <> 0 THEN 'no' ELSE 'yes' END) As Opti_News ,
-                                (CASE WHEN ABONNE_PROMOTION <> 0 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
-                                f.CREATED_DATE as Created_Date , f.DATE_MODIFICATION as Modified_Date
-                                FROM repertoire_fournisseurs f, repertoire_fournisseur_type ft, repertoire_ville AS rv, repertoire_region AS rr, repertoire_pays AS rp, repertoire_utilisateurs as ru
-                                WHERE f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.status=1 AND ru.NOM_TABLE ='Fournisseurs' 
-                                ".$qry_str." ORDER BY Company_Name");  
-
-                            // File name and path                               
-                            $supplier_type_name = SupplierType::model()->findByPk($typeval)->TYPE_FOURNISSEUR_FR;
-                            $filename = "Client_data_".date("Y_m_d")."_".$supplier_type_name."_".$randstr.".csv";                
-                            $outputFile_path = $attach_path.$filename;
-
-                            // Export as csv file
-                            $this->Exceldownload($ret_result,$outputFile_path);
-                            
-                            $model=new ExportDatas;   
-                            $model->attachment_file = $filename;
-                            $model->user_type = "Client";
-                            $model->save();
-                        }    
-                    }
-                }    
-            }
-            
-        } 
         
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

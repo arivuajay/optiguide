@@ -125,21 +125,23 @@ $cat_types = CHtml::listData(ClientCategoryTypes::model()->findAll(array("order"
                     <div class="form-group">
                         <?php echo $form->labelEx($model, 'C_type', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">
-                            <?php echo $form->dropDownList($model, 'ptype', $cat_types, array('class' => 'form-control', 'empty' => "Choisissez une catégorie type")); ?> 
-                        </div>
-                    </div>
-
-                     <div class="form-group">
-                        <?php echo $form->labelEx($model, 'category', array('class' => 'col-sm-2 control-label')); ?>
-                        <div class="col-sm-5">
-                            <?php 
-                            $options_sections = $selected_sections;                        
-                            $htmlOptions = array('size' => '7', 'multiple' => 'true', 'id' => 'ClientProfiles_category', 'class' => 'form-control','options'=>$options_sections);
-                            echo $form->listBox($model, 'category', $category_names, $htmlOptions);
+                            <?php echo $form->dropDownList($model, 'ptype', $cat_types, array('class' => 'form-control', 'empty' => "Choisissez une catégorie type"));
                             echo $form->error($model, 'ptype');
                             ?> 
                         </div>
                     </div>
+
+<!--                     <div class="form-group">
+                        <?php //echo $form->labelEx($model, 'category', array('class' => 'col-sm-2 control-label')); ?>
+                        <div class="col-sm-5">
+                            <?php 
+                            //$options_sections = $selected_sections;                        
+                           // $htmlOptions = array('size' => '7', 'multiple' => 'true', 'id' => 'ClientProfiles_category', 'class' => 'form-control','options'=>$options_sections);
+                           // echo $form->listBox($model, 'category', $category_names, $htmlOptions);
+                            
+                            ?> 
+                        </div>
+                    </div>-->
                     
                     <div class="box-header">
                         <h3 class="page-header">Step 4</h3>
@@ -170,6 +172,7 @@ $cat_types = CHtml::listData(ClientCategoryTypes::model()->findAll(array("order"
                         <div class="col-sm-0 col-sm-offset-2">
                             <?php
                                 echo CHtml::submitButton('Export', array('class' => 'btn btn-success'));
+                                echo CHtml::hiddenField('utype' , 'client');  
                             ?>
                             <a href="javascript:void(0);" id="calculateusers" class="btn btn-primary">Calculate</a>
                             <p id="filtercounts" style="display: none;"><b>Filtered users count </b>: <span id="totalcounts">&nbsp;</span></p>

@@ -138,30 +138,30 @@ class ClientProfiles extends CActiveRecord
 	 */
 	public function attributeLabels()
 	{
-		return array(
-			'client_id' => Myclass::t('Client'),
-			'name' => Myclass::t('Client Nom'),
-			'company' => Myclass::t('Entreprise'),
-			'job_title' => Myclass::t('Fonction'),
-			'member_type' => Myclass::t('Type'),
-                        'cat_type_id' => Myclass::t('Catégorie Type'),
-			'category' => Myclass::t('Catégorie Nom'),
-			'address' => Myclass::t('Adresse'),
-			'local_number' => Myclass::t('Numéro de local/bureau'),
-			'country' => Myclass::t('Pays'),
-			'region' => Myclass::t('Province'),
-			'ville' => Myclass::t('Ville'),
-			'phonenumber1' => Myclass::t('Téléphone'),
-			'phonenumber2' => Myclass::t('Téléphone 2'),
-			'mobile_number' => Myclass::t('Cellulaire'),
-			'tollfree_number' => Myclass::t('Sans frais'),
-			'fax' => Myclass::t('Fax'),
-			'email' => Myclass::t('Courriel'),
-			'site_address' => Myclass::t('Website'),
-			'subscription' => Myclass::t('Abonnement'),
-			'created_date' => Myclass::t('Date de création'),
-			'modified_date' => Myclass::t('Date de changement'),
-		);
+            return array(
+                'client_id' => Myclass::t('Client'),
+                'name' => Myclass::t('Client Nom'),
+                'company' => Myclass::t('Entreprise'),
+                'job_title' => Myclass::t('Fonction'),
+                'member_type' => Myclass::t('Type'),
+                'cat_type_id' => Myclass::t('Catégorie Type'),
+                'category' => Myclass::t('Catégorie Nom'),
+                'address' => Myclass::t('Adresse'),
+                'local_number' => Myclass::t('Numéro de local/bureau'),
+                'country' => Myclass::t('Pays'),
+                'region' => Myclass::t('Province'),
+                'ville' => Myclass::t('Ville'),
+                'phonenumber1' => Myclass::t('Téléphone'),
+                'phonenumber2' => Myclass::t('Téléphone 2'),
+                'mobile_number' => Myclass::t('Cellulaire'),
+                'tollfree_number' => Myclass::t('Sans frais'),
+                'fax' => Myclass::t('Fax'),
+                'email' => Myclass::t('Courriel'),
+                'site_address' => Myclass::t('Website'),
+                'subscription' => Myclass::t('Abonnement'),
+                'created_date' => Myclass::t('Date de création'),
+                'modified_date' => Myclass::t('Date de changement'),
+            );
 	}
 
 	/**

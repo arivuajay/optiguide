@@ -66,8 +66,7 @@ class ExportDatas extends CActiveRecord
             }
             
             return true;
-        }
-        
+        }        
     
 
 	/**
@@ -85,7 +84,7 @@ class ExportDatas extends CActiveRecord
                     'P_type' => 'Professional Type',
                     'R_type' => 'Retailer Type',
                     'S_type' => 'Supplier Type',                    
-                    'C_type' => Myclass::t('Catégorie Type'),
+                    'C_type' => Myclass::t('Catégorie'),
                     'category' => Myclass::t('Catégorie Nom'),
 		);
 	}
