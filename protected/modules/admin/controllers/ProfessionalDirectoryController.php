@@ -191,6 +191,7 @@ class ProfessionalDirectoryController extends Controller {
                     $model->DATE_MODIFICATION=date("Y-m-d H:m:s");
                     $model->save(false);
                     Yii::app()->user->setFlash('success', 'professionnelle mis à jour avec succès!!!');
+                    $this->redirect(array('update', "id" => $id));
                 }
                 // save the alert message         
                 if (isset($_POST['ProfessionalMessages'])) {

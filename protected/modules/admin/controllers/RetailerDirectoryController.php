@@ -264,6 +264,7 @@ class RetailerDirectoryController extends Controller {
                     $model->DATE_MODIFICATION=date("Y-m-d H:m:s");
                     $model->save();
                     Yii::app()->user->setFlash('success', 'Détaillant correctement mis à jour!!!');
+                    $this->redirect(array('update',"id"=>$id));
                 }
                   // save the alert message         
                 if (isset($_POST['RetailerMessages'])) 
