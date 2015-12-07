@@ -17,9 +17,22 @@ class OgIdentity extends CUserIdentity {
      */
     public function authenticate() {
         $user = UserDirectory::model()->find('USR = :U', array(':U' => $this->username));
+        
+        $user_dbpass = $user->PWD;
+        // strip out all whitespace
+        $user_dbpass = preg_replace('/\s*/', '', $user_dbpass);
+        // convert the string to all lowercase
+        $user_dbpass = strtolower($user_dbpass);
+        
+        $user_postpass = $this->password;
+        // strip out all whitespace
+        $user_postpass = preg_replace('/\s*/', '', $user_postpass);
+        // convert the string to all lowercase
+        $user_postpass = strtolower($user_postpass);
+        
         if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;     // Error Code : 1
-        } else if ($user->PWD !== $this->password) {
+        } else if ($user_dbpass !== $user_postpass) {
             $this->errorCode = self::ERROR_PASSWORD_INVALID;   // Error Code : 1
         } else if ($user->status == 0) {
             //Add new condition to finding the status of user.
