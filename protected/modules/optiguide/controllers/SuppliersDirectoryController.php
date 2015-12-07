@@ -55,7 +55,7 @@ class SuppliersDirectoryController extends OGController {
         $ret_result = Yii::app()->db->createCommand(
                 "SELECT f.profile_expirydate AS expirydate , ru.COURRIEL AS email ,ru.NOM_UTILISATEUR AS username,f.renewal_flag AS flag, f.ID_FOURNISSEUR AS s_id, ru.ID_UTILISATEUR AS u_id, f.COMPAGNIE AS COMPAGNIE
                 FROM repertoire_fournisseurs f, repertoire_utilisateurs as ru
-                WHERE f.ID_FOURNISSEUR = ru.ID_RELATION AND ru.status = 1 AND ru.NOM_TABLE = 'Fournisseurs' AND f.profile_expirydate != '0000-00-00 00:00:00' AND f.COURRIEL != ''
+                WHERE f.ID_FOURNISSEUR = ru.ID_RELATION AND ru.status = 1 AND ru.NOM_TABLE = 'Fournisseurs' AND f.profile_expirydate != '0000-00-00 00:00:00' AND ru.COURRIEL != '' 
                 ")->queryAll();  
         $flag=0;
         foreach ($ret_result as $single_record){
