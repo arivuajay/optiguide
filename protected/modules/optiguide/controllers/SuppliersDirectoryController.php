@@ -33,7 +33,7 @@ class SuppliersDirectoryController extends OGController {
         return array_merge(
                 parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('detect_supplier','create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify', 'renewpaypalnotify', 'delproducts'),
+                'actions' => array('renewalmail','detect_supplier','create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify', 'renewpaypalnotify', 'delproducts'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -50,7 +50,49 @@ class SuppliersDirectoryController extends OGController {
                 )
         );
     }
-
+    public function actionRenewalmail() {
+        $baseurl = Yii::app()->request->getBaseUrl(true);
+        $ret_result = Yii::app()->db->createCommand(
+                "SELECT f.profile_expirydate AS expirydate , ru.COURRIEL AS email ,ru.NOM_UTILISATEUR AS username,f.renewal_flag AS flag, f.ID_FOURNISSEUR AS s_id, ru.ID_UTILISATEUR AS u_id, f.COMPAGNIE AS COMPAGNIE
+                FROM repertoire_fournisseurs f, repertoire_utilisateurs as ru
+                WHERE f.ID_FOURNISSEUR = ru.ID_RELATION AND ru.status = 1 AND ru.NOM_TABLE = 'Fournisseurs' AND f.profile_expirydate != '0000-00-00 00:00:00' AND f.COURRIEL != ''
+                ")->queryAll();  
+        $flag=0;
+        foreach ($ret_result as $single_record){
+            $difference = strtotime($single_record['expirydate']) - strtotime(date("Y-m-d H:m:s"));
+            $days = floor($difference / (60*60*24) );
+            if($days==90 && $single_record['flag']!=1){
+                $single_record['flag'] = 1;
+                $flag=1;
+            }elseif($days==30  && $single_record['flag']!=2){
+                $single_record['flag'] = 2;
+                $flag=1;
+            }elseif($days==7  && $single_record['flag']!=3){
+                $single_record['flag'] = 3;
+                $flag=1;
+            }
+            if($flag!=0){
+                $sql="UPDATE repertoire_fournisseurs SET renewal_flag=:flag WHERE ID_FOURNISSEUR=:supplier_id";
+                $command=Yii::app()->db->createCommand($sql);
+                $command->bindParam(":supplier_id",$single_record['s_id']);
+                $command->bindParam(":flag",$single_record['flag']);
+                $command->execute();
+                    
+                        $mail = new Sendmail;
+                        $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/renewsubscription';
+                        $trans_array = array(
+                            "{NEXTSTEPURL}"=>$nextstep_url,
+                            "{RENEWALDAY}"=>date("d-m-Y", strtotime($single_record['expirydate'])),
+                            "{USERNAME}" => $single_record['username'],
+                        );
+                        $message = $mail->getMessage('renewal_mail', $trans_array);
+                        $Subject = $mail->translate('Renewal You Account');
+                        $mail->send($single_record['email'], $Subject, $message);
+            }
+        $flag=0;
+        }
+    }
+    
     public function actionMappingreps() {
 
         $imp_ret = '';

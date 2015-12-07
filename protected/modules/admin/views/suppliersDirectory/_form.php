@@ -225,7 +225,18 @@
                                     </div>
                                 <?php }
                                 ?>
-
+                                                <?php
+                                if (!$model->isNewRecord) {
+                                    ?>
+                                <div class="form-group"> 
+                                    <?php echo $form->labelEx($model, 'DATE_MODIFICATION', array()); ?>: 
+                                        <?php echo $model->DATE_MODIFICATION; ?>
+                                </div>
+                                <div class="form-group"> 
+                                    <?php echo $form->labelEx($model, 'CREATED_DATE', array()); ?>: 
+                                        <?php echo $model->CREATED_DATE; ?>
+                                </div>
+                                <?php } ?>
                                 <div class="box-header">
                                     <h3 class="box-title">Visualisation</h3>
                                 </div>

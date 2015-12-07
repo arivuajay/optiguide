@@ -90,9 +90,11 @@ class SuppliersDirectory extends CActiveRecord {
             array('REGIONS_FR, REGIONS_EN', 'length', 'max' => 1000),
             array('COURRIEL', 'email'),
             array('SITE_WEB', 'url'),
+            
+//            array('renewal_flag', 'number'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('country,region,archivecat,IDSECTION,Products1,Products2,ID_SECTION,PROD_SERVICE,subscription_type,expirydate,pfile,proof_file,CREATED_DATE, autre_ville', 'safe'),
+            array('country,region,archivecat,IDSECTION,Products1,Products2,ID_SECTION,PROD_SERVICE,subscription_type,expirydate,pfile,proof_file,CREATED_DATE, autre_ville,renewal_flag', 'safe'),
             array('ID_FOURNISSEUR, COMPAGNIE, ID_CLIENT, ID_TYPE_FOURNISSEUR, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELECOPIEUR, TITRE_TEL_SANS_FRAIS, TITRE_TEL_SANS_FRAIS_EN, TEL_SANS_FRAIS, TITRE_TEL_SECONDAIRE, TITRE_TEL_SECONDAIRE_EN, TEL_SECONDAIRE, COURRIEL, SITE_WEB, SUCCURSALES, ETABLI_DEPUIS, NB_EMPLOYES, PERSONNEL_NOM1, PERSONNEL_TITRE1, PERSONNEL_TITRE1_EN, PERSONNEL_NOM2, PERSONNEL_TITRE2, PERSONNEL_TITRE2_EN, PERSONNEL_NOM3, PERSONNEL_TITRE3, PERSONNEL_TITRE3_EN, DATE_MODIFICATION, REGIONS_FR, REGIONS_EN, bAfficher_site, iId_fichier', 'safe', 'on' => 'search'),
             array('TELEPHONE, TELECOPIEUR, TEL_SANS_FRAIS, TEL_SECONDAIRE', 'phoneNumber'),
             array('pfile', 'file', 'types' => 'jpg, jpeg, doc, pdf', 'allowEmpty' => true, 'safe' => false, 'on' => 'backend'),
