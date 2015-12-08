@@ -405,7 +405,7 @@ class SuppliersDirectoryController extends OGController {
                 ->select('ID_FOURNISSEUR , COMPAGNIE ,profile_expirydate , TYPE_FOURNISSEUR_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
                 ->from(array('repertoire_fournisseurs f', 'repertoire_fournisseur_type ft', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                 ->where("f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and bAfficher_site=1 AND ru.NOM_TABLE ='Fournisseurs' and ru.status=1 " . $sname_qry . $stype_qry . $section_product_qry)
-                ->order('ft.TYPE_FOURNISSEUR_' . $this->lang . ' ASC , profile_expirydate DESC')
+                ->order('ft.TYPE_FOURNISSEUR_' . $this->lang . ' ASC , profile_expirydate DESC,COMPAGNIE ASC')
                 ->limit(SUPPLIERSLISTPERPAGE, $limit) // the trick is here!
                 ->queryAll();
 
@@ -928,7 +928,7 @@ class SuppliersDirectoryController extends OGController {
     
     protected function savecreditcard_response($sess_attr_m , $sess_attr_u , $sess_productids, $sess_marqueids, $pdetails,$invoice_number)
     {
-        
+        $baseurl = Yii::app()->request->getBaseUrl(true);
         if (!empty($sess_attr_m)) {
            $ficherid = 0;
 
@@ -1044,6 +1044,22 @@ class SuppliersDirectoryController extends OGController {
             );
             $message = $mail->getMessage('supplier_registration', $trans_array);
             $mail->send(ADMIN_EMAIL, $subject, $message);
+            
+            $subject = SITENAME . "- Thanks for your subscription as a supplier and invoice details.";
+            $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/transactions';
+            $trans_array = array(
+                "{NAME}" => $model->COMPAGNIE,
+                "{UTYPE}" => 'suppliers',
+                "{NEXTSTEPURL}" => $nextstep_url,
+                "{message}" => 'Thanks for your subscription as a supplier user type in '. SITENAME .' site.Your subscription will expire on '.$model->profile_expirydate.'.',
+                "{item_name}" => $itemname,
+                "{pay_type}"=>'Credit Card',
+                "{total_price}" => $pdetails['total_price'],
+                "{payment_status}" => 'Completed',
+                "{txn_id}" => $pdetails['PNREF'],
+            );
+            $message = $mail->getMessage('confirm_supplier_registration', $trans_array);
+            $mail->send($umodel->COURRIEL, $subject, $message);
         }                
         
     }        
@@ -1120,6 +1136,7 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function actionPaypalnotify() {
+        $baseurl = Yii::app()->request->getBaseUrl(true);
         $paypalManager = new Paypal;
 
         if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
@@ -1293,6 +1310,23 @@ class SuppliersDirectoryController extends OGController {
                         );
                         $message = $mail->getMessage('supplier_registration', $trans_array);
                         $mail->send(ADMIN_EMAIL, $subject, $message);
+                        
+                       $subject = SITENAME . "- Thanks for your subscription as a supplier and invoice details.";
+                        $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/transactions';
+                        $contact_url = $baseurl . '/optiguide/default/contactus';
+                        $trans_array = array(
+                            "{NAME}" => $model->COMPAGNIE,
+                            "{NEXTSTEPURL}" => $nextstep_url,
+                            "{message}" => 'Thanks for your subscription as a supplier user type in '. SITENAME .' site.Your payment status is Pending, So please <a href="'.$contact_url.'">contact</a> admin for further information.',
+                            "{item_name}" => $itemname,
+                            "{pay_type}"=> $ptmodel->payment_type,
+                            "{total_price}" => $pdetails['total_price'],
+                            "{payment_status}" => 'Completed',
+                            "{txn_id}" => $pdetails['PNREF'],
+                        );
+                        $message = $mail->getMessage('confirm_supplier_registration', $trans_array);
+                        $mail->send($umodel->COURRIEL, $subject, $message);
+            
                     }
                 }
             }
@@ -1883,7 +1917,7 @@ class SuppliersDirectoryController extends OGController {
     
     protected function savecreditcard_response_renew($model_paypaladvance, $pdetails,$invoice_number)
     {
-        
+        $baseurl = Yii::app()->request->getBaseUrl(true);
         if (!empty($pdetails)) {
 
             $supplierid = $pdetails['user_id'];
@@ -1898,7 +1932,9 @@ class SuppliersDirectoryController extends OGController {
             }
         
             // Update the expiry date in supplier table once the payment is suceess (Completed)
-            $model = SuppliersDirectory::model()->findByPk($supplierid);     
+            $model = SuppliersDirectory::model()->findByPk($supplierid); 
+            $user = UserDirectory::model()->findByAttributes(array('ID_RELATION'=>$supplierid,'NOM_TABLE'=>'Fournisseurs'));
+            
             if ($subtype == "1" || $subtype == "2") {
                 $model->profile_expirydate = $pdetails['profile_expirydate'];
             }
@@ -1943,6 +1979,21 @@ class SuppliersDirectoryController extends OGController {
             $message = $mail->getMessage('supplier_renew_subscription', $trans_array);
             $mail->send(ADMIN_EMAIL, $subject, $message);
             
+            $subject = SITENAME . "- Thanks for your renewal subscription as a supplier and invoice details.";
+            $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/transactions';
+            $trans_array = array(
+                "{NAME}" => $model->COMPAGNIE,
+                "{NEXTSTEPURL}" => $nextstep_url,
+                "{message}" => 'Thanks for your renewal subscription as a supplier user type in '. SITENAME .' site.Your subscription will expire on '.$model->profile_expirydate.'.',
+                "{item_name}" => $itemname,
+                "{pay_type}"=>'Credit Card',
+                "{total_price}" => $pdetails['total_price'],
+                "{payment_status}" => 'Completed',
+                "{txn_id}" => $pdetails['PNREF'],
+            );
+            $message = $mail->getMessage('confirm_supplier_registration', $trans_array);
+            $mail->send($user->COURRIEL, $subject, $message);
+            
         }            
         
     }        
@@ -1976,7 +2027,7 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function actionRenewpaypalnotify() {
-
+        $baseurl = Yii::app()->request->getBaseUrl(true);
         $paypalManager = new Paypal;
 
 
@@ -2096,6 +2147,27 @@ class SuppliersDirectoryController extends OGController {
                         );
                         $message = $mail->getMessage('supplier_renew_subscription', $trans_array);
                         $mail->send(ADMIN_EMAIL, $subject, $message);
+                        
+                        $user = UserDirectory::model()->findByAttributes(array('ID_RELATION'=>$pdetails['user_id'],'NOM_TABLE'=>'Fournisseurs'));
+                        $subject = SITENAME . "- Thanks for your renewal subscription as a supplier and invoice details.";
+                        $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/transactions';
+                        $contact_url = $baseurl . '/optiguide/default/contactus';
+                        $trans_array = array(
+                            "{NAME}" => $model->COMPAGNIE,
+                            "{NEXTSTEPURL}" => $nextstep_url,
+                            "{message}" => 'Thank you for renewal your account in '. SITENAME .' site.Your payment status is Pending, So please <a href="'.$contact_url.'">contact</a> admin for further information.',
+                            "{item_name}" => $_POST['item_name'],
+                            "{pay_type}"=> $ptmodel->payment_type,
+                            "{total_price}" => $pdetails['total_price'],
+                            "{payment_status}" => 'Completed',
+                            "{txn_id}" => $pdetails['PNREF'],
+                        );
+                        $message = $mail->getMessage('confirm_supplier_registration', $trans_array);
+                        if($user->COURRIEL!=''){
+                            $mail->send($user->COURRIEL, $subject, $message);
+                        }
+                        
+                                                    
                     }
                 }
             }

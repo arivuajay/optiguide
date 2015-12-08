@@ -66,7 +66,7 @@ return array(
     'OG042' => 'Télécopieur',
     'OG043' => 'Aucun résultat trouvé',
     
-    'OG044' => 'Merci de vous être inscrit ! Vous pouvez vous connecter sur le site dès maintenant.',
+    'OG044' => 'Merci pour votre abonnement ! Maintenant, vous pouvez vous connecter sur le site .',
     'OG045' => 'Vous inscrire',
     'OG046' => 'Sans frais',
     

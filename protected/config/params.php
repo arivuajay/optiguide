@@ -34,7 +34,7 @@ return array(
     'FB_SECRET_ID' => $fb_sec_id,
     'GOOGLE_APP_ID' => $google_app_id,
     'GOOGLE_SECRET_ID' => $google_sec_id,
-    'ADMIN_EMAIL'   => 'vasanth@arkinfotec.com',
+    'ADMIN_EMAIL'   => 'nachiyappan.arumugam@arkinfotec.com',
     'ADMIN_URL'  => $adminurl,   
     
     //Product Settings
