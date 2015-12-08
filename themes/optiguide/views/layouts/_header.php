@@ -1,6 +1,10 @@
 <?php
 $profileurl = '';
+$popupimg = "popup_alert_EN.jpg";
 if (!Yii::app()->user->isGuest) {
+    
+    $lang = Yii::app()->session['language'];    
+    $popupimg = "popup_alert_".$lang.".jpg";
     
     $mustvalidate = UserDirectory::model()->findByPk(Yii::app()->user->id)->MUST_VALIDATE;
     if($mustvalidate==0)
@@ -29,7 +33,7 @@ if (!Yii::app()->user->isGuest) {
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <img src="<?php echo Yii::app()->createAbsoluteUrl("/uploads/archivage/warning-updated-required.jpg");?>">          
+        <img src="<?php echo Yii::app()->createAbsoluteUrl("/uploads/archivage/".$popupimg);?>">          
     </div>    
   </div>
 </div>

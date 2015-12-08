@@ -102,7 +102,7 @@ EOD;
                         ?>   
                         <li class="li-1">
                             <span class="date start"><?php echo date("F d Y", strtotime($einfo->DATE_AJOUT1)); ?></span>
-                            <?php echo CHtml::link($einfo->TITRE, array('/optiguide/calenderEvent/view', 'id' => $einfo->ID_EVENEMENT)); ?> 
+                            <?php echo CHtml::link($einfo->TITRE, array('/optirep/calenderEvent/view', 'id' => $einfo->ID_EVENEMENT)); ?> 
                         </li>
                         <?php
                     }

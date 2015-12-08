@@ -230,7 +230,7 @@ class ProfessionalDirectoryController extends ORController {
             if( $search_postal != '')
              {
                  $searchModel->CODE_POSTAL =  $search_postal;
-                 $spostal_qry    = " AND CODE_POSTAL = ". $search_postal;
+                 $spostal_qry    = " AND CODE_POSTAL = '". $search_postal."'";
              }
             
              if ($search_type != '') {

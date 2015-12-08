@@ -225,5 +225,11 @@ return array(
     'OG198' => ' contact ',
     'OG199' => 'admin and get your password.',
     'OG200' =>'Please enter all values for employee alert.  (Employee , message and date)',
+    
+    'OG201' => 'All Types',
+    'OG202' => 'All Countries',
+    'OG203' => 'All Regions',
+    'OG204' => 'All Cities',
+    
 );
 ?>
