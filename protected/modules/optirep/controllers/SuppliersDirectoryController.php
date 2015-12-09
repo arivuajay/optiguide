@@ -130,7 +130,7 @@ class SuppliersDirectoryController extends ORController {
     public function actionGetproducts() {
         $options = '';
         $sid = isset($_POST['id']) ? $_POST['id'] : '';
-        $options = "<option value=''>" . Myclass::t('OR066', '', 'or') . "</option>";
+        $options = "<option value=''>" . Myclass::t('OG206') . "</option>";
         if ($sid != '') {
             $criteria = new CDbCriteria;
             $criteria->order = 'NOM_PRODUIT_' . $this->lang . ' ASC';

@@ -238,7 +238,7 @@ class RetailerDirectoryController extends ORController {
 
             if ($search_postal != '') {
                 $searchModel->CODE_POSTAL = $search_postal;
-                $spostal_qry = " AND CODE_POSTAL = " . $search_postal;
+                $spostal_qry = " AND rs.CODE_POSTAL = '".$search_postal."'";
             }
 
             if ($search_ret_type != '') {
@@ -251,7 +251,7 @@ class RetailerDirectoryController extends ORController {
                 $sgroup_qry = " AND ID_GROUPE = " . $search_group;
             }
         }
-
+        // echo "rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $scat_query . $spostal_qry . $srettype_qry . $sgroup_qry;
         // Get all records list  with limit
         $retail_query = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('ID_RETAILER , COMPAGNIE , NOM_TYPE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
@@ -260,7 +260,7 @@ class RetailerDirectoryController extends ORController {
                 ->order('COMPAGNIE')
                 ->limit($searchModel->listperpage, $limit) // the trick is here!
                 ->queryAll();
-
+        
         // Get total counts of records    
         $item_count = Yii::app()->db->createCommand() // this query get the total number of items,
                 ->select('count(*) as count')
@@ -268,6 +268,7 @@ class RetailerDirectoryController extends ORController {
                 ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $scat_query . $spostal_qry . $srettype_qry . $sgroup_qry)
                 ->queryScalar(); // do not LIMIT it, this must count all items!
         // the pagination itself      
+        
         $pages = new CPagination($item_count);
         $pages->setPageSize($searchModel->listperpage);
 
@@ -284,7 +285,7 @@ class RetailerDirectoryController extends ORController {
     public function actionGetGroups() {
         $options = '';
         $cid = isset($_POST['id']) ? $_POST['id'] : '';
-        $options = "<option value=''>" . Myclass::t('OG119') . "</option>";
+        $options = "<option value=''>" . Myclass::t('OG207') . "</option>";
         if ($cid != '') {
             $criteria = new CDbCriteria;
             $criteria->order = 'NOM_GROUPE ASC';

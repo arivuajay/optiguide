@@ -48,7 +48,15 @@ class Controller extends CController {
     public function actionGetRegions() {
         $options = '';
         $cid = isset($_POST['id']) ? $_POST['id'] : '';
-        $options = "<option value=''>" . Myclass::t('APP44') . "</option>";
+        
+        $search_disp = isset($_POST['search']) ? $_POST['search'] : '';
+        if($search_disp=="yes")
+        {    
+            $options = "<option value=''>" . Myclass::t('OG203') . "</option>";
+        }else{
+            $options = "<option value=''>" . Myclass::t('APP44') . "</option>";
+        }
+        
         if ($cid != '') {
             $data_regions = Myclass::getallregions($cid);
             foreach ($data_regions as $k => $info) {
@@ -62,7 +70,15 @@ class Controller extends CController {
     public function actionGetCities() {
         $options = '';
         $cid = isset($_POST['id']) ? $_POST['id'] : '';
-        $options = "<option value=''>" . Myclass::t('APP59') . "</option>";
+        $search_disp = isset($_POST['search']) ? $_POST['search'] : '';
+        
+        if($search_disp=="yes")
+        {    
+            $options = "<option value=''>" . Myclass::t('OG204') . "</option>";
+        }else{
+            $options = "<option value=''>" . Myclass::t('APP59') . "</option>";
+        }
+        
         if ($cid != '') {
             $data_cities = Myclass::getallcities($cid);
             foreach ($data_cities as $k => $info) {

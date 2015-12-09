@@ -226,9 +226,14 @@ return array(
     'OG199' => 'admin et obtenir votre mot de passe.',
     'OG200' =>'S\'il vous plaît entrer toutes les valeurs pour recevoir une alerte de l\'employé . ( Employés , message et date)',
     
-    'OG201' => 'Tout types',
-    'OG202' => 'Tous les pays',
-    'OG203' => 'Toutes les régions',
-    'OG204' => 'Toutes les villes',
+    'OG201' => 'Types',
+    'OG202' => 'Pays',
+    'OG203' => 'Régions',
+    'OG204' => 'Villes',
+    'OG205' => 'Sections',
+    'OG206' => 'Produits et services',
+    'OG207' => 'Groupe',
+    'OG208' => 'Catégories',
+    'OG209' => 'Titre'
 );
 ?>

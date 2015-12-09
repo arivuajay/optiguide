@@ -226,10 +226,14 @@ return array(
     'OG199' => 'admin and get your password.',
     'OG200' =>'Please enter all values for employee alert.  (Employee , message and date)',
     
-    'OG201' => 'All Types',
-    'OG202' => 'All Countries',
-    'OG203' => 'All Regions',
-    'OG204' => 'All Cities',
-    
+    'OG201' => 'Types',
+    'OG202' => 'Countries',
+    'OG203' => 'Regions',
+    'OG204' => 'Cities',
+    'OG205' => 'Sections',
+    'OG206' => 'Products and services',
+    'OG207' => 'Group',
+    'OG208' => 'Categories',
+    'OG209' => 'Title'
 );
 ?>

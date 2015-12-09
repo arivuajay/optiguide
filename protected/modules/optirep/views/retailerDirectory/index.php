@@ -1,9 +1,10 @@
 <div class="cate-bg user-right">
-    <?php $this->renderPartial('_search', array('searchModel' => $searchModel)); ?>
+    <?php     
+    $this->renderPartial('_search', array('searchModel' => $searchModel)); ?>
     <h2> <?php echo Myclass::t('OG040', '', 'og'); ?> </h2>
     <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 pull-right"> 
         <div class="perpage pull-right"> <span><?php echo Myclass::t('OR630', '', 'or'); ?> </span>
-            <?php
+            <?php           
             $options = array('15' => '15', '30' => '30', '75' => '75', '100' => '100');
             echo CHtml::dropDownList('page_select', $searchModel->listperpage, $options, array("class" => "", "id" => "page_change"));
             ?>
@@ -12,6 +13,7 @@
     </div>  
     <div class="search-list">
         <?php
+          
         if (!empty($model)) {
             ?>
             <ul>
@@ -31,6 +33,7 @@
         }
         ?>
         <?php
+        
         $this->widget('CLinkPager', array(
             'pages' => $pages,
             'currentPage' => $pages->getCurrentPage(),
@@ -42,7 +45,7 @@
             'htmlOptions' => array(
                 'class' => 'pagination',
             ),
-        ));
+        ));       
         ?>       
     </div>
 

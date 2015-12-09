@@ -41,15 +41,15 @@ if ($ccontroller == "default") {
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'ID_TYPE_FOURNISSEUR', $suppliertypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OR064', '', 'or'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'ID_TYPE_FOURNISSEUR', $suppliertypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG201'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'ID_SECTION', $sectiontypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OR065', '', 'or'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'ID_SECTION', $sectiontypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG205'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 <?php echo $dispclass; ?>"> 
-        <?php echo $form->dropDownList($searchModel, 'PROD_SERVICE', $prod_services, array('class' => 'selectpicker', 'empty' => Myclass::t('OR066', '', 'or'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'PROD_SERVICE', $prod_services, array('class' => 'selectpicker', 'empty' => Myclass::t('OG206'))); ?> 
     </div>
 
 

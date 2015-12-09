@@ -55,7 +55,7 @@ $js = <<< EOD
     $(document).ready(function(){
     $("#ProfessionalDirectory_country").change(function(){
         var id=$(this).val();
-        var dataString = 'id='+ id;
+        var dataString = 'id='+ id +'&search=yes';
             
         $.ajax({
             type: "POST",
@@ -70,7 +70,7 @@ $js = <<< EOD
             
    $("#ProfessionalDirectory_region").change(function(){
         var id=$(this).val();
-        var dataString = 'id='+ id;
+        var dataString = 'id='+ id +'&search=yes';
             
         $.ajax({
             type: "POST",

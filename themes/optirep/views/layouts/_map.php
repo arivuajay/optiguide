@@ -38,6 +38,7 @@
         $sregion_qry = '';  
         $scity_qry   = ''; 
         $spostal_qry = '';
+        $stype_qry   = '';
      ?>   
             
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">       
@@ -60,7 +61,7 @@
                        if( $search_country != ''){ $scntry_qry  = " AND rp.ID_PAYS = ". $search_country;     } 
                        if( $search_region != ''){ $sregion_qry  = " AND rr.ID_REGION = ". $search_region;   } 
                        if( $search_ville != ''){ $scity_qry    = " AND rs.ID_VILLE = ". $search_ville; } 
-                       if( $search_postal != '') { $spostal_qry    = " AND CODE_POSTAL = ". $search_postal;}
+                       if( $search_postal != '') { $spostal_qry    = " AND CODE_POSTAL = '". $search_postal."'";}
                       
                         $results = Yii::app()->db->createCommand() //this query contains all the data
                         ->select(' COMPAGNIE , classification,NOM_TYPE_'.$this->lang.' ,  NOM_VILLE ,  NOM_REGION_'.$this->lang.' , ABREVIATION_'.$this->lang.' ,  NOM_PAYS_'.$this->lang.', map_lat , map_long')
@@ -78,24 +79,28 @@
                 if($_controller=="professionalDirectory")
                 {   
                     // $searchModel->unsetAttributes();
-                    if (isset($_GET['ProfessionalDirectory'])) {
-
-                        $search_name = isset($_GET['ProfessionalDirectory']['NOM']) ? $_GET['ProfessionalDirectory']['NOM'] : '';
+                    if (isset($_GET['ProfessionalDirectory'])) 
+                    {
+                        $search_name    = isset($_GET['ProfessionalDirectory']['NOM']) ? $_GET['ProfessionalDirectory']['NOM'] : '';
                         $search_country = isset($_GET['ProfessionalDirectory']['country']) ? $_GET['ProfessionalDirectory']['country'] : '';
-                        $search_region = isset($_GET['ProfessionalDirectory']['region']) ? $_GET['ProfessionalDirectory']['region'] : '';
-                        $search_ville = isset($_GET['ProfessionalDirectory']['ID_VILLE']) ? $_GET['ProfessionalDirectory']['ID_VILLE'] : '';
+                        $search_region  = isset($_GET['ProfessionalDirectory']['region']) ? $_GET['ProfessionalDirectory']['region'] : '';
+                        $search_ville   = isset($_GET['ProfessionalDirectory']['ID_VILLE']) ? $_GET['ProfessionalDirectory']['ID_VILLE'] : '';
+                        $search_type    = isset($_GET['ProfessionalDirectory']['ID_TYPE_SPECIALISTE']) ? $_GET['ProfessionalDirectory']['ID_TYPE_SPECIALISTE'] : '';
+                        $search_postal  = isset($_GET['ProfessionalDirectory']['CODE_POSTAL']) ? $_GET['ProfessionalDirectory']['CODE_POSTAL'] : '';
 
                         if ($search_name != '') { $sname_qry = " AND NOM like '%$search_name%' "; }
                         if ($search_country != '') {  $scntry_qry = " AND rp.ID_PAYS = " . $search_country; }
                         if ($search_region != '') {   $sregion_qry = " AND rr.ID_REGION = " . $search_region; }
                         if ($search_ville != '') { $scity_qry = " AND rs.ID_VILLE = " . $search_ville; }
+                        if( $search_postal != '') { $spostal_qry    = " AND rs.CODE_POSTAL = '".$search_postal."'";}
+                        if ($search_type != '') { $stype_qry = " AND rs.ID_TYPE_SPECIALISTE = " . $search_type; }
                     }
-
+            
                     // Get all records list  with limit
                     $results = Yii::app()->db->createCommand() //this query contains all the data
                             ->select('NOM , PRENOM , TYPE_SPECIALISTE_'.$this->lang.' , NOM_VILLE ,  NOM_REGION_'.$this->lang.' , ABREVIATION_'.$this->lang.' ,  NOM_PAYS_'.$this->lang.' , map_lat , map_long')
                             ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-                            ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry)
+                            ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " .  $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
                             ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
                             ->limit($listperpage, $limit) // the trick is here!
                             ->queryAll();

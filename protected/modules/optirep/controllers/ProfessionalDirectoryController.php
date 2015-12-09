@@ -184,7 +184,7 @@ class ProfessionalDirectoryController extends ORController {
         $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country; 
          
         $searchModel->listperpage = (isset($_GET['listperpage']))?$_GET['listperpage']:LISTPERPAGE;
-       
+               
         //$page = (isset($_GET['page']) ? $_GET['page'] : 1);  // define the variable to “LIMIT” the query        
         $page = Yii::app()->request->getParam('page');
         $page = isset($page) ? $page : 1;
@@ -230,7 +230,7 @@ class ProfessionalDirectoryController extends ORController {
             if( $search_postal != '')
              {
                  $searchModel->CODE_POSTAL =  $search_postal;
-                 $spostal_qry    = " AND CODE_POSTAL = '". $search_postal."'";
+                 $spostal_qry    = " AND rs.CODE_POSTAL = '".$search_postal."'";
              }
             
              if ($search_type != '') {

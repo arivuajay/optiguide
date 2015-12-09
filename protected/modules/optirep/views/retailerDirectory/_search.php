@@ -3,6 +3,7 @@
         <div class="search-heading">  <i class="fa fa-users"></i>  <?php echo Myclass::t('OG047', '', 'og') ?> </div>
     </div>
     <?php
+   
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'search-form',
         'method' => 'get',
@@ -27,28 +28,28 @@
     </div>
 
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 ">                      
-        <?php echo $form->dropDownList($searchModel, 'ID_RETAILER_TYPE', $retailertypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG118'))); ?>                          
+        <?php echo $form->dropDownList($searchModel, 'ID_RETAILER_TYPE', $retailertypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG201'))); ?>                          
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 ">                      
-        <?php echo $form->dropDownList($searchModel, 'ID_GROUPE', $groupetypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG119'))); ?>                          
+        <?php echo $form->dropDownList($searchModel, 'ID_GROUPE', $groupetypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG207'))); ?>                          
     </div>
 
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'searchcat', $categories, array('class' => 'selectpicker', 'empty' => Myclass::t('OG048', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'searchcat', $categories, array('class' => 'selectpicker', 'empty' => Myclass::t('OG208'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'country', $country, array('class' => 'selectpicker', 'empty' => Myclass::t('OG021', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'country', $country, array('class' => 'selectpicker', 'empty' => Myclass::t('OG202'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'region', $regions, array('class' => 'selectpicker', 'empty' => Myclass::t('OG021', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'region', $regions, array('class' => 'selectpicker', 'empty' => Myclass::t('OG203'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => Myclass::t('OG021', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => Myclass::t('OG204'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
@@ -70,7 +71,7 @@ $js = <<< EOD
     $(document).ready(function(){
     $("#RetailerDirectory_country").change(function(){
         var id=$(this).val();
-        var dataString = 'id='+ id;
+        var dataString = 'id='+ id +'&search=yes';
             
         $.ajax({
             type: "POST",
@@ -85,7 +86,7 @@ $js = <<< EOD
    
    $("#RetailerDirectory_region").change(function(){
         var id=$(this).val();
-        var dataString = 'id='+ id;
+        var dataString = 'id='+ id +'&search=yes';
             
         $.ajax({
             type: "POST",
@@ -117,4 +118,5 @@ $js = <<< EOD
 });
 EOD;
 Yii::app()->clientScript->registerScript('index', $js);
+
 ?>
