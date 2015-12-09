@@ -81,7 +81,24 @@ class UserDirectoryController extends Controller {
             }            
             $model->sGuid       = $guid_val;
             if ($model->save()) {
+                
                 Yii::app()->user->setFlash('success', 'L\'accès de l\'utilisateur créé avec succès!!!');
+                $mail = new Sendmail();
+                $subject = "OptiGuide- your account details";
+
+                $nextstep_url = GUIDEURL . 'optiguide/';
+                $trans_array = array(
+                    "{NAME}" => $model->NOM_UTILISATEUR,
+                    "{subscription_name}" => $model->NOM_TABLE,
+                    "{username}"=>$model->USR,
+                    "{password}"=>$model->PWD,
+                    "{NEXTSTEPURL}" => $nextstep_url,
+                );
+                $message = $mail->getMessage('backend_user_create', $trans_array);
+                if($model->COURRIEL!=''){
+                    $mail->send($model->COURRIEL, $subject, $message);
+                }
+                
                 $edituserlink =  '/admin/userDirectory/update';
                 $uid =  $model->ID_UTILISATEUR; 
                 $this->redirect(array($edituserlink,"id"=>$uid));
@@ -117,7 +134,7 @@ class UserDirectoryController extends Controller {
                   $model->PWD  = $result->CODE_POSTAL;
             
         } 
-
+        
         $this->render('create',  compact('userslist_query','model','relid','namestr','nomtable'));
     }
 

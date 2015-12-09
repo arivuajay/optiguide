@@ -736,6 +736,10 @@ class SuppliersDirectoryController extends Controller {
                     $ptmodel->pay_type   = $payment_type;
                     $ptmodel->subscription_type = $subscriptiontype;
                     $ptmodel->save();
+                    echo 'new payment';
+                    echo '<pre>';
+                    print_r($ptmodel);
+                    exit;
                     
                     if($_POST['PaymentCheques']['pay_type']=="2")
                     { 
@@ -932,6 +936,17 @@ class SuppliersDirectoryController extends Controller {
                     $ptmodel->expirydate = $expirydate;
                     $ptmodel->invoice_number = Myclass::getRandomString();
                     $ptmodel->pay_type   = $payment_type;
+                    
+                    //UserDirectory model
+                    $criteria = new CDbCriteria;
+                    $criteria->condition = "ID_RELATION = :id AND NOM_TABLE = :nom_table";
+                    $criteria->params=(array(':id'=>$supplierid,':nom_table'=>'Fournisseurs'));
+                    $row = UserDirectory::model()->find($criteria);
+                    $somevariable = $row->COURRIEL;
+                    
+                    //SuppliersDirectory model
+                    $suppmodel = SuppliersDirectory::model()->findByPk($supplierid);
+                    
                     if (isset($sess_attr_m['ID_FOURNISSEUR'])) 
                     {
                        $ptmodel->supp_renew_status = "1";
@@ -943,6 +958,19 @@ class SuppliersDirectoryController extends Controller {
                     { 
                         $pmodel->payment_transaction_id = $ptmodel->id;
                         $pmodel->save();
+                    }
+                    $mail = new Sendmail();
+                    $subject = SITENAME . "- renewed your account";
+                    
+                    $nextstep_url = GUIDEURL . 'optiguide/';
+                    $trans_array = array(
+                        "{NAME}" => $suppmodel->COMPAGNIE,
+                        "{NEXTSTEPURL}" => $nextstep_url,
+                        "{expirydate}" => $suppmodel->profile_expirydate,
+                    );
+                    $message = $mail->getMessage('supplier_backend_renew_account', $trans_array);
+                    if($somevariable!=''){
+                        $mail->send($somevariable, $subject, $message);
                     }
                         
                 }

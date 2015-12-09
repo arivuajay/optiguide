@@ -57,6 +57,7 @@ class PaymentTransactionController extends Controller {
      * @param integer $id the ID of the model to be updated
      */
     public function actionUpdate($id) {
+        $baseurl = Yii::app()->request->getBaseUrl(true);
         $model = $this->loadModel($id);
 
         // Uncomment the following line if AJAX validation is needed
@@ -75,7 +76,7 @@ class PaymentTransactionController extends Controller {
                 $invoice_number = $model->invoice_number;
 
                 $fmodel = SuppliersDirectory::model()->findByPk($suppid);
-
+                
                 $profile_expirydate = $fmodel->profile_expirydate;
                 $logo_expirydate = $fmodel->logo_expirydate;
 
@@ -112,6 +113,25 @@ class PaymentTransactionController extends Controller {
 
                 if ($model->save()) {
                     Yii::app()->user->setFlash('success', 'PaymentTransaction status Updated Successfully!!!');
+                    
+                    $mail = new Sendmail();
+                    $user = UserDirectory::model()->findByAttributes(array('ID_RELATION'=>$fmodel->ID_FOURNISSEUR,'NOM_TABLE'=>'Fournisseurs'));
+                    $login_url = $baseurl;
+                    $trans_array = array(
+                        "{NAME}" => $fmodel->COMPAGNIE,
+                        "{NEXTSTEPURL}" => $login_url,
+                        "{SITENAME}" => 'OptiGuide',
+                    );
+                    
+                    if($model->supp_renew_status == 1){
+                        $subject = 'Renew Supplier Subscription';
+                    }else{
+                        $subject = 'Supplier Subscription';
+                    }
+                    $message = $mail->getMessage('supplier_backend_completed_status', $trans_array);
+                    if($user->COURRIEL!=''){
+                        $mail->send($user->COURRIEL, $subject, $message);
+                    }
                 }
             }
 

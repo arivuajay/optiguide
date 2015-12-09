@@ -1058,7 +1058,7 @@ class SuppliersDirectoryController extends OGController {
                 "{payment_status}" => 'Completed',
                 "{txn_id}" => $pdetails['PNREF'],
             );
-            $message = $mail->getMessage('confirm_supplier_registration', $trans_array);
+            $message = $mail->getMessage('supplier_frontend_subscription_account', $trans_array);
             $mail->send($umodel->COURRIEL, $subject, $message);
         }                
         
@@ -1321,10 +1321,10 @@ class SuppliersDirectoryController extends OGController {
                             "{item_name}" => $itemname,
                             "{pay_type}"=> $ptmodel->payment_type,
                             "{total_price}" => $pdetails['total_price'],
-                            "{payment_status}" => 'Completed',
-                            "{txn_id}" => $pdetails['PNREF'],
+                            "{payment_status}" => $_POST['payment_status'],
+                            "{txn_id}" => $_POST['txn_id'],
                         );
-                        $message = $mail->getMessage('confirm_supplier_registration', $trans_array);
+                        $message = $mail->getMessage('supplier_frontend_subscription_account', $trans_array);
                         $mail->send($umodel->COURRIEL, $subject, $message);
             
                     }
@@ -1991,7 +1991,7 @@ class SuppliersDirectoryController extends OGController {
                 "{payment_status}" => 'Completed',
                 "{txn_id}" => $pdetails['PNREF'],
             );
-            $message = $mail->getMessage('confirm_supplier_registration', $trans_array);
+            $message = $mail->getMessage('supplier_frontend_subscription_account', $trans_array);
             $mail->send($user->COURRIEL, $subject, $message);
             
         }            
@@ -2155,14 +2155,14 @@ class SuppliersDirectoryController extends OGController {
                         $trans_array = array(
                             "{NAME}" => $model->COMPAGNIE,
                             "{NEXTSTEPURL}" => $nextstep_url,
-                            "{message}" => 'Thank you for renewal your account in '. SITENAME .' site.Your payment status is Pending, So please <a href="'.$contact_url.'">contact</a> admin for further information.',
+                            "{message}" => 'Thank for renewal your account in '. SITENAME .' site.Your payment status is Pending, So please <a href="'.$contact_url.'">contact</a> admin for further information.',
                             "{item_name}" => $_POST['item_name'],
                             "{pay_type}"=> $ptmodel->payment_type,
                             "{total_price}" => $pdetails['total_price'],
                             "{payment_status}" => 'Completed',
-                            "{txn_id}" => $pdetails['PNREF'],
+                            "{txn_id}" => $_POST['txn_id'],
                         );
-                        $message = $mail->getMessage('confirm_supplier_registration', $trans_array);
+                        $message = $mail->getMessage('supplier_frontend_subscription_account', $trans_array);
                         if($user->COURRIEL!=''){
                             $mail->send($user->COURRIEL, $subject, $message);
                         }
