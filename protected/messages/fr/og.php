@@ -28,7 +28,7 @@ return array(
     //CalenderEvent/index.php
     'OG017' => 'Calendrier des événements',
     'OG018' => 'Du',
-    'OG019' => 'Au',
+    'OG019' => 'au',
     'OG020' => 'Trouver un événement',
     'OG021' => 'Tous',
     'OG022' => 'Mois',

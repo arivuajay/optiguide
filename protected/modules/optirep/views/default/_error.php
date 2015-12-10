@@ -8,7 +8,7 @@
                             <h1><?php echo Myclass::t('OR509', '', 'or') ?></h1> 
                             <b> 404 </b>
                             <p> 
-                                <?php echo CHtml::link(Myclass::t('OR510', '', 'or'), array("/optirep"), array("class" => "btn btn-primary")); ?>
+                                <?php echo CHtml::link(Myclass::t('OR510', '', 'or'), array("/optirep/dashboard"), array("class" => "btn btn-primary")); ?>
                             </p>
                         </div>
                     </div>

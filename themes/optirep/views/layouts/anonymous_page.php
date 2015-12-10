@@ -25,12 +25,40 @@
         $cs->registerCssFile($themeUrl . '/css/font-awesome.css');
         $cs->registerCssFile($themeUrl . '/css/bootstrap-select.min.css');
         $cs->registerCssFile($themeUrl . '/css/custom.css');
+        
+        $cs->registerCssFile($themeUrl . '/css/bootstrap-switch.min.css');
+        $cs->registerCssFile($themeUrl . '/css/pink.css');
+        $cs->registerCssFile($themeUrl . '/css/nanoscroller.css');
+        ?>
+        <?php
+        $currentLang = Yii::app()->language;
+        if ($currentLang == 'en') {
+            $displang = 'Français';
+            $changelang = 'fr';
+        } else {
+            $displang = 'English';
+            $changelang = 'en';
+        }
         ?>
     </head>
-    <body>
+    <body class="<?php echo $currentLang; ?>">
+        <?php
+            echo CHtml::beginForm('', 'post', array('id' => 'langform'));
+            echo CHtml::hiddenField('_lang', $changelang, array());
+            echo CHtml::endForm();
+        ?>
         <div class="body-cont"> 
             <div class="container"> 
                 <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 flagicons">                 
+                    <?php   
+                    $frimage = CHtml::image($this->themeUrl . '/images/fr.png', 'Translate to FR');
+                    echo CHtml::link($frimage, 'javascript:void(0);', array("id"=>"FR","class"=>"",'onclick' => "document.getElementById('langform').submit();") ); 
+                    echo "&nbsp";
+                    $enimage = CHtml::image($this->themeUrl . '/images/en1.png', 'Translate to En');
+                    echo CHtml::link($enimage, 'javascript:void(0);', array("id"=>"EN","class"=>"",'onclick' => "document.getElementById('langform').submit();")); 
+                    ?>                    
+                </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ad1"> 
                         <?php
                         $image = CHtml::image("{$this->themeUrl}/images/logo2.png", 'Logo');
@@ -58,20 +86,26 @@
 
         <?php
         $cs_pos_end = CClientScript::POS_END;
-
         $cs->registerCoreScript('jquery');
 
-        // $cs->registerScriptFile($themeUrl . '/js/bootstrap.min.js', $cs_pos_end);
+        //  $cs->registerScriptFile($themeUrl . '/js/bootstrap.min.js', $cs_pos_end);
         $cs->registerScriptFile($themeUrl . '/js/bootstrap-select.js', $cs_pos_end);
+        $cs->registerScriptFile($themeUrl . '/js/bootstrap-switch.min.js', $cs_pos_end);
+        $cs->registerScriptFile($themeUrl . '/js/bootstrap-number-input.js', $cs_pos_end);
+        $cs->registerScriptFile($themeUrl . '/js/icheck.min.js', $cs_pos_end);
+        $cs->registerScriptFile($themeUrl . '/js/jquery.lionbars.0.3.js', $cs_pos_end);
+        $cs->registerScriptFile($themeUrl . '/js/jquery.nanoscroller.min.js', $cs_pos_end);
         ?>
 
         <?php
         $js = <<< EOD
             $(document).ready(function () {
                 $('.selectpicker').selectpicker();
+                
+                $("[name='my-checkbox']").bootstrapSwitch();
             }); 
 EOD;
-        Yii::app()->clientScript->registerScript('_anonymous_page', $js);
+        Yii::app()->clientScript->registerScript('_authenticate_page', $js);
         ?>
     </body>
 </html>

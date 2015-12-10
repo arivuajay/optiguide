@@ -528,10 +528,12 @@ class Myclass extends CController {
             return round(($totalusers / 1000000000)) . ' billion';
         } elseif ($totalusers > 1000000) {
             return round(($totalusers / 1000000)) . ' million';
-        } elseif ($totalusers > 1000) {
-            return Myclass::t('OG210'). round(($totalusers / 1000)) . ' K';
+        }elseif ($totalusers > 10000) {
+            return Myclass::t('OG210'). round(($totalusers / 1000)) . ' 000';
+        }elseif ($totalusers > 1000) {
+            return Myclass::t('OG210'). round(($totalusers / 1000)) . '000';
         } elseif ($totalusers > 100) {
-            return round(($totalusers / 100)) . ' hundred';
+            return round(($totalusers / 100)) . '00';
         } else {
             return $totalusers;
         }
