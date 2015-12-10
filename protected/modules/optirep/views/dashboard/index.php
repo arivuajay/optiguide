@@ -28,7 +28,7 @@ if ($topbanner != '') {
     <div class="cate-bg">    
         <?php
         $stats_disp = Myclass::stats_display();
-        if ($stats_disp == "1") {
+        if ($stats_disp == "1" || true) {
             $this->widget('booster.widgets.TbHighCharts', array(
                 'options' => array(
                     'chart' => array(

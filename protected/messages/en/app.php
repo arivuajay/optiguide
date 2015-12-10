@@ -234,6 +234,11 @@ return array(
     'OG206' => 'Products and services',
     'OG207' => 'Group',
     'OG208' => 'Categories',
-    'OG209' => 'Title'
-);
+    'OG209' => 'Title',
+    
+    'OG210' => 'Over ',
+    'OG211' => 'Sales Representatives',
+    'OG212' => 'All rights reserved',
+    
+);    
 ?>

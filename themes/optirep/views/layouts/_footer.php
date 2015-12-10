@@ -36,12 +36,12 @@ $rep_display = Myclass::format_numbers_words($total_rep);
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">                    
                     <?php echo CHtml::image("{$this->themeUrl}/images/footer-icon4.jpg", 'Footer Icon4') ?>
-                    <h2> <?php echo $rep_display; ?></h2> <span>  Sales Reps </span>
+                    <h2> <?php echo $rep_display; ?></h2> <span>  <?php echo Myclass::t('OG211');?></span>
                 </div>
             </div>
         </div>
     </div>
-    <div class="copy"> Copyright © 2015  opti-rep.com. All rights reserved. </div>
+    <div class="copy"> Copyright © 2015  opti-rep.com. <?php echo Myclass::t('OG212');?>. </div>
 </div>
 <?php
 $cur_lang = $this->lang;

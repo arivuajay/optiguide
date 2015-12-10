@@ -275,7 +275,7 @@ return array(
     'OR717' => 'Bienvenue',
     'OR718' => 'Professionnels',
     'OR719' => 'Fournisseurs',
-    'OR720' => 'Les détaillants',
+    'OR720' => 'Détaillants',
     'OR721' => 'Cherchez une marque',
     'OR722' => 'Ville ne peut pas être vide.',
     'OR723' => 'Actualités',

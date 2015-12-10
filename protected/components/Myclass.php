@@ -529,7 +529,7 @@ class Myclass extends CController {
         } elseif ($totalusers > 1000000) {
             return round(($totalusers / 1000000)) . ' million';
         } elseif ($totalusers > 1000) {
-            return 'Over ' . round(($totalusers / 1000)) . ' K';
+            return Myclass::t('OG210'). round(($totalusers / 1000)) . ' K';
         } elseif ($totalusers > 100) {
             return round(($totalusers / 100)) . ' hundred';
         } else {

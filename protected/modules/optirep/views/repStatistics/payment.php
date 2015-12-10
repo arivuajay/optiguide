@@ -13,23 +13,36 @@
 
     $subprices = SupplierSubscriptionPrice::model()->findByPk(1);
     $stats_price = $subprices->rep_statistics_price;
+    
     ?>
     <div class="row"> 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 stats-tips">
+         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 stats-tips">
             <p><?php echo Myclass::t('OR724', '', 'or') ?></p>
-            <b><?php echo Myclass::t('OR725', '', 'or') ?></b>
+         </div>   
+        <?php
+        if(Yii::app()->user->rep_role=="single")
+        {?>    
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 stats-tips">          
+<!--        <b><?php //echo Myclass::t('OR725', '', 'or') ?></b>-->
             <ul>
                 <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR726', '', 'or') ?></li>
             </ul>
         </div>
+        <?php
+        }?>
+        <?php
+        if(Yii::app()->user->rep_role=="admin")
+        {?>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 stats-tips">
-            <b><?php echo Myclass::t('OR727', '', 'or') ?></b>
+<!--        <b><?php //echo Myclass::t('OR727', '', 'or') ?></b>-->
             <ul>
                 <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR728', '', 'or') ?></li>
                 <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR729', '', 'or') ?></li>
                 <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR730', '', 'or') ?></li>
             </ul>
         </div>
+        <?php
+        }?>
     </div>            
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
