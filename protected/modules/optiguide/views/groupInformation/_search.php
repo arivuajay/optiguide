@@ -21,15 +21,15 @@
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'category', $category_list, array('class' => 'selectpicker', 'empty' => Myclass::t('OG021', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'category', $category_list, array('class' => 'selectpicker', 'empty' => Myclass::t('OG208'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'country', $country, array('class' => 'selectpicker', 'empty' => Myclass::t('OG021', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'country', $country, array('class' => 'selectpicker', 'empty' => Myclass::t('OG202'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'region', $regions, array('class' => 'selectpicker', 'empty' => Myclass::t('OG021', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'region', $regions, array('class' => 'selectpicker', 'empty' => Myclass::t('OG203'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
@@ -44,7 +44,7 @@ $js = <<< EOD
     $(document).ready(function(){
     $("#GroupInformation_country").change(function(){
         var id=$(this).val();
-        var dataString = 'id='+ id;
+        var dataString = 'id='+ id +'&search=yes';
             
         $.ajax({
             type: "POST",

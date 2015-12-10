@@ -8,15 +8,10 @@
                     <h4>  <?php echo Myclass::t('OR734', '', 'or') ?> </h4> 
                     <div class="clearfix"></div>
                     <?php if (Yii::app()->language == 'en') { ?>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
-                       Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. 
-                       Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>
-                     <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
-                       Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. 
-                       Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>
-                      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
-                       Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. 
-                       Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>
+                    <p>Opti-Rep gathers all the information you need at hand.</p>
+                    <p>Find more easily and quickly than ever coordinates and information about suppliers, brands and professionals you need to serve your customers and help them maximize their sales! Get more key statistics about your customers to establish more personalized strategies; perfect for achieving your goals and those of your customers.</p>
+                    <p>This platform specifically designed for representatives offers more of the latest optical industry and upcoming events not to be missed. Stay in the heart of the action has never been simpler.</p>
+                    <p>Several coordination tools are also available in this tool suitable for representatives of teams. Discover now how you too can better manage and track your representatives, from Montreal to Saskatoon and Charlottetown to Vancouver.</p>
                       <?php } else { ?>
                     <p>Opti-Rep regroupe toutes les informations dont vous avez besoin à portée de main.</p>
                     <p>Trouvez plus facilement et rapidement que jamais les coordonnées et les informations sur les fournisseurs, les marques et les professionnels dont vous avez besoin pour bien servir vos clients et les aider à maximiser leurs ventes! Obtenez de plus des statistiques clés sur vos clients, afin d’établir des stratégies plus personnalisées; parfait pour l’atteinte de vos objectifs et ceux de votre clientèle.</p>

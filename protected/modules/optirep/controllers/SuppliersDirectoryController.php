@@ -227,12 +227,17 @@ class SuppliersDirectoryController extends ORController {
         }
 
         // Get all records list  with limit
+        $today_date =date("Y-m-d ");
         $supplier_query = Yii::app()->db->createCommand() //this query contains all the data
-                ->select('ID_FOURNISSEUR , COMPAGNIE ,profile_expirydate , TYPE_FOURNISSEUR_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                ->from(array('repertoire_fournisseurs f', 'repertoire_fournisseur_type ft', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                ->select("DATEDIFF(profile_expirydate,'$today_date') AS expiredays,
+                          (CASE WHEN (DATEDIFF(profile_expirydate,'$today_date') IS NULL || DATEDIFF(profile_expirydate,'$today_date') <= 0 ) 
+                          THEN '2'
+                          ELSE '1'
+                          END) AS expiry_status,ID_FOURNISSEUR , COMPAGNIE ,profile_expirydate , TYPE_FOURNISSEUR_".$this->lang." ,  NOM_VILLE ,  NOM_REGION_".$this->lang." , ABREVIATION_".$this->lang.",  NOM_PAYS_".$this->lang)
+                ->from(array('repertoire_fournisseurs f', 'repertoire_fournisseur_type ft', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                 ->where("f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and bAfficher_site=1 AND ru.NOM_TABLE ='Fournisseurs' and ru.status=1 " . $sname_qry . $stype_qry . $section_product_qry)
-                ->order('ft.TYPE_FOURNISSEUR_' . $this->lang . ' ASC , profile_expirydate DESC, f.COMPAGNIE ASC')
-                ->limit(LISTPERPAGE, $limit) // the trick is here!
+                ->order('ft.TYPE_FOURNISSEUR_' . $this->lang . ' ASC , expiry_status ASC,COMPAGNIE ASC')
+                ->limit(SUPPLIERSLISTPERPAGE, $limit) // the trick is here!
                 ->queryAll();
 
         // Get total counts of records    

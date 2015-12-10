@@ -35,15 +35,11 @@
                                 $param_array['disppage'] = $parampage;
                             }
 
-                            $expirydate = $info['profile_expirydate'];
-                            $today = time();
-                            $expiry_str = strtotime($expirydate);
                             $disp_supp = CHtml::link($dispname, $param_array) . ' ';
                             $disp_supp .= $info['NOM_VILLE'] . ", " . $info['ABREVIATION_' . $this->lang] . ", " . $info['NOM_PAYS_' . $this->lang] . " ";
 
-                            if ($expiry_str != '' && ($expiry_str > $today))
-                                $disp_supp .= "<i class='fa fa-eye paidmems'></i>";
-                            //$disp_supp .= CHtml::image("{$this->themeUrl}/images/paid.jpg", 'Paid');
+                            if( $info['expiry_status']=="1")
+                             $disp_supp .= "<i class='fa fa-eye paidmems'></i>";   
 
                             echo $disp_supp;
                             ?>

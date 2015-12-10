@@ -175,20 +175,13 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                         //call the method 'gridDataColumn' from the controller
                         'value' => array($this, 'gridDataColumn'),
                     ),
-//                    array(
-//                        'header' => 'Actes',
-//                        'class' => 'booster.widgets.TbButtonColumn',
-//                        'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-//                        'template' => '{delete}',
-//                        'buttons' => array
-//                            (
-//                            'delete' => array
-//                                (
-//                                'label' => 'Delete',
-//                                'url' => 'Yii::app()->createUrl("admin/clientMessages/delete", array("id"=>$data->message_id))',
-//                            ),
-//                        ),
-//                    )
+                    array('name' => 'created_date',
+                        'type' => 'raw',
+                        'value' => function($data) {
+                            echo date("d-m-Y", strtotime($data->created_date));
+                        },
+                        'filter' => false,
+                    ) 
                 );
 
                 $this->widget('booster.widgets.TbExtendedGridView', array(
@@ -242,20 +235,14 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                         //call the method 'gridDataColumn' from the controller
                         'value' => array($this, 'gridDataColumn'),
                     ),
-                    array(
-                        'header' => 'Actes',
-                        'class' => 'booster.widgets.TbButtonColumn',
-                        'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                        'template' => '{delete}',
-                        'buttons' => array
-                            (
-                            'delete' => array
-                                (
-                                'label' => 'Delete',
-                                'url' => 'Yii::app()->createUrl("admin/clientMessages/delete", array("id"=>$data->message_id))',
-                            ),
-                        ),
-                    )
+                      array('name' => 'created_date',
+                        'type' => 'raw',
+                        'value' => function($data) {
+                            echo date("d-m-Y", strtotime($data->created_date));
+                        },
+                        'filter' => false,
+                    )       
+                   
                 );
 
                 $this->widget('booster.widgets.TbExtendedGridView', array(

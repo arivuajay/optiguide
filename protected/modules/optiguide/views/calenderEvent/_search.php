@@ -22,19 +22,19 @@
     ?>
 
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 "> 
-        <?php echo $form->textField($searchModel, 'TITRE', array('class' => 'txtfield')); ?>
+        <?php echo $form->textField($searchModel, 'TITRE', array('class' => 'txtfield','placeholder'=>Myclass::t('OG209'))); ?>
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'ID_PAYS', $country, array('class' => 'selectpicker', 'empty' => Myclass::t('OG021', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'ID_PAYS', $country, array('class' => 'selectpicker', 'empty' => Myclass::t('OG202'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'ID_REGION', $regions, array('class' => 'selectpicker', 'empty' => Myclass::t('OG021', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'ID_REGION', $regions, array('class' => 'selectpicker', 'empty' => Myclass::t('OG203'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => Myclass::t('OG021', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => Myclass::t('OG204'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 "> 
@@ -58,7 +58,7 @@ $js = <<< EOD
     $(document).ready(function(){
     $("#CalenderEvent_ID_PAYS").change(function(){
         var id=$(this).val();
-        var dataString = 'id='+ id;
+        var dataString = 'id='+ id +'&search=yes';
             
         $.ajax({
             type: "POST",
@@ -73,7 +73,7 @@ $js = <<< EOD
    
    $("#CalenderEvent_ID_REGION").change(function(){
         var id=$(this).val();
-        var dataString = 'id='+ id;
+        var dataString = 'id='+ id +'&search=yes';
             
         $.ajax({
             type: "POST",

@@ -45,15 +45,15 @@
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'ID_TYPE_FOURNISSEUR', $suppliertypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG064', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'ID_TYPE_FOURNISSEUR', $suppliertypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG201'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 "> 
-        <?php echo $form->dropDownList($searchModel, 'ID_SECTION', $sectiontypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG065', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'ID_SECTION', $sectiontypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG205'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 <?php echo $dispclass;?>"> 
-        <?php echo $form->dropDownList($searchModel, 'PROD_SERVICE', $prod_services, array('class' => 'selectpicker', 'empty' => Myclass::t('OG066', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'PROD_SERVICE', $prod_services, array('class' => 'selectpicker', 'empty' => Myclass::t('OG206'))); ?> 
     </div>
    
 
@@ -70,7 +70,7 @@ $js = <<< EOD
         $("#SuppliersDirectory_ID_SECTION").change(function(){
         
             var id=$(this).val();
-            var dataString = 'id='+ id;
+            var dataString = 'id='+ id +'&search=yes';
 
             $.ajax({
             type: "POST",

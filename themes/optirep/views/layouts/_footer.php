@@ -27,12 +27,12 @@ $rep_display = Myclass::format_numbers_words($total_rep);
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3"> 
                     <?php echo CHtml::image("{$this->themeUrl}/images/footer-icon2.jpg", 'Footer Icon2') ?>
-                    <h2> <?php echo $retail_display; ?> </h2>   <span>  <?php echo Myclass::t('OR719', '', 'or');?>  </span>
+                    <h2> <?php echo $retail_display; ?> </h2>   <span>  <?php echo Myclass::t('OR720', '', 'or');?>  </span>
                 </div>
                 <div class="col-xs-12 col-sm-6 
                      col-md-3 col-lg-3">                     
                      <?php echo CHtml::image("{$this->themeUrl}/images/footer-icon3.jpg", 'Footer Icon3') ?>
-                    <h2> <?php echo $supp_display; ?></h2>  <span>  <?php echo Myclass::t('OR720', '', 'or');?> </span>
+                    <h2> <?php echo $supp_display; ?></h2>  <span>  <?php echo Myclass::t('OR719', '', 'or');?> </span>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">                    
                     <?php echo CHtml::image("{$this->themeUrl}/images/footer-icon4.jpg", 'Footer Icon4') ?>

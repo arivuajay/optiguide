@@ -33,16 +33,12 @@ if($actionpage == "index")
                             if($searchModel->ID_SECTION!=''){   $param_array['sectionid'] = $searchModel->ID_SECTION;   }                         
                             if($searchModel->PROD_SERVICE!=''){   $param_array['productid'] = $searchModel->PROD_SERVICE;}
                             if($parampage!=''){   $param_array['disppage'] = $parampage;}
-                            
-                            $expirydate = $info['profile_expirydate'];                           
-                            $today      = time();
-                            $expiry_str = strtotime($expirydate);
+                           
                             $disp_supp  = CHtml::link($dispname,$param_array) . ' ';   
                             $disp_supp .= $info['NOM_VILLE'].", ".$info['ABREVIATION_'.$this->lang].", ".$info['NOM_PAYS_'.$this->lang]." ";
                             
-                            if($expiry_str!='' && ($expiry_str>$today))
+                            if( $info['expiry_status']=="1")
                              $disp_supp .= "<i class='fa fa-eye paidmems'></i>";   
-                            //$disp_supp .= CHtml::image("{$this->themeUrl}/images/paid.jpg", 'Paid');
                             
                             echo $disp_supp;
                             ?>

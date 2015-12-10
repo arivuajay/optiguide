@@ -329,11 +329,18 @@ $themeUrl = $this->themeUrl;
                                                     'filter' => false,
                                                       //call the method 'gridDataColumn' from the controller
                                                     'value' => array($this, 'gridDataColumn'),
-                                                ),              
+                                                ), 
+                                                array('name' => 'created_date',
+                                                    'type' => 'raw',
+                                                    'value' => function($data) {
+                                                        echo date("d-m-Y", strtotime($data->created_date));
+                                                    },
+                                                    'filter' => false,
+                                                ),
                                                 array(
                                                 'header' => 'Actes',
                                                 'class' => 'ButtonColumn',
-                                                'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                                                'htmlOptions' => array('style' => 'text-align:center;width:10%', 'vAlign' => 'middle', 'class' => 'action_column'),
                                                 'template' => '{update}&nbsp;&nbsp;{delete}',
                                                 'evaluateID' => true,
                                                 'buttons'=>array
@@ -407,12 +414,18 @@ $themeUrl = $this->themeUrl;
                                                     'filter' => false,
                                                       //call the method 'gridDataColumn' from the controller
                                                     'value' => array($this, 'gridDataColumn'),
-                                                ),  
-                                                       
+                                                ), 
+                                                array('name' => 'created_date',
+                                                    'type' => 'raw',
+                                                    'value' => function($data) {
+                                                        echo date("d-m-Y", strtotime($data->created_date));
+                                                    },
+                                                    'filter' => false,
+                                                ),   
                                                 array(
                                                 'header' => 'Actes',
                                                 'class' => 'booster.widgets.TbButtonColumn',
-                                                'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                                                'htmlOptions' => array('style' => 'text-align:center;width:10%', 'vAlign' => 'middle', 'class' => 'action_column'),
                                                 'template' => '{delete}',
                                                 'buttons'=>array
                                                     (

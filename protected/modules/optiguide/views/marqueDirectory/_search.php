@@ -23,11 +23,11 @@
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 "> 
-        <?php echo $form->dropDownList($searchModel, 'ID_SECTION', $sectiontypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG065', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'ID_SECTION', $sectiontypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG205'))); ?> 
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-        <?php echo $form->dropDownList($searchModel, 'PROD_SERVICE', $prod_services, array('class' => 'selectpicker', 'empty' => Myclass::t('OG066', '', 'og'))); ?> 
+        <?php echo $form->dropDownList($searchModel, 'PROD_SERVICE', $prod_services, array('class' => 'selectpicker', 'empty' => Myclass::t('OG206'))); ?> 
     </div>
    
 

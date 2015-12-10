@@ -195,8 +195,7 @@ class ClientProfilesController extends Controller {
                 if (isset($_POST['ClientMessages'])) 
                 {  
                     $cmodel->attributes    = $_POST['ClientMessages'];
-                    $cmodel->client_id     = $model->client_id;
-                    $cmodel->date_remember = date("Y-m-d", strtotime($_POST['ClientMessages']['date_remember']));
+                    $cmodel->client_id     = $model->client_id;                   
                     $cmodel->created_date  = date("Y-m-d");
                     $cmodel->randkey       = Myclass::getGuid();
                     //save attachment
@@ -214,6 +213,7 @@ class ClientProfilesController extends Controller {
                     
                     if($cmodel->date_remember!='' && $cmodel->employee_id!='' && $cmodel->message!='')
                     {     
+                        $cmodel->date_remember = date("Y-m-d", strtotime($_POST['ClientMessages']['date_remember']));
                         $cmodel->save();
                         Yii::app()->user->setFlash('success', 'Alarme correctement mis à jour !!!');
                     }else{

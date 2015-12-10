@@ -197,8 +197,7 @@ class ProfessionalDirectoryController extends Controller {
                 if (isset($_POST['ProfessionalMessages'])) {
                     $pmodel->attributes = $_POST['ProfessionalMessages'];
                     $pmodel->ID_SPECIALISTE = $model->ID_SPECIALISTE;
-                    $pmodel->message = nl2br($_POST['ProfessionalMessages']['message']);
-                    $pmodel->date_remember = date("Y-m-d", strtotime($_POST['ProfessionalMessages']['date_remember']));
+                    $pmodel->message = nl2br($_POST['ProfessionalMessages']['message']);                                        
                     $pmodel->created_date = date("Y-m-d");
                     $pmodel->randkey = Myclass::getGuid();
                     //save attachment
@@ -211,9 +210,10 @@ class ProfessionalDirectoryController extends Controller {
                             mkdir($attach_path, 0777, true);
                         }
                         $pmodel->afile->saveAs($attach_path . $filename);
-                    }
+                    }                   
 
                     if ($pmodel->date_remember != '' && $pmodel->employee_id != '' && $pmodel->message != '') {
+                        $pmodel->date_remember = date("Y-m-d", strtotime($_POST['ProfessionalMessages']['date_remember']));
                         $pmodel->save(false);
                         Yii::app()->user->setFlash('success', 'Alarme correctement mis à jour !!!');
                     }else{

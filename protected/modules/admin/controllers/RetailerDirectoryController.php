@@ -164,7 +164,7 @@ class RetailerDirectoryController extends Controller {
                     $rmodel->attributes     = $_POST['RetailerMessages'];
                     $rmodel->ID_RETAILER    = $model->ID_RETAILER;
                     $rmodel->message        = nl2br($_POST['RetailerMessages']['message']);
-                    $rmodel->date_remember  = date("Y-m-d", strtotime($_POST['RetailerMessages']['date_remember']));
+                   
                     $rmodel->created_date   = date("Y-m-d");
                     $rmodel->randkey        = Myclass::getGuid();
                     //save attachment
@@ -271,8 +271,7 @@ class RetailerDirectoryController extends Controller {
                 {  
                     $rmodel->attributes     = $_POST['RetailerMessages'];
                     $rmodel->ID_RETAILER    = $model->ID_RETAILER;
-                    $rmodel->message        = nl2br($_POST['RetailerMessages']['message']);
-                    $rmodel->date_remember  = date("Y-m-d", strtotime($_POST['RetailerMessages']['date_remember']));
+                    $rmodel->message        = nl2br($_POST['RetailerMessages']['message']);                  
                     $rmodel->created_date   = date("Y-m-d");
                     $rmodel->randkey        = Myclass::getGuid();
                      //save attachment
@@ -290,6 +289,7 @@ class RetailerDirectoryController extends Controller {
                     
                     if($rmodel->date_remember!='' && $rmodel->employee_id!='' && $rmodel->message!='')
                     {     
+                        $rmodel->date_remember  = date("Y-m-d", strtotime($_POST['RetailerMessages']['date_remember']));
                         $rmodel->save();
                         Yii::app()->user->setFlash('success', 'Alarme correctement mis à jour !!!');
                     }else{
