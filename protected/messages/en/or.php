@@ -295,4 +295,8 @@ return array(
     'OR735' => 'Change Password',
     'OR736' => 'Please Check the Username or Email.',
     'OR737' => 'Reset password URL has been sent to your registered email. Please check your email',
+    'OR738' => 'Statistics',
+    'OR739' => 'Find an statistics',
+    'OR740' => 'Filter',
+    'OR741' => 'Users subscription',
 );

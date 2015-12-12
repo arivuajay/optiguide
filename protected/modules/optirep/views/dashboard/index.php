@@ -27,41 +27,122 @@ if ($topbanner != '') {
 <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
     <div class="cate-bg">    
         <?php
-        $stats_disp = Myclass::stats_display();
-        if ($stats_disp == "1" || true) {
-            $this->widget('booster.widgets.TbHighCharts', array(
-                'options' => array(
-                    'chart' => array(
-                        'type' => 'spline'
-                    ),
-                    'title' => array(
-                        'text' => 'Loggedin Activities'
-                    ),
-                    'subtitle' => array(
-                        'text' => 'Last 6 days'
-                    ),
-                    'xAxis' => array(
-                        'categories' => $response['dates']
-                    ),
-                    'yAxis' => array(
-                        'title' => array(
-                            'text' => 'No.of Times Loggedin'
-                        )
-                    ),
-                    'series' => array(
-                        array(
-                            'name' => Yii::app()->user->name,
-                            'data' => $response['visits']
-                        )
-                    ),
-                    "credits" => array(
-                        'enabled' => false
-                    )
-                )
-            ));
-        } else {
-            echo CHtml::link(CHtml::image($this->themeUrl . '/images/chart.jpg'), array('/optirep/repStatistics/payment/'), array('class' => ''));
+        /** Loggedin Activities **/
+//        $stats_disp = Myclass::stats_display();
+//        if ($stats_disp == "1" || true) {
+//            $this->widget('booster.widgets.TbHighCharts', array(
+//                'options' => array(
+//                    'chart' => array(
+//                        'type' => 'spline'
+//                    ),
+//                    'title' => array(
+//                        'text' => 'Loggedin Activities'
+//                    ),
+//                    'subtitle' => array(
+//                        'text' => 'Last 6 days'
+//                    ),
+//                    'xAxis' => array(
+//                        'categories' => $response['dates']
+//                    ),
+//                    'yAxis' => array(
+//                        'title' => array(
+//                            'text' => 'No.of Times Loggedin'
+//                        )
+//                    ),
+//                    'series' => array(
+//                        array(
+//                            'name' => Yii::app()->user->name,
+//                            'data' => $response['visits']
+//                        )
+//                    ),
+//                    "credits" => array(
+//                        'enabled' => false
+//                    )
+//                )
+//            ));
+//        } else {
+//            echo CHtml::link(CHtml::image($this->themeUrl . '/images/chart.jpg'), array('/optirep/repStatistics/payment/'), array('class' => ''));
+//        }
+        
+        /** Users registered in optiguide **/
+        $months = array();
+        for ($i = 0; $i < 6; $i++) {
+            array_push($months, date("M Y", strtotime($i . " months ago")));
         }
+
+        $response['months'] = array();
+        foreach ($months as $month) {
+            array_push($response["months"], $month);
+        }
+
+        $usertypes = array("Professionals", "Retailers");
+
+        foreach ($usertypes as $key => $utype) {
+            // Count  profile view counts  per month
+            $response['viewcounts'] = array();
+            $viewcounts = '';
+            foreach ($months as $month) {
+
+                $searchdate = date("Y-m", strtotime($month));
+                if ($utype == "Professionals") {
+                    $viewcounts = ProfessionalDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
+                }
+
+                if ($utype == "Retailers") {
+                    $viewcounts = RetailerDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
+                }
+
+//                if ($utype == "Suppliers") {
+//                    $viewcounts = SuppliersDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
+//                }
+
+                array_push($response["viewcounts"], (int) $viewcounts);
+            }
+
+            $response['allprofiles'][$key]['name'] = $utype;
+            $response['allprofiles'][$key]['data'] = $response["viewcounts"];
+        }
+
+        $this->widget('booster.widgets.TbHighCharts', array(
+            'options' => array(
+                'chart' => array(
+                    'type' => 'column'
+                ),
+                'title' => array(
+                    'text' => 'Users subscription in Optiguide.'
+                ),
+                'subtitle' => array(
+                    'text' => 'Last 6 months'
+                ),
+                'xAxis' => array(
+                    'categories' => $response['months'],
+                    'crosshair' => true
+                ),
+                'yAxis' => array(
+                    'title' => array(
+                        'text' => 'Subscription counts'
+                    ),
+                    'min' => 0,
+                ),
+                'tooltip' => array(
+                    'headerFormat' => '<span style="font-size:10px">{point.key}</span><table>',
+                    'pointFormat' => '<tr><td style="color:{series.color};padding:0">{series.name}: </td><td style="padding:0"><b>{point.y}</b></td></tr>',
+                    'footerFormat' => '</table>',
+                    'shared' => true,
+                    'useHTML' => true
+                ),
+                'plotOptions' => array(
+                    'column' => array(
+                        'pointPadding' => 0.2,
+                        'borderWidth' => 0
+                    )
+                ),
+                'series' => $response['allprofiles'],
+                "credits" => array(
+                    'enabled' => false
+                )
+            )
+        ));
         ?>
     </div>
 </div>

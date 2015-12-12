@@ -24,7 +24,7 @@ class RepStatisticsController extends ORController {
                 'users' => array('*'),
             ), 
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'payment'),
+                'actions' => array('index', 'payment','statistics'),
                 'users' => array('@'),               
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -360,7 +360,107 @@ class RepStatisticsController extends ORController {
         $this->render('index', array('response' => $response));
     }
 
+    public function actionStatistics() {
+        
+//        $stats_disp = Myclass::stats_display();
+//        $response = array();
+//        if($stats_disp==0)
+//        {
+//            Yii::app()->user->setFlash('info', "Kindly do the payment to see the statistics chart!!");
+//            $this->redirect('payment');
+//        }   
+        
+        
+        $SPECIALISTE="TYPE_SPECIALISTE_".$this->lang;
+        $RETAILER_TYPE="NOM_TYPE_".$this->lang;
+
+        $months = array();
+        for ($i = 0; $i < 6; $i++) {
+            array_push($months, date("M Y", strtotime($i . " months ago")));
+        }
+
+        $response['months'] = array();
+        foreach ($months as $month) {
+            array_push($response["months"], $month);
+        }
+
+        $usertypes = array("Professionals", "Retailers");
+
+        foreach ($usertypes as $key => $utype) {
+            // Count  profile view counts  per month
+            $response['viewcounts'] = array();
+            $viewcounts = '';
+            foreach ($months as $month) {
+
+                $searchdate = date("Y-m", strtotime($month));
+                if ($utype == "Professionals") {
+                    $viewcounts = ProfessionalDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
+                }
+
+                if ($utype == "Retailers") {
+                    $viewcounts = RetailerDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
+                }
+
+                array_push($response["viewcounts"], (int) $viewcounts);
+            }
+
+            $response['allprofiles'][$key]['name'] = $utype;
+            $response['allprofiles'][$key]['data'] = $response["viewcounts"];
+            
+        }
+            $professional = new CDbCriteria;
+            $pro_types = ProfessionalType::model()->findall($professional);
+            $dispvals=array();
+            foreach($pro_types as $pro_type){
+                $p_type = $pro_type->$SPECIALISTE;
+                $p_count = $pro_type->professionalCount;               
+                $dispvals[]=array($p_type,(int)$p_count);
+                $professionals_total=$professionals_total + $p_count;
+            }
+            
+            
+            
+            $response['allprofessionals'][0]['name'] = 'Professional';
+            $response['allprofessionals'][0]['data'] = $dispvals;
+            $response['allprofessionals'][0]['dataLabels'] = array(
+                        'enabled' => false,
+                        'rotation' => -90,
+                        'color' => '#FFFFFF',
+                        'align' => 'right',
+                        'format' => '{point.y}',
+                        'y' => '10',
+                        'style' =>array(
+                            'fontSize' => '13px',
+                            'fontFamily' => 'Verdana, sans-serif',
+                        ),
+                    );
+            $response['total']['professionals'] = $professionals_total;
+             $item_counts= Yii::app()->db->createCommand() // this query get the total number of items,
+                ->select('count(*) as count , NOM_TYPE_EN')
+                ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $scat_query . $spostal_qry . $srettype_qry . $sgroup_qry)
+                ->group('rs.ID_RETAILER_TYPE')
+                ->queryAll();
+             
+            foreach($item_counts as $item_count){
+                $total = $total + $item_count['count'];
+            }
+
+            foreach($item_counts as $key =>$item_count){
+                $retailvals[$key]['name'] = $item_count['NOM_TYPE_EN'];
+                $retailvals[$key]['y'] = (float)number_format(($item_count['count']/$total)*100, 2);
+            }
+            $response['allretailer'][0]['name'] = 'Retailer';
+            $response['allretailer'][0]['colorByPoint'] = true;
+            $response['allretailer'][0]['data'] = $retailvals;
+            $response['total']['retailers']=$total;
+        $this->render('statistics', array('response' => $response,'searchModel' => $searchModel,));
+    }
+    
+    
     //Rep Admin - Accounts Logged in Activites
+    /** Userslogstats **/
+    
     public function actionUserslogstats() {
         
         $stats_disp = Myclass::stats_display();
@@ -403,6 +503,8 @@ class RepStatisticsController extends ORController {
         $this->render('userslogstats', array('response' => $response));
     }
 
+    /** Profileviewstats **/
+    
     public function actionProfileviewstats() {
         
         $stats_disp = Myclass::stats_display();

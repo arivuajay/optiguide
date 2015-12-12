@@ -295,4 +295,8 @@ return array(
     'OR735' => 'Mettre votre mot de passe à jour',
     'OR736' => "S'il vous plaît Vérifiez le nom d'utilisateur ou e-mail",
     'OR737' => 'Réinitialiser le mot de passe URL épreuve à votre e-mail enregistrée . Merci de consulter vos emails',
+    'OR738' => 'Statistiques',
+    'OR739' => 'Trouver un statistiques',
+    'OR740' => 'Filtre',
+    'OR741' => 'utilisateurs abonnement',
 );

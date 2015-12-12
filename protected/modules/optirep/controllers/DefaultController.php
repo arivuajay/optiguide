@@ -83,6 +83,9 @@ class DefaultController extends ORController {
 
     public function actionIndex() {
         $model = new OrLoginForm('login');
+        if (!Yii::app()->user->isGuest)
+            $this->redirect(array('/optirep/dashboard'));
+        
         if (isset($_POST['login'])) {
             $model->attributes = $_POST['OrLoginForm'];
             if ($model->validate() && $model->login()) {
