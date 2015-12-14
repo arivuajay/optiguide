@@ -83,15 +83,49 @@ $view = "View All <i class='fa fa-arrow-circle-right'></i>";
 
                 $searchdate = date("Y-m", strtotime($month));
                 if ($utype == "Professionals") {
-                    $viewcounts = ProfessionalDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
+                    //$viewcounts = ProfessionalDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
+                    $per_mount_counts = Yii::app()->db->createCommand() //this query contains all the data
+                            ->select('count(*) as pro_per_month_count,ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_FR ,  NOM_VILLE ,  NOM_REGION_FR , ABREVIATION_FR ,  NOM_PAYS_FR')
+                            ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                            ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' AND rs.CREATED_DATE LIKE '%$searchdate%' ")
+                            ->group('rst.ID_TYPE_SPECIALISTE')
+                            ->queryAll();
+                        
+                     foreach($per_mount_counts as $per_mount_count){
+                         $viewcount = $viewcount + $per_mount_count['pro_per_month_count'];
+                     }
+                        
+                    $viewcounts =$viewcount;
+                    $viewcount=0;
                 }
 
                 if ($utype == "Retailers") {
-                    $viewcounts = RetailerDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
+//                    $viewcounts = RetailerDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
+                    $ret_mount_counts = Yii::app()->db->createCommand() // this query get the total number of items,
+                        ->select('count(*) as ret_per_month_count , NOM_TYPE_EN')
+                        ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' AND rs.CREATED_DATE LIKE '%$searchdate%'")
+                        ->group('rst.ID_RETAILER_TYPE')
+                        ->queryAll();
+                    foreach($ret_mount_counts as $ret_mount_count){
+                         $viewcount = $viewcount + $ret_mount_count['ret_per_month_count'];
+                     }                        
+                    $viewcounts =$viewcount;
+                    $viewcount= 0;
                 }
 
                 if ($utype == "Suppliers") {
-                    $viewcounts = SuppliersDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
+//                    $viewcounts = SuppliersDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
+                    $sup_mount_counts = Yii::app()->db->createCommand() // this query get the total number of items,
+                        ->select('count(*) as sup_per_month_count , NOM_TABLE')
+                        ->from(array('repertoire_fournisseurs rs','repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                        ->where("rs.ID_FOURNISSEUR=ru.ID_RELATION AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Fournisseurs' AND rs.CREATED_DATE LIKE '%$searchdate%'")
+                        ->queryAll();
+                    foreach($sup_mount_counts as $sup_mount_count){
+                         $viewcount = $viewcount + $sup_mount_count['sup_per_month_count'];
+                     }                        
+                    $viewcounts =$viewcount;
+                    $viewcount= 0;
                 }
 
                 array_push($response["viewcounts"], (int) $viewcounts);
