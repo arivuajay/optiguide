@@ -1,19 +1,23 @@
 <div class="cate-bg user-right">
-    <?php // $this->renderPartial('_search', array('searchModel' => $searchModel)); ?>
+    <?php $this->renderPartial('_search', array('searchModel' => $searchModel)); ?>
+    <?php // $country_name = Myclass::getcountries($searchModel->country);?>
     <h2> <?php echo Myclass::t('OR738', '', 'or') ?> </h2>
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h3> <?php echo Myclass::t('OR742', '', 'or') ?></h3>
+            
             <?php
+            if($response['total']['retailers']!='' || $response['total']['professionals']!=''){
             $this->widget('booster.widgets.TbHighCharts', array(
             'options' => array(
                 'chart' => array(
                     'type' => 'column'
                 ),
                 'title' => array(
-                    'text' => 'Professional and Retailers subscription in Optiguide.'
+                    'text' => Myclass::t('OR742', '', 'or')
                 ),
                 'subtitle' => array(
-                    'text' => 'Last 6 months'
+                    'text' => Myclass::t('OR743', '', 'or')
                 ),
                 'xAxis' => array(
                     'categories' => $response['months'],
@@ -21,7 +25,7 @@
                 ),
                 'yAxis' => array(
                     'title' => array(
-                        'text' => 'Subscription counts'
+                        'text' => Myclass::t('OR744', '', 'or')
                     ),
                     'min' => 0,
                 ),
@@ -44,20 +48,24 @@
                 )
             )
         ));
-            
-            ?>
+            } else{ ?>
+            <span class="center"><?php echo Myclass::t('OR745', '', 'or') ?></span>
+            <?php } ?>
         </div>
         
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <hr>
+            <h3><?php echo Myclass::t('OR746', '', 'or') ?></h3>
+            
             <?php
+            if($response['total']['professionals']!=''){
             $this->widget('booster.widgets.TbHighCharts', array(
             'options' => array(
                 'chart' => array(
                     'type' => 'column'
                 ),
                 'title' => array(
-                    'text' => 'Professional Users Type.'
+                    'text' => Myclass::t('OR746', '', 'or')
                 ),
                 'xAxis' => array(
                     'type' => 'category',
@@ -71,7 +79,7 @@
                 ),
                 'yAxis' => array(
                     'title' => array(
-                        'text' => 'Professional counts'
+                        'text' => Myclass::t('OR747', '', 'or')
                     ),
                     'min' => 0,
                 ),
@@ -88,11 +96,16 @@
             
             
             ?>
-            <span class="pull-right">Total Professional Users:<?php echo $response['total']['professionals'];?></span>
+            <span class="pull-right"><?php echo Myclass::t('OR748', '', 'or') ?><?php echo $response['total']['professionals'];?></span>
+            <?php }else{?>
+            <span class="center"><?php echo Myclass::t('OR745', '', 'or') ?></span>
+            <?php } ?>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <hr>
+            <h3><?php echo Myclass::t('OR749', '', 'or') ?></h3>
             <?php
+            if($response['total']['retailers']!=''){
             $this->widget('booster.widgets.TbHighCharts', array(
                 'options' => array(
                     'chart'=> array(
@@ -102,7 +115,7 @@
                         'type'=> 'pie'
                     ),
                     'title' => array(
-                        'text'=> 'Retailer Users Type'
+                        'text'=> Myclass::t('OR749', '', 'or')
                     ),
                     'tooltip' => array(
                         'pointFormat'=> '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -125,7 +138,22 @@
         ));
             
             ?>
-            <span class="pull-right">Total Retailers Users:<?php echo $response['total']['retailers'];?></span>
+            <span class="pull-right"><?php echo Myclass::t('OR750', '', 'or') ?><?php echo $response['total']['retailers'];?></span>
+            <?php }else{?>
+            <span class="center"><?php echo Myclass::t('OR745', '', 'or') ?></span>
+            <?php } ?>
         </div>
     </div>
 </div>
+<?php
+$js = <<< EOD
+$(document).ready(function(){              
+    $("#page_change").change(function(){
+        var id=$(this).val();
+        $("#listperpage").val(id);  
+        $("#search-form").submit();   
+    });
+});
+EOD;
+Yii::app()->clientScript->registerScript('page_change', $js);
+?>

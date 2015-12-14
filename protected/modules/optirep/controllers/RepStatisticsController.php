@@ -362,18 +362,67 @@ class RepStatisticsController extends ORController {
 
     public function actionStatistics() {
         
-//        $stats_disp = Myclass::stats_display();
-//        $response = array();
-//        if($stats_disp==0)
-//        {
-//            Yii::app()->user->setFlash('info', "Kindly do the payment to see the statistics chart!!");
-//            $this->redirect('payment');
-//        }   
-        
+        $sname_qry = '';
+        $scntry_qry = '';
+        $sregion_qry = '';
+        $scity_qry = '';
+
+        $searchModel = new ProfessionalDirectory();
+        $searchModel->unsetAttributes();
+
+        $searchModel->country = isset($searchModel->country) ? $searchModel->country : DEFAULTPAYS;
+        $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country; 
+         
+        $searchModel->listperpage = (isset($_GET['listperpage']))?$_GET['listperpage']:LISTPERPAGE;
+               
+        //$page = (isset($_GET['page']) ? $_GET['page'] : 1);  // define the variable to “LIMIT” the query        
+        $page = Yii::app()->request->getParam('page');
+        $page = isset($page) ? $page : 1;
+        $limit = 0;
+
+        if ($page > 1) {
+            $offset = $page - 1;
+            $limit = $searchModel->listperpage * $offset;
+        }
+
+        // $searchModel->unsetAttributes();
+        if (isset($_GET['ProfessionalDirectory'])) {
+
+            $searchModel->attributes = $_REQUEST['ProfessionalDirectory'];
+            
+            
+            $search_country = isset($_GET['ProfessionalDirectory']['country']) ? $_GET['ProfessionalDirectory']['country'] : '';
+            $search_region = isset($_GET['ProfessionalDirectory']['region']) ? $_GET['ProfessionalDirectory']['region'] : '';
+            $search_ville = isset($_GET['ProfessionalDirectory']['ID_VILLE']) ? $_GET['ProfessionalDirectory']['ID_VILLE'] : '';
+            
+            if ($search_country != '') {
+                $searchModel->country = $search_country;
+                $scntry_qry = " AND rp.ID_PAYS = " . $search_country;
+            }
+
+            if ($search_region != '') {
+                $searchModel->region = $search_region;
+                $sregion_qry = " AND rr.ID_REGION = " . $search_region;
+            }
+
+            if ($search_ville != '') {
+                $searchModel->ID_VILLE = $search_ville;
+                $scity_qry = " AND rs.ID_VILLE = " . $search_ville;
+            }
+        }
+
         
         $SPECIALISTE="TYPE_SPECIALISTE_".$this->lang;
         $RETAILER_TYPE="NOM_TYPE_".$this->lang;
 
+         $pro_types = Yii::app()->db->createCommand() //this query contains all the data
+                ->select('count(*) as pro_count,ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
+                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
+                ->group('rst.ID_TYPE_SPECIALISTE')
+                ->queryAll();
+         
+         
         $months = array();
         for ($i = 0; $i < 6; $i++) {
             array_push($months, date("M Y", strtotime($i . " months ago")));
@@ -394,11 +443,34 @@ class RepStatisticsController extends ORController {
 
                 $searchdate = date("Y-m", strtotime($month));
                 if ($utype == "Professionals") {
-                    $viewcounts = ProfessionalDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
+                        $per_mount_counts = Yii::app()->db->createCommand() //this query contains all the data
+                            ->select('count(*) as pro_per_month_count,ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
+                            ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                            ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' AND rs.CREATED_DATE LIKE '%$searchdate%' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
+                            ->group('rs.ID_TYPE_SPECIALISTE')
+                            ->queryAll();
+                        
+                     foreach($per_mount_counts as $per_mount_count){
+                         $viewcount = $viewcount + $per_mount_count['pro_per_month_count'];
+                     }
+                    $viewcounts =$viewcount;$viewcount='';
+//                    echo "profess-".$viewcounts."<br>";
                 }
 
                 if ($utype == "Retailers") {
-                    $viewcounts = RetailerDirectory::model()->count(" CREATED_DATE like '%$searchdate%'");
+                    $ret_mount_counts = Yii::app()->db->createCommand() // this query get the total number of items,
+                        ->select('count(*) as ret_per_month_count , NOM_TYPE_EN')
+                        ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' AND rs.CREATED_DATE LIKE '%$searchdate%'" . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $scat_query . $spostal_qry . $srettype_qry . $sgroup_qry)
+                        ->group('rs.ID_RETAILER_TYPE')
+                        ->queryAll();
+                    
+                    foreach($ret_mount_counts as $ret_mount_count){
+                         $viewcount = $viewcount + $ret_mount_count['ret_per_month_count'];
+                     }
+                    $viewcounts =$viewcount;
+                    $viewcount='';
+//                    echo "retails-".$viewcounts."<br>";
                 }
 
                 array_push($response["viewcounts"], (int) $viewcounts);
@@ -408,16 +480,25 @@ class RepStatisticsController extends ORController {
             $response['allprofiles'][$key]['data'] = $response["viewcounts"];
             
         }
-            $professional = new CDbCriteria;
-            $pro_types = ProfessionalType::model()->findall($professional);
+//            exit;
+        $pro_types = Yii::app()->db->createCommand() //this query contains all the data
+                ->select('count(*) as pro_count,ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
+                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
+                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
+                ->group('rst.ID_TYPE_SPECIALISTE')
+                ->queryAll();
+                
+        
+//            $professional = new CDbCriteria;
+//            $pro_types = ProfessionalType::model()->findall($professional);
             $dispvals=array();
+
             foreach($pro_types as $pro_type){
-                $p_type = $pro_type->$SPECIALISTE;
-                $p_count = $pro_type->professionalCount;               
+                $p_type = $pro_type[$SPECIALISTE];
+                $p_count = $pro_type['pro_count'];               
                 $dispvals[]=array($p_type,(int)$p_count);
                 $professionals_total=$professionals_total + $p_count;
             }
-            
             
             
             $response['allprofessionals'][0]['name'] = 'Professional';
@@ -435,6 +516,7 @@ class RepStatisticsController extends ORController {
                         ),
                     );
             $response['total']['professionals'] = $professionals_total;
+            
              $item_counts= Yii::app()->db->createCommand() // this query get the total number of items,
                 ->select('count(*) as count , NOM_TYPE_EN')
                 ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
@@ -454,7 +536,7 @@ class RepStatisticsController extends ORController {
             $response['allretailer'][0]['colorByPoint'] = true;
             $response['allretailer'][0]['data'] = $retailvals;
             $response['total']['retailers']=$total;
-        $this->render('statistics', array('response' => $response,'searchModel' => $searchModel,));
+        $this->render('statistics', array('response' => $response,'searchModel' => $searchModel));
     }
     
     

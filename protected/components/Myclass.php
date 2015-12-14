@@ -73,7 +73,23 @@ class Myclass extends CController {
             unset(Yii::app()->request->cookies['admin_username']);
         }
     }
+    
+    public static function getcountries($id) {
+        $criteria = new CDbCriteria;
 
+        $countryname = 'NOM_PAYS_' . Yii::app()->session['language'];
+
+        $criteria->order = $countryname . ' ASC';
+        if (!is_null($id)) {
+            $criteria->condition = 'ID_PAYS=:id';
+            $criteria->params = array(':id' => $id);
+        }
+
+        $country = CountryDirectory::model()->find($criteria);
+        $val = $country->$countryname;
+        return $val;
+    }
+    
     public static function getallcountries($id = null) {
         $criteria = new CDbCriteria;
 

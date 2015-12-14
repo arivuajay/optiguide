@@ -299,4 +299,13 @@ return array(
     'OR739' => 'Find an statistics',
     'OR740' => 'Filter',
     'OR741' => 'Users subscription',
+    'OR742' => 'Professional and Retailers subscription in Optiguide',
+    'OR743' => 'Last 6 months',
+    'OR744' => 'Subscription counts',
+    'OR745' => 'No Record',
+    'OR746' => 'Statistics - Based on Professional Users Types',
+    'OR747' => 'Professional counts',
+    'OR748' => 'Total Professional Users:',
+    'OR749' => 'Statistics - Based on Retailer Users Types',
+    'OR750' => 'Total Retailers Users:',
 );

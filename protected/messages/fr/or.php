@@ -299,4 +299,13 @@ return array(
     'OR739' => 'Trouver un statistiques',
     'OR740' => 'Filtre',
     'OR741' => 'utilisateurs abonnement',
+    'OR742' => 'Abonnement professionnel et Détaillants à Optiguide',
+    'OR743' => 'Les 6 derniers mois',
+    'OR744' => 'Chiffres de souscription',
+    'OR745' => 'Aucun enregistrement',
+    'OR746' => 'Statistiques - basées sur les utilisateurs professionnels Types',
+    'OR747' => 'Nombre de professionnels',
+    'OR748' => 'Nombre total d\'utilisateurs professionnels :',
+    'OR749' => 'Statistiques - Basé sur Retailer Utilisateurs Types',
+    'OR750' => 'Détaillants total d\'utilisateurs:',
 );
