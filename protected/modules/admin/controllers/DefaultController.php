@@ -160,12 +160,14 @@ class DefaultController extends Controller {
     }
 
     public function actionError() {
+        $this->layout = '//layouts/anonymous_page';
         if ($error = Yii::app()->errorHandler->error) {
             if (Yii::app()->request->isAjaxRequest) {
                 echo $error['message'];
                 Yii::app()->end();
             } else {
                 $name = Yii::app()->errorHandler->error['code'] . ' Error';
+               
                 $this->render('error', compact('error', 'name'));
             }
         }

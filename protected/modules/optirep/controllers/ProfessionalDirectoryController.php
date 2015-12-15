@@ -181,7 +181,11 @@ class ProfessionalDirectoryController extends ORController {
         $searchModel->unsetAttributes();
 
         $searchModel->country = isset($searchModel->country) ? $searchModel->country : DEFAULTPAYS;
-        $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country; 
+        $search_country = isset($_GET['ProfessionalDirectory']['country']) ? $_GET['ProfessionalDirectory']['country'] : '';
+        if($search_country=='')
+        {    
+            $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country; 
+        }    
          
         $searchModel->listperpage = (isset($_GET['listperpage']))?$_GET['listperpage']:LISTPERPAGE;
                
@@ -212,18 +216,21 @@ class ProfessionalDirectoryController extends ORController {
                 $sname_qry = " AND NOM like '%$search_name%' ";
             }
 
+            $searchModel->country = $search_country;
             if ($search_country != '') {
-                $searchModel->country = $search_country;
                 $scntry_qry = " AND rp.ID_PAYS = " . $search_country;
-            }
+            }else
+            {
+                 $scntry_qry = "";
+            }    
 
-            if ($search_region != '') {
-                $searchModel->region = $search_region;
+                 $searchModel->region = $search_region;
+            if ($search_region != '') {               
                 $sregion_qry = " AND rr.ID_REGION = " . $search_region;
             }
 
-            if ($search_ville != '') {
                 $searchModel->ID_VILLE = $search_ville;
+            if ($search_ville != '') {                
                 $scity_qry = " AND rs.ID_VILLE = " . $search_ville;
             }
             

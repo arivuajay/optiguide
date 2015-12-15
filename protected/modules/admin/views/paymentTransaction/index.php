@@ -32,7 +32,8 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 array(
                     'name' => 'total_price',
                     'value' => $data->total_price,    
-                    'filter' =>false,                    
+                    'filter' =>false,  
+                    'sortable' => false
                  ),
 		array(
                     'header'  => 'Type de rémunération',    
@@ -49,13 +50,15 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                          elseif($data->pay_type == 4) 
                              echo "Free";
                      }, 
-                     'filter' => false,   
+                     'filter' => false,  
+                     'sortable' => false
                 ), 
                 array(
                     'header'  => 'Nom de l\'abonnement',    
                     'name'    => 'item_name',
                     'htmlOptions' => array('style' => 'width: 180px;text-align:center', 'vAlign' => 'middle'),            
-                    'filter' => false,   
+                    'filter' => false,  
+                    'sortable' => false
                 ),
                 array('name' => 'payment_status',
                     'type' => 'raw',
@@ -63,10 +66,12 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                         echo ($data->payment_status == "Pending") ? '<span class="label label-warning">Pending</span>' : '<span class="label label-success">Completed</span>';
                     },
                     'filter' => false,
+                    'sortable' => false
                 ),
                 array(
                     'name' => 'created_at',
                     'filter' => false,    
+                    'sortable' => false
                  ),    
 		/*
 		'payment_type',
@@ -94,7 +99,8 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
         $this->widget('booster.widgets.TbExtendedGridView', array(
         'filter' => $model,
-        'type' => 'striped bordered datatable',
+        'ajaxUrl' => $this->createUrl('paymentTransaction/index'),
+        'type' => 'striped bordered datatable',            
         'dataProvider' => $model->search(),
         'responsiveTable' => true,
         'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Fournisseurs transactions de paiement</h3></div><div class="panel-body">{items}{pager}</div></div>',

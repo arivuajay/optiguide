@@ -40,14 +40,19 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'value' => $data->retailerType->NOM_TYPE_FR,
                 'filter' => CHtml::activeDropDownList($model, 'ID_RETAILER_TYPE', CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR'), array('class' => 'form-control', 'prompt' => 'Tous')),
             ),
-            'ID_CLIENT',  
+            array(
+              'name' => 'ID_CLIENT',
+              'sortable' => false,
+            ), 
             array(
                 'name' => 'DATE_MODIFICATION',
-                'filter' => false
+                'filter' => false,
+                'sortable' => false,
             ),
             array(
                 'name' => 'CREATED_DATE',
-                'filter' => false
+                'filter' => false,
+                'sortable' => false,
             ),
             array(
                 'header' => "Alert Date",

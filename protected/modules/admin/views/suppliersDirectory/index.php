@@ -31,7 +31,10 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             array('header' => 'SN.',
                 'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
             ),
-            'COMPAGNIE',
+             array(
+              'name' =>  'COMPAGNIE',
+              'sortable' => false,
+            ),
             array(
                 'header' => 'Type de fournisseurs',
                 'name' => 'supplierType.TYPE_FOURNISSEUR_FR',
@@ -43,12 +46,16 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'name' => 'bAfficher_site',
                 'htmlOptions' => array('style' => 'width: 180px;text-align:center', 'vAlign' => 'middle'),
                 'type' => 'raw',
+                'sortable' => false,
                 'value' => function($data) {
             echo ($data->bAfficher_site == 1) ? "<i class='fa fa-circle text-green'></i>" : "<i class='fa fa-circle text-red'></i>";
         },
                 'filter' => CHtml::activeDropDownList($model, 'bAfficher_site', array("1" => "Activés", "0" => "Désactivés"), array('class' => 'form-control', 'prompt' => 'Tous')),
             ),
-            'ID_CLIENT',
+             array(
+              'name' => 'ID_CLIENT',
+              'sortable' => false,
+            ),
 //            array(
 //                'header' => "Accès",
 //                'type' => 'raw',

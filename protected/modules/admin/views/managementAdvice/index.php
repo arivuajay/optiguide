@@ -26,11 +26,19 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
     <div class="row">
         <?php
         $gridColumns = array(
-                
-		'TITRE',
-                'LANGUE',
-                'DATE_AJOUT1',
-                'DATE_AJOUT2',
+        array(
+            'name' => 'TITRE',
+            'sortable' => false
+        ), array(
+            'name' => 'LANGUE',
+            'sortable' => false
+        ), array(
+            'name' => 'DATE_AJOUT1',
+            'sortable' => false
+        ), array(
+            'name' => 'DATE_AJOUT2',
+            'sortable' => false
+        ),		
         array(
         'header' => 'Actes',
         'class' => 'booster.widgets.TbButtonColumn',
@@ -41,6 +49,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
         $this->widget('booster.widgets.TbExtendedGridView', array(
         'filter' => $model,
+        'ajaxUrl' => $this->createUrl('managementAdvice/index'),
         'type' => 'striped bordered datatable',
         'dataProvider' => $model->search(),
         'responsiveTable' => true,

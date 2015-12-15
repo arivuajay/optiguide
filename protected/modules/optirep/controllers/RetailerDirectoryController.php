@@ -180,8 +180,12 @@ class RetailerDirectoryController extends ORController {
         $searchModel->unsetAttributes();
 
         $searchModel->country = isset($searchModel->country) ? $searchModel->country : DEFAULTPAYS;
-        $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country;
-
+        $search_country = isset($_GET['RetailerDirectory']['country']) ? $_GET['ProfessionalDirectory']['country'] : '';
+        if($search_country=='')
+        {   
+          $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country;
+        }    
+        
         $searchModel->listperpage = (isset($_GET['listperpage'])) ? $_GET['listperpage'] : LISTPERPAGE;
 
         //$page = (isset($_GET['page']) ? $_GET['page'] : 1);  // define the variable to “LIMIT” the query        
@@ -221,10 +225,13 @@ class RetailerDirectoryController extends ORController {
                 $scat_query = " AND CATEGORY_$search_cat ";
             }
 
-            if ($search_country != '') {
-                $searchModel->country = $search_country;
+            $searchModel->country = $search_country;
+            if ($search_country != '') {                
                 $scntry_qry = " AND rp.ID_PAYS = " . $search_country;
-            }
+            }else
+            {
+                 $scntry_qry = "";
+            }   
 
             if ($search_region != '') {
                 $searchModel->region = $search_region;
