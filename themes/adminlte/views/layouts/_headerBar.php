@@ -1,5 +1,5 @@
 <header class="header">
-    <?php echo CHtml::link(Yii::app()->name, array('/'), array('class' => 'logo')); ?>
+    <?php echo CHtml::link(Yii::app()->name, array('/admin/'), array('class' => 'logo')); ?>
     <nav class="navbar navbar-static-top" role="navigation">
         <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
