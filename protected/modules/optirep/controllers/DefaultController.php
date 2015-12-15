@@ -26,7 +26,7 @@ class DefaultController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('logout'),
+                'actions' => array('logout','updateadsclick'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -156,5 +156,20 @@ class DefaultController extends ORController {
         $this->layout = '//layouts/column1';
         $this->render('classified');
     }
+    
+     public function actionupdateadsclick() {
+        $ads_id = isset($_POST['id']) ? $_POST['id'] : '';
+
+        if ($ads_id != '' && is_numeric($ads_id)) {
+            // Add one count for the loading banner.
+            Yii::app()->db
+                    ->createCommand("UPDATE publicite_publicite SET CLICK_RATE = CLICK_RATE + 1 WHERE ID_PUBLICITE=:adsId")
+                    ->bindValues(array(':adsId' => $ads_id))
+                    ->execute();
+            echo "success";
+            exit;
+        }
+    }
+    
 
 }

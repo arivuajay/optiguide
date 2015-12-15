@@ -63,8 +63,12 @@
                                                 </div>
                                                 <?php
                                             }
-                                        }
-                                        ?>
+                                         }else{ ?>
+                                            <div class="news-thumbs"> 
+                                                <p>No records.</p>
+                                            </div>   
+                                       <?php }
+                                       ?>
                                     </div>
                                     <div role="tabpanel" class="tab-pane fade " id="classified2">
                                         <?php
@@ -83,8 +87,12 @@
                                                 </div>
                                                 <?php
                                             }
-                                        }
-                                        ?>
+                                         }else{ ?>
+                                            <div class="news-thumbs"> 
+                                                <p>No records.</p>
+                                            </div>   
+                                       <?php }
+                                       ?>
                                     </div>
                                     <div role="tabpanel" class="tab-pane fade" id="classified3">
                                         <?php
@@ -103,8 +111,12 @@
                                                 </div>
                                                 <?php
                                             }
-                                        }
-                                        ?>
+                                         }else{ ?>
+                                            <div class="news-thumbs"> 
+                                                <p>No records.</p>
+                                            </div>   
+                                       <?php }
+                                       ?>
                                     </div>
                                 </div>
                             </div>

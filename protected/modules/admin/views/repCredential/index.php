@@ -11,9 +11,18 @@ $this->breadcrumbs = array(
             array('header' => 'SN.',
                 'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
             ),
-            'rep_username',
-            'rep_password',
-            'rep_role',
+            array(
+                'name' => 'rep_username',
+                'sortable' => false
+            ),
+            array(
+                'name' => 'rep_password',
+                'sortable' => false
+            ),            
+            array(
+                'name' => 'rep_role',
+                'sortable' => false
+            ),
             array(
                 'name' => 'rep_status',
                 'type' => 'raw',
@@ -21,8 +30,12 @@ $this->breadcrumbs = array(
                     echo ($data->rep_status == 1) ? "<i class='fa fa-circle text-green'></i>" : "<i class='fa fa-circle text-red'></i>";
                 },
                 'filter' => CHtml::activeDropDownList($model, 'rep_status', array("1" => "Active", "0" => "In-Active"), array('class' => 'form-control', 'prompt' => 'Tous')),
+                'sortable' => false
             ),
-            'rep_expiry_date',
+            array(
+                'name' => 'rep_expiry_date',
+                 'sortable' => false
+            ),
             array(
                 'header' => 'Actions',
                 'class' => 'booster.widgets.TbButtonColumn',

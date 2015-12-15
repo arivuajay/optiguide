@@ -65,11 +65,28 @@
         ?>
 
         <?php
+        $adsclick_update = Yii::app()->createUrl('/optirep/default/updateadsclick');
         $js = <<< EOD
             $(document).ready(function () {
                 $('.selectpicker').selectpicker();
                 
                 $("[name='my-checkbox']").bootstrapSwitch();
+                
+                $('a.adsclick').click(function() 
+                { 
+                    var adsID   = $(this).attr('id');
+                    var adsLINK = $(this).attr('href');
+                    var dataString = 'id='+ adsID;
+                    $.ajax({
+                        type  : "POST",
+                        url   : '{$adsclick_update}',
+                        data  : dataString,
+                        cache : false,
+                        success: function(html){             
+                            return true;
+                        }
+                     });
+               });
             }); 
 EOD;
         Yii::app()->clientScript->registerScript('_authenticate_page', $js);

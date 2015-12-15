@@ -1325,7 +1325,7 @@ class SuppliersDirectoryController extends OGController {
                             "{NAME}" => $model->COMPAGNIE,
                             "{NEXTSTEPURL}" => $nextstep_url,
                             "{message}" => 'Thanks for your subscription as a supplier user type in '. SITENAME .' site.Your payment status is Pending, So please <a href="'.$contact_url.'">contact</a> admin for further information.',
-                            "{item_name}" => $itemname,
+                            "{item_name}" => $_POST['item_name'],
                             "{pay_type}"=> $ptmodel->payment_type,
                             "{total_price}" => $pdetails['total_price'],
                             "{payment_status}" => $_POST['payment_status'],
