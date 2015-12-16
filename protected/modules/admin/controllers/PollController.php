@@ -22,11 +22,11 @@ class PollController extends Controller
   {
     return array(
       array('allow',
-        'actions'=>array('index','view','vote'),
+        'actions'=>array(''),
         'users'=>array('*'),
       ),
       array('allow',
-        'actions'=>array('index','view','create','update','admin','delete','export','Print'),
+        'actions'=>array('index','view', 'vote','create','update','admin','delete','export','Print'),
         'users'=>array('admin'),
       ),
       array('deny',
