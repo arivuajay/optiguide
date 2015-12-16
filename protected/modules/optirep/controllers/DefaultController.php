@@ -22,11 +22,11 @@ class DefaultController extends ORController {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('index', 'aboutus', 'legend', 'contactus', 'forgotPassword', 'error', 'footercount', 'classifieds'),
+                'actions' => array('index', 'forgotPassword', 'error', 'footercount'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('logout','updateadsclick'),
+                'actions' => array('logout','updateadsclick','aboutus', 'legend', 'contactus', 'classifieds'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
