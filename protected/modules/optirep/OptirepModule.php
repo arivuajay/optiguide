@@ -22,6 +22,8 @@ class OptirepModule extends CWebModule {
     }
 
     public function beforeControllerAction($controller, $action) {
+        
+               
         // Check the expiry date for Rep Single login and redirect to renew page       
         if (isset(Yii::app()->user->id)) {
             if (Yii::app()->user->rep_role == RepCredentials::ROLE_SINGLE) {
@@ -43,9 +45,10 @@ class OptirepModule extends CWebModule {
                     }
                 }
             }
-        }
-
+        }   
+         
         Yii::app()->user->loginUrl = array('/optirep/');
+        
         if (parent::beforeControllerAction($controller, $action)) {
             // this method is called before any module controller action is performed
             // you may place customized code here

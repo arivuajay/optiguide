@@ -14,25 +14,29 @@
                 </div>
                 <div class="col-xs-8 col-sm-8 col-md-4 col-lg-4 welcome-user">                    
                     <?php 
-                    if( Yii::app()->user->rep_role == "single")
-                    {                         
-                        $mailicon = '';    
-                        $uid = isset(Yii::app()->user->user_id)?Yii::app()->user->user_id:'';
-                        if($uid!='')
-                        {    
-                            $condition_unread = "((user1=".$uid." AND user1read='no') OR (user2=".$uid." AND user2read='no'))";
-                            $dispcount = InternalMessage::model()->count($condition_unread);
-                            if($dispcount>0)
+                    if(isset(Yii::app()->user->rep_role))
+                    {    
+                        if( Yii::app()->user->rep_role == "single")
+                        {                         
+                            $mailicon = '';    
+                            $uid = isset(Yii::app()->user->user_id)?Yii::app()->user->user_id:'';
+                            if($uid!='')
                             {    
-                                $mailicon = "<i class='fa fa-envelope'><span class='icon_counter icon_counter_red'>".$dispcount."</span></i>";
-                            }else 
-                            {
-                                $mailicon = "<i class='fa fa-envelope'></i>";   
-                            }  
-                        }     
-                        echo CHtml::link($mailicon, array('/optirep/internalMessage/'),array("class"=>"btn btn-default")); 
-                        
-                    }    ?>
+                                $condition_unread = "((user1=".$uid." AND user1read='no') OR (user2=".$uid." AND user2read='no'))";
+                                $dispcount = InternalMessage::model()->count($condition_unread);
+                                if($dispcount>0)
+                                {    
+                                    $mailicon = "<i class='fa fa-envelope'><span class='icon_counter icon_counter_red'>".$dispcount."</span></i>";
+                                }else 
+                                {
+                                    $mailicon = "<i class='fa fa-envelope'></i>";   
+                                }  
+                            }     
+                            echo CHtml::link($mailicon, array('/optirep/internalMessage/'),array("class"=>"btn btn-default")); 
+
+                        }  
+                    
+                    }?>
                     &nbsp;
                    <?php echo Myclass::t('OR717', '', 'or');?>, <?php echo CHtml::link(Yii::app()->user->getState('rep_username'), array('/optirep/repCredential/editprofile')); ?>
                 </div>
