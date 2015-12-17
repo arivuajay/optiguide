@@ -476,3 +476,44 @@ and open the template in the editor.
 .eventList .li-1 a{
      color: #337ab7;
 }
+
+.breton-popup {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #ffffff;
+    border-color: #e5e5e5 #e5e5e5 -moz-use-text-color;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 1px 1px 0;
+    bottom: 0;
+    box-shadow: 0 0.085em 0.5em 0 rgba(0, 0, 0, 0.165);
+    padding: 30px;
+    position: fixed;
+    transform: translate3d(0px, 0px, 0px);
+    transition: all 0.5s ease 0s;
+    z-index: 1050;
+    left:0px;
+}
+
+.breton-popup-close {
+    font-size: 12px;
+    line-height: 1;
+    position: absolute;
+    right: 10px;
+    text-decoration: none;
+    top: 10px;
+}
+
+img.breton {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+    border: medium none !important;
+    box-shadow: none !important;
+    display: inline !important;
+    height: 1em !important;
+    margin: 0 0.07em !important;
+    padding: 0 !important;
+    vertical-align: -0.1em !important;
+    width: 1em !important;
+}

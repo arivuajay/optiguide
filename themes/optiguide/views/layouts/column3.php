@@ -123,15 +123,7 @@
     $this->widget('OgCalenderWidget');
     ?>
 
-    <div class="ad2"> 
-        <?php
-        echo CHtml::image("{$this->themeUrl}/images/bretonJOBS_logo_noslogan.jpg", 'Ad');
-        $find_job = CHtml::image("{$this->themeUrl}/images/boutons-find.png", 'Ad');
-        echo CHtml::link($find_job, 'http://bretonjobs.com/jobs/', array('target' => '_blank'));
-        $post_job = CHtml::image("{$this->themeUrl}/images/boutons-post.png", 'Ad');
-        echo CHtml::link($post_job, 'http://bretonjobs.com/pricing/', array('target' => '_blank'));
-        ?>
-    </div>
+    
 </div>
 
 <div class="col-xs-12 col-sm-6 col-md-7 col-lg-8">

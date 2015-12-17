@@ -186,7 +186,14 @@ class RetailerDirectoryController extends ORController {
           $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country;
         }    
         
-        $searchModel->listperpage = (isset($_GET['listperpage'])) ? $_GET['listperpage'] : LISTPERPAGE;
+        if(isset($_GET['listperpage']) && $_GET['listperpage']!='')
+        {
+          $listperpage = $_GET['listperpage'];
+        }else{    
+          $listperpage = LISTPERPAGE;
+        }        
+         
+        $searchModel->listperpage = $listperpage;
 
         //$page = (isset($_GET['page']) ? $_GET['page'] : 1);  // define the variable to “LIMIT” the query        
         $page = Yii::app()->request->getParam('page');

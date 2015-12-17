@@ -185,16 +185,23 @@ class ProfessionalDirectoryController extends ORController {
         if($search_country=='')
         {    
             $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country; 
-        }    
+        }
+        
+        if(isset($_GET['listperpage']) && $_GET['listperpage']!='')
+        {
+          $listperpage = $_GET['listperpage'];
+        }else{    
+          $listperpage = LISTPERPAGE;
+        }        
          
-        $searchModel->listperpage = (isset($_GET['listperpage']))?$_GET['listperpage']:LISTPERPAGE;
+        $searchModel->listperpage = $listperpage;
                
         //$page = (isset($_GET['page']) ? $_GET['page'] : 1);  // define the variable to “LIMIT” the query        
         $page = Yii::app()->request->getParam('page');
         $page = isset($page) ? $page : 1;
         $limit = 0;
 
-        if ($page > 1) {
+        if ($page > 1) {            
             $offset = $page - 1;
             $limit = $searchModel->listperpage * $offset;
         }
@@ -245,7 +252,7 @@ class ProfessionalDirectoryController extends ORController {
                 $stype_qry = " AND rs.ID_TYPE_SPECIALISTE = " . $search_type;
             }
         }
-
+        
         // Get all records list  with limit
         $prof_query = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
@@ -261,7 +268,7 @@ class ProfessionalDirectoryController extends ORController {
                 ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
                 ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
                 ->queryScalar(); // do not LIMIT it, this must count all items!
-        // the pagination itself      
+        // the pagination itself
         $pages = new CPagination($item_count);
         $pages->setPageSize($searchModel->listperpage);
 

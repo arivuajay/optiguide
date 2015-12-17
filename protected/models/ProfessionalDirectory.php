@@ -29,7 +29,7 @@ class ProfessionalDirectory extends CActiveRecord {
 
     public $country;
     public $TYPESPECIALISTEFR;
-    public $region, $pfile, $listperpage, $autre_ville;
+    public $region, $pfile, $listperpage, $autre_ville,$updatestatus;
     static $NOM_TABLE = 'Professionnels';
 
     /**
@@ -55,7 +55,7 @@ class ProfessionalDirectory extends CActiveRecord {
             array('CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2', 'length', 'max' => 20),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('country,region,age,sex,map_lat,map_long,proof_file,listperpage,CREATED_DATE,autre_ville', 'safe'),
+            array('country,region,age,sex,map_lat,map_long,proof_file,listperpage,CREATED_DATE,autre_ville,updatestatus', 'safe'),
             array('COURRIEL', 'email'),
             array('SITE_WEB', 'url'),
             array('ID_SPECIALISTE, TYPESPECIALISTEFR , ID_CLIENT, PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, ID_TYPE_SPECIALISTE, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, SITE_WEB, COURRIEL, DATE_MODIFICATION', 'safe', 'on' => 'search'),

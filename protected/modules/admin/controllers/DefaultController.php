@@ -24,7 +24,7 @@ class DefaultController extends Controller {
     {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('login', 'error', 'forgotpassword', 'screens','exceldownload'),
+                'actions' => array('login', 'error', 'forgotpassword', 'screens','exceldownload','extractexcelsheet'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -36,6 +36,106 @@ class DefaultController extends Controller {
             ),
         );
     }
+    
+    public function actionExtractexcelsheet()
+    {
+        $fpath = Yii::getPathOfAlias('webroot').'/uploads/import_datas/Professionals.xls';
+        $from = $_REQUEST['from'];
+        $to  =  $_REQUEST['to']; 
+       echo "between $from - $to \n";
+      
+        
+        Yii::import('ext.phpexcelreader.JPhpExcelReader');
+        $data=new JPhpExcelReader($fpath);
+        
+        $rows =  $data->rowcount(); // 11499
+        $cols =  $data->colcount(); // 4
+        
+          
+        for($i=$from;$i<=$to;$i++)
+        {
+            for($j=1;$j<=$cols;$j++)
+            {
+                if($j==1)
+                {    
+                   $client_id  = $data->val($i,$j);
+                }
+                else if($j==2)
+                {  
+                   $gender   = $data->val($i,$j); // M or F
+                } 
+                else if($j==3)
+                { 
+                   $Envue_Print = $data->val($i,$j); // NO or YES
+                }                  
+                else if($j==4)
+                { 
+                   $Envision_Print = ($j==4)?$data->val($i,$j):''; // NO or YES
+                } 
+            }
+//                echo "Client id    : ".$client_id."<br>";
+//                echo "gender       : ".$gender."<br>";
+//                echo "Envue Print  : ".$Envue_Print."<br>";
+//                echo "EnvisionPrint: ".$Envision_Print."<br>";
+//                exit;
+                
+            // Get professional detail
+            $prof_query = Yii::app()->db->createCommand() //this query contains all the data
+                ->select('rs.ID_SPECIALISTE,ru.ID_UTILISATEUR,rs.ID_CLIENT,ru.NOM_TABLE,ru.status')
+                ->from(array('repertoire_specialiste rs', 'repertoire_utilisateurs as ru'))
+                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND ru.NOM_TABLE ='Professionnels' AND rs.ID_CLIENT=$client_id")
+                ->queryRow();
+            
+            if(!empty($prof_query))
+            {
+                $uid  = $prof_query['ID_UTILISATEUR'];               
+                if($uid!='')
+                {   
+                    if($Envue_Print=="YES")
+                    {
+                        $envueprint_flag = 1;
+                    }else{
+                        $envueprint_flag = 0;
+                    } 
+                    
+                    if($Envision_Print=="YES")
+                    {
+                        $envisionprint_flag = 1;
+                    }else{
+                        $envisionprint_flag = 0;
+                    } 
+                                        
+                    $umodel = UserDirectory::model()->findByPk($uid);
+                    $umodel->print_envision = $envisionprint_flag;
+                    $umodel->print_envue  = $envueprint_flag;
+                    $umodel->updatestatus = 1;
+                    $umodel->save(false);
+                }    
+                
+                $prof_id = $prof_query['ID_SPECIALISTE'];
+                if($prof_id!='' && $gender!='')
+                {
+                    if($gender=="F")
+                    {
+                       $gflag = "female";
+                    }else{
+                       $gflag = "male";
+                    }
+                    
+                    $pmodel = ProfessionalDirectory::model()->findByPk($prof_id);
+                    $pmodel->sex = $gflag;
+                    $pmodel->save(false);
+                }    
+            }else{
+                $clientids[] = $client_id;
+            }    
+            
+        }  
+       echo "Done $from - $to \n";
+
+       echo implode(",",$clientids);
+        
+    }        
 
     public function actionIndex() 
     {

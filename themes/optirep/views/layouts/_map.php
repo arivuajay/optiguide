@@ -43,12 +43,19 @@
             
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">       
                 <?php
-                $listperpage = (isset($_GET['listperpage']))?$_GET['listperpage']:LISTPERPAGE;
+               // $listperpage = (isset($_GET['listperpage']))?$_GET['listperpage']:LISTPERPAGE;
+                if(isset($_GET['listperpage']) && $_GET['listperpage']!='')
+                {
+                  $listperpage = $_GET['listperpage'];
+                }else{    
+                  $listperpage = LISTPERPAGE;
+                }   
+                
                 if($_controller=="retailerDirectory")
                 {  
                     // $searchModel->unsetAttributes();
                    if (isset($_GET['RetailerDirectory'])) 
-                   { 
+                    { 
                        $search_name    = isset($_GET['RetailerDirectory']['COMPAGNIE'])?$_GET['RetailerDirectory']['COMPAGNIE']:'';
                        $search_cat     = isset($_GET['RetailerDirectory']['searchcat'])?$_GET['RetailerDirectory']['searchcat']:'';
                        $search_country = isset($_GET['RetailerDirectory']['country'])?$_GET['RetailerDirectory']['country']:'';
@@ -62,16 +69,17 @@
                        if( $search_region != ''){ $sregion_qry  = " AND rr.ID_REGION = ". $search_region;   } 
                        if( $search_ville != ''){ $scity_qry    = " AND rs.ID_VILLE = ". $search_ville; } 
                        if( $search_postal != '') { $spostal_qry    = " AND CODE_POSTAL = '". $search_postal."'";}
+                    }     
                       
                         $results = Yii::app()->db->createCommand() //this query contains all the data
                         ->select(' COMPAGNIE , classification,NOM_TYPE_'.$this->lang.' ,  NOM_VILLE ,  NOM_REGION_'.$this->lang.' , ABREVIATION_'.$this->lang.' ,  NOM_PAYS_'.$this->lang.', map_lat , map_long')
                         ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                         ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS "
-                                . "AND ru.status=1 AND ru.NOM_TABLE ='Detaillants' ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry)
+                                . "AND ru.status=1 AND ru.NOM_TABLE ='Detaillants' and rs.map_lat!='' and rs.map_long!='' ".$sname_qry.$scntry_qry.$sregion_qry.$scity_qry.$scat_query.$spostal_qry)
                         ->order('COMPAGNIE ASC')
                         ->limit( $listperpage , $limit) // the trick is here!
                         ->queryAll();
-                   }               
+                                
                     
                 
                 }
@@ -100,7 +108,8 @@
                     $results = Yii::app()->db->createCommand() //this query contains all the data
                             ->select('NOM , PRENOM , TYPE_SPECIALISTE_'.$this->lang.' , NOM_VILLE ,  NOM_REGION_'.$this->lang.' , ABREVIATION_'.$this->lang.' ,  NOM_PAYS_'.$this->lang.' , map_lat , map_long')
                             ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-                            ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " .  $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
+                            ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS "
+                                    . "and ru.status=1 AND ru.NOM_TABLE ='Professionnels' and rs.map_lat!='' and rs.map_long!='' " .  $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
                             ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
                             ->limit($listperpage, $limit) // the trick is here!
                             ->queryAll();

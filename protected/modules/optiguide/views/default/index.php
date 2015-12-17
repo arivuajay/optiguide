@@ -31,3 +31,30 @@
     $this->renderPartial('_did_you_know');
     ?>
 </div>
+<div class="breton-popup">    
+    <div class="ad2"> 
+        <?php
+        echo CHtml::image("{$this->themeUrl}/images/bretonJOBS_logo_noslogan.jpg", 'Ad');
+        $find_job = CHtml::image("{$this->themeUrl}/images/boutons-find.png", 'Ad');
+        echo "<br>";
+        echo CHtml::link($find_job, 'http://bretonjobs.com/jobs/', array('target' => '_blank'));
+        echo "<br>";
+        $post_job = CHtml::image("{$this->themeUrl}/images/boutons-post.png", 'Ad');
+        echo CHtml::link($post_job, 'http://bretonjobs.com/pricing/', array('target' => '_blank'));
+        ?>
+    </div>
+    <a class="breton-popup-close" href="javascript:void(0);">
+      <span><img draggable="false" class="breton" alt="✖" src="<?php echo $this->themeUrl."/images/close.png";?>"></span>      
+    </a>
+</div>
+<?php
+$js = <<< EOD
+        
+$(document).ready(function(){
+    $('.breton-popup-close').click(function(){
+       $('.breton-popup').hide();
+    });
+});
+EOD;
+Yii::app()->clientScript->registerScript('_bretonpopup', $js);
+?>
