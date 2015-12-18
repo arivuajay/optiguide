@@ -16,8 +16,8 @@
             <div class="opti-rep-logo"> 
                 <?php echo CHtml::image("{$this->themeUrl}/images/opti-rep-logo.png", 'Logo') ?>
             </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas congue nibh ipsum, rhoncus. Suspendisse eget purus tellus fermentum.</p>
-            <p> <p><?php echo Myclass::t('OG058', '', 'og'); ?>   <?php echo CHtml::link(Myclass::t('OG045', '', 'og'), REPURL.'optirep/repCredential/step1'); ?></p>
+            <p><?php  echo Myclass::t('OG213');?></p>
+            <p> <?php echo CHtml::link(Myclass::t('OG214'), REPURL.'optirep/repCredential/step1'); ?></p>
         </div>
     </div>
 
