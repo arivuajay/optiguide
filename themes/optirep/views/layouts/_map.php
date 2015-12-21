@@ -110,7 +110,7 @@
                             ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
                             ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS "
                                     . "and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " .  $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
-                            ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
+                            ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',PRENOM')
                             ->limit($listperpage, $limit) // the trick is here!
                             ->queryAll();
                      
@@ -128,7 +128,7 @@
                              
                             if($_controller=="professionalDirectory")
                             {
-                                $titlename = $rinfo['NOM']." ".$rinfo['PRENOM'];
+                                $titlename = $rinfo['PRENOM']." ".$rinfo['NOM'];
                                 $alink     = CHtml::link($titlename, array('/optirep/professionalDirectory/view', 'id' => $rinfo['ID_SPECIALISTE']),array("target" => "_blank")) . ' ';
                                 $dispname  = $alink." , ".$rinfo['NOM_VILLE']." , ".$rinfo['ABREVIATION_'.$this->lang]." , ".$rinfo['NOM_PAYS_'.$this->lang];                                 
                             }elseif ($_controller=="retailerDirectory") {

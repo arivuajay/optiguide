@@ -34,13 +34,23 @@
 <div class="breton-popup">    
     <div class="ad2"> 
         <?php
-        echo CHtml::image("{$this->themeUrl}/images/bretonJOBS_logo_noslogan.jpg", 'Ad');
-        $find_job = CHtml::image("{$this->themeUrl}/images/boutons-find.png", 'Ad');
+        echo CHtml::image("{$this->themeUrl}/images/bretonpopup/bretonjobs.jpg", 'bretonjobs');
+        if(Yii::app()->session['language']=="FR")
+        {
+           $find_job    = CHtml::image("{$this->themeUrl}/images/bretonpopup/FR/findajob.jpg", 'find a job');  
+           $findjob_url = 'http://bretonjobs.com/jobs/?lang=fr';
+           $post_job    = CHtml::image("{$this->themeUrl}/images/bretonpopup/FR/postajob.jpg", 'post a job');
+           $postjob_url = 'http://bretonjobs.com/pricing/?lang=fr';           
+        }else{
+           $find_job    = CHtml::image("{$this->themeUrl}/images/bretonpopup/EN/findajob.jpg", 'find a job');  
+           $findjob_url = 'http://bretonjobs.com/jobs/';
+           $post_job    = CHtml::image("{$this->themeUrl}/images/bretonpopup/EN/postajob.jpg", 'post a job');
+           $postjob_url = 'http://bretonjobs.com/pricing/';
+        }
         echo "<br>";
-        echo CHtml::link($find_job, 'http://bretonjobs.com/jobs/', array('target' => '_blank'));
+        echo CHtml::link($find_job, $findjob_url , array('target' => '_blank'));
         echo "<br>";
-        $post_job = CHtml::image("{$this->themeUrl}/images/boutons-post.png", 'Ad');
-        echo CHtml::link($post_job, 'http://bretonjobs.com/pricing/', array('target' => '_blank'));
+        echo CHtml::link($post_job, $postjob_url, array('target' => '_blank')); 
         ?>
     </div>
     <a class="breton-popup-close" href="javascript:void(0);">

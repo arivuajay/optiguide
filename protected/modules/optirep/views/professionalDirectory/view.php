@@ -41,7 +41,42 @@
             </div>
 
         </div>
-
+        <?php
+        // For map direction display
+        $endmap = array();
+        if($model['ADRESSE']!='')
+        {
+            $endmap[] = $model['ADRESSE'];
+        }
+        if($model['NOM_VILLE']!='')
+        {
+            $endmap[] = $model['NOM_VILLE'];
+        }
+        if($model['NOM_REGION_EN']!='')
+        {
+            $endmap[] = $model['NOM_REGION_EN'];
+        }
+        if($model['NOM_PAYS_EN']!='')
+        {
+            $endmap[] = $model['NOM_PAYS_EN'];
+        }
+        if($model['CODE_POSTAL']!='')
+        {
+            $endmap[] =$model['CODE_POSTAL'];
+        }
+        $destination_address = implode(",",$endmap);   
+        
+        // Rep address
+        $startmap = array();
+        if($repModel['rep_address']!='')
+        {
+            $startmap[] = $repModel['rep_address'];
+        }
+        $startmap[] = $repModel['NOM_VILLE'];
+        $startmap[] = $repModel['NOM_REGION_EN'];
+        $startmap[] = $repModel['NOM_PAYS_EN'];       
+        $start_address = implode(",",$startmap); 
+        ?>
 
         <div class="clearfix"></div>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">         
@@ -244,60 +279,26 @@
 $themeUrl = $this->themeUrl;
 
 $ajaxUpdatefav = Yii::app()->createUrl('/optirep/repFavourites/updatefav');
-$lat = $model['map_lat'];
+$lat = $model['map_lat']; 
 $long = $model['map_long'];
+
+$startval = $start_address;
+$endval   = $destination_address;
+
 $cs = Yii::app()->getClientScript();
 $cs_pos_end = CClientScript::POS_END;
-$cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
-
+$cs->registerScriptFile("http://maps.google.com/maps/api/js");
 $cs->registerCssFile($themeUrl . '/css/datepicker3.css');
 $cs->registerScriptFile($themeUrl . '/js/bootstrap-datepicker.js', $cs_pos_end);
 
 $js = <<< EOD
 $(document).ready(function(){
         
-        $('#reminder_datepicker').datepicker({
-            format: 'yyyy-mm-dd',
-            startDate: '+1d'
-        });
-        
-    var latval  = parseFloat("{$lat}") || 0;
-    var longval = parseFloat("{$long}") || 0;
-        
-     function initialize() {
-      
-        // Define the latitude and longitude positions
-        var latitude = parseFloat(latval); // Latitude get from above variable
-        var longitude = parseFloat(longval); // Longitude from same
-        var latlngPos = new google.maps.LatLng(latitude, longitude);
-
-        // Set up options for the Google map
-        var mapOptions = {
-            zoom: 15,
-            center: latlngPos,
-            zoomControlOptions: true,
-            zoomControlOptions: {
-                style: google.maps.ZoomControlStyle.LARGE
-            }
-        };
-        // Define the map
-        $("#display_map").show();
-        map = new google.maps.Map(document.getElementById("display_map"), mapOptions);
-
-        var marker = new google.maps.Marker({
-                  position: latlngPos,
-                  map: map,
-                  icon:'{$this->themeUrl}/images/map-red.png',
-                  draggable:false,
-                  animation: google.maps.Animation.DROP
-          });
-    }   
-    
-    if(latval!=0 && longval!=0)
-    {    
-        google.maps.event.addDomListener(window, 'load', initialize);    
-    }       
-        
+    $('#reminder_datepicker').datepicker({
+        format: 'yyyy-mm-dd',
+        startDate: '+1d'
+    });
+            
     $('input').iCheck({
                     checkboxClass: 'icheckbox_flat-pink',
                     radioClass: 'iradio_flat-pink'
@@ -359,8 +360,118 @@ $(document).ready(function(){
               return false; 
          }    
     });  
+    
+    var latval   = parseFloat("{$lat}") || 0;
+    var longval  = parseFloat("{$long}") || 0;
+    var startval = "{$startval}";
+    var endval   = "{$endval}";
+               
+    var directionsDisplay;
+    var directionsService = new google.maps.DirectionsService();
+    function initialize() 
+    {
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        var latlng = new google.maps.LatLng(latval, longval);
+        var myOptions =
+        {
+            zoom: 8,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        calcRoute(startval,endval); 
+        // Define the map
+        $("#display_map").show();
+        var map = new google.maps.Map(document.getElementById("display_map"), myOptions);
+        directionsDisplay.setMap(map);
+    }
+    function calcRoute(startval,endval) 
+    {
+       // var selectedMode = document.getElementById("mode").value;
+       // var start = document.getElementById("start").value;
+       // var end = document.getElementById("end").value;
+ 
+       var selectedMode = "DRIVING";
+       var start = startval;
+       var end   = endval;
+    
+        google.maps.DirectionsTravelMode.DRIVING
+
+            if(selectedMode=="DRIVING")
+            {
+                var request = {
+                origin: start,
+                destination: end,
+                travelMode:google.maps.DirectionsTravelMode.DRIVING
+                };
+            }
+            else if(selectedMode=="WALKING")
+            {
+                var request = {
+                origin: start,
+                destination: end,
+                travelMode:google.maps.DirectionsTravelMode.WALKING
+                };
+            }
+            else if(selectedMode=="BICYCLING")
+            {
+                var request = {
+                origin: start,
+                destination: end,
+                travelMode:google.maps.DirectionsTravelMode.BICYCLING
+                };
+            }
+
+            directionsService.route(request, function (response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {   
+                directionsDisplay.setDirections(response);
+            }
+        });
+
+    }
+    if(latval!=0 && longval!=0)
+    { 
+        google.maps.event.addDomListener(window, 'load', initialize);
+    }
             
 });
 EOD;
 Yii::app()->clientScript->registerScript('_form_view', $js);
-?>
+
+//
+//var latval  = parseFloat("{$lat}") || 0;
+//    var longval = parseFloat("{$long}") || 0;
+//        
+//     function initialize() {
+//      
+//        // Define the latitude and longitude positions
+//        var latitude = parseFloat(latval); // Latitude get from above variable
+//        var longitude = parseFloat(longval); // Longitude from same
+//        var latlngPos = new google.maps.LatLng(latitude, longitude);
+//
+//        // Set up options for the Google map
+//        var mapOptions = {
+//            zoom: 15,
+//            center: latlngPos,
+//            zoomControlOptions: true,
+//            zoomControlOptions: {
+//                style: google.maps.ZoomControlStyle.LARGE
+//            }
+//        };
+//        // Define the map
+//        $("#display_map").show();
+//        map = new google.maps.Map(document.getElementById("display_map"), mapOptions);
+//
+//        var marker = new google.maps.Marker({
+//                  position: latlngPos,
+//                  map: map,
+//                  icon:'{$this->themeUrl}/images/map-red.png',
+//                  draggable:false,
+//                  animation: google.maps.Animation.DROP
+//          });
+//    }   
+//    
+//    if(latval!=0 && longval!=0)
+//    {    
+//        google.maps.event.addDomListener(window, 'load', initialize);    
+//    }  
+?>  

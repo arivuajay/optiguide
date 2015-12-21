@@ -58,6 +58,13 @@ class RetailerDirectoryController extends ORController {
         $rep_id = Yii::app()->user->id;
         $retail_id = $id;
         $today = date('Y-m-d');
+        
+        // Get rep detail
+        $rep_query = Yii::app()->db->createCommand() //this query contains all the data
+        ->select('rs.rep_address , NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
+        ->from(array('rep_credential_profiles rs', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
+        ->where("rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND rep_credential_id=$rep_id")
+        ->queryRow();
 
         // Check the professional view today
         $condition2 = " DATE(view_date) ='$today' and rep_credential_id=" . $rep_id . " and ID_RETAILER=" . $retail_id;
@@ -160,7 +167,8 @@ class RetailerDirectoryController extends ORController {
             'model' => $retail_query,
             'searchModel' => $searchModel,
             'results' => $results,
-            'internalmodel' => $internalmodel
+            'internalmodel' => $internalmodel,
+            'repModel'  => $rep_query  
         ));
     }
 
