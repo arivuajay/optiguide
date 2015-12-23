@@ -15,7 +15,7 @@ require_once($yii);
 
 $optiguide_array = array('local.optiguide', 'optiguide.arkinfotec.in');
 $optirep_array = array('local.optirep', 'optirep.arkinfotec.in');
-$optiadmin_array = array('optiadmin.opti-guide.info');
+$optiadmin_array = array('local.optiadmin','optiadmin.opti-guide.info');
 
 if (in_array($_SERVER['HTTP_HOST'], $optiadmin_array)) {
 
