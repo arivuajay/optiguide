@@ -74,6 +74,13 @@ $themeUrl = $this->themeUrl;
                          <?php echo $form->dropDownList($model, 'member_type', array("free_member"=>'Free member','advertiser'=>'Advertiser'), array('class' => 'form-control')); ?> 
                     </div>
                 </div>
+                
+                 <div class="form-group">
+                    <?php echo $form->labelEx($model, 'sex', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                         <?php echo $form->dropDownList($model, 'sex', array("male"=>'Male','female'=>'Female'), array('class' => 'form-control')); ?> 
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'cat_type_id', array('class' => 'col-sm-2 control-label')); ?>
@@ -133,6 +140,14 @@ $themeUrl = $this->themeUrl;
                         <?php echo $form->error($model, 'ville'); ?>
                     </div>
                 </div>
+                
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'CodePostal', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($model, 'CodePostal', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
+                        <?php echo $form->error($model, 'CodePostal'); ?>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'phonenumber1', array('class' => 'col-sm-2 control-label')); ?>
@@ -147,6 +162,14 @@ $themeUrl = $this->themeUrl;
                     <div class="col-sm-5">
                         <?php echo $form->textField($model, 'phonenumber2', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
                         <?php echo $form->error($model, 'phonenumber2'); ?>
+                    </div>
+                </div>
+                
+                 <div class="form-group">
+                    <?php echo $form->labelEx($model, 'phonenumber3', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($model, 'phonenumber3', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
+                        <?php echo $form->error($model, 'phonenumber3'); ?>
                     </div>
                 </div>
 
@@ -173,7 +196,39 @@ $themeUrl = $this->themeUrl;
                         <?php echo $form->error($model, 'fax'); ?>
                     </div>
                 </div>
-
+                
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'Poste1', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($model, 'Poste1', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
+                        <?php echo $form->error($model, 'Poste1'); ?>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'Poste2', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($model, 'Poste2', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
+                        <?php echo $form->error($model, 'Poste2'); ?>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'Europe', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($model, 'Europe', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
+                        <?php echo $form->error($model, 'Europe'); ?>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'feurope', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($model, 'feurope', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
+                        <?php echo $form->error($model, 'feurope'); ?>
+                    </div>
+                </div>
+                
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'email', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
@@ -187,6 +242,20 @@ $themeUrl = $this->themeUrl;
                     <div class="col-sm-5">
                         <?php echo $form->textField($model, 'site_address', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>(http://www.monsite.com )
                         <?php echo $form->error($model, 'site_address'); ?>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <?php echo $form->labelEx($model, 'Website2', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($model, 'Website2', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>(http://www.monsite.com )
+                        <?php echo $form->error($model, 'Website2'); ?>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <?php echo $form->labelEx($model, 'Rep', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($model, 'Rep', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
+                        <?php echo $form->error($model, 'Rep'); ?>
                     </div>
                 </div>
                 <div class="box-header">

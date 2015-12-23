@@ -24,7 +24,7 @@ class DefaultController extends Controller {
     {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('login', 'error', 'forgotpassword', 'screens','exceldownload','extractexcelsheet'),
+                'actions' => array('login', 'error', 'forgotpassword', 'screens','exceldownload','extractexcelsheet','extractexcelsheet_client'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -37,12 +37,105 @@ class DefaultController extends Controller {
         );
     }
     
+    public function actionExtractexcelsheet_client()
+    {
+        header('Content-type: text/html; charset=UTF-8') ;
+        $fpath = Yii::getPathOfAlias('webroot').'/uploads/import_datas/Clients.xls';
+        $from = $_REQUEST['from'];
+        $to  =  $_REQUEST['to']; 
+        echo "between $from - $to \n";
+      
+        Yii::import('ext.phpexcelreader.JPhpExcelReader');
+        $data=new JPhpExcelReader($fpath);
+        
+        $rows =  $data->rowcount(); // 2641
+        $cols =  $data->colcount(); // 48
+        
+        for($i=$from;$i<=$to;$i++)
+        {
+            $cat_arr = array();
+            for($j=1;$j<=$cols;$j++)
+            {   
+//                echo "<br>";
+//                echo "****$j***** ";echo "<br>";
+//                echo $data->val($i,$j);echo "<br>";
+               
+                if($j==1){  $modification_date  = $data->val($i,$j);  }
+                if($j==3){  $client_id  = $data->val($i,$j);    }              
+                if($j==4 || $j==5 || $j==6 || $j==7 || $j==8 || $j==9 || $j==10 || $j==11 || $j==12 || $j==13 || $j==14 || $j==15 )
+                { 
+                    $cat_id  = $data->val($i,$j);      
+                    if($cat_id!='')
+                    {
+                       $cat_arr[] = $cat_id;
+                    }    
+                }                
+                if($j==16){  $NomEntreprise  = $data->val($i,$j); }                   
+                if($j==17){  $Sexe    = $data->val($i,$j);     } 
+                if($j==18){  $Contact = $data->val($i,$j);  }
+                if($j==19){  $TitreDuContact = $data->val($i,$j); } 
+                if($j==20){  $Adresse = $data->val($i,$j); }
+                if($j==21){ 
+                    $Ville = $data->val($i,$j);
+                    $villeid = $this->_getcityinfo($Ville);
+                }
+               
+            }
+            echo $villeid;
+            exit;
+        }
+        
+        
+    }
+    
+    public function _getcityinfo($Ville)
+    {
+        $regionid  = 0;
+        $ID_VILLE  = 0;
+        $countryid = 0;
+        
+        $Ville = trim($Ville);
+        $exp_cty = explode(",",$Ville);
+        if(count($exp_cty)>1)
+        {    
+           $cityname = $exp_cty[0];
+           $province = trim($exp_cty[1]);
+           // get region id
+           $condition = "ABREVIATION_EN='$province'";
+           $region_exist = RegionDirectory::model()->find($condition);
+           if (!empty($region_exist)) {
+               // get country id
+                 $regionid  = $region_exist->ID_REGION;
+                 $countryid = $region_exist->ID_PAYS;
+            }        
+        }else{
+           $cityname = $Ville;
+        }
+        
+      
+        $condition_cty  = "NOM_VILLE='$cityname'";
+        $city_exist = CityDirectory::model()->find($condition_cty);
+       
+        if (!empty($city_exist)) {
+            $ID_VILLE = $city_exist->ID_VILLE;
+        } else {             
+            $cinfo = new CityDirectory;
+            $cinfo->ID_REGION = $regionid;
+            $cinfo->NOM_VILLE = $cityname;
+            $cinfo->country   = $countryid;
+            $cinfo->save();
+            $ID_VILLE = $cinfo->ID_VILLE;
+        }
+        
+      return $ID_VILLE;
+    }        
+    
     public function actionExtractexcelsheet()
     {
         $fpath = Yii::getPathOfAlias('webroot').'/uploads/import_datas/Professionals.xls';
-        $from = $_REQUEST['from'];
-        $to  =  $_REQUEST['to']; 
-       echo "between $from - $to \n";
+       // $from = $_REQUEST['from'];
+      //  $to  =  $_REQUEST['to']; 
+       //echo "between $from - $to \n";
       
         
         Yii::import('ext.phpexcelreader.JPhpExcelReader');
@@ -51,7 +144,6 @@ class DefaultController extends Controller {
         $rows =  $data->rowcount(); // 11499
         $cols =  $data->colcount(); // 4
         
-          
         for($i=$from;$i<=$to;$i++)
         {
             for($j=1;$j<=$cols;$j++)

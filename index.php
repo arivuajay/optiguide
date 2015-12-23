@@ -15,19 +15,24 @@ require_once($yii);
 
 $optiguide_array = array('local.optiguide', 'optiguide.arkinfotec.in');
 $optirep_array = array('local.optirep', 'optirep.arkinfotec.in');
+$optiadmin_array = array('optiadmin.opti-guide.info');
 
-if (in_array($_SERVER['HTTP_HOST'], $optiguide_array)) {
-    $modules = array('optiguide');
-    $def_mod = 'optiguide';
-    define('SITENAME', 'OptiGuide');
+if (in_array($_SERVER['HTTP_HOST'], $optiadmin_array)) {
+
+    $modules = array('admin');
+    $def_mod = 'admin';
+    define('SITENAME', 'OptiGuide Admin');
+    
 } elseif (in_array($_SERVER['HTTP_HOST'], $optirep_array)) {
     $modules = array('optirep');
     $def_mod = 'optirep';
     define('SITENAME', 'OptiRep');
 } else {
-    $modules = array('admin');
-    $def_mod = 'admin';
-    define('SITENAME', 'OptiGuide Admin');
+
+    $modules = array('optiguide');
+    $def_mod = 'optiguide';
+    define('SITENAME', 'OptiGuide');
+    
 }
 
 if ($modules) {

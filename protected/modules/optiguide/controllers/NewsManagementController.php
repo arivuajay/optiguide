@@ -5,6 +5,13 @@ class NewsManagementController extends OGController {
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
+    
+    public $lang;
+    
+    public function __construct($id, $module = null) {           
+        parent::__construct($id, $module);
+        $this->lang = Yii::app()->session['language'];      
+    }
 
     /**
      * @return array action filters
@@ -59,7 +66,7 @@ class NewsManagementController extends OGController {
         } else {
             $criteria->addCondition('DATE_AJOUT1 <= "' . $current_date . '" AND DATE_AJOUT2 >= "' . $current_date . '"');
         }
-        $criteria->addCondition('LANGUE = "' . Yii::app()->session['language'] . '"');
+        $criteria->addCondition('LANGUE = "' . $this->lang. '"');
         $criteria->order = 'DATE_AJOUT1 DESC, TITRE ASC';
 
         $count = NewsManagement::model()->count($criteria);

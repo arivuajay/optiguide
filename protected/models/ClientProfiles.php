@@ -28,7 +28,7 @@
  */
 class ClientProfiles extends CActiveRecord
 {
-        public $subscription,$cname,$ctype;
+        public $subscription,$cname,$ctype,$category,$cat_type_id;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -51,7 +51,8 @@ class ClientProfiles extends CActiveRecord
 			array('name, company, job_title, member_type, address, local_number', 'length', 'max'=>255),
 			array('country, region, ville, phonenumber1, phonenumber2, mobile_number, tollfree_number, fax, email, site_address', 'length', 'max'=>55),
 			array('created_date, modified_date,cname,ctype', 'safe'),
-                        array('Optipromo , Optinews , Envision_print ,Envision_digital,Envue_print,Envue_digital' , 'safe'),
+                        array('Optipromo , Optinews , Envision_print ,Envision_digital,Envue_print,Envue_digital,category,cat_type_id' , 'safe'),
+                        array('ID_CLIENT ,sex, CodePostal, Poste1,Poste2,phonenumber3,Europe,feurope,Website2,Rep' , 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
                         array('site_address','url'),
@@ -153,6 +154,7 @@ class ClientProfiles extends CActiveRecord
                 'ville' => Myclass::t('Ville'),
                 'phonenumber1' => Myclass::t('Téléphone'),
                 'phonenumber2' => Myclass::t('Téléphone 2'),
+                'phonenumber3' => Myclass::t('Téléphone 3'),
                 'mobile_number' => Myclass::t('Cellulaire'),
                 'tollfree_number' => Myclass::t('Sans frais'),
                 'fax' => Myclass::t('Fax'),

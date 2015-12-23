@@ -126,7 +126,21 @@ class ClientProfilesController extends Controller {
             $model->category = $cat_vals;
             $model->created_date  = date("Y-m-d");
             $model->modified_date = date("Y-m-d");
-            if ($model->save()) {                
+            $model->ID_CLIENT     = Myclass::getRandomNUmbers();
+            if ($model->save()) {    
+                
+                $clientid = $model->client_id;
+                
+                $catvals = $_POST['ClientProfiles']['category'];
+                foreach($catvals as $cinfo)
+                {
+                    $catmap_model = new ClientCatMapping();
+                    $catmap_model->client_id   = $clientid;
+                    $catmap_model->cat_type_id = $_POST['ClientProfiles']['cat_type_id'];
+                    $catmap_model->category    =  $cinfo;
+                    $catmap_model->save();
+                }    
+                
                 // save the alert message         
                 if (isset($_POST['ClientMessages'])) 
                 {  
@@ -188,6 +202,20 @@ class ClientProfilesController extends Controller {
             $model->modified_date = date("Y-m-d");
             if(isset($_POST['modified-profile'])){
                     $model->save(false);
+                    
+                    $client_id = $model->client_id;  
+                    ClientCatMapping::model()->deleteAll("client_id ='" .$client_id. "'");
+                    
+                    $catvals = $_POST['ClientProfiles']['category'];
+                    foreach($catvals as $cinfo)
+                    {
+                        $catmap_model = new ClientCatMapping();
+                        $catmap_model->client_id   = $client_id;
+                        $catmap_model->cat_type_id = $_POST['ClientProfiles']['cat_type_id'];
+                        $catmap_model->category    =  $cinfo;
+                        $catmap_model->save();
+                    }    
+                    
                     Yii::app()->user->setFlash('success', 'Client profile updated successfully!!!');
                     $this->redirect(array('update', "id" => $id));
                 }
@@ -231,15 +259,19 @@ class ClientProfilesController extends Controller {
         $ccurrentmodel = $cmodel->search_currentalerts($id);
         
         $selected_sections = array();
-        $qry_selected_category = $model->category;                      
-        if($qry_selected_category!='')
-        {    
-            $expcats = explode(',', $qry_selected_category);
-            foreach($expcats as $catinfo)
+        
+        $client_id = $model->client_id;  
+        $client_catinfos = ClientCatMapping::model()->findAll("client_id=".$client_id);
+        
+        if($client_catinfos!='')
+        {               
+            foreach($client_catinfos as $catinfo)
             {
-                $pubcatid =  $catinfo;  
-                $selected_sections[$pubcatid]['selected'] =  'selected';               
-            }            
+                $pubcatid = $catinfo->category;             
+                $selected_sections[$pubcatid]['selected'] =  'selected';     
+                $cattypeid = $catinfo->cat_type_id; 
+            }   
+            $model->cat_type_id = $cattypeid;
         } 
 
         $this->render('update', array(

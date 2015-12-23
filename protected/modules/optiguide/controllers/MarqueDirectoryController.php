@@ -8,9 +8,9 @@ class MarqueDirectoryController extends OGController {
       
     public $lang;
     
-    public function __construct($id, $module = null) {   
-        $this->lang = Yii::app()->session['language'];      
+    public function __construct($id, $module = null) {           
         parent::__construct($id, $module);
+        $this->lang = Yii::app()->session['language'];      
     }
 
     /**

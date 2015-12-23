@@ -21,7 +21,7 @@
                     <?php foreach ($users as $info) { ?>
                         <li>
                             <?php
-                            $dispname = $info['PRENOM'] . ' ' . $info['NOM'];
+                            $dispname = $info['NOM'] . ' ' . $info['PRENOM'];
                             echo CHtml::link($dispname, array('/optirep/professionalDirectory/view', 'id' => $info['ID_SPECIALISTE'])) . ' ';
                             echo $info['NOM_VILLE'] . ", " . $info['ABREVIATION_' . $this->lang] . ", " . $info['NOM_PAYS_' . $this->lang];
                             ?>

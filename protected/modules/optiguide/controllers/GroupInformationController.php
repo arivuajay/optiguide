@@ -9,8 +9,8 @@ class GroupInformationController extends OGController {
     public $lang;
 
     public function __construct($id, $module = null) {
-        $this->lang = Yii::app()->session['language'];
         parent::__construct($id, $module);
+        $this->lang = Yii::app()->session['language'];
     }
 
     /**

@@ -11,34 +11,34 @@ class OGController extends Controller {
      * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
      */
     public $layout = '//layouts/column3';
-    
-     public function init() {
+
+    public function init() {
         parent::init();
-               
-         $app = Yii::app();
-        if (isset($_POST['_lang']))
-        {
+
+
+        $app = Yii::app();
+        if (isset($_POST['_lang'])) {
             $app->language = $_POST['_lang'];
             $app->session['_lang'] = $app->language;
-            Yii::app()->session['language'] = strtoupper($app->language); 
-            
-        }
-        else if (isset($app->session['_lang']))
-        {
+            Yii::app()->session['language'] = strtoupper($app->language);
+        } else if (isset($app->session['_lang'])) {
             $app->language = $app->session['_lang'];
-            Yii::app()->session['language'] = strtoupper($app->language); 
-        }else
-        {
+            Yii::app()->session['language'] = strtoupper($app->language);
+        } else {
             $app->language = 'en';
             Yii::app()->session['language'] = strtoupper($app->language);
-        }    
-        
-      //  echo  $app->language; exit;
-    }
-    
-    public function __construct($id, $module = null) {
-        parent::__construct($id, $module);    
+        }
+
+
+        //  echo  $app->language; exit;
     }
 
+    public function __construct($id, $module = null) {
+        if (empty(Yii::app()->session['language'])) {
+            Yii::app()->language = 'en';
+            Yii::app()->session['language'] = strtoupper(Yii::app()->language);
+        }
+        parent::__construct($id, $module);
+    }
 
 }
