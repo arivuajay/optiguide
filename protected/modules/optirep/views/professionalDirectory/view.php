@@ -3,7 +3,7 @@
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
             <div class="inner-container eventslist-cont">         
-                <h2> <?php echo $model['PRENOM']; ?>  <?php echo $model['NOM']; ?>  , <?php echo $model['TYPE_SPECIALISTE_' . $this->lang]; ?></h2>
+                <h2> <?php echo strtoupper($model['PRENOM']); ?>  <?php echo strtoupper($model['NOM']); ?>, <?php echo strtoupper($model['TYPE_SPECIALISTE_' . $this->lang]); ?></h2>
             </div>
         </div>    
         <?php
