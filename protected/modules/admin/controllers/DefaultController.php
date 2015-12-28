@@ -87,14 +87,14 @@ class DefaultController extends Controller {
                 if($j==19){  $Client_Profile['job_title'] = utf8_encode($data->val($i,$j)); }//TitreDuContact
                 if($j==20){  $Client_Profile['address'] = utf8_encode($data->val($i,$j)); }//Adresse
                 if($j==21){ 
-                    $Ville = $data->val($i,$j);
+                    $Ville = utf8_encode($data->val($i,$j));
 //                    $villeid = $this->_getcityinfo($Ville);
                 }
                 if($j==22){ 
-                    $Region = $data->val($i,$j);
+                    $Region = utf8_encode($data->val($i,$j));
                 }
                 if($j==23){ 
-                    $Country = $data->val($i,$j);
+                    $Country = utf8_encode($data->val($i,$j));
                     $final_rs = $this->_getcountryinfo($Ville,$Region,$Country);
                     $Client_Profile['country']=$final_rs[0];//Pays
                     $Client_Profile['region']=$final_rs[1];//Province
