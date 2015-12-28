@@ -96,6 +96,12 @@ class ClientProfilesController extends Controller {
     public function actionGetcategories() {
         $val = "";
         $id = isset($_POST['id']) ? $_POST['id'] : '';
+        
+         $filter_ajax = isset($_POST['filter_ajax']) ? $_POST['filter_ajax'] : '';
+        
+         if($filter_ajax=="yes")
+          $val = "<option value=''>Choisissez une Catégorie Nom</option>";
+         
         if ($id != '') {
             $data_cats = CHtml::listData(ClientCategory::model()->findAll(array("order" => "category asc", "condition" => "cat_type_id=" . $id)), 'category', 'cat_name');           
             foreach ($data_cats as $k => $info) {
@@ -122,8 +128,8 @@ class ClientProfilesController extends Controller {
         if (isset($_POST['ClientProfiles'])) {
             $model->attributes = $_POST['ClientProfiles'];
             
-            $cat_vals = implode(',',$_POST['ClientProfiles']['category']);
-            $model->category = $cat_vals;
+//            $cat_vals = implode(',',$_POST['ClientProfiles']['category']);
+//            $model->category = $cat_vals;
             $model->created_date  = date("Y-m-d");
             $model->modified_date = date("Y-m-d");
             $model->ID_CLIENT     = Myclass::getRandomNUmbers();

@@ -128,7 +128,7 @@
                              
                             if($_controller=="professionalDirectory")
                             {
-                                $titlename = $rinfo['NOM']." ".$rinfo['PRENOM'];
+                                $titlename = strtoupper($rinfo['NOM']).", ".$rinfo['PRENOM'].", ";
                                 $alink     = CHtml::link($titlename, array('/optirep/professionalDirectory/view', 'id' => $rinfo['ID_SPECIALISTE']),array("target" => "_blank")) . ' ';
                                 $dispname  = $alink." , ".$rinfo['NOM_VILLE']." , ".$rinfo['ABREVIATION_'.$this->lang]." , ".$rinfo['NOM_PAYS_'.$this->lang];                                 
                             }elseif ($_controller=="retailerDirectory") {

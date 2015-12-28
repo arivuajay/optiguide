@@ -39,6 +39,8 @@ class DefaultController extends Controller {
     
     public function actionExtractexcelsheet_client()
     {
+        
+        
         header('Content-type: text/html; charset=UTF-8') ;
         $fpath = Yii::getPathOfAlias('webroot').'/uploads/import_datas/Clients.xls';
         $from = $_REQUEST['from'];
@@ -50,72 +52,335 @@ class DefaultController extends Controller {
         
         $rows =  $data->rowcount(); // 2641
         $cols =  $data->colcount(); // 48
+        $Client_Profile= array();
         
         for($i=$from;$i<=$to;$i++)
         {
             $cat_arr = array();
+            $Country = $Region = $Ville ='';
+            $site_url1= $site_url  ='';
             for($j=1;$j<=$cols;$j++)
             {   
+                $model  = new ClientProfiles;
 //                echo "<br>";
 //                echo "****$j***** ";echo "<br>";
-//                echo $data->val($i,$j);echo "<br>";
+//                echo $j.'-'.$data->val($i,$j);echo "<br>";
                
-                if($j==1){  $modification_date  = $data->val($i,$j);  }
-                if($j==3){  $client_id  = $data->val($i,$j);    }              
+                if($j==1){  
+                    
+                    $modified_time=strtotime(str_replace('/', '-', $data->val($i,$j)));
+                    echo 'Modified: '.$modified_time.'<br>';
+                    $Client_Profile['modified_date'] = date('Y-m-d H:i:s', $modified_time);
+                    }
+                if($j==3){  $Client_Profile['ID_CLIENT']  = $data->val($i,$j);    }              
                 if($j==4 || $j==5 || $j==6 || $j==7 || $j==8 || $j==9 || $j==10 || $j==11 || $j==12 || $j==13 || $j==14 || $j==15 )
                 { 
                     $cat_id  = $data->val($i,$j);      
                     if($cat_id!='')
                     {
-                       $cat_arr[] = $cat_id;
+                       $cat_arrs[] = $cat_id;//store to client-map
                     }    
                 }                
-                if($j==16){  $NomEntreprise  = $data->val($i,$j); }                   
-                if($j==17){  $Sexe    = $data->val($i,$j);     } 
-                if($j==18){  $Contact = $data->val($i,$j);  }
-                if($j==19){  $TitreDuContact = $data->val($i,$j); } 
-                if($j==20){  $Adresse = $data->val($i,$j); }
+                if($j==16){  $Client_Profile['company']  = utf8_encode($data->val($i,$j)); }//NomEntreprise                    
+                if($j==17){  $Client_Profile['sex']    = $data->val($i,$j);     } 
+                if($j==18){  $Client_Profile['name'] = utf8_encode($data->val($i,$j));  }//Contact
+                if($j==19){  $Client_Profile['job_title'] = utf8_encode($data->val($i,$j)); }//TitreDuContact
+                if($j==20){  $Client_Profile['address'] = utf8_encode($data->val($i,$j)); }//Adresse
                 if($j==21){ 
                     $Ville = $data->val($i,$j);
-                    $villeid = $this->_getcityinfo($Ville);
+//                    $villeid = $this->_getcityinfo($Ville);
                 }
-               
+                if($j==22){ 
+                    $Region = $data->val($i,$j);
+                }
+                if($j==23){ 
+                    $Country = $data->val($i,$j);
+                    $final_rs = $this->_getcountryinfo($Ville,$Region,$Country);
+                    $Client_Profile['country']=$final_rs[0];//Pays
+                    $Client_Profile['region']=$final_rs[1];//Province
+                    $Client_Profile['ville']=$final_rs[2];//Ville
+                }
+                if($j==24){ 
+                    $Client_Profile['CodePostal'] = $data->val($i,$j);
+                }
+                if($j==25){ 
+                    $Client_Profile['phonenumber1'] = $data->val($i,$j);
+                }
+                if($j==26){ 
+                    $Client_Profile['Poste1'] = $data->val($i,$j);
+                }
+                if($j==27){ 
+                    $Client_Profile['phonenumber2'] = $data->val($i,$j);
+                }
+                if($j==28){ 
+                    $Client_Profile['Poste2'] = $data->val($i,$j);
+                }
+                if($j==29){ 
+                    $Client_Profile['phonenumber3'] = $data->val($i,$j);
+                }
+                if($j==30){ 
+                    $Client_Profile['Europe'] = utf8_encode($data->val($i,$j));
+                }
+                if($j==31){ 
+                    $Client_Profile['feurope'] = $data->val($i,$j);
+                }
+                if($j==32){ 
+                    $Client_Profile['tollfree_number'] = $data->val($i,$j);
+                }
+                if($j==33){ 
+                    $Client_Profile['mobile_number'] = $data->val($i,$j);
+                }
+                if($j==34){ 
+                    $Client_Profile['fax'] = $data->val($i,$j);
+                }
+                if($j==35){ 
+                    $Client_Profile['email'] = $data->val($i,$j);
+                }
+                //36 and 37 is Calcul and Valeur
+                if($j==38){ 
+                    $site_url = $data->val($i,$j);
+                    if(!empty($site_url)){
+                    if(strpos($site_url, "http://") !== false){
+                        $Client_Profile['site_address'] = $data->val($i,$j);
+                    }else{
+                        $Client_Profile['site_address'] = 'http://'.$data->val($i,$j);
+                    }
+                    }  else {
+                        $Client_Profile['site_address'] = '';
+                    }
+                }
+                if($j==39){ 
+                    $site_url1 = $data->val($i,$j);
+                    if(!empty($site_url1)){
+                        if(strpos($site_url1, "http://") !== false){
+                            $Client_Profile['Website2'] = $data->val($i,$j);
+                        }else{
+                            $Client_Profile['Website2'] = 'http://'.$data->val($i,$j);
+                        }
+                    }  else {
+                        $Client_Profile['Website2'] = '';
+                    }
+                    
+                }
+                //40 Région
+                if($j==41){ 
+                    $Client_Profile['Envue_print'] = $this->_subscriptioninfo($data->val($i,$j));
+                }
+                if($j==42){ 
+                    $Client_Profile['Envision_print'] = $this->_subscriptioninfo($data->val($i,$j));
+                }
+                if($j==43){ 
+                    $Client_Profile['Optipromo'] = $this->_subscriptioninfo($data->val($i,$j));
+                }
+                if($j==44){ 
+                    $Client_Profile['Optinews'] = $this->_subscriptioninfo($data->val($i,$j));
+                }
+                if($j==45){ 
+                    $Client_Profile['Envision_digital'] = $this->_subscriptioninfo($data->val($i,$j));
+                }
+                if($j==46){ 
+                    $Client_Profile['Envue_digital'] = $this->_subscriptioninfo($data->val($i,$j));
+                }
+                if($j==47){ 
+                    $Client_Profile['Rep'] = $data->val($i,$j);
+                }
+                if($j==48){ 
+                    
+                    $create_time=strtotime(str_replace('/', '-', $data->val($i,$j)));
+                    echo 'create: '.$create_time.'<br>';
+                    $Client_Profile['created_date'] = date('Y-m-d H:i:s', $create_time);
+                }
+                $Client_Profile['member_type'] = 0;
+                $Client_Profile['local_number'] = '';
+                $Client_Profile['client_id']='';
             }
-            echo $villeid;
-            exit;
+            
+            $client_category = ClientCategory::model()->findByPk($cat_arrs[0]);
+            $client_category_id =$client_category->cat_type_id;
+            $model->attributes = $Client_Profile;
+            
+            if ($model->save()) {
+            $client_id = Yii::app()->db->getLastInsertID();
+            echo 'id :'.$client_id;
+            foreach($cat_arrs as $cat_arr)
+                {
+                    $catmap = array();
+                    $catmap_model = new ClientCatMapping;
+                    $catmap['client_id']   = $client_id;
+                    $catmap['cat_type_id'] = $client_category_id;
+                    $catmap['category']    =  $cat_arr;
+                    $catmap_model->attributes=$catmap;
+                    $catmap_model->save();
+                }
+            }else{
+                print_r($model->getErrors());
+            }
+            echo '<pre>';
+            print_r($model->attributes);
+              $Client_Profile = $catmap = $final_rs = null; 
+              $cat_arrs = null;
+              $client_id='';
+              
         }
         
         
     }
+    public function _subscriptioninfo($var){
+        if($var=='YES'){
+            return 1;
+        }  else {
+            return 0;
+        }
+    }
+            
+            
+    public function _getcountryinfo($Ville,$Region,$Country)
+    {
+        
+        $regionid  = $countryinfo_id = $regioninfo_id =0;
+        $ID_VILLE = $ID_REGION = $ID_COUNTRY = '';
+        $countryid = 0;
+        $cityname='';
+        $ville = $regions = $countrys = null;
+        $Ville = trim($Ville);
+        $exp_cty = explode(",",$Ville);
+        
+        if(count($exp_cty)>1)
+        {    
+           $cityname = trim(utf8_encode($exp_cty[0]));
+        }else{
+           $cityname = trim(utf8_encode($Ville));
+        }
+        
+        $condition_country  = "NOM_PAYS_EN = '$Country' OR NOM_PAYS_FR = '$Country'";
+        $countrys = CountryDirectory::model()->find($condition_country);
+        if (!empty($countrys)) {
+            
+            $ID_COUNTRY = $countrys->ID_PAYS;
+            foreach ($countrys->repertoireRegions as $country){
+
+                if($country->ABREVIATION_EN == $Region){
+                    $condition_region  = "ID_REGION = '$country->ID_REGION'";
+                    $ID_REGION = $country->ID_REGION;
+                    $regions = RegionDirectory::model()->find($condition_region);
+                }
+            }
+            if (!empty($regions)) {
+                
+                foreach ($regions->cityDirectory as $region){
+                    
+                    if($region->NOM_VILLE == $cityname){
+                        $condition_ville  = "ID_VILLE = '$region->ID_VILLE'";
+                        $ville = CityDirectory::model()->find($condition_ville);
+                    }
+                }
+                if (!empty($ville)) {
+                    $ID_VILLE = $ville->ID_VILLE;
+                } else {                    
+                    if(!empty($cityname)){
+                        
+                    $cinfo = new CityDirectory;
+                    $cinfo->ID_REGION = $ID_REGION;
+                    $cinfo->NOM_VILLE = $cityname;
+                    $cinfo->country   = $ID_COUNTRY;
+                    $cinfo->save();
+                    $ID_VILLE = $cinfo->ID_VILLE; 
+                    }
+                    else {
+                        $ID_VILLE=0.3;
+                    }
+                }
+            }  else {
+                    if(!empty($Region)){
+                    $regioninfo = new RegionDirectory;
+                    $regioninfo->ID_PAYS = $ID_COUNTRY;
+                    $regioninfo->NOM_REGION_FR = $Region;
+                    $regioninfo->NOM_REGION_EN = $Region;
+                    $regioninfo->ABREVIATION_FR = $Region;
+                    $regioninfo->ABREVIATION_EN = $Region;
+                    $regioninfo->save();
+                    $regioninfo_id = $regioninfo->ID_REGION;
+                    $ID_REGION = $regioninfo_id;
+                    $cinfo = new CityDirectory;
+                    $cinfo->ID_REGION = $regioninfo_id;
+                    $cinfo->NOM_VILLE = $cityname;                    
+                    $cinfo->country   = $ID_COUNTRY;
+                    $cinfo->save();
+                    $ID_VILLE = $cinfo->ID_VILLE;
+                }
+                else {
+                    $ID_REGION=0.2;$ID_VILLE=0.2;
+                }
+            }
+        
+        }  else {
+            if(!empty($Country)){
+                
+                $countryinfo = new CountryDirectory;
+                $countryinfo->NOM_PAYS_FR = $Country;
+                $countryinfo->NOM_PAYS_EN = $Country;
+                $countryinfo->save();
+                $countryinfo_id = $countryinfo->ID_PAYS;
+                $ID_COUNTRY = $countryinfo_id;
+                $regioninfo = new RegionDirectory;
+                $regioninfo->ID_PAYS = $countryinfo_id;
+                $regioninfo->NOM_REGION_FR = $Region;
+                $regioninfo->NOM_REGION_EN = $Region;
+                $regioninfo->ABREVIATION_FR = $Region;
+                $regioninfo->ABREVIATION_EN = $Region;
+                $regioninfo->save();
+                $regioninfo_id = $regioninfo->ID_REGION;
+                $ID_REGION = $regioninfo_id;
+                $cinfo = new CityDirectory;
+                $cinfo->ID_REGION = $regioninfo_id;
+                $cinfo->NOM_VILLE = $cityname;
+                $cinfo->country   = $countryinfo_id;
+                $cinfo->save();
+                $ID_VILLE = $cinfo->ID_VILLE;
+                
+            }
+            else {
+                $ID_COUNTRY=0.1;$ID_REGION=0.1;$ID_VILLE=0.1;
+                    }
+        }
+        
+        $final_rs=array();
+        $final_rs[]=$ID_COUNTRY;
+        $final_rs[]=$ID_REGION;
+        $final_rs[]=$ID_VILLE;
+        
+      return $final_rs;
+    }
     
-    public function _getcityinfo($Ville)
+    public function _getcityinfo($Villesss)
     {
         $regionid  = 0;
         $ID_VILLE  = 0;
         $countryid = 0;
-        
         $Ville = trim($Ville);
         $exp_cty = explode(",",$Ville);
+        
         if(count($exp_cty)>1)
         {    
-           $cityname = $exp_cty[0];
+           $cityname = utf8_encode($exp_cty[0]);
            $province = trim($exp_cty[1]);
            // get region id
            $condition = "ABREVIATION_EN='$province'";
            $region_exist = RegionDirectory::model()->find($condition);
+           
            if (!empty($region_exist)) {
                // get country id
                  $regionid  = $region_exist->ID_REGION;
                  $countryid = $region_exist->ID_PAYS;
             }        
         }else{
-           $cityname = $Ville;
+           $cityname = utf8_encode($Ville);
         }
+
         
-      
-        $condition_cty  = "NOM_VILLE='$cityname'";
-        $city_exist = CityDirectory::model()->find($condition_cty);
-       
+        $condition_cty  = "NOM_VILLE = '$cityname'";
+        $city_exist = CityDirectory::model()->find(array('condition'=>$condition_cty));
+        
         if (!empty($city_exist)) {
             $ID_VILLE = $city_exist->ID_VILLE;
         } else {             

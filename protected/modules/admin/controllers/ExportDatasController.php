@@ -774,10 +774,10 @@ class ExportDatasController extends Controller
             if($type=="client")
             {
                  $item_count = Yii::app()->db->createCommand() //this query contains all the data
-                ->select('count(*) as count')
-                ->from(array('client_profiles ru' ,'client_category_types ct' , 'repertoire_pays  rp' , 'repertoire_region rr' , 'repertoire_ville rv'))
-                ->where("ru.cat_type_id=ct.cat_type_id AND ru.country=rp.ID_PAYS AND ru.region=rr.ID_REGION AND ru.ville=rv.ID_VILLE " . $querystr)
-                ->queryScalar(); // do not LIMIT it, this must count all items!
+                ->select('COUNT(DISTINCT ru.client_id) AS count')
+                ->from(array('client_profiles ru' ,'client_category_types ct' , 'repertoire_pays  rp' , 'repertoire_region rr' , 'repertoire_ville rv', 'client_category cc', 'client_cat_mapping cm'))
+                ->where("cm.client_id=ru.client_id AND cm.cat_type_id=ct.cat_type_id AND cm.category=cc.category AND ru.country=rp.ID_PAYS AND ru.region=rr.ID_REGION AND ru.ville=rv.ID_VILLE " . $querystr)
+                ->queryScalar();
             }
                 
            return  $item_count;
@@ -813,7 +813,14 @@ class ExportDatasController extends Controller
            
                 if($usertype=="client")
                 {
-                    $subscription_str  = $this->getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital); 
+                    
+                    $ptype=$_POST['ExportDatas']['ptype'];
+                    $category=$_POST['ExportDatas']['category'];
+                    
+                    $subscription_str  = $this->getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital,$ptype,$category); 
+//                    echo '<pre>';
+//                    print_r($subscription_str);
+//                    exit;
                 }else
                 {
                     $subscription_str = $this->getsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital);
@@ -860,8 +867,13 @@ class ExportDatasController extends Controller
                 
                 // Get user counts           
                 $querystr   = $lang_str.$subscription_str.$province_str.$type_str;
-        
-              
+////                    echo '<pre>';
+//                    echo $lang_str.'<br>';
+//                    echo $subscription_str.'<br>';
+//                    echo $province_str.'<br>';
+//                    echo $type_str.'<br>';
+////                    print_r($querystr);
+
                 $item_count = $this->countusers($querystr,$usertype);
             }      
               
@@ -1017,7 +1029,7 @@ class ExportDatasController extends Controller
             {  
                 if($type_vlas!='')
                 {
-                     $type_str   = " AND ru.cat_type_id = $type_vlas "; 
+                     $type_str   = " AND cc.cat_type_id = $type_vlas "; 
                 }
                   
             }
@@ -1040,7 +1052,7 @@ class ExportDatasController extends Controller
 
             if(isset($_POST['ExportDatas']))
             {   
-              
+                
                 $model->attributes=$_POST['ExportDatas'];
                 
                 //if($model->validate()){                              
@@ -1054,9 +1066,9 @@ class ExportDatasController extends Controller
                 $sub_envision_digital =  $_POST['ExportDatas']['Envision_digital'];
                 $sub_envue_print   =  $_POST['ExportDatas']['Envue_print'];
                 $sub_envue_digital =  $_POST['ExportDatas']['Envue_digital'];
-           
-                $subscription_str  = $this->getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital);
-              
+                $ptype=$_POST['ExportDatas']['ptype'];
+                $category=$_POST['ExportDatas']['category'];
+                $subscription_str  = $this->getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital,$ptype,$category); 
                  // Provience filter               
                 $province_str = ''; $scntry_qry=''; $sregion_qry='';
                 //$provinces    = $_POST['ExportDatas']['province'];
@@ -1077,19 +1089,21 @@ class ExportDatasController extends Controller
                 $type_str  = '';
                 
                 $category_type = $_POST['ExportDatas']['ptype'];      
-                $type_str      = $this->gettype_filter($category_type,"client");
-     
+//                $type_str      = $this->gettype_filter($category_type,"client");
+                $category = $_POST['ExportDatas']['category'];
+                
+                    
                 // Export type    
                 $export_type = $_POST['ExportDatas']['export_type'];
                 
                 // Get user counts           
-                $querystr   = $subscription_str.$province_str.$type_str;
+                $querystr   = $subscription_str.$province_str;
                 $item_count = $this->countusers($querystr,'client');
                 
                 if($item_count>0)
                 {   
                    // Export data and save the files
-                    $this->exportfiles_client( $export_type , $subscription_str , $province_str , $type_str , $category_type);
+                    $this->exportfiles_client( $export_type , $subscription_str , $province_str,$category_type,$category);
                  
                     Yii::app()->user->setFlash('success', 'Datas export successfully!!!');
                     $this->redirect(array('clientIndex'));
@@ -1112,7 +1126,7 @@ class ExportDatasController extends Controller
             ));
 	}          
          
-        public function exportfiles_client( $export_type , $subscription_str , $province_str , $type_str, $category_type)
+        public function exportfiles_client( $export_type , $subscription_str , $province_str,$category_type,$category)
         {
             Yii::import('ext.ECSVExport');
             $attach_path = Yii::getPathOfAlias('webroot').'/'.EXPORTDATAS;   
@@ -1120,35 +1134,49 @@ class ExportDatasController extends Controller
            
             // Single file
               
-                
+                //                    echo '<pre>';
+//                    echo $export_type.':export_type<br>';
+//            
+//                    echo $category.':category:'.utf8_encode($cattype_name).'<br>';
+//                    echo $category_type.':category_type<br>';
+//                    exit;
                 
                 // Get all records list  with limit
                 $ret_result = Yii::app()->db->createCommand(
-                "SELECT name as Client_Name, company ,job_title,ct.cat_type as Category_Type ,address, local_number, rp.NOM_PAYS_EN as Country, rr.NOM_REGION_EN as Region,rv.NOM_VILLE as City,phonenumber1,phonenumber2,mobile_number,tollfree_number,
-                fax,email,site_address,    
-                (CASE WHEN Envision_digital <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
-                (CASE WHEN Envue_digital <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
-                (CASE WHEN Envision_print <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
-                (CASE WHEN Envue_print <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
-                (CASE WHEN Optinews <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
-                (CASE WHEN Optipromo <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
-                ru.created_date as Created_Date , ru.modified_date as Modified_Date
-                FROM client_profiles ru ,client_category_types ct , repertoire_pays  rp , repertoire_region rr , repertoire_ville rv
-                WHERE ru.cat_type_id=ct.cat_type_id AND ru.country=rp.ID_PAYS AND ru.region=rr.ID_REGION AND ru.ville=rv.ID_VILLE                                 
-                ".$subscription_str.$province_str.$type_str." ORDER BY Client_Name");  
-                
+                "SELECT ru.client_id AS ID,GROUP_CONCAT(cc.cat_name SEPARATOR ', ')AS Category_Name, ct.cat_type AS Category_Type,ru.ID_CLIENT ,
+                    (CASE WHEN ru.member_type <> 'free_member' THEN 'Advertiser' ELSE 'Free member' END) AS Member_Type,
+                ru.name AS Client_Name,ru.sex AS Sex,ru.company AS Company,ru.job_title AS Job_Title,  ru.address AS Address,  ru.local_number AS Local_number,  rp.NOM_PAYS_EN AS Country,  rr.ABREVIATION_EN AS Region,  rv.NOM_VILLE AS Ville,    ru.CodePostal, ru.phonenumber1,  ru.Poste1,ru.phonenumber2, ru.Poste2, ru.phonenumber3, ru.Europe,  ru.feurope, 
+                ru.tollfree_number, ru.mobile_number,  ru.fax AS Fax,  ru.email AS Email,  ru.site_address AS Site_address, ru.Website2,
+                (CASE WHEN ru.Envision_digital <> 1 THEN 'No' ELSE 'Yes' END) AS Envision_Digital ,
+                (CASE WHEN ru.Envue_digital <> 1 THEN 'No' ELSE 'Yes' END) AS Envue_Digital ,
+                (CASE WHEN ru.Envision_print <> 1 THEN 'No' ELSE 'Yes' END) AS Envision_Print ,
+                (CASE WHEN ru.Envue_print <> 1 THEN 'No' ELSE 'Yes' END) AS Envue_Print ,                                 
+                (CASE WHEN ru.Optinews <> 1 THEN 'No' ELSE 'Yes' END) AS Opti_News ,
+                (CASE WHEN ru.Optipromo <> 1 THEN 'No' ELSE 'Yes' END) AS Opti_Promo ,
+                ru.Rep,   ru.modified_date ,ru.created_date
+                FROM client_category cc,client_profiles ru  ,client_category_types ct ,repertoire_pays  rp , repertoire_region rr ,repertoire_ville rv,client_cat_mapping cm
+                WHERE cm.client_id=ru.client_id AND cm.cat_type_id=ct.cat_type_id AND cm.category=cc.category AND ru.country=rp.ID_PAYS AND ru.region=rr.ID_REGION AND ru.ville=rv.ID_VILLE                                 
+                ".$subscription_str.$province_str." GROUP BY ru.client_id");
+              
+//                echo '<pre>';
+//                print_r($ret_result);
+//                exit;
                 // File name and path      
                 if($export_type==1)
                 { 
                     $filename = "Client_data_".date("Y_m_d")."_".$randstr.".csv";                
                     $outputFile_path = $attach_path.$filename;
-                }else if($export_type==3)  {                                              
+                }else if($export_type==3)  {  
+                    if(!empty($category)){
+                        $cattype_name = ClientCategory::model()->findByPk($category)->cat_name;
+                    }else if(!empty($category_type)) {
                     $cattype_name = ClientCategoryTypes::model()->findByPk($category_type)->cat_type;
+                    }
+                
                     $filename = "Client_data_".date("Y_m_d")."_".$cattype_name."_".$randstr.".csv";                
                     $outputFile_path = $attach_path.$filename;
-
                 }                    
-
+                
                 // Export as csv file
                 $this->Exceldownload($ret_result,$outputFile_path);
                 $model=new ExportDatas;   
@@ -1158,9 +1186,11 @@ class ExportDatasController extends Controller
   
         } 
         
-        public function getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital)
+        public function getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital,$ptype,$category)
         {
+            
             $subscription_arr = array();
+            $subscription_arr1 = array();
             $subscription_str = '';
                 
             if($sub_optipromo=="1")
@@ -1192,20 +1222,40 @@ class ExportDatasController extends Controller
             {
                 $subscription_arr[] = " ru.Envue_digital=1 ";
             } 
+            if(!empty($ptype))
+            {
+                $subscription_arr1[] = " AND ct.cat_type_id = ".$ptype;
+            }
+            if(!empty($category))
+            {
+                $subscription_arr1[] = " AND cc.category= ".$category;
+            }  else {
+                $subscription_arr1[] = "";
+            }
+            
                 
-                
+            if(!empty($subscription_arr1))
+            {
+                $imp_substr1 =  implode(" ",$subscription_arr1);
+            }  else {
+                $imp_substr1 = '';
+            }
+            
             if(!empty($subscription_arr))
             {
                 if(count($subscription_arr)>1)
                 {
                    $imp_substr =  implode(" || ",$subscription_arr);
-                   $subscription_str = " AND  ( $imp_substr )  ";
+                   
+                   $subscription_str = " AND  ( $imp_substr )  ".$imp_substr1;
                 }else
                 {
-                   $subscription_str = " AND $subscription_arr[0] ";
+                   $subscription_str = " AND $subscription_arr[0] ".$imp_substr1;
                 }    
+            }else{
+                $subscription_str = $imp_substr1;
             }  
-
+              
             return $subscription_str;
         }  
         

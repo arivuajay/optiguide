@@ -23,8 +23,10 @@ $cities = Myclass::getallcities($model->region);
 $category_names = array();
 $cat_types = CHtml::listData(ClientCategoryTypes::model()->findAll(array("order"=>"cat_type_id asc")), 'cat_type_id', 'cat_type');
 //if($model->cat_type_id){
+////    empty' => "Choisissez une Catégorie Nom"
 //    $category_names = CHtml::listData(ClientCategory::model()->findAll(array("order"=>"category asc","condition"=>"cat_type_id=".$model->cat_type_id)), 'category', 'cat_name');
-//}else
+//}
+//else
 //{
 //    $category_names = CHtml::listData(ClientCategory::model()->findAll(array("order"=>"category asc","condition"=>"cat_type_id=2")), 'category', 'cat_name');
 //}    
@@ -130,7 +132,16 @@ $cat_types = CHtml::listData(ClientCategoryTypes::model()->findAll(array("order"
                             ?> 
                         </div>
                     </div>
-
+                    
+                    <div class="form-group">
+                        <?php echo $form->labelEx($model, 'category', array('class' => 'col-sm-2 control-label')); ?>
+                        <div class="col-sm-5">
+                            <?php 
+                            echo $form->dropDownList($model, 'category', $category_names, array('class' => 'form-control','empty' => 'Choisissez une Catégorie Nom'));
+                            echo $form->error($model, 'category');
+                            ?> 
+                        </div>
+                    </div>
 <!--                     <div class="form-group">
                         <?php //echo $form->labelEx($model, 'category', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">
@@ -212,7 +223,7 @@ $js = <<< EOD
             
      $("#ExportDatas_ptype").change(function(){
         var id=$(this).val();
-        var dataString = 'id='+ id;
+        var dataString = 'id='+ id + '&filter_ajax=yes';
             
         $.ajax({
             type: "POST",
@@ -220,7 +231,7 @@ $js = <<< EOD
             data: dataString,
             cache: false,
             success: function(html){             
-                $("#ClientProfiles_category").html(html);
+                $("#ExportDatas_category").html(html);
             }
          });
     });        
