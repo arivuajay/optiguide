@@ -133,6 +133,7 @@ class ClientProfilesController extends Controller {
             $model->created_date  = date("Y-m-d");
             $model->modified_date = date("Y-m-d");
             $model->ID_CLIENT     = Myclass::getRandomNUmbers();
+            
             if ($model->save()) {    
                 
                 $clientid = $model->client_id;

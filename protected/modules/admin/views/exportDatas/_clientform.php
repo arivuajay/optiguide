@@ -16,7 +16,7 @@ $this->breadcrumbs=array(
 //$province_datas    = CHtml::listData(RegionDirectory::model()->findAll($criteria2), 'ID_REGION', 'fullname');
 
 
-$country = Myclass::getallcountries();
+$country = Myclass::getallcountries1();
 $regions = Myclass::getallregions($model->country);
 $cities = Myclass::getallcities($model->region);
 

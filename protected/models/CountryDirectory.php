@@ -34,10 +34,10 @@ class CountryDirectory extends CActiveRecord
                         array('NOM_PAYS_FR, NOM_PAYS_EN', 'required'),
                         array('NOM_PAYS_FR, NOM_PAYS_EN', 'unique'),
 			array('NOM_PAYS_FR, NOM_PAYS_EN', 'length', 'max'=>255),
-                    
+                        array('Flag_List', 'safe'),
 			// The following rule is used by search().
                         			// @todo Please remove those attributes that should not be searched.
-			array('ID_PAYS, NOM_PAYS_FR, NOM_PAYS_EN, repertoireRegion_count', 'safe', 'on'=>'search'),
+			array('ID_PAYS, NOM_PAYS_FR, NOM_PAYS_EN, Flag_List, repertoireRegion_count', 'safe', 'on'=>'search'),
 		);
 	}
 

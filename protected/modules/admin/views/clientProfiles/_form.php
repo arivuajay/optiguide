@@ -39,7 +39,7 @@ $themeUrl = $this->themeUrl;
                 $category_names = CHtml::listData(ClientCategory::model()->findAll(array("order"=>"category asc","condition"=>"cat_type_id=2")), 'category', 'cat_name');
             }    
             
-            $country = Myclass::getallcountries();
+            $country = Myclass::getallcountries1();
             $regions = Myclass::getallregions($model->country);
             $cities = Myclass::getallcities($model->region);
             ?>
@@ -78,7 +78,7 @@ $themeUrl = $this->themeUrl;
                  <div class="form-group">
                     <?php echo $form->labelEx($model, 'sex', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                         <?php echo $form->dropDownList($model, 'sex', array("male"=>'Male','female'=>'Female'), array('class' => 'form-control')); ?> 
+                         <?php echo $form->dropDownList($model, 'sex', array("M"=>'Male','F'=>'Female'), array('class' => 'form-control')); ?> 
                     </div>
                 </div>
 

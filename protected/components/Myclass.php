@@ -89,18 +89,33 @@ class Myclass extends CController {
         $val = $country->$countryname;
         return $val;
     }
-    
-    public static function getallcountries($id = null) {
+    public static function getallcountries1($id = null) {
         $criteria = new CDbCriteria;
-
+        
         $countryname = 'NOM_PAYS_' . Yii::app()->session['language'];
 
         $criteria->order = $countryname . ' ASC';
         if (!is_null($id)) {
-            $criteria->condition = 'ID_PAYS=:id';
+            $criteria->condition = 'ID_PAYS=:id  ';
             $criteria->params = array(':id' => $id);
         }
+        $country = CountryDirectory::model()->findAll($criteria);
+        $val = CHtml::listData($country, 'ID_PAYS', $countryname);
+        return $val;
+    }
+    
+    public static function getallcountries($id = null) {
+        $criteria = new CDbCriteria;
+        $val=1;
+        $countryname = 'NOM_PAYS_' . Yii::app()->session['language'];
 
+        $criteria->order = $countryname . ' ASC';
+        if (!is_null($id)) {
+            $criteria->condition = 'ID_PAYS=:id  ';
+            $criteria->params = array(':id' => $id);
+        }
+        $criteria->condition = 'Flag_List != :val';
+        $criteria->params = array(':val' => $val);
         $country = CountryDirectory::model()->findAll($criteria);
         $val = CHtml::listData($country, 'ID_PAYS', $countryname);
         return $val;

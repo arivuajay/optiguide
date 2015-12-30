@@ -818,9 +818,7 @@ class ExportDatasController extends Controller
                     $category=$_POST['ExportDatas']['category'];
                     
                     $subscription_str  = $this->getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital,$ptype,$category); 
-//                    echo '<pre>';
-//                    print_r($subscription_str);
-//                    exit;
+
                 }else
                 {
                     $subscription_str = $this->getsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital);
@@ -867,12 +865,7 @@ class ExportDatasController extends Controller
                 
                 // Get user counts           
                 $querystr   = $lang_str.$subscription_str.$province_str.$type_str;
-////                    echo '<pre>';
-//                    echo $lang_str.'<br>';
-//                    echo $subscription_str.'<br>';
-//                    echo $province_str.'<br>';
-//                    echo $type_str.'<br>';
-////                    print_r($querystr);
+
 
                 $item_count = $this->countusers($querystr,$usertype);
             }      
@@ -1133,19 +1126,12 @@ class ExportDatasController extends Controller
             $randstr  = Myclass::getRandomString(4);
            
             // Single file
-              
-                //                    echo '<pre>';
-//                    echo $export_type.':export_type<br>';
-//            
-//                    echo $category.':category:'.utf8_encode($cattype_name).'<br>';
-//                    echo $category_type.':category_type<br>';
-//                    exit;
-                
                 // Get all records list  with limit
                 $ret_result = Yii::app()->db->createCommand(
-                "SELECT ru.client_id AS ID,GROUP_CONCAT(cc.cat_name SEPARATOR ', ')AS Category_Name, ct.cat_type AS Category_Type,ru.ID_CLIENT ,
-                    (CASE WHEN ru.member_type <> 'free_member' THEN 'Advertiser' ELSE 'Free member' END) AS Member_Type,
-                ru.name AS Client_Name,ru.sex AS Sex,ru.company AS Company,ru.job_title AS Job_Title,  ru.address AS Address,  ru.local_number AS Local_number,  rp.NOM_PAYS_EN AS Country,  rr.ABREVIATION_EN AS Region,  rv.NOM_VILLE AS Ville,    ru.CodePostal, ru.phonenumber1,  ru.Poste1,ru.phonenumber2, ru.Poste2, ru.phonenumber3, ru.Europe,  ru.feurope, 
+                "SELECT ru.client_id AS ID,ru.ID_CLIENT ,ru.name AS Client_Name,ru.sex AS Sex,ru.company AS Company,ru.job_title AS Job_Title,
+                (CASE WHEN ru.member_type <> 'free_member' THEN 'Advertiser' ELSE 'Free member' END) AS Member_Type,
+                ct.cat_type AS Category_Type,GROUP_CONCAT(cc.cat_name SEPARATOR ', ')AS Category_Name,
+                ru.address AS Address,  ru.local_number AS Local_number,  rp.NOM_PAYS_EN AS Country,  rr.ABREVIATION_EN AS Region,  rv.NOM_VILLE AS Ville,    ru.CodePostal, ru.phonenumber1,  ru.Poste1,ru.phonenumber2, ru.Poste2, ru.phonenumber3, ru.Europe,  ru.feurope, 
                 ru.tollfree_number, ru.mobile_number,  ru.fax AS Fax,  ru.email AS Email,  ru.site_address AS Site_address, ru.Website2,
                 (CASE WHEN ru.Envision_digital <> 1 THEN 'No' ELSE 'Yes' END) AS Envision_Digital ,
                 (CASE WHEN ru.Envue_digital <> 1 THEN 'No' ELSE 'Yes' END) AS Envue_Digital ,
@@ -1158,9 +1144,6 @@ class ExportDatasController extends Controller
                 WHERE cm.client_id=ru.client_id AND cm.cat_type_id=ct.cat_type_id AND cm.category=cc.category AND ru.country=rp.ID_PAYS AND ru.region=rr.ID_REGION AND ru.ville=rv.ID_VILLE                                 
                 ".$subscription_str.$province_str." GROUP BY ru.client_id");
               
-//                echo '<pre>';
-//                print_r($ret_result);
-//                exit;
                 // File name and path      
                 if($export_type==1)
                 { 
