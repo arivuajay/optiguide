@@ -116,10 +116,10 @@ class PaymentTransactionController extends Controller {
                     
                     $mail = new Sendmail();
                     $user = UserDirectory::model()->findByAttributes(array('ID_RELATION'=>$fmodel->ID_FOURNISSEUR,'NOM_TABLE'=>'Fournisseurs'));
-                    $login_url = $baseurl;
+//                    $login_url = $baseurl;
                     $trans_array = array(
                         "{NAME}" => $fmodel->COMPAGNIE,
-                        "{NEXTSTEPURL}" => $login_url,
+                        "{NEXTSTEPURL}" => GUIDEURL,
                         "{SITENAME}" => 'OptiGuide',
                     );
                     
