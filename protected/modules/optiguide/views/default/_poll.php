@@ -25,10 +25,18 @@ if (Myclass::is_home_page()) {
             $this->widget('EPoll', array('poll_id' => $polid));
         }
     }else
-    {?>
+    {
+    $lang = Yii::app()->session['language'];   
+    if($lang=="FR")
+    {
+        $nopollimg = "opti-guide-banner-fr.jpg";
+    }else{
+        $nopollimg = "opti-guide-banner.jpg";
+    }       
+        ?>
      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">   
         <div class="poll-nocont"> 
-            <?php echo CHtml::image("{$this->themeUrl}/images/opti-guide-banner.jpg", 'No Poll');?>
+            <?php echo CHtml::image("{$this->themeUrl}/images/".$nopollimg, 'No Poll');?>
         </div>
     </div>     
    <?php }    

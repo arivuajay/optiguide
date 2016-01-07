@@ -551,3 +551,15 @@ a.back {
 .flagicons{
     padding: 5px 25px;
 }
+
+.more_stats {
+    background: none repeat scroll 0 0 #398aca;
+    border-radius: 4px;
+    color: #ffffff;
+    float: right;
+    line-height: 25px;
+    text-align: center;
+    width: 100%;
+    margin-top: 5px;
+    padding: 2px 10px;
+}

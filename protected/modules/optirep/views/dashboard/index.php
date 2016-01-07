@@ -27,43 +27,7 @@ if ($topbanner != '') {
 <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
     <div class="cate-bg">    
         <?php
-        /** Loggedin Activities **/
-//        $stats_disp = Myclass::stats_display();
-//        if ($stats_disp == "1" || true) {
-//            $this->widget('booster.widgets.TbHighCharts', array(
-//                'options' => array(
-//                    'chart' => array(
-//                        'type' => 'spline'
-//                    ),
-//                    'title' => array(
-//                        'text' => 'Loggedin Activities'
-//                    ),
-//                    'subtitle' => array(
-//                        'text' => 'Last 6 days'
-//                    ),
-//                    'xAxis' => array(
-//                        'categories' => $response['dates']
-//                    ),
-//                    'yAxis' => array(
-//                        'title' => array(
-//                            'text' => 'No.of Times Loggedin'
-//                        )
-//                    ),
-//                    'series' => array(
-//                        array(
-//                            'name' => Yii::app()->user->name,
-//                            'data' => $response['visits']
-//                        )
-//                    ),
-//                    "credits" => array(
-//                        'enabled' => false
-//                    )
-//                )
-//            ));
-//        } else {
-//            echo CHtml::link(CHtml::image($this->themeUrl . '/images/chart.jpg'), array('/optirep/repStatistics/payment/'), array('class' => ''));
-//        }
-        
+       
         /** Users registered in optiguide **/
         $months = array();
         for ($i = 0; $i < 6; $i++) {
@@ -164,7 +128,9 @@ if ($topbanner != '') {
             )
         ));
         ?>
-    </div>
+        <p class="pull-right"><?php echo CHtml::link(Myclass::t('OG215'), array('/optirep/repStatistics/statistics'),array("class"=>"more_stats")); ?> </p>
+        
+    </div>     
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">

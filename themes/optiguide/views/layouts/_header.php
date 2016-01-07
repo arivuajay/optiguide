@@ -1,9 +1,9 @@
 <?php
 $profileurl = '';
 $popupimg = "popup_alert_EN.jpg";
+$lang = Yii::app()->session['language'];   
 if (!Yii::app()->user->isGuest) {
     
-    $lang = Yii::app()->session['language'];    
     $popupimg = "popup_alert_".$lang.".jpg";
     
     $mustvalidate = UserDirectory::model()->findByPk(Yii::app()->user->id)->MUST_VALIDATE;
@@ -25,6 +25,14 @@ if (!Yii::app()->user->isGuest) {
         
         $profileurl = '/optiguide/suppliersDirectory/update';
     }
+}
+
+if($lang=="FR"){
+    $popupstr = "Merci d’entrer un critère de recherche";
+    $placehold_str = "Recherche";
+}else{
+    $popupstr = 'Please give search value.';
+    $placehold_str = "Search";
 }
 ?>
 
@@ -54,7 +62,7 @@ if (!Yii::app()->user->isGuest) {
                     $searchval = isset($_GET['searchval'])?$_GET['searchval']:'';
                     ?>
                 <div class="search-bg4" id="search">
-                    <input type="text" id="search_val" class="search-field4" placeholder="Search" value="<?php echo $searchval;?>" name="searchval">
+                    <input type="text" id="search_val" class="search-field4" placeholder="<?php echo $placehold_str;?>" value="<?php echo $searchval;?>" name="searchval">
                     <button id="search_submit" class="search-btn4" type="button"> <i class="fa fa-search"></i></button>
                 </div> 
                  <?php $this->endWidget(); ?>
@@ -112,14 +120,26 @@ if (!Yii::app()->user->isGuest) {
 </div>
 <?php
 Yii::app()->clientScript->registerScript('search', "
-    $('#search_submit').click(function(){
-       var searchval = $('#search_val').val(); 
+    $('#search_submit').click(function(e){      
+    
+       var searchval = $('#search_val').val();        
+       var popupalert_val = '{$popupstr}';
+       
        if(searchval=='')
        {
-         alert('Please give search value.');
+         alert(popupalert_val);
          return false;
-       }   
+       }
+       
        $('#search-form').submit();       
+       
+    });
+    
+    $('#search input[name=\'searchval\']').on('keydown', function(e) {  
+        if (e.keyCode == 13) {   
+             $('#search_submit').trigger('click');
+             return false;
+        }
     });
     
     $('#myModal').modal({

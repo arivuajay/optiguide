@@ -242,5 +242,7 @@ return array(
     
     'OG213' => 'Opti-Rep is the #1 key for representatives.  You can finally keep all the information you need within reach. Find all the suppliers, brands and professionals’ details and contact information faster and easier than ever before. Our key-indicators and statistics allow you to create customized strategy for your ECP’s, You will have all in hands to assist your clients in achieving maximum sales and growth in their specific market; Perfect to help you and your clients meet your own objectives!',
     'OG214' => 'Subscribe now!',
+    
+    'OG215' => 'More Stats'
 );    
 ?>

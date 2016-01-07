@@ -61,7 +61,7 @@
 $js = <<< EOD
         
 $(document).ready(function(){
-    var cacheval = localStorage.getItem('popState');
+        
     if(localStorage.getItem('popState') != 'shown'){
         $('.breton-popup').show();
         localStorage.setItem('popState','shown')
