@@ -31,7 +31,7 @@
     $this->renderPartial('_did_you_know');
     ?>
 </div>
-<div class="breton-popup">    
+<div class="breton-popup" style="display:none;">    
     <div class="ad2"> 
         <?php
         echo CHtml::image("{$this->themeUrl}/images/bretonpopup/bretonjobs.jpg", 'bretonjobs');
@@ -61,6 +61,12 @@
 $js = <<< EOD
         
 $(document).ready(function(){
+    var cacheval = localStorage.getItem('popState');
+    if(localStorage.getItem('popState') != 'shown'){
+        $('.breton-popup').show();
+        localStorage.setItem('popState','shown')
+    }
+        
     $('.breton-popup-close').click(function(){
        $('.breton-popup').hide();
     });
