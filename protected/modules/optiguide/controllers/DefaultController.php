@@ -209,11 +209,18 @@ class DefaultController extends OGController {
         $this->performAjaxValidation(array($model));
 
         if (isset($_POST['ContactForm'])) {
+            $this->lang = Yii::app()->session['language'];
             $model->attributes = $_POST['ContactForm'];
 
             /* Send request mail to admin for advertise */
             $mail = new Sendmail();
-            $subject = SITENAME . " - Contact from " . $model->name;
+            
+            if($this->lang=='EN' ){
+                $subject = SITENAME . " - Contact from " . $model->name;
+            }elseif($this->lang=='FR'){
+                $subject = SITENAME . " - Demande de contact d’un utilisateur";
+            }
+            
             $trans_array = array(
                 "{SITE}" => SITENAME,
                 "{NAME}" => $model->name,
@@ -241,11 +248,18 @@ class DefaultController extends OGController {
         $this->performAjaxValidation(array($model));
 
         if (isset($_POST['Advertise'])) {
+            $this->lang = Yii::app()->session['language'];
             $model->attributes = $_POST['Advertise'];
 
             /* Send request mail to admin for advertise */
             $mail = new Sendmail();
-            $subject = SITENAME . " - Advertise request from " . $model->name;
+            
+            if($this->lang=='EN' ){
+                $subject = SITENAME . " - Advertise request from " . $model->name;
+            }elseif($this->lang=='FR'){
+                $subject = SITENAME . " - Bannière publicitaire sur le site";
+            }
+            
             $trans_array = array(
                 "{SITE}" => SITENAME,
                 "{NAME}" => $model->name,

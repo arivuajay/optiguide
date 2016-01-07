@@ -302,12 +302,21 @@ class RetailerDirectoryController extends OGController {
                 $umodel->ID_RELATION = $model->ID_RETAILER;
                 $umodel->save(false);
 
+                $this->lang = Yii::app()->session['language'];
+                
+                
+                
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
                 $retailer_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
                 $enc_url = Myclass::refencryption($retailer_url);
                 $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
-                $subject = SITENAME . "- New optical retailer registration notification - " . $model->COMPAGNIE;
+                
+                if($this->lang=='EN' ){
+                    $subject = SITENAME . " - New optical retailer registration notification - " . $model->COMPAGNIE;
+                }elseif($this->lang=='FR'){
+                    $subject = SITENAME . " - Nouveau profil créé";
+                }
                 $trans_array = array(
                     "{NAME}" => $model->COMPAGNIE,
                     "{UTYPE}" => 'optical retailer',
@@ -318,8 +327,12 @@ class RetailerDirectoryController extends OGController {
 
                 /* Send activatoin link to the user */
                 $mail2 = new Sendmail();
-                $confirmation_url = GUIDEURL . '/optiguide/default/confirmation/id/' . $umodel->sGuid;                               
-                $subject = SITENAME . " - Subscription confirmation mail";
+                $confirmation_url = GUIDEURL . '/optiguide/default/confirmation/id/' . $umodel->sGuid;    
+                if($this->lang=='EN' ){
+                    $subject = SITENAME . " - Subscription confirmation mail";
+                }elseif($this->lang=='FR'){
+                    $subject = SITENAME . " - Finalisez votre inscription";
+                }
                 $trans_array = array(
                     "{NAME}" => $model->COMPAGNIE,
                     "{NEXTSTEPURL}" => $confirmation_url,

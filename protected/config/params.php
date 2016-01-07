@@ -3,7 +3,7 @@
 $whitelist = array('127.0.0.1', '::1');
 if (in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
     $mailsendby = 'smtp';
-    $adminurl   = 'http://localhost/optiguide/branches/dev/';
+    $adminurl   = 'http://local.optiadmin/';
     $repurl     = 'http://local.optirep/'; 
     $guideurl   = 'http://local.optiguide/'; 
 } else {
@@ -17,7 +17,8 @@ if (in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
 return array(
     //Global Settings
     'EMAILLAYOUT' => 'file', // file(file concept) or db(db_concept)
-    'EMAILTEMPLATE' => '/mailtemplate/',
+    'EMAILTEMPLATE_EN' => '/mailtemplate/en/',
+    'EMAILTEMPLATE_FR' => '/mailtemplate/fr/',
     'MAILSENDBY' => $mailsendby,
     //EMAIL Settings
     'SMTPHOST' => 'smtp.gmail.com',
@@ -34,7 +35,7 @@ return array(
     'FB_SECRET_ID' => $fb_sec_id,
     'GOOGLE_APP_ID' => $google_app_id,
     'GOOGLE_SECRET_ID' => $google_sec_id,
-    'ADMIN_EMAIL'   => 'info@bretoncom.com',
+    'ADMIN_EMAIL'   => 'nachiyappan.arumugam@arkinfotec.com',
     'ADMIN_URL'  => $adminurl,   
     
     //Product Settings

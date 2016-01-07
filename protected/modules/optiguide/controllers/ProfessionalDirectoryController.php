@@ -121,7 +121,7 @@ class ProfessionalDirectoryController extends OGController {
 
         // Mapping the user to the current professional.
         if (isset($_POST['RetailersRequest'])) {
-
+            $this->lang = Yii::app()->session['language'];
             $encryptval = Yii::app()->user->encryptval;
 
             $retailername = $_POST['RetailersRequest']['retailername'];
@@ -132,7 +132,13 @@ class ProfessionalDirectoryController extends OGController {
             /* Send mail to admin for confirmation */
             $mail = new Sendmail();
             $nextstep_url = $baseurl . '/optiguide/retailerDirectory/create/profid/' . $encryptval;
-            $subject = Yii::app()->user->name . " professional user send request to join in " . SITENAME;
+            
+            if($this->lang=='EN' ){
+                $subject = Yii::app()->user->name . " professional user send request to join in " . SITENAME;
+            }elseif($this->lang=='FR'){
+                $subject = SITENAME . "- Demande d’information reçue de la part d’un professionnel de la santé ";
+            }
+            
             $trans_array = array(
                 "{SITENAME}" => SITENAME,
                 "{NAME}" => $retailername,
@@ -409,11 +415,20 @@ class ProfessionalDirectoryController extends OGController {
                 $umodel->save(false);
 
                 /* Send mail to admin for confirmation */
+                
+                
+                $this->lang = Yii::app()->session['language'];
+                
                 $mail = new Sendmail();
                 $professional_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
                 $enc_url = Myclass::refencryption($professional_url);
                 $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
-                $subject = SITENAME . "- New professional registration notification - " . $model->NOM . " " . $model->PRENOM;
+                
+                if($this->lang=='EN' ){
+                    $subject = SITENAME . " - New professional registration notification - " . $model->NOM . " " . $model->PRENOM;
+                }elseif($this->lang=='FR'){
+                    $subject = SITENAME . " - Nouveau profil créé";
+                }
                 $trans_array = array(
                     "{NAME}" => $model->NOM,
                     "{UTYPE}" => 'professional',
@@ -424,8 +439,14 @@ class ProfessionalDirectoryController extends OGController {
                 
                 /* Send activatoin link to the user */
                 $mail2 = new Sendmail();
-                $confirmation_url = GUIDEURL . '/optiguide/default/confirmation/id/' . $umodel->sGuid;                               
-                $subject = SITENAME . " - Subscription confirmation mail";
+                $confirmation_url = GUIDEURL . '/optiguide/default/confirmation/id/' . $umodel->sGuid;      
+                
+                if($this->lang=='EN' ){
+                    $subject = SITENAME . " - Subscription confirmation mail";
+                }elseif($this->lang=='FR'){
+                    $subject = SITENAME . " - Finalisez votre inscription";
+                }
+                
                 $trans_array = array(
                     "{NAME}" => $model->NOM,
                     "{NEXTSTEPURL}" => $confirmation_url,
@@ -435,6 +456,7 @@ class ProfessionalDirectoryController extends OGController {
                 
                 Yii::app()->user->setFlash('success', Myclass::t('OG044', '', 'og'));
                 $this->redirect(array('create'));
+                
             } else {
 //                echo "<pre>";
 //               print_r($model->getErrors());

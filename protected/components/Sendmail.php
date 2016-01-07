@@ -47,13 +47,17 @@ class Sendmail {
     }
 
     public function getMessage($body, &$translate) {
-       
+       $this->lang = Yii::app()->session['language'];
         if (EMAILLAYOUT == 'file'):
-         
-            $msg_header = file_get_contents(SITEURL . EMAILTEMPLATE . 'header.html');
-            $msg_footer = file_get_contents(SITEURL . EMAILTEMPLATE . 'footer.html');  
-            $msg_body = file_get_contents(SITEURL . EMAILTEMPLATE . $body . '.html');
-
+            if($this->lang=='EN'){
+                $msg_header = file_get_contents(SITEURL . EMAILTEMPLATE_EN . 'header.html');
+                $msg_footer = file_get_contents(SITEURL . EMAILTEMPLATE_EN . 'footer.html');  
+                $msg_body = file_get_contents(SITEURL . EMAILTEMPLATE_EN . $body . '.html');
+            }elseif($this->lang=='FR'){
+                $msg_header = file_get_contents(SITEURL . EMAILTEMPLATE_FR . 'header.html');
+                $msg_footer = file_get_contents(SITEURL . EMAILTEMPLATE_FR . 'footer.html');  
+                $msg_body = file_get_contents(SITEURL . EMAILTEMPLATE_FR . $body . '.html');
+            }
             $message_dub = $msg_header . $msg_body . $msg_footer;
 
 //        else: // for db concept

@@ -143,8 +143,12 @@ class UserDirectoryController extends OGController {
                             "{NEXTSTEPURL}"=>$nextstep_url,
                             "{USERNAME}" => $model->NOM_UTILISATEUR,
                         );
+                        if($this->lang=='EN' ){
+                            $Subject = SITENAME . " - Reset Password";
+                        }elseif($this->lang=='FR'){
+                            $Subject = SITENAME . " - Réinitialiser votre mot de passe";
+                        }
                         $message = $mail->getMessage('guide_forgot_password', $trans_array);
-                        $Subject = $mail->translate('Reset Password');
                         $mail->send($model->COURRIEL, $Subject, $message);
                     endif;
 

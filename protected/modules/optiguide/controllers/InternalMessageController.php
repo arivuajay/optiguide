@@ -42,7 +42,6 @@ class InternalMessageController extends OGController {
     }
 
     public function actionReadmessage() {
-
         $model = new InternalMessage;
 
         $session_userid = Yii::app()->user->id;
@@ -79,10 +78,16 @@ class InternalMessageController extends OGController {
                 
                 if($rep_email!= '')
                 {    
+                    $this->lang = Yii::app()->session['language'];
                     /* Send notification mail to rep */
                     $mail         = new Sendmail();
-                    $nextstep_url = REPURL.'optirep/internalMessage/readmessage/convid/' .$model->id1;           
-                    $subject      = SITENAME." - ".Yii::app()->user->name." sent message for you ( ".$todaydate." )";
+                    $nextstep_url = REPURL.'optirep/internalMessage/readmessage/convid/' .$model->id1; 
+                    if($this->lang=='EN'){
+                        $subject      = SITENAME." - ".Yii::app()->user->name." sent message for you ( ".$todaydate." )";
+                    }else if($this->lang=='FR'){
+                        $subject = SITENAME . " - Vous avez un nouveau message";
+                    }
+                    
                     $trans_array  = array(
                         "{SITENAME}" => SITENAME,
                         "{NAME}"     => Yii::app()->user->name,

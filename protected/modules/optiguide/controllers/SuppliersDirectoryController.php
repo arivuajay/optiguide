@@ -78,15 +78,20 @@ class SuppliersDirectoryController extends OGController {
                 $command->bindParam(":flag", $single_record['flag']);
                 $command->execute();
 
+                $this->lang = Yii::app()->session['language'];
                 $mail = new Sendmail;
                 $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/renewsubscription';
+                if($this->lang=='EN' ){
+                    $Subject = SITENAME . " - Account expiry reminder";
+                }elseif($this->lang=='FR'){
+                    $Subject = SITENAME . " - Votre abonnement tire à sa fin";
+                }
                 $trans_array = array(
                     "{NEXTSTEPURL}" => $nextstep_url,
                     "{RENEWALDAY}" => date("d-m-Y", strtotime($single_record['expirydate'])),
                     "{USERNAME}" => $single_record['username'],
                 );
                 $message = $mail->getMessage('renewal_mail', $trans_array);
-                $Subject = $mail->translate('Renewal You Account');
                 $mail->send($single_record['email'], $Subject, $message);
             }
             $flag = 0;
@@ -1019,8 +1024,8 @@ class SuppliersDirectoryController extends OGController {
 
             /* Send mail to admin for confirmation */
             $mail = new Sendmail();
-            $suppliers_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
-            $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
+            $suppliers_url = ADMIN_URL . 'admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
+            $invoice_url = ADMIN_URL . 'admin/paymentTransaction/view/id/' . $ptmodel->id;
 
             $enc_url = Myclass::refencryption($suppliers_url);
             $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
@@ -1028,7 +1033,11 @@ class SuppliersDirectoryController extends OGController {
             $enc_url2 = Myclass::refencryption($invoice_url);
             $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
 
-            $subject = SITENAME . "- New suppliers registration notification with invoice details - " . $model->COMPAGNIE;
+            if($this->lang=='EN' ){
+                $subject = SITENAME . " - New suppliers registration notification with invoice details - " . $model->COMPAGNIE;
+            }elseif($this->lang=='FR'){
+                $subject = SITENAME . " - Nouveau profil à authentifier ";
+            }
             $trans_array = array(
                 "{NAME}" => $model->COMPAGNIE,
                 "{UTYPE}" => 'suppliers',
@@ -1042,13 +1051,24 @@ class SuppliersDirectoryController extends OGController {
             $message = $mail->getMessage('supplier_registration', $trans_array);
             $mail->send(ADMIN_EMAIL, $subject, $message);
 
+            if($this->lang=='EN' ){
+                $subject = SITENAME . " - Thanks for your subscription as a supplier and invoice details.";
+                $message1 = 'Thanks for your subscription as a supplier user type in ' . SITENAME.'.';
+                $message2 = 'Your subscription will expire on ' . $model->profile_expirydate . '.';
+                
+            }elseif($this->lang=='FR'){
+                $subject = SITENAME . " - Votre inscription comme fournisseur est complétée";
+                $message1 = 'Nous vous remercions de vous être inscrit comme fournisseur sur le site ' . SITENAME.'.';
+                $message2 = 'Votre inscription sera en vigueur jusqu’au ' . $model->profile_expirydate . '.';
+            }
             $subject = SITENAME . "- Thanks for your subscription as a supplier and invoice details.";
             $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/transactions';
             $trans_array = array(
                 "{NAME}" => $model->COMPAGNIE,
                 "{UTYPE}" => 'suppliers',
                 "{NEXTSTEPURL}" => $nextstep_url,
-                "{message}" => 'Thanks for your subscription as a supplier user type in ' . SITENAME . ' site.Your subscription will expire on ' . $model->profile_expirydate . '.',
+                "{message1}" => $message1,
+                "{message2}" => $message2,
                 "{item_name}" => $itemname,
                 "{pay_type}" => 'Credit Card',
                 "{total_price}" => $pdetails['total_price'],
@@ -1281,6 +1301,7 @@ class SuppliersDirectoryController extends OGController {
 
                         /* Send mail to admin for confirmation */
                         $mail = new Sendmail();
+                        
                         $suppliers_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
                         $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
 
@@ -1289,8 +1310,12 @@ class SuppliersDirectoryController extends OGController {
 
                         $enc_url2 = Myclass::refencryption($invoice_url);
                         $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
-
-                        $subject = SITENAME . "- New suppliers registration notification with invoice details - " . $model->COMPAGNIE;
+                        
+                        if($this->lang=='EN' ){
+                            $subject = SITENAME . " - New suppliers registration notification with invoice details - " . $model->COMPAGNIE;
+                        }elseif($this->lang=='FR'){
+                            $subject = SITENAME . " - Nouveau profil à authentifier ";
+                        }
                         $trans_array = array(
                             "{NAME}" => $model->COMPAGNIE,
                             "{UTYPE}" => 'suppliers',
@@ -1303,14 +1328,27 @@ class SuppliersDirectoryController extends OGController {
                         );
                         $message = $mail->getMessage('supplier_registration', $trans_array);
                         $mail->send(ADMIN_EMAIL, $subject, $message);
-
+                        
+                        
                         $subject = SITENAME . "- Thanks for your subscription as a supplier and invoice details.";
                         $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/transactions';
                         $contact_url = $baseurl . '/optiguide/default/contactus';
+                        
+                        if($this->lang=='EN' ){
+                            $subject = SITENAME . " - Thanks for your subscription as a supplier and invoice details.";
+                            $message1 = 'Thank you for subscribing to ' . SITENAME.' Website. Your payment status is Pending,';
+                            $message2 = 'Please <a href="' . $contact_url . '">contact</a> admin for further information.';
+
+                        }elseif($this->lang=='FR'){
+                            $subject = SITENAME . " - Votre inscription comme fournisseur est complétée";
+                            $message1 = 'Nous vous remercions de vous être inscrit comme fournisseur sur le site ' . SITENAME.'. Votre paiement est présentement en traitement.';
+                            $message2 = 'Pour plus de détails, vous pouvez <a href="' . $contact_url . '">nous contacter</a>.';
+                        }
                         $trans_array = array(
                             "{NAME}" => $model->COMPAGNIE,
                             "{NEXTSTEPURL}" => $nextstep_url,
-                            "{message}" => 'Thanks for your subscription as a supplier user type in ' . SITENAME . ' site.Your payment status is Pending, So please <a href="' . $contact_url . '">contact</a> admin for further information.',
+                            "{message1}" => $message1,
+                            "{message2}" => $message2,
                             "{item_name}" => $_POST['item_name'],
                             "{pay_type}" => $ptmodel->payment_type,
                             "{total_price}" => $pdetails['total_price'],
@@ -1903,11 +1941,11 @@ class SuppliersDirectoryController extends OGController {
             $subtype = $pdetails['subscription_type'];
 
             if ($subtype == 1) {
-                $itemname = 'Renew Supplier Subscription - Profile only';
+                $itemname = ' - Renew Supplier Subscription - Profile only';
             } else if ($subtype == 2) {
-                $itemname = 'Renew Supplier Subscription - Profile & logo';
+                $itemname = ' - Renew Supplier Subscription - Profile & logo';
             } else if ($subtype == 3) {
-                $itemname = 'Renew Supplier Subscription - Logo only';
+                $itemname = ' - Renew Supplier Subscription - Logo only';
             }
 
             // Update the expiry date in supplier table once the payment is suceess (Completed)
@@ -1939,12 +1977,24 @@ class SuppliersDirectoryController extends OGController {
             $ptmodel->save(false);
 
             /* Send mail to admin for confirmation */
-            $mail = new Sendmail();
+            $mail = new Sendmail();              
+            
+            $umodel = UserDirectory::model()->findByAttributes(array('ID_RELATION' => $supplierid, 'NOM_TABLE' => 'Fournisseurs'));
+            $suppliers_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
             $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
+
+            $enc_url = Myclass::refencryption($suppliers_url);
+            $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
+            
+            
             $enc_url2 = Myclass::refencryption($invoice_url);
             $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
-
-            $subject = SITENAME . $itemname . " notification with invoice details - " . $model->COMPAGNIE;
+            
+            if($this->lang=='EN' ){
+                $subject = SITENAME . $itemname . " notification with invoice details - " . $model->COMPAGNIE;
+            }elseif($this->lang=='FR'){
+                $subject = SITENAME . " - Renouvellement de profil exigeant votre approbation ";
+            }
             $trans_array = array(
                 "{NAME}" => $model->COMPAGNIE,
                 "{UTYPE}" => 'suppliers',
@@ -1958,12 +2008,23 @@ class SuppliersDirectoryController extends OGController {
             $message = $mail->getMessage('supplier_renew_subscription', $trans_array);
             $mail->send(ADMIN_EMAIL, $subject, $message);
 
-            $subject = SITENAME . "- Thanks for your renewal subscription as a supplier and invoice details.";
-            $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/transactions';
+            $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/transactions';            
+            
+            if($this->lang=='EN' ){
+                $subject = SITENAME . " - Thanks for your subscription as a supplier and invoice details.";
+                $message1 = 'Thanks for your renewal subscription as a supplier user type in ' . SITENAME.' site.';
+                $message2 = 'Your subscription will expire on '. $model->profile_expirydate . '.';
+
+            }elseif($this->lang=='FR'){
+                $subject = SITENAME . " - Votre inscription comme fournisseur est complétée";
+                $message1 = 'Nous vous remercions d’avoir renouvelé votre inscription en tant que fournisseur sur le site ' . SITENAME.'.';
+                $message2 = 'Votre inscription sera en vigueur jusqu’au '. $model->profile_expirydate . '.';
+            }
             $trans_array = array(
                 "{NAME}" => $model->COMPAGNIE,
                 "{NEXTSTEPURL}" => $nextstep_url,
-                "{message}" => 'Thanks for your renewal subscription as a supplier user type in ' . SITENAME . ' site.Your subscription will expire on ' . $model->profile_expirydate . '.',
+                "{message1}" => $message1,
+                "{message2}" => $message2,
                 "{item_name}" => $itemname,
                 "{pay_type}" => 'Credit Card',
                 "{total_price}" => $pdetails['total_price'],
@@ -2107,11 +2168,23 @@ class SuppliersDirectoryController extends OGController {
 
                         /* Send mail to admin for confirmation */
                         $mail = new Sendmail();
-                        $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
-                        $enc_url2 = Myclass::refencryption($invoice_url);
-                        $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
+                        
+                        $user = UserDirectory::model()->findByAttributes(array('ID_RELATION' => $supplierid, 'NOM_TABLE' => 'Fournisseurs'));
+                       $suppliers_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $user->ID_UTILISATEUR;
+                       $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
 
-                        $subject = SITENAME . $_POST['item_name'] . " notification with invoice details - " . $model->COMPAGNIE;
+                       $enc_url = Myclass::refencryption($suppliers_url);
+                       $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
+
+
+                       $enc_url2 = Myclass::refencryption($invoice_url);
+                       $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
+
+                       if($this->lang=='EN' ){
+                           $subject = SITENAME . $itemname . " notification with invoice details - " . $model->COMPAGNIE;
+                       }elseif($this->lang=='FR'){
+                           $subject = SITENAME . " - Renouvellement de profil exigeant votre approbation ";
+                       }
                         $trans_array = array(
                             "{NAME}" => $model->COMPAGNIE,
                             "{UTYPE}" => 'suppliers',
@@ -2125,14 +2198,26 @@ class SuppliersDirectoryController extends OGController {
                         $message = $mail->getMessage('supplier_renew_subscription', $trans_array);
                         $mail->send(ADMIN_EMAIL, $subject, $message);
 
-                        $user = UserDirectory::model()->findByAttributes(array('ID_RELATION' => $pdetails['user_id'], 'NOM_TABLE' => 'Fournisseurs'));
-                        $subject = SITENAME . "- Thanks for your renewal subscription as a supplier and invoice details.";
+                        
+                        
                         $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/transactions';
                         $contact_url = $baseurl . '/optiguide/default/contactus';
+                        
+                        if($this->lang=='EN' ){
+                            $subject = SITENAME . " - Thanks for your renewal subscription as a supplier and invoice details.";
+                            $message1 = 'Thank you for the renewal of your account in ' . SITENAME.' Website. However, note that your payment status is currently pending.';
+                            $message2 = 'Please <a href="' . $contact_url . '">contact</a> admin for further information. ';
+
+                        }elseif($this->lang=='FR'){
+                            $subject = SITENAME . " - Renouvellement de votre profil fournisseur";
+                            $message1 = 'Nous vous remercions d’avoir renouvelé votre inscription en tant que fournisseur sur le site ' . SITENAME.'. Notez que votre paiement est présentement en traitement.';
+                            $message2 = 'Veuillez <a href="' . $contact_url . '">nous contacter</a> pour plus de détails.';
+                        }
                         $trans_array = array(
                             "{NAME}" => $model->COMPAGNIE,
                             "{NEXTSTEPURL}" => $nextstep_url,
-                            "{message}" => 'Thank for renewal your account in ' . SITENAME . ' site.Your payment status is Pending, So please <a href="' . $contact_url . '">contact</a> admin for further information.',
+                            "{message1}" => $message1,
+                            "{message2}" => $message2,
                             "{item_name}" => $_POST['item_name'],
                             "{pay_type}" => $ptmodel->payment_type,
                             "{total_price}" => $pdetails['total_price'],

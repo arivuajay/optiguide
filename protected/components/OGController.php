@@ -11,7 +11,7 @@ class OGController extends Controller {
      * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
      */
     public $layout = '//layouts/column3';
-
+    public $lang = "EN";
     public function init() {
         parent::init();
 
