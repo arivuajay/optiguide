@@ -128,10 +128,15 @@ class RetailerDirectoryController extends ORController {
 
             /* Send notification mail to admin */
             $mail = new Sendmail();
+            $this->lang = Yii::app()->session['language'];
             $user_url = ADMIN_URL . 'admin/retailerDirectory/update/id/' . $retail_query['ID_RETAILER'];
             $enc_url = Myclass::refencryption($user_url);
             $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
-            $subject = SITENAME . " - " . $rep_name . " representative report the user ( " . $uname . " )";
+            if($this->lang=='EN' ){
+                $subject = SITENAME." - ".$rep_name." representative report the user ( ".$uname." )";
+            }elseif($this->lang=='FR'){
+                $subject =  "Un profil signalé sur le site ".SITENAME;
+            }
             $trans_array = array(
                 "{SITENAME}" => SITENAME,
                 "{NAME}" => $uname,

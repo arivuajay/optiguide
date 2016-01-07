@@ -3,14 +3,14 @@
             <tr>
                 <td  style="padding:20px 20px 0 20px">
                     <p style="color: #545454; font-size: 13px; line-height: 20px;">
-                        Dear {USERNAME},
+                        Bonjour {USERNAME},
                     </p>
                     <p style="color: #545454; font-size: 13px; line-height: 20px;">
-                        This is the My Notes Reminder Mail, You taken this note on {CREATEDAT}
+                        Petit rappel : Vous avez pris la note suivante à partir de votre profil Opti-Rep en date du {CREATEDAT}
                     </p>
                     <table>
                         <tr>
-                            <td>Client Name</td>
+                            <td>Nom du client</td>
                             <td> : {CLIENTNAME}</td>
                         </tr>
                         <tr>
@@ -18,9 +18,12 @@
                             <td> : {MESSAGE}</td>
                         </tr>
                         <tr>
-                            <td>Alert Date</td>
+                            <td>Date de l’alerte</td>
                             <td> : {ALERTDATE}</td>
                         </tr>
                     </table>
                 </td>
+            </tr>
+            <td  style="padding:20px 20px 10px;"> <p  style="color: #545454; font-size: 13px; line-height: 20px;">Merci,<br />
+                        The {SITENAME} Team</p></td>
             </tr>

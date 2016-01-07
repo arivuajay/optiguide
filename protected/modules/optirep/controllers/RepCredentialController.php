@@ -333,6 +333,7 @@ class RepCredentialController extends ORController {
     }
 
     protected function processPaymentTransaction($rep_temp_random_id) {
+        $baseurl = Yii::app()->request->getBaseUrl(true);
         $temp_random_id = $rep_temp_random_id;
         $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
         if (!empty($result)) {
@@ -367,11 +368,19 @@ class RepCredentialController extends ORController {
                 if (!empty($rep_email)) {
                     $rep_username = $registration['step2']['RepCredentials']['rep_username'];
                     $mail = new Sendmail;
+                    $this->lang = Yii::app()->session['language'];
+                    $contact_url = $baseurl . '/optirep/default/contactus';
                     $trans_array = array(
                         "{USERNAME}" => $rep_username,
+                        "{NEXTSTEPURL}" => $contact_url,
                     );
+                    if($this->lang=='EN' ){
+                        $subject = SITENAME . " - Registration - Payment Status Pending ";
+                    }elseif($this->lang=='FR'){
+                        $subject =  " Abonnement à ".SITENAME;
+                    }
                     $message = $mail->getMessage('rep_registration_pending_status', $trans_array);
-                    $Subject = $mail->translate('Registration - Payment Status Pending');
+//                    $Subject = $mail->translate('Registration - Payment Status Pending');
                     $mail->send($rep_email, $Subject, $message);
                 }
             }

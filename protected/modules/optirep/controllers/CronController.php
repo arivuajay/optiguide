@@ -1,6 +1,8 @@
 <?php
 
 class CronController extends ORController {
+    
+    
 
     public function actionMynotesReminder() {
         $today = date("Y-m-d");
@@ -14,6 +16,12 @@ class CronController extends ORController {
                 $client = UserDirectory::model()->findByPk($today_note['ID_UTILISATEUR']);
 
                 if (!empty($rep_credential_profile['rep_profile_email'])):
+                    Yii::app()->session['language'] = $client['LANGUE'];
+                    if($client['LANGUE'] == 'EN' ){
+                        $subject = SITENAME."- My Notes Reminder";
+                    }elseif($client['LANGUE'] =='FR'){
+                        $subject =  "Rappel - Votre note sur ".SITENAME;
+                    }
                     $mail = new Sendmail;
                     $trans_array = array(
                         "{USERNAME}" => $rep_credential['rep_username'],
@@ -22,9 +30,10 @@ class CronController extends ORController {
                         "{ALERTDATE}" => $today_note['alert_date'],
                         "{CREATEDAT}" => $today_note['created_at']
                     );
+                    
                     $message = $mail->getMessage('rep_mynotes_reminder', $trans_array);
-                    $Subject = $mail->translate('OptiRep - My Notes Reminder');
-                    $mail->send($rep_credential_profile['rep_profile_email'], $Subject, $message);
+//                    $Subject = $mail->translate('OptiRep - My Notes Reminder');
+                    $mail->send($rep_credential_profile['rep_profile_email'], $subject, $message);
                 endif;
             }
         }
@@ -46,7 +55,9 @@ class CronController extends ORController {
                 $rep_profile_detail = $rep_detail->repCredentialProfiles;
                 
                 if (!empty($rep_profile_detail['rep_profile_email'])):
+                    
                     $mail = new Sendmail;
+                    
                     $trans_array = array(
                         "{USERNAME}" => $rep_detail['rep_username'],
                         "{EXPIRYDATE}" => Myclass::dateFormat($rep_detail['rep_expiry_date']),

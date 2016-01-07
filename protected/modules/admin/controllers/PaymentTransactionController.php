@@ -115,6 +115,21 @@ class PaymentTransactionController extends Controller {
                     Yii::app()->user->setFlash('success', 'PaymentTransaction status Updated Successfully!!!');
                     
                     $mail = new Sendmail();
+                    $this->lang = Yii::app()->session['language'];
+                    
+                    if($this->lang=='EN' ){
+                        if($model->supp_renew_status == 1){
+                            $subject = 'OptiGuide - Renew Supplier Subscription';
+                        }else{
+                            $subject = 'OptiGuide - Supplier Subscription';
+                        }
+                    }elseif($this->lang=='FR'){
+                        if($model->supp_renew_status == 1){
+                            $subject = 'Bienvenu sur notre site OptiGuide';
+                        }else{
+                            $subject = 'Bienvenu sur notre site OptiGuide';
+                        }
+                    }
                     $user = UserDirectory::model()->findByAttributes(array('ID_RELATION'=>$fmodel->ID_FOURNISSEUR,'NOM_TABLE'=>'Fournisseurs'));
 //                    $login_url = $baseurl;
                     $trans_array = array(
@@ -123,11 +138,7 @@ class PaymentTransactionController extends Controller {
                         "{SITENAME}" => 'OptiGuide',
                     );
                     
-                    if($model->supp_renew_status == 1){
-                        $subject = 'Renew Supplier Subscription';
-                    }else{
-                        $subject = 'Supplier Subscription';
-                    }
+                    
                     $message = $mail->getMessage('supplier_backend_completed_status', $trans_array);
                     if($user->COURRIEL!=''){
                         $mail->send($user->COURRIEL, $subject, $message);

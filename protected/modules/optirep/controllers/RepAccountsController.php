@@ -428,6 +428,7 @@ class RepAccountsController extends ORController {
     }
 
     protected function processPaymentTransaction($rep_temp_random_id) {
+        $baseurl = Yii::app()->request->getBaseUrl(true);
         $temp_random_id = $rep_temp_random_id;
         $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
         if (!empty($result)) {
@@ -464,14 +465,22 @@ class RepAccountsController extends ORController {
                 $rep_profile = $rep_account->repCredentialProfiles;
                 $rep_email = $rep_profile['rep_profile_email'];
                 if (!empty($rep_email)) {
+                    $this->lang = Yii::app()->session['language'];
                     $rep_username = $rep_account['rep_username'];
                     $mail = new Sendmail;
+                    
+                    $contact_url = $baseurl . '/optirep/default/contactus';
                     $trans_array = array(
                         "{USERNAME}" => $rep_username,
+                        "{NEXTSTEPURL}" => $contact_url,
                     );
+                    if($this->lang=='EN' ){
+                        $subject = SITENAME . " Buy More Rep Accounts - Payment Status Pending ";
+                    }elseif($this->lang=='FR'){
+                        $subject =  " Abonnement à ".SITENAME;
+                    }
                     $message = $mail->getMessage('rep_admin_buymoreaccounts_pending_status', $trans_array);
-                    $Subject = $mail->translate('Buy More Rep Accounts - Payment Status Pending');
-                    $mail->send($rep_email, $Subject, $message);
+                    $mail->send($rep_email, $subject, $message);
                 }
             }
         }
@@ -636,6 +645,7 @@ class RepAccountsController extends ORController {
     }
 
     protected function processRenewalPaymentTransaction($rep_temp_random_id) {
+        $baseurl = Yii::app()->request->getBaseUrl(true);
         $temp_random_id = $rep_temp_random_id;
         $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
         if (!empty($result)) {
@@ -672,13 +682,22 @@ class RepAccountsController extends ORController {
                 $rep_profile = $rep_account->repCredentialProfiles;
                 $rep_email = $rep_profile['rep_profile_email'];
                 if (!empty($rep_email)) {
+                    
+                    $this->lang = Yii::app()->session['language'];
                     $rep_username = $rep_account['rep_username'];
                     $mail = new Sendmail;
+                    $contact_url = $baseurl . '/optirep/default/contactus';
                     $trans_array = array(
                         "{USERNAME}" => $rep_username,
+                        "{NEXTSTEPURL}" => $contact_url,
                     );
+                    if($this->lang=='EN' ){
+                        $subject = SITENAME . " Rep Accounts Renewal - Payment Status Pending ";
+                    }elseif($this->lang=='FR'){
+                        $subject =  " Renouvellement à ".SITENAME;
+                    }
                     $message = $mail->getMessage('rep_admin_renewal_pending_status', $trans_array);
-                    $Subject = $mail->translate('Rep Accounts Renewal - Payment Status Pending');
+//                    $Subject = $mail->translate('Rep Accounts Renewal - Payment Status Pending');
                     $mail->send($rep_email, $Subject, $message);
                 }
             }

@@ -84,7 +84,12 @@ class UserDirectoryController extends Controller {
                 
                 Yii::app()->user->setFlash('success', 'L\'accès de l\'utilisateur créé avec succès!!!');
                 $mail = new Sendmail();
-                $subject = "OptiGuide- your account details";
+                $this->lang = Yii::app()->session['language'];
+                    if($this->lang=='EN' ){
+                            $subject = 'OptiGuide- your account details';
+                    }elseif($this->lang=='FR'){
+                            $subject = 'OptiGuide- your account details';
+                    }
 
                 $nextstep_url = GUIDEURL . 'optiguide/';
                 $trans_array = array(

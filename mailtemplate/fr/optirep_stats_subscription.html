@@ -2,15 +2,19 @@
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td  style="padding:20px 20px 0 20px">
-                    <p style="color: #545454; font-size: 13px; line-height: 20px;">Dear Admin!</p>
-                    <p style="color: #545454; font-size: 13px; line-height: 20px;">Statistics subscription payment done by {NAME} in {SITENAME} site.</p>                    
-                    <p style="color: #545454; font-size: 20px; line-height: 20px;">Invoice Details</p>
-                    <p style="color: #545454; font-size: 13px; line-height: 20px;">Subscription Type : {item_name}</p>
-                    <p style="color: #545454; font-size: 13px; line-height: 20px;">Total price : {total_price}</p>
-                    <p style="color: #545454; font-size: 13px; line-height: 20px;">Payment status : {payment_status}</p>
-                    <p style="color: #545454; font-size: 13px; line-height: 20px;">Txn Id : {txn_id}</p>
-                    <p style="color: #545454; font-size: 13px; line-height: 20px;"><a href="{INVOICEURL}">Click Here</a> to see the invoice details.</p>
-                    <p style="color: #545454; font-size: 13px; line-height: 20px;">If you can't click the button above, you can copying and pasting (or typing) the following address into your browser:</p>
-                    <p style="color: #545454; font-size: 13px; line-height: 20px;"><a href="{INVOICEURL}">{INVOICEURL}</a></p>
+                    <p style="color: #545454; font-size: 13px; line-height: 20px; margin-bottom: 20px;">Cher administrateur,</p>
+                    <p style="color: #545454; font-size: 13px; line-height: 20px;">Un paiement pour l’accès aux statistiques d’{UTYPE} a été reçu de la part de {NAME}.</p>                    
+                    <p style="color: #545454; font-size: 20px; line-height: 20px;">Voici les détails de ce paiement :</p>
+                    <p style="color: #545454; font-size: 13px; line-height: 10px;">Type d’inscription : {item_name}</p>
+                    <p style="color: #545454; font-size: 13px; line-height: 10px;">Prix total : {total_price}</p>
+                    <p style="color: #545454; font-size: 13px; line-height: 10px;">État du paiement : {payment_status}</p>
+                    <p style="color: #545454; font-size: 13px; line-height: 10px;margin-bottom: 20px;">Numéro de transaction PayPal : {txn_id}</p>
+                    <p style="color: #545454; font-size: 13px; line-height: 20px;"><a href="{INVOICEURL}">Cliquez ici</a> pour toutes les informations entourant cette inscription.</p>
+                    <p style="color: #545454; font-size: 13px; line-height: 20px;">Si vous ne pouvez pas utiliser le lien ci-dessus, copiez et collez le lien suivant dans votre navigateur :</p>
+                    <p style="color: #545454; font-size: 13px; line-height: 10px;"><a href="{INVOICEURL}">{INVOICEURL}</a></p>
                 </td>
             </tr>
+            <td  style="padding:20px 20px 10px;"> <p  style="color: #545454; font-size: 13px; line-height: 20px;">Merci,<br />
+                        The {SITENAME} Team</p></td>
+            </tr>
+            

@@ -960,7 +960,12 @@ class SuppliersDirectoryController extends Controller {
                         $pmodel->save();
                     }
                     $mail = new Sendmail();
-                    $subject = SITENAME . "- renewed your account";
+                    $this->lang = Yii::app()->session['language'];
+                    if($this->lang=='EN' ){
+                            $subject = 'OptiGuide - Renewed your account';
+                    }elseif($this->lang=='FR'){
+                            $subject = 'Bienvenu sur notre site OptiGuide';
+                    }
                     
                     $nextstep_url = GUIDEURL . 'optiguide/';
                     $trans_array = array(

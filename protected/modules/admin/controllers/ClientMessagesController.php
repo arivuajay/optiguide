@@ -75,7 +75,13 @@ class ClientMessagesController extends Controller {
 
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
-                $subject = SITENAME . "- Reminder Mail - Today meet with client " . $client_name;
+                $this->lang = Yii::app()->session['language'];
+                if($this->lang=='EN' ){
+                    $subject = SITENAME . "- Reminder Mail - Today meet with client " . $client_name;
+                }elseif($this->lang=='FR'){
+                    $subject =  SITENAME." - Rappel Mail - Aujourd'hui rencontrer client ". $client_name;
+                }
+                
                 $trans_array = array(
                     "{REMKEY}" => $randkey,
                     "{NAME}" => $client_name,
@@ -129,7 +135,12 @@ class ClientMessagesController extends Controller {
 
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
-                $subject = SITENAME . "- Reminder Mail - Today meet with professional " . $client_name;
+                $this->lang = Yii::app()->session['language'];
+                if($this->lang=='EN' ){
+                    $subject = SITENAME . "- Reminder Mail - Today meet with professional " . $client_name;
+                }elseif($this->lang=='FR'){
+                    $subject =  SITENAME." - Rappel Mail - Aujourd'hui rencontrer professionnelle ". $client_name;
+                }
                 $trans_array = array(
                     "{REMKEY}" => $randkey,
                     "{NAME}" => $client_name,
@@ -185,7 +196,12 @@ class ClientMessagesController extends Controller {
 
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
-                $subject = SITENAME . "- Reminder Mail - Today meet with retailer " . $client_name;
+                $this->lang = Yii::app()->session['language'];
+                if($this->lang=='EN' ){
+                    $subject = SITENAME . "- Reminder Mail - Today meet with retailer " . $client_name;
+                }elseif($this->lang=='FR'){
+                    $subject =  SITENAME." - Rappel Mail - Aujourd'hui, rencontre avec le détaillant ". $client_name;
+                }
                 $trans_array = array(
                     "{REMKEY}" => $randkey,
                     "{NAME}" => $client_name,

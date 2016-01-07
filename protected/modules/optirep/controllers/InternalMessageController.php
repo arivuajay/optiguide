@@ -100,7 +100,7 @@ class InternalMessageController extends ORController {
                 $nextstep_url = GUIDEURL . 'optiguide/internalMessage/readmessage/convid/' . $model->id1;
                                 
                 if($this->lang=='EN'){
-                    $subject = SITENAME . " - " . $ufrm_infos->NOM_UTILISATEUR . " sent message for you ( " . $todaydate . " )";
+                    $subject      = SITENAME." - ".Yii::app()->user->name." sent message for you ( ".$todaydate." )";
                 }else if($this->lang=='FR'){
                     $subject = SITENAME . " - Vous avez un nouveau message";
                 }
@@ -162,9 +162,14 @@ class InternalMessageController extends ORController {
 
                 if ($ret_email != '') {
                     /* Send notification mail to rep */
+                    $this->lang = Yii::app()->session['language'];
                     $mail = new Sendmail();
                     $nextstep_url = GUIDEURL . 'optiguide/internalMessage/readmessage/convid/' . $model->id1;
-                    $subject = SITENAME . " - " . $ufrm_infos->NOM_UTILISATEUR . " sent message for you ( " . $todaydate . " )";
+                    if($this->lang=='EN'){
+                        $subject      = SITENAME." - ".$ufrm_infos->NOM_UTILISATEUR." sent message for you ( ".$todaydate." )";
+                    }else if($this->lang=='FR'){
+                        $subject = SITENAME . " - Vous avez un nouveau message";
+                    }
                     $trans_array = array(
                         "{SITENAME}" => SITENAME,
                         "{NAME}" => $ufrm_infos->NOM_UTILISATEUR,

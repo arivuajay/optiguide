@@ -49,6 +49,7 @@ class Sendmail {
     public function getMessage($body, &$translate) {
        $this->lang = Yii::app()->session['language'];
         if (EMAILLAYOUT == 'file'):
+            
             if($this->lang=='EN'){
                 $msg_header = file_get_contents(SITEURL . EMAILTEMPLATE_EN . 'header.html');
                 $msg_footer = file_get_contents(SITEURL . EMAILTEMPLATE_EN . 'footer.html');  
@@ -71,10 +72,17 @@ class Sendmail {
     }
 
     public function translate($msg_dub, $translate = array()) {
+        if(strcmp(SITENAME,'OptiRep') ==0){
+            $site_logo= EMAILHEADERIMAGE_REP;
+        }
+        if(strcmp(SITENAME,'OptiGuide') == 0){
+            $site_logo= EMAILHEADERIMAGE_GUIDE;
+        }
+        
         $def_trans = array(
             "{SITEURL}" => SITEURL,
             "{SITENAME}" => SITENAME,
-            "{EMAILHEADERIMAGE}" => Yii::app()->createAbsoluteUrl(EMAILHEADERIMAGE),
+            "{EMAILHEADERIMAGE}" => $site_logo,
             "{CONTACTMAIL}" => CONTACTMAIL,
         );
 

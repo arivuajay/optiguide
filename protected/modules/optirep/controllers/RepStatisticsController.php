@@ -256,12 +256,16 @@ class RepStatisticsController extends ORController {
 
                     /* Send mail to admin for confirmation */
                     $mail = new Sendmail();
-
+                    $this->lang = Yii::app()->session['language'];
                     $invoice_url = ADMIN_URL . '/admin/paymentTransaction/repview/id/' . $ptmodel->id;
                     $enc_url2    = Myclass::refencryption($invoice_url);
                     $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
-
-                    $subject = SITENAME . "- Statistics subscription notification with invoice details - " . $repname;
+                    
+                    if($this->lang=='EN' ){
+                        $subject = SITENAME . "- Statistics subscription notification with invoice details - " . $repname;
+                    }elseif($this->lang=='FR'){
+                        $subject =  "Inscription à ".SITENAME;
+                    }
                     $trans_array = array(
                     "{NAME}" => $repname,
                     "{UTYPE}" => 'Opti-Rep',               
@@ -306,12 +310,20 @@ class RepStatisticsController extends ORController {
 
         /* Send mail to admin for confirmation */
         $mail = new Sendmail();
+        
+        $this->lang = Yii::app()->session['language'];
 
+        if($this->lang=='EN' ){
+            $subject = SITENAME . "- Statistics subscription notification with invoice details - " . $repname;
+        }elseif($this->lang=='FR'){
+            $subject =  "Inscription à ".SITENAME;
+        }
+        
+        
         $invoice_url   = ADMIN_URL . '/admin/paymentTransaction/repview/id/' . $ptmodel->id;
         $enc_url2      = Myclass::refencryption($invoice_url);
         $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
 
-        $subject = SITENAME . "- Statistics subscription notification with invoice details - " . $repname;
         $trans_array = array(
         "{NAME}" => $repname,
         "{UTYPE}" => 'Opti-Rep',               

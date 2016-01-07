@@ -1061,7 +1061,6 @@ class SuppliersDirectoryController extends OGController {
                 $message1 = 'Nous vous remercions de vous être inscrit comme fournisseur sur le site ' . SITENAME.'.';
                 $message2 = 'Votre inscription sera en vigueur jusqu’au ' . $model->profile_expirydate . '.';
             }
-            $subject = SITENAME . "- Thanks for your subscription as a supplier and invoice details.";
             $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/transactions';
             $trans_array = array(
                 "{NAME}" => $model->COMPAGNIE,
@@ -1330,7 +1329,6 @@ class SuppliersDirectoryController extends OGController {
                         $mail->send(ADMIN_EMAIL, $subject, $message);
                         
                         
-                        $subject = SITENAME . "- Thanks for your subscription as a supplier and invoice details.";
                         $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/transactions';
                         $contact_url = $baseurl . '/optiguide/default/contactus';
                         

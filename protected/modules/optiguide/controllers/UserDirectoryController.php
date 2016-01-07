@@ -136,7 +136,7 @@ class UserDirectoryController extends OGController {
 
                     if (!empty($model->COURRIEL)):
                         //$loginlink = Yii::app()->createAbsoluteUrl('/site/default/login');
-                        
+                        $this->lang = Yii::app()->session['language'];
                         $mail = new Sendmail;
                         $nextstep_url = $baseurl . '/optiguide/userDirectory/resetpassword/cnfrm/'.$model->reset_pwd_code;
                         $trans_array = array(
@@ -144,12 +144,12 @@ class UserDirectoryController extends OGController {
                             "{USERNAME}" => $model->NOM_UTILISATEUR,
                         );
                         if($this->lang=='EN' ){
-                            $Subject = SITENAME . " - Reset Password";
+                            $subject = SITENAME . " - Reset Password";
                         }elseif($this->lang=='FR'){
-                            $Subject = SITENAME . " - Réinitialiser votre mot de passe";
+                            $subject = SITENAME . " - Réinitialiser votre mot de passe";
                         }
                         $message = $mail->getMessage('guide_forgot_password', $trans_array);
-                        $mail->send($model->COURRIEL, $Subject, $message);
+                        $mail->send($model->COURRIEL, $subject, $message);
                     endif;
 
                     Yii::app()->user->setFlash('success', Myclass::t("OR737", "", "or"));

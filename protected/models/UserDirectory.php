@@ -47,7 +47,7 @@ class UserDirectory extends CActiveRecord
             return array(
                     array('LANGUE,NOM_UTILISATEUR,USR, PWD,COURRIEL', 'required'),
                     array('USR', 'unique', 'message'=> Myclass::t('OG178')),      
-                    array('COURRIEL', 'unique', 'message'=> Myclass::t('OG179')),      
+                    array('COURRIEL', 'unique', 'message'=> Myclass::t('OG179')),     
                     array('ABONNE_MAILING, ABONNE_PROMOTION, ABONNE_TRANSITION, IS_FIRST_LOG, ID_RELATION, MUST_VALIDATE, bSubscription_envision, bSubscription_envue', 'numerical', 'integerOnly'=>true),
                     array('PREFIXE, NOM_TABLE', 'length', 'max'=>50),
                     // array('USR', 'length', 'max'=>8),
