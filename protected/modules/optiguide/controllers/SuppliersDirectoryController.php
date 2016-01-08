@@ -1024,6 +1024,7 @@ class SuppliersDirectoryController extends OGController {
 
             /* Send mail to admin for confirmation */
             $mail = new Sendmail();
+            $this->lang = Yii::app()->session['language'];
             $suppliers_url = ADMIN_URL . 'admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
             $invoice_url = ADMIN_URL . 'admin/paymentTransaction/view/id/' . $ptmodel->id;
 
@@ -1300,9 +1301,9 @@ class SuppliersDirectoryController extends OGController {
 
                         /* Send mail to admin for confirmation */
                         $mail = new Sendmail();
-                        
-                        $suppliers_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
-                        $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
+                        $this->lang = Yii::app()->session['language'];
+                        $suppliers_url = ADMIN_URL . 'admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
+                        $invoice_url = ADMIN_URL . 'admin/paymentTransaction/view/id/' . $ptmodel->id;
 
                         $enc_url = Myclass::refencryption($suppliers_url);
                         $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
@@ -1976,10 +1977,10 @@ class SuppliersDirectoryController extends OGController {
 
             /* Send mail to admin for confirmation */
             $mail = new Sendmail();              
-            
+            $this->lang = Yii::app()->session['language'];
             $umodel = UserDirectory::model()->findByAttributes(array('ID_RELATION' => $supplierid, 'NOM_TABLE' => 'Fournisseurs'));
-            $suppliers_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
-            $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
+            $suppliers_url = ADMIN_URL . 'admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
+            $invoice_url = ADMIN_URL . 'admin/paymentTransaction/view/id/' . $ptmodel->id;
 
             $enc_url = Myclass::refencryption($suppliers_url);
             $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
@@ -2166,10 +2167,10 @@ class SuppliersDirectoryController extends OGController {
 
                         /* Send mail to admin for confirmation */
                         $mail = new Sendmail();
-                        
+                        $this->lang = Yii::app()->session['language'];
                         $user = UserDirectory::model()->findByAttributes(array('ID_RELATION' => $supplierid, 'NOM_TABLE' => 'Fournisseurs'));
-                       $suppliers_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $user->ID_UTILISATEUR;
-                       $invoice_url = ADMIN_URL . '/admin/paymentTransaction/view/id/' . $ptmodel->id;
+                       $suppliers_url = ADMIN_URL . 'admin/userDirectory/update/id/' . $user->ID_UTILISATEUR;
+                       $invoice_url = ADMIN_URL . 'admin/paymentTransaction/view/id/' . $ptmodel->id;
 
                        $enc_url = Myclass::refencryption($suppliers_url);
                        $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;

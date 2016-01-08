@@ -381,7 +381,7 @@ class RepCredentialController extends ORController {
                     }
                     $message = $mail->getMessage('rep_registration_pending_status', $trans_array);
 //                    $Subject = $mail->translate('Registration - Payment Status Pending');
-                    $mail->send($rep_email, $Subject, $message);
+                    $mail->send($rep_email, $subject, $message);
                 }
             }
         }

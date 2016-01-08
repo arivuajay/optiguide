@@ -420,7 +420,7 @@ class ProfessionalDirectoryController extends OGController {
                 $this->lang = Yii::app()->session['language'];
                 
                 $mail = new Sendmail();
-                $professional_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
+                $professional_url = ADMIN_URL . 'admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
                 $enc_url = Myclass::refencryption($professional_url);
                 $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
                 

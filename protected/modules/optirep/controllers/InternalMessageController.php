@@ -61,7 +61,8 @@ class InternalMessageController extends ORController {
             $condition = " NOM_TABLE='rep_credentials' AND ID_RELATION='$sess_id' ";
             $ufrm_infos = UserDirectory::model()->find($condition);
 
-            $model->message = nl2br($_POST['InternalMessage']['message']);
+            $conv_message = nl2br($_POST['InternalMessage']['message']);
+            $model->message = $conv_message;
             // conversation id
             $model->id1 = $id1;
             // New conversation start        

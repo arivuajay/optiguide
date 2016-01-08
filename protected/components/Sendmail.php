@@ -73,10 +73,10 @@ class Sendmail {
 
     public function translate($msg_dub, $translate = array()) {
         if(strcmp(SITENAME,'OptiRep') ==0){
-            $site_logo= EMAILHEADERIMAGE_REP;
+            $site_logo= REPURL.EMAILHEADERIMAGE_REP;
         }
         if(strcmp(SITENAME,'OptiGuide') == 0){
-            $site_logo= EMAILHEADERIMAGE_GUIDE;
+            $site_logo= GUIDEURL.EMAILHEADERIMAGE_GUIDE;
         }
         
         $def_trans = array(

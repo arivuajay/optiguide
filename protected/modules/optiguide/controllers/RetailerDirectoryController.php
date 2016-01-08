@@ -308,7 +308,7 @@ class RetailerDirectoryController extends OGController {
                 
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
-                $retailer_url = ADMIN_URL . '/admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
+                $retailer_url = ADMIN_URL . 'admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
                 $enc_url = Myclass::refencryption($retailer_url);
                 $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
                 

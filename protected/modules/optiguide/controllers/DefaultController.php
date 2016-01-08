@@ -2,7 +2,12 @@
 
 class DefaultController extends OGController {
     
-       
+    public $lang;
+
+    public function __construct($id, $module = null) {
+        parent::__construct($id, $module);
+        $this->lang = Yii::app()->session['language'];
+    }   
     public function actionExpireValidate()
     {
         $today = date("Y-m-d h:i:s");

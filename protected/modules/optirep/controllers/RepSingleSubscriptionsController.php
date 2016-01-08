@@ -270,7 +270,7 @@ class RepSingleSubscriptionsController extends ORController {
                         $subject =  " Renouvellement à ".SITENAME;
                     }
                     $message = $mail->getMessage('rep_renewal_pending_status', $trans_array);
-                    $mail->send($rep_email, $Subject, $message);
+                    $mail->send($rep_email, $subject, $message);
                 }
             }
         }

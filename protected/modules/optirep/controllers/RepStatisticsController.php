@@ -257,7 +257,7 @@ class RepStatisticsController extends ORController {
                     /* Send mail to admin for confirmation */
                     $mail = new Sendmail();
                     $this->lang = Yii::app()->session['language'];
-                    $invoice_url = ADMIN_URL . '/admin/paymentTransaction/repview/id/' . $ptmodel->id;
+                    $invoice_url = ADMIN_URL . 'admin/paymentTransaction/repview/id/' . $ptmodel->id;
                     $enc_url2    = Myclass::refencryption($invoice_url);
                     $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
                     
