@@ -24,7 +24,7 @@
                 <?php $this->endWidget(); ?>
             </div>
 
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+<!--            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <?php
                 $form = $this->beginWidget('CActiveForm', array(
                     'id' => 'buy-more-accounts-form',
@@ -47,7 +47,7 @@
                     </div>
                 </div>  
                 <?php $this->endWidget(); ?>
-            </div>
+            </div>-->
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
                 <?php
@@ -67,10 +67,10 @@
                             echo $form->hiddenField($model_paypaladvance, 'pay_type', array('value' => 2));
                             ?>
                             <input type="hidden" id="model_paypaladvance_no_of_accounts_purchase" name="RepCredentials[no_of_accounts_purchase]" class="rep_cred_no_of_acc_purchase">
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+<!--                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <h3> <?php echo Myclass::t('OR652', '', 'or') ?> </h3>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4"> 
+                            </div>-->
+<!--                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4"> 
                                 <?php echo $form->labelEx($model_paypaladvance, 'credit_card'); ?>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-8"> 
@@ -93,12 +93,12 @@
 
                             <div class="col-xs-12 col-sm-4 col-md-6 col-lg-4"> 
                                 <?php echo $form->labelEx($model_paypaladvance, 'cvv2'); ?>
-                                <!--                                <br/> 
-                                                                <a href="#">What is this ?</a>-->
+                                                                <br/> 
+                                                                <a href="#">What is this ?</a>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-2 col-lg-3"> 
                                 <?php echo $form->textField($model_paypaladvance, 'cvv2', array('class' => "form-field")); ?>
-                            </div>
+                            </div>-->
 
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
                                 <?php

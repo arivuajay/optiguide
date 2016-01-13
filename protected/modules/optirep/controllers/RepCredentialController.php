@@ -21,7 +21,7 @@ class RepCredentialController extends ORController {
         return array_merge(
                 parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('step1', 'step2', 'step3', 'final', 'paypalCancel', 'paypalReturn', 'paypalNotify', 'generatelatlong', 'finaltmp'),
+                'actions' => array('step1', 'step2', 'step3', 'final', 'paypalCancel', 'paypalReturn', 'paypalNotify', 'generatelatlong', 'finaltmp', 'ppaProblem'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -66,7 +66,6 @@ class RepCredentialController extends ORController {
     }
 
     public function actionStep2() {
-
         if (!Yii::app()->user->isGuest) {
             $this->redirect('/optirep/dashboard');
         }
@@ -81,10 +80,12 @@ class RepCredentialController extends ORController {
         $profile = new RepCredentialProfiles('step2');
 
         $model->no_of_accounts_purchase = $rep_subscription_type['rep_subscription_min'];
+
         if (isset(Yii::app()->session['registration']['step2'])) {
             $model->attributes = Yii::app()->session['registration']['step2']['RepCredentials'];
             $profile->attributes = Yii::app()->session['registration']['step2']['RepCredentialProfiles'];
         }
+
         if (isset($_POST['btnSubmit'])) {
             $model->attributes = $_POST['RepCredentials'];
             $profile->attributes = $_POST['RepCredentialProfiles'];
@@ -144,15 +145,6 @@ class RepCredentialController extends ORController {
 
         $this->layout = '//layouts/anonymous_page';
 
-
-        if (isset($_POST['RESULT']) || isset($_GET['RESULT'])) {
-            $_SESSION['payflowresponse'] = array_merge($_GET, $_POST);
-            echo "<pre>";
-            print_r($_SESSION['payflowresponse']);
-            // echo '<script type="text/javascript">window.top.location.href = "' . script_url() .  '";</script>';
-            exit;
-        }
-
         $model = new RepCredentials;
         $registration = Yii::app()->session['registration'];
         $no_of_accounts_purchased = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
@@ -164,48 +156,46 @@ class RepCredentialController extends ORController {
         $price_list = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchased, $offer_calculation);
 
         $registration['step1']['subscription_type_id'] = $price_list['subscription_type_id'];
+        $registration['step3'] = $price_list;
         Yii::app()->session['registration'] = $registration;
 
+        $sequrity_id = Myclass::getRandomString(8);
+        //paypal advance
+        $paypalAdv = new PaypalAdvance;
+        $request = array(
+            "PARTNER" => $paypalAdv::PARTNER,
+            "VENDOR" => $paypalAdv::VENDOR,
+            "USER" => $paypalAdv::USER,
+            "PWD" => $paypalAdv::PWD,
+            "TENDER" => "C",
+            "TRXTYPE" => "S",
+            "CURRENCY" => "CAD",
+            "AMT" => $registration['step3']['grand_total'],
+            "CREATESECURETOKEN" => "Y",
+            "SECURETOKENID" => $sequrity_id, //Should be unique, never used before
+            "RETURNURL" => Yii::app()->createAbsoluteUrl('/optirep/repCredential/final'),
+            "CANCELURL" => Yii::app()->createAbsoluteUrl('/optirep/repCredential/ppaProblem'),
+            "ERRORURL" => Yii::app()->createAbsoluteUrl('/optirep/repCredential/ppaProblem'),
+        );
 
-       
-            $sequrity_id = Myclass::getRandomString(8);
-            //paypal advance
-            $paypalAdv = new PaypalAdvance;
-            $request = array(
-                "PARTNER" => $paypalAdv::PARTNER,
-                "VENDOR" => $paypalAdv::VENDOR,
-                "USER" => $paypalAdv::USER,
-                "PWD" => $paypalAdv::PWD,
-                "TENDER" => "C",
-                "TRXTYPE" => "S",
-                "CURRENCY" => "CAD",
-                "AMT" => "100",
-                "CREATESECURETOKEN" => "Y",
-                "SECURETOKENID" => $sequrity_id, //Should be unique, never used before
-                "RETURNURL" => Yii::app()->createAbsoluteUrl('/optirep/repCredential/finaltmp'),
-                "CANCELURL" => Yii::app()->createUrl('/optirep/repCredential/step3'),
-                "ERRORURL" => Yii::app()->createUrl('/optirep/repCredential/step3'),
-            );
+        //Run request and get the response
+        $response = $paypalAdv->run_payflow_call($request);
+        $response['mode'] = $paypalAdv::MODE;
 
-            //Run request and get the response
-            $response = $paypalAdv->run_payflow_call($request);
-            $response['mode'] = 'TEST';
-
-            if ($response['RESULT'] != 0) {
-                Yii::app()->user->setFlash('danger', Myclass::t("OR606", "", "or"));
-                $this->redirect(array('step1'));
-            } else {
-                $repTemp = new RepTemp;
-                $repTemp->rep_temp_random_id = $sequrity_id;
-                $repTemp->rep_temp_key = RepTemp::REGISTRATION;
-                $repTemp->rep_temp_value = serialize($registration);
-                $repTemp->save();
-               // $response['tempid'] = $repTemp->rep_temp_random_id;
-            }
-       
+        if ($response['RESULT'] != 0) {
+            Yii::app()->user->setFlash('danger', "There is some problem in your payment. Please try again.");
+            $this->redirect(array('step1'));
+        } else {
+            $repTemp = new RepTemp;
+            $repTemp->rep_temp_random_id = $sequrity_id;
+            $repTemp->rep_temp_key = RepTemp::REGISTRATION;
+            $repTemp->rep_temp_value = serialize($registration);
+            $repTemp->save();
+        }
 
         $model_paypal = new PaymentTransaction();
         $model_paypalAdvance = new PaymentTransaction('paypal_advance');
+
 //      if (isset($_POST['btnSubmit'])) {
 //            $process_final = false;
 //            if ($_POST['PaymentTransaction']['pay_type'] == 1) {
@@ -236,100 +226,101 @@ class RepCredentialController extends ORController {
             'response' => $response
         ));
     }
-    
-    public function actionFinaltmp(){
+
+    public function actionFinal() {
+        Yii::app()->session->destroy();
         if (isset($_POST['RESULT']) || isset($_GET['RESULT'])) {
-            $_SESSION['payflowresponse'] = array_merge($_GET, $_POST);           
-       
-            $rep_temp_random_id = $_SESSION['payflowresponse']['SECURETOKENID'];
-            $response = $_SESSION['payflowresponse'];
-            
+            $response = array_merge($_GET, $_POST);
+            $rep_temp_random_id = $response['SECURETOKENID'];
             $this->processPPAPaymentTransaction($rep_temp_random_id, $response);
             $this->processRegistration($rep_temp_random_id);
             Yii::app()->session->open();
-            Yii::app()->user->setFlash('success', Myclass::t("OR605", "", "or"));
-            $this->redirect(array('/optirep/default/index'));     
-            // echo '<script type="text/javascript">window.top.location.href = "' . script_url() .  '";</script>';
-            exit;
+            Yii ::app()->user->setFlash('success', Myclass::t("OR605", "", "or"));
+            $url = Yii::app()->createAbsoluteUrl('/optirep');
+//            $this->redirect(array('/optirep/default/index'));
+            echo '<script type="text/javascript">window.top.location.href = "' . $url . '";</script>';
         }
     }
 
-    public function actionFinal() {
-        if (!Yii::app()->user->isGuest) {
-            $this->redirect('/optirep/dashboard');
-        }
-
-        if (!isset(Yii::app()->session['registration']['step3'])) {
-            $this->redirect('step3');
-        }
-
-        $this->layout = '//layouts/anonymous_page';
-
-        $registration = Yii::app()->session['registration'];
-        $payment = $registration['final'];
-
-        //Remove CC details from registration array
-        unset($registration['final']);
-
-        $repTemp = new RepTemp;
-        $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
-        $repTemp->rep_temp_key = RepTemp::REGISTRATION;
-        $repTemp->rep_temp_value = serialize($registration);
-        if ($repTemp->save()) {
-            Yii::app()->session->destroy();
-
-            if ($payment['pay_type'] == 1) {
-                //paypal
-                $paypalManager = new Paypal;
-                $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalReturn'));
-                $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalCancel'));
-                $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalNotify'));
-
-                $paypalManager->addField('item_name', RepTemp::REGISTRATION);
-                $paypalManager->addField('amount', $registration['step3']['total_price']);
-//            $paypalManager->addField('quantity', $registration['step2']['RepCredentials']['no_of_accounts_purchase']);
-                $paypalManager->addField('tax', $registration['step3']['tax']);
-                $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
-                $paypalManager->addField('return', $returnUrl);
-                $paypalManager->addField('cancel_return', $cancelUrl);
-                $paypalManager->addField('notify_url', $notifyUrl);
-
-                //$paypalManager->dumpFields();   // for printing paypal form fields
-                $paypalManager->submitPaypalPost();
-            } elseif ($payment['pay_type'] == 2) {
-                //paypal advance
-                $paypalAdv = new PaypalAdvance;
-                $request = array(
-                    "PARTNER" => $paypalAdv::PARTNER,
-                    "VENDOR" => $paypalAdv::VENDOR,
-                    "USER" => $paypalAdv::USER,
-                    "PWD" => $paypalAdv::PWD,
-                    "TENDER" => "C",
-                    "TRXTYPE" => "S",
-                    "CURRENCY" => "CAD",
-                    "AMT" => $registration['step3']['grand_total'],
-                    "ACCT" => $payment['credit_card'],
-                    "EXPDATE" => $payment['exp_month'] . $payment['exp_year'],
-                    "CVV2" => $payment['cvv2'],
-                );
-
-
-
-                //Run request and get the response
-                $response = $paypalAdv->run_payflow_call($request);
-                if ($response['RESULT'] == 0 && $response['RESPMSG'] == 'Approved') {
-                    $this->processPPAPaymentTransaction($repTemp->rep_temp_random_id, $response);
-                    $this->processRegistration($repTemp->rep_temp_random_id);
-                    Yii::app()->session->open();
-                    Yii::app()->user->setFlash('success', Myclass::t("OR605", "", "or"));
-                    $this->redirect(array('/optirep/default/index'));
-                } else {
-                    Yii::app()->user->setFlash('danger', Myclass::t("OR606", "", "or"));
-                    $this->redirect(array('step1'));
-                }
-            }
-        }
+    public function actionPpaProblem() {
+        Yii ::app()->user->setFlash('danger', "There is some problem in your payment. Please contact admin.");
+        $this->redirect(array('/optirep/repCredential/step1'));
     }
+
+//    public function actionFinal() {
+//        if (!Yii::app()->user->isGuest) {
+//            $this->redirect('/optirep/dashboard');
+//        }
+//
+//        if (!isset(Yii::app()->session['registration']['step3'])) {
+//            $this->redirect('step3');
+//        }
+//
+//        $this->layout = '//layouts/anonymous_page';
+//
+//        $registration = Yii::app()->session['registration'];
+//        $payment = $registration['final'];
+//
+//        //Remove CC details from registration array
+//        unset($registration['final']);
+//
+//        $repTemp = new RepTemp;
+//        $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
+//        $repTemp->rep_temp_key = RepTemp::REGISTRATION;
+//        $repTemp->rep_temp_value = serialize($registration);
+//        if ($repTemp->save()) {
+//            Yii::app()->session->destroy();
+//
+//            if ($payment['pay_type'] == 1) {
+//                //paypal
+//                $paypalManager = new Paypal;
+//                $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalReturn'));
+//                $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalCancel'));
+//                $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repCredential/paypalNotify'));
+//
+//                $paypalManager->addField('item_name', RepTemp::REGISTRATION);
+//                $paypalManager->addField('amount', $registration['step3']['total_price']);
+////            $paypalManager->addField('quantity', $registration['step2']['RepCredentials']['no_of_accounts_purchase']);
+//                $paypalManager->addField('tax', $registration['step3']['tax']);
+//                $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
+//                $paypalManager->addField('return', $returnUrl);
+//                $paypalManager->addField('cancel_return', $cancelUrl);
+//                $paypalManager->addField('notify_url', $notifyUrl);
+//
+//                //$paypalManager->dumpFields();   // for printing paypal form fields
+//                $paypalManager->submitPaypalPost();
+//            } elseif ($payment['pay_type'] == 2) {
+//                //paypal advance
+//                $paypalAdv = new PaypalAdvance;
+//                $request = array(
+//                    "PARTNER" => $paypalAdv::PARTNER,
+//                    "VENDOR" => $paypalAdv::VENDOR,
+//                    "USER" => $paypalAdv::USER,
+//                    "PWD" => $paypalAdv::PWD,
+//                    "TENDER" => "C",
+//                    "TRXTYPE" => "S",
+//                    "CURRENCY" => "CAD",
+//                    "AMT" => $registration['step3']['grand_total'],
+//                    "ACCT" => $payment['credit_card'],
+//                    "EXPDATE" => $payment['exp_month'] . $payment['exp_year'],
+//                    "CVV2" => $payment['cvv2'],
+//                );
+//
+//                //Run request and get the response
+//                $response = $paypalAdv->run_payflow_call($request);
+//                if ($response['RESULT'] == 0 && $response['RESPMSG'] == 'Approved') {
+//                    $this->processPPAPaymentTransaction($repTemp->rep_temp_random_id, $response);
+//                    $this->processRegistration($repTemp->rep_temp_random_id);
+//                    Yii::app()->session->open();
+//                    Yii::app()->user->setFlash('success', Myclass::t("OR605", "", "or"));
+//                    $this->redirect(array('/optirep/default/index'));
+//                } else {
+//                    Yii::app()->user->setFlash('danger', Myclass::t("OR606", "", "or"));
+//                    $this->redirect(array('step1'));
+//                }
+//            }
+//        }
+//    }
 
     /* ------------ PAYPAL ADVANCE START----------------------------------------- */
 
@@ -367,22 +358,24 @@ class RepCredentialController extends ORController {
     /* ------------ PAYPAL START----------------------------------------- */
 
     public function actionPaypalCancel() {
-        Yii::app()->user->setFlash('danger', Myclass::t("OR603", "", "or"));
-        $this->redirect(array('step1'));
+        Yii :: app()->user->setFlash('danger', Myclass::t("OR603", "", "or"));
+        $this->redirect(array
+            ('step1'));
     }
 
     public function actionPaypalReturn() {
         $pstatus = $_POST["payment_status"];
-        if (isset($_POST["txn_id"]) && isset($_POST["payment_status"])) {
+        if (isset($_POST["txn_id"]) && isset($_POST ["payment_status"])) {
             if ($pstatus == "Pending") {
-                Yii::app()->user->setFlash('info', Myclass::t("OR604", "", "or"));
+                Yii:: app()->user->setFlash('info', Myclass::t("OR604", "", "or"));
             } else {
-                Yii::app()->user->setFlash('success', Myclass::t("OR605", "", "or"));
+                Yii ::app()->user->setFlash('success', Myclass::t("OR605", "", "or"));
             }
         } else {
-            Yii::app()->user->setFlash('danger', Myclass::t("OR606", "", "or"));
+            Yii :: app()->user->setFlash('danger', Myclass::t("OR606", "", "or"));
         }
-        $this->redirect(array('/optirep/default/index'));
+        $this->redirect(array
+            ('/optirep/default/index'));
     }
 
     public function actionPaypalNotify() {
@@ -390,7 +383,8 @@ class RepCredentialController extends ORController {
         if ($paypalManager->notify()) {
             $this->processPaymentTransaction($_POST['custom']);
             if ($_POST['payment_status'] == "Completed") {
-                $this->processRegistration($_POST['custom']);
+                $this->processRegistration(
+                        $_POST['custom']);
             }
         }
     }
@@ -435,8 +429,7 @@ class RepCredentialController extends ORController {
                     $contact_url = $baseurl . '/optirep/default/contactus';
                     $trans_array = array(
                         "{USERNAME}" => $rep_username,
-                        "{NEXTSTEPURL}" => $contact_url,
-                    );
+                        "{NEXTSTEPURL}" => $contact_url,);
                     if ($this->lang == 'EN') {
                         $subject = SITENAME . " - Registration - Payment Status Pending ";
                     } elseif ($this->lang == 'FR') {
@@ -515,13 +508,13 @@ class RepCredentialController extends ORController {
 
                 $model->save(false);
                 $profile->save(false);
-
-                Yii::app()->user->setFlash('success', Myclass::t("OR607", "", "or"));
+                Yii ::app()->user->setFlash('success', Myclass::t("OR607", "", "or"));
                 $this->redirect(array('editprofile'));
             }
         }
 
-        $this->render('editprofile', array('model' => $model, 'profile' => $profile));
+        $this->render('editprofile', array('model' => $model, 'profile' =>
+            $profile));
     }
 
     //Change Password for Opti-Rep
@@ -537,10 +530,10 @@ class RepCredentialController extends ORController {
             if ($valid) {
                 $model->rep_password = $model->new_password;
                 if ($model->save()) {
-                    Yii::app()->user->setFlash('success', Myclass::t("OR608", "", "or"));
+                    Yii ::app()->user->setFlash('success', Myclass::t("OR608", "", "or"));
                     $this->redirect(array('changepassword'));
                 } else {
-                    Yii::app()->user->setFlash('danger', Myclass::t("OR609", "", "or"));
+                    Yii :: app()->user->setFlash('danger', Myclass::t("OR609", "", "or"));
                     $this->redirect(array('changepassword'));
                 }
             }

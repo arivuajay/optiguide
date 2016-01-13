@@ -20,11 +20,11 @@ class RepAccountsController extends ORController {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('paypalCancel', 'paypalReturn', 'paypalNotify', 'paypalRenewalCancel', 'paypalRenewalReturn', 'paypalRenewalNotify'),
+                'actions' => array('paypalCancel', 'paypalReturn', 'paypalNotify', 'paypalRenewalCancel', 'paypalRenewalReturn', 'paypalRenewalNotify', 'finalRenewalRep', 'finalBuyMoreAccounts'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'create', 'edit', 'delete', 'buyMoreAccounts', 'buyMoreAccountsPriceList', 'renewalRepAccounts', 'subscriptions', 'transactions'),
+                'actions' => array('index', 'create', 'edit', 'delete', 'buyMoreAccounts', 'buyMoreAccountsPriceList', 'renewalRepAccounts', 'subscriptions', 'transactions', 'final'),
                 'users' => array('@'),
                 'expression' => 'Yii::app()->user->rep_role=="admin"'
             ),
@@ -286,71 +286,77 @@ class RepAccountsController extends ORController {
 
             $price_list = $new_subscription['price_list'];
 
-            if ($_POST['PaymentTransaction']['pay_type'] == 1) {
-                //paypal
-                $repTemp = new RepTemp;
-                $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
-                $repTemp->rep_temp_key = RepTemp::REP_ADMIN_BUY_MORE_ACCOUNTS;
-                $repTemp->rep_temp_value = serialize($new_subscription);
-                if ($repTemp->save()) {
-                    $paypalManager = new Paypal;
-                    $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalReturn'));
-                    $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalCancel'));
-                    $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalNotify'));
-
-                    $paypalManager->addField('item_name', RepTemp::REP_ADMIN_BUY_MORE_ACCOUNTS);
-                    $paypalManager->addField('amount', $price_list['total_price']);
-//                $paypalManager->addField('quantity', $new_subscription['no_of_accounts_purchase']);
-                    $paypalManager->addField('tax', $price_list['tax']);
-                    $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
-                    $paypalManager->addField('return', $returnUrl);
-                    $paypalManager->addField('cancel_return', $cancelUrl);
-                    $paypalManager->addField('notify_url', $notifyUrl);
-
-                    //$paypalManager->dumpFields();   // for printing paypal form fields
-                    $paypalManager->submitPaypalPost();
-                }
-            } elseif ($_POST['PaymentTransaction']['pay_type'] == 2) {
-                //paypal advance
-                $model_paypalAdvance->attributes = $_POST['PaymentTransaction'];
-                $valid = $model_paypalAdvance->validate();
-                if ($valid) {
-                    $repTemp = new RepTemp;
-                    $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
-                    $repTemp->rep_temp_key = RepTemp::REP_ADMIN_BUY_MORE_ACCOUNTS;
-                    $repTemp->rep_temp_value = serialize($new_subscription);
-
-                    if ($repTemp->save()) {
-                        $paypalAdv = new PaypalAdvance;
-                        $request = array(
-                            "PARTNER" => $paypalAdv::PARTNER,
-                            "VENDOR" => $paypalAdv::VENDOR,
-                            "USER" => $paypalAdv::USER,
-                            "PWD" => $paypalAdv::PWD,
-                            "TENDER" => "C",
-                            "TRXTYPE" => "S",
-                            "CURRENCY" => "CAD",
-                            "AMT" => $price_list['grand_total'],
-                            "ACCT" => $model_paypalAdvance->credit_card,
-                            "EXPDATE" => $model_paypalAdvance->exp_month . $model_paypalAdvance->exp_year,
-                            "CVV2" => $model_paypalAdvance->cvv2,
-                        );
-
-                        //Run request and get the response
-                        $response = $paypalAdv->run_payflow_call($request);
-                        if ($response['RESULT'] == 0 && $response['RESPMSG'] == 'Approved') {
-                            $this->processPPAPaymentTransaction($repTemp->rep_temp_random_id, $response);
-                            $this->processBuyMoreAccounts($repTemp->rep_temp_random_id);
-
-                            Yii::app()->user->setFlash('success', Myclass::t('OR598', '', 'or'));
-                            $this->redirect(array('index'));
-                        } else {
-                            Yii::app()->user->setFlash('danger', Myclass::t('OR596', '', 'or'));
-                            $this->redirect(array('buyMoreAccounts'));
-                        }
-                    }
-                }
+            if ($_POST['PaymentTransaction']['pay_type'] == 2) {
+                Yii::app()->session['buy_more_accounts'] = $new_subscription;
+                $this->redirect('/optirep/repAccounts/final');
             }
+
+
+//            if ($_POST['PaymentTransaction']['pay_type'] == 1) {
+//                //paypal
+//                $repTemp = new RepTemp;
+//                $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
+//                $repTemp->rep_temp_key = RepTemp::REP_ADMIN_BUY_MORE_ACCOUNTS;
+//                $repTemp->rep_temp_value = serialize($new_subscription);
+//                if ($repTemp->save()) {
+//                    $paypalManager = new Paypal;
+//                    $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalReturn'));
+//                    $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalCancel'));
+//                    $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalNotify'));
+//
+//                    $paypalManager->addField('item_name', RepTemp::REP_ADMIN_BUY_MORE_ACCOUNTS);
+//                    $paypalManager->addField('amount', $price_list['total_price']);
+////                $paypalManager->addField('quantity', $new_subscription['no_of_accounts_purchase']);
+//                    $paypalManager->addField('tax', $price_list['tax']);
+//                    $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
+//                    $paypalManager->addField('return', $returnUrl);
+//                    $paypalManager->addField('cancel_return', $cancelUrl);
+//                    $paypalManager->addField('notify_url', $notifyUrl);
+//
+//                    //$paypalManager->dumpFields();   // for printing paypal form fields
+//                    $paypalManager->submitPaypalPost();
+//                }
+//            } elseif ($_POST['PaymentTransaction']['pay_type'] == 2) {
+//                //paypal advance
+//                $model_paypalAdvance->attributes = $_POST['PaymentTransaction'];
+//                $valid = $model_paypalAdvance->validate();
+//                if ($valid) {
+//                    $repTemp = new RepTemp;
+//                    $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
+//                    $repTemp->rep_temp_key = RepTemp::REP_ADMIN_BUY_MORE_ACCOUNTS;
+//                    $repTemp->rep_temp_value = serialize($new_subscription);
+//
+//                    if ($repTemp->save()) {
+//                        $paypalAdv = new PaypalAdvance;
+//                        $request = array(
+//                            "PARTNER" => $paypalAdv::PARTNER,
+//                            "VENDOR" => $paypalAdv::VENDOR,
+//                            "USER" => $paypalAdv::USER,
+//                            "PWD" => $paypalAdv::PWD,
+//                            "TENDER" => "C",
+//                            "TRXTYPE" => "S",
+//                            "CURRENCY" => "CAD",
+//                            "AMT" => $price_list['grand_total'],
+//                            "ACCT" => $model_paypalAdvance->credit_card,
+//                            "EXPDATE" => $model_paypalAdvance->exp_month . $model_paypalAdvance->exp_year,
+//                            "CVV2" => $model_paypalAdvance->cvv2,
+//                        );
+//
+//                        //Run request and get the response
+//                        $response = $paypalAdv->run_payflow_call($request);
+//                        if ($response['RESULT'] == 0 && $response['RESPMSG'] == 'Approved') {
+//                            $this->processPPAPaymentTransaction($repTemp->rep_temp_random_id, $response);
+//                            $this->processBuyMoreAccounts($repTemp->rep_temp_random_id);
+//
+//                            Yii::app()->user->setFlash('success', Myclass::t('OR598', '', 'or'));
+//                            $this->redirect(array('index'));
+//                        } else {
+//                            Yii::app()->user->setFlash('danger', Myclass::t('OR596', '', 'or'));
+//                            $this->redirect(array('buyMoreAccounts'));
+//                        }
+//                    }
+//                }
+//            }
         }
 
         $this->render('buyMoreAccounts', array(
@@ -358,6 +364,68 @@ class RepAccountsController extends ORController {
             'model_paypal' => $model_paypal,
             'model_paypaladvance' => $model_paypalAdvance,
         ));
+    }
+
+    public function actionFinal() {
+        if(!isset(Yii::app()->session['buy_more_accounts'])){
+            $this->redirect("/optirep/repAccounts/buyMoreAccounts");
+        }
+        
+        $new_subscription = Yii::app()->session['buy_more_accounts'];
+        $price_list = $new_subscription['price_list'];
+
+        $sequrity_id = Myclass::getRandomString(8);
+        $paypalAdv = new PaypalAdvance;
+        $request = array(
+            "PARTNER" => $paypalAdv::PARTNER,
+            "VENDOR" => $paypalAdv::VENDOR,
+            "USER" => $paypalAdv::USER,
+            "PWD" => $paypalAdv::PWD,
+            "TENDER" => "C",
+            "TRXTYPE" => "S",
+            "CURRENCY" => "CAD",
+            "AMT" => $price_list['grand_total'],
+            "CREATESECURETOKEN" => "Y",
+            "SECURETOKENID" => $sequrity_id, //Should be unique, never used before
+            "RETURNURL" => Yii::app()->createAbsoluteUrl('/optirep/repAccounts/finalBuyMoreAccounts'),
+            "CANCELURL" => Yii::app()->createAbsoluteUrl('/optirep/repAccounts/buyMoreAccounts'),
+            "ERRORURL" => Yii::app()->createAbsoluteUrl('/optirep/repAccounts/buyMoreAccounts'),
+        );
+
+        //Run request and get the response
+        $response = $paypalAdv->run_payflow_call($request);
+        $response['mode'] = $paypalAdv::MODE;
+
+        if ($response['RESULT'] != 0) {
+            Yii::app()->user->setFlash('danger', Myclass::t('OR596', '', 'or'));
+            $this->redirect(array('buyMoreAccounts'));
+        } else {
+            $repTemp = new RepTemp;
+            $repTemp->rep_temp_random_id = $sequrity_id;
+            $repTemp->rep_temp_key = RepTemp::REP_ADMIN_BUY_MORE_ACCOUNTS;
+            $repTemp->rep_temp_value = serialize($new_subscription);
+            $repTemp->save();
+        }
+
+        $this->render('final', array(
+            'response' => $response
+        ));
+    }
+
+    public function actionFinalBuyMoreAccounts() {
+        unset(Yii::app()->session['buy_more_accounts']);
+        if (isset($_POST['RESULT']) || isset($_GET['RESULT'])) {
+            $response = array_merge($_GET, $_POST);
+            $rep_temp_random_id = $response['SECURETOKENID'];
+            $this->processPPAPaymentTransaction($rep_temp_random_id, $response);
+            $this->processBuyMoreAccounts($rep_temp_random_id);
+            
+            Yii::app()->session->open();
+            Yii ::app()->user->setFlash('success', Myclass::t("OR605", "", "or"));
+            $url = Yii::app()->createAbsoluteUrl('/optirep/repAccounts/index');
+//            $this->redirect(array('/optirep/default/index'));
+            echo '<script type="text/javascript">window.top.location.href = "' . $url . '";</script>';
+        }
     }
 
     /* --------- PAYPAL ADVANCE START-------------------------------- */
@@ -468,16 +536,16 @@ class RepAccountsController extends ORController {
                     $this->lang = Yii::app()->session['language'];
                     $rep_username = $rep_account['rep_username'];
                     $mail = new Sendmail;
-                    
+
                     $contact_url = $baseurl . '/optirep/default/contactus';
                     $trans_array = array(
                         "{USERNAME}" => $rep_username,
                         "{NEXTSTEPURL}" => $contact_url,
                     );
-                    if($this->lang=='EN' ){
+                    if ($this->lang == 'EN') {
                         $subject = SITENAME . " Buy More Rep Accounts - Payment Status Pending ";
-                    }elseif($this->lang=='FR'){
-                        $subject =  " Abonnement à ".SITENAME;
+                    } elseif ($this->lang == 'FR') {
+                        $subject = " Abonnement à " . SITENAME;
                     }
                     $message = $mail->getMessage('rep_admin_buymoreaccounts_pending_status', $trans_array);
                     $mail->send($rep_email, $subject, $message);
@@ -495,87 +563,136 @@ class RepAccountsController extends ORController {
             $this->redirect('index');
         }
 
+        $data = Yii::app()->session['renewal'];
+        $sequrity_id = Myclass::getRandomString(8);
+        //paypal advance
+        $paypalAdv = new PaypalAdvance;
+        $request = array(
+            "PARTNER" => $paypalAdv::PARTNER,
+            "VENDOR" => $paypalAdv::VENDOR,
+            "USER" => $paypalAdv::USER,
+            "PWD" => $paypalAdv::PWD,
+            "TENDER" => "C",
+            "TRXTYPE" => "S",
+            "CURRENCY" => "CAD",
+            "AMT" => $data['price_list']['grand_total'],
+            "CREATESECURETOKEN" => "Y",
+            "SECURETOKENID" => $sequrity_id, //Should be unique, never used before
+            "RETURNURL" => Yii::app()->createAbsoluteUrl('/optirep/repAccounts/finalRenewalRep'),
+            "CANCELURL" => Yii::app()->createAbsoluteUrl('/optirep/repAccounts/index'),
+            "ERRORURL" => Yii::app()->createAbsoluteUrl('/optirep/repAccounts/index'),
+        );
+
+        //Run request and get the response
+        $response = $paypalAdv->run_payflow_call($request);
+        $response['mode'] = $paypalAdv::MODE;
+
+        if ($response['RESULT'] != 0) {
+            Yii::app()->user->setFlash('danger', Myclass::t('OR600', '', 'or'));
+            $this->redirect(array('/optirep/repAccounts/index'));
+        } else {
+            $repTemp = new RepTemp;
+            $repTemp->rep_temp_random_id = $sequrity_id;
+            $repTemp->rep_temp_key = RepTemp::REP_ADMIN_RENEWAL_REP_ACCOUNTS;
+            $repTemp->rep_temp_value = serialize($data);
+            $repTemp->save();
+        }
+
         $model_paypal = new PaymentTransaction();
         $model_paypalAdvance = new PaymentTransaction('paypal_advance');
 
-        if (isset($_POST['btnSubmit'])) {
-            if ($_POST['PaymentTransaction']['pay_type'] == 1) {
-                //paypal
-                $data = Yii::app()->session['renewal'];
-                $repTemp = new RepTemp;
-                $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
-                $repTemp->rep_temp_key = RepTemp::REP_ADMIN_RENEWAL_REP_ACCOUNTS;
-                $repTemp->rep_temp_value = serialize($data);
-                if ($repTemp->save()) {
-                    unset(Yii::app()->session['renewal']);
-
-                    $paypalManager = new Paypal;
-                    $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalRenewalReturn'));
-                    $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalRenewalCancel'));
-                    $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalRenewalNotify'));
-
-                    $paypalManager->addField('item_name', RepTemp::REP_ADMIN_RENEWAL_REP_ACCOUNTS);
-                    $paypalManager->addField('amount', $data['price_list']['total_price']);
-//                $paypalManager->addField('quantity', $data['no_of_accounts_purchase']);
-                    $paypalManager->addField('tax', $data['price_list']['tax']);
-                    $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
-                    $paypalManager->addField('return', $returnUrl);
-                    $paypalManager->addField('cancel_return', $cancelUrl);
-                    $paypalManager->addField('notify_url', $notifyUrl);
-
-                    //$paypalManager->dumpFields();   // for printing paypal form fields
-                    $paypalManager->submitPaypalPost();
-                }
-            } elseif ($_POST['PaymentTransaction']['pay_type'] == 2) {
-                //paypal advance
-                $model_paypalAdvance->attributes = $_POST['PaymentTransaction'];
-                $valid = $model_paypalAdvance->validate();
-                if ($valid) {
-                    $data = Yii::app()->session['renewal'];
-                    $repTemp = new RepTemp;
-                    $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
-                    $repTemp->rep_temp_key = RepTemp::REP_ADMIN_RENEWAL_REP_ACCOUNTS;
-                    $repTemp->rep_temp_value = serialize($data);
-
-                    if ($repTemp->save()) {
-                        unset(Yii::app()->session['renewal']);
-
-                        $paypalAdv = new PaypalAdvance;
-                        $request = array(
-                            "PARTNER" => $paypalAdv::PARTNER,
-                            "VENDOR" => $paypalAdv::VENDOR,
-                            "USER" => $paypalAdv::USER,
-                            "PWD" => $paypalAdv::PWD,
-                            "TENDER" => "C",
-                            "TRXTYPE" => "S",
-                            "CURRENCY" => "CAD",
-                            "AMT" => $data['price_list']['grand_total'],
-                            "ACCT" => $model_paypalAdvance->credit_card,
-                            "EXPDATE" => $model_paypalAdvance->exp_month . $model_paypalAdvance->exp_year,
-                            "CVV2" => $model_paypalAdvance->cvv2,
-                        );
-
-                        //Run request and get the response
-                        $response = $paypalAdv->run_payflow_call($request);
-                        if ($response['RESULT'] == 0 && $response['RESPMSG'] == 'Approved') {
-                            $this->processRenewalPPAPaymentTransaction($repTemp->rep_temp_random_id, $response);
-                            $this->processRenewalRepAccounts($repTemp->rep_temp_random_id);
-
-                            Yii::app()->user->setFlash('success', Myclass::t('OR601', '', 'or'));
-                            $this->redirect(array('index'));
-                        } else {
-                            Yii::app()->user->setFlash('danger', Myclass::t('OR600', '', 'or'));
-                            $this->redirect(array('index'));
-                        }
-                    }
-                }
-            }
-        }
+//        if (isset($_POST['btnSubmit'])) {
+//            if ($_POST['PaymentTransaction']['pay_type'] == 1) {
+//                //paypal
+//                $data = Yii::app()->session['renewal'];
+//                $repTemp = new RepTemp;
+//                $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
+//                $repTemp->rep_temp_key = RepTemp::REP_ADMIN_RENEWAL_REP_ACCOUNTS;
+//                $repTemp->rep_temp_value = serialize($data);
+//                if ($repTemp->save()) {
+//                    unset(Yii::app()->session['renewal']);
+//
+//                    $paypalManager = new Paypal;
+//                    $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalRenewalReturn'));
+//                    $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalRenewalCancel'));
+//                    $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repAccounts/paypalRenewalNotify'));
+//
+//                    $paypalManager->addField('item_name', RepTemp::REP_ADMIN_RENEWAL_REP_ACCOUNTS);
+//                    $paypalManager->addField('amount', $data['price_list']['total_price']);
+////                $paypalManager->addField('quantity', $data['no_of_accounts_purchase']);
+//                    $paypalManager->addField('tax', $data['price_list']['tax']);
+//                    $paypalManager->addField('custom', $repTemp->rep_temp_random_id);
+//                    $paypalManager->addField('return', $returnUrl);
+//                    $paypalManager->addField('cancel_return', $cancelUrl);
+//                    $paypalManager->addField('notify_url', $notifyUrl);
+//
+//                    //$paypalManager->dumpFields();   // for printing paypal form fields
+//                    $paypalManager->submitPaypalPost();
+//                }
+//            } elseif ($_POST['PaymentTransaction']['pay_type'] == 2) {
+//                //paypal advance
+//                $model_paypalAdvance->attributes = $_POST['PaymentTransaction'];
+//                $valid = $model_paypalAdvance->validate();
+//                if ($valid) {
+//                    $data = Yii::app()->session['renewal'];
+//                    $repTemp = new RepTemp;
+//                    $repTemp->rep_temp_random_id = Myclass::getRandomString(8);
+//                    $repTemp->rep_temp_key = RepTemp::REP_ADMIN_RENEWAL_REP_ACCOUNTS;
+//                    $repTemp->rep_temp_value = serialize($data);
+//
+//                    if ($repTemp->save()) {
+//                        unset(Yii::app()->session['renewal']);
+//
+//                        $paypalAdv = new PaypalAdvance;
+//                        $request = array(
+//                            "PARTNER" => $paypalAdv::PARTNER,
+//                            "VENDOR" => $paypalAdv::VENDOR,
+//                            "USER" => $paypalAdv::USER,
+//                            "PWD" => $paypalAdv::PWD,
+//                            "TENDER" => "C",
+//                            "TRXTYPE" => "S",
+//                            "CURRENCY" => "CAD",
+//                            "AMT" => $data['price_list']['grand_total'],
+//                            "ACCT" => $model_paypalAdvance->credit_card,
+//                            "EXPDATE" => $model_paypalAdvance->exp_month . $model_paypalAdvance->exp_year,
+//                            "CVV2" => $model_paypalAdvance->cvv2,
+//                        );
+//
+//                        //Run request and get the response
+//                        $response = $paypalAdv->run_payflow_call($request);
+//                        if ($response['RESULT'] == 0 && $response['RESPMSG'] == 'Approved') {
+//                            $this->processRenewalPPAPaymentTransaction($repTemp->rep_temp_random_id, $response);
+//                            $this->processRenewalRepAccounts($repTemp->rep_temp_random_id);
+//
+//                            Yii::app()->user->setFlash('success', Myclass::t('OR601', '', 'or'));
+//                            $this->redirect(array('index'));
+//                        } else {
+//                            Yii::app()->user->setFlash('danger', Myclass::t('OR600', '', 'or'));
+//                            $this->redirect(array('index'));
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         $this->render('renewalRepAccounts', array(
             'model_paypal' => $model_paypal,
             'model_paypaladvance' => $model_paypalAdvance,
+            'response' => $response,
         ));
+    }
+
+    public function actionFinalRenewalRep() {
+        if (isset($_POST['RESULT']) || isset($_GET['RESULT'])) {
+            $response = array_merge($_GET, $_POST);
+            $rep_temp_random_id = $response['SECURETOKENID'];
+            $this->processRenewalPPAPaymentTransaction($rep_temp_random_id, $response);
+            $this->processRenewalRepAccounts($rep_temp_random_id);
+            Yii::app()->user->setFlash('success', Myclass::t('OR601', '', 'or'));
+
+            $url = Yii::app()->createAbsoluteUrl('/optirep/repAccounts/index');
+            echo '<script type="text/javascript">window.top.location.href = "' . $url . '";</script>';
+        }
     }
 
     /* ---- PAYPAL ADVANCE START----------------------------- */
@@ -682,7 +799,7 @@ class RepAccountsController extends ORController {
                 $rep_profile = $rep_account->repCredentialProfiles;
                 $rep_email = $rep_profile['rep_profile_email'];
                 if (!empty($rep_email)) {
-                    
+
                     $this->lang = Yii::app()->session['language'];
                     $rep_username = $rep_account['rep_username'];
                     $mail = new Sendmail;
@@ -691,10 +808,10 @@ class RepAccountsController extends ORController {
                         "{USERNAME}" => $rep_username,
                         "{NEXTSTEPURL}" => $contact_url,
                     );
-                    if($this->lang=='EN' ){
+                    if ($this->lang == 'EN') {
                         $subject = SITENAME . " Rep Accounts Renewal - Payment Status Pending ";
-                    }elseif($this->lang=='FR'){
-                        $subject =  " Renouvellement à ".SITENAME;
+                    } elseif ($this->lang == 'FR') {
+                        $subject = " Renouvellement à " . SITENAME;
                     }
                     $message = $mail->getMessage('rep_admin_renewal_pending_status', $trans_array);
 //                    $Subject = $mail->translate('Rep Accounts Renewal - Payment Status Pending');

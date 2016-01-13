@@ -69,7 +69,7 @@
                 <?php echo $form->labelEx($profile, 'ID_VILLE'); ?>
                 <?php echo $form->dropDownList($profile, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
             </div>
-            
+
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3" id="other_city" style="display:none;">
                 <?php echo $form->labelEx($profile, 'autre_ville'); ?>
                 <?php echo $form->textField($profile, 'autre_ville', array('class' => 'form-field')); ?>  
