@@ -820,7 +820,7 @@ class SuppliersDirectoryController extends OGController {
                 
                 // For pay with paypal payflowlink
                 $returnurl = Yii::app()->createAbsoluteUrl('/optiguide/suppliersDirectory/finaltmp');
-                $cancelurl = Yii::app()->createUrl('/optiguide/suppliersDirectory/paypalcancel');
+                $cancelurl = Yii::app()->createAbsoluteUrl('/optiguide/suppliersDirectory/paypalcancel');
                 $response  = $this->pay_with_creditcard($invoice_number, $pmodel->amount,$returnurl, $cancelurl);
               
                 if ($response['RESULT'] != 0) {
@@ -1908,7 +1908,7 @@ class SuppliersDirectoryController extends OGController {
 
                 // For pay with credit card               
                 $returnurl = Yii::app()->createAbsoluteUrl('/optiguide/suppliersDirectory/finaltmp_renew');
-                $cancelurl = Yii::app()->createUrl('/optiguide/suppliersDirectory/renewpaypalcancel');
+                $cancelurl = Yii::app()->createAbsoluteUrl('/optiguide/suppliersDirectory/renewpaypalcancel');
                 
                 $response  = $this->pay_with_creditcard($invoice_number, $payment_details['total_price'],$returnurl, $cancelurl);
               

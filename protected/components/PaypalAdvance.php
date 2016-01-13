@@ -7,17 +7,17 @@
  */
 class PaypalAdvance extends CComponent {
 
-    const PARTNER = 'PayPal';
-    const VENDOR = 'stanleyr15';
-    const USER = 'stanleyr15';
-    const PWD = 'stanley123';
-    const MODE = 'TEST';
+//    const PARTNER = 'PayPal';
+//    const VENDOR = 'stanleyr15';
+//    const USER = 'stanleyr15';
+//    const PWD = 'stanley123';
+//    const MODE = 'TEST';
     
-//    const PARTNER = "PayPalCA";
-//    const VENDOR = "Marjeantine495";
-//    const USER = "AureVass495";
-//    const PWD = "AureVass2015%88";
-//    const MODE = 'LIVE';    
+    const PARTNER = "PayPalCA";
+    const VENDOR = "Marjeantine495";
+    const USER = "AureVass495";
+    const PWD = "AureVass2015%88";
+    const MODE = 'LIVE';    
 
     // Set this to "live" for the live server, "pilot" for the test server, or "sandbox"
 // for Payflow accounts created through a Website Payments Pro account on the Sandbox.
@@ -25,7 +25,7 @@ class PaypalAdvance extends CComponent {
 
     public function __construct() {
         global $environment;
-        $this->environment = 'pilot'; //live
+        $this->environment = 'live'; //live
     }
 
 //// Helper functions
