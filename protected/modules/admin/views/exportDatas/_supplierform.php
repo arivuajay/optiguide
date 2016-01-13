@@ -22,6 +22,10 @@ $regions = Myclass::getallregions($model->country);
 $criteria3 = new CDbCriteria();
 $criteria3->order  = "TYPE_FOURNISSEUR_EN ASC";
 $suppliertype_datas = CHtml::listData(SupplierType::model()->findAll($criteria3) , 'ID_TYPE_FOURNISSEUR' , 'TYPE_FOURNISSEUR_EN');
+
+$suppliersection_datas = CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_FR")), 'ID_SECTION', 'NOM_SECTION_FR'); 
+
+$suppliersection_datas
 ?>
 <div class="user-create">
     <div class="row">
@@ -152,6 +156,16 @@ $suppliertype_datas = CHtml::listData(SupplierType::model()->findAll($criteria3)
                             //echo $form->listBox($model, 'ptype', $suppliertype_datas, $htmlOptions);
                             echo $form->dropDownList($model, 'ptype', $suppliertype_datas, array('class' => 'form-control', 'empty' => "Tout types"));             
                             echo $form->error($model, 'ptype'); 
+                            ?> 
+                        </div>  
+                    </div>
+
+                    <div class="form-group">
+                        <?php echo $form->labelEx($model, 'S_section', array('class' => 'col-sm-2 control-label')); ?>
+                        <div class="col-sm-5">
+                            <?php                           
+                            echo $form->dropDownList($model, 'psection', $suppliersection_datas, array('class' => 'form-control', 'empty' => "Toutes les sections"));             
+                            echo $form->error($model, 'psection'); 
                             ?> 
                         </div>  
                     </div>

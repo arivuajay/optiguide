@@ -243,7 +243,14 @@ return array(
     'OG213' => 'Opti-Rep est LA référence pour les représentants. Grâce à cette plateforme exclusive, trouvez plus facilement et rapidement que jamais les coordonnées et les informations sur les fournisseurs, les marques et les professionnels dont vous avez besoin pour bien servir vos clients et les aider à maximiser leurs ventes! Obtenez de plus des statistiques clés sur vos clients, afin d’établir des stratégies plus personnalisées; parfait pour l’atteinte de vos objectifs et ceux de votre clientèle.',
     'OG214' => 'Inscrivez-vous dès maintenant!',    
     
-    'OG215' => 'Plus de statistiques'
+    'OG215' => 'Plus de statistiques',
+    'OG216' => "<strong>*Astuce</strong > : Cliquez sur l'icône et de donner début adresse pour obtenir les directions de la carte",
+    'OG217' => 'Adresse de départ:',
+    'OG218' => 'Marche',
+    'OG219' => 'Éviter les autoroutes',
+    'OG220' => 'Adresse de destination:',
+    'OG221' => 'Obtenir des directions'
+    
 
 );
 ?>

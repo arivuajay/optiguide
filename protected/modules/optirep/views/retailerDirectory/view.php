@@ -151,7 +151,9 @@
         <?php if ($model['map_lat'] && $model['map_long']) {
             ?>    
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">         
-                <div id="display_map" style="display:none;width:100%;height:350px; "></div> 
+                <p style="color:red;"><?php echo Myclass::t('OG216');?></p>  
+                <div id="display_map" style="display:none;width:100%;height:350px; margin: 0;"></div> 
+                <div id="directionsPanel" style="display:none; width:100%;height: 350px; overflow: auto; margin: 0;"></div>
             </div>
         <?php }
         ?>
@@ -370,9 +372,17 @@
 
     $lat = $model['map_lat']; 
     $long = $model['map_long'];
+    
+    $lang_started  = Myclass::t('OG217');
+    $lang_Walk     = Myclass::t('OG218');
+    $lang_Highways = Myclass::t('OG219');
+    $lang_Destination    = Myclass::t('OG220');
+    $lang_getdirections  = Myclass::t('OG221');
 
     $startval = $start_address;
     $endval   = $destination_address;
+    
+    $rep_address = $endval;
 
     $ajaxUpdatefav = Yii::app()->createUrl('/optirep/repFavourites/updatefav');
     $cs = Yii::app()->getClientScript();
@@ -451,79 +461,106 @@ $(document).ready(function(){
          }    
     }); 
                
+   $("body").on('click','#viewpaths', function() {
+             myDirections();          
+    });           
+        
+});
+ // MAP display           
     var latval   = parseFloat("{$lat}") || 0;
     var longval  = parseFloat("{$long}") || 0;
-    var startval = "{$startval}";
-    var endval   = "{$endval}";
-               
-    var directionsDisplay;
+    var directionsDisplay = new google.maps.DirectionsRenderer();
     var directionsService = new google.maps.DirectionsService();
+    var gmarkers = [];
+    var htmls    = [];
+    var map      = null;
+    
+    var infowindow = new google.maps.InfoWindow({
+       size: new google.maps.Size(150, 50)
+     });
+    
     function initialize() 
     {
-        directionsDisplay = new google.maps.DirectionsRenderer();
-        var latlng = new google.maps.LatLng(latval, longval);
-        var myOptions =
-        {
-            zoom: 8,
-            center: latlng,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        calcRoute(startval,endval); 
-        // Define the map
-        $("#display_map").show();
-        var map = new google.maps.Map(document.getElementById("display_map"), myOptions);
-        directionsDisplay.setMap(map);
+       var location   = new google.maps.LatLng(latval, longval);
+       var mapOptions = {
+         center: location,
+         zoom: 8,
+         scrollwheel: true
+       };
+
+       map = new google.maps.Map(document.getElementById("display_map"), mapOptions);
+
+       directionsDisplay.setMap(map);
+       directionsDisplay.setPanel(document.getElementById("directionsPanel"));
+       google.maps.event.addListener(map, 'click', function() {
+         infowindow.close();
+       });
+
+       var marker = new google.maps.Marker({
+         position: location,
+         map: map,
+         animation: google.maps.Animation.DROP,
+         icon : '{$this->themeUrl}/images/map-red.png',   
+         title: '{$rep_address}'    
+       });
+
+       var i  = gmarkers.length;
+       latlng = location;    
+         
+        var html = 
+         '<strong>{$lang_started}:</strong><form action="#">' +
+         '<input type="text" SIZE=40 MAXLENGTH=60 name="saddr" id="saddr" value="" /><br>' +
+         '<input value="{$lang_getdirections}" id="viewpaths" TYPE="button"><br>' +    
+         '{$lang_Walk} <input type="checkbox" name="walk" id="walk" /> &nbsp; {$lang_Highways} <input type="checkbox" name="highways" id="highways" />' +
+         '<input type="hidden" id="daddr" value="' + latlng.lat() + ',' + latlng.lng() +     
+         '"/><br><br><strong>{$lang_Destination}:</strong>' + marker.getTitle();
+        var contentString = html;
+
+       google.maps.event.addListener(marker, 'click', function() {
+         map.setZoom(15);
+         map.setCenter(marker.getPosition());
+         infowindow.setContent(contentString);
+         infowindow.open(map, marker);
+       });
+       // save the info we need to use later for the side_bar
+       gmarkers.push(marker);
+       htmls[i] = html;
     }
-    function calcRoute(startval,endval) 
-    {
-       // var selectedMode = document.getElementById("mode").value;
-       // var start = document.getElementById("start").value;
-       // var end = document.getElementById("end").value;
- 
-       var selectedMode = "DRIVING";
-       var start = startval;
-       var end   = endval;
-    
-        google.maps.DirectionsTravelMode.DRIVING
 
-            if(selectedMode=="DRIVING")
-            {
-                var request = {
-                origin: start,
-                destination: end,
-                travelMode:google.maps.DirectionsTravelMode.DRIVING
-                };
-            }
-            else if(selectedMode=="WALKING")
-            {
-                var request = {
-                origin: start,
-                destination: end,
-                travelMode:google.maps.DirectionsTravelMode.WALKING
-                };
-            }
-            else if(selectedMode=="BICYCLING")
-            {
-                var request = {
-                origin: start,
-                destination: end,
-                travelMode:google.maps.DirectionsTravelMode.BICYCLING
-                };
-            }
-
-            directionsService.route(request, function (response, status) {
-            if (status == google.maps.DirectionsStatus.OK) {   
-                directionsDisplay.setDirections(response);
-            }
-        });
-
-    }
     if(latval!=0 && longval!=0)
     { 
         google.maps.event.addDomListener(window, 'load', initialize);
-    }            
-        
-});
+        $("#display_map").show();       
+    }
+    
+    // ===== request the directions =====
+    function myDirections() 
+    {
+       // ==== Set up the walk and avoid highways options ====
+       var request = {};
+       if (document.getElementById("walk").checked) {
+         request.travelMode = google.maps.DirectionsTravelMode.WALKING;
+       } else {
+         request.travelMode = google.maps.DirectionsTravelMode.DRIVING;
+       }
+
+       if (document.getElementById("highways").checked) {
+         request.avoidHighways = true;
+       }
+       // ==== set the start and end locations ====
+       var saddr = document.getElementById("saddr").value;
+       var daddr = '{$rep_address}';
+
+       request.origin = saddr;
+       request.destination = daddr;
+       directionsService.route(request, function(response, status) {
+         if (status == google.maps.DirectionsStatus.OK) {
+           directionsDisplay.setDirections(response);
+           $("#directionsPanel").show();   
+         } else alert("Directions not found: " + status);
+       });
+     }      
+               
 EOD;
 Yii::app()->clientScript->registerScript('_form_view', $js);
 ?>

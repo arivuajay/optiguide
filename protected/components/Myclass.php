@@ -564,7 +564,7 @@ class Myclass extends CController {
         }elseif ($totalusers > 1000) {
             return Myclass::t('OG210'). round(($totalusers / 1000)) . '000';
         } elseif ($totalusers > 100) {
-            return round(($totalusers / 100)) . '00';
+            return Myclass::t('OG210'). round(($totalusers / 100)) . '00';
         } else {
             return $totalusers;
         }

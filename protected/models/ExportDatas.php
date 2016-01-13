@@ -13,7 +13,7 @@ class ExportDatas extends CActiveRecord
 {
         
         public $P_type,$R_type,$S_type,$language,$EN,$FR,$subscriptions,$Optipromo,$Optinews,$Envision_print,$Envision_digital,$Envue_print,$Envue_digital,$province,$ptype,$export_type;
-        public $country,$region,$cat_type_id,$category,$ID_GROUPE;
+        public $country,$region,$cat_type_id,$category,$ID_GROUPE,$psection,$S_section;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -89,7 +89,8 @@ class ExportDatas extends CActiveRecord
                     'export_type' => 'Type d\'exportation',
                     'country' => "Pays",
                     'region' => "Province",
-                    'ID_GROUPE' => 'Regroupement'
+                    'ID_GROUPE' => 'Regroupement',
+                    'S_section' => 'Fournisseur Section'
 		);
 	}
 

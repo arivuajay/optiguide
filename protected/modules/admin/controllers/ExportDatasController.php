@@ -92,23 +92,35 @@ class ExportDatasController extends Controller
                 //$province_str = $this->getprovince_filter($provinces);
                 $province_str = $this->getprovince_filter($search_country,$search_region);
                 
-                // Professional Type
+                // Supplier Type
                 $type_str  = '';
                 $supplier_type = $_POST['ExportDatas']['ptype'];                     
                 $type_str    = $this->gettype_filter($supplier_type,"supplier");
+                
+                // Supplier section
+                $section_str  = '';
+                $supplier_section = isset($_POST['ExportDatas']['psection'])?$_POST['ExportDatas']['psection']:'';           
+                if($supplier_section!="")
+                {    
+                    $section_str  = $this->getsection_filter($supplier_section);
+                }else{
+                    $section_str  = "";
+                }    
      
                 // Export type    
                 $export_type = $_POST['ExportDatas']['export_type'];
                 
                 
                 // Get user counts           
-                $querystr   = $lang_str.$subscription_str.$province_str.$type_str;
+                $querystr   = $lang_str.$subscription_str.$province_str.$type_str.$section_str;
+              
                 $item_count = $this->countusers($querystr,"supplier");
+               
                 
                 if($item_count>0)
                 {   
                    // Export data and save the files
-                    $this->exportfiles_supplier( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $supplier_type , $provinces);
+                    $this->exportfiles_supplier( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $supplier_type , $provinces , $section_str);
                  
                     Yii::app()->user->setFlash('success', 'Datas export successfully!!!');
                     $this->redirect(array('supplierIndex'));
@@ -131,8 +143,47 @@ class ExportDatasController extends Controller
             ));
 	}
         
+        public function getsection_filter($search_section)
+        {
+            $section_product_qry = "";
+            
+            if ($search_section != '') {
+                // Get productmarques ids based on products and sections
+                $criteria = new CDbCriteria;
+                $criteria->with = array("productMarqueDirectory" => array("select" => "ID_LIEN_MARQUE"));
+                $criteria->condition = 'ID_SECTION=:id';
+                $criteria->params = array(':id' => $search_section);               
+                $data_products_marques = ProductDirectory::model()->findAll($criteria);
+ 
+                foreach ($data_products_marques as $infos) {
+                    foreach ($infos['productMarqueDirectory'] as $info2) {
+                        $infoarr[] = $info2['ID_LIEN_MARQUE'];
+                    }
+                }
+                
+                if (!empty($infoarr)) {
+                    // Get supplierids related to the productmarques   
+                    $criteria = new CDbCriteria;
+                    $criteria->addInCondition('ID_LIEN_PRODUIT_MARQUE', $infoarr);
+                    $criteria->group = 'ID_FOURNISSEUR';
+                    $data_suppliers = SupplierProducts::model()->findAll($criteria);
+
+                    foreach ($data_suppliers as $infos3) {
+                        $supplierids[] = $infos3['ID_FOURNISSEUR'];
+                    }
+                }
+
+                if (!empty($supplierids)) {
+                    $imp_suppids = (count($supplierids) > 1) ? implode(',', $supplierids) : $supplierids[0];
+                    $section_product_qry = " AND f.ID_FOURNISSEUR IN (" . $imp_suppids . ") ";                   
+                }
+            }
+           
+            return $section_product_qry;
+        }
+        
          
-        public function exportfiles_supplier( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $supplier_type , $provinces)
+        public function exportfiles_supplier( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $supplier_type , $provinces, $section_str)
         {
             Yii::import('ext.ECSVExport');
             $attach_path = Yii::getPathOfAlias('webroot').'/'.EXPORTDATAS;   
@@ -151,7 +202,7 @@ class ExportDatasController extends Controller
                 f.CREATED_DATE as Created_Date , f.DATE_MODIFICATION as Modified_Date
                 FROM repertoire_fournisseurs f, repertoire_fournisseur_type ft, repertoire_ville AS rv, repertoire_region AS rr, repertoire_pays AS rp, repertoire_utilisateurs as ru
                 WHERE f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.status=1 AND ru.NOM_TABLE ='Fournisseurs' 
-                ".$lang_str.$subscription_str.$province_str.$type_str." ORDER BY Company_Name");  
+                ".$lang_str.$subscription_str.$province_str.$type_str.$section_str." ORDER BY Company_Name");  
                 
                 if($export_type==1)
                 {    
@@ -160,6 +211,7 @@ class ExportDatasController extends Controller
                     $outputFile_path = $attach_path.$filename;
 
                 }else if($export_type==3){
+                    
                     $supplier_type_name = SupplierType::model()->findByPk($supplier_type)->TYPE_FOURNISSEUR_FR;
                     $filename = "Supplier_data_".date("Y_m_d")."_".$supplier_type_name."_".$randstr.".csv";                
                     $outputFile_path = $attach_path.$filename;
@@ -654,7 +706,7 @@ class ExportDatasController extends Controller
                         $reg_arr      = array();
                         $reg_arr[]    = $reg_val;
                         $province_str = $this->getprovince_filter($reg_arr);                       
-                        $qry_str       = $lang_str.$subscription_str.$province_str.$type_str;
+                        $qry_str      = $lang_str.$subscription_str.$province_str.$type_str;
                         
                         $records_exist = $this->countusers($qry_str,"professional");
                         
@@ -858,14 +910,25 @@ class ExportDatasController extends Controller
                 }else{        
                     $type_str = $this->gettype_filter($u_type,$usertype);
                 }
+                
+                 $section_str  = "";
+                if($usertype=="supplier")
+                {
+                    // Supplier section                   
+                    $supplier_section = isset($_POST['ExportDatas']['psection'])?$_POST['ExportDatas']['psection']:'';           
+                    if($supplier_section!="")
+                    {   
+                        
+                        $section_str  = $this->getsection_filter($supplier_section);
+                    }
+                }
             
                     
                 // Export type    
                 $export_type = $_POST['ExportDatas']['export_type'];
                 
                 // Get user counts           
-                $querystr   = $lang_str.$subscription_str.$province_str.$type_str;
-
+                $querystr   = $lang_str.$subscription_str.$province_str.$type_str.$section_str;
 
                 $item_count = $this->countusers($querystr,$usertype);
             }      

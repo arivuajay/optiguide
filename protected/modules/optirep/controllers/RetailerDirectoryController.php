@@ -76,7 +76,7 @@ class RetailerDirectoryController extends ORController {
 
         if ($check_view == 1) {
             
-        } else if ($viewcounts >= 50) {
+        } else if ($viewcounts >= 30) {
             Yii::app()->user->setFlash('info', Myclass::t("OR618", "", "or"));
             $this->redirect(array('index'));
         }

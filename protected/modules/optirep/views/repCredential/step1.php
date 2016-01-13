@@ -3,29 +3,33 @@
     <h2> <?php echo Myclass::t('OR555', '', 'or'); ?>  </h2>
     <div class="row">
         <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'rep-credential-form',
-        ));
+//        $form = $this->beginWidget('CActiveForm', array(
+//            'id' => 'rep-credential-form',
+//        ));
+     
         $repSubscriptionTypes = RepSubscriptionTypes::model()->findAll();
-        echo $form->errorSummary($model);
+//        echo $form->errorSummary($model);
+         
         ?>
         <?php foreach ($repSubscriptionTypes as $repSubsTypeId => $repSubscriptionType) { ?>
             <?php
             $checked = '';
             $active_class = '';
             if (isset(Yii::app()->session['registration']['step1'])) {
+               
                 if ($repSubscriptionType['rep_subscription_type_id'] == Yii::app()->session['registration']['step1']['subscription_type_id']) {
-                    $checked = 'checked';
+//                    $checked = 'checked';
                     $active_class = '';
                 } else {
                     $active_class = 'selected';
                 }
             }
             ?>
-            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                <?php echo $form->radioButton($model, 'subscription_type_id', array('value' => $repSubscriptionType['rep_subscription_type_id'], 'uncheckValue' => null, 'class' => 'subscription_types', 'id' => $repSubsTypeId, 'checked' => $checked)); ?>
-                <label for="<?php echo $repSubsTypeId; ?>">
-                    <div class="subscription-cont <?php echo $active_class ?>">
+            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3" class="testcl">
+                <a href="<?php echo Yii::app()->createUrl('/optirep/repCredential/step1',array('sid'=> $repSubscriptionType['rep_subscription_type_id'])); ?>">
+                <?php // echo $form->radioButton($model, 'subscription_type_id', array('value' => $repSubscriptionType['rep_subscription_type_id'], 'uncheckValue' => null, 'class' => 'subscription_types', 'id' => $repSubsTypeId, 'checked' => $checked)); ?>
+                <label>
+                    <div class="subscription-cont <?php echo $active_class; ?>">
                         <div class="subscription-heading subscription-heading<?php echo $repSubsTypeId + 1 ?>">  
                             <?php echo $repSubscriptionType['rep_subscription_name']; ?> 
                         </div>
@@ -39,35 +43,48 @@
                                 <?php echo $repSubscriptionType['rep_subscription_description']; ?>
                             </p>
                             <p>
-                                <a href="javascript:void()" class="subscribe-btn"> 
+                                <span class="subscribe-btn"> 
                                     <?php echo Myclass::t('OR556', '', 'or'); ?>
-                                </a>
+                                </span>
                             </p>
                         </div>
                     </div>
                 </label>
+                </a>     
             </div>
         <?php } ?>
-        <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 pull-right steps-btn-cont"> 
+        <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 pull-right steps-btn-cont" style="display:none;"> 
             <?php
-            echo CHtml::tag('button', array(
-                'name' => 'btnSubmit',
-                'type' => 'submit',
-                'class' => 'register-btn'
-                    ), Myclass::t('OR557', '', 'or') . ' <i class="fa fa-angle-double-right"></i>');
+//            echo CHtml::tag('button', array(
+//                'name' => 'btnSubmit',
+//                'type' => 'submit',
+//                'id'   => 'register-step1', 
+//                'class' => 'register-btn'
+//                    ), Myclass::t('OR557', '', 'or') . ' <i class="fa fa-angle-double-right"></i>');
             ?>
         </div>
-        <?php $this->endWidget(); ?>
+        <?php // $this->endWidget(); ?>
     </div>
 </div>
 <div class="clearfix"> </div>
 <?php
 $js = <<< EOD
     $(document).ready(function () {
-        $('.subscription-cont').click(function(){
-            $('.subscription-cont').addClass("selected");
-            $(this).removeClass( "selected" );    
-        });
+        
+//        $(".subscribe-btn").click(function(){
+//           alert($(this).closest('.box').children('.needToFind').val())
+//           var result= $(this).attr('id').split('_');         
+//           alert(result[1]);
+//           return false;
+//        });
+        
+//        $(".subscription_types").click(function(){
+//       
+////          $('.subscription-cont').addClass("selected");
+////          $(this).removeClass( "selected" );   
+//            $( "#rep-credential-form" ).submit();
+//            return false;
+//        });
     }); 
 EOD;
 Yii::app()->clientScript->registerScript('_step1', $js);

@@ -9,11 +9,9 @@
             echo CHtml::dropDownList('page_select', $searchModel->listperpage, $options, array("class" => "", "id" => "page_change"));
             ?>
         </div>
-
     </div>  
     <div class="search-list">
-        <?php
-          
+        <?php          
         if (!empty($model)) {
             ?>
             <ul>
