@@ -17,7 +17,7 @@ class PaypalAdvance extends CComponent {
 //    const VENDOR = "Marjeantine495";
 //    const USER = "AureVass495";
 //    const PWD = "AureVass2015%88";
-//    const MODE = 'LIVE';
+//    const MODE = 'LIVE';    
 
     // Set this to "live" for the live server, "pilot" for the test server, or "sandbox"
 // for Payflow accounts created through a Website Payments Pro account on the Sandbox.

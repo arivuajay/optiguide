@@ -81,9 +81,10 @@ $grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo) . $curr
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">                                                                                     
                             <?php 
-                            if(!isset($pmodel->payment_type)){$pmodel->payment_type="1";}
-                            echo $form->dropDownList($pmodel, 'payment_type', array('1' => 'Paypal', '2' => 'Pay with credit card'), array('class' => 'selectpicker')); ?>                          
-                            <?php echo $form->error($pmodel, 'payment_type'); ?>
+                            if(!isset($pmodel->payment_type)){$pmodel->payment_type="2";}
+                            //echo $form->dropDownList($pmodel, 'payment_type', array('1' => 'Paypal', '2' => 'Pay with credit card'), array('class' => 'selectpicker'));                           
+                              echo $form->hiddenField($pmodel, 'payment_type',array('value'=>'2'));?>   
+                            <?php //echo $form->error($pmodel, 'payment_type'); ?>
                             
                             <?php echo $form->hiddenField($pmodel, 'subscription_type'); ?>
                         </div>
@@ -128,80 +129,91 @@ $grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo) . $curr
                         </p>
                     </div>
                     
+                    <div class="form-row1"> 
+                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 pull-right"> 
+                            <?php
+                            echo CHtml::tag('button', array(
+                                'name' => 'btnSubmit',
+                                'type' => 'submit',
+                                'value' => 'Payfee',
+                                'class' => 'submit-btn'
+                                    ), '<i class="fa fa-arrow-circle-right"></i> ' . Myclass::t('OGO199', '', 'og'));
+                            ?>
+                        </div>
+                    </div>
                     
-                    
-                    <div class="form-row1" id="paypal"> 
+<!--                <div class="form-row1" id="paypal"> 
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
                             <div class="card-details-cont"> 
                                 <div class="col-xs-12 col-sm-11 col-md-7 col-md-offset-5 col-lg-5 col-lg-offset-7" id="paypal_align">  <h4> &nbsp; The Faster, Safer way to pay </h4> 
                                     <?php
-                                    $paypal_buttton = CHtml::image($this->themeUrl . "/images/express-checkout-hero.png", "paypal", array('img-responsive'));
-                                    echo CHtml::tag('button', array(
-                                        'name' => 'btnSubmit',
-                                        'value' => 'Payfee',
-                                        'type' => 'submit',
-                                        'class' => 'paypal_btn'
-                                            ), $paypal_buttton);
+//                                    $paypal_buttton = CHtml::image($this->themeUrl . "/images/express-checkout-hero.png", "paypal", array('img-responsive'));
+//                                    echo CHtml::tag('button', array(
+//                                        'name' => 'btnSubmit',
+//                                        'value' => 'Payfee',
+//                                        'type' => 'submit',
+//                                        'class' => 'paypal_btn'
+//                                            ), $paypal_buttton);
                                     ?>
                                 </div>
                             </div>
                         </div>
-                    </div> 
+                    </div> -->
 
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="creditcard" style="display:none;"> 
+<!--                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="creditcard" style="display:none;"> 
                         <div class="card-details-cont"> 
                             <div class="form-row1"> 
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <h4> Pay with debit card or credit card </h4>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4"> <?php echo $form->labelEx($model_paypaladvance, 'credit_card'); ?>  </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4"> <?php //echo $form->labelEx($model_paypaladvance, 'credit_card'); ?>  </div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">  
-                                    <?php echo $form->textField($model_paypaladvance, 'credit_card', array('class' => "form-txtfield")); ?>
-                                    <?php echo $form->error($model_paypaladvance, 'credit_card'); ?>
+                                    <?php //echo $form->textField($model_paypaladvance, 'credit_card', array('class' => "form-txtfield")); ?>
+                                    <?php //echo $form->error($model_paypaladvance, 'credit_card'); ?>
                                 </div>
                             </div>
                             <div class="form-row1"> 
                                 <div class="col-xs-12 col-sm-5 col-md-6 col-lg-4">   </div>
-                                <div class="col-xs-12 col-sm-7 col-md-6 col-lg-4">  <?php echo CHtml::image($this->themeUrl . '/images/payment-icons.jpg', '', array("class" => 'pay-icon')); ?></div>
+                                <div class="col-xs-12 col-sm-7 col-md-6 col-lg-4">  <?php //echo CHtml::image($this->themeUrl . '/images/payment-icons.jpg', '', array("class" => 'pay-icon')); ?></div>
                             </div>
                             <div class="form-row1"> 
-                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4"><label><?php echo Myclass::t('OR653', '', 'or') ?>&nbsp;<span class="required">*</span></label> </div>
-                                <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2">  <?php echo $form->textField($model_paypaladvance, 'exp_month', array('class' => "form-txtfield", "placeholder" => "MM")); ?> 
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4"><label><?php //echo Myclass::t('OR653', '', 'or') ?>&nbsp;<span class="required">*</span></label> </div>
+                                <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2">  <?php //echo $form->textField($model_paypaladvance, 'exp_month', array('class' => "form-txtfield", "placeholder" => "MM")); ?> 
                                 </div>
                                 <span> / </span>
-                                <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2">  <?php echo $form->textField($model_paypaladvance, 'exp_year', array('class' => "form-txtfield", "placeholder" => "YYYY")); ?> </div>
+                                <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2">  <?php //echo $form->textField($model_paypaladvance, 'exp_year', array('class' => "form-txtfield", "placeholder" => "YYYY")); ?> </div>
                                 <div class="clearfix"></div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">&nbsp;</div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                                    <?php echo $form->error($model_paypaladvance, 'exp_month'); ?>
-                                    <?php echo $form->error($model_paypaladvance, 'exp_year'); ?>
+                                    <?php //echo $form->error($model_paypaladvance, 'exp_month'); ?>
+                                    <?php //echo $form->error($model_paypaladvance, 'exp_year'); ?>
                                 </div>
                             </div>
                             <div class="form-row1"> 
-                                <div class="col-xs-12 col-sm-7 col-md-6 col-lg-4"> <?php echo $form->labelEx($model_paypaladvance, 'cvv2'); ?></div>
+                                <div class="col-xs-12 col-sm-7 col-md-6 col-lg-4"> <?php //echo $form->labelEx($model_paypaladvance, 'cvv2'); ?></div>
                                 <div class="col-xs-12 col-sm-6 col-md-2 col-lg-2">  
-                                    <?php echo $form->textField($model_paypaladvance, 'cvv2', array('class' => "form-txtfield")); ?>                                    
+                                    <?php //echo $form->textField($model_paypaladvance, 'cvv2', array('class' => "form-txtfield")); ?>                                    
                                 </div>                                
                                 <div class="clearfix"></div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">&nbsp;</div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                                    <?php echo $form->error($model_paypaladvance, 'cvv2'); ?>
+                                    <?php //echo $form->error($model_paypaladvance, 'cvv2'); ?>
                                 </div>
                             </div>
                             <div class="form-row1"> 
                                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 pull-right"> 
                                     <?php
-                                    echo CHtml::tag('button', array(
-                                        'name' => 'btnSubmit',
-                                        'type' => 'submit',
-                                        'value' => 'Payfee',
-                                        'class' => 'submit-btn'
-                                            ), '<i class="fa fa-arrow-circle-right"></i> ' . Myclass::t('OGO199', '', 'og'));
+//                                    echo CHtml::tag('button', array(
+//                                        'name' => 'btnSubmit',
+//                                        'type' => 'submit',
+//                                        'value' => 'Payfee',
+//                                        'class' => 'submit-btn'
+//                                            ), '<i class="fa fa-arrow-circle-right"></i> ' . Myclass::t('OGO199', '', 'og'));
                                     ?>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     
                 </div>              
             </div>
@@ -244,7 +256,7 @@ $(document).ready(function(){
    
    //Check the payment method 
     var paytype_val=$("#SuppliersSubscription_payment_type").val();
-    chnagemethod(paytype_val); 
+   // chnagemethod(paytype_val); 
     
     $("#SuppliersSubscription_payment_type").change(function(){
         var paytype_val= $(this).val();
