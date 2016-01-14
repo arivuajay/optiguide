@@ -25,7 +25,7 @@
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3" class="testcl">
                 <a href="<?php echo Yii::app()->createUrl('/optirep/repCredential/step1', array('sid' => $repSubscriptionType['rep_subscription_type_id'])); ?>">
                     <?php // echo $form->radioButton($model, 'subscription_type_id', array('value' => $repSubscriptionType['rep_subscription_type_id'], 'uncheckValue' => null, 'class' => 'subscription_types', 'id' => $repSubsTypeId, 'checked' => $checked)); ?>
-                    <label>
+                  
                         <div class="subscription-cont <?php echo $active_class; ?>">
                             <div class="subscription-heading subscription-heading<?php echo $repSubsTypeId + 1 ?>">  
                                 <?php echo $repSubscriptionType['rep_subscription_name']; ?> 
@@ -45,8 +45,7 @@
                                     </span>
                                 </p>
                             </div>
-                        </div>
-                    </label>
+                        </div>                    
                 </a>     
             </div>
         <?php } ?>

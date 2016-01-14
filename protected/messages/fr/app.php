@@ -249,8 +249,9 @@ return array(
     'OG218' => 'Marche',
     'OG219' => 'Éviter les autoroutes',
     'OG220' => 'Adresse de destination:',
-    'OG221' => 'Obtenir des directions'
+    'OG221' => 'Obtenir des directions',
     
-
+    'OG222' => 'Aucun derniers enregistrements trouvés . Cliquez sur <b> Plus de conseils </b> pour voir les autres messages .',
+    'OG223' => "Aucune dernières nouvelles trouvé . Cliquez sur <b> Voir tous </b > Pour voir d'autres nouvelles ."
 );
 ?>

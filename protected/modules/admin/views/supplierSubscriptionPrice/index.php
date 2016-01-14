@@ -23,7 +23,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             'profile_price',
             'profile_logo_price',
             'expire_days', 
-            'tax',
+           // 'tax',
             array(
                 'header' => 'Actes',
                 'class' => 'booster.widgets.TbButtonColumn',

@@ -8,6 +8,21 @@ class Myclass extends CController {
         return hash("sha512", $value);
     }
 
+    public static function calculatetax($regionid) {
+        $region_result = RegionDirectory::model()->findByPk($regionid);
+        $taxtype = $region_result->taxt_type;
+        $provincial_rates = $region_result->provincial_rates;
+        $federal_rates = $region_result->federal_rates;
+        $total_tax = ( $provincial_rates + $federal_rates);
+
+        $taxvals['taxtype'] = $taxtype;
+        $taxvals['provincialrates'] = $provincial_rates;
+        $taxvals['federalrates'] = $federal_rates;
+        $taxvals['total_tax'] = $total_tax;
+
+        return $taxvals;
+    }
+
     public static function refencryption($str) {
         return base64_encode($str);
     }
@@ -28,7 +43,7 @@ class Myclass extends CController {
         }
         return $final_rand;
     }
-    
+
     public static function getRandomNUmbers($length = 8) {
         $chars = "1234567890";
         $final_rand = '';
@@ -73,7 +88,7 @@ class Myclass extends CController {
             unset(Yii::app()->request->cookies['admin_username']);
         }
     }
-    
+
     public static function getcountries($id) {
         $criteria = new CDbCriteria;
 
@@ -89,9 +104,10 @@ class Myclass extends CController {
         $val = $country->$countryname;
         return $val;
     }
+
     public static function getallcountries1($id = null) {
         $criteria = new CDbCriteria;
-        
+
         $countryname = 'NOM_PAYS_' . Yii::app()->session['language'];
 
         $criteria->order = $countryname . ' ASC';
@@ -103,10 +119,10 @@ class Myclass extends CController {
         $val = CHtml::listData($country, 'ID_PAYS', $countryname);
         return $val;
     }
-    
+
     public static function getallcountries($id = null) {
         $criteria = new CDbCriteria;
-        $val=1;
+        $val = 1;
         $countryname = 'NOM_PAYS_' . Yii::app()->session['language'];
 
         $criteria->order = $countryname . ' ASC';
@@ -143,14 +159,13 @@ class Myclass extends CController {
         $criteria_reg = new CDbCriteria;
         $criteria_reg->order = 'NOM_VILLE ASC';
         if (!is_null($id)) {
-            
+
             $criteria_reg->condition = 'ID_REGION=:id';
             $criteria_reg->params = array(':id' => $id);
             $cities_result = CityDirectory::model()->findAll($criteria_reg);
-            $cities1["-1"] =  Myclass::t('OG173');
+            $cities1["-1"] = Myclass::t('OG173');
             $cities2 = CHtml::listData($cities_result, 'ID_VILLE', 'NOM_VILLE');
-            $cities = $cities1+$cities2;
-            
+            $cities = $cities1 + $cities2;
         }
         return $cities;
     }
@@ -196,6 +211,7 @@ class Myclass extends CController {
         );
         return $months;
     }
+
     public static function getMonths_Fr($m) {
         $months = array(
             1 => 'Janvier',
@@ -290,20 +306,18 @@ class Myclass extends CController {
                     ->createCommand("UPDATE publicite_publicite SET NB_IMPRESSIONS_FAITES = NB_IMPRESSIONS_FAITES + 1 WHERE ID_PUBLICITE=:adsId")
                     ->bindValues(array(':adsId' => $ads_id))
                     ->execute();
-        }else
-        {
+        } else {
             $adsresult = Myclass::get_adsense_result($positionid);
             if (!empty($adsresult)) {
                 $html = $adsresult->content;
             }
-        }    
+        }
 
         return $html;
     }
-    
-    public static function get_adsense_result($positionid)
-    {
-       // For module / sections / default / datewise filters
+
+    public static function get_adsense_result($positionid) {
+        // For module / sections / default / datewise filters
         $criteria = new CDbCriteria();
         $criteria->addCondition("iId_position = " . $positionid);
         $criteria->addCondition("status = 1");
@@ -311,7 +325,7 @@ class Myclass extends CController {
         $criteria->limit = 1;
         $result = PubliciteAdsense::model()->find($criteria);
         return $result;
-    }        
+    }
 
     public static function get_banner_result($positionid, $current_moduleid, $sectionid) {
         $lang = strtoupper(Yii::app()->session['language']);
@@ -426,17 +440,38 @@ class Myclass extends CController {
     }
 
     public static function currencyFormat($number) {
-        
+
         $result = self::numberFormat($number);
-        return $result . ' CAD'.$c;
+        return $result . ' CAD' . $c;
     }
-    
+
     public static function numberFormat($number) {
-        if (Yii::app()->session['language'] == 'FR') { 
-            return number_format($number, 2, ","," ");
-        }  else {
+        if (Yii::app()->session['language'] == 'FR') {
+            return number_format($number, 2, ",", " ");
+        } else {
             return number_format($number, 2);
         }
+    }
+
+    public static function rep_taxpercentage() {
+        $regionid = "";
+        $tax_percentage = self::TAX;
+        
+        if (isset(Yii::app()->session['registration']['step2']['RepCredentialProfiles']['region'])) {
+            $regionid = Yii::app()->session['registration']['step2']['RepCredentialProfiles']['region'];
+        } elseif (isset(Yii::app()->user->id)) {
+            $uid = Yii::app()->user->id;
+            $profile_infos = RepCredentialProfiles::model()->find("rep_credential_id=" . $uid);
+            $ville = $profile_infos->ID_VILLE;
+            $regionid = CityDirectory::model()->findByPk($ville)->ID_REGION;
+        }
+
+        if ($regionid != '') {
+            $taxprce = self::calculatetax($regionid);
+            $tax_percentage = $taxprce['total_tax'];
+        }
+        
+        return $tax_percentage;
     }
 
     public static function priceCalculation($no_of_accounts_purchased) {
@@ -444,7 +479,7 @@ class Myclass extends CController {
         $subscription_type_id = $findSubscriptionType['rep_subscription_type_id'];
         $per_account_price = $findSubscriptionType['rep_subscription_price'];
         $total_price = $no_of_accounts_purchased * $per_account_price;
-        $tax_percentage = self::TAX;
+        $tax_percentage = self::rep_taxpercentage();
         $tax = $total_price * $tax_percentage / 100;
         $grand_total = $total_price + $tax;
         $result = array();
@@ -471,8 +506,11 @@ class Myclass extends CController {
             $offer_price = 0;
             $total = $total_month_price;
         }
-        $tax_percentage = self::TAX;
-        $tax = $total * $tax_percentage / 100;
+
+        $tax_percentage = self::rep_taxpercentage();
+
+        $tax = $total * ($tax_percentage / 100);
+
         $grand_total = $total + $tax;
 
         $result = array();
@@ -559,12 +597,12 @@ class Myclass extends CController {
             return round(($totalusers / 1000000000)) . ' billion';
         } elseif ($totalusers > 1000000) {
             return round(($totalusers / 1000000)) . ' million';
-        }elseif ($totalusers > 10000) {
-            return Myclass::t('OG210'). round(($totalusers / 1000)) . ' 000';
-        }elseif ($totalusers > 1000) {
-            return Myclass::t('OG210'). round(($totalusers / 1000)) . '000';
+        } elseif ($totalusers > 10000) {
+            return Myclass::t('OG210') . round(($totalusers / 1000)) . ' 000';
+        } elseif ($totalusers > 1000) {
+            return Myclass::t('OG210') . round(($totalusers / 1000)) . '000';
         } elseif ($totalusers > 100) {
-            return Myclass::t('OG210'). round(($totalusers / 100)) . '00';
+            return Myclass::t('OG210') . round(($totalusers / 100)) . '00';
         } else {
             return $totalusers;
         }

@@ -171,6 +171,8 @@ class RepCredentialController extends ORController {
             "TRXTYPE" => "S",
             "CURRENCY" => "CAD",
             "AMT" => $registration['step3']['grand_total'],
+            "TAX" => $registration['step3']['tax'],
+            "SUBTOTAL" => $registration['step3']['total_price'],
             "CREATESECURETOKEN" => "Y",
             "SECURETOKENID" => $sequrity_id, //Should be unique, never used before
             "RETURNURL" => Yii::app()->createAbsoluteUrl('/optirep/repCredential/final'),

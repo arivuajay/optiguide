@@ -763,6 +763,17 @@ class SuppliersDirectoryController extends OGController {
         $model_paypaladvance = new PaymentTransaction('paypal_advance');
 
         $this->performAjaxValidation(array($pmodel));
+        
+        // Session supplier model attribute    
+        $sess_attr_m = Yii::app()->user->getState("mattributes");
+        
+        // Set and get regionid to calculate tax 
+        $sess_attr_m['regionid'] = Yii::app()->user->getState("sregion");  
+        $regionid = Yii::app()->user->getState("sregion");
+        $taxvals = Myclass::calculatetax($regionid);
+        
+        $tax_price = $taxvals['total_tax'];
+        
 
         if (isset($_POST['SuppliersSubscription'])) {
 
@@ -786,7 +797,9 @@ class SuppliersDirectoryController extends OGController {
                 $subprices = SupplierSubscriptionPrice::model()->findByPk(1);
                 $profile_price = $subprices->profile_price;
                 $profile_logo_price = $subprices->profile_logo_price;
-                $tax_price = $subprices->tax;
+                
+                
+               // $tax_price = $subprices->tax;
 
                 $invoice_number  = Myclass::getRandomString();                
 
@@ -821,7 +834,7 @@ class SuppliersDirectoryController extends OGController {
                 // For pay with paypal payflowlink
                 $returnurl = Yii::app()->createAbsoluteUrl('/optiguide/suppliersDirectory/finaltmp');
                 $cancelurl = Yii::app()->createAbsoluteUrl('/optiguide/suppliersDirectory/paypalcancel');
-                $response  = $this->pay_with_creditcard($invoice_number, $pmodel->amount,$returnurl, $cancelurl);
+                $response  = $this->pay_with_creditcard($invoice_number, $payment_details,$returnurl, $cancelurl);
               
                 if ($response['RESULT'] != 0) {
                     Yii::app()->user->setFlash('danger', 'Please contact admin!!! Have a problem in payment processing.');
@@ -860,8 +873,7 @@ class SuppliersDirectoryController extends OGController {
                         $payment_details['EXTENSION'] = $fmodel->EXTENSION;
                     }
 
-                    // Session supplier model attribute    
-                    $sess_attr_m = Yii::app()->user->getState("mattributes");
+                  
                     // Session user model attribute
                     $sess_attr_u = Yii::app()->user->getState("uattributes");
                     // Session productids 
@@ -905,7 +917,7 @@ class SuppliersDirectoryController extends OGController {
         }
         $tab = 4;
         $viewpage = '_payment_form';
-        $this->render($viewpage, compact('pmodel', 'tab', 'model_paypaladvance'));
+        $this->render($viewpage, compact('pmodel', 'tab', 'model_paypaladvance','tax_price'));
     }
     
     public function finalstep($securetoken,$securetokenid,$mode)
@@ -1087,7 +1099,7 @@ class SuppliersDirectoryController extends OGController {
         }
     }
 
-    protected function pay_with_creditcard($sequrity_id, $amount , $returnurl , $cancelurl) {
+    protected function pay_with_creditcard($sequrity_id, $payment_details , $returnurl , $cancelurl) {
         $paypalAdv = new PaypalAdvance;
         $request = array(
             "PARTNER" => $paypalAdv::PARTNER,
@@ -1097,8 +1109,10 @@ class SuppliersDirectoryController extends OGController {
             "TENDER" => "C",
             "TRXTYPE" => "S",
             "CURRENCY" => "CAD",
-            "AMT" => $amount,
-            "CREATESECURETOKEN" => "Y",
+            "SUBTOTAL" => $payment_details['subscription_price'],
+            "AMT" => $payment_details['total_price'],
+            "TAX" => $payment_details['tax'],
+            "CREATESECURETOKEN" => "Y",            
             "SECURETOKENID" => $sequrity_id, //Should be unique, never used before
             "RETURNURL" => $returnurl,
             "CANCELURL" => $cancelurl,
@@ -1848,6 +1862,15 @@ class SuppliersDirectoryController extends OGController {
         $model_paypaladvance = new PaymentTransaction('paypal_advance');
 
         $this->performAjaxValidation(array($pmodel));
+        
+        
+        $relid     = Yii::app()->user->relationid;
+        $fmodel    = $this->loadModel($relid);
+        $regionid  = CityDirectory::model()->findByPk($fmodel->ID_VILLE)->ID_REGION;
+       
+        $taxvals   = Myclass::calculatetax($regionid);        
+        $tax_price = $taxvals['total_tax'];
+       
 
         if (isset($_POST['SuppliersSubscription'])) {
 
@@ -1861,11 +1884,10 @@ class SuppliersDirectoryController extends OGController {
 //                $card_validdate = $model_paypaladvance->validate();
 //            }
 
-
             if ($pmodel->validate() && $card_validdate) 
             {
                 $subprices = SupplierSubscriptionPrice::model()->findByPk(1);
-                $tax_price = $subprices->tax;
+               // $tax_price = $subprices->tax;
                 $profile_price = $subprices->profile_price;
                 $profile_logo_price = $subprices->profile_logo_price;
                 $logo_price = ( $profile_logo_price - $profile_price );
@@ -1910,7 +1932,7 @@ class SuppliersDirectoryController extends OGController {
                 $returnurl = Yii::app()->createAbsoluteUrl('/optiguide/suppliersDirectory/finaltmp_renew');
                 $cancelurl = Yii::app()->createAbsoluteUrl('/optiguide/suppliersDirectory/renewpaypalcancel');
                 
-                $response  = $this->pay_with_creditcard($invoice_number, $payment_details['total_price'],$returnurl, $cancelurl);
+                $response  = $this->pay_with_creditcard($invoice_number, $payment_details,$returnurl, $cancelurl);
               
                 if ($response['RESULT'] != 0) {
                     Yii::app()->user->setFlash('danger', 'Please contact admin!!! Have a problem in payment processing.');
@@ -1921,8 +1943,7 @@ class SuppliersDirectoryController extends OGController {
                     $payment_details['payment_type'] = $_POST['SuppliersSubscription']['payment_type'];
                     $payment_details['subscription_type'] = $subscriptiontype;
 
-                    $relid = Yii::app()->user->relationid;
-                    $fmodel = $this->loadModel($relid);
+                   
                     $profile_expirydate = $fmodel->profile_expirydate;
                     $logo_expirydate = $fmodel->logo_expirydate;
 
@@ -1971,10 +1992,10 @@ class SuppliersDirectoryController extends OGController {
                // $this->renewpaypaltest($subscriptiontype, $amount, $invoice_number);
             }
         }
-        $this->render('_renewsubscription', compact('model_paypaladvance', 'sub_types', 'pmodel'));
+        $this->render('_renewsubscription', compact('model_paypaladvance', 'sub_types', 'pmodel','tax_price'));
     }
     
-     public function finalstep_renew($securetoken,$securetokenid,$mode)
+    public function finalstep_renew($securetoken,$securetokenid,$mode)
     {         
         $viewpage = '_renewsubscription_final';        
         $this->render($viewpage, compact('securetoken', 'securetokenid','mode'));        

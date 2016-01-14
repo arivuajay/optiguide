@@ -385,6 +385,8 @@ class RepAccountsController extends ORController {
             "TRXTYPE" => "S",
             "CURRENCY" => "CAD",
             "AMT" => $price_list['grand_total'],
+            "TAX" => $price_list['tax'],
+            "SUBTOTAL" => $price_list['total_price'],
             "CREATESECURETOKEN" => "Y",
             "SECURETOKENID" => $sequrity_id, //Should be unique, never used before
             "RETURNURL" => Yii::app()->createAbsoluteUrl('/optirep/repAccounts/finalBuyMoreAccounts'),
@@ -576,6 +578,8 @@ class RepAccountsController extends ORController {
             "TRXTYPE" => "S",
             "CURRENCY" => "CAD",
             "AMT" => $data['price_list']['grand_total'],
+            "TAX" => $data['price_list']['tax'],
+            "SUBTOTAL" => $data['price_list']['total_price'],
             "CREATESECURETOKEN" => "Y",
             "SECURETOKENID" => $sequrity_id, //Should be unique, never used before
             "RETURNURL" => Yii::app()->createAbsoluteUrl('/optirep/repAccounts/finalRenewalRep'),

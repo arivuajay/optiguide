@@ -79,6 +79,8 @@ class RepSingleSubscriptionsController extends ORController {
             "TRXTYPE" => "S",
             "CURRENCY" => "CAD",
             "AMT" => $price_calculation['grand_total'],
+            "TAX" => $price_calculation['tax'],
+            "SUBTOTAL" => $price_calculation['total_price'],
             "CREATESECURETOKEN" => "Y",
             "SECURETOKENID" => $sequrity_id, //Should be unique, never used before
             "RETURNURL" => Yii::app()->createAbsoluteUrl('/optirep/repSingleSubscriptions/final'),

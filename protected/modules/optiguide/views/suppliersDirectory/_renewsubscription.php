@@ -13,7 +13,8 @@ $profile_expirydate = $get_expirydate['profile_expirydate'];
 $logo_expirydate = $get_expirydate['logo_expirydate'];
 
 $subprices = SupplierSubscriptionPrice::model()->findByPk(1);
-$tax_price = $subprices->tax;
+//$tax_price = $subprices->tax;
+$tax_price = $tax_price;
 $profile_price = $subprices->profile_price;
 $profile_logo_price = $subprices->profile_logo_price;
 $logo_price = $profile_logo_price - $profile_price;

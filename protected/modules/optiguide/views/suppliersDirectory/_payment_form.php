@@ -9,7 +9,7 @@ $themeUrl = $this->themeUrl;
 $subprices = SupplierSubscriptionPrice::model()->findByPk(1);
 $profile_price = $subprices->profile_price;
 $profile_logo_price = $subprices->profile_logo_price;
-$tax_price = $subprices->tax;
+$tax_price = $tax_price;
 
 $user_infos = Yii::app()->user->getState("uattributes");
 $logo_name = $user_infos['USR'];
@@ -187,6 +187,7 @@ $logo_name = $user_infos['USR'];
 $taxval_profile = $profile_price * ($tax_price / 100);
 //$taxval_profile_logo = $profile_logo_price * ($tax_price / 100);
 $taxval_profile_logo=Myclass::numberFormat($profile_logo_price * ($tax_price / 100));
+
 $grandtotal_profile = ( $profile_price + $taxval_profile);
 $grandtotal_profile_logo =Myclass::numberFormat($profile_logo_price + $taxval_profile_logo);
 //$grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo);

@@ -249,7 +249,10 @@ return array(
     'OG218' => 'Walk',
     'OG219' => 'Avoid Highways',
     'OG220' => 'Destination address:',
-    'OG221' => 'Get Directions'
+    'OG221' => 'Get Directions',
+    
+    'OG222' => 'No latest records found. Click <b>More advice</b> to see other posts.',
+    'OG223' => 'No latest news found. Click <b>View all</b> to see other news.',
     
 );    
 ?>

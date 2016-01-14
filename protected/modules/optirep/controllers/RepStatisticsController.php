@@ -20,7 +20,7 @@ class RepStatisticsController extends ORController {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('paypalreturn' , 'paypalcancel' , 'paypalnotify'),
+                'actions' => array('finalstat','paypalreturn' , 'paypalcancel' , 'paypalnotify'),
                 'users' => array('*'),
             ), 
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -92,68 +92,58 @@ class RepStatisticsController extends ORController {
             $payment_details['rep_user_name']     = Yii::app()->user->rep_username;
             $payment_details['pay_type'] = $pay_type;
             $payment_details['subscription_type'] = $_POST['subscription_type'];
+            $payment_details['subscriptionprice'] = $price;
+            $payment_details['itemname'] =  $itemname;
             $pdetails = serialize($payment_details);
 
-            if($pay_type==1)
-            {
-                
-                $stmodel = new SupplierTemp;
-                $stmodel->paymentdetails = $pdetails;
-                $stmodel->invoice_number = $invoice;
-                $stmodel->save(false);
-
-                $paypalManager->addField('item_name', $itemname);
-                $paypalManager->addField('amount', $price);
-                $paypalManager->addField('custom', $invoice);
-                $paypalManager->addField('return', $returnUrl);
-                $paypalManager->addField('cancel_return', $cancelUrl);
-                $paypalManager->addField('notify_url', $notifyUrl);
-
-                //$paypalManager->dumpFields();   // for printing paypal form fields
-                $paypalManager->submitPaypalPost();
-                
-            } else if($pay_type==2){
+            $returnurl = Yii::app()->createAbsoluteUrl('/optirep/repStatistics/finalstat');
+            $cancelurl = Yii::app()->createAbsoluteUrl('/optirep/repStatistics/paypalcancel');
             //Pay by credit card    
-                $model_paypalAdvance->attributes = $_POST['PaymentTransaction'];
-                $valid = $model_paypalAdvance->validate();
-               
-                if ($valid) {
-                    
-                    $paypalAdv = new PaypalAdvance;
-                    $request   = array(
-                        "PARTNER" => $paypalAdv::PARTNER,
-                        "VENDOR" => $paypalAdv::VENDOR,
-                        "USER" => $paypalAdv::USER,
-                        "PWD" => $paypalAdv::PWD,
-                        "TENDER" => "C",
-                        "TRXTYPE" => "S",
-                        "CURRENCY" => "CAD",
-                        "AMT" => $price,
-                        "ACCT" => $model_paypalAdvance->credit_card,
-                        "EXPDATE" => $model_paypalAdvance->exp_month . $model_paypalAdvance->exp_year,
-                        "CVV2" => $model_paypalAdvance->cvv2,
-                    );
-                    
-                     $payment_details['subscriptionprice'] = $price;
-                     $payment_details['itemname'] =  $itemname;
+                $model_paypalAdvance->attributes = $_POST['PaymentTransaction'];                
+                $paypalAdv = new PaypalAdvance;
+                $request   = array(
+                    "PARTNER" => $paypalAdv::PARTNER,
+                    "VENDOR" => $paypalAdv::VENDOR,
+                    "USER" => $paypalAdv::USER,
+                    "PWD" => $paypalAdv::PWD,
+                    "TENDER" => "C",
+                    "TRXTYPE" => "S",
+                    "CURRENCY" => "CAD",
+                    "AMT" => $price,
+                    "CREATESECURETOKEN" => "Y",            
+                    "SECURETOKENID" => $invoice, //Should be unique, never used before
+                    "RETURNURL" => $returnurl,
+                    "CANCELURL" => $cancelurl,
+                );
 
-                    //Run request and get the response
-                    $response = $paypalAdv->run_payflow_call($request);
-                    if ($response['RESULT'] == 0 && $response['RESPMSG'] == 'Approved') {
-                        
-                        $this->creditcardnotify($invoice, $response,$payment_details);
-                        
-                        Yii::app()->user->setFlash('success', Myclass::t('OR648', '', 'or'));
-                        $this->redirect(array('payment'));
-                    } else {
-                        Yii::app()->user->setFlash('danger', Myclass::t('OR649', '', 'or'));
-                        $this->redirect(array('payment'));
-                    }
+                
 
+                //Run request and get the response
+                $response = $paypalAdv->run_payflow_call($request);
+                if ($response['RESULT'] != 0) {
+                    
+                    Yii::app()->user->setFlash('danger', 'Please contact admin!!! Have a problem in payment processing.');
+                    $this->redirect(array('payment'));
+                    
+                } else {
+                    
+                   // $this->creditcardnotify($invoice, $response,$payment_details);
+                    
+                    $stmodel = new SupplierTemp;
+                    $stmodel->paymentdetails = $pdetails;
+                    $stmodel->invoice_number = $invoice;
+                    $stmodel->save(false);
+                    
+                    $securetoken   = $response['SECURETOKEN'];                    
+                    $securetokenid = $response['SECURETOKENID'];  
+                    $paypalAdv     = new PaypalAdvance;
+                    $mode          = $paypalAdv::MODE; 
+                                        
+                    $this->final_statistics($securetoken,$securetokenid,$mode);
+
+                    //Yii::app()->user->setFlash('success', Myclass::t('OR648', '', 'or'));
+                    //$this->redirect(array('payment'));
                 }
-            }    
-            
-            
         }
 
         $this->render('payment', array(
@@ -162,6 +152,34 @@ class RepStatisticsController extends ORController {
         ));
     }
 
+    public function final_statistics($securetoken,$securetokenid,$mode)
+    {         
+        $viewpage = '_statistics_final';        
+        $this->render($viewpage, compact('securetoken', 'securetokenid','mode'));        
+    }  
+    
+    public function actionFinalstat()
+    { 
+        if (isset($_POST['RESULT']) || isset($_GET['RESULT'])) 
+        { 
+            $_SESSION['payflowresponse'] = array_merge($_GET, $_POST); 
+            
+            $invoice_number = $_SESSION['payflowresponse']['SECURETOKENID'];
+            $response = $_SESSION['payflowresponse'];
+            
+            $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");                    
+            $pdetails      = $result->paymentdetails;
+            $payment_details = unserialize($pdetails);
+
+            $this->creditcardnotify($invoice_number,$response,$payment_details);
+            
+            Yii::app()->user->setFlash('success', Myclass::t('OGO185', '', 'og'));
+            $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repStatistics/payment'));           
+            echo '<script type="text/javascript">window.top.location.href = "' . $returnUrl .  '";</script>';
+            exit(0);          
+        }
+    }
+    
     public function actionPaypalreturn() {
 
         $pstatus = $_POST["payment_status"];
