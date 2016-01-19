@@ -14,7 +14,7 @@
     <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5"> 
         <div class="opti-rep-cont">
             <div class="opti-rep-logo"> 
-                <?php echo CHtml::image("{$this->themeUrl}/images/opti-rep-logo.png", 'Logo') ?>
+                <?php echo CHtml::link(CHtml::image("{$this->themeUrl}/images/opti-rep-logo.png", 'Logo'), REPURL); ?>
             </div>
             <p><?php  echo Myclass::t('OG213');?></p>
             <p> <?php echo CHtml::link(Myclass::t('OG214'), REPURL.'optirep/repCredential/step1'); ?></p>

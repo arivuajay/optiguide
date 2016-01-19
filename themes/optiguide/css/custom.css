@@ -517,3 +517,7 @@ img.breton {
     vertical-align: -0.1em !important;
     width: 1em !important;
 }
+
+.opti-rep-logo a{
+  background: none;
+}

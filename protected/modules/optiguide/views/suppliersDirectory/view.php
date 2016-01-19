@@ -22,6 +22,7 @@ if ($model['logo_expirydate'] != '') {
 } else {
     $ldisp = 0;
 }
+
 ?>
 
 <div class="row"> 
@@ -34,11 +35,21 @@ if ($model['logo_expirydate'] != '') {
                 if ($model['ID_CATEGORIE'] > 0 && $ldisp=="1") {
                     $extypes = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
                     $img_ext = $model['EXTENSION'];
+                    $siteweb = $model['SITE_WEB'];
                     if (in_array($img_ext, $extypes)) {
-                       
                         $img_url = Yii::app()->getBaseUrl(true) . '/uploads/archivage/' . $model['ID_CATEGORIE'] . '/' . $model['FICHIER'];
                         ?>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 brand-logo"> <img src="<?php echo $img_url; ?>" width="200" height="200" alt=""> </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 brand-logo">
+                            <?php
+                            if($siteweb!="")
+                            {?>  
+                               <a target="_blank" href="<?php echo $siteweb;?>" ><img src="<?php echo $img_url; ?>" width="200" height="200" alt=""></a> 
+                            <?php
+                            }else{?>
+                                <img src="<?php echo $img_url; ?>" width="200" height="200" alt="">     
+                            <?php   
+                            } ?>    
+                            </div>
                         <?php
                     }
                 }

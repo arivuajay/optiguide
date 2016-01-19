@@ -13,6 +13,18 @@ $tax_price = $tax_price;
 
 $user_infos = Yii::app()->user->getState("uattributes");
 $logo_name = $user_infos['USR'];
+
+$taxval_profile = $profile_price * ($tax_price / 100);
+//$taxval_profile_logo = $profile_logo_price * ($tax_price / 100);
+$taxval_profile_logo=Myclass::numberFormat($profile_logo_price * ($tax_price / 100));
+
+$grandtotal_profile = ( $profile_price + $taxval_profile);
+$grandtotal_profile_logo =Myclass::numberFormat($profile_logo_price + $taxval_profile_logo);
+//$grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo);
+
+$currency = CURRENCY;
+$p_price = $profile_price . ' ' . $currency;
+$p_l_price = $profile_logo_price . ' ' . $currency;
 ?>
 
 <div class="row"> 
@@ -80,7 +92,7 @@ $logo_name = $user_infos['USR'];
                         
                         <p> <b><?php echo Myclass::t('OG138'); ?>  : </b>
                             <span id="sprice"><?php echo $p_l_price;?></span>
-                        </p>               
+                        </p>  
                         <p> <b><?php echo Myclass::t('OG176'); ?> : </b>
                             <span id="stax"><?php echo $taxval_profile_logo;?></span>
                         </p>
@@ -184,18 +196,6 @@ $logo_name = $user_infos['USR'];
     </div> 
 </div>   
 <?php
-$taxval_profile = $profile_price * ($tax_price / 100);
-//$taxval_profile_logo = $profile_logo_price * ($tax_price / 100);
-$taxval_profile_logo=Myclass::numberFormat($profile_logo_price * ($tax_price / 100));
-
-$grandtotal_profile = ( $profile_price + $taxval_profile);
-$grandtotal_profile_logo =Myclass::numberFormat($profile_logo_price + $taxval_profile_logo);
-//$grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo);
-
-$currency = CURRENCY;
-$p_price = $profile_price . ' ' . $currency;
-$p_l_price = $profile_logo_price . ' ' . $currency;
-
 $js = <<< EOD
 $(document).ready(function(){ 
             
@@ -251,7 +251,7 @@ $(document).ready(function(){
         {
             $('#catlogo').show();
             $('#price').show();
-            $('#sprice').html(profile_logo_price);
+            $('#sprice').html(profile_logo_price);            
             $('#stax').html(tax_profile_logo+" "+currency);
             $('#stotalprice').html(grandtotal_profile_logo+" "+currency);
         }else  if(subval==1)
