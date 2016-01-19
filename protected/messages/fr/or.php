@@ -157,7 +157,7 @@ return array(
     'OR616' => 'Vous ne devez pas les droits pour accéder à cette page . !',
     'OR617' => 'Cette discussion ne existe pas!',
     //controllers/ProfessionalDirectoryController
-    'OR618' => "Maximum de 50 utilisateurs (professionnels / détaillants) seulement capable de voir et par jour. Vos limites sont atteintes aujourd'hui !!",
+    'OR618' => "Maximum de 30 utilisateurs (professionnels / détaillants) seulement capable de voir et par jour. Vos limites sont atteintes aujourd'hui !!",
     'OR619' => "Rapport envoyé avec succès à l'admin !!!",
     'OR620' => "Remarque créé avec succès !!!",
     //views/InternalMessage

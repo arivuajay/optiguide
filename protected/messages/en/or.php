@@ -157,7 +157,7 @@ return array(
     'OR616' => 'You dont have the rights to access this page.!',
     'OR617' => 'This discussion does not exists!',
     //controllers/ProfessionalDirectoryController
-    'OR618' => 'Maximum 50 users ( professionals / retailers ) only able to view per day. Your limits are reached today!!',
+    'OR618' => 'Maximum 30 users ( professionals / retailers ) only able to view per day. Your limits are reached today!!',
     'OR619' => "Report sent successfully to admin!!!",
     'OR620' => "Note Created successfully!!!",
     //views/InternalMessage
