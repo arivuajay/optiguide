@@ -244,9 +244,9 @@ return array(
     'OG214' => 'Subscribe now!',
     
     'OG215' => 'More Stats',
-    'OG216' => '<strong>*Hint</strong>: Click the icon and give start address to get the directions of the map.',
-    'OG217' => 'Start address:',
-    'OG218' => 'Walk',
+    'OG216' => '<strong>*Hint</strong>: Click on the Opti-Rep icon and indicate your starting address to get directions to this point.',
+    'OG217' => 'Starting address',
+    'OG218' => 'Walking',
     'OG219' => 'Avoid Highways',
     'OG220' => 'Destination address:',
     'OG221' => 'Get Directions',

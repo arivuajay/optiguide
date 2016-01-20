@@ -79,7 +79,7 @@ return array(
     'OG049' => '(enter last name only)',
     'OG050' => 'Categories',
 
-    'OG051' => 'Welcome To OptiGuide',
+    'OG051' => 'Welcome to Opti-Guide.com',
 
     'OG052'=> 'Find an optical Supplier',
     'OG053'=> 'All Optical Supplier',
@@ -87,8 +87,18 @@ return array(
     'OG055'=> 'Log in!',
     'OG056'=> 'Forgot your password?',
     
-    'OG057'=> '<p>You are looking for an optical dispensary? Search through the engine and find what you need!</p>
-     <p>You are a professionnal in this industry? Use your access codes and visit the secured zone to find more about canadian suppliers, products and brand names, calendar of upcoming events and to read fresh news from the industry through the Opti-News e-mail newsletter.</p>',
+    'OG057'=> '<p>Discover the brand-new Website for Opti-Guide.com, where you can find all the information regarding the optical industry with just a few clicks.</p>
+     <p>In addition to a brand new design, the new Opti-Guide is full of new benefits for all professionals in the optical industry such as you.</p><p>Some of the highlights include</p>
+     
+<ul class="eventList welcome1-cont"><li class="li-1">A responsive Website, universally accessible. Access the information that interests you on any device, be it a smartphone, tablet or personal computer</li>
+     <li class="li-1">You no longer need to login. Get directly the information you need regarding suppliers and brands, without having to log onto the site</li>
+     <li class="li-1">Find all the details on suppliers who registered as Opti-Guide members</li>
+     <li class="li-1">Find out the ground breaking news of the industry, daily. Sharing news is easier than never, since login is no longer required</li>
+     <li class="li-1">All the optical industry\'s major events, in Canada and across the globe, are available at your fingertips. Planning your networking and training is a piece of cake</li>
+     <li class="li-1">New accessible and fun polls, updated regularly</li>
+     <li class="li-1">A reviewed and updated ranking, to help you find the information easily</li>
+     <li class="li-1">Learn more with our new advices for all professionals</li>
+     </ul><p>And many more!</p><p>More than ever, Opti-Guide.com is YOUR leader in optic.</p>',
     
     'OG058'=> 'Need an access code? Click here to',
     'OG059'=> 'Products & Services',

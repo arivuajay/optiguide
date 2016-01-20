@@ -244,11 +244,11 @@ return array(
     'OG214' => 'Inscrivez-vous dès maintenant!',    
     
     'OG215' => 'Plus de statistiques',
-    'OG216' => "<strong>*Astuce</strong > : Cliquez sur l'icône et de donner début adresse pour obtenir les directions de la carte",
-    'OG217' => 'Adresse de départ:',
-    'OG218' => 'Marche',
+    'OG216' => "<strong>*Astuce</strong > : Cliquez sur l’icône Opti-Rep et indiquez votre lieu de départ pour obtenir le trajet",
+    'OG217' => 'Adresse du lieu de départ',
+    'OG218' => 'Trajet à la marche',
     'OG219' => 'Éviter les autoroutes',
-    'OG220' => 'Adresse de destination:',
+    'OG220' => 'Adresse de la destination',
     'OG221' => 'Obtenir des directions',
     
     'OG222' => 'Aucun derniers enregistrements trouvés . Cliquez sur <b> Plus de conseils </b> pour voir les autres messages .',

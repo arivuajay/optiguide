@@ -75,7 +75,7 @@ return array(
     'OG049' => '(entrez nom de famille seulement )',
     'OG050' => 'Catégories',
     
-    'OG051' => 'BIENVENUE sur le site d’OPTI-GUIDE',
+    'OG051' => 'Bienvenue sur Opti-Guide.com',
     
     'OG052'=> 'Trouver un Fournisseur optique',
     'OG053'=> 'Toutes Fournisseur Optique',
@@ -83,9 +83,20 @@ return array(
     'OG055'=> 'Se connecter!',
     'OG056'=> 'Mot de passe oublié?',
     
-    'OG057'=> '<p>Vous êtes à la recherche d’un bureau d\'optique ? Utilisez notre moteur de recherche pour trouver ce dont vous avez besoin!</p>
-    <p>Vous êtes un professionnel de l’industrie? Utilisez vos codes d\'accès afin d’accéder à la zone sécurisée pour trouver les fournisseurs canadiens, les produits et les marques. Découvrez de plus le calendrier des événements à venir et consultez les dernières nouvelles de l\'industrie en vous abonnant à la liste d’envoi de l’Opti-News.</p>',
-    'OG058'=> 'Besoin d\'un code d\'accès ? Cliquez ici pour',
+    'OG057'=> '<p>Redécouvrez le tout nouveau site d’Opti-Guide.com, et accédez en quelques clics à toutes les infos de l\'industrie de l\'optique!</p>
+     <p>En plus d’un design revu et corrigé, le nouvel Opti-Guide fourmille de nouveaux atouts pour l’ensemble des professionnels de l’industrie tels que vous.</p><p>En voici un aperçu :</p>
+     
+<ul class="eventList welcome1-cont"><li class="li-1">Site adapté à toutes les plateformes. Accédez à l’information qui vous intéresse, à partir de votre ordinateur, votre tablette ou votre téléphone intelligent</li>
+     <li class="li-1">Plus besoin de vous connecter! Accédez directement aux renseignements que vous recherchez sur les fournisseurs et les marques, sans devoir vous connecter</li>
+     <li class="li-1">Obtenez tous les détails sur les fournisseurs membres d’Opti-Guide</li>
+     <li class="li-1">Découvrez les actualités de l’industrie, à tous les jours, et partagez les nouvelles plus facilement que jamais. La connexion n’est pas nécessaire</li>
+     <li class="li-1">Les événements majeurs de l’industrie, au Canada et à travers le monde, sont à portée de main. Planifiez réseautage et formation devient un jeu d’enfant.</li>
+     <li class="li-1">De nouveaux sondages accessibles et ludiques vous attendent régulièrement</li>
+     <li class="li-1">Un classement revu et corrigé, pour vous permettre de trouver rapidement l’information</li>
+     <li class="li-1">Apprenez-en davantage grâce à nos astuces pour tous les professionnels de l’industrie</li>
+     </ul><p>Et plus encore!</p><p>Plus que jamais, Opti-Guide.com est VOTRE référence en optique.</p>',
+    
+    'OG058'=> 'Besoin d\'un code d\'accès ? Cliquez ici pour ',
     'OG059'=> 'Produits et services',
 
     'OG060'=> 'Prénom',

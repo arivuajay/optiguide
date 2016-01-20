@@ -624,8 +624,8 @@ class Myclass extends CController {
 
     public static function noOfMonths() {
         $no_of_months = array(
-            1 => '1 Month',
-            6 => '6 Months',
+            1 => '1 '.Myclass::t('OR755', '', 'or'),
+            6 => '6 '.Myclass::t('OR755', '', 'or'),
             12 => '1 Year',
         );
 

@@ -557,7 +557,7 @@ $(document).ready(function(){
          if (status == google.maps.DirectionsStatus.OK) {
            directionsDisplay.setDirections(response);
            $("#directionsPanel").show();   
-         } else alert("Directions not found: " + status);
+         } else alert("Adresse invalide");
        });
      }      
                

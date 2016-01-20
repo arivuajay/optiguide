@@ -44,7 +44,7 @@ class RepCredentials extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('subscription_type_id', 'required', 'on' => 'step1', 'message' => 'Select the subscription'),
+            array('subscription_type_id', 'required', 'on' => 'step1', 'message' => 'Please select your subscription.'),
             array('rep_username, rep_password, no_of_accounts_purchase', 'required', 'on' => 'step2'),
             array('rep_username, rep_password', 'required', 'on' => 'update'),
             array('rep_username', 'unique'),
@@ -104,6 +104,8 @@ class RepCredentials extends CActiveRecord {
             'old_password' => Myclass::t('OR711', '', 'or'),
             'new_password' => Myclass::t('OR712', '', 'or'),
             'confirm_password' => Myclass::t('OR713', '', 'or'),
+            'no_of_accounts_purchase' => Myclass::t('OR752', '', 'or'),
+            'no_of_months' => Myclass::t('OR753', '', 'or'),
         );
     }
 

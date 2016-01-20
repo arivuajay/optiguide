@@ -57,17 +57,17 @@
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <?php echo $form->labelEx($profile, 'country'); ?>
-                <?php echo $form->dropDownList($profile, 'country', $country, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
+                <?php echo $form->dropDownList($profile, 'country', $country, array('class' => 'selectpicker', 'empty' => Myclass::t('OR754', '', 'or'))); ?>  
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <?php echo $form->labelEx($profile, 'region'); ?>
-                <?php echo $form->dropDownList($profile, 'region', $regions, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
+                <?php echo $form->dropDownList($profile, 'region', $regions, array('class' => 'selectpicker', 'empty' => Myclass::t('OR754', '', 'or'))); ?>  
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <?php echo $form->labelEx($profile, 'ID_VILLE'); ?>
-                <?php echo $form->dropDownList($profile, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => 'Select')); ?>  
+                <?php echo $form->dropDownList($profile, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => Myclass::t('OR754', '', 'or'))); ?>  
             </div>
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3" id="other_city" style="display:none;">

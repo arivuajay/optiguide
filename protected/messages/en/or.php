@@ -75,7 +75,7 @@ return array(
     'OR546' => 'Payment Transactions',
     //views/repCredentials
     'OR547' => 'Step',
-    'OR548' => 'Select The Subscription',
+    'OR548' => 'Select your Subscription',
     'OR549' => 'Basic Information',
     'OR550' => 'Payment',
     'OR551' => 'Change Password',
@@ -85,9 +85,9 @@ return array(
     'OR555' => 'Price & Subscription',
     'OR556' => 'Subscribe',
     'OR557' => 'Next',
-    'OR558' => 'No of Accounts Purchased',
+    'OR558' => 'No of Account Purchased',
     'OR559' => 'No of Months',
-    'OR560' => 'Price Per Account / Per Month',
+    'OR560' => 'Price per user, per month',
     'OR561' => 'Total Months Price',
     'OR562' => 'Offer',
     'OR563' => 'Offer Price',
@@ -157,7 +157,7 @@ return array(
     'OR616' => 'You dont have the rights to access this page.!',
     'OR617' => 'This discussion does not exists!',
     //controllers/ProfessionalDirectoryController
-    'OR618' => 'Maximum 30 users ( professionals / retailers ) only able to view per day. Your limits are reached today!!',
+    'OR618' => 'You can access to a maximum of 30 users (professionals and retailers) per day. You have reached your daily limit, come back tomorrow.',
     'OR619' => "Report sent successfully to admin!!!",
     'OR620' => "Note Created successfully!!!",
     //views/InternalMessage
@@ -308,4 +308,11 @@ return array(
     'OR748' => 'Total Professional Users:',
     'OR749' => 'Statistics - Based on Retailer Users Types',
     'OR750' => 'Total Retailers Users:',
+    'OR751' => 'Per month',
+    'OR752' => 'No of Accounts Purchased',
+    'OR753' => 'Duration',
+    'OR754' => 'Select',
+    'OR755' => 'month',
+    'OR756' => 'Subtotal',
+    'OR757' => 'Total',
 );

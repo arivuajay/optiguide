@@ -103,8 +103,8 @@
                     <?php echo $price_list['no_of_accounts_purchased']; ?> 
                 </p>
                 <p> 
-                    <?php echo Myclass::t('OR559', '', 'or'); ?> :
-                    <?php echo $price_list['no_of_months']; ?> 
+                    <?php echo Myclass::t('OR753', '', 'or'); ?> :
+                    <?php echo $price_list['no_of_months'].' '.Myclass::t('OR755', '', 'or'); ?> 
                 </p>
                 <p> 
                     <?php echo Myclass::t('OR560', '', 'or'); ?> :
@@ -125,7 +125,7 @@
                     </p>
                 <?php } ?>
                 <p> 
-                    <b><?php echo Myclass::t('OR539', '', 'or'); ?> : </b> 
+                    <b><?php echo Myclass::t('OR756', '', 'or'); ?> : </b> 
                     <?php echo Myclass::currencyFormat($price_list['total_price']); ?>
                 </p>
                 <p> 
@@ -133,7 +133,7 @@
                     <?php echo Myclass::currencyFormat($price_list['tax']); ?> 
                 </p>
                 <p> 
-                    <b><?php echo Myclass::t('OR541', '', 'or'); ?> : </b> 
+                    <b><?php echo Myclass::t('OR757', '', 'or'); ?> : </b> 
                     <?php echo Myclass::currencyFormat($price_list['grand_total']); ?> 
                 </p>
             </div>

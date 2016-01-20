@@ -764,7 +764,7 @@ select.mobile-device {
     font-size:22px;
     border-bottom:#f0f0f0 solid 1px;
     padding-bottom:10px;
-    text-transform:uppercase;
+    /*text-transform:uppercase;*/
     color:#2e2e2e;
     margin:0px;
     margin-bottom:15px;
@@ -1673,4 +1673,17 @@ a:focus
 a:focus
 {
     outline:none;
+}
+.welcome1-cont
+{
+    float: left;
+    list-style:outside none none;
+    padding-left:1px;
+}
+.welcome1-cont li
+{
+    padding:0px 0px 7px 15px;
+    background:url(../images/tick.png) 0px 6px no-repeat;
+    font-size:13px;
+    
 }
