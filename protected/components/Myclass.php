@@ -452,6 +452,10 @@ class Myclass extends CController {
             return number_format($number, 2);
         }
     }
+    
+     public static function numberFormat_rep($number) {       
+            return number_format($number, 2);       
+    }
 
     public static function rep_taxpercentage() {
         $regionid = "";
@@ -484,10 +488,10 @@ class Myclass extends CController {
         $grand_total = $total_price + $tax;
         $result = array();
         $result['subscription_type_id'] = $subscription_type_id;
-        $result['per_account_price'] = self::numberFormat($per_account_price);
-        $result['total_price'] = self::numberFormat($total_price);
-        $result['tax'] = self::numberFormat($tax);
-        $result['grand_total'] = self::numberFormat($grand_total);
+        $result['per_account_price'] = self::numberFormat_rep($per_account_price);
+        $result['total_price'] = self::numberFormat_rep($total_price);
+        $result['tax'] = self::numberFormat_rep($tax);
+        $result['grand_total'] = self::numberFormat_rep($grand_total);
         return $result;
     }
 
@@ -515,15 +519,15 @@ class Myclass extends CController {
 
         $result = array();
         $result['subscription_type_id'] = $subscription_type_id;
-        $result['per_account_price'] = self::numberFormat($per_account_price);
+        $result['per_account_price'] = self::numberFormat_rep($per_account_price);
         $result['no_of_months'] = $months;
         $result['no_of_accounts_purchased'] = $no_of_accounts_purchased;
-        $result['total_month_price'] = self::numberFormat($total_month_price);
+        $result['total_month_price'] = self::numberFormat_rep($total_month_price);
         $result['offer_in_percentage'] = $offer_in_percentage;
-        $result['offer_price'] = self::numberFormat($offer_price);
-        $result['total_price'] = self::numberFormat($total);
-        $result['tax'] = self::numberFormat($tax);
-        $result['grand_total'] = self::numberFormat($grand_total);
+        $result['offer_price'] = self::numberFormat_rep($offer_price);
+        $result['total_price'] = self::numberFormat_rep($total);
+        $result['tax'] = self::numberFormat_rep($tax);
+        $result['grand_total'] = self::numberFormat_rep($grand_total);
         return $result;
     }
 

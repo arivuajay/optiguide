@@ -80,7 +80,7 @@ class InternalMessageController extends ORController {
             // Get user infos
             $ret_prof_id = $model->user2;
             $ret_infos = UserDirectory::model()->findByPk($ret_prof_id);
-            $ret_name = $ret_infos->NOM_UTILISATEUR;
+            $ret_name  = $ret_infos->NOM_UTILISATEUR;
             $ret_email = $ret_infos->COURRIEL;
             $todaydate = date("d-m-Y");
 

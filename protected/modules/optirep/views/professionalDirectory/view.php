@@ -327,37 +327,37 @@ $(document).ready(function(){
         }
         
         var dataString = 'id='+ ret_val+'&favstatus='+fav_status;
-           $.ajax({
-               type: "POST",
-               url: '{$ajaxUpdatefav}',
-               data: dataString,
-               cache: false,
-               success: function(html){             
-               }
-            });
+        $.ajax({
+            type: "POST",
+            url: '{$ajaxUpdatefav}',
+            data: dataString,
+            cache: false,
+            success: function(html){             
+            }
+         });
       
     }); 
                
     $('#note_form').on('submit', function() {
                
-         var notmsg = $("#note_message").val();      
-         $("#note_error").hide();
-         if(notmsg=='')
-         {
-              $("#note_error").show();
-              return false; 
-         }    
+        var notmsg = $("#note_message").val();      
+        $("#note_error").hide();
+        if(notmsg=='')
+        {
+             $("#note_error").show();
+             return false; 
+        }    
     });
                
     $('#report_form').on('submit', function() {
                
-         var rprtmsg = $("#report_message").val();      
-         $("#report_error").hide();
-         if(rprtmsg=='')
-         {
-              $("#report_error").show();
-              return false; 
-         }    
+        var rprtmsg = $("#report_message").val();      
+        $("#report_error").hide();
+        if(rprtmsg=='')
+        {
+             $("#report_error").show();
+             return false; 
+        }    
     });  
     
    $('#send_message_form').on('submit', function() {
