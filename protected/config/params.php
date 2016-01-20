@@ -43,8 +43,8 @@ return array(
     'JOURNAL_IMG_PATH' => 'uploads/journal/',
     'COPYRIGHT' => '&copy; 2015 Optiguide.',
 //    'EMAILHEADERIMAGE' => '/themes/site/css/frontend/img/logos/header-logo.png',
-    'EMAILHEADERIMAGE_REP' => 'themes/optiguide/images/opti-rep-logo.png',
-    'EMAILHEADERIMAGE_GUIDE' => 'themes/optiguide/images/logo.jpg',
+    'EMAILHEADERIMAGE_REP' => '/themes/optiguide/images/opti-rep-logo.png',
+    'EMAILHEADERIMAGE_GUIDE' => '/themes/optiguide/images/opti-guide.png',
     
     
     'DEFAULTPAYS' => 1,    

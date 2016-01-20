@@ -335,6 +335,8 @@ class RetailerDirectoryController extends OGController {
                 }
                 $trans_array = array(
                     "{NAME}" => $model->COMPAGNIE,
+                    "{USERNAME}" => $umodel->USR,
+                    "{PWD}" => $umodel->PWD,
                     "{NEXTSTEPURL}" => $confirmation_url,
                 );
                 $message = $mail2->getMessage('subscription_confirmation', $trans_array);

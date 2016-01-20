@@ -427,7 +427,7 @@ class ProfessionalDirectoryController extends OGController {
                 if($this->lang=='EN' ){
                     $subject = SITENAME . " - New professional registration notification - " . $model->NOM . " " . $model->PRENOM;
                 }elseif($this->lang=='FR'){
-                    $subject = SITENAME . " - Nouveau profil créé";
+                    $subject =  SITENAME . utf8_encode(" - Nouveau profil créé ");
                 }
                 $trans_array = array(
                     "{NAME}" => $model->NOM,
@@ -449,6 +449,8 @@ class ProfessionalDirectoryController extends OGController {
                 
                 $trans_array = array(
                     "{NAME}" => $model->NOM,
+                    "{USERNAME}" => $umodel->USR,
+                    "{PWD}" => $umodel->PWD,
                     "{NEXTSTEPURL}" => $confirmation_url,
                 );
                 $message = $mail2->getMessage('subscription_confirmation', $trans_array);
