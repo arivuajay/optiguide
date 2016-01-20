@@ -161,7 +161,7 @@ return array(
     'OR619' => "Rapport envoyé avec succès à l'admin !!!",
     'OR620' => "Remarque créé avec succès !!!",
     //views/InternalMessage
-    'OR621' => "Envoyer le message",
+    'OR621' => "Envoyer un message",
     'OR622' => "Envoyer à",
     'OR623' => "Messages internes",
     'OR624' => "Message",
@@ -315,4 +315,6 @@ return array(
     'OR755' => 'mois',
     'OR756' => 'Sous-total',
     'OR757' => 'Total',
+    
+    'OR758' => "Nous sommes désolés, cet utilisateur n'a pas fourni d'adresse courriel.",
 );

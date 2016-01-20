@@ -315,4 +315,6 @@ return array(
     'OR755' => 'month',
     'OR756' => 'Subtotal',
     'OR757' => 'Total',
+    
+    'OR758' => 'We are sorry, this user did not provide any e-mail address.',
 );

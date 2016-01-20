@@ -112,7 +112,7 @@ class RetailerDirectoryController extends ORController {
 
         // Get all records list  with limit
         $retail_query = Yii::app()->db->createCommand() //this query contains all the data
-                ->select('rs.* , ru.ID_UTILISATEUR , ru.NOM_UTILISATEUR ,  NOM_TYPE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
+                ->select('rs.* ,ru.COURRIEL , ru.ID_UTILISATEUR , ru.NOM_UTILISATEUR ,  NOM_TYPE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
                 ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                 ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.status=1 AND ru.NOM_TABLE='Detaillants' AND ID_RETAILER=$id")
                 ->queryRow();

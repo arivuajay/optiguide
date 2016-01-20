@@ -1,11 +1,21 @@
 <div class="cate-bg user-right">
-    <?php $this->renderPartial('_search', array('searchModel' => $searchModel)); ?>
+    <?php $this->renderPartial('_search', array('searchModel' => $searchModel)); 
+    $professionalemail = $model['COURRIEL']; 
+    ?>
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
             <div class="inner-container eventslist-cont">         
-                <h2> <?php echo strtoupper($model['PRENOM']); ?>  <?php echo strtoupper($model['NOM']); ?>, <?php echo strtoupper($model['TYPE_SPECIALISTE_' . $this->lang]); ?></h2>
+                <h2> <?php echo strtoupper($model['PRENOM']); ?>  <?php echo strtoupper($model['NOM']); ?>, <?php echo strtoupper($model['TYPE_SPECIALISTE_' . $this->lang]); ?></h2>                  
+                <?php 
+                if($professionalemail=='')
+                { ?>  
+                   <p><?php echo Myclass::t('OR758', '', 'or');?></p>
+               <?php        
+                } ?>
             </div>
-        </div>    
+          
+        </div>   
+        
         <?php
         $rep_id = Yii::app()->user->id;
         $userid = $model['ID_UTILISATEUR'];
@@ -13,10 +23,11 @@
         $criteria->condition = 'rep_credential_id=:repid and ID_UTILISATEUR= :retid';
         $criteria->params = array(":repid" => $rep_id, ":retid" => $userid);
         $favourites = RepFavourites::model()->find($criteria);
-        $fav_user = $favourites->ID_UTILISATEUR;
+        $fav_user = $favourites->ID_UTILISATEUR;        
         ?>
-
+        
         <div class="users-links">
+       
 
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <div class="addfav-btn">          
@@ -28,10 +39,13 @@
                 </div>
             </div>
 
+            <?php if($professionalemail!='')
+                 { ?>    
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> ' . Myclass::t('OR621', '', 'or'), array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#sendmessage")); ?>
             </div>
-
+            <?php } ?>
+            
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> ' . Myclass::t('OR632', '', 'or'), array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#reportchange")); ?>
             </div>
@@ -76,6 +90,8 @@
         $startmap[] = $repModel['NOM_REGION_EN'];
         $startmap[] = $repModel['NOM_PAYS_EN'];       
         $start_address = implode(",",$startmap); 
+        
+       
         ?>
 
         <div class="clearfix"></div>

@@ -9,10 +9,18 @@
         $criteria->params = array(":repid" => $rep_id, ":retid" => $retailerid);
         $favourites = RepFavourites::model()->find($criteria);
         $fav_retailer = $favourites->ID_UTILISATEUR;
+        
+        $retailer_email = $model['COURRIEL']; 
         ?>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
             <div class="inner-container eventslist-cont">         
                 <h2> <?php echo $model['COMPAGNIE']; ?></h2>
+                <?php 
+                if($retailer_email=='')
+                { ?>  
+                   <p><?php echo Myclass::t('OR758', '', 'or');?></p>
+               <?php        
+                } ?>
             </div>
         </div>
 
@@ -28,11 +36,14 @@
                 </div>
             </div>
 
+              <?php 
+                if($retailer_email!='')
+                { ?>  
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> ' . Myclass::t('OR621', '', 'or'), array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#sendmessage")); ?>
-
             </div>
-
+            <?php        
+                } ?>
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <?php echo CHtml::link('<i class="fa fa-exclamation-triangle"></i> ' . Myclass::t('OR632', '', 'or'), array('#'), array("class" => "addfav-btn pull-right", "data-toggle" => "modal", "data-target" => "#reportchange")); ?>
 
