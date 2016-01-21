@@ -120,7 +120,7 @@ class ExportDatasController extends Controller
                 if($item_count>0)
                 {   
                    // Export data and save the files
-                    $this->exportfiles_supplier( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $supplier_type , $provinces , $section_str);
+                    $this->exportfiles_supplier( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $supplier_type , $provinces , $section_str , $supplier_section);
                  
                     Yii::app()->user->setFlash('success', 'Datas export successfully!!!');
                     $this->redirect(array('supplierIndex'));
@@ -183,7 +183,7 @@ class ExportDatasController extends Controller
         }
         
          
-        public function exportfiles_supplier( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $supplier_type , $provinces, $section_str)
+        public function exportfiles_supplier( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $supplier_type , $provinces, $section_str , $supplier_section)
         {
             Yii::import('ext.ECSVExport');
             $attach_path = Yii::getPathOfAlias('webroot').'/'.EXPORTDATAS;   
@@ -204,6 +204,7 @@ class ExportDatasController extends Controller
                 WHERE f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.status=1 AND ru.NOM_TABLE ='Fournisseurs' 
                 ".$lang_str.$subscription_str.$province_str.$type_str.$section_str." ORDER BY Company_Name");  
                 
+             
                 if($export_type==1)
                 {    
                     // File name and path                
@@ -212,8 +213,16 @@ class ExportDatasController extends Controller
 
                 }else if($export_type==3){
                     
-                    $supplier_type_name = SupplierType::model()->findByPk($supplier_type)->TYPE_FOURNISSEUR_FR;
-                    $filename = "Supplier_data_".date("Y_m_d")."_".$supplier_type_name."_".$randstr.".csv";                
+                    $supplier_type_name = SupplierType::model()->findByPk($supplier_type)->TYPE_FOURNISSEUR_EN;
+                    
+                    if($supplier_section!="")
+                    {
+                        $supplier_type_name = SectionDirectory::model()->findByPk($supplier_section)->NOM_SECTION_EN;    
+                        $supplier_type_name = str_replace(" ", "_", $supplier_type_name);
+                    }   
+                    
+                    $filename = "Supplier_data_".date("Y_m_d")."_".$supplier_type_name."_".$randstr.".csv"; 
+                  
                     $outputFile_path = $attach_path.$filename;
                 } 
 

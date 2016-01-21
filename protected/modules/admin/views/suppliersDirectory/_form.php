@@ -110,14 +110,17 @@
                                     <?php echo $form->textField($model, 'COMPAGNIE', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
                                     <?php echo $form->error($model, 'COMPAGNIE'); ?>
                                 </div>
-
-<!--                                <div class="form-group">                                   
-                                    <?php //echo $form->labelEx($model, 'ID_CLIENT', array()); ?>                                                            
-                                    <?php //echo $form->textField($model, 'ID_CLIENT', array('class' => 'form-control', 'size' => 10, 'maxlength' => 10)); ?>
-                                    <?php //echo $form->error($umodel, 'USR');  ?>      
-                                    <?php //echo $form->error($model, 'ID_CLIENT'); ?>
-                                </div>-->
-
+                                
+                                <?php
+                                if (!$model->isNewRecord) {
+                                ?>  
+                                <div class="form-group">                                   
+                                    <?php echo $form->labelEx($model, 'ID_CLIENT', array()); ?>                                                            
+                                    <?php echo $model->ID_CLIENT; ?> 
+                                </div>
+                                <?php
+                                }
+                                ?>
 
                                 <div class="form-group">
                                     <?php echo $form->labelEx($model, 'country', array()); ?>                                                         

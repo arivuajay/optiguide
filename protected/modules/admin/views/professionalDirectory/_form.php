@@ -32,15 +32,7 @@
                         <?php echo $form->error($model, 'ID_TYPE_SPECIALISTE'); ?>
                     </div>
                 </div>
-
-<!--                <div class="form-group">
-                    <?php //echo $form->labelEx($model, 'ID_CLIENT', array('class' => 'col-sm-2 control-label')); ?>
-                    <div class="col-sm-5">
-                        <?php //echo $form->textField($model, 'ID_CLIENT', array('class' => 'form-control', 'size' => 8, 'maxlength' => 8)); ?>                       
-                        <?php //echo $form->error($model, 'ID_CLIENT'); ?>
-                    </div>
-                </div>-->
-
+                
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'PREFIXE_FR', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
@@ -56,6 +48,20 @@
                         <?php echo $form->error($model, 'PREFIXE_EN'); ?>
                     </div>
                 </div>
+                
+                <?php
+                if (!$model->isNewRecord) {
+                ?>    
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'ID_CLIENT', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $model->ID_CLIENT; ?>                       
+                       
+                    </div>
+                </div>
+                <?php
+                }
+                ?>
 
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'PRENOM', array('class' => 'col-sm-2 control-label')); ?>
