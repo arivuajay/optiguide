@@ -736,11 +736,11 @@ class SuppliersDirectoryController extends Controller {
                     $ptmodel->pay_type   = $payment_type;
                     $ptmodel->subscription_type = $subscriptiontype;
                     $ptmodel->save();
-                    echo 'new payment';
-                    echo '<pre>';
-                    print_r($ptmodel);
-                    exit;
-                    
+//                    echo 'new payment';
+//                    echo '<pre>';
+//                    print_r($ptmodel);
+//                    exit;
+//                    
                     if($_POST['PaymentCheques']['pay_type']=="2")
                     { 
                         $pmodel->payment_transaction_id = $ptmodel->id;
