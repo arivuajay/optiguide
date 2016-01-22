@@ -32,6 +32,14 @@ $cs_pos_end = CClientScript::POS_END;
         } else {
             $actn_url = Yii::app()->createUrl('/admin/repCredential/create/');
         }
+        //check if session exists
+        if (Yii::app()->user->hasState("scountry")) {
+            //get session variable
+            $scountry = Yii::app()->user->getState("scountry");
+            $profile->country = $scountry;
+            $sregion = Yii::app()->user->getState("sregion");
+            $profile->region = $sregion;
+        }
 $country = Myclass::getallcountries();
         $regions = Myclass::getallregions($profile->country);
         $cities = Myclass::getallcities($profile->region);
@@ -198,6 +206,9 @@ $pay_type = isset($pmodel->pay_type) ? $pmodel->pay_type : 1;
 $js = <<< EOD
     $(document).ready(function(){
    
+        // Tabs display    
+    $("#a_tab_{$tab}").trigger('click');  
+    
 // Get region for seleted country   
     $("#RepCredentialProfiles_country").change(function(){
         var id=$(this).val();
@@ -231,7 +242,30 @@ $js = <<< EOD
 
     });  
 
-
+            // Check to change check payment type
+    $('input[name="PaymentCheques\\[pay_type\\]"]').on('ifChecked', function(event){
+     var chkval = $('input[name="PaymentCheques\\[pay_type\\]"]:checked').val();
+     
+      $("#by_cheque").hide();
+      $("#by_free").hide() ; 
+      if(chkval=="2")            
+      {
+          $("#by_cheque").show() ; 
+      }else
+      {
+          $("#by_free").show() ;                 
+      }    
+            
+    });  
+            
+    var pay_type = {$pay_type};        
+    if(pay_type==2)
+    {
+       $("#by_cheque").show() ;  
+    }else
+    {
+        $("#by_free").show() ;                 
+    }  
             
 });
 EOD;

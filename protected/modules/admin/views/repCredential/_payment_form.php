@@ -33,12 +33,13 @@ $proids = Yii::app()->user->getState("product_ids");
 //echo "</pre>"; 
 $pmodel->pay_type = isset($pmodel->pay_type) ? $pmodel->pay_type : 1;
 
-$price_infos = SupplierSubscriptionPrice::model()->findByPk(1);
-$profileprce = $price_infos->profile_price;
-$profile_logoprce = $price_infos->profile_logo_price;
-$logo_price = ($profile_logoprce - $profileprce);
-
-$free_expiredays = $price_infos->rep_expire_days;
+$price_infos = RepSubscriptionTypes::model()->findByPk(1);
+$expire_days = SupplierSubscriptionPrice::model()->findByPk(1);
+//$profileprce = $price_infos->profile_price;
+//$profile_logoprce = $price_infos->profile_logo_price;
+//$logo_price = ($profile_logoprce - $profileprce);
+//
+$free_expiredays = $expire_days->rep_expire_days;
 ?> 
 <div class="box box-primary">   
     <div class="box-body">
@@ -83,16 +84,13 @@ $free_expiredays = $price_infos->rep_expire_days;
            
 
             <div class="form-group">
-                <?php echo $form->labelEx($pmodel, 'subscription_type', array('class' => 'col-sm-2 control-label')); ?>
+                <label class ="col-sm-2 control-label"> <?php echo $price_infos->rep_subscription_name; ?> </label>
                 <div class="col-sm-5">                     
-                    <div class="checkbox">
-                        <label>
-                            <?php echo $form->checkBox($pmodel, 'profile', array('value' => 1, 'uncheckValue' => 0)); ?>   
-                            <?php echo $form->labelEx($pmodel, 'profile') . " ( " . $profileprce . " CAD )"; ?>
-                        </label>
-                    </div>
+                            <?php echo $price_infos->rep_subscription_price; ?> 
+                            <?php echo $form->hiddenField($pmodel, 'profile', array('value' => 1, 'uncheckValue' => 0)); ?>
                 </div>
             </div>
+            
 
             <div class="form-group">
                 <?php echo $form->labelEx($pmodel, 'pay_type', array('class' => 'col-sm-2 control-label')); ?>    
@@ -102,7 +100,7 @@ $free_expiredays = $price_infos->rep_expire_days;
             </div>
             
              <div id="by_free" class="col-md-12">   
-                 <p style="color: red;"><strong>Hint* :</strong> Pay type <strong>"Free"</strong> subscription for profile/logo will active only for<strong> <?php echo $free_expiredays;?> days </strong>.If you want to adjust the days , please <strong><a href="<?php echo Yii::app()->createUrl('/admin/supplierSubscriptionPrice/update/id/1/type/supplier');?>">click here</a></strong>.This expire days will affect only for current subscription.</p>   
+                 <p style="color: red;"><strong>Hint* :</strong> Pay type <strong>"Free"</strong> subscription for profile/logo will active only for<strong> <?php echo $free_expiredays;?> days </strong>.If you want to adjust the days , please <strong><a href="<?php echo Yii::app()->createUrl('/admin/supplierSubscriptionPrice/update/id/1/type/stats');?>">click here</a></strong>.This expire days will affect only for current subscription.</p>   
             </div> 
 
             <div id="by_cheque" style="display:none;">

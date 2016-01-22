@@ -32,8 +32,15 @@ $this->breadcrumbs = array(
                 'name' => 'pay_type',
                 'type' => 'raw',
                 'value' => function($data) {
-                    echo ($data->pay_type == 1) ? "Paypal" : "Credit Card";
-                },
+                         if($data->pay_type == 1) 
+                             echo "Paypal";
+                         elseif($data->pay_type == 2) 
+                             echo "Credit Card";
+                         elseif($data->pay_type == 3) 
+                             echo "Cheque";
+                         elseif($data->pay_type == 4) 
+                             echo "Free";
+                     }, 
                 'filter' => false,
             ),
             array(

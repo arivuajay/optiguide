@@ -74,12 +74,13 @@ class RepCredentialController extends Controller {
         if(Yii::app()->user->hasState("secondtab") || Yii::app()->user->hasState("thirdtab"))
         {    
             //check if session exists
-            if (Yii::app()->user->hasState("repattributes") && Yii::app()->user->hasState("profileattributes") ) {
+            if (Yii::app()->user->hasState("repattributes")  && Yii::app()->user->getState("profileattributes")) {
                 //get session variable
                 $sess_attr_rep = Yii::app()->user->getState("repattributes");
-                $sess_attr_pro = Yii::app()->user->getState("repattributes");
+                
                 
                 $model->attributes = $sess_attr_rep;
+                $sess_attr_pro = Yii::app()->user->getState("profileattributes");
                 $profile->attributes = $sess_attr_pro;
              //   $sess_attr_u = Yii::app()->user->getState("uattributes");
               //  $umodel->attributes = $sess_attr_u;
@@ -105,8 +106,9 @@ class RepCredentialController extends Controller {
 
         
         if (isset($_POST['yt0'])) {
-
-            $model->attributes = $_POST['RepCredential'];
+            
+            
+            $model->attributes = $_POST['RepCredentials'];
             $profile->attributes = $_POST['RepCredentialProfiles'];
 
 
@@ -116,8 +118,21 @@ class RepCredentialController extends Controller {
                 Yii::app()->user->setState("scountry", $scountry);
                 Yii::app()->user->setState("sregion", $sregion);
                 
+             
                 $repattributes = $model->attributes;
-                $profileattributes = $model->attributes;
+                
+                $address = $profile->rep_address;
+                $country = $profile->country;
+                $region = $profile->region;
+                $cty = $profile->ID_VILLE;
+                $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
+                if ($geo_values != '') {
+                    $exp_latlong = explode('~', $geo_values);
+                    $profile->rep_lat = $exp_latlong[0];
+                    $profile->rep_long = $exp_latlong[1];
+                }
+                
+                $profileattributes = $profile->attributes;
               //  $uattributes = $umodel->attributes;
 
                 Yii::app()->user->setState("repattributes", $repattributes);
@@ -126,6 +141,7 @@ class RepCredentialController extends Controller {
                 
                 Yii::app()->user->setState("secondtab", "2");
                 
+               
                 $this->redirect(array('payment'));
             
         }
@@ -137,16 +153,11 @@ class RepCredentialController extends Controller {
         $tab    = 2;
         $pmodel = new PaymentCheques;
           
-        if (Yii::app()->user->hasState("repattributes") ){
+        if (Yii::app()->user->hasState("repattributes") && Yii::app()->user->hasState("profileattributes")){
             $sess_attr_rep = Yii::app()->user->getState("repattributes");
-        }
-        if(Yii::app()->user->hasState("profileattributes")) {
             $sess_attr_pro = Yii::app()->user->getState("profileattributes");
         }
-        
-        echo '<pre>';
-        print_r($sess_attr_rep);
- exit;
+
         if (!empty($sess_attr_rep))
         {
             //Check for update form
@@ -156,17 +167,16 @@ class RepCredentialController extends Controller {
                 $model = $this->loadModel($fid);
                 $profile = RepCredentialProfiles::model()->findByAttributes(array('rep_credential_id' => $fid));
               //  $umodel = UserDirectory::model()->find("USR = '{$model->ID_CLIENT}'");
+                 $item_name = "SingleRenewalRepAccount";
             } else {
                 $model = new RepCredentials;
                 $profile = new RepCredentialProfiles;
+                 $item_name = "Registration";
               //  $umodel = new UserDirectory();
             }
         } 
         
-//        echo '<pre>';
-//        print_r($sess_attr_rep);
-//        
-//        exit;
+
         //check if session exists
         if (Yii::app()->user->hasState("repattributes") && Yii::app()->user->hasState("profileattributes")) 
         {
@@ -182,18 +192,20 @@ class RepCredentialController extends Controller {
         { 
             $pmodel->attributes = $_POST['PaymentCheques'];
             $pmodel->profile    = $_POST['PaymentCheques']['profile'];
-//            $pmodel->logo       = $_POST['PaymentCheques']['logo'];
             $pmodel->pay_type   = $_POST['PaymentCheques']['pay_type'];
             
+           
             if($pmodel->pay_type==2)
-            {    
+            { 
               $pmodel->scenario = 'bycheque';
             }
+           
             
             if($pmodel->validate())
             {
-                
+             
                 $sett_infos = SupplierSubscriptionPrice::model()->findByPk(1);
+                $rep_subscription_type = RepSubscriptionTypes::model()->findByPk(1);
                 if($_POST['PaymentCheques']['pay_type']=="2")
                 {    
                     $paytype      = "Cheque";
@@ -208,51 +220,55 @@ class RepCredentialController extends Controller {
                     $payment_type = "4";
                 }  
                 
-                $profile_price = $sett_infos->profile_price;
+                $profile_price = $rep_subscription_type->rep_subscription_price;
+                $amount = $profile_price;
 //                $profile_logo_price = $sett_infos->profile_logo_price;
 //                $logo_price = ( $profile_logo_price - $profile_price );
 
-                $sub_type_profile = $_POST['PaymentCheques']['profile'];
+//                $sub_type_profile = $_POST['PaymentCheques']['profile'];
 //                $sub_type_logo    = $_POST['PaymentCheques']['logo'];
                 
                 // Session supplier model attribute    
                 $sess_attr_rep = Yii::app()->user->getState("repattributes");
                 // Session user model attribute
-                
 
-                if (Yii::app()->user->hasState("repattributes") && Yii::app()->user->setState("profileattributes")) {
+                if (Yii::app()->user->hasState("repattributes")) {
+                   
                     $model->attributes = $sess_attr_rep; 
                     
                     $profile->attributes = $sess_attr_pro;
                   //  $model->ID_CLIENT  = $sess_attr_rep['ID_CLIENT'];
                     
-                    if($sub_type_profile==1)
-                    {
-                        $subscriptiontype = "1";
-                        $amount = $profile_price;
-                        $model->rep_expiry_date = $expirydate;
-                        $item_name = "Statistics Subscription";
-
-                    }
+//                    if($sub_type_profile==1)
+//                    {
+//                        $subscriptiontype = "1";
+//                        $amount = $profile_price;
+//                        $model->rep_expiry_date = $expirydate;
+//                        $item_name = "Statistics Subscription";
+//
+//                    }
+                    $model->rep_expiry_date = $expirydate;
+                    $model->created_at = date("Y-m-d h:i:s",time());
+                    $model->modified_at = date("Y-m-d h:i:s",time());
+                    $model->save(); 
+                    $profile->rep_credential_id = $model->rep_credential_id;
+                    $profile->save(); 
                     
-                    $model->created_at = date("Y-m-d");
-                    $model->rep_expiry_date=$expirydate;
-                    $model->modified_at = date("Y-m-d");
-                    $model->save(false); 
-                    
-                    $profile->rep_credential_id = $model->rep_credentials;
-                    
-                    $address = $profile->rep_address;
-                    $country = $profile->country;
-                    $region = $profile->region;
-                    $cty = $profile->ID_VILLE;
-                    $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
-                    if ($geo_values != '') {
-                        $exp_latlong = explode('~', $geo_values);
-                        $profile->rep_lat = $exp_latlong[0];
-                        $profile->rep_long = $exp_latlong[1];
-                    }
-                    $profile->save(false); 
+                    $repSingle = new RepSingleSubscriptions;
+                    $repSingle->rep_credential_id = $model->rep_credential_id;
+                    $repSingle->rep_subscription_type_id = '1';
+                    $repSingle->purchase_type = RepSingleSubscriptions::PURCHASE_TYPE_NEW;
+                    $repSingle->rep_single_price = $amount;
+                    $repSingle->rep_single_no_of_months = $no_of_months;
+                    $repSingle->rep_single_total_month_price = $amount;
+//                    $repSingle->offer_in_percentage = $registration['step3']['offer_in_percentage'];
+//                    $repSingle->offer_price = $registration['step3']['offer_price'];
+                    $repSingle->rep_single_total = $amount;
+//                    $repSingle->rep_single_tax = $registration['step3']['tax'];
+                    $repSingle->rep_single_grand_total = $amount;
+                    $repSingle->rep_single_subscription_start = date('Y-m-d');
+                    $repSingle->rep_single_subscription_end = $model->rep_expiry_date;
+                    $repSingle->save(false);
                  //   $umodel->attributes  = $sess_attr_u;
                  //   $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
                  //   $umodel->save(false);                
@@ -260,7 +276,7 @@ class RepCredentialController extends Controller {
                     
                     // Save the payment details                                   
                     $ptmodel = new PaymentTransaction;
-                    $ptmodel->user_id = $supplierid;    // need to assign acutal user id
+                    $ptmodel->user_id = $model->rep_credential_id;    // need to assign acutal user id
                     $ptmodel->total_price = $amount;
                     $ptmodel->subscription_price = $amount;
                     $ptmodel->payment_status = 'Completed';
@@ -275,7 +291,6 @@ class RepCredentialController extends Controller {
                     $ptmodel->expirydate = $expirydate;
                     $ptmodel->invoice_number = Myclass::getRandomString();
                     $ptmodel->pay_type   = $payment_type;
-                    $ptmodel->subscription_type = $subscriptiontype;
                     $ptmodel->save();
 //                    echo 'new payment';
 //                    echo '<pre>';
@@ -304,6 +319,11 @@ class RepCredentialController extends Controller {
 
                 Yii::app()->user->setFlash('success', 'Informations ales rep ajouter / jour avec succès!!!');
                 $this->redirect(array('index'));
+            }else
+            {
+                $errores = $pmodel->getErrors();
+                print_r($errores);
+               exit;
             }    
             
         }

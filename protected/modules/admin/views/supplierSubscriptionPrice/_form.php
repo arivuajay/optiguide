@@ -31,6 +31,13 @@
                         <?php echo $form->error($model, 'rep_statistics_price'); ?>
                     </div>
                 </div>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'rep_expire_days', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($model, 'rep_expire_days', array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'rep_expire_days'); ?>
+                    </div>
+                </div>
                 <?php }else{?>
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'profile_price', array('class' => 'col-sm-2 control-label')); ?>
