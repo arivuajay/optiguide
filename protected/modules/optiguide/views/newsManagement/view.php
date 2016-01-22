@@ -46,7 +46,6 @@ $share_title = $model['TITRE'];
 $share_summary = $model['SYNOPSYS'];
 $share_image = $img_url;
 ?>
-
 <span class='st_facebook_large' displayText='Facebook' st_url="<?php echo $share_url ?>" st_title="<?php echo $share_title ?>" st_summary="<?php echo $share_summary ?>" st_image="<?php echo $share_image ?>"></span>
 
 <span class='st_twitter_large' displayText='Tweet' st_url="<?php echo $share_url ?>" st_title="<?php echo $share_title ?>" st_summary="<?php echo $share_summary ?>" st_image="<?php echo $share_image ?>"></span>
@@ -58,11 +57,14 @@ $share_image = $img_url;
 <span class='st_email_large' displayText='Email' st_url="<?php echo $share_url ?>" st_title="<?php echo $share_title ?>" st_summary="<?php echo $share_summary ?>" st_image="<?php echo $share_image ?>"></span>
 
 <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+
 <script type="text/javascript">
+    var lan = '<?php echo $lang; ?>';
     stLight.options({
         publisher: "db446c76-416b-452e-8de5-7bdc02fae4d5",
         doNotHash: false,
         doNotCopy: false,
-        hashAddressBar: false
+        hashAddressBar: false,
+        lang: '<?php $lang=strtolower(Yii::app()->session['language']); echo $lang;?>'
     });
 </script>

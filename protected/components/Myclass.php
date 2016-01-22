@@ -105,7 +105,7 @@ class Myclass extends CController {
         return $val;
     }
 
-    public static function getallcountries1($id = null) {
+    public static function getallcountries_client($id = null) {
         $criteria = new CDbCriteria;
 
         $countryname = 'NOM_PAYS_' . Yii::app()->session['language'];
@@ -136,8 +136,7 @@ class Myclass extends CController {
         $val = CHtml::listData($country, 'ID_PAYS', $countryname);
         return $val;
     }
-
-    public static function getallregions($id = null) {
+    public static function getallregions_client($id = null) {
         $regions = array();
         $criteria_reg = new CDbCriteria;
 
@@ -147,6 +146,22 @@ class Myclass extends CController {
         if (!is_null($id)) {
             $criteria_reg->condition = 'ID_PAYS=:id';
             $criteria_reg->params = array(':id' => $id);
+            $regions = RegionDirectory::model()->findAll($criteria_reg);
+            $regions = CHtml::listData($regions, 'ID_REGION', $regionname);
+        }
+
+        return $regions;
+    }
+    public static function getallregions($id = null) {
+        $regions = array();
+        $criteria_reg = new CDbCriteria;
+        $val = 1;
+        $regionname = 'NOM_REGION_' . Yii::app()->session['language'];
+
+        $criteria_reg->order = $regionname . ' ASC';
+        if (!is_null($id)) {
+            $criteria_reg->condition = 'ID_PAYS=:id AND flag != :val';
+            $criteria_reg->params = array(':id' => $id ,':val' => $val);
             $regions = RegionDirectory::model()->findAll($criteria_reg);
             $regions = CHtml::listData($regions, 'ID_REGION', $regionname);
         }

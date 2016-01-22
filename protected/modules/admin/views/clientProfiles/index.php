@@ -44,6 +44,10 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                         return Myclass::dateFormat($data->clientMessages2->date_remember);
                    },           
                 ),
+            array(
+              'name' => 'ID_CLIENT',
+              'sortable' => false,
+            ),
             /*
               'local_number',
               'country',

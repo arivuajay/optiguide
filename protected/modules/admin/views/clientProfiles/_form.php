@@ -39,8 +39,8 @@ $themeUrl = $this->themeUrl;
                 $category_names = CHtml::listData(ClientCategory::model()->findAll(array("order"=>"category asc","condition"=>"cat_type_id=2")), 'category', 'cat_name');
             }    
             
-            $country = Myclass::getallcountries1();
-            $regions = Myclass::getallregions($model->country);
+            $country = Myclass::getallcountries_client();
+            $regions = Myclass::getallregions_client($model->country);
             $cities = Myclass::getallcities($model->region);
             ?>
             <div class="box-body">
@@ -81,7 +81,14 @@ $themeUrl = $this->themeUrl;
                          <?php echo $form->dropDownList($model, 'sex', array("M"=>'Male','F'=>'Female'), array('class' => 'form-control')); ?> 
                     </div>
                 </div>
-
+                <?php if (!$model->isNewRecord) {   ?>  
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'ID_CLIENT', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                         <?php echo $model->ID_CLIENT; ?> 
+                    </div>
+                </div>
+                <?php } ?>
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'cat_type_id', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
@@ -636,7 +643,7 @@ $js = <<< EOD
         $.ajax({
             type: "POST",
             url: '{$ajaxRegionUrl}',
-            data: dataString,
+            data: dataString+'&client_disp=yes',
             cache: false,
             success: function(html){             
                 $("#ClientProfiles_region").html(html);

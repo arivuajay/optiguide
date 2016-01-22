@@ -56,7 +56,8 @@
                         publisher: "db446c76-416b-452e-8de5-7bdc02fae4d5",
                         doNotHash: false,
                         doNotCopy: false,
-                        hashAddressBar: false
+                        hashAddressBar: false,
+                        lang: '<?php $lang=strtolower(Yii::app()->session['language']); echo $lang;?>'
                     });
                 </script>
             </div>

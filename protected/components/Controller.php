@@ -48,6 +48,7 @@ class Controller extends CController {
     public function actionGetRegions() {
         $options = '';
         $cid = isset($_POST['id']) ? $_POST['id'] : '';
+        $client_disp = isset($_POST['client_disp']) ? $_POST['client_disp'] : '';
         
         $search_disp = isset($_POST['search']) ? $_POST['search'] : '';
         if($search_disp=="yes")
@@ -58,7 +59,14 @@ class Controller extends CController {
         }
         
         if ($cid != '') {
+            
+             if($client_disp=="yes")
+        {   
+            $data_regions = Myclass::getallregions_client($cid);
+        }  else {
             $data_regions = Myclass::getallregions($cid);
+        }
+            
             foreach ($data_regions as $k => $info) {
                 $options .= "<option value='" . $k . "'>" . $info . "</option>";
             }

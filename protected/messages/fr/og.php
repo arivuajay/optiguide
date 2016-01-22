@@ -78,7 +78,7 @@ return array(
     'OG051' => 'Bienvenue sur Opti-Guide.com',
     
     'OG052'=> 'Trouver un Fournisseur optique',
-    'OG053'=> 'Toutes Fournisseur Optique',
+    'OG053'=> 'TOUS LES FOURNISSEURS',
     'OG054'=> 'Zone professionnelle',
     'OG055'=> 'Se connecter!',
     'OG056'=> 'Mot de passe oublié?',

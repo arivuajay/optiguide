@@ -6,6 +6,11 @@ $this->breadcrumbs = array(
 ?>
 <div class="col-lg-12 col-md-12">
     <div class="row">
+        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp; Ajouter un sales rep ', array('/admin/repCredential/create'), array('class' => 'btn btn-success pull-right')); ?>
+    </div>
+</div>
+<div class="col-lg-12 col-md-12">
+    <div class="row">
         <?php
         $gridColumns = array(
             array('header' => 'SN.',
@@ -24,14 +29,25 @@ $this->breadcrumbs = array(
                 'sortable' => false
             ),
             array(
+//                'header' => 'rep_status',
                 'name' => 'rep_status',
+                'htmlOptions' => array('style' => 'width: 180px;text-align:center', 'vAlign' => 'middle'),
                 'type' => 'raw',
+                'sortable' => false,
                 'value' => function($data) {
                     echo ($data->rep_status == 1) ? "<i class='fa fa-circle text-green'></i>" : "<i class='fa fa-circle text-red'></i>";
                 },
                 'filter' => CHtml::activeDropDownList($model, 'rep_status', array("1" => "Active", "0" => "In-Active"), array('class' => 'form-control', 'prompt' => 'Tous')),
-                'sortable' => false
             ),
+//                array(
+//                'name' => 'rep_status',
+//                'type' => 'raw',
+//                'value' => function($data) {
+//                    echo ($data->rep_status == 1) ? "<i class='fa fa-circle text-green'></i>" : "<i class='fa fa-circle text-red'></i>";
+//                },
+//                'filter' => CHtml::activeDropDownList($model, 'rep_status', array("1" => "Active", "0" => "In-Active"), array('class' => 'form-control', 'prompt' => 'Tous')),
+//                'sortable' => false
+//            ),
             array(
                 'name' => 'rep_expiry_date',
                  'sortable' => false
@@ -39,7 +55,7 @@ $this->breadcrumbs = array(
             array(
                 'header' => 'Actions',
                 'class' => 'booster.widgets.TbButtonColumn',
-                'template' => '{view}',
+                'template' => '&nbsp;&nbsp;{view}&nbsp;&nbsp;{update}',
             )
         );
 

@@ -144,7 +144,7 @@
     </div>
     
      <div class="ad3">   
-        <!--  Right side bottom banner - position - 6 -->
+        <!--  Garage Position - 9 -->
         <?php echo Myclass::banner_display(9); ?>
     </div>
 

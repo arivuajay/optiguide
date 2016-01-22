@@ -5,7 +5,7 @@ class SuppliersDirectoryController extends Controller {
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
-
+    public $lang='EN';
     /**
      * @return array action filters
      */
@@ -960,7 +960,7 @@ class SuppliersDirectoryController extends Controller {
                         $pmodel->save();
                     }
                     $mail = new Sendmail();
-                    $this->lang = Yii::app()->session['language'];
+//                    $this->lang = Yii::app()->session['language'];
                     if($this->lang=='EN' ){
                             $subject = 'OptiGuide - Renewed your account';
                     }elseif($this->lang=='FR'){
