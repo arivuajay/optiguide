@@ -270,7 +270,7 @@ return array(
     'OR713' => 'Confirmez le mot de passe',
     //Others
     'OR714' => 'Accueil',
-    'OR715' => 'À PROPOS',
+    'OR715' => 'Fonctionnalités',
     'OR716' => 'Légende',
     'OR717' => 'Bienvenue',
     'OR718' => 'Professionnels',

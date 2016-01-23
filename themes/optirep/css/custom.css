@@ -573,3 +573,12 @@ a .subscription-txt{
     text-transform: none !important;
     padding-bottom: 5px !important;
 }
+
+.logo2{
+   text-align: center; 
+}
+
+.landingmenu li a{
+    font-size: 13px !important;   
+     padding: 15px 7px !important;
+}

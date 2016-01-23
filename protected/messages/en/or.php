@@ -270,7 +270,7 @@ return array(
     'OR713' => 'Confirm Password',
     //Others
     'OR714' => 'Home',
-    'OR715' => 'About',
+    'OR715' => 'Features',
     'OR716' => 'Legend',
     'OR717' => 'Welcome',
     'OR718' => 'Professionals',

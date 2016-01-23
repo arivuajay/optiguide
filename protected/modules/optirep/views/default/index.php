@@ -1,27 +1,35 @@
-<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 landing-left">  
-    <h2> <?php echo Myclass::t('OG194'); ?> </h2>
-    <?php if (Yii::app()->language == 'en') { ?>
-    <p>With Opti-Rep, you can finally keep all the information you need within reach. Find all the suppliers, brands and professionals’ details and contact information faster and easier than ever before. Our key-indicators and statistics allow you to create customized strategy for your ECP’s, You will have all in hands to assist your clients in achieving maximum sales and growth in their specific market; Perfect to help you and your clients meet your own objectives!</p>
-    <p>Stay in touch with the optical industry. Opti-Rep provides you the latest news and the upcoming not-to-be-missed events, directly on you smartphone. </p>
-    <p>Coordination tool are also provided for teams. You can finally manage and keep track with all you representatives, coast to coast.</p>
+<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 landing-left">
+       <h2> <?php echo Myclass::t('OG194'); ?> </h2>
+       <?php if (Yii::app()->language == 'en') { ?>
+       <p>Opti-Rep is a platform especially created for sales departments and sales representatives in the Canadian optical industry. It gives you the practical and useful information you need to better prospect new optical stores and extend your clientele.</p>
+       <p>With Opti-Rep you can easily and rapidly find retailers and eyecare professionals’ coordinates and profiles and benefit from a complete solution that will maximise your efforts. Manage your follow ups, obtain key stats, plus find the latest news and events in only a few clicks.</p>
+       <p>Coordinate your sales team with the help of an administrator’s account offered at no charge when opening two or more sales representatives’ accounts. Follow their actions and guide them in order to simplify and improve your working relations.</p>
+       <p>Now is the time to discover the most complete sales tool in the optical industry, covering Canada from coast to coast. </p>
     <?php } else { ?>
-    <p>Opti-Rep regroupe toutes les informations dont vous avez besoin à portée de main. </p>
-    <p>Trouvez plus facilement et rapidement que jamais les coordonnées et les informations sur les fournisseurs, les marques et les professionnels dont vous avez besoin pour bien servir vos clients et les aider à maximiser leurs ventes! Obtenez de plus des statistiques clés sur vos clients, afin d’établir des stratégies plus personnalisées; parfait pour l’atteinte de vos objectifs et ceux de votre clientèle.</p>
-    <p>Cette plateforme conçue spécifiquement pour les représentants vous offre de plus les dernières nouvelles de l’industrie de l’optique et les prochains événements à ne pas manquer. Rester au cœur de l’action n’a jamais été plus simple.</p>
-    <p>Plusieurs outils de coordination sont aussi offerts dans cet outil adapté aux équipes de représentants. Découvrez dès maintenant comment vous aussi pourrez mieux gérer et suivre vos représentants, de Montréal à Saskatoon et de Charlottetown à Vancouver.</p>
+       <p>Opti-Rep.com est une plateforme conçue spécifiquement pour les départements des ventes et représentants du domaine de l’optique au Canada. Ayez à portée de main toutes les informations dont vous avez besoin pour prospecter de nouvelles boutiques et étendre votre clientèle.</p>
+       <p>En plus de trouver rapidement et facilement les coordonnées et profils des détaillants et des professionnels de la vue, bénéficiez d’un outil de travail complet qui vous aidera à maximiser vos efforts. Gérez vos suivis, obtenez des statistiques clés, soyez à l’affut des dernières nouvelles et évènements en quelques clics seulement.</p>
+       <p>Coordonnez votre équipe de représentants à l’aide d’un compte administrateur totalement gratuit dès l’ouverture de deux comptes ou plus. Suivez leurs actions et conseillez-les afin de simplifier et améliorer vos relations de travail.</p>
+       <p>Découvrez dès aujourd’hui l’outil le plus complet du monde de l’optique qui dessert le Canada d’est en ouest.</p>
     <?php }  ?>
 </div>
-
+    
 <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 landing-left"> 
-    <?php 
-    $image = CHtml::image("{$this->themeUrl}/images/site-screen.jpg", 'Site Screen', array("width" => "673", "height" => "434")); 
-    echo CHtml::link($image, array('/optirep/dashboard/'));
-    ?>
+       <?php
+       $image = CHtml::image("{$this->themeUrl}/images/optirep.jpg", 'optirep');
+       echo CHtml::link($image, array('/optirep'));
+       ?>
 </div>
-
+   
 <div class="clearfix"> </div>
-<?php if(Yii::app()->user->isGuest){ ?>
-<div class="col-xs-12 col-sm-8 col-md-6 col-lg-4 col-sm-offset-2 col-md-offset-3 col-lg-offset-4">
-    <?php $this->renderPartial('_login_form', array('model' => $model)); ?>
-</div>
+ 
+ <?php if(Yii::app()->user->isGuest){ ?>
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4 col-lg-offset-1">
+        <?php $this->renderPartial('_login_form', array('model' => $model)); ?>
+    </div>
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6 ">
+        <div class="signup-cont">
+           <p> <?php echo Myclass::t('OR506', '', 'or') ?><br/>  </p>
+          <?php echo CHtml::link(Myclass::t('OR507', '', 'or'), '/optirep/repCredential/step1') ?>    
+        </div>
+    </div>
 <?php } ?>

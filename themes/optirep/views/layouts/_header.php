@@ -36,12 +36,28 @@
 
                         }  
                     
+                    }else{
+                      echo CHtml::link('<i class="fa fa-user"></i>', array('/optirep#login-form'),array("class"=>"btn btn-default"));   
                     }?>
                     &nbsp;
-                   <?php echo Myclass::t('OR717', '', 'or');?>, <?php echo CHtml::link(Yii::app()->user->getState('rep_username'), array('/optirep/repCredential/editprofile')); ?>
+                   <?php 
+                    if(!Yii::app()->user->isGuest)
+                    { 
+                        echo Myclass::t('OR717', '', 'or')." , ".CHtml::link(Yii::app()->user->getState('rep_username'), array('/optirep/repCredential/editprofile')); 
+                    }else{
+                        echo Myclass::t('OR717', '', 'or')." , Guest"; 
+                    }    
+                    ?>
+                        
                 </div>
                 <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2 login"> 
-                    <?php echo CHtml::link('<i class="fa fa-sign-out"></i> '.Myclass::t('OR659', '', 'or'), '/optirep/default/logout') ?>
+                    <?php 
+                    if(!Yii::app()->user->isGuest)
+                    { 
+                     echo CHtml::link('<i class="fa fa-sign-out"></i> '.Myclass::t('OR659', '', 'or'), '/optirep/default/logout');
+                    }else{
+                     echo CHtml::link('<i class="fa fa-sign-out"></i> '.Myclass::t('OR505', '', 'or'), '/optirep#login-form');   
+                    }?>
                 </div>
             </div>
         </div>
@@ -79,7 +95,7 @@
                                     'activateItems' => true,
                                     'items' => array(
                                         array('label' => Myclass::t('OR714', '', 'or'), 'url' => array('/optirep/dashboard'), 'active' => ($_controller == 'default' && $_action == 'index')),
-                                        array('label' => Myclass::t('OR715', '', 'or'), 'url' => array('/optirep/default/aboutus'), 'active' => ($_controller == 'default' && $_action == 'aboutus')),
+                                        array('label' => Myclass::t('OR715', '', 'or'), 'url' => array('/optirep/default/features'), 'active' => ($_controller == 'default' && $_action == 'features')),
                                        // array('label' => Myclass::t('OR716', '', 'or'), 'url' => array('/optirep/default/legend'), 'active' => ($_controller == 'default' && $_action == 'legend')),
                                         array('label' => Myclass::t('OR732', '', 'or'), 'url' => array('/optirep/default/contactus'), 'active' => ($_controller == 'default' && $_action == 'contactus')),
                                     ),

@@ -5,7 +5,7 @@
         <div class="inner-container eventslist-cont"> 
             <div class="search-list">
                 <div class="news-thumbs news-details"> 
-                    <h4>  <?php echo Myclass::t('OR734', '', 'or') ?> </h4> 
+                    <h4>  <?php echo Myclass::t('OR715', '', 'or') ?> </h4> 
                     <div class="clearfix"></div>
                     <?php if (Yii::app()->language == 'en') { ?>
                     <p>With Opti-Rep, you can finally keep all the information you need within reach. Find all the suppliers, brands and professionals’ details and contact information faster and easier than ever before. Our key-indicators and statistics allow you to create customized strategy for your ECP’s, You will have all in hands to assist your clients in achieving maximum sales and growth in their specific market; Perfect to help you and your clients meet your own objectives!</p>

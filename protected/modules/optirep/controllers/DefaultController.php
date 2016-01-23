@@ -22,7 +22,7 @@ class DefaultController extends ORController {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('index', 'forgotPassword', 'error', 'footercount'),
+                'actions' => array('index', 'forgotPassword', 'error', 'footercount','features', 'contactus'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -95,7 +95,7 @@ class DefaultController extends ORController {
         $this->render('index', array('model' => $model));
     }
 
-    public function actionAboutus() {
+    public function actionFeatures() {
         $this->layout = '//layouts/column1';
         $this->render('aboutus');
     }
