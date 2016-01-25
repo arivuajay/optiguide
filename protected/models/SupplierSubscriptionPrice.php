@@ -56,7 +56,7 @@ class SupplierSubscriptionPrice extends CActiveRecord
                         'rep_statistics_price' => Myclass::t('Statistiques Prix'),
                         'expire_days' => Myclass::t('Expirera jours pour les membres gratuits'),
                         'tax'  => Myclass::t('impôt'),
-                        'rep_expire_days' => Myclass::t('Expirera jours pour les membres gratuits'),
+                        'rep_expire_days' => Myclass::t('Expirent mois pour les membres gratuits'),
 		);
 	}
 

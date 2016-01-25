@@ -340,12 +340,13 @@ class SuppliersDirectoryController extends Controller {
                 Yii::app()->user->setState("secondtab", "2");
 
                 $this->redirect(array('addproducts'));
-            }else
-            {
-                //$errores = $model->getErrors();
-                //print_r($errores);
-               
-            }    
+            }
+//            else
+//            {
+//                //$errores = $model->getErrors();
+//                //print_r($errores);
+//               
+//            }    
         }
         $tab = 1;
         $this->render('create', compact('model', 'tab','pmodel'));

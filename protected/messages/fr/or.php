@@ -270,7 +270,7 @@ return array(
     'OR713' => 'Confirmez le mot de passe',
     //Others
     'OR714' => 'Accueil',
-    'OR715' => 'Fonctionnalités',
+    'OR715' => 'FONCTIONNALITÉS',
     'OR716' => 'Légende',
     'OR717' => 'Bienvenue',
     'OR718' => 'Professionnels',
@@ -317,4 +317,8 @@ return array(
     'OR757' => 'Total',
     
     'OR758' => "Nous sommes désolés, cet utilisateur n'a pas fourni d'adresse courriel.",
+    'OR759' => 'GESTION DE PROFIL',
+    'OR760' => 'COMPTE ADMINISTRATEUR',
+    'OR761' => 'ACCESSIBILITÉ',
+    'OR762' => 'ABONNEMENT',
 );

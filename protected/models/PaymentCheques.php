@@ -17,7 +17,7 @@
  */
 class PaymentCheques extends CActiveRecord
 {
-    public $subscription_type,$pay_type,$profile,$logo;
+    public $subscription_type,$pay_type,$profile,$logo,$rep_expire_month;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -38,7 +38,7 @@ class PaymentCheques extends CActiveRecord
 			array('payment_transaction_id', 'numerical', 'integerOnly'=>true),
 			array('cheque_price', 'numerical'),
 			array('cheque_num, cheque_account_name, cheque_bank, cheque_account_type', 'length', 'max'=>255),
-			array('cheque_date, notes, created_date,subscription_type,pay_type,profile,logo', 'safe'),
+			array('cheque_date, notes, created_date,subscription_type,pay_type,profile,logo,rep_expire_month', 'safe'),
                         array('profile,logo','Checkatleast'), 
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -85,6 +85,7 @@ class PaymentCheques extends CActiveRecord
 			'cheque_price' => Myclass::t('Cheque Price'),
 			'notes' => Myclass::t('Notes'),
 			'created_date' => Myclass::t('Created Date'),
+                        'rep_expire_month'=>'Expirent mois pour',
 		);
 	}
 

@@ -650,7 +650,18 @@ class Myclass extends CController {
 
         return $no_of_months;
     }
+    public static function noOfMonths_sales_rep() {
+        $no_of_months = array(
+            1 => '1 '.Myclass::t('OR755', '', 'or'),
+            2 => '2 '.Myclass::t('OR755', '', 'or'),
+            3 => '3 '.Myclass::t('OR755', '', 'or'),
+            4 => '4 '.Myclass::t('OR755', '', 'or'),
+            5 => '5 '.Myclass::t('OR755', '', 'or'),
+            6 => '6 '.Myclass::t('OR755', '', 'or'),
+        );
 
+        return $no_of_months;
+    }
     public static function monthWiseOffer($month) {
         //1 - 1 Month, 0% OFFER
         //2 - 6 Months, 5% OFFER

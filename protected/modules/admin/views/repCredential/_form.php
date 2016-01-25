@@ -176,13 +176,13 @@ $country = Myclass::getallcountries();
             </div>
                 <div class="tab-pane" id="tab_2">
                     <?php
-                    $this->renderPartial('_payment_form', array('model' => $model, 'form' => $form, 'data_products' => $data_products, 'pmodel' => $pmodel,'profile'=>$profile));
+                    $this->renderPartial('_payment_form', array('model' => $model, 'form' => $form,  'pmodel' => $pmodel,'profile'=>$profile));
                     ?>
                 </div>  
 
                 <div class="tab-pane" id="tab_3">
                     <?php
-                    $this->renderPartial('_payment_transactions', array('model' => $model, 'form' => $form, 'data_products' => $data_products, 'pmodel' => $pmodel));
+                    $this->renderPartial('_payment_transactions', array('model' => $model, 'form' => $form, 'pmodel' => $pmodel,'profile'=>$profile));
                     ?>
                 </div>  
             </div>

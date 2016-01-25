@@ -27,7 +27,7 @@ class RepCredentialController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view','update','create','payment','renewpayment'),
+                'actions' => array('index', 'view','update','create','payment','renewpayment','get_totalamount'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -41,6 +41,7 @@ class RepCredentialController extends Controller {
         );
     }
 
+    
     public function actionIndex() {
         $model = new RepCredentials('search');
         $model->unsetAttributes();  // clear any default values
@@ -60,6 +61,17 @@ class RepCredentialController extends Controller {
             'profile' => $model->repCredentialProfiles,
         ));
     }
+    
+    public function actionGet_totalamount() {
+        $no_of_months = isset($_POST['no_of_months']) ? $_POST['no_of_months'] : '';
+        $no_of_accounts_purchased = 1;
+        $offer_calculation = true;
+        $price_list = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchased, $offer_calculation);
+        $total_amount=$price_list['total_price'].'  CAD';
+        echo $total_amount;
+        exit;
+        
+    }
     public function actionCreate() {
         
         $model  = new RepCredentials;
@@ -71,7 +83,7 @@ class RepCredentialController extends Controller {
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation(array($model,$profile));
         
-        if(Yii::app()->user->hasState("secondtab") || Yii::app()->user->hasState("thirdtab"))
+        if(Yii::app()->user->hasState("secondtab"))
         {    
             //check if session exists
             if (Yii::app()->user->hasState("repattributes")  && Yii::app()->user->getState("profileattributes")) {
@@ -91,8 +103,6 @@ class RepCredentialController extends Controller {
             Yii::app()->user->setState("profileattributes", null);
             // unset Session user model attribute
            
-            // unset Session marqueids 
-            Yii::app()->user->setState("thirdtab", null);
             // unset Session marqueids  
             Yii::app()->user->setState("secondtab", null);
             // unset Session scountry  
@@ -148,6 +158,94 @@ class RepCredentialController extends Controller {
         $tab = 1;
         $this->render('create', compact('model', 'tab','pmodel','profile'));
     }
+     public function actionUpdate($id) {
+        $model = $this->loadModel($id);
+        $profile = RepCredentialProfiles::model()->findByAttributes(array('rep_credential_id' => $id));
+        $model->scenario = 'update';
+//        $this->performAjaxValidation(array($model,$profile));
+//        if (isset($_POST['client_sub'])) {
+//            $model->attributes = $_POST['RepCredentials'];
+//            $profile->attributes = $_POST['RepCredentialProfiles'];
+//                $model->save(false);
+//                $profile->save(false);
+//                Yii::app()->user->setFlash('success', 'L\'accès de l\'utilisateur à jour avec succès!!!');
+//                $this->redirect(array('update', "id" => $id));
+//        }
+//
+//        $this->render('update', compact('model','profile'));
+        
+        
+        $pmodel = new PaymentCheques;
+       
+        
+        // Uncomment the following line if AJAX validation is needed
+        $this->performAjaxValidation(array($model,$profile));
+        
+        $repattributes = $model->attributes;
+        $profileattributes = $profile->attributes;
+
+        Yii::app()->user->setState("repattributes", $repattributes);
+
+        Yii::app()->user->setState("profileattributes", $profileattributes);
+     //   Yii::app()->user->setState("uattributes", $uattributes);
+
+        // Set and intialize session from existing database records.         
+         
+
+        if ($_POST['yt0']) 
+        {
+             $model->attributes = $_POST['RepCredentials'];
+            $profile->attributes = $_POST['RepCredentialProfiles'];
+         //   $umodel->attributes = $_POST['UserDirectory'];
+         //   $umodel->NOM_TABLE = $model::$NOM_TABLE;
+         //   $umodel->NOM_UTILISATEUR = $model->COMPAGNIE;
+
+        //    $valid = $umodel->validate();
+        //    $valid = $model->validate() && $valid;
+
+
+                //set session variable
+                $scountry = $_POST['RepCredentialProfiles']['country'];
+                $sregion  = $_POST['RepCredentialProfiles']['region'];
+                Yii::app()->user->setState("scountry", $scountry);
+                Yii::app()->user->setState("sregion", $sregion);
+                
+
+                $repattributes = $model->attributes;
+                
+                $address = $profile->rep_address;
+                $country = $profile->country;
+                $region = $profile->region;
+                $cty = $profile->ID_VILLE;
+                $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
+                if ($geo_values != '') {
+                    $exp_latlong = explode('~', $geo_values);
+                    $profile->rep_lat = $exp_latlong[0];
+                    $profile->rep_long = $exp_latlong[1];
+                }
+                
+                $profileattributes = $profile->attributes;
+                $model->modified_at = date("Y-m-d h:i:s",time());
+                
+                $model->save(); 
+                $profile->save(); 
+              //  $uattributes = $umodel->attributes;
+
+                Yii::app()->user->setState("repattributes", $repattributes);
+
+                Yii::app()->user->setState("profileattributes", $profileattributes);
+                
+                Yii::app()->user->setState("secondtab", "2");
+                
+               
+                $this->redirect(array('payment'));
+                
+        }
+        
+
+        $tab = 1;
+        $this->render('update', compact('model', 'tab','pmodel','profile'));
+    }  
     public function actionPayment()
     {
         $tab    = 2;
@@ -191,7 +289,7 @@ class RepCredentialController extends Controller {
         if (isset($_POST['PaymentCheques'])) 
         { 
             $pmodel->attributes = $_POST['PaymentCheques'];
-            $pmodel->profile    = $_POST['PaymentCheques']['profile'];
+            $pmodel->rep_expire_month    = $_POST['PaymentCheques']['rep_expire_month'];
             $pmodel->pay_type   = $_POST['PaymentCheques']['pay_type'];
             
            
@@ -204,20 +302,21 @@ class RepCredentialController extends Controller {
             if($pmodel->validate())
             {
              
-                $sett_infos = SupplierSubscriptionPrice::model()->findByPk(1);
+//                $sett_infos = SupplierSubscriptionPrice::model()->findByPk(1);
                 $rep_subscription_type = RepSubscriptionTypes::model()->findByPk(1);
                 if($_POST['PaymentCheques']['pay_type']=="2")
                 {    
                     $paytype      = "Cheque";
                     $expirydate   = date("Y-m-d", strtotime('+1 year'));
                     $payment_type = "3";   
-
+                    $no_of_months = "12";
                 }elseif($_POST['PaymentCheques']['pay_type']=="1")
                 {
                     $paytype = "Free";  
-                    $expdays = $sett_infos->rep_expire_days;
-                    $expirydate = date("Y-m-d", strtotime("+$expdays days"));
+                    $no_of_months = $pmodel->rep_expire_month ;
+                    $expirydate = date("Y-m-d", strtotime("+$no_of_months month",time()));
                     $payment_type = "4";
+                    
                 }  
                 
                 $profile_price = $rep_subscription_type->rep_subscription_price;
@@ -232,6 +331,10 @@ class RepCredentialController extends Controller {
                 $sess_attr_rep = Yii::app()->user->getState("repattributes");
                 // Session user model attribute
 
+                $no_of_accounts_purchased = 1;
+                $offer_calculation = true;
+                $price_list = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchased, $offer_calculation);
+                
                 if (Yii::app()->user->hasState("repattributes")) {
                    
                     $model->attributes = $sess_attr_rep; 
@@ -254,18 +357,20 @@ class RepCredentialController extends Controller {
                     $profile->rep_credential_id = $model->rep_credential_id;
                     $profile->save(); 
                     
+                    
+                    
                     $repSingle = new RepSingleSubscriptions;
                     $repSingle->rep_credential_id = $model->rep_credential_id;
                     $repSingle->rep_subscription_type_id = '1';
                     $repSingle->purchase_type = RepSingleSubscriptions::PURCHASE_TYPE_NEW;
-                    $repSingle->rep_single_price = $amount;
-                    $repSingle->rep_single_no_of_months = $no_of_months;
-                    $repSingle->rep_single_total_month_price = $amount;
+                    $repSingle->rep_single_price = $price_list['per_account_price'];
+                    $repSingle->rep_single_no_of_months = $price_list['no_of_months'];
+                    $repSingle->rep_single_total_month_price = $price_list['total_month_price'];
 //                    $repSingle->offer_in_percentage = $registration['step3']['offer_in_percentage'];
 //                    $repSingle->offer_price = $registration['step3']['offer_price'];
-                    $repSingle->rep_single_total = $amount;
+                    $repSingle->rep_single_total = $price_list['total_price'];
 //                    $repSingle->rep_single_tax = $registration['step3']['tax'];
-                    $repSingle->rep_single_grand_total = $amount;
+                    $repSingle->rep_single_grand_total = $price_list['grand_total'];
                     $repSingle->rep_single_subscription_start = date('Y-m-d');
                     $repSingle->rep_single_subscription_end = $model->rep_expiry_date;
                     $repSingle->save(false);
@@ -319,12 +424,7 @@ class RepCredentialController extends Controller {
 
                 Yii::app()->user->setFlash('success', 'Informations ales rep ajouter / jour avec succès!!!');
                 $this->redirect(array('index'));
-            }else
-            {
-                $errores = $pmodel->getErrors();
-                print_r($errores);
-               exit;
-            }    
+            }
             
         }
         
@@ -338,134 +438,111 @@ class RepCredentialController extends Controller {
         
         $this->render($viewpage, compact('model', 'tab', 'data_products','pmodel','profile'));
     }  
-    public function actionRenewpayment()
+    
+     public function actionRenewpayment()
     {
         $tab    = 2;
         $pmodel = new PaymentCheques;
           
-        if (Yii::app()->user->hasState("mattributes")) 
-        {
-            $sess_attr_m = Yii::app()->user->getState("mattributes");
-            $fid = $sess_attr_m['ID_FOURNISSEUR'];
-            $model = $this->loadModel($fid); 
-            $model->attributes = $sess_attr_m;
-        }     
-       
+        if (Yii::app()->user->hasState("repattributes") && Yii::app()->user->hasState("profileattributes")){
+            $sess_attr_rep = Yii::app()->user->getState("repattributes");
+            $sess_attr_pro = Yii::app()->user->getState("profileattributes");
+            
+            $fid = $sess_attr_rep['rep_credential_id'];
+            $model = $this->loadModel($fid);
+            $model->attributes = $sess_attr_rep;
+            $profile = RepCredentialProfiles::model()->findByAttributes(array('rep_credential_id' => $fid));
+            $profile->attributes = $sess_attr_pro;
+             $item_name = "SingleRenewalRepAccount";
+        }
+
+        
          // Save products in to database        
         if (isset($_POST['PaymentCheques'])) 
         { 
             $pmodel->attributes = $_POST['PaymentCheques'];
-            $pmodel->profile    = $_POST['PaymentCheques']['profile'];
-            $pmodel->logo       = $_POST['PaymentCheques']['logo'];
+            $pmodel->rep_expire_month    = $_POST['PaymentCheques']['rep_expire_month'];
             $pmodel->pay_type   = $_POST['PaymentCheques']['pay_type'];
             
+            
             if($pmodel->pay_type==2)
-            {    
+            { 
               $pmodel->scenario = 'bycheque';
             }
+           
             
             if($pmodel->validate())
             {
+               
+                $rep_expirydate    = $model->rep_expiry_date;
                 
-                $sett_infos = SupplierSubscriptionPrice::model()->findByPk(1);
+//                $sett_infos = SupplierSubscriptionPrice::model()->findByPk(1);
+                $rep_subscription_type = RepSubscriptionTypes::model()->findByPk(1);
                 if($_POST['PaymentCheques']['pay_type']=="2")
                 {    
                     $paytype      = "Cheque";
+                    $time = strtotime($rep_expirydate);
+                    $no_of_months = $pmodel->rep_expire_month;
+                    $expirydate = date("Y-m-d", strtotime("+$no_of_months month", $time));
                     $payment_type = "3";   
-                    $expirydate   = date("Y-m-d", strtotime('+1 year'));                    
-                   
-                    // get existing profile expiry date
-                    $profile_expirydate = $model->profile_expirydate;
-                    $logo_expirydate    = $model->logo_expirydate;
-
-                    $p_expdate = date("Y-m-d", strtotime($profile_expirydate));
-                    if ($p_expdate > date("Y-m-d")) {
-                         $time = strtotime($profile_expirydate);
-                         $profile_expirydate = date("Y-m-d", strtotime("+1 year", $time));
-                    } else {
-                         $profile_expirydate = date('Y-m-d', strtotime('+1 year'));
-                    }
-
-                     $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
-                    if ($l_expdate > date("Y-m-d")) {
-                        $time = strtotime($logo_expirydate);
-                        $logo_expirydate = date("Y-m-d", strtotime("+1 year", $time));
-                    } else {
-                        $logo_expirydate = date('Y-m-d', strtotime('+1 year'));
-                    }
-
                 }elseif($_POST['PaymentCheques']['pay_type']=="1")
                 {
                     $paytype = "Free";  
-                    $expdays = $sett_infos->expire_days;
-                    $expirydate = date("Y-m-d", strtotime("+$expdays days"));
+                    $no_of_months = $pmodel->rep_expire_month;
+                    $time = strtotime($rep_expirydate);
+                    $expirydate = date("Y-m-d", strtotime("+$no_of_months month", $time));
                     $payment_type = "4";
-                    
-                    // get existing profile expiry date
-                    $profile_expirydate = $model->profile_expirydate;
-                    $logo_expirydate    = $model->logo_expirydate;
-
-                    $p_expdate = date("Y-m-d", strtotime($profile_expirydate));
-                    if ($p_expdate > date("Y-m-d")) {
-                         $time = strtotime($profile_expirydate);
-                         $profile_expirydate = date("Y-m-d", strtotime("+$expdays days", $time));
-                    } else {
-                         $profile_expirydate = date('Y-m-d', strtotime("+$expdays days"));
-                    }
-
-                     $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
-                    if ($l_expdate > date("Y-m-d")) {
-                        $time = strtotime($logo_expirydate);
-                        $logo_expirydate = date("Y-m-d", strtotime("+$expdays days", $time));
-                    } else {
-                        $logo_expirydate = date('Y-m-d', strtotime("+$expdays days"));
-                    }            
                     
                 }  
                 
-                $profile_price = $sett_infos->profile_price;
-                $profile_logo_price = $sett_infos->profile_logo_price;
-                $logo_price = ( $profile_logo_price - $profile_price );
+                $profile_price = $rep_subscription_type->rep_subscription_price;
+                $amount = $profile_price;
 
-                $sub_type_profile = $_POST['PaymentCheques']['profile'];
-                $sub_type_logo    = $_POST['PaymentCheques']['logo'];
                 
                 // Session supplier model attribute    
-                $sess_attr_m = Yii::app()->user->getState("mattributes");
-    
-                if (Yii::app()->user->hasState("mattributes")) {
-                                    
-                    if($sub_type_profile==1 && $sub_type_logo==1)
-                    {
-                        $subscriptiontype = "2";
-                        $amount = $profile_logo_price;    
-                        $model->profile_expirydate = $profile_expirydate;
-                        $model->logo_expirydate = $logo_expirydate;
-                        $item_name = "Suppliers Subscription - Profile & logo";
+                $sess_attr_rep = Yii::app()->user->getState("repattributes");
+                // Session user model attribute
 
-                    }else if($sub_type_profile==1 && $sub_type_logo==0)
-                    {
-                        $subscriptiontype = "1";
-                        $amount = $profile_price;
-                        $model->profile_expirydate = $profile_expirydate;
-                        $item_name = "Suppliers Subscription - Profile only";
-
-                    }else if($sub_type_profile==0 && $sub_type_logo==1)
-                    {
-                        $subscriptiontype = "3";
-                        $amount = $logo_price;
-                        $model->logo_expirydate = $logo_expirydate;
-                        $item_name = "Suppliers Subscription - Logo only";
-                    }   
+                $no_of_accounts_purchased = 1;
+                $offer_calculation = true;
+                $price_list = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchased, $offer_calculation);
+                
+                if (Yii::app()->user->hasState("repattributes")) {
+                   
+                    $model->attributes = $sess_attr_rep; 
+                    $profile->attributes = $sess_attr_pro;
+                
+                    $model->rep_expiry_date = $expirydate;
                     
-                    $model->save(false);
-                                
-                    $supplierid = $model->ID_FOURNISSEUR;
+                    $model->save(); 
+                    $profile->save(); 
+                    
+                    
+                    
+                    $repSingle = new RepSingleSubscriptions;
+                    $repSingle->rep_credential_id = $model->rep_credential_id;
+                    $repSingle->rep_subscription_type_id = '1';
+                    $repSingle->purchase_type = RepSingleSubscriptions::PURCHASE_TYPE_RENEWAL;
+                    $repSingle->rep_single_price = $price_list['per_account_price'];
+                    $repSingle->rep_single_no_of_months = $price_list['no_of_months'];
+                    $repSingle->rep_single_total_month_price = $price_list['total_month_price'];
+//                    $repSingle->offer_in_percentage = $registration['step3']['offer_in_percentage'];
+//                    $repSingle->offer_price = $registration['step3']['offer_price'];
+                    $repSingle->rep_single_total = $price_list['total_price'];
+//                    $repSingle->rep_single_tax = $registration['step3']['tax'];
+                    $repSingle->rep_single_grand_total = $price_list['grand_total'];
+                    $repSingle->rep_single_subscription_start = date('Y-m-d');
+                    $repSingle->rep_single_subscription_end = $model->rep_expiry_date;
+                    $repSingle->save(false);
+                 //   $umodel->attributes  = $sess_attr_u;
+                 //   $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
+                 //   $umodel->save(false);                
+                       
                     
                     // Save the payment details                                   
                     $ptmodel = new PaymentTransaction;
-                    $ptmodel->user_id = $supplierid;    // need to assign acutal user id
-                    $ptmodel->total_price = $amount;
+                    $ptmodel->user_id = $model->rep_credential_id;    // need to assign acutal user id
+                    $ptmodel->total_price = $price_list['total_price'];
                     $ptmodel->subscription_price = $amount;
                     $ptmodel->payment_status = 'Completed';
                     $ptmodel->payer_email = '';
@@ -475,101 +552,38 @@ class RepCredentialController extends Controller {
                     $ptmodel->receiver_email = '';
                     $ptmodel->txn_type   = '';
                     $ptmodel->item_name  = $item_name;
-                    $ptmodel->NOMTABLE   = 'suppliers';
+                    $ptmodel->NOMTABLE   = 'rep_credentials';
                     $ptmodel->expirydate = $expirydate;
                     $ptmodel->invoice_number = Myclass::getRandomString();
                     $ptmodel->pay_type   = $payment_type;
-                    
-                    //UserDirectory model
-                    $criteria = new CDbCriteria;
-                    $criteria->condition = "ID_RELATION = :id AND NOM_TABLE = :nom_table";
-                    $criteria->params=(array(':id'=>$supplierid,':nom_table'=>'Fournisseurs'));
-                    $row = UserDirectory::model()->find($criteria);
-                    $somevariable = $row->COURRIEL;
-                    
-                    //SuppliersDirectory model
-                    $suppmodel = SuppliersDirectory::model()->findByPk($supplierid);
-                    
-                    if (isset($sess_attr_m['ID_FOURNISSEUR'])) 
-                    {
-                       $ptmodel->supp_renew_status = "1";
-                    }
-                    $ptmodel->subscription_type = $subscriptiontype;
                     $ptmodel->save();
-                    
+//                    echo 'new payment';
+//                    echo '<pre>';
+//                    print_r($ptmodel);
+//                    exit;
+//                    
                     if($_POST['PaymentCheques']['pay_type']=="2")
                     { 
                         $pmodel->payment_transaction_id = $ptmodel->id;
                         $pmodel->save();
                     }
-                    $mail = new Sendmail();
-//                    $this->lang = Yii::app()->session['language'];
-                    if($this->lang=='EN' ){
-                            $subject = 'OptiGuide - Renewed your account';
-                    }elseif($this->lang=='FR'){
-                            $subject = 'Bienvenu sur notre site OptiGuide';
-                    }
-                    
-                    $nextstep_url = GUIDEURL . 'optiguide/';
-                    $trans_array = array(
-                        "{NAME}" => $suppmodel->COMPAGNIE,
-                        "{NEXTSTEPURL}" => $nextstep_url,
-                        "{expirydate}" => $suppmodel->profile_expirydate,
-                    );
-                    $message = $mail->getMessage('supplier_backend_renew_account', $trans_array);
-                    if($somevariable!=''){
-                        $mail->send($somevariable, $subject, $message);
-                    }
                         
                 }
- 
-               Yii::app()->user->setFlash('success', 'Abonnement renouveler avec succès !!!');
+
+                  Yii::app()->user->setFlash('success', 'Abonnement renouveler avec succès !!!');
                 $this->redirect(array('renewpayment'));
-            }    
+            }
             
         }
         
-         if (Yii::app()->user->hasState("product_ids")) 
-        {
-            $sess_product_ids = Yii::app()->user->getState("product_ids");
-            $data_products   = SuppliersDirectory::getproducts($sess_product_ids);
-            
-            if(empty($sess_product_ids))
-            {
-                Yii::app()->user->setState("marque_ids", null); 
-            }    
-        }
-      
-       $viewpage = 'update';
+         
+        
+        $viewpage = 'update';
        
-        $this->render($viewpage, compact('model', 'tab', 'data_products','pmodel','profile'));
+        
+        $this->render($viewpage, compact('model', 'tab', 'pmodel','profile'));
     }
-    public function actionUpdate($id) {
-        $model = $this->loadModel($id);
-        $profile = RepCredentialProfiles::model()->findByAttributes(array('rep_credential_id' => $id));
-        $profile->scenario = 'update';
-        $this->performAjaxValidation(array($model,$profile));
-        if (isset($_POST['client_sub'])) {
-            $model->attributes = $_POST['RepCredentials'];
-            $profile->attributes = $_POST['RepCredentialProfiles'];
-//            $valid = $model->validate();
-//            $valid = $profile->validate() && $valid;
-//            echo '<pre>';
-//            print_r($model->attributes);
-//            print_r($profile->attributes);
-//            exit;
-                $model->save(false);
-                $profile->save(false);
-                Yii::app()->user->setFlash('success', 'L\'accès de l\'utilisateur à jour avec succès!!!');
-                //$this->redirect(array('index'));
-//                $edituserlink =  '/admin/userDirectory/update';
-//                $uid =  $model->ID_UTILISATEUR; 
-//                $this->redirect(array($edituserlink,"id"=>$uid));
-                $this->redirect(array('update', "id" => $id));
-        }
-
-        $this->render('update', compact('model','profile'));
-    }   
+    
     
     public function loadModel($id) {
         $model = RepCredentials::model()->findByPk($id);

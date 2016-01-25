@@ -1294,3 +1294,20 @@ font-family: 'Lato', sans-serif;
 {
     margin: 40px 0px 40px 0px;
 }
+
+.news-details ul{
+    float:left;
+}
+
+.news-details li{
+    padding: 0px 0px 5px 25px !important;
+}
+
+.news-details p{
+    padding-left: 10px;
+}
+.features_img{
+    float: left;
+    width: 40%;
+    padding-left: 10px;
+}

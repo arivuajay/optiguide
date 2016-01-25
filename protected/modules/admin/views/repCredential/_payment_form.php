@@ -40,6 +40,7 @@ $expire_days = SupplierSubscriptionPrice::model()->findByPk(1);
 //$logo_price = ($profile_logoprce - $profileprce);
 //
 $free_expiredays = $expire_days->rep_expire_days;
+$no_of_months = Myclass::noOfMonths_sales_rep();
 ?> 
 <div class="box box-primary">   
     <div class="box-body">
@@ -82,28 +83,32 @@ $free_expiredays = $expire_days->rep_expire_days;
                 <h3 class="box-title"><?php echo $sub_name; ?> </h3>
             </div>
            
-
             <div class="form-group">
-                <label class ="col-sm-2 control-label"> <?php echo $price_infos->rep_subscription_name; ?> </label>
-                <div class="col-sm-5">                     
-                            <?php echo $price_infos->rep_subscription_price; ?> 
-                            <?php echo $form->hiddenField($pmodel, 'profile', array('value' => 1, 'uncheckValue' => 0)); ?>
+                    <?php echo $form->labelEx($pmodel, 'rep_expire_month', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->dropDownList($pmodel, 'rep_expire_month', $no_of_months, array('class' => 'form-control')); ?>  
+                    </div>
                 </div>
-            </div>
             
-
+            
             <div class="form-group">
-                <?php echo $form->labelEx($pmodel, 'pay_type', array('class' => 'col-sm-2 control-label')); ?>    
-                <div class="col-sm-5">        
-                    <?php echo $form->radioButtonList($pmodel, 'pay_type', array('1' => 'Free', '2' => 'By Cheque'), array('separator' => ' ')); ?> 
-                </div>     
-            </div>
-            
-             <div id="by_free" class="col-md-12">   
-                 <p style="color: red;"><strong>Hint* :</strong> Pay type <strong>"Free"</strong> subscription for profile/logo will active only for<strong> <?php echo $free_expiredays;?> days </strong>.If you want to adjust the days , please <strong><a href="<?php echo Yii::app()->createUrl('/admin/supplierSubscriptionPrice/update/id/1/type/stats');?>">click here</a></strong>.This expire days will affect only for current subscription.</p>   
-            </div> 
+                    <?php echo $form->labelEx($pmodel, 'pay_type', array('class' => 'col-sm-2 control-label')); ?>    
+                    <div class="col-sm-5">        
+                        <?php echo $form->radioButtonList($pmodel, 'pay_type', array('1' => 'Free', '2' => 'By Cheque'), array('separator' => ' ')); ?> 
+                    </div>     
+                </div>
+<!--             <div id="by_free" class="col-md-12">   
+                 <p style="color: red;"><strong>Hint* :</strong> Pay type <strong>"Free"</strong> subscription for sales rep will active only for<strong> <?php echo $free_expiredays;?> month's </strong>.If you want to adjust the days , please <strong><a href="<?php // echo Yii::app()->createUrl('/admin/supplierSubscriptionPrice/update/id/1/type/stats');?>">click here</a></strong>.This expire days will affect only for current subscription.</p>   
+            </div> -->
 
             <div id="by_cheque" style="display:none;">
+                <div class="form-group">
+                    <label class ="col-sm-2 control-label"> <?php echo $price_infos->rep_subscription_name; ?> </label>
+                    <div class="col-sm-5" id="subscription_price">                     
+                                <?php echo $price_infos->rep_subscription_price.'   CAD'; ?> 
+                                <?php echo $form->hiddenField($pmodel, 'profile', array('value' => 1, 'uncheckValue' => 0)); ?>
+                    </div>
+                </div>
                 <div class="form-group">
                     <?php echo $form->labelEx($pmodel, 'cheque_num', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">    
@@ -123,7 +128,7 @@ $free_expiredays = $expire_days->rep_expire_days;
                     <div class="col-sm-5"> 
                         <?php echo $form->textField($pmodel, 'cheque_account_type', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
                         <?php echo $form->error($pmodel, 'cheque_account_type'); ?>
-                    </div>    
+                    </div>   
                 </div>
                 <div class="form-group">
                     <?php echo $form->labelEx($pmodel, 'cheque_bank', array('class' => 'col-sm-2 control-label')); ?>
@@ -170,11 +175,28 @@ $free_expiredays = $expire_days->rep_expire_days;
 <?php $this->endWidget(); ?>
 
 <?php
+$ajaxtotalamountUrl = Yii::app()->createUrl('/admin/repCredential/get_totalamount');
 $js = <<< EOD
 $(document).ready(function(){        
    $('.year').datepicker({ dateFormat: 'yyyy' });
    $('.date').datepicker({ format: 'yyyy-mm-dd' });     
-       
+      
+   // Get no of month
+   $("#PaymentCheques_rep_expire_month").change(function(){
+        var month=$(this).val();
+        var dataString = 'no_of_months='+ month;
+            
+        $.ajax({
+            type: "POST",
+            url: '{$ajaxtotalamountUrl}',
+            data: dataString,
+            cache: false,
+            success: function(html){      
+                $("#subscription_price").html(html);
+            }
+         });
+
+    });  
 });
 EOD;
 Yii::app()->clientScript->registerScript('_pform', $js);

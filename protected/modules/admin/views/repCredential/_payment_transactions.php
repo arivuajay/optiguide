@@ -9,9 +9,9 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_p
 $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
 
 $tmodel = new PaymentTransaction;
-if (isset($model->ID_FOURNISSEUR)) {
+if (isset($model->rep_credential_id)) {
     
-  $suppid =  $model->ID_FOURNISSEUR;
+  $suppid =  $model->rep_credential_id;
 
 ?>
 
@@ -78,7 +78,7 @@ if (isset($model->ID_FOURNISSEUR)) {
         $this->widget('booster.widgets.TbExtendedGridView', array(
         'filter' => $tmodel,
         'type' => 'striped bordered datatable',
-        'dataProvider' => $tmodel->search_supplier($suppid),
+        'dataProvider' => $tmodel->search_sales_rep($suppid),
         'responsiveTable' => true,
         'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Fournisseurs transactions de paiement</h3></div><div class="panel-body">{items}{pager}</div></div>',
         'columns' => $gridColumns

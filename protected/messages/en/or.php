@@ -270,7 +270,7 @@ return array(
     'OR713' => 'Confirm Password',
     //Others
     'OR714' => 'Home',
-    'OR715' => 'Features',
+    'OR715' => 'FEATURES',
     'OR716' => 'Legend',
     'OR717' => 'Welcome',
     'OR718' => 'Professionals',
@@ -317,4 +317,8 @@ return array(
     'OR757' => 'Total',
     
     'OR758' => 'We are sorry, this user did not provide any e-mail address.',
+    'OR759' => 'PROFILE MANAGEMENT',
+    'OR760' => 'ADMINISTRATION ACCOUNT',
+    'OR761' => 'TECHNICAL DATA',
+    'OR762' => 'MEMBERSHIP',
 );
