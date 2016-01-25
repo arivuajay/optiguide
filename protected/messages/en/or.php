@@ -321,4 +321,5 @@ return array(
     'OR760' => 'ADMINISTRATION ACCOUNT',
     'OR761' => 'TECHNICAL DATA',
     'OR762' => 'MEMBERSHIP',
+    'OR763' => 'See features',
 );

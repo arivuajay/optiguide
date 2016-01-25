@@ -11,14 +11,17 @@
        <p>Coordonnez votre équipe de représentants à l’aide d’un compte administrateur totalement gratuit dès l’ouverture de deux comptes ou plus. Suivez leurs actions et conseillez-les afin de simplifier et améliorer vos relations de travail.</p>
        <p>Découvrez dès aujourd’hui l’outil le plus complet du monde de l’optique qui dessert le Canada d’est en ouest.</p>
     <?php }  ?>
+       <div class="signup-cont">
+          <?php echo CHtml::link(Myclass::t('OR763', '', 'or'), '/optirep/default/features') ?>    
+        </div>
 </div>
     
 <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 landing-left"> 
        <?php
        if (Yii::app()->language == 'en') {
-            $image = CHtml::image("{$this->themeUrl}/images/Home Page.png", 'optirep');
+            $image = CHtml::image("{$this->themeUrl}/images/optirep.jpg", 'optirep');
        }  else {
-            $image = CHtml::image("{$this->themeUrl}/images/Home Page French.png", 'optirep');    
+            $image = CHtml::image("{$this->themeUrl}/images/optirep-fr.jpg", 'optirep');    
        }       
        echo CHtml::link($image, array('/optirep'));
        ?>

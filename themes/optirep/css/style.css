@@ -1300,11 +1300,15 @@ font-family: 'Lato', sans-serif;
 }
 
 .news-details li{
-    padding: 0px 0px 5px 25px !important;
+    padding: 0px 0px 5px 15px !important;
+    background: rgba(0, 0, 0, 0) url("../images/tick.png") no-repeat scroll 0 6px;
+    font-size: 16px !important;
 }
 
 .news-details p{
     padding-left: 10px;
+    font-size: 18px;
+    padding-top: 20px;
 }
 .features_img{
     float: left;
@@ -1313,4 +1317,7 @@ font-family: 'Lato', sans-serif;
 }
 .landing-left img{
     margin-top: 20px;
+}
+.last-pag{
+    padding-bottom: 30px;
 }

@@ -42,12 +42,12 @@ return array(
     'OR514' => "favoris",
     'OR515' => "Vous avez pas d' utilisateurs représentatifs dès maintenant",
     'OR516' => '<a href=":url">Cliquez</a> à ajouter vos utilisateurs',
-    'OR517' => "Vous avez pas d'utilisateurs favoris bonnes now.See les détaillants et les professionnels utilisateurs et rendre votre favori !!!",
+    'OR517' => "Aucun utilisateur n'a été ajouté à votre liste de favoris",
     'OR518' => 'Calendrier',
     'OR519' => 'Évènements à venir',
     'OR520' => 'Aucun événement',
     'OR521' => 'Mes notes',
-    'OR522' => 'Vous avez pas de notes dès maintenant',
+    'OR522' => 'Vous n\'avez pas encore créé de note',
     'OR523' => '<a href=":url">Cliquez</a> à ajouter vos notes',
     //views/repAccounts
     'OR524' => 'Gérer les comptes Rep',
@@ -321,4 +321,5 @@ return array(
     'OR760' => 'COMPTE ADMINISTRATEUR',
     'OR761' => 'ACCESSIBILITÉ',
     'OR762' => 'ABONNEMENT',
+    'OR763' => 'Voir les fonctionalités',
 );
