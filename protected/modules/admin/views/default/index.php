@@ -90,13 +90,12 @@ $view = "View All <i class='fa fa-arrow-circle-right'></i>";
                             ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' AND rs.CREATED_DATE LIKE '%$searchdate%' ")
                             ->group('rst.ID_TYPE_SPECIALISTE')
                             ->queryAll();
-                        
+                     $viewcount = 0;
                      foreach($per_mount_counts as $per_mount_count){
                          $viewcount = $viewcount + $per_mount_count['pro_per_month_count'];
                      }
                         
-                    $viewcounts =$viewcount;
-                    $viewcount=0;
+                    $viewcounts =$viewcount;                   
                 }
 
                 if ($utype == "Retailers") {
@@ -107,11 +106,11 @@ $view = "View All <i class='fa fa-arrow-circle-right'></i>";
                         ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' AND rs.CREATED_DATE LIKE '%$searchdate%'")
                         ->group('rst.ID_RETAILER_TYPE')
                         ->queryAll();
+                    $viewcount = 0;
                     foreach($ret_mount_counts as $ret_mount_count){
                          $viewcount = $viewcount + $ret_mount_count['ret_per_month_count'];
                      }                        
-                    $viewcounts =$viewcount;
-                    $viewcount= 0;
+                    $viewcounts =$viewcount;                   
                 }
 
                 if ($utype == "Suppliers") {
@@ -121,11 +120,12 @@ $view = "View All <i class='fa fa-arrow-circle-right'></i>";
                         ->from(array('repertoire_fournisseurs rs','repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                         ->where("rs.ID_FOURNISSEUR=ru.ID_RELATION AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Fournisseurs' AND rs.CREATED_DATE LIKE '%$searchdate%'")
                         ->queryAll();
+                    $viewcount = 0;
                     foreach($sup_mount_counts as $sup_mount_count){
                          $viewcount = $viewcount + $sup_mount_count['sup_per_month_count'];
                      }                        
                     $viewcounts =$viewcount;
-                    $viewcount= 0;
+                    
                 }
 
                 array_push($response["viewcounts"], (int) $viewcounts);

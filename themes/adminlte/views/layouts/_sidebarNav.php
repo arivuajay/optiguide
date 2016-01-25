@@ -19,6 +19,15 @@
             'activateItems' => true,
             'items' => array(
                 array('label' => '<i class="fa fa-dashboard"></i> <span>Dashboard</span>', 'url' => Yii::app()->homeUrl),
+                array('label' => '<i class="fa fa-cog"></i> <span>Administration</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
+                    'itemOptions' => array('class' => 'treeview'),
+                    'submenuOptions' => array('class' => 'treeview-menu'),
+                    'visible' => '1',
+                    'items' => array(                      
+                        array('label' => '<i class="fa fa-music"></i> <span>Roles</span>', 'url' => array('/admin/masterrole/index'), 'visible' => '1'),
+                        array('label' => '<i class="fa fa-user"></i> <span>Users</span>', 'url' => array('/admin/admin/index'), 'visible' => '1'),
+                    ),
+                ),
                 array('label' => '<i class="fa fa-newspaper-o"></i> <span>Nouvelles</span>', 'url' => array('/admin/newsManagement/index'), 'active' => $_controller == 'newsManagement'),
                 array('label' => '<i class="fa fa-calendar"></i> <span>Calendrier</span>', 'url' => array('/admin/calenderEvent/index'), 'active' => $_controller == 'calenderEvent'),
                 array('label' => '<i class="fa fa-briefcase"></i> <span>Publicité</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',

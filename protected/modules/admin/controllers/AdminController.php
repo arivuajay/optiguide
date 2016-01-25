@@ -1,6 +1,6 @@
 <?php
 
-class CalenderEventController extends Controller
+class AdminController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -25,27 +25,22 @@ class CalenderEventController extends Controller
 	 */
 	public function accessRules()
 	{
-		return array_merge(
-                
-                        parent::accessRules(), 
-                        array(
-                            array('allow',  // allow all users to perform 'index' and 'view' actions
-                                    'actions'=>array(''),
-                                    'users'=>array('*'),
-                            ),
-                            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                                    'actions'=>array('index','view','create','update','admin','delete'),
-                                    'users'=>array('@'),
-                                    'expression'=> 'AdminIdentity::checkAccess()',
-                            ),
-                            array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                                    'actions'=>array(''),
-                                    'users'=>array('admin'),
-                            ),
-                            array('deny',  // deny all users
-                                    'users'=>array('*'),
-                            ),
-                        )
+		return array(
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array(''),
+				'users'=>array('*'),
+			),
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array('index','view','create','update','admin','delete'),
+				'users'=>array('@'),
+			),
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions'=>array(''),
+				'users'=>array('admin'),
+			),
+			array('deny',  // deny all users
+				'users'=>array('*'),
+			),
 		);
 	}
 
@@ -66,16 +61,17 @@ class CalenderEventController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new CalenderEvent;
+		$model=new Admin;
 
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
 
-		if(isset($_POST['CalenderEvent']))
+		if(isset($_POST['Admin']))
 		{
-			$model->attributes=$_POST['CalenderEvent'];
+			$model->attributes=$_POST['Admin'];
+                        $model->admin_password = Myclass::encrypt($model->org_password);                        
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'Événement créé avec succès!!!');
+                                Yii::app()->user->setFlash('success', 'Admin Created Successfully!!!');
                                 $this->redirect(array('index'));
                         }
 		}
@@ -97,11 +93,16 @@ class CalenderEventController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
 
-		if(isset($_POST['CalenderEvent']))
+		if(isset($_POST['Admin']))
 		{
-			$model->attributes=$_POST['CalenderEvent'];
+			$model->attributes=$_POST['Admin'];
+                        if($model->admin_password)
+                        {    
+                            $model->admin_password = Myclass::encrypt($model->org_password);                           
+                        }
+                        
 			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'Événement correctement mis à jour!!!');
+                                Yii::app()->user->setFlash('success', 'Admin Updated Successfully!!!');
                                 $this->redirect(array('index'));
                         }
 		}
@@ -122,7 +123,7 @@ class CalenderEventController extends Controller
         
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax'])){
-                    Yii::app()->user->setFlash('success', 'CalenderEvent Deleted Successfully!!!');
+                    Yii::app()->user->setFlash('success', 'Admin Deleted Successfully!!!');
                     $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
                 }
 	}
@@ -132,12 +133,10 @@ class CalenderEventController extends Controller
 	 */
 	public function actionIndex()
 	{
-            $model=new CalenderEvent('search');
+            $model=new Admin('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['CalenderEvent']))
-			$model->attributes = $_GET['CalenderEvent'];
-                        $model->Year       = $_GET['CalenderEvent']['Year'];
-                        $model->keyword    = $_GET['CalenderEvent']['keyword'];
+		if(isset($_GET['Admin']))
+			$model->attributes=$_GET['Admin'];
 
 		$this->render('index',array(
 			'model'=>$model,
@@ -149,10 +148,10 @@ class CalenderEventController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new CalenderEvent('search');
+		$model=new Admin('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['CalenderEvent']))
-			$model->attributes=$_GET['CalenderEvent'];
+		if(isset($_GET['Admin']))
+			$model->attributes=$_GET['Admin'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -163,12 +162,12 @@ class CalenderEventController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return CalenderEvent the loaded model
+	 * @return Admin the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=CalenderEvent::model()->findByPk($id);
+		$model=Admin::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -176,11 +175,11 @@ class CalenderEventController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param CalenderEvent $model the model to be validated
+	 * @param Admin $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='calender-events-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='admin-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

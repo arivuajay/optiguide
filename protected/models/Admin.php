@@ -15,7 +15,7 @@
  */
 class Admin extends CActiveRecord {
 
-    public $current_password, $re_password;
+    public $current_password, $re_password,$org_password;
 
     /**
      * @return string the associated database table name
@@ -31,17 +31,18 @@ class Admin extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('admin_name, admin_password, admin_status, admin_email, created_date', 'required', 'on' => 'create'),
+            array('admin_name, admin_username, org_password, admin_email,role', 'required'),
 //			array('admin_login_ip', 'numerical', 'integerOnly'=>true),
-            array('admin_name,admin_username,admin_email', 'required', 'on' => 'update'),
+            array('admin_name,admin_username, admin_email', 'required', 'on' => 'update'),
             array('admin_email', 'email'),
+            array('admin_username,admin_email','unique'),
             array('admin_email', 'required', 'on' => 'forgotpassword'),
             array('admin_password,current_password,re_password', 'required', 'on' => 'changepassword'),
             array('current_password', 'compare', 'compareAttribute' => 're_password', 'on' => 'changepassword'),
             array('admin_password', 'equalPasswords', 'on' => 'changepassword'),
             array('admin_name, admin_password, admin_email', 'length', 'max' => 255),
             array('admin_status', 'length', 'max' => 1),
-            array('admin_last_login', 'safe'),
+            array('admin_last_login,org_password,role', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('admin_id, admin_name, admin_password, admin_status, admin_email, created_date, admin_last_login, admin_login_ip', 'safe', 'on' => 'search'),
@@ -63,6 +64,9 @@ class Admin extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'authResources' => array(self::HAS_MANY, 'AuthResources', 'Master_User_ID'),
+            'roleMdl' => array(self::BELONGS_TO, 'MasterRole', 'role'),
+           
         );
     }
 
@@ -81,7 +85,9 @@ class Admin extends CActiveRecord {
             're_password' => Myclass::t('APP8'),
             'created_date' => Myclass::t('APP9'),
             'admin_last_login' => Myclass::t('APP10'),
-            'admin_login_ip' => Myclass::t('APP11')
+            'admin_login_ip' => Myclass::t('APP11'),
+            'role' => 'role',    
+            'org_password' => Myclass::t('APP4'),
         );
     }
 
@@ -110,6 +116,12 @@ class Admin extends CActiveRecord {
         $criteria->compare('created_date', $this->created_date, true);
         $criteria->compare('admin_last_login', $this->admin_last_login, true);
         $criteria->compare('admin_login_ip', $this->admin_login_ip);
+        if($this->role){
+            $criteria->condition = "role=:role_type and role != 1";
+        $criteria->params=(array(':role_type'=>$this->role));
+        }else{
+          $criteria->condition = "role != 1";   
+        }
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

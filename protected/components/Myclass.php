@@ -683,4 +683,14 @@ class Myclass extends CController {
             return '-';
     }
 
+   public static function getMasterModule($is_active = TRUE, $key = NULL) {
+        if ($is_active && $key == NULL)
+            $modules = CHtml::listData(MasterModule::model()->isActive()->findAll(array('order' => 'Master_Module_ID')), 'Master_Module_ID', 'Description');
+        else
+            $modules = CHtml::listData(MasterModule::model()->findAll(array('order' => 'Master_Module_ID')), 'Master_Module_ID', 'Description');
+
+        if ($key != NULL)
+            return $modules[$key];
+        return $modules;
+    }     
 }

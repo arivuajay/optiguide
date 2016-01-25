@@ -624,8 +624,8 @@ class DefaultController extends Controller {
                 Yii::app()->end();
             } else {
                 $name = Yii::app()->errorHandler->error['code'] . ' Error';
-               
-                $this->render('error', compact('error', 'name'));
+                $message = Yii::app()->errorHandler->error['message'];
+                $this->render('error', compact('error', 'name', 'message'));
             }
         }
     }

@@ -34,19 +34,26 @@ class AdminIdentity extends CUserIdentity {
             endif;
         endif;
 
-        if ($this->errorCode == self::ERROR_NONE):
-            $lastLogin = date('Y-m-d H:i:s');
-            $user->admin_last_login = $lastLogin;
-            $user->admin_login_ip = Yii::app()->request->userHostAddress;
-            $user->save(false);
-            $this->_id = $user->admin_id;
-            $this->setState('username', $user->admin_name);
-            $this->setState('v1', $user->admin_email);
-            $this->setState('role', 'admin');
-
+        if ($this->errorCode == self::ERROR_NONE):           
+            $this->setUserData($user);
         endif;
 
         return !$this->errorCode;
+    }
+    
+    protected function setUserData($user) {
+     
+        $lastLogin = date('Y-m-d H:i:s');
+        $user->admin_last_login = $user->admin_last_login;
+        $user->admin_login_ip = Yii::app()->request->userHostAddress;
+        $user->save(false);
+        $this->_id = $user->admin_id;
+        $this->setState('username', $user->admin_name);
+        $this->setState('v1', $user->admin_email);
+        $this->setState('role', 'admin');
+        //$this->setState('role', $user->role);
+        //$this->setState('rolename', $user->roleMdl->Description);
+        return;
     }
     
      public function checkadminemail() {
@@ -65,5 +72,82 @@ class AdminIdentity extends CUserIdentity {
      */
     public function getId() {
         return $this->_id;
+    }
+    
+    public static function checkAccess($id = NULL, $controller = NULL, $action = NULL, $group_role = NULL) {
+        $return = true;
+       
+        if ($id == NULL)
+            $id = Yii::app()->user->id;
+        if ($controller == NULL)
+            $controller = Yii::app()->controller->id;
+        if ($action == NULL)
+            $action = Yii::app()->controller->action->id;
+
+        $user = Admin::model()->find('admin_id = :U', array(':U' => $id));
+
+        ##### Hardcode for groups controller ####
+        if (in_array($controller, array('group', 'publishergroup'))) {
+            if ($group_role != '') {
+                $controller = $group_role;
+            } else {
+                $groupCheck = Myclass::checkGroupactions($controller, $action);
+                foreach ($groupCheck as $key => $value) {
+                    if ($value)
+                        $controller = $key;
+                }
+            }
+        }
+        
+        ## end ##
+
+        $screen = MasterScreen::model()->find("Screen_code = :controller", array(':controller' => $controller));
+       
+        if (!empty($user) && !empty($screen)) {
+           
+         
+            $auth_resources = AuthResources::model()->findByAttributes(array('Master_Role_ID' => $user->role, 'Master_Module_ID' => $screen->Module_ID, 'Master_Screen_ID' => $screen->Master_Screen_ID));
+             
+            if (!empty($auth_resources)) {
+                $insert_actions = array('create', 'insertright', 'insertlabel', 'newperformer', 'newproducer', 'newrecording');
+                $update_actions = array('update');
+                $view_actions = array('index', 'view', 'download', 'print', 'pdf', 'searchright', 'contractexpiry', 'invoice', 'backdated', 'searchcontract', 'getinvoice');
+                $delete_actions = array('delete', 'filedelete', 'biofiledelete', 'subtitledelete', 'linkdelete', 'holderremove', 'publicationdelete', 'fixationdelete', 'foliodelete', 'memberdelete');
+                $other_actions = array();
+               
+                if (in_array($action, $insert_actions)) {
+                    $return = $auth_resources->Master_Task_ADD == 1;
+                } elseif (in_array($action, $update_actions)) {
+                    $return = $auth_resources->Master_Task_UPT == 1;
+                } elseif (in_array($action, $view_actions)) {
+                    $return = $auth_resources->Master_Task_SEE == 1;
+                } elseif (in_array($action, $delete_actions)) {
+                    $return = $auth_resources->Master_Task_DEL == 1;
+                } elseif (in_array($action, $other_actions)) {
+                    $return = true;
+                }
+            }
+        }
+        return $return;
+    }
+    
+     public static function checkAdmin() {
+        $return = false;
+        if(isset(Yii::app()->user->id)){
+            $user = User::model()->find('id = :U', array(':U' => Yii::app()->user->id));
+            $return = $user->role == 1;
+        }
+        return $return;
+    }
+    
+     public static function checkPrivilages($rank/*, $id = NULL, $controller = NULL, $action = NULL, $group_role = NULL*/) {
+        $return = false;
+        if(isset(Yii::app()->user->id)){
+            $user = User::model()->find('id = :U', array(':U' => Yii::app()->user->id));
+            $return = $user->roleMdl->Rank <= $rank;
+        }
+//        if(!$return)
+//            $return = self::checkAccess ($id, $controller, $action, $group_role);
+        return $return;
     }
 }
