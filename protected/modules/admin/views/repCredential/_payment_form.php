@@ -87,6 +87,7 @@ $no_of_months = Myclass::noOfMonths_sales_rep();
                     <?php echo $form->labelEx($pmodel, 'rep_expire_month', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
                         <?php echo $form->dropDownList($pmodel, 'rep_expire_month', $no_of_months, array('class' => 'form-control')); ?>  
+                        <?php echo $form->hiddenField($pmodel, 'profile', array('value' => 1, 'uncheckValue' => 0)); ?>
                     </div>
                 </div>
             

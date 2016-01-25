@@ -71,7 +71,8 @@ if (isset($model->rep_credential_id)) {
         'header' => 'Actes',
         'class' => 'booster.widgets.TbButtonColumn',
         'htmlOptions' => array('style' => 'text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-        'template' => '{view}',       
+        'template' => '{view}',    
+        'viewButtonUrl'=>'Yii::app()->createUrl("/admin/repCredential/transaction_view/",$params=array("id"=>$data["id"]))',
                 ),
         );
 

@@ -16,9 +16,9 @@
 <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 landing-left"> 
        <?php
        if (Yii::app()->language == 'en') {
-            $image = CHtml::image("{$this->themeUrl}/images/optirep.jpg", 'optirep');
+            $image = CHtml::image("{$this->themeUrl}/images/Home Page.png", 'optirep');
        }  else {
-            $image = CHtml::image("{$this->themeUrl}/images/optirep-fr.jpg", 'optirep');    
+            $image = CHtml::image("{$this->themeUrl}/images/Home Page French.png", 'optirep');    
        }       
        echo CHtml::link($image, array('/optirep'));
        ?>

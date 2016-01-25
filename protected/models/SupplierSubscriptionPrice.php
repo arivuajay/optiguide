@@ -26,7 +26,7 @@ class SupplierSubscriptionPrice extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('profile_price, profile_logo_price,rep_statistics_price,expire_days,tax,rep_expire_days', 'numerical'),
+			array('profile_price, profile_logo_price,rep_statistics_price,expire_days,tax', 'numerical'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, profile_price, profile_logo_price,rep_statistics_price,expire_days,tax', 'safe', 'on'=>'search'),
@@ -56,7 +56,7 @@ class SupplierSubscriptionPrice extends CActiveRecord
                         'rep_statistics_price' => Myclass::t('Statistiques Prix'),
                         'expire_days' => Myclass::t('Expirera jours pour les membres gratuits'),
                         'tax'  => Myclass::t('impôt'),
-                        'rep_expire_days' => Myclass::t('Expirent mois pour les membres gratuits'),
+                        
 		);
 	}
 
@@ -82,7 +82,7 @@ class SupplierSubscriptionPrice extends CActiveRecord
 		$criteria->compare('profile_price',$this->profile_price);
 		$criteria->compare('profile_logo_price',$this->profile_logo_price);
                 $criteria->compare('rep_statistics_price',$this->rep_statistics_price);
-                $criteria->compare('rep_expire_days',$this->rep_statistics_price);
+                
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
                         'pagination' => array(

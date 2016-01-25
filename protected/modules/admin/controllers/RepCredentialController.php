@@ -27,7 +27,7 @@ class RepCredentialController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view','update','create','payment','renewpayment','get_totalamount'),
+                'actions' => array('index', 'view','update','create','payment','renewpayment','get_totalamount','transaction_view'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -52,7 +52,13 @@ class RepCredentialController extends Controller {
 
         $this->render('index', compact('model'));
     }
-    
+    public function actionTransaction_view($id){
+        $pmodel =  PaymentTransaction::model()->findByPk($id);
+        $this->render('_view', array(
+            'pmodel' => $pmodel,
+        ));
+        
+    }
     public function actionView($id){
         $model = $this->loadModel($id);
 
@@ -291,8 +297,8 @@ class RepCredentialController extends Controller {
             $pmodel->attributes = $_POST['PaymentCheques'];
             $pmodel->rep_expire_month    = $_POST['PaymentCheques']['rep_expire_month'];
             $pmodel->pay_type   = $_POST['PaymentCheques']['pay_type'];
+            $no_of_months_db = $amount = $no_of_months = null;
             
-           
             if($pmodel->pay_type==2)
             { 
               $pmodel->scenario = 'bycheque';
@@ -307,25 +313,25 @@ class RepCredentialController extends Controller {
                 if($_POST['PaymentCheques']['pay_type']=="2")
                 {    
                     $paytype      = "Cheque";
-                    $expirydate   = date("Y-m-d", strtotime('+1 year'));
+                    $no_of_months = $pmodel->rep_expire_month;
+                    $expirydate = date("Y-m-d", strtotime("+$no_of_months month", time()));
                     $payment_type = "3";   
-                    $no_of_months = "12";
+                    $amount = $rep_subscription_type->rep_subscription_price;
+                    $no_of_months_db=$no_of_months;
+                
                 }elseif($_POST['PaymentCheques']['pay_type']=="1")
                 {
                     $paytype = "Free";  
-                    $no_of_months = $pmodel->rep_expire_month ;
-                    $expirydate = date("Y-m-d", strtotime("+$no_of_months month",time()));
+                    $no_of_months = $pmodel->rep_expire_month;
+                    $expirydate = date("Y-m-d", strtotime("+$no_of_months month", time()));
                     $payment_type = "4";
-                    
+                    $no_of_months_db=$no_of_months;
+                    $no_of_months="0";
+                    $amount = 0;
                 }  
                 
-                $profile_price = $rep_subscription_type->rep_subscription_price;
-                $amount = $profile_price;
-//                $profile_logo_price = $sett_infos->profile_logo_price;
-//                $logo_price = ( $profile_logo_price - $profile_price );
+               
 
-//                $sub_type_profile = $_POST['PaymentCheques']['profile'];
-//                $sub_type_logo    = $_POST['PaymentCheques']['logo'];
                 
                 // Session supplier model attribute    
                 $sess_attr_rep = Yii::app()->user->getState("repattributes");
@@ -340,16 +346,7 @@ class RepCredentialController extends Controller {
                     $model->attributes = $sess_attr_rep; 
                     
                     $profile->attributes = $sess_attr_pro;
-                  //  $model->ID_CLIENT  = $sess_attr_rep['ID_CLIENT'];
-                    
-//                    if($sub_type_profile==1)
-//                    {
-//                        $subscriptiontype = "1";
-//                        $amount = $profile_price;
-//                        $model->rep_expiry_date = $expirydate;
-//                        $item_name = "Statistics Subscription";
-//
-//                    }
+                 
                     $model->rep_expiry_date = $expirydate;
                     $model->created_at = date("Y-m-d h:i:s",time());
                     $model->modified_at = date("Y-m-d h:i:s",time());
@@ -363,8 +360,8 @@ class RepCredentialController extends Controller {
                     $repSingle->rep_credential_id = $model->rep_credential_id;
                     $repSingle->rep_subscription_type_id = '1';
                     $repSingle->purchase_type = RepSingleSubscriptions::PURCHASE_TYPE_NEW;
-                    $repSingle->rep_single_price = $price_list['per_account_price'];
-                    $repSingle->rep_single_no_of_months = $price_list['no_of_months'];
+                    $repSingle->rep_single_price = $amount;
+                    $repSingle->rep_single_no_of_months = $no_of_months_db;
                     $repSingle->rep_single_total_month_price = $price_list['total_month_price'];
 //                    $repSingle->offer_in_percentage = $registration['step3']['offer_in_percentage'];
 //                    $repSingle->offer_price = $registration['step3']['offer_price'];
@@ -396,6 +393,7 @@ class RepCredentialController extends Controller {
                     $ptmodel->expirydate = $expirydate;
                     $ptmodel->invoice_number = Myclass::getRandomString();
                     $ptmodel->pay_type   = $payment_type;
+                    $ptmodel->rep_single_subscription_id=$repSingle->rep_single_subscription_id;
                     $ptmodel->save();
 //                    echo 'new payment';
 //                    echo '<pre>';
@@ -410,17 +408,18 @@ class RepCredentialController extends Controller {
                         
                 }
 
-                // unset Session supplier model attribute    
-                Yii::app()->user->setState("repattributes", null);
-                // unset Session user model attribute
-                //  Yii::app()->user->setState("uattributes", null);
+                 // unset Session repcredential model attribute    
+            Yii::app()->user->setState("repattributes", null);
+            Yii::app()->user->setState("profileattributes", null);
+            // unset Session user model attribute
+           
+            // unset Session marqueids  
+            Yii::app()->user->setState("secondtab", null);
+            // unset Session scountry  
+            Yii::app()->user->setState("scountry", null);
+            // unset Session sregion  
+            Yii::app()->user->setState("sregion", null);
                 
-                // unset Session marqueids  
-                Yii::app()->user->setState("secondtab", null);
-                // unset Session scountry  
-                Yii::app()->user->setState("scountry", null);
-                // unset Session sregion  
-                Yii::app()->user->setState("sregion", null);
 
                 Yii::app()->user->setFlash('success', 'Informations ales rep ajouter / jour avec succès!!!');
                 $this->redirect(array('index'));
@@ -463,7 +462,8 @@ class RepCredentialController extends Controller {
             $pmodel->attributes = $_POST['PaymentCheques'];
             $pmodel->rep_expire_month    = $_POST['PaymentCheques']['rep_expire_month'];
             $pmodel->pay_type   = $_POST['PaymentCheques']['pay_type'];
-            
+            $pmodel->profile    = $_POST['PaymentCheques']['profile'];
+            $no_of_months_db = $amount = $no_of_months = null;
             
             if($pmodel->pay_type==2)
             { 
@@ -485,6 +485,9 @@ class RepCredentialController extends Controller {
                     $no_of_months = $pmodel->rep_expire_month;
                     $expirydate = date("Y-m-d", strtotime("+$no_of_months month", $time));
                     $payment_type = "3";   
+                    $amount = $rep_subscription_type->rep_subscription_price;
+                    $no_of_months_db=$no_of_months;
+                
                 }elseif($_POST['PaymentCheques']['pay_type']=="1")
                 {
                     $paytype = "Free";  
@@ -492,11 +495,12 @@ class RepCredentialController extends Controller {
                     $time = strtotime($rep_expirydate);
                     $expirydate = date("Y-m-d", strtotime("+$no_of_months month", $time));
                     $payment_type = "4";
-                    
+                    $no_of_months_db=$no_of_months;
+                    $no_of_months="0";
+                    $amount = 0;
                 }  
                 
-                $profile_price = $rep_subscription_type->rep_subscription_price;
-                $amount = $profile_price;
+                
 
                 
                 // Session supplier model attribute    
@@ -523,8 +527,8 @@ class RepCredentialController extends Controller {
                     $repSingle->rep_credential_id = $model->rep_credential_id;
                     $repSingle->rep_subscription_type_id = '1';
                     $repSingle->purchase_type = RepSingleSubscriptions::PURCHASE_TYPE_RENEWAL;
-                    $repSingle->rep_single_price = $price_list['per_account_price'];
-                    $repSingle->rep_single_no_of_months = $price_list['no_of_months'];
+                    $repSingle->rep_single_price = $amount;
+                    $repSingle->rep_single_no_of_months = $no_of_months_db;
                     $repSingle->rep_single_total_month_price = $price_list['total_month_price'];
 //                    $repSingle->offer_in_percentage = $registration['step3']['offer_in_percentage'];
 //                    $repSingle->offer_price = $registration['step3']['offer_price'];
@@ -556,6 +560,7 @@ class RepCredentialController extends Controller {
                     $ptmodel->expirydate = $expirydate;
                     $ptmodel->invoice_number = Myclass::getRandomString();
                     $ptmodel->pay_type   = $payment_type;
+                     $ptmodel->rep_single_subscription_id=$repSingle->rep_single_subscription_id;
                     $ptmodel->save();
 //                    echo 'new payment';
 //                    echo '<pre>';
@@ -572,6 +577,11 @@ class RepCredentialController extends Controller {
 
                   Yii::app()->user->setFlash('success', 'Abonnement renouveler avec succès !!!');
                 $this->redirect(array('renewpayment'));
+            }
+            else{
+                $erorr = $pmodel->getErrors();
+                print_r($erorr);
+                exit;
             }
             
         }

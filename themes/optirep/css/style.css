@@ -1311,3 +1311,6 @@ font-family: 'Lato', sans-serif;
     width: 40%;
     padding-left: 10px;
 }
+.landing-left img{
+    margin-top: 20px;
+}

@@ -630,18 +630,21 @@ class SuppliersDirectoryController extends Controller {
                     $paytype      = "Cheque";
                     $expirydate   = date("Y-m-d", strtotime('+1 year'));
                     $payment_type = "3";   
-
+                    $profile_price = $sett_infos->profile_price;
+                    $profile_logo_price = $sett_infos->profile_logo_price;
+                    $logo_price = ( $profile_logo_price - $profile_price );
                 }elseif($_POST['PaymentCheques']['pay_type']=="1")
                 {
                     $paytype = "Free";  
                     $expdays = $sett_infos->expire_days;
                     $expirydate = date("Y-m-d", strtotime("+$expdays days"));
                     $payment_type = "4";
+                    $profile_price = '0';
+                    $profile_logo_price = '0';
+                    $logo_price = ( $profile_logo_price - $profile_price );
                 }  
                 
-                $profile_price = $sett_infos->profile_price;
-                $profile_logo_price = $sett_infos->profile_logo_price;
-                $logo_price = ( $profile_logo_price - $profile_price );
+                
 
                 $sub_type_profile = $_POST['PaymentCheques']['profile'];
                 $sub_type_logo    = $_POST['PaymentCheques']['logo'];
@@ -851,6 +854,10 @@ class SuppliersDirectoryController extends Controller {
                     } else {
                         $logo_expirydate = date('Y-m-d', strtotime('+1 year'));
                     }
+                    
+                    $profile_price = $sett_infos->profile_price;
+                $profile_logo_price = $sett_infos->profile_logo_price;
+                $logo_price = ( $profile_logo_price - $profile_price );
 
                 }elseif($_POST['PaymentCheques']['pay_type']=="1")
                 {
@@ -877,13 +884,14 @@ class SuppliersDirectoryController extends Controller {
                         $logo_expirydate = date("Y-m-d", strtotime("+$expdays days", $time));
                     } else {
                         $logo_expirydate = date('Y-m-d', strtotime("+$expdays days"));
-                    }            
+                    }    
+                    $profile_price = '0';
+                $profile_logo_price = '0';
+                $logo_price = ( $profile_logo_price - $profile_price );
                     
                 }  
                 
-                $profile_price = $sett_infos->profile_price;
-                $profile_logo_price = $sett_infos->profile_logo_price;
-                $logo_price = ( $profile_logo_price - $profile_price );
+                
 
                 $sub_type_profile = $_POST['PaymentCheques']['profile'];
                 $sub_type_logo    = $_POST['PaymentCheques']['logo'];
