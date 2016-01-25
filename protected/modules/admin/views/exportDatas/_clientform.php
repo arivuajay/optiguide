@@ -16,8 +16,8 @@ $this->breadcrumbs=array(
 //$province_datas    = CHtml::listData(RegionDirectory::model()->findAll($criteria2), 'ID_REGION', 'fullname');
 
 
-$country = Myclass::getallcountries1();
-$regions = Myclass::getallregions($model->country);
+$country = Myclass::getallcountries_client();
+$regions = Myclass::getallregions_client($model->country,3);
 $cities = Myclass::getallcities($model->region);
 
 $category_names = array();
@@ -213,7 +213,7 @@ $js = <<< EOD
         $.ajax({
             type: "POST",
             url: '{$ajaxRegionUrl}',
-            data: dataString,
+            data: dataString+'&client_disp=3',
             cache: false,
             success: function(html){             
                 $("#ExportDatas_region").html(html);

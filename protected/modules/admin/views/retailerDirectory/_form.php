@@ -23,7 +23,7 @@
                 $groupetypes = CHtml::listData(RetailerGroup::model()->findAll("ID_RETAILER_TYPE=" . $model->ID_RETAILER_TYPE), 'ID_GROUPE', 'NOM_GROUPE');
             }
             $country = Myclass::getallcountries();
-            $regions = Myclass::getallregions(@$model->country);
+            $regions = Myclass::getallregions_client(@$model->country,2);
             $cities = Myclass::getallcities(@$model->region);
             ?>
             <div class="box-body">
@@ -663,7 +663,7 @@ $js = <<< EOD
         $.ajax({
             type: "POST",
             url: '{$ajaxRegionUrl}',
-            data: dataString,
+            data: dataString+'&client_disp=2',
             cache: false,
             success: function(html){             
                 $("#RetailerDirectory_region").html(html);

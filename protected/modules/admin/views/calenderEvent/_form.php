@@ -35,7 +35,7 @@ $startdate = $model->DATE_AJOUT1;
 $enddate = $model->DATE_AJOUT2;
 
 $country = Myclass::getallcountries();
-$regions = Myclass::getallregions($model->ID_PAYS);
+$regions = Myclass::getallregions_client($model->ID_PAYS,2);
 $cities  = Myclass::getallcities($model->ID_REGION);
 $archivecats = CHtml::listData(ArchiveCategory::model()->findAll(array("order"=>'NOM_CATEGORIE_FR')), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
 
@@ -281,7 +281,7 @@ if(startdate=='' || enddate=='')
         $.ajax({
             type: "POST",
             url: '{$ajaxRegionUrl}',
-            data: dataString,
+            data: dataString+'&client_disp=2',
             cache: false,
             success: function(html){             
                 $("#CalenderEvent_ID_REGION").html(html);

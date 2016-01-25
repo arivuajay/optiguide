@@ -17,7 +17,7 @@ $criteria2->order  = "countryDirectory.NOM_PAYS_EN ASC,NOM_REGION_EN ASC";
 $province_datas    = CHtml::listData(RegionDirectory::model()->findAll($criteria2), 'ID_REGION', 'fullname');
 */
 $country = Myclass::getallcountries();
-$regions = Myclass::getallregions($model->country);
+$regions = Myclass::getallregions_client($model->country,2);
             
 $criteria3 = new CDbCriteria();
 $criteria3->order  = "TYPE_SPECIALISTE_EN ASC";
@@ -211,7 +211,7 @@ $js = <<< EOD
         $.ajax({
             type: "POST",
             url: '{$ajaxRegionUrl}',
-            data: dataString,
+            data: dataString+'&client_disp=2',
             cache: false,
             success: function(html){             
                 $("#ExportDatas_region").html(html);

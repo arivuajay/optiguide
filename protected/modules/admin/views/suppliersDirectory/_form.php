@@ -25,7 +25,7 @@
         }
         $suppliertypes = CHtml::listData(SupplierType::model()->findAll(), 'ID_TYPE_FOURNISSEUR', 'TYPE_FOURNISSEUR_FR');
         $country = Myclass::getallcountries();
-        $regions = Myclass::getallregions($model->country);
+        $regions = Myclass::getallregions_client($model->country,2);
         $cities = Myclass::getallcities($model->region);
         $archivecats = CHtml::listData(ArchiveCategory::model()->findAll(array("order" => 'NOM_CATEGORIE_FR')), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
 
@@ -468,7 +468,7 @@ $js = <<< EOD
         $.ajax({
             type: "POST",
             url: '{$ajaxRegionUrl}',
-            data: dataString,
+            data: dataString+'&client_disp=2',
             cache: false,
             success: function(html){             
                 $("#SuppliersDirectory_region").html(html);

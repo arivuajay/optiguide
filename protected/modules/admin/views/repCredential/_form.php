@@ -41,7 +41,7 @@ $cs_pos_end = CClientScript::POS_END;
             $profile->region = $sregion;
         }
 $country = Myclass::getallcountries();
-        $regions = Myclass::getallregions($profile->country);
+        $regions = Myclass::getallregions_client($profile->country,2);
         $cities = Myclass::getallcities($profile->region);
         $paymentcounts = 0;
         if ($model->rep_credential_id) {
@@ -217,7 +217,7 @@ $js = <<< EOD
         $.ajax({
             type: "POST",
             url: '{$ajaxRegionUrl}',
-            data: dataString,
+            data: dataString+'&client_disp=2',
             cache: false,
             success: function(html){             
                 $("#RepCredentialProfiles_region").html(html);

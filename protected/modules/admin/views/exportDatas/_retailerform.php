@@ -17,7 +17,7 @@ $this->breadcrumbs=array(
 
 
 $country = Myclass::getallcountries();
-$regions = Myclass::getallregions($model->country);
+$regions = Myclass::getallregions_client($model->country,2);
 
 $criteria3 = new CDbCriteria();
 $criteria3->order  = "NOM_TYPE_EN ASC";
@@ -223,7 +223,7 @@ $js = <<< EOD
         $.ajax({
             type: "POST",
             url: '{$ajaxRegionUrl}',
-            data: dataString,
+            data: dataString+'&client_disp=2',
             cache: false,
             success: function(html){             
                 $("#ExportDatas_region").html(html);

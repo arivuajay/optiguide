@@ -20,7 +20,7 @@
 
             $proftypes = CHtml::listData(ProfessionalType::model()->findAll(), 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_FR');
             $country = Myclass::getallcountries();
-            $regions = Myclass::getallregions($model->country);
+            $regions = Myclass::getallregions_client($model->country,2);
             $cities = Myclass::getallcities($model->region);
             ?>
 
@@ -538,7 +538,7 @@ $js = <<< EOD
         $.ajax({
             type: "POST",
             url: '{$ajaxRegionUrl}',
-            data: dataString,
+            data: dataString+'&client_disp=2',
             cache: false,
             success: function(html){             
                 $("#ProfessionalDirectory_region").html(html);

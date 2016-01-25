@@ -84,7 +84,7 @@ $ajaxCityUrl    = Yii::app()->createUrl('/admin/calenderEvent/getcities');
             $.ajax({
                 type: "POST",
                 url: '<?php echo $ajaxRegionUrl;?>',
-                data: dataString,
+                data: dataString+'&client_disp=2',
                 cache: false,
                 success: function(html){             
                     $("#CalenderEvent_ID_REGION").html(html);

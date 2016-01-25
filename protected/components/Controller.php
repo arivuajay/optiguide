@@ -60,12 +60,12 @@ class Controller extends CController {
         
         if ($cid != '') {
             
-             if($client_disp=="yes")
-        {   
-            $data_regions = Myclass::getallregions_client($cid);
-        }  else {
-            $data_regions = Myclass::getallregions($cid);
-        }
+            if(!empty($client_disp))
+            {   
+                $data_regions = Myclass::getallregions_client($cid,$client_disp);
+            }  else {
+                $data_regions = Myclass::getallregions($cid);
+            }
             
             foreach ($data_regions as $k => $info) {
                 $options .= "<option value='" . $k . "'>" . $info . "</option>";

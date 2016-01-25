@@ -18,7 +18,7 @@
             ));
 
             $country = Myclass::getallcountries();
-            $regions = Myclass::getallregions($model->country);
+            $regions = Myclass::getallregions_client($model->country,2);
             $cities = Myclass::getallcities($model->region);
             ?>
             <div class="box-body">
@@ -221,7 +221,7 @@ $(document).ready(function()
         ({
             type: "POST",
             url: '{$ajaxRegionUrl}',
-            data: dataString,
+            data: dataString+'&client_disp=2',
             cache: false,
             success: function(html)
             {             
