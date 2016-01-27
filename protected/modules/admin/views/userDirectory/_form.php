@@ -12,9 +12,10 @@
             ->select('ID_UTILISATEUR , NOM_UTILISATEUR , USR')
             ->from(array('repertoire_utilisateurs'))
             ->where("ID_RELATION='$relid' AND NOM_TABLE='$nomtable'")
-            ->order('NOM_UTILISATEUR')
+            ->order('ID_UTILISATEUR')
             ->limit(1)
-            ->queryAll();  
+            ->queryAll(); 
+    
     if(!empty($userslist_query))
     {       
         foreach($userslist_query as $info)
