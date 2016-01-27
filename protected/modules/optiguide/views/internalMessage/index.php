@@ -1,5 +1,5 @@
 <div class="cate-bg user-right">
-    <h2> Internal Messages </h2>
+    <h2><?php echo Myclass::t('OR623', '', 'or');?> </h2>
     <div class="row">     
         <?php
         $session_userid = Yii::app()->user->id;
@@ -17,9 +17,9 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
                     <tr>
                         <th width="9%">S. No</th>
-                        <th width="20%"> User</th>
-                        <th width="18%"> Message </th>
-                        <th width="18%"> Date </th>
+                        <th width="20%"> <?php echo Myclass::t('APP2');?></th>
+                        <th width="18%"> <?php echo Myclass::t('OR624', '', 'or');?> </th>
+                        <th width="18%">  <?php echo Myclass::t('OR628', '', 'or');?></th>
                     </tr>
                     <?php
                     if (!empty($mymessages)) {

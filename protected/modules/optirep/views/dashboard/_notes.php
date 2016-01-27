@@ -39,12 +39,19 @@ $model_notes = Yii::app()->db->createCommand() //this query contains all the dat
                     <div class="lastest-newsconttxt"> 
                         <strong><?php echo $nmessage; ?></strong><br/> 
                         <?php if ($urole != "admin") { ?>
-                            <span> <b> For : </b> <?php echo $uname; ?></span>
+                            <span> <b> <?php echo Myclass::t('OR641', '', 'or'); ?> : </b> <?php echo $uname; ?></span>
                         <?php } ?> 
                     </div>
                     <div class="lastest-date"> 
                         <span> 
-                            <?php echo date("M", strtotime($notes['created_at'])) . ' ' . date("d", strtotime($notes['created_at'])) ?> 
+                            <?php 
+                            if (Yii::app()->session['language'] == 'FR') { 
+                                $m= date("n", strtotime($notes['created_at']));
+                                $mon = Myclass::getMonths_M($m);
+                            }else{
+                                $mon = date("M", strtotime($notes['created_at']));
+                            }
+                                  echo $mon . ' ' . date("d", strtotime($notes['created_at'])) ?> 
                         </span> 
                     </div>
                 </div>  

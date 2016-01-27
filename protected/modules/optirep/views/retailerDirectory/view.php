@@ -105,6 +105,8 @@
                 <div class="search-list">       
                     <h2><?php echo Myclass::t('OG072', '', 'og'); ?></h2>
                     <p><?php
+                        $_var=$model['classification'];
+                        $classification = array('Upscale'=>Myclass::t('OG224'),'Midscale'=>Myclass::t('OG225'),'DownRange'=>Myclass::t('OG226'));
                         if ($model['services_offered'] != '') {
                             echo "<b>" . Myclass::t('OG155') . "</b> : " . $model['services_offered'] . "<br/>";
                         }
@@ -112,7 +114,7 @@
                             echo "<b>" . Myclass::t('OG156') . "</b> : " . $model['description'] . "<br/>";
                         }
                         if ($model['classification'] != '') {
-                            echo "<b>" . Myclass::t('OG154') . "</b> : " . $model['classification'] . "<br/>";
+                            echo "<b>" . Myclass::t('OG154') . "</b> : " . $classification[$_var] . "<br/>";
                         }
                         if ($model['contact_person'] != '') {
                             echo "<b>" . Myclass::t('OG158') . "</b> : " . $model['contact_person'] . "<br/>";

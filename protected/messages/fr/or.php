@@ -93,7 +93,7 @@ return array(
     'OR563' => "Prix ​​de l'offre",
     'OR564' => 'Faire un paiement',
     //views/repFavorites
-    'OR565' => 'utilisateurs favoris',
+    'OR565' => 'Utilisateurs favoris',
     'OR566' => 'type',
     //views/repNotes
     'OR567' => 'Ajouter une note',
@@ -101,7 +101,7 @@ return array(
     'OR569' => 'NOTE',
     'OR570' => 'Si vous choisissez une date dans le champ ci-dessus, vous recevrez le courriel de rappel à cette date',
     'OR571' => 'Retour',
-    'OR572' => 'utilisateur',
+    'OR572' => 'Utilisateur',
     'OR573' => 'Remarques',
     'OR574' => 'Date de rappel',
     'OR575' => 'Créé Le',
@@ -165,7 +165,7 @@ return array(
     'OR622' => "Envoyer à",
     'OR623' => "Messages internes",
     'OR624' => "Message",
-    'OR625' => "date",
+    'OR625' => "Date",
     'OR626' => "conversation",
     'OR627' => "nom",
     'OR628' => "Envoyé",
@@ -322,4 +322,8 @@ return array(
     'OR761' => 'ACCESSIBILITÉ',
     'OR762' => 'ABONNEMENT',
     'OR763' => 'Voir les fonctionalités',
+    'OR764' => 'La combinaison Nom d’utilisateur/Mot de passe n’est pas correcte',
+    'OR765' => 'an',
+    'OR766' => 'Inscriptions d’utilisateurs sur Opti-Guide.com',
+    'OR767' => 'Nombre d’inscriptions',
 );

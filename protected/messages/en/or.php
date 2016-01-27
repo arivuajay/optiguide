@@ -322,4 +322,8 @@ return array(
     'OR761' => 'TECHNICAL DATA',
     'OR762' => 'MEMBERSHIP',
     'OR763' => 'See features',
+    'OR764' => 'Username/Password combination is wrong',
+    'OR765' => 'year',
+    'OR766' => 'Users subscription to Opti-Guide.com',
+    'OR767' => 'Subscription counts',
 );

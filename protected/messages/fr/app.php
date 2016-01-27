@@ -252,6 +252,9 @@ return array(
     'OG221' => 'Obtenir des directions',
     
     'OG222' => 'Aucun derniers enregistrements trouvés . Cliquez sur <b> Plus de conseils </b> pour voir les autres messages .',
-    'OG223' => "Aucune dernières nouvelles trouvé . Cliquez sur <b> Voir tous </b > Pour voir d'autres nouvelles ."
+    'OG223' => "Aucune dernières nouvelles trouvé . Cliquez sur <b> Voir tous </b > Pour voir d'autres nouvelles .",
+    'OG224' => 'Haut de gamme',
+    'OG225' =>'Milieu de gamme',
+    'OG226' =>'Bas de gamme',
 );
 ?>

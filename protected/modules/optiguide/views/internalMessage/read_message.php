@@ -26,9 +26,9 @@ $command = Yii::app()->db->createCommand($sql)->execute();
                      <div class="table-responsive nano-content">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
                             <tr>          
-                                <th class="author">User</th>
-                                <th>Message</th>
-                                <th>Sent</th>
+                                <th class="author"><?php echo Myclass::t('APP2');?></th>
+                                <th><?php echo Myclass::t('OR624', '', 'or');?></th>
+                                <th><?php echo Myclass::t('OR628', '', 'or');?></th>
                             </tr>
                             <?php
                             foreach ($mymessages as $minfos) {
@@ -50,7 +50,7 @@ $command = Yii::app()->db->createCommand($sql)->execute();
             <div class="row"> 
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subscribe-btncont"> 
                     <div class="inner-container"> 
-                        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8"><h2>Reply</h2></div>  
+                        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8"><h2><?php echo Myclass::t('OR629', '', 'or');?></h2></div>  
                         <?php
                         $form = $this->beginWidget('CActiveForm', array(
                             'id' => 'internal-message-form',

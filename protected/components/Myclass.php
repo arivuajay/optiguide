@@ -226,7 +226,38 @@ class Myclass extends CController {
         );
         return $months;
     }
-
+    public static function getMonths_M($m) {
+            $months = array(
+            1 => 'Jan',
+            2 => 'Fév',
+            3 => 'Mar',
+            4 => 'Avr',
+            5 => 'Mai',
+            6 => 'Juin',
+            7 => 'Juil',
+            8 => 'Août',
+            9 => 'Sep',
+            10 => 'Oct',
+            11 => 'Nov',
+            12 => 'Déc',
+            );
+//        $months = array(
+//            1 => 'Jan',
+//            2 => 'Feb',
+//            3 => 'Mar',
+//            4 => 'Apr',
+//            5 => 'May',
+//            6 => 'Jun',
+//            7 => 'Jul',
+//            8 => 'Aug',
+//            9 => 'Sep',
+//            10 => 'Oct',
+//            11 => 'Nov',
+//            12 => 'Dec',
+//        );
+        
+        return $months[$m];
+    }
     public static function getMonths_Fr($m) {
         $months = array(
             1 => 'Janvier',
@@ -645,7 +676,7 @@ class Myclass extends CController {
         $no_of_months = array(
             1 => '1 '.Myclass::t('OR755', '', 'or'),
             6 => '6 '.Myclass::t('OR755', '', 'or'),
-            12 => '1 Year',
+            12 => '1 ' .Myclass::t('OR765', '', 'or'),
         );
 
         return $no_of_months;

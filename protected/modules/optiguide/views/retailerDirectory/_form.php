@@ -17,8 +17,12 @@
                 ),
                 'enableAjaxValidation' => true,
             ));
-
-            $retailertypes = CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR');
+            if (Yii::app()->session['language'] == 'FR') {
+                $retailertypes = CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR');
+            }  else {
+                $retailertypes = CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_EN');
+            }
+            
             $groupetypes = array();
             if ($model->ID_RETAILER_TYPE) {
                 $groupetypes = CHtml::listData(RetailerGroup::model()->findAll("ID_RETAILER_TYPE=" . $model->ID_RETAILER_TYPE), 'ID_GROUPE', 'NOM_GROUPE');

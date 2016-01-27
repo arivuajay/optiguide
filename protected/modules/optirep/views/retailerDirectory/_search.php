@@ -16,7 +16,12 @@
     $cities = Myclass::getallcities($searchModel->region);
     $categories = array("1" => Myclass::t('OG105'), "2" => Myclass::t('OG106'), "3" => Myclass::t('OG107'), "4" => Myclass::t('OG108'), "5" => Myclass::t('OG109'));
 
-    $retailertypes = CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR');
+    if (Yii::app()->session['language'] == 'FR') {
+        $retailertypes = CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR');
+    }  else {
+        $retailertypes = CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_EN');
+    }
+    
     $groupetypes = array();
     if ($searchModel->ID_RETAILER_TYPE) {
         $groupetypes = CHtml::listData(RetailerGroup::model()->findAll("ID_RETAILER_TYPE=" . $searchModel->ID_RETAILER_TYPE), 'ID_GROUPE', 'NOM_GROUPE');

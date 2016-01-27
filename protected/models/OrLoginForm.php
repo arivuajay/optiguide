@@ -50,7 +50,7 @@ class OrLoginForm extends CFormModel {
             $this->_identity = new OrIdentity($this->username, $this->password);
             if (!$this->_identity->authenticate()):
                 if (($this->_identity->errorCode == 1) or ( $this->_identity->errorCode == 2))
-                    $this->addError('password', 'Username/Password combination is wrong');
+                    $this->addError('password', Myclass::t('OR764', '', 'or'));
                 elseif ($this->_identity->errorCode == 3)
                     $this->addError('password', 'Your account is now In-Active. Please contact admin.');
                 elseif ($this->_identity->errorCode == 4)

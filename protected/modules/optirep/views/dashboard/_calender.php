@@ -101,7 +101,22 @@ EOD;
                     foreach ($upcoming_events as $einfo) {
                         ?>   
                         <li class="li-1">
-                            <span class="date start"><?php echo date("F d Y", strtotime($einfo->DATE_AJOUT1)); ?></span>
+                            <span class="date start">
+                            <?php 
+                            if (Yii::app()->session['language'] == 'FR') { 
+                                        $time = strtotime($einfo->DATE_AJOUT1);
+                                        $m= date("n", $time);
+                                        $month = Myclass::getMonths_Fr($m);
+                                        $year = date("d Y", $time);
+                                        $res= $month.' '.$year;
+                                }else{
+                                        $time = strtotime($einfo->DATE_AJOUT1);
+                                        $month = date("F", $time);
+                                        $year = date("d Y", $time);
+                                        $res= $month.' '.$year;
+                                }
+                                echo $res;
+                            ?></span>
                             <?php echo CHtml::link($einfo->TITRE, array('/optirep/calenderEvent/view', 'id' => $einfo->ID_EVENEMENT)); ?> 
                         </li>
                         <?php

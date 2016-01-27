@@ -30,9 +30,21 @@ if ($topbanner != '') {
        
         /** Users registered in optiguide **/
         $months = array();
-        for ($i = 0; $i < 6; $i++) {
-            array_push($months, date("M Y", strtotime($i . " months ago")));
+        if (Yii::app()->session['language'] == 'FR') { 
+            for ($i = 0; $i < 6; $i++) {
+
+                $m= date("n", strtotime($i . " months ago"));
+                $mon = Myclass::getMonths_M($m);
+                $year = date("Y", strtotime($i . " months ago"));
+                $get_my= $mon.' '.$year;
+                array_push($months, $get_my);
+            }
+        }else{
+            for ($i = 0; $i < 6; $i++) {
+                array_push($months, date("M Y", strtotime($i . " months ago")));
+            }
         }
+//            array_push($months, date("M Y", strtotime($i . " months ago")));
 
         $response['months'] = array();
         foreach ($months as $month) {
@@ -48,7 +60,7 @@ if ($topbanner != '') {
             foreach ($months as $month) {
 
                 $searchdate = date("Y-m", strtotime($month));
-                if ($utype == "Professionals") {
+                if ($utype == "Professionals" || $utype=="Professionnels") {
                     $per_mount_counts = Yii::app()->db->createCommand() //this query contains all the data
                             ->select('count(*) as pro_per_month_count,ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
                             ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
@@ -62,10 +74,10 @@ if ($topbanner != '') {
                         
                     $viewcounts =$viewcount;
                     $viewcount=0;
-                    
+                    $user_type=Myclass::t('OR718', '', 'or');
                 }
 
-                if ($utype == "Retailers") {
+                if ($utype == "Retailers" || $utype=="Détaillants") {
                     $ret_mount_counts = Yii::app()->db->createCommand() // this query get the total number of items,
                         ->select('count(*) as ret_per_month_count , NOM_TYPE_EN')
                         ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
@@ -77,13 +89,13 @@ if ($topbanner != '') {
                      }                        
                     $viewcounts =$viewcount;
                     $viewcount= 0;
-                    
+                    $user_type = Myclass::t('OR720', '', 'or');
                 }
 
                 array_push($response["viewcounts"], (int) $viewcounts);
             }
 
-            $response['allprofiles'][$key]['name'] = $utype;
+            $response['allprofiles'][$key]['name'] = $user_type;
             $response['allprofiles'][$key]['data'] = $response["viewcounts"];
         }
         
@@ -93,7 +105,7 @@ if ($topbanner != '') {
                     'type' => 'column'
                 ),
                 'title' => array(
-                    'text' => 'Users subscription in Optiguide.'
+                    'text' => Myclass::t("OR766", "", "or")
                 ),
                 'subtitle' => array(
                     'text' => 'Last 6 months'
@@ -104,7 +116,7 @@ if ($topbanner != '') {
                 ),
                 'yAxis' => array(
                     'title' => array(
-                        'text' => 'Subscription counts'
+                        'text' => Myclass::t("OR767", "", "or")
                     ),
                     'min' => 0,
                 ),
@@ -149,7 +161,15 @@ if ($topbanner != '') {
                     <div class="lastest-newsconttxt"> 
                         <?php echo CHtml::link($dispname, array('/optirep/newsManagement/view', 'id' => $latest_new['ID_NOUVELLE'])); ?> <br/> 
                     </div>
-                    <div class="lastest-date"> <span> <?php echo date("M", strtotime($latest_new['DATE_AJOUT1'])) . ' ' . date("d", strtotime($latest_new['DATE_AJOUT1'])) ?> </span> </div>
+                    <div class="lastest-date"> <span>
+                    <?php 
+                    if (Yii::app()->session['language'] == 'FR') { 
+                                $m= date("n", strtotime($latest_new['DATE_AJOUT1']));
+                                $mon = Myclass::getMonths_M($m);
+                            }else{
+                                $mon = date("M", strtotime($latest_new['DATE_AJOUT1']));
+                            }
+                        echo $mon . ' ' . date("d", strtotime($latest_new['DATE_AJOUT1'])) ?> </span> </div>
                 </div>  
             <?php } ?>
         <?php } ?>
