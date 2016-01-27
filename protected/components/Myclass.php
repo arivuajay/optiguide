@@ -160,7 +160,7 @@ class Myclass extends CController {
 
         $criteria_reg->order = $regionname . ' ASC';
         if (!is_null($id)) {
-            $criteria_reg->condition = 'ID_PAYS=:id AND flag != :val';
+            $criteria_reg->condition = 'ID_PAYS=:id AND flag < :val';
             $criteria_reg->params = array(':id' => $id ,':val' => $val);
             $regions = RegionDirectory::model()->findAll($criteria_reg);
             $regions = CHtml::listData($regions, 'ID_REGION', $regionname);
