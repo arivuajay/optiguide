@@ -6,7 +6,19 @@ $this->breadcrumbs = array(
 ?>
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp; Ajouter un sales rep ', array('/admin/repCredential/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php //echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp; Ajouter un sales rep ', array('/admin/repCredential/create'), array('class' => 'btn btn-success pull-right')); ?>
+         <?php
+        $this->widget(
+            'application.components.MyTbButton', array(
+            'label' => 'Ajouter un sales rep',
+            'icon' => 'fa fa-plus',
+            'url' => array('/admin/repCredential/create'),
+            'buttonType' => 'link',
+            'context' => 'success',
+            'htmlOptions' => array('class' => 'pull-right'),
+                )
+        );
+        ?>
     </div>
 </div>
 <div class="col-lg-12 col-md-12">
@@ -54,7 +66,7 @@ $this->breadcrumbs = array(
             ),
             array(
                 'header' => 'Actions',
-                'class' => 'booster.widgets.TbButtonColumn',
+                'class' => 'application.components.MyActionButtonColumn',
                 'template' => '&nbsp;&nbsp;{view}&nbsp;&nbsp;{update}',
             )
         );

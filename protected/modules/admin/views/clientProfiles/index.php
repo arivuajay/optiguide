@@ -16,7 +16,19 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Créer un profil de client', array('/admin/clientProfiles/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php //echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Créer un profil de client', array('/admin/clientProfiles/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php
+        $this->widget(
+            'application.components.MyTbButton', array(
+            'label' => 'Créer un profil de client',
+            'icon' => 'fa fa-plus',
+            'url' => array('/admin/clientProfiles/create'),
+            'buttonType' => 'link',
+            'context' => 'success',
+            'htmlOptions' => array('class' => 'pull-right'),
+                )
+        );
+        ?>
     </div>
 </div>
 
@@ -66,7 +78,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
              */
             array(
                 'header' => 'Actes',
-                'class' => 'booster.widgets.TbButtonColumn',
+                'class' => 'application.components.MyActionButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
                 'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
             )

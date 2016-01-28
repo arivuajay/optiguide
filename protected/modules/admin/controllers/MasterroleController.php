@@ -31,6 +31,7 @@ class MasterroleController extends Controller {
                 'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete'),
                 //'expression'=> 'AdminIdentity::checkAccess()',
                 'users' => array('@'),
+                'expression'=> 'AdminIdentity::checkAccess()',
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions' => array(''),
@@ -64,8 +65,7 @@ class MasterroleController extends Controller {
 
         if (isset($_POST['MasterRole'])) {
             $model->attributes = $_POST['MasterRole'];
-            if ($model->save()) {
-                Myclass::addAuditTrail("Created Role {$model->Role_Code} successfully.", "music");
+            if ($model->save()) {              
                 Yii::app()->user->setFlash('success', 'MasterRole Created Successfully!!!');
                 //$this->redirect(array('view','id'=>$model->Master_Role_ID));
                 $this->redirect(array('index'));

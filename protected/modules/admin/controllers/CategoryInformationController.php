@@ -35,6 +35,7 @@ class CategoryInformationController extends Controller
                 array('allow', // allow authenticated user to perform 'create' and 'update' actions
                       'actions'=>array('index','view','create','update','admin','delete','getcities','deleteall'),
                       'users'=>array('@'),
+                      'expression'=> 'AdminIdentity::checkAccess()',
                 ),
                 array('allow', // allow admin user to perform 'admin' and 'delete' actions
                       'actions'=>array(''),

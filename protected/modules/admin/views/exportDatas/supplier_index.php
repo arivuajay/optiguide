@@ -30,7 +30,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             'created',
             array(
             'header' => 'Actes',
-            'class' => 'booster.widgets.TbButtonColumn',
+            'class' => 'application.components.MyActionButtonColumn',
             'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
             'template' => '{download}&nbsp;&nbsp;&nbsp;{delete}',
             'buttons' => array(                           

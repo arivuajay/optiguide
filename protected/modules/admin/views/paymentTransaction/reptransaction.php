@@ -62,13 +62,13 @@ $this->breadcrumbs = array(
             ),
             array(
                 'header' => 'Actes',
-                'class' => 'booster.widgets.TbButtonColumn',
+                'class' => 'booster.widgets.TbButtonColumn',                
                 'viewButtonUrl' => 'Yii::app()->createUrl("/admin/paymentTransaction/repview/", array("id"=>$data->id))',
                 'updateButtonUrl' => 'Yii::app()->createUrl("/admin/paymentTransaction/repUpdateStatus/", array("id"=>$data->id))',
                 'template' => '{view}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{update}',
                 'buttons' => array(
                     'update' => array(
-                        'visible' => '$data->payment_status=="Pending"',
+                        'visible' => '$data->payment_status=="Pending" && AdminIdentity::checkAccess(NULL, "paymentTransaction", "repUpdateStatus")',
                     ),
                 ),
             ),

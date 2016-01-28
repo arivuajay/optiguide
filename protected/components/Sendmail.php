@@ -47,14 +47,16 @@ class Sendmail {
     }
 
     public function getMessage($body, &$translate) {
-       $this->lang = Yii::app()->session['language'];
+       
+        $lang = isset(Yii::app()->session['language'])?Yii::app()->session['language']:"FR";
+       
         if (EMAILLAYOUT == 'file'):
             
-            if($this->lang=='EN'){
+            if($lang=='EN'){
                 $msg_header = file_get_contents(SITEURL . EMAILTEMPLATE_EN . 'header.html');
                 $msg_footer = file_get_contents(SITEURL . EMAILTEMPLATE_EN . 'footer.html');  
                 $msg_body = file_get_contents(SITEURL . EMAILTEMPLATE_EN . $body . '.html');
-            }elseif($this->lang=='FR'){
+            }elseif($lang=='FR'){
                 $msg_header = file_get_contents(SITEURL . EMAILTEMPLATE_FR . 'header.html');
                 $msg_footer = file_get_contents(SITEURL . EMAILTEMPLATE_FR . 'footer.html');  
                 $msg_body = file_get_contents(SITEURL . EMAILTEMPLATE_FR . $body . '.html');
@@ -72,13 +74,17 @@ class Sendmail {
     }
 
     public function translate($msg_dub, $translate = array()) {
+       
+        $site_logo= GUIDEURL.EMAILHEADERIMAGE_GUIDE;
+          
         if(strcmp(SITENAME,'OptiRep') ==0){
             $site_logo= REPURL.EMAILHEADERIMAGE_REP;
         }
+        
         if(strcmp(SITENAME,'OptiGuide') == 0){
             $site_logo= GUIDEURL.EMAILHEADERIMAGE_GUIDE;
         }
-        
+               
         $def_trans = array(
             "{SITEURL}" => SITEURL,
             "{SITENAME}" => SITENAME,

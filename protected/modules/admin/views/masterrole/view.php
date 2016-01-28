@@ -17,7 +17,7 @@ $this->breadcrumbs = array(
         'attributes' => array(
 //            'Master_Role_ID',
             'Role_Code',
-            'Rank',
+//            'Rank',
             'Description',         
             array(
                 'label' => MasterRole::model()->getAttributeLabel('Active'),

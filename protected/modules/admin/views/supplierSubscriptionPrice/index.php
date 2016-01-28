@@ -26,7 +26,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
            // 'tax',
             array(
                 'header' => 'Actes',
-                'class' => 'booster.widgets.TbButtonColumn',
+                'class' => 'application.components.MyActionButtonColumn',
                 'updateButtonUrl'=>'Yii::app()->createUrl("/admin/supplierSubscriptionPrice/update/", array("id"=>$data->id,"type"=>"supplier"))',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
                 'template' => '{update}',

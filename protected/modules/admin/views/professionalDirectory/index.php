@@ -16,7 +16,19 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter un professionnel', array('/admin/professionalDirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php //echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Ajouter un professionnel', array('/admin/professionalDirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
+         <?php
+        $this->widget(
+            'application.components.MyTbButton', array(
+            'label' => 'Ajouter un professionnel',
+            'icon' => 'fa fa-plus',
+            'url' => array('/admin/professionalDirectory/create'),
+            'buttonType' => 'link',
+            'context' => 'success',
+            'htmlOptions' => array('class' => 'pull-right'),
+                )
+        );
+        ?>
     </div>
 </div>
 
@@ -78,14 +90,15 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 //               ),
                     array(
                         'header' => 'Actes',
-                        'class' => 'booster.widgets.TbButtonColumn',
+                        'class' => 'application.components.MyActionButtonColumn',
                         'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
                         'template' => '{access}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{update}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{delete}',
                         'buttons' => array(
                             'access' => array(
                                 'label' => "<i class='fa fa-lock'></i>",
                                 'url' => 'Yii::app()->createUrl("/admin/userDirectory/create", array("relid"=>$data->ID_SPECIALISTE, "nomtable"=>"Professionnels"))',
-                                'options' => array("title" => "Accès")
+                                'options' => array("title" => "Accès"),
+                                'visible' => 'AdminIdentity::checkAccess(NULL, "professionalDirectory", "update")'
                             )
                         ),
                     )

@@ -33,6 +33,7 @@ class ExportDatasController extends Controller
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('index','create','delete','retailerIndex','supplierIndex','clientIndex','generate_retailers', 'generate_suppliers','generate_clients','calculate_usercounts'),
 				'users'=>array('@'),
+                                'expression'=> 'AdminIdentity::checkAccess()',
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array(''),

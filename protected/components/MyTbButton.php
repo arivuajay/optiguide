@@ -25,14 +25,7 @@ class MyTbButton extends TbButton{
             $controller = $exp[2];
             $action = $exp[3];
         }
-        //hard code for groups controller//
-        if(isset($this->url['type'])){
-            $group_role = "{$this->url['type']}group";
-        }
-        //end//
-
-       // $this->visible = AdminIdentity::checkAccess(NULL, $controller, $action, $group_role);
-         $this->visible = 1;
+        $this->visible = AdminIdentity::checkAccess(NULL, $controller, $action,NULL);       
         parent::init();
     }
 

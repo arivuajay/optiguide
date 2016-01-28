@@ -18,13 +18,13 @@ class MyActionButtonColumn extends TbButtonColumn {
     protected function initDefaultButtons() {
         $validate_buttons = array(
             'view' => array(
-                //'visible' => 'UserIdentity::checkAccess(NULL, "'.strtolower($this->grid->dataProvider->modelClass).'", "view")'
+                'visible' => 'AdminIdentity::checkAccess(NULL, "'.strtolower($this->grid->dataProvider->modelClass).'", "view")'
             ),
             'update' => array(
-               // 'visible' => 'UserIdentity::checkAccess(NULL, "'.strtolower($this->grid->dataProvider->modelClass).'", "update")'
+                'visible' => 'AdminIdentity::checkAccess(NULL, "'.strtolower($this->grid->dataProvider->modelClass).'", "update")'
             ),
             'delete' => array(
-               // 'visible' => 'UserIdentity::checkAccess(NULL, "'.strtolower($this->grid->dataProvider->modelClass).'", "delete")'
+                'visible' => 'AdminIdentity::checkAccess(NULL, "'.strtolower($this->grid->dataProvider->modelClass).'", "delete")'
             )
         );
         $this->buttons = array_merge($this->buttons, $validate_buttons);

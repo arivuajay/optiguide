@@ -23,7 +23,7 @@ $this->breadcrumbs = array(
         ?>
     </div>
 </div>
-
+<div class="col-lg-12 col-md-12">&nbsp;</div>
 <div class="col-lg-12 col-md-12">
     <div class="row">
         <?php
@@ -55,7 +55,7 @@ $this->breadcrumbs = array(
                         ),
                         'url' => 'CHtml::normalizeUrl(array("/admin/authresources/role/rid/".rawurlencode($data->Master_Role_ID)))',
                      //   'visible' => 'UserIdentity::checkPrivilages(rawurlencode($data->Rank))'
-                         'visible' => '($data->is_Admin != 1)'
+                         'visible' => '($data->is_Admin != 1) && AdminIdentity::checkAccess(NULL, "masterrole", "update")'
                        
                     ),
                     'role_update' => array(//the name {reply} must be same
@@ -65,7 +65,7 @@ $this->breadcrumbs = array(
                         ),
                         'url' => 'CHtml::normalizeUrl(array("/admin/masterrole/update/id/".rawurlencode($data->Master_Role_ID)))',
                       //  'visible' => 'UserIdentity::checkPrivilages(rawurlencode($data->Rank)) && UserIdentity::checkAccess(NULL, "masterrole", "update")'
-                        'visible' => '($data->is_Admin != 1)'
+                        'visible' => '($data->is_Admin != 1) && AdminIdentity::checkAccess(NULL, "masterrole", "update")'
                     ),
                     'role_delete' => array(//the name {reply} must be same
                         'label' => '<i class="glyphicon glyphicon-trash"></i>',
@@ -75,7 +75,7 @@ $this->breadcrumbs = array(
                         ),
                         'url' => 'CHtml::normalizeUrl(array("/admin/masterrole/delete/id/".rawurlencode($data->Master_Role_ID)))',
                       //  'visible' => 'UserIdentity::checkPrivilages(rawurlencode($data->Rank)) && UserIdentity::checkAccess(NULL, "masterrole", "delete")'
-                         'visible' => '($data->is_Admin != 1)'
+                         'visible' => '($data->is_Admin != 1) && AdminIdentity::checkAccess(NULL, "masterrole", "delete")'
                     ),
                 ),
             )

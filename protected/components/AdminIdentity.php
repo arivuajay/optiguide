@@ -85,34 +85,26 @@ class AdminIdentity extends CUserIdentity {
             $action = Yii::app()->controller->action->id;
 
         $user = Admin::model()->find('admin_id = :U', array(':U' => $id));
-
-        ##### Hardcode for groups controller ####
-        if (in_array($controller, array('group', 'publishergroup'))) {
-            if ($group_role != '') {
-                $controller = $group_role;
-            } else {
-                $groupCheck = Myclass::checkGroupactions($controller, $action);
-                foreach ($groupCheck as $key => $value) {
-                    if ($value)
-                        $controller = $key;
-                }
-            }
-        }
         
-        ## end ##
+        $othercontrollers = array("exportDatas","paymentTransaction","supplierSubscriptionPrice");
 
-        $screen = MasterScreen::model()->find("Screen_code = :controller", array(':controller' => $controller));
+        if(in_array($controller , $othercontrollers))
+        {   
+            $screen = MasterScreen::model()->find("Screen_code = :controller and action= :action", array(':controller' => $controller, ':action'=>$action));                           
+        }else{    
+            $screen = MasterScreen::model()->find("Screen_code = :controller", array(':controller' => $controller));
+        }    
        
         if (!empty($user) && !empty($screen)) {
            
          
             $auth_resources = AuthResources::model()->findByAttributes(array('Master_Role_ID' => $user->role, 'Master_Module_ID' => $screen->Module_ID, 'Master_Screen_ID' => $screen->Master_Screen_ID));
-             
+  
             if (!empty($auth_resources)) {
-                $insert_actions = array('create', 'insertright', 'insertlabel', 'newperformer', 'newproducer', 'newrecording');
-                $update_actions = array('update');
-                $view_actions = array('index', 'view', 'download', 'print', 'pdf', 'searchright', 'contractexpiry', 'invoice', 'backdated', 'searchcontract', 'getinvoice');
-                $delete_actions = array('delete', 'filedelete', 'biofiledelete', 'subtitledelete', 'linkdelete', 'holderremove', 'publicationdelete', 'fixationdelete', 'foliodelete', 'memberdelete');
+                $insert_actions = array('create');
+                $update_actions = array('update','repUpdateStatus');
+                $view_actions = array('index', 'view', 'retailerIndex','supplierIndex','clientIndex','reptransaction',"statsprice","repview");
+                $delete_actions = array('delete');
                 $other_actions = array();
                
                 if (in_array($action, $insert_actions)) {
@@ -140,14 +132,12 @@ class AdminIdentity extends CUserIdentity {
         return $return;
     }
     
-     public static function checkPrivilages($rank/*, $id = NULL, $controller = NULL, $action = NULL, $group_role = NULL*/) {
+     public static function checkPrivilages($rank) {
         $return = false;
         if(isset(Yii::app()->user->id)){
             $user = User::model()->find('id = :U', array(':U' => Yii::app()->user->id));
             $return = $user->roleMdl->Rank <= $rank;
         }
-//        if(!$return)
-//            $return = self::checkAccess ($id, $controller, $action, $group_role);
         return $return;
     }
 }

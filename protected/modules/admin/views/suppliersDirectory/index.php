@@ -16,7 +16,19 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp; Ajouter un fournisseur ', array('/admin/suppliersDirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
+        <?php //echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp; Ajouter un fournisseur ', array('/admin/suppliersDirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
+         <?php
+        $this->widget(
+            'application.components.MyTbButton', array(
+            'label' => 'Ajouter un fournisseur',
+            'icon' => 'fa fa-plus',
+            'url' => array('/admin/suppliersDirectory/create'),
+            'buttonType' => 'link',
+            'context' => 'success',
+            'htmlOptions' => array('class' => 'pull-right'),
+                )
+        );
+        ?>
     </div>
 </div>
 
@@ -73,7 +85,8 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                     'access' => array(
                         'label' => "<i class='fa fa-lock'></i>",
                         'url' => 'Yii::app()->createUrl("/admin/userDirectory/create", array("relid"=>$data->ID_FOURNISSEUR, "nomtable"=>"Fournisseurs"))',
-                        'options' => array("title" => "Accès")
+                        'options' => array("title" => "Accès"),
+                       // 'visible' => 'AdminIdentity::checkAccess(NULL, "suppliersDirectory", "update")'
                     )
                 ),
             )

@@ -32,6 +32,7 @@ class MasterscreenController extends Controller {
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('create', 'update'),
                 'users' => array('@'),
+                'expression'=> 'AdminIdentity::checkAccess()',
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions' => array('admin', 'delete'),
@@ -66,7 +67,6 @@ class MasterscreenController extends Controller {
         if (isset($_POST['MasterScreen'])) {
             $model->attributes = $_POST['MasterScreen'];
             if ($model->save()){
-                Myclass::addAuditTrail("Created Screen {$model->Module_ID} successfully.", "image-o");
                 $this->redirect(array('view', 'id' => $model->Master_Screen_ID));
             }
         }
@@ -89,8 +89,7 @@ class MasterscreenController extends Controller {
 
         if (isset($_POST['MasterScreen'])) {
             $model->attributes = $_POST['MasterScreen'];
-            if ($model->save()){
-                Myclass::addAuditTrail("Updated Screen {$model->Module_ID} successfully.", "image-o");
+            if ($model->save()){               
                 $this->redirect(array('view', 'id' => $model->Master_Screen_ID));
             }
         }
@@ -108,8 +107,7 @@ class MasterscreenController extends Controller {
     public function actionDelete($id) {
         try {
             $model = $this->loadModel($id);
-            $model->delete();
-            Myclass::addAuditTrail("Deleted Screen {$model->Module_ID} successfully.", "image-o");
+            $model->delete();            
         } catch (CDbException $e) {
             if ($e->errorInfo[1] == 1451) {
                 throw new CHttpException(400, Yii::t('err', 'Relation Restriction Error.'));
