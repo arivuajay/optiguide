@@ -45,7 +45,7 @@ class ClientProfiles extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                        array('name,phonenumber1,email,address,country, region, ville',"required"),
+                        array('name,address,country, region, ville',"required"),
                         array('email',"email"),
 			array('cat_type_id', 'numerical', 'integerOnly'=>true),
 			array('name, company, job_title, member_type, address, local_number', 'length', 'max'=>255),

@@ -52,10 +52,17 @@ class AdminLoginForm extends CFormModel {
         if (!$this->hasErrors()):
             $this->_identity = new AdminIdentity($this->username, $this->password);
             if (!$this->_identity->authenticate()):
-                if ($this->_identity->errorCode)
-                    $this->addError('username', Myclass::t('APP14'));
+                if ($this->_identity->errorCode)                
+                     if(($this->_identity->errorCode == 1) or ($this->_identity->errorCode == 2))
+                        $this->addError('password',Myclass::t('APP14'));
+                    elseif($this->_identity->errorCode == 3)
+                        $this->addError('username',Myclass::t('OG125'));
+                    elseif($this->_identity->errorCode == 4)
+                        $this->addError('username',Myclass::t('OG227'));
+                    else
+                        $this->addError('username',Myclass::t('OG126'));
             endif;
-        endif;
+        endif;      
     }
 
     /**

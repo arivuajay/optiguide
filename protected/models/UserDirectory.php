@@ -45,7 +45,8 @@ class UserDirectory extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
             return array(
-                    array('LANGUE,NOM_UTILISATEUR,USR, PWD,COURRIEL', 'required'),
+                    array('LANGUE,NOM_UTILISATEUR,USR, PWD', 'required'),
+                    array('COURRIEL', 'required' , 'on' => 'frontend'),
                     array('USR', 'unique', 'message'=> Myclass::t('OG178')),      
                     array('COURRIEL', 'unique', 'message'=> Myclass::t('OG179')),     
                     array('ABONNE_MAILING, ABONNE_PROMOTION, ABONNE_TRANSITION, IS_FIRST_LOG, ID_RELATION, MUST_VALIDATE, bSubscription_envision, bSubscription_envue', 'numerical', 'integerOnly'=>true),
@@ -59,7 +60,7 @@ class UserDirectory extends CActiveRecord
                     array('bSubscription_envision,bSubscription_envue,ABONNE_MAILING,ABONNE_PROMOTION,COURRIEL,print_envision,print_envue','Checksubscriptionmail' , 'on'=>'frontend'),        
                     array('ID_UTILISATEUR, LANGUE, PREFIXE, NOM_UTILISATEUR, USR, PWD, COURRIEL, ABONNE_MAILING, ABONNE_PROMOTION, ABONNE_TRANSITION, IS_FIRST_LOG, NOM_TABLE, ID_RELATION, MUST_VALIDATE, sGuid, bSubscription_envision, bSubscription_envue,print_envision,print_envue', 'safe', 'on'=>'search'),
                     
-                    array('status','safe'),
+                    array('status,print_envision,print_envue','safe'),
                     array('old_password, new_password, repeat_password', 'required', 'on' => 'changePwd'),
                     array('old_password', 'findPasswords', 'on' => 'changePwd'),
                     array('repeat_password', 'compare', 'compareAttribute'=>'new_password', 'on'=>'changePwd'),

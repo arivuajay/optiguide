@@ -254,8 +254,10 @@ return array(
     'OG222' => 'No latest records found. Click <b>More advice</b> to see other posts.',
     'OG223' => 'No latest news found. Click <b>View all</b> to see other news.',
     'OG224' => 'High-end',
-    'OG225' =>'Mid-range',
-    'OG226' =>'Entry-level',
+    'OG225' => 'Mid-range',
+    'OG226' => 'Entry-level',
+    
+    'OG227' => 'Your role is deactivated. please contact admin.',
      
 );    
 ?>

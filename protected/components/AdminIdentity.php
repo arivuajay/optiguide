@@ -11,7 +11,8 @@ class AdminIdentity extends CUserIdentity {
     
     public $email;
 
-	    
+   const ERROR_USERNAME_NOT_ACTIVE = 3;    
+   const ERROR_ROLE_NOT_ACTIVE = 4;    
 
     /**
      * Authenticates a user.
@@ -21,22 +22,31 @@ class AdminIdentity extends CUserIdentity {
 
         $user = Admin::model()->find('admin_username = :U', array(':U' => $this->username));
 
-
-        if ($user === null):
+        if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;     // Error Code : 1
-        else:
-            $is_correct_password = ($user->admin_password !== Myclass::encrypt($this->password)) ? false : true;
-
-            if ($is_correct_password):
-                $this->errorCode = self::ERROR_NONE;
-            else:
-                $this->errorCode = self::ERROR_USERNAME_INVALID;   // Error Code : 1
-            endif;
-        endif;
-
-        if ($this->errorCode == self::ERROR_NONE):           
+        } else if ($user->admin_password !== Myclass::encrypt($this->password)) {           
+            $this->errorCode = self::ERROR_PASSWORD_INVALID;   // Error Code : 1
+        } else if ($user->admin_status == 0) {             
+            //Add new condition to finding the status of user.
+            $this->errorCode = self::ERROR_USERNAME_NOT_ACTIVE;
+        }else if($user->role>0){            
+             $userrole = MasterRole::model()->findByPk($user->role);
+             if($userrole->Active==0)
+             {
+               $this->errorCode = self::ERROR_ROLE_NOT_ACTIVE;  
+             }else{
+                 $this->errorCode = self::ERROR_NONE;
+             }
+        }else{
+           
+            $this->errorCode = self::ERROR_NONE;
+        } 
+        
+        if ($this->errorCode == self::ERROR_NONE)
+        { 
+            
             $this->setUserData($user);
-        endif;
+        }
 
         return !$this->errorCode;
     }

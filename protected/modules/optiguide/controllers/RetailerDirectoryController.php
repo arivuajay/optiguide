@@ -234,7 +234,7 @@ class RetailerDirectoryController extends OGController {
             $this->redirect(array('index'));
         }
 
-        $model = new RetailerDirectory;
+        $model = new RetailerDirectory('frontend');
         $umodel = new UserDirectory('frontend');
 
         $this->performAjaxValidation(array($model, $umodel));
@@ -372,6 +372,7 @@ class RetailerDirectoryController extends OGController {
         $relid = Yii::app()->user->relationid;
         $id = Yii::app()->user->id;
         $model = $this->loadModel($relid);
+        $model->scenario = 'frontend';
         $umodel = UserDirectory::model()->findByPk($id);
         $umodel->scenario = 'frontend';
 

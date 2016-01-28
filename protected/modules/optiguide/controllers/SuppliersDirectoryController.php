@@ -556,7 +556,7 @@ class SuppliersDirectoryController extends OGController {
             $this->redirect(array('index'));
         }
 
-        $model = new SuppliersDirectory;
+        $model = new SuppliersDirectory('frontend');
         $umodel = new UserDirectory('frontend');
 
         if (Yii::app()->user->hasState("secondtab") || Yii::app()->user->hasState("thirdtab") || Yii::app()->user->hasState("fourthtab")) {
@@ -1499,6 +1499,7 @@ class SuppliersDirectoryController extends OGController {
         $relid = Yii::app()->user->relationid;
         $id = Yii::app()->user->id;
         $model = $this->loadModel($relid);
+        $model->scenario = 'frontend';
         $umodel = UserDirectory::model()->findByPk($id);
         $umodel->scenario = 'frontend';
 

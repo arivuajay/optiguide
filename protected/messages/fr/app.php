@@ -256,5 +256,7 @@ return array(
     'OG224' => 'Haut de gamme',
     'OG225' =>'Milieu de gamme',
     'OG226' =>'Bas de gamme',
+    
+    'OG227' => 'Votre rôle est désactivé . s\'il vous plaît contacter administration'
 );
 ?>

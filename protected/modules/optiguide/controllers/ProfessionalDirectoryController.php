@@ -359,7 +359,7 @@ class ProfessionalDirectoryController extends OGController {
             $this->redirect(array('index'));
         }
 
-        $model = new ProfessionalDirectory;
+        $model = new ProfessionalDirectory('frontend');
         $umodel = new UserDirectory('frontend');
 
         // Uncomment the following line if AJAX validation is needed
@@ -478,6 +478,7 @@ class ProfessionalDirectoryController extends OGController {
         $profid = Yii::app()->user->relationid;
         $id = Yii::app()->user->id;
         $model = $this->loadModel($profid);
+        $model->scenario = 'frontend';
         $umodel = UserDirectory::model()->findByPk($id);
         $umodel->scenario = 'frontend';
 

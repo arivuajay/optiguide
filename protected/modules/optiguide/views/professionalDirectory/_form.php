@@ -180,7 +180,8 @@
                             <?php echo $form->labelEx($model, 'CODE_POSTAL'); ?>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
-                            <?php echo $form->textField($model, 'CODE_POSTAL', array('class' => 'form-txtfield')); ?>                            
+                            <?php echo $form->textField($model, 'CODE_POSTAL', array('class' => 'form-txtfield')); ?> 
+                            <?php echo $form->error($model, 'CODE_POSTAL'); ?>
                         </div>
                     </div>
                     
