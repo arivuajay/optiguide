@@ -54,8 +54,14 @@
                         echo $model['TITRE_REPRESENTANT_' . Yii::app()->session['language']];
                     ?>
                 </p>
-                <div class="clearfix"></div>               
-                <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/groupInformation'), array('class' => 'basic-btn')); ?>
+                <div class="clearfix"></div> 
+                <?php $pre_url=Yii::app()->request->urlReferrer; 
+                          if(empty($pre_url)){?>
+                        <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/groupInformation'), array('class' => 'basic-btn')); ?>
+                    <?php }else{?>
+                        <a class='basic-btn' href="<?php echo $pre_url; ?>"><?php echo Myclass::t('OG016', '', 'og');?>  </a>
+                    <?php }?>
+                
             </div>
         </div>
     </div>

@@ -210,8 +210,23 @@
         <?php } ?>    
 
     </div>
-
-    <div class="viewall"> <?php //echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/suppliersDirectory'), array("class" => "pull-left"));      ?> </div>  
+    <div class="viewall">
+    <?php $pre_url=Yii::app()->request->urlReferrer; 
+            $marqueids=Yii::app()->request->getParam('marqueid');
+          if(empty($pre_url)){
+              if ($disppage == "category") {
+                  echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/suppliersDirectory/category'), array("class" => "pull-left"));   
+              }else if (empty($marqueids))  {
+                  echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/suppliersDirectory'), array("class" => "pull-left"));   
+              }else{
+                  echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/marqueDirectory'), array("class" => "pull-left"));   
+              }
+    ?>
+    <?php }else{?>
+        <a class='pull-left' href="<?php echo $pre_url; ?>"><i class="fa fa-arrow-circle-left"></i><?php echo Myclass::t('OG016', '', 'og');?>  </a>
+    <?php }?>
+    </div>
+    
 </div>
 <?php
 $js = <<< EOD

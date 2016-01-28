@@ -52,7 +52,14 @@
                     echo $model['TITRE_REPRESENTANT_'.$this->lang];
                 ?>
             </p>
-            <div class="clearfix"></div>               
-            <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> '.Myclass::t('OG016', '', 'og'), array('/optirep/groupInformation'),array("class"=>"pull-left")); ?> </div>  
+            <div class="clearfix"></div>      
+            <div class="viewall">
+            <?php $pre_url=Yii::app()->request->urlReferrer; 
+                  if(empty($pre_url)){?>
+                <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> '.Myclass::t('OG016', '', 'og'), array('/optirep/groupInformation'),array("class"=>"pull-left")); ?>
+            <?php }else{?>
+                <a class='pull-left' href="<?php echo $pre_url; ?>"><i class="fa fa-arrow-circle-left"></i><?php echo Myclass::t('OG016', '', 'og');?>  </a>
+            <?php }?>
+            </div>
         </div>
 </div>

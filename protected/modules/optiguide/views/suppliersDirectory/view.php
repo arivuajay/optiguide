@@ -224,6 +224,20 @@ if ($model['logo_expirydate'] != '') {
 
             </div>             
         </div>
+        <?php $pre_url=Yii::app()->request->urlReferrer; 
+            $marqueids=Yii::app()->request->getParam('marqueid');
+          if(empty($pre_url)){
+              if ($disppage == "category") {
+                  echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/optiguide/suppliersDirectory/category'), array("class" => "basic-btn"));   
+              }else if (empty($marqueids))  {
+                  echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/optiguide/suppliersDirectory'), array("class" => "basic-btn"));   
+              }else{
+                  echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/optiguide/marqueDirectory'), array("class" => "basic-btn"));   
+              }
+    ?>
+    <?php }else{?>
+        <a class='basic-btn' href="<?php echo $pre_url; ?>"><?php echo Myclass::t('OG016', '', 'og');?>  </a>
+    <?php }?>
         <?php //echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/suppliersDirectory'), array('class' => 'basic-btn')); ?>
     </div>
 </div>

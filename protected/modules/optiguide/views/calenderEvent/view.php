@@ -33,8 +33,14 @@
                     <p>
                         <a target="_blank" href="<?php echo $model['LIEN_URL']; ?>"><?php echo $model['LIEN_TITRE']; ?></a>
                     </p>
-                    <div class="clearfix"></div>               
-                    <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/calenderEvent'), array('class' => 'basic-btn')); ?>
+                    <div class="clearfix"></div>          
+                    <?php $pre_url=Yii::app()->request->urlReferrer; 
+                          if(empty($pre_url)){?>
+                        <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/calenderEvent'), array('class' => 'basic-btn')); ?>
+                    <?php }else{?>
+                        <a class='basic-btn' href="<?php echo $pre_url; ?>"><?php echo Myclass::t('OG016', '', 'og');?>  </a>
+                    <?php }?>
+                    
                 </div>
             </div>
         </div>

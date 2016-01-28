@@ -118,8 +118,15 @@
             </div>
         <?php }
         ?>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">            
-            <div class="viewall"> <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/professionalDirectory'), array("class" => "pull-left")); ?> </div>  
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
+            <div class="viewall">
+            <?php $pre_url=Yii::app()->request->urlReferrer; 
+                  if(empty($pre_url)){?>
+                <?php echo CHtml::link('<i class="fa fa-arrow-circle-left"></i> ' . Myclass::t('OG016', '', 'og'), array('/optirep/professionalDirectory'), array("class" => "pull-left")); ?>
+            <?php }else{?>
+                <a class='pull-left' href="<?php echo $pre_url; ?>"><i class="fa fa-arrow-circle-left"></i><?php echo Myclass::t('OG016', '', 'og');?>  </a>
+            <?php }?>
+                </div>  
         </div>        
 
         <?php if (!empty($results)) { ?>

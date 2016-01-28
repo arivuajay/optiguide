@@ -33,7 +33,12 @@
                         ?>
                         <?php echo $model['TEXTE']; ?>
                     </p>
-                    <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/newsManagement'), array('class' => 'basic-btn')); ?>
+                    <?php $pre_url=Yii::app()->request->urlReferrer; 
+                          if(empty($pre_url)){?>
+                        <?php echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/newsManagement'), array('class' => 'basic-btn')); ?>
+                    <?php }else{?>
+                        <a class='basic-btn' href="<?php echo $pre_url; ?>"><?php echo Myclass::t('OG016', '', 'og');?>  </a>
+                    <?php }?>
                 </div>
             </div>
         </div>
