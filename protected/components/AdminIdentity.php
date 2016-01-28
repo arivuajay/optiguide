@@ -84,8 +84,9 @@ class AdminIdentity extends CUserIdentity {
         return $this->_id;
     }
     
-    public static function checkAccess($id = NULL, $controller = NULL, $action = NULL, $group_role = NULL) {
-        $return = true;
+    public static  function checkAccess_others($id = NULL, $controller = NULL, $action = NULL, $addtional = NULL) {
+      
+        $auth_resources = array();
        
         if ($id == NULL)
             $id = Yii::app()->user->id;
@@ -93,9 +94,64 @@ class AdminIdentity extends CUserIdentity {
             $controller = Yii::app()->controller->id;
         if ($action == NULL)
             $action = Yii::app()->controller->action->id;
-
-        $user = Admin::model()->find('admin_id = :U', array(':U' => $id));
         
+        if($id==1)
+        {    
+            $return = true;
+        }else{
+            $return = false; 
+        }  
+        
+        $user   = Admin::model()->find('admin_id = :U', array(':U' => $id));
+        $screen = MasterScreen::model()->find("Screen_code = :controller and action= :action", array(':controller' => $controller, ':action'=>$action));
+        
+        if (!empty($user) && !empty($screen)) {    
+            $auth_resources = AuthResources::model()->findByAttributes(array('Master_Role_ID' => $user->role, 'Master_Module_ID' => $screen->Module_ID, 'Master_Screen_ID' => $screen->Master_Screen_ID));
+        }  
+        
+        if (!empty($auth_resources)) {
+           $insert_actions = array('create',"generate_suppliers","generate_clients","generate_retailers");
+           $update_actions = array('update','repUpdateStatus');
+           $view_actions = array('index', 'view', 'retailerIndex','supplierIndex','clientIndex','reptransaction',"statsprice","repview");
+           $delete_actions = array('delete');
+           $other_actions = array();
+
+           if (in_array($addtional, $insert_actions)) {
+               $return = $auth_resources->Master_Task_ADD == 1;
+           } elseif (in_array($addtional, $update_actions)) {
+               $return = $auth_resources->Master_Task_UPT == 1;
+           } elseif (in_array($addtional, $view_actions)) {
+               $return = $auth_resources->Master_Task_SEE == 1;
+           } elseif (in_array($addtional, $delete_actions)) {
+               $return = $auth_resources->Master_Task_DEL == 1;
+           } elseif (in_array($action, $other_actions)) {
+               $return = true;
+           }
+       }
+       
+       return $return;
+    }
+
+
+    public static function checkAccess($id = NULL, $controller = NULL, $action = NULL, $group_role = NULL) {
+        
+       
+        if ($id == NULL)
+            $id = Yii::app()->user->id;
+        if ($controller == NULL)
+            $controller = Yii::app()->controller->id;
+        if ($action == NULL)
+            $action = Yii::app()->controller->action->id;
+        
+        if($id==1)
+        {    
+            $return = true;
+        }else{
+            $return = false; 
+        }    
+        
+        $user = Admin::model()->find('admin_id = :U', array(':U' => $id));
+       
         $othercontrollers = array("exportDatas","paymentTransaction","supplierSubscriptionPrice");
 
         if(in_array($controller , $othercontrollers))
@@ -111,7 +167,7 @@ class AdminIdentity extends CUserIdentity {
             $auth_resources = AuthResources::model()->findByAttributes(array('Master_Role_ID' => $user->role, 'Master_Module_ID' => $screen->Module_ID, 'Master_Screen_ID' => $screen->Master_Screen_ID));
   
             if (!empty($auth_resources)) {
-                $insert_actions = array('create');
+                $insert_actions = array('create',"generate_suppliers");
                 $update_actions = array('update','repUpdateStatus');
                 $view_actions = array('index', 'view', 'retailerIndex','supplierIndex','clientIndex','reptransaction',"statsprice","repview");
                 $delete_actions = array('delete');

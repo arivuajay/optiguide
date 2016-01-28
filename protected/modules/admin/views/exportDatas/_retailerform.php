@@ -132,13 +132,24 @@ $retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3)
                         </div>
                     </div>
 
+<!--                    <div class="form-group">
+                        <?php //echo $form->labelEx($model, 'region', array('class' => 'col-sm-2 control-label')); ?>
+                        <div class="col-sm-5">                       
+                            <?php //echo $form->dropDownList($model, 'region', $regions, array('class' => 'form-control', 'empty' => "Toutes les régions")); ?>                          
+                            <?php // echo $form->error($model, 'region'); ?>
+                        </div>
+                    </div>-->
+
                     <div class="form-group">
                         <?php echo $form->labelEx($model, 'region', array('class' => 'col-sm-2 control-label')); ?>
-                        <div class="col-sm-5">                       
-                            <?php echo $form->dropDownList($model, 'region', $regions, array('class' => 'form-control', 'empty' => "Toutes les régions")); ?>                          
-                            <?php echo $form->error($model, 'region'); ?>
-                        </div>
-                    </div>
+                        <div class="col-sm-5">
+                            <?php
+                            $htmlOptions = array('size' => '8', 'multiple' => 'true', 'class' => 'form-control');
+                            echo $form->listBox($model, 'region', $regions, $htmlOptions);
+                            echo $form->error($model, 'region'); 
+                            ?> 
+                        </div>  
+                    </div> 
                     
                      <div class="box-header">
                         <h3 class="page-header">Step 3</h3>

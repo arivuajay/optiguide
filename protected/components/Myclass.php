@@ -136,6 +136,7 @@ class Myclass extends CController {
         $val = CHtml::listData($country, 'ID_PAYS', $countryname);
         return $val;
     }
+    
     public static function getallregions_client($id = null,$client_disp = null) {
         $regions = array();
         $criteria_reg = new CDbCriteria;
@@ -152,6 +153,7 @@ class Myclass extends CController {
 
         return $regions;
     }
+    
     public static function getallregions($id = null) {
         $regions = array();
         $criteria_reg = new CDbCriteria;

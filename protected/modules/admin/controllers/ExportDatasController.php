@@ -631,7 +631,7 @@ class ExportDatasController extends Controller
                 $province_str = '';
                 //$provinces    = $_POST['ExportDatas']['province'];
                 $search_country = isset($_POST['ExportDatas']['country'])?$_POST['ExportDatas']['country']:'';
-                $search_region  = isset($_POST['ExportDatas']['region'])?$_POST['ExportDatas']['region']:'';
+                $search_region  = isset($_POST['ExportDatas']['region'])?$_POST['ExportDatas']['region']:'';                
                 
                 //$province_str = $this->getprovince_filter($provinces);
                 $province_str = $this->getprovince_filter($search_country,$search_region);
@@ -895,16 +895,15 @@ class ExportDatasController extends Controller
                  $search_region  = isset($_POST['ExportDatas']['region'])?$_POST['ExportDatas']['region']:'';
                 if($usertype=="client")
                 {
-                
-                    if ($search_country != '') {                
-                        $scntry_qry = " AND ru.country = " . $search_country;
+                    if (!empty($search_region)) {                
+                            $imp_prov    = implode(",",$search_region);
+                            $province_str = " AND ru.region in ($imp_prov)";
+                    }else{
+                        if ($search_country != '') {                
+                             $province_str = " AND ru.country = " . $search_country;
+                         }
                     }
-
-                    if ($search_region != '') {                
-                        $sregion_qry = " AND ru.region = " . $search_region;
-                    }
-
-                    $province_str = $scntry_qry.$sregion_qry;
+                    
                 }else{  
                     $province_str   = $this->getprovince_filter($search_country,$search_region);
                 }
@@ -1041,15 +1040,32 @@ class ExportDatasController extends Controller
 //               $province_str = " AND rs.ID_VILLE IN ($cities_str) ";  
 //            }
             
-            if ($search_country != '') {                
-                $scntry_qry = " AND rp.ID_PAYS = " . $search_country;
-            }
-
-            if ($search_region != '') {                
-                $sregion_qry = " AND rr.ID_REGION = " . $search_region;
-            }
+            if(!empty($search_region))
+            {    
+               
+                 $provinces    = $search_region;
+                 $imp_prov     = implode(",",$provinces);
+//               $condition    = " ID_REGION IN ($imp_prov) ";
+//               $city_results = CHtml::listData( CityDirectory::model()->findAll($condition) , 'ID_VILLE' , 'ID_VILLE');
+//               $cities_str   = implode(',',$city_results);               
+//               $province_str = " AND rs.ID_VILLE IN ($cities_str) ";     
+               
+               $province_str = " AND rr.ID_REGION in ($imp_prov)";
+                
+            }else{
             
-            $province_str = $scntry_qry.$sregion_qry;
+                if ($search_country != '') {                
+                    //$scntry_qry = " AND rp.ID_PAYS = " . $search_country;
+                    $province_str = " AND rp.ID_PAYS = " . $search_country;
+                }
+            
+            }
+//
+//            if ($search_region != '') {                
+//                $sregion_qry = " AND rr.ID_REGION = " . $search_region;
+//            }
+            
+           // $province_str = $scntry_qry.$sregion_qry;
             
             return $province_str;
         }  
@@ -1140,17 +1156,20 @@ class ExportDatasController extends Controller
                 //$provinces    = $_POST['ExportDatas']['province'];
                 $search_country = isset($_POST['ExportDatas']['country'])?$_POST['ExportDatas']['country']:'';
                 $search_region  = isset($_POST['ExportDatas']['region'])?$_POST['ExportDatas']['region']:'';
-                
-                if ($search_country != '') {                
-                    $scntry_qry = " AND ru.country = " . $search_country;
-                }
+                           
+                if(!empty($search_region))
+                {  
+                     $imp_prov     = implode(",",$search_region);  
+                     $province_str = " AND ru.region in ($imp_prov)";
 
-                if ($search_region != '') {                
-                    $sregion_qry = " AND ru.region = " . $search_region;
-                }
+                }else{
+            
+                    if ($search_country != '') {                
+                        //$scntry_qry = " AND rp.ID_PAYS = " . $search_country;
+                        $province_str = " AND ru.country = " . $search_country;
+                    }
 
-                $province_str = $scntry_qry.$sregion_qry;
-                
+                }
                 // Client category Type
                 $type_str  = '';
                 
@@ -1226,7 +1245,7 @@ class ExportDatasController extends Controller
                     if(!empty($category)){
                         $cattype_name = ClientCategory::model()->findByPk($category)->cat_name;
                     }else if(!empty($category_type)) {
-                    $cattype_name = ClientCategoryTypes::model()->findByPk($category_type)->cat_type;
+                        $cattype_name = ClientCategoryTypes::model()->findByPk($category_type)->cat_type;
                     }
                 
                     $filename = "Client_data_".date("Y_m_d")."_".$cattype_name."_".$randstr.".csv";                
@@ -1336,14 +1355,14 @@ class ExportDatasController extends Controller
 	 */
 	public function actionIndex()
 	{
-            $model=new ExportDatas('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['ExportDatas']))
-			$model->attributes=$_GET['ExportDatas'];
+            $model= new ExportDatas('search');
+            $model->unsetAttributes();  // clear any default values
+            if(isset($_GET['ExportDatas']))
+                    $model->attributes=$_GET['ExportDatas'];
 
-		$this->render('index',array(
-			'model'=>$model,
-		));
+            $this->render('index',array(
+                    'model'=>$model,
+            ));
 	}
         
         /**

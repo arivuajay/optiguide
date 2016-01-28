@@ -26,10 +26,15 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
            // 'tax',
             array(
                 'header' => 'Actes',
-                'class' => 'application.components.MyActionButtonColumn',
+                'class' => 'booster.widgets.TbButtonColumn',   
                 'updateButtonUrl'=>'Yii::app()->createUrl("/admin/supplierSubscriptionPrice/update/", array("id"=>$data->id,"type"=>"supplier"))',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
                 'template' => '{update}',
+                'buttons' => array(
+                    'update' => array(
+                        'visible' => 'AdminIdentity::checkAccess_others(NULL, NULL,NULL, "update")',
+                    ),
+                ),
             )
         );
 

@@ -13,19 +13,14 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <div class="row">
-        <?php //echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Générer les données', array('/admin/exportDatas/generate_clients'), array('class' => 'btn btn-success pull-right')); ?>
-        <?php
-        $this->widget(
-            'application.components.MyTbButton', array(
-            'label' => 'Générer les données',
-            'icon' => 'fa fa-plus',
-            'url' => array('/admin/exportDatas/generate_clients'),
-            'buttonType' => 'link',
-            'context' => 'success',
-            'htmlOptions' => array('class' => 'pull-right'),
-                )
-        );
+        <?php 
+        $isvisble = AdminIdentity::checkAccess_others(NULL, NULL,NULL, "generate_clients");  
+        if($isvisble)
+        { 
+            echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp;Générer les données', array('/admin/exportDatas/generate_clients'), array('class' => 'btn btn-success pull-right')); 
+        }    
         ?>
+       
     </div>
 </div>
 
@@ -42,7 +37,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             'created',
             array(
             'header' => 'Actes',
-            'class' => 'application.components.MyActionButtonColumn',
+            'class' => 'booster.widgets.TbButtonColumn',
             'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
             'template' => '{download}&nbsp;&nbsp;&nbsp;{delete}',
             'buttons' => array(                           
@@ -51,6 +46,9 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                        'url' => '(file_exists(YiiBase::getPathOfAlias("webroot")."/uploads/export_datas/".$data->attachment_file)) ? Yii::app()->createAbsoluteUrl("/uploads/export_datas/".$data->attachment_file) : ""',                            
                        'options' => array('class' => 'newWindow','title' => "Download file" ),
                     ),
+                    'delete' => array(
+                        'visible' => 'AdminIdentity::checkAccess_others(NULL, NULL,NULL, "delete")'
+                    )
                 ),
             )
         );

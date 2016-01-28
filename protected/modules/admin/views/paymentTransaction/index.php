@@ -91,8 +91,8 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         'template' => '{view}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{update}',
          'buttons'=> array(
                     'update'=>array(                                    
-                              'visible'=>'$data->payment_status=="Pending"',
-                                ),                                  
+                              'visible'=>'$data->payment_status=="Pending" && AdminIdentity::checkAccess_others(NULL, NULL,NULL, "update")',
+                            ),                                  
                      ),
                 ),
         );

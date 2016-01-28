@@ -68,7 +68,7 @@ $this->breadcrumbs = array(
                 'template' => '{view}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{update}',
                 'buttons' => array(
                     'update' => array(
-                        'visible' => '$data->payment_status=="Pending" && AdminIdentity::checkAccess(NULL, "paymentTransaction", "repUpdateStatus")',
+                        'visible' => '$data->payment_status=="Pending" && AdminIdentity::checkAccess_others(NULL, NULL,NULL, "update")',
                     ),
                 ),
             ),
