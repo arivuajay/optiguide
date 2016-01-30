@@ -58,8 +58,20 @@ class ClientProfiles extends CActiveRecord
                         array('site_address','url'),
 			array('client_id, name, company, job_title, member_type, category, address, local_number, country, region, ville, phonenumber1, phonenumber2, mobile_number, tollfree_number, fax, email, site_address, subscription, created_date, modified_date', 'safe', 'on'=>'search'),
                         array('local_number , phonenumber1, phonenumber2, mobile_number, tollfree_number', 'phoneNumber'),
+                        array('category', 'checknotempty'),
 		);
 	}
+        
+        public function checknotempty($attribute_name, $params) 
+        {
+            if ($this->cat_type_id !=''  &&  $this->category == '') 
+            {
+                $this->addError('category', "S'il vous plaît choisir une catégorie");
+                return false;
+            }         
+           
+            return true;
+        }   
 
 	/**
 	 * @return array relational rules.

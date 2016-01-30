@@ -340,6 +340,19 @@
                                             //call the method 'gridDataColumn' from the controller
                                             'value' => array($this, 'gridDataColumn'),
                                         ),
+                                         array(
+                                        'header' => 'Attachment',
+                                        'class' => 'application.components.MyActionButtonColumn',
+                                        'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                                        'template' => '{download}',
+                                        'buttons' => array(                           
+                                                'download' => array(
+                                                   'label' => "<i class='fa fa-download'></i>",                         
+                                                   'url' => '(file_exists(YiiBase::getPathOfAlias("webroot")."/uploads/alerts_attachments/".$data->alertfile)) ? Yii::app()->createAbsoluteUrl("/uploads/alerts_attachments/".$data->alertfile) : ""',                            
+                                                   'options' => array('class' => 'newWindow','title' => "Download file" ),
+                                                ),
+                                            ),
+                                        ),
                                         array('name' => 'created_date',
                                             'type' => 'raw',
                                             'value' => function($data) {
@@ -424,6 +437,19 @@
                                             'filter' => false,
                                             //call the method 'gridDataColumn' from the controller
                                             'value' => array($this, 'gridDataColumn'),
+                                        ),
+                                        array(
+                                        'header' => 'Attachment',
+                                        'class' => 'application.components.MyActionButtonColumn',
+                                        'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
+                                        'template' => '{download}',
+                                        'buttons' => array(                           
+                                                'download' => array(
+                                                   'label' => "<i class='fa fa-download'></i>",                         
+                                                   'url' => '(file_exists(YiiBase::getPathOfAlias("webroot")."/uploads/alerts_attachments/".$data->alertfile)) ? Yii::app()->createAbsoluteUrl("/uploads/alerts_attachments/".$data->alertfile) : ""',                            
+                                                   'options' => array('class' => 'newWindow','title' => "Download file" ),
+                                                ),
+                                            ),
                                         ),
                                         array('name' => 'created_date',
                                             'type' => 'raw',

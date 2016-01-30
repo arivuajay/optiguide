@@ -219,16 +219,16 @@ $themeUrl = $this->themeUrl;
                         <?php echo $form->error($model, 'Poste2'); ?>
                     </div>
                 </div>
-                
+     <!--             
                 <div class="form-group">
-                    <?php echo $form->labelEx($model, 'Europe', array('class' => 'col-sm-2 control-label')); ?>
+                    <?php //echo $form->labelEx($model, 'Europe', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php echo $form->textField($model, 'Europe', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
-                        <?php echo $form->error($model, 'Europe'); ?>
+                        <?php //echo $form->textField($model, 'Europe', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
+                        <?php //echo $form->error($model, 'Europe'); ?>
                     </div>
                 </div>
                 
-<!--                <div class="form-group">
+              <div class="form-group">
                     <?php //echo $form->labelEx($model, 'feurope', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
                         <?php //echo $form->textField($model, 'feurope', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
