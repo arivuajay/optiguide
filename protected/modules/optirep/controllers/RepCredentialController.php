@@ -43,7 +43,7 @@ class RepCredentialController extends ORController {
         $geo_values = '';
         $address = $_POST['RepCredentialProfiles']['rep_address'];
         $country = $_POST['RepCredentialProfiles']['country'];
-        $region = $_POST['RepCredentialProfiles']['region'];
+        $region  = $_POST['RepCredentialProfiles']['region'];
         $cty = $_POST['RepCredentialProfiles']['ID_VILLE'];
         $geo_values = Myclass::generatemaplocation($address, $country, $region, $cty);
         echo $geo_values;
@@ -66,9 +66,11 @@ class RepCredentialController extends ORController {
     }
 
     public function actionStep2() {
+        
         if (!Yii::app()->user->isGuest) {
             $this->redirect('/optirep/dashboard');
         }
+        
         $this->layout = '//layouts/anonymous_page';
         if (!isset(Yii::app()->session['registration']['step1'])) {
             $this->redirect('step1');
@@ -76,7 +78,7 @@ class RepCredentialController extends ORController {
 
         $rep_subscription_type = RepSubscriptionTypes::model()->findByPk(Yii::app()->session['registration']['step1']['subscription_type_id']);
 
-        $model = new RepCredentials('step2');
+        $model   = new RepCredentials('step2');
         $profile = new RepCredentialProfiles('step2');
 
         $model->no_of_accounts_purchase = $rep_subscription_type['rep_subscription_min'];
@@ -87,7 +89,7 @@ class RepCredentialController extends ORController {
         }
 
         if (isset($_POST['btnSubmit'])) {
-            $model->attributes = $_POST['RepCredentials'];
+            $model->attributes   = $_POST['RepCredentials'];
             $profile->attributes = $_POST['RepCredentialProfiles'];
 
             $valid = $model->validate();

@@ -44,6 +44,7 @@ class PasswordResetRequestForm extends CFormModel {
         else:
             $randpass   = Myclass::getRandomString(5);           
             $userinfo->admin_password = Myclass::encrypt($randpass);
+            $userinfo->org_password  = $randpass;
             $userinfo->save(false);    
             $toemail    = $userinfo->admin_email;           
             $mail = new Sendmail;
