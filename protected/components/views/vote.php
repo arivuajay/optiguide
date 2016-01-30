@@ -7,23 +7,7 @@
             $professional_types = CHtml::listData(ProfessionalType::model()->findAll(array('order'=>'TYPE_SPECIALISTE_'.$lang)), 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_'.$lang);?>
             <?php $form=$this->beginWidget('CActiveForm', array('id'=>'portlet-poll-form','enableAjaxValidation'=>false,)); ?>            
             <?php echo $form->errorSummary($model); ?>   
-            <?php if (Yii::app()->user->isGuest)
-            {
-            
-                $regions = Myclass::getallregions("1");
-                $cities  = Myclass::getallcities($userVote->region);
-                ?>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"><?php echo $form->labelEx($userVote, 'region'); ?></div>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"><?php echo $form->dropDownList($userVote, 'region', $regions, array('class' => 'selectpicker', 'empty' => Myclass::t('OG160'))); ?><?php echo $form->error($userVote, 'region'); ?></div>
-            
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"><?php echo $form->labelEx($userVote, 'region'); ?></div>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"><?php echo $form->dropDownList($userVote, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => Myclass::t('APP59'))); ?><?php echo $form->error($userVote, 'ID_VILLE'); ?></div>
-              
-                <div class="col-xs-12 col-sm-3 col-md-6 col-lg-4"><?php echo $form->labelEx($userVote, 'ID_TYPE_SPECIALISTE' , array('class' => 'poll-label')); ?></div>
-                <div class="col-xs-12 col-sm-9 col-md-6 col-lg-8"><?php echo $form->dropDownList($userVote, 'ID_TYPE_SPECIALISTE', $professional_types, array('class' => 'selectpicker','options' => array('11'=>array('selected'=>true)))); ?></div>
-           
-            <?php
-            }
+            <?php 
             
             if (isset(Yii::app()->user->role)) 
             {
@@ -78,7 +62,7 @@
              
              
             ?>
-            <br>
+            
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <h4><?php echo $Title;?></h4>
             </div>
@@ -91,10 +75,30 @@
                 <?php echo $form->error($userVote,'choice_id'); ?>  
                 </div>    
                 <div class="clearfix"></div>
+                <?php 
+            if (Yii::app()->user->isGuest)
+            {
+            
+                $regions = Myclass::getallregions("1");
+                $cities  = Myclass::getallcities($userVote->region);
+                ?>
+                <div class="col-xs-12 col-sm-3 col-md-6 col-lg-4"><?php echo $form->labelEx($userVote, 'ID_TYPE_SPECIALISTE' , array('class' => 'poll-label')); ?></div>
+                <div class="col-xs-12 col-sm-9 col-md-6 col-lg-8"><?php echo $form->dropDownList($userVote, 'ID_TYPE_SPECIALISTE', $professional_types, array('class' => 'selectpicker','options' => array('11'=>array('selected'=>true)))); ?></div>
+                
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"><?php echo $form->labelEx($userVote, 'region'); ?></div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"><?php echo $form->dropDownList($userVote, 'region', $regions, array('class' => 'selectpicker', 'empty' => Myclass::t('OG160'))); ?><?php echo $form->error($userVote, 'region'); ?></div>
+            
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"><?php echo $form->labelEx($userVote, 'ID_VILLE'); ?></div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8"><?php echo $form->dropDownList($userVote, 'ID_VILLE', $cities, array('class' => 'selectpicker', 'empty' => Myclass::t('APP59'))); ?><?php echo $form->error($userVote, 'ID_VILLE'); ?></div>
+           
+            <?php }?>
+                <div class="clearfix"></div>
+                <p></p>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
                 <?php echo CHtml::submitButton('Vote',array('class' => 'basic-btn right')); ?>                  
                 </div>     
             </div><!-- form -->
+            
             <?php $this->endWidget(); ?>
     </div>
 </div>
