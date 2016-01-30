@@ -78,7 +78,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 //            ),
             array(
                 'header' => 'Actes',
-                'class' => 'booster.widgets.TbButtonColumn',
+                'class' => 'application.components.MyActionButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
                 'template' => '{access}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{update}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{delete}',
                 'buttons' => array(
@@ -86,7 +86,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                         'label' => "<i class='fa fa-lock'></i>",
                         'url' => 'Yii::app()->createUrl("/admin/userDirectory/create", array("relid"=>$data->ID_FOURNISSEUR, "nomtable"=>"Fournisseurs"))',
                         'options' => array("title" => "Accès"),
-                       // 'visible' => 'AdminIdentity::checkAccess(NULL, "suppliersDirectory", "update")'
+                        'visible' => 'AdminIdentity::checkAccess(NULL, "suppliersDirectory", "update")'
                     )
                 ),
             )

@@ -150,10 +150,13 @@ class ExportDatasController extends Controller
             
             if ($search_section != '') {
                 // Get productmarques ids based on products and sections
+              
+                $imp_sections    = implode(",",$search_section);       
+              
                 $criteria = new CDbCriteria;
                 $criteria->with = array("productMarqueDirectory" => array("select" => "ID_LIEN_MARQUE"));
-                $criteria->condition = 'ID_SECTION=:id';
-                $criteria->params = array(':id' => $search_section);               
+                $criteria->condition = "ID_SECTION in ($imp_sections)";
+               // $criteria->params = array(':id' => $imp_sections);               
                 $data_products_marques = ProductDirectory::model()->findAll($criteria);
  
                 foreach ($data_products_marques as $infos) {
@@ -176,10 +179,10 @@ class ExportDatasController extends Controller
 
                 if (!empty($supplierids)) {
                     $imp_suppids = (count($supplierids) > 1) ? implode(',', $supplierids) : $supplierids[0];
-                    $section_product_qry = " AND f.ID_FOURNISSEUR IN (" . $imp_suppids . ") ";                   
+                    $section_product_qry = " AND f.ID_FOURNISSEUR IN (" . $imp_suppids . ") ";                      
                 }
             }
-           
+          // echo $section_product_qry; exit;
             return $section_product_qry;
         }
         
@@ -189,8 +192,10 @@ class ExportDatasController extends Controller
             Yii::import('ext.ECSVExport');
             $attach_path = Yii::getPathOfAlias('webroot').'/'.EXPORTDATAS;   
             $randstr  = Myclass::getRandomString(4);
-           
-            // Single file              
+          
+            if($export_type==1)
+            { 
+                // Single file              
                 // Get all records list  with limit
                 $ret_result = Yii::app()->db->createCommand(
                 "SELECT COMPAGNIE as Company_Name, TYPE_FOURNISSEUR_FR as Supplier_Type, ru.COURRIEL as Email, ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
@@ -204,28 +209,10 @@ class ExportDatasController extends Controller
                 FROM repertoire_fournisseurs f, repertoire_fournisseur_type ft, repertoire_ville AS rv, repertoire_region AS rr, repertoire_pays AS rp, repertoire_utilisateurs as ru
                 WHERE f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.status=1 AND ru.NOM_TABLE ='Fournisseurs' 
                 ".$lang_str.$subscription_str.$province_str.$type_str.$section_str." ORDER BY Company_Name");  
-                
-             
-                if($export_type==1)
-                {    
-                    // File name and path                
-                    $filename = "Supplier_data_".date("Y_m_d")."_".$randstr.".csv";                
-                    $outputFile_path = $attach_path.$filename;
 
-                }else if($export_type==3){
-                    
-                    $supplier_type_name = SupplierType::model()->findByPk($supplier_type)->TYPE_FOURNISSEUR_EN;
-                    
-                    if($supplier_section!="")
-                    {
-                        $supplier_type_name = SectionDirectory::model()->findByPk($supplier_section)->NOM_SECTION_EN;    
-                        $supplier_type_name = str_replace(" ", "_", $supplier_type_name);
-                    }   
-                    
-                    $filename = "Supplier_data_".date("Y_m_d")."_".$supplier_type_name."_".$randstr.".csv"; 
-                  
-                    $outputFile_path = $attach_path.$filename;
-                } 
+                // File name and path                
+                $filename = "Supplier_data_".date("Y_m_d",time())."_".$randstr.".csv";                
+                $outputFile_path = $attach_path.$filename;
 
                 // Export as csv file
                 $this->Exceldownload($ret_result,$outputFile_path);
@@ -233,6 +220,89 @@ class ExportDatasController extends Controller
                 $model->attachment_file = $filename;
                 $model->user_type = "Supplier";
                 $model->save();
+
+            }else if($export_type==3)
+            {
+                if(!empty($supplier_section))
+                {
+
+                    foreach($supplier_section as $typeval)
+                    { 
+                        // Supplier section
+                        $search_section   = array();
+                        $search_section[] = $typeval;
+                        $section_str      = $this->getsection_filter($search_section);  
+                        if($section_str!='')
+                        {
+                            $qry_str       = $lang_str.$subscription_str.$province_str.$type_str.$section_str;                        
+                            $records_exist = $this->countusers($qry_str,"supplier");
+
+                            if($records_exist>0)
+                            {  
+                                
+                                 $ret_result = Yii::app()->db->createCommand(
+                                "SELECT COMPAGNIE as Company_Name, TYPE_FOURNISSEUR_FR as Supplier_Type, ru.COURRIEL as Email, ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
+                                (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
+                                (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
+                                (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
+                                (CASE WHEN print_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
+                                (CASE WHEN ABONNE_MAILING <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
+                                (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
+                                f.CREATED_DATE as Created_Date , f.DATE_MODIFICATION as Modified_Date
+                                FROM repertoire_fournisseurs f, repertoire_fournisseur_type ft, repertoire_ville AS rv, repertoire_region AS rr, repertoire_pays AS rp, repertoire_utilisateurs as ru
+                                WHERE f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.status=1 AND ru.NOM_TABLE ='Fournisseurs' 
+                                ".$lang_str.$subscription_str.$province_str.$type_str.$section_str." ORDER BY Company_Name");  
+                                         
+                                $supplier_section_name = SectionDirectory::model()->findByPk($typeval)->NOM_SECTION_EN;    
+                                $supplier_section_name = str_replace(" ", "_", $supplier_section_name);
+                                
+                                // File name and path                
+                                $filename = "Supplier_data_".date("Y_m_d",time())."_".$supplier_section_name."_".$randstr.".csv";                
+                                $outputFile_path = $attach_path.$filename;
+
+                                // Export as csv file
+                                $this->Exceldownload($ret_result,$outputFile_path);
+
+                                $model=new ExportDatas;   
+                                $model->attachment_file = $filename;
+                                $model->user_type = "Supplier";
+                                $model->save();
+                            }
+                        }
+                    }    
+                    
+                }else{  
+                    
+                    $ret_result = Yii::app()->db->createCommand(
+                    "SELECT COMPAGNIE as Company_Name, TYPE_FOURNISSEUR_FR as Supplier_Type, ru.COURRIEL as Email, ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
+                    (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
+                    (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
+                    (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
+                    (CASE WHEN print_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
+                    (CASE WHEN ABONNE_MAILING <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
+                    (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
+                    f.CREATED_DATE as Created_Date , f.DATE_MODIFICATION as Modified_Date
+                    FROM repertoire_fournisseurs f, repertoire_fournisseur_type ft, repertoire_ville AS rv, repertoire_region AS rr, repertoire_pays AS rp, repertoire_utilisateurs as ru
+                    WHERE f.ID_FOURNISSEUR=ru.ID_RELATION AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.status=1 AND ru.NOM_TABLE ='Fournisseurs' 
+                    ".$lang_str.$subscription_str.$province_str.$type_str." ORDER BY Company_Name");  
+                
+                    // For suuplier type only
+                    $supplier_type_name = SupplierType::model()->findByPk($supplier_type)->TYPE_FOURNISSEUR_EN;
+                    $filename = "Supplier_data_".date("Y_m_d",time())."_".$supplier_type_name."_".$randstr.".csv"; 
+                    
+                    $outputFile_path = $attach_path.$filename;
+                    // Export as csv file
+                    $this->Exceldownload($ret_result,$outputFile_path);
+                    $model=new ExportDatas;   
+                    $model->attachment_file = $filename;
+                    $model->user_type = "Supplier";
+                    $model->save();
+                }
+
+             
+            } 
+
+              
            
             
             // Province 
@@ -446,7 +516,7 @@ class ExportDatasController extends Controller
                 ".$lang_str.$subscription_str.$province_str.$type_str." ORDER BY Company_Name");  
                 
                 // File name and path                
-                $filename = "Retailer_data_".date("Y_m_d")."_".$randstr.".csv";                
+                $filename = "Retailer_data_".date("Y_m_d",time())."_".$randstr.".csv";                
                 $outputFile_path = $attach_path.$filename;
 
                 // Export as csv file
@@ -543,7 +613,7 @@ class ExportDatasController extends Controller
 
                                 // File name and path                               
                                 $retailer_group_name = RetailerGroup::model()->findByPk($typeval)->NOM_GROUPE;
-                                $filename = "Retailer_data_".date("Y_m_d")."_".$retailer_group_name."_".$randstr.".csv";                
+                                $filename = "Retailer_data_".date("Y_m_d",time())."_".$retailer_group_name."_".$randstr.".csv";                
                                 $outputFile_path = $attach_path.$filename;
 
                                 // Export as csv file
@@ -574,7 +644,7 @@ class ExportDatasController extends Controller
                                 
                          // File name and path                               
                         $retailer_type_name = RetailerType::model()->findByPk($retailer_type)->NOM_TYPE_EN;
-                        $filename = "Retailer_data_".date("Y_m_d")."_".$retailer_type_name."_".$randstr.".csv";     
+                        $filename = "Retailer_data_".date("Y_m_d",time())."_".$retailer_type_name."_".$randstr.".csv";     
                         
                         $outputFile_path = $attach_path.$filename;
 
@@ -694,7 +764,7 @@ class ExportDatasController extends Controller
                     ".$lang_str.$subscription_str.$province_str.$type_str." ORDER BY NOM");  
 
                 // File name and path                
-                $filename = "Professional_data_".date("Y_m_d")."_".$randstr.".csv";                
+                $filename = "Professional_data_".date("Y_m_d",time())."_".$randstr.".csv";                
                 $outputFile_path = $attach_path.$filename;
 
                 // Export as csv file
@@ -738,7 +808,7 @@ class ExportDatasController extends Controller
 
                             // File name and path                                
                             $province_name = RegionDirectory::model()->findByPk($reg_val)->NOM_REGION_EN;
-                            $filename = "Professional_data_".date("Y_m_d")."_".$province_name."_".$randstr.".csv";    
+                            $filename = "Professional_data_".date("Y_m_d",time())."_".$province_name."_".$randstr.".csv";    
                             $outputFile_path = $attach_path.$filename;
 
                             // Export as csv file
@@ -783,7 +853,7 @@ class ExportDatasController extends Controller
 
                             // File name and path                               
                             $professional_type_name = ProfessionalType::model()->findByPk($typeval)->TYPE_SPECIALISTE_EN;
-                            $filename = "Professional_data_".date("Y_m_d")."_".$professional_type_name."_".$randstr.".csv";                
+                            $filename = "Professional_data_".date("Y_m_d",time())."_".$professional_type_name."_".$randstr.".csv";                
                             $outputFile_path = $attach_path.$filename;
 
                             // Export as csv file
@@ -926,18 +996,17 @@ class ExportDatasController extends Controller
                     // Supplier section                   
                     $supplier_section = isset($_POST['ExportDatas']['psection'])?$_POST['ExportDatas']['psection']:'';           
                     if($supplier_section!="")
-                    {   
-                        
-                        $section_str  = $this->getsection_filter($supplier_section);
+                    { 
+                        $section_str  = $this->getsection_filter($supplier_section);                       
                     }
                 }
-            
                     
                 // Export type    
                 $export_type = $_POST['ExportDatas']['export_type'];
                 
                 // Get user counts           
                 $querystr   = $lang_str.$subscription_str.$province_str.$type_str.$section_str;
+                
 
                 $item_count = $this->countusers($querystr,$usertype);
             }      
@@ -1239,7 +1308,7 @@ class ExportDatasController extends Controller
                 // File name and path      
                 if($export_type==1)
                 { 
-                    $filename = "Client_data_".date("Y_m_d")."_".$randstr.".csv";                
+                    $filename = "Client_data_".date("Y_m_d",time())."_".$randstr.".csv";                
                     $outputFile_path = $attach_path.$filename;
                 }else if($export_type==3)  {  
                     if(!empty($category)){
@@ -1248,7 +1317,7 @@ class ExportDatasController extends Controller
                         $cattype_name = ClientCategoryTypes::model()->findByPk($category_type)->cat_type;
                     }
                 
-                    $filename = "Client_data_".date("Y_m_d")."_".$cattype_name."_".$randstr.".csv";                
+                    $filename = "Client_data_".date("Y_m_d",time())."_".$cattype_name."_".$randstr.".csv";                
                     $outputFile_path = $attach_path.$filename;
                 }                    
                 

@@ -23,7 +23,7 @@ $criteria3 = new CDbCriteria();
 $criteria3->order  = "TYPE_FOURNISSEUR_EN ASC";
 $suppliertype_datas = CHtml::listData(SupplierType::model()->findAll($criteria3) , 'ID_TYPE_FOURNISSEUR' , 'TYPE_FOURNISSEUR_EN');
 
-$suppliersection_datas = CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_FR")), 'ID_SECTION', 'NOM_SECTION_FR'); 
+$suppliersection_datas = CHtml::listData(SectionDirectory::model()->findAll(array("order" => "NOM_SECTION_EN")), 'ID_SECTION', 'NOM_SECTION_EN'); 
 
 $suppliersection_datas
 ?>
@@ -171,15 +171,26 @@ $suppliersection_datas
                         </div>  
                     </div>
 
+<!--                    <div class="form-group">
+                        <?php //echo $form->labelEx($model, 'S_section', array('class' => 'col-sm-2 control-label')); ?>
+                        <div class="col-sm-5">
+                            <?php                           
+                            //echo $form->dropDownList($model, 'psection', $suppliersection_datas, array('class' => 'form-control', 'empty' => "Toutes les sections"));             
+                            //echo $form->error($model, 'psection'); 
+                            ?> 
+                        </div>  
+                    </div>-->
+
                     <div class="form-group">
                         <?php echo $form->labelEx($model, 'S_section', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">
-                            <?php                           
-                            echo $form->dropDownList($model, 'psection', $suppliersection_datas, array('class' => 'form-control', 'empty' => "Toutes les sections"));             
+                            <?php
+                            $htmlOptions = array('size' => '8', 'multiple' => 'true', 'class' => 'form-control');
+                            echo $form->listBox($model, 'psection', $suppliersection_datas, $htmlOptions);
                             echo $form->error($model, 'psection'); 
                             ?> 
                         </div>  
-                    </div>
+                    </div> 
                     
                     <div class="box-header">
                         <h3 class="page-header">Step 4</h3>
@@ -210,7 +221,10 @@ $suppliersection_datas
                         <div class="col-sm-0 col-sm-offset-2">
                             <?php
                                 echo CHtml::submitButton('Exporter', array('class' => 'btn btn-success'));
-                                echo CHtml::hiddenField('utype' , 'supplier');  
+                                echo CHtml::hiddenField('utype' , 'supplier');
+                               
+                                $model->Etype ='supplier';
+                                echo $form->hiddenField($model, 'Etype');
                             ?>
                             <a href="javascript:void(0);" id="calculateusers" class="btn btn-primary">Calculer</a>
                             <p id="filtercounts" style="display: none;"><b>Compter les utilisateurs filtrés </b>: <span id="totalcounts">&nbsp;</span></p>

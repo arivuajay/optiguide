@@ -108,7 +108,7 @@ class AdminIdentity extends CUserIdentity {
         if (!empty($user) && !empty($screen)) {    
             $auth_resources = AuthResources::model()->findByAttributes(array('Master_Role_ID' => $user->role, 'Master_Module_ID' => $screen->Module_ID, 'Master_Screen_ID' => $screen->Master_Screen_ID));
         }  
-        
+       
         if (!empty($auth_resources)) {
            $insert_actions = array('create',"generate_suppliers","generate_clients","generate_retailers");
            $update_actions = array('update','repUpdateStatus');
@@ -129,6 +129,12 @@ class AdminIdentity extends CUserIdentity {
            }
        }
        
+        $some_actions = array("calculateuser_counts");        
+        if(in_array($action , $some_actions))
+        {
+            $return = true;
+        }
+       
        return $return;
     }
 
@@ -148,7 +154,7 @@ class AdminIdentity extends CUserIdentity {
             $return = true;
         }else{
             $return = false; 
-        }    
+        } 
         
         $user = Admin::model()->find('admin_id = :U', array(':U' => $id));
        
@@ -156,22 +162,84 @@ class AdminIdentity extends CUserIdentity {
 
         if(in_array($controller , $othercontrollers))
         {   
-            $screen = MasterScreen::model()->find("Screen_code = :controller and action= :action", array(':controller' => $controller, ':action'=>$action));                           
-        }else{    
-            $screen = MasterScreen::model()->find("Screen_code = :controller", array(':controller' => $controller));
-        }    
-       
-        if (!empty($user) && !empty($screen)) {
+            
+            $array_exportprofessionals = array("create","delete");
+            $array_exportretailers = array("generate_retailers","delete");
+            $array_exportsuppliers = array("generate_suppliers","delete");
+            $array_exportclients = array("generate_clients","delete");
            
+            if($controller=="exportDatas" && $action=="create")
+            {
+                if(in_array($action,$array_exportprofessionals))
+                {    
+                     $action = "index";
+                }    
+            }else if(in_array($action,$array_exportretailers))
+            {
+               $action = "retailerIndex";
+            }else if(in_array($action,$array_exportsuppliers))
+            {
+               $action = "supplierIndex";
+            }else if(in_array($action,$array_exportclients))
+            {
+               $action = "clientIndex";
+            } 
+            
+            $array_paymenttransaction = array("repUpdateStatus","repview");
+            if($controller=="paymentTransaction")
+            {
+                if(in_array($action,$array_paymenttransaction))
+                { 
+                 $action = "reptransaction";
+                }else if($action == "update")
+                {
+                  $action = "index";  
+                }    
+            } 
+            
+            if($controller=="supplierSubscriptionPrice" && $action=="update")
+            {
+                $params =  Yii::app()->getRequest()->getParam('type');
+                if($params=="stats")
+                {    
+                    $action = "statsprice"; 
+                }else if($params=="supplier")    
+                {
+                     $action = "index"; 
+                }    
+            }
+                 
+         
+            $screen = MasterScreen::model()->find("Screen_code = :controller and action= :action", array(':controller' => $controller, ':action'=>$action));                           
+        
+            
+        }else{  
+            $array_suppliers = array( 'addproducts', 'addmarques', 'listmarques', 'payment', 'renewpayment');
+            
+            if($controller=="suppliersDirectory")
+            {
+                if(in_array($action,$array_suppliers))
+                {
+                   $action = "view";
+                }
+            }
+            
+            
+            $screen = MasterScreen::model()->find("Screen_code = :controller", array(':controller' => $controller));
+        }   
+//       echo "<pre>";
+//       print_r($screen);
+//       exit;
+        if (!empty($user) && !empty($screen)) {
          
             $auth_resources = AuthResources::model()->findByAttributes(array('Master_Role_ID' => $user->role, 'Master_Module_ID' => $screen->Module_ID, 'Master_Screen_ID' => $screen->Master_Screen_ID));
   
             if (!empty($auth_resources)) {
-                $insert_actions = array('create',"generate_suppliers");
-                $update_actions = array('update','repUpdateStatus');
-                $view_actions = array('index', 'view', 'retailerIndex','supplierIndex','clientIndex','reptransaction',"statsprice","repview");
+                $insert_actions = array('create',"generate_suppliers","generate_clients","generate_retailers");
+                $update_actions = array('update','repUpdateStatus','generateclients');
+                $view_actions = array('index', 'view', 'retailerIndex','supplierIndex','clientIndex','reptransaction',"statsprice","repview", 'getfichers','getficherimage',);
                 $delete_actions = array('delete');
-                $other_actions = array();
+                $other_actions = array("calculate_usercounts");
                
                 if (in_array($action, $insert_actions)) {
                     $return = $auth_resources->Master_Task_ADD == 1;
@@ -186,6 +254,13 @@ class AdminIdentity extends CUserIdentity {
                 }
             }
         }
+        
+        $some_actions = array("calculate_usercounts","payment",'renewpayment','get_totalamount','transaction_view', 'getproducts' ,'getgroups','getmessage','deleteMessage', 'updateMessage', 'deleteProof');
+        if(in_array($action , $some_actions))
+        {
+            $return = true;
+        }
+        
         return $return;
     }
     

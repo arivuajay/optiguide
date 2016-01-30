@@ -161,7 +161,7 @@
         }
         ?> 
 
-        <?php if ($model['map_lat'] && $model['map_long']) {
+        <?php if ($model['map_lat']!='' && $model['map_long']!='') {
             ?>    
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">         
                 <p style="color:red;"><?php echo Myclass::t('OG216');?></p>  

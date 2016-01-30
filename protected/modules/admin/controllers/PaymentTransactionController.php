@@ -104,10 +104,26 @@ class PaymentTransactionController extends Controller {
                 $fmodel->save(false);
 
                 /* Registration - Update user status 1 in user table */
-                if ($model->supp_renew_status == 0) {
-                    $userinfos = UserDirectory::model()->find("NOM_TABLE='Fournisseurs' AND ID_RELATION = " . $suppid);
-                    $userinfos->status = 1;
-                    $userinfos->save(false);
+                if ($model->supp_renew_status == 0) {   
+                   
+                    $userslist_query = Yii::app()->db->createCommand() //this query contains all the data
+                    ->select('ID_UTILISATEUR , NOM_UTILISATEUR , USR')
+                    ->from(array('repertoire_utilisateurs'))
+                    ->where("ID_RELATION='$suppid' AND NOM_TABLE='Fournisseurs'")
+                    ->order('ID_UTILISATEUR')
+                    ->limit(1)
+                    ->queryAll();      
+                    if(!empty($userslist_query))
+                    {       
+                        foreach($userslist_query as $info)
+                        {
+                          $uid =  $info['ID_UTILISATEUR'];
+                        } 
+                        
+                        //$userinfos = 
+                        $userinfos->status = 1;
+                        $userinfos->save(false);
+                    }
                 }
 
                 SupplierTemp::model()->deleteAll("invoice_number = '" . $invoice_number . "'");
@@ -116,15 +132,15 @@ class PaymentTransactionController extends Controller {
                     Yii::app()->user->setFlash('success', 'PaymentTransaction status Updated Successfully!!!');
                     
                     $mail = new Sendmail();
-                    $this->lang = Yii::app()->session['language'];
+                    $lang = 'FR';
                     
-                    if($this->lang=='EN' ){
+                    if($lang=='EN' ){
                         if($model->supp_renew_status == 1){
                             $subject = 'OptiGuide - Renew Supplier Subscription';
                         }else{
                             $subject = 'OptiGuide - Supplier Subscription';
                         }
-                    }elseif($this->lang=='FR'){
+                    }elseif($lang=='FR'){
                         if($model->supp_renew_status == 1){
                             $subject = 'Bienvenu sur notre site OptiGuide';
                         }else{

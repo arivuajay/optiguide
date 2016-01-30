@@ -228,13 +228,13 @@ $themeUrl = $this->themeUrl;
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <?php echo $form->labelEx($model, 'feurope', array('class' => 'col-sm-2 control-label')); ?>
+<!--                <div class="form-group">
+                    <?php //echo $form->labelEx($model, 'feurope', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
-                        <?php echo $form->textField($model, 'feurope', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
-                        <?php echo $form->error($model, 'feurope'); ?>
+                        <?php //echo $form->textField($model, 'feurope', array('class' => 'form-control', 'size' => 55, 'maxlength' => 55)); ?>
+                        <?php //echo $form->error($model, 'feurope'); ?>
                     </div>
-                </div>
+                </div>-->
                 
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'email', array('class' => 'col-sm-2 control-label')); ?>

@@ -75,10 +75,10 @@ class ClientMessagesController extends Controller {
 
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
-                $this->lang = Yii::app()->session['language'];
-                if($this->lang=='EN' ){
+                $lang = 'FR';
+                if($lang=='EN' ){
                     $subject = SITENAME . "- Reminder Mail - Today meet with client " . $client_name;
-                }elseif($this->lang=='FR'){
+                }elseif($lang=='FR'){
                     $subject =  SITENAME." - Rappel Mail - Aujourd'hui rencontrer client ". $client_name;
                 }
                 
@@ -135,10 +135,10 @@ class ClientMessagesController extends Controller {
 
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
-                $this->lang = Yii::app()->session['language'];
-                if($this->lang=='EN' ){
+                $lang = 'FR';
+                if($lang=='EN' ){
                     $subject = SITENAME . "- Reminder Mail - Today meet with professional " . $client_name;
-                }elseif($this->lang=='FR'){
+                }elseif($lang=='FR'){
                     $subject =  SITENAME." - Rappel Mail - Aujourd'hui rencontrer professionnelle ". $client_name;
                 }
                 $trans_array = array(
@@ -196,10 +196,10 @@ class ClientMessagesController extends Controller {
 
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
-                $this->lang = Yii::app()->session['language'];
-                if($this->lang=='EN' ){
+                $lang = 'FR';
+                if($lang=='EN' ){
                     $subject = SITENAME . "- Reminder Mail - Today meet with retailer " . $client_name;
-                }elseif($this->lang=='FR'){
+                }elseif($lang=='FR'){
                     $subject =  SITENAME." - Rappel Mail - Aujourd'hui, rencontre avec le détaillant ". $client_name;
                 }
                 $trans_array = array(

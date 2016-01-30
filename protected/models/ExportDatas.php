@@ -13,7 +13,7 @@ class ExportDatas extends CActiveRecord
 {
         
         public $P_type,$R_type,$S_type,$language,$EN,$FR,$subscriptions,$Optipromo,$Optinews,$Envision_print,$Envision_digital,$Envue_print,$Envue_digital,$province,$ptype,$export_type;
-        public $country,$region,$cat_type_id,$category,$ID_GROUPE,$psection,$S_section;
+        public $country,$region,$cat_type_id,$category,$ID_GROUPE,$psection,$S_section,$Etype;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -35,7 +35,8 @@ class ExportDatas extends CActiveRecord
                         array('Optipromo , Optinews , Envision_print ,Envision_digital,Envue_print,Envue_digital,province,ptype,cat_type_id,category,ID_GROUPE' , 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, attachment_file, user_type, created, language, EN, FR,subscriptions,export_type', 'safe', 'on'=>'search'),
+			array('id, attachment_file, user_type, created, language, EN, FR,subscriptions,export_type,Etype', 'safe', 'on'=>'search'),
+                        array('Etype,psection','safe'),
                         array('export_type', 'checknotempty'),
 		);
 	}
@@ -58,13 +59,21 @@ class ExportDatas extends CActiveRecord
                 $this->addError('province', "S'il vous plaît choisir une province.");
                 return false;
             }
-            
-            if ($this->export_type == 3 && $this->ptype == '') 
+          
+            if($this->Etype=="supplier" && $this->export_type == 3)
+            {                
+                if ($this->psection == '' && $this->ptype == '') 
+                {
+                    $this->addError('psection', "S'il vous plaît choisir un type ou de la section .");
+                    return false;
+                }
+                
+            }elseif ($this->export_type == 3 && $this->ptype == '') 
             {
                 $this->addError('ptype', "S'il vous plaît choisir un type");
                 return false;
             }
-            
+           
             return true;
         }        
     
@@ -90,7 +99,8 @@ class ExportDatas extends CActiveRecord
                     'country' => "Pays",
                     'region' => "Province",
                     'ID_GROUPE' => 'Regroupement',
-                    'S_section' => 'Fournisseur Section'
+                    'S_section' => 'Fournisseur Section',
+                    'Etype' => "Exportype"
 		);
 	}
 

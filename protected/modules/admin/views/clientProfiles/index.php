@@ -80,7 +80,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'header' => 'Actes',
                 'class' => 'application.components.MyActionButtonColumn',
                 'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
+                'template' => '{update}&nbsp;&nbsp;{delete}',
             )
         );
                    
