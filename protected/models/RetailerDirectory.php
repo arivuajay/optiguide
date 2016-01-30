@@ -52,7 +52,7 @@ class RetailerDirectory extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('COMPAGNIE, ID_RETAILER_TYPE, ID_GROUPE, country, region, ID_VILLE,ADRESSE', 'required'),
+            array('COMPAGNIE, ID_RETAILER_TYPE, country, region, ID_VILLE,ADRESSE', 'required'),
             array('TELEPHONE,CODE_POSTAL', 'required', 'on' => 'frontend'),
             array('autre_ville', 'checkOtherCityChoosen'),
             array('Retailers2', 'required', 'on' => 'mapping', 'message' => Myclass::t('OGO159', '', 'og')),
