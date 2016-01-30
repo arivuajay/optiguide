@@ -151,7 +151,7 @@ class RepCredentialController extends ORController {
         $registration = Yii::app()->session['registration'];
         $no_of_accounts_purchased = $registration['step2']['RepCredentials']['no_of_accounts_purchase'];
         $no_of_months = $registration['step2']['RepCredentials']['no_of_months'];
-        $offer_calculation = true;
+        $offer_calculation = false;
         if ($no_of_accounts_purchased > 1) {
             $offer_calculation = false;
         }

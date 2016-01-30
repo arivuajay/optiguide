@@ -544,9 +544,21 @@ class Myclass extends CController {
     }
 
     public static function priceCalculationWithMonths($months = 1, $no_of_accounts_purchased = 1, $offer_calculate = true) {
+        $result = array();
         $findSubscriptionType = RepSubscriptionTypes::model()->findByAccountMembers($no_of_accounts_purchased);
         $subscription_type_id = $findSubscriptionType['rep_subscription_type_id'];
         $per_account_price = $findSubscriptionType['rep_subscription_price'];
+        // OFFER - Reduce price based on month (6 months - 1CAD , 12 months - 2CAD)
+        if($months==6)
+        {
+          $per_account_price =   $findSubscriptionType['rep_subscription_price']-1;
+          $result['offer_price'] = self::numberFormat_rep(1);
+        }elseif($months==12)
+        {
+           $per_account_price =   $findSubscriptionType['rep_subscription_price']-2; 
+           $result['offer_price'] = self::numberFormat_rep(2);
+        }    
+       
         $total_month_price = $per_account_price * $no_of_accounts_purchased * $months;
 
         if ($offer_calculate) {
@@ -565,14 +577,14 @@ class Myclass extends CController {
 
         $grand_total = $total + $tax;
 
-        $result = array();
+        
         $result['subscription_type_id'] = $subscription_type_id;
         $result['per_account_price'] = self::numberFormat_rep($per_account_price);
         $result['no_of_months'] = $months;
         $result['no_of_accounts_purchased'] = $no_of_accounts_purchased;
         $result['total_month_price'] = self::numberFormat_rep($total_month_price);
-        $result['offer_in_percentage'] = $offer_in_percentage;
-        $result['offer_price'] = self::numberFormat_rep($offer_price);
+      //  $result['offer_in_percentage'] = $offer_in_percentage;
+       // $result['offer_price'] = self::numberFormat_rep($offer_price);
         $result['total_price'] = self::numberFormat_rep($total);
         $result['tax'] = self::numberFormat_rep($tax);
         $result['grand_total'] = self::numberFormat_rep($grand_total);

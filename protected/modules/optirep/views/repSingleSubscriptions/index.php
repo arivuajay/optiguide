@@ -28,15 +28,15 @@
                         'header' => Myclass::t('OR559', '', 'or'),
                         'name' => 'rep_single_no_of_months',
                     ),
-                    array(
-                        'header' => Myclass::t('OR561', '', 'or'),
-                        'name' => 'rep_single_total_month_price',
-                        'value' => 'Myclass::currencyFormat($data->rep_single_total_month_price)'
-                    ),
-                    array(
-                        'header' => Myclass::t('OR562', '', 'or') . ' (%)',
-                        'name' => 'offer_in_percentage',
-                    ),
+//                    array(
+//                        'header' => Myclass::t('OR561', '', 'or'),
+//                        'name' => 'rep_single_total_month_price',
+//                        'value' => 'Myclass::currencyFormat($data->rep_single_total_month_price)'
+//                    ),
+//                    array(
+//                        'header' => Myclass::t('OR562', '', 'or') . ' (%)',
+//                        'name' => 'offer_in_percentage',
+//                    ),
                     array(
                         'header' => Myclass::t('OR563', '', 'or'),
                         'name' => 'offer_price',

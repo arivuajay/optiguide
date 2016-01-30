@@ -72,7 +72,7 @@ class RepCredentialController extends Controller {
     public function actionGet_totalamount() {
         $no_of_months = isset($_POST['no_of_months']) ? $_POST['no_of_months'] : '';
         $no_of_accounts_purchased = 1;
-        $offer_calculation = true;
+        $offer_calculation = false;
         $price_list = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchased, $offer_calculation);
         $total_amount=$price_list['total_price'].'  CAD';
         echo $total_amount;
@@ -339,7 +339,7 @@ class RepCredentialController extends Controller {
                 // Session user model attribute
 
                 $no_of_accounts_purchased = 1;
-                $offer_calculation = true;
+                $offer_calculation = false;
                 $price_list = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchased, $offer_calculation);
                 
                 if (Yii::app()->user->hasState("repattributes")) {
@@ -509,7 +509,7 @@ class RepCredentialController extends Controller {
                 // Session user model attribute
 
                 $no_of_accounts_purchased = 1;
-                $offer_calculation = true;
+                $offer_calculation = false;
                 $price_list = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchased, $offer_calculation);
                 
                 if (Yii::app()->user->hasState("repattributes")) {

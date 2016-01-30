@@ -326,4 +326,6 @@ return array(
     'OR765' => 'an',
     'OR766' => 'Inscriptions d’utilisateurs sur Opti-Guide.com',
     'OR767' => 'Nombre d’inscriptions',
+    
+    'OR768' => 'Prix ​​de l\'offre , par mois'
 );

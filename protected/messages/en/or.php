@@ -326,4 +326,6 @@ return array(
     'OR765' => 'year',
     'OR766' => 'Users subscription to Opti-Guide.com',
     'OR767' => 'Subscription counts',
+    
+    'OR768' => 'Offer price , per month'
 );
