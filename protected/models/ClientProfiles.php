@@ -51,7 +51,7 @@ class ClientProfiles extends CActiveRecord
 			array('name, company, job_title, member_type, address, local_number', 'length', 'max'=>255),
 			array('country, region, ville, phonenumber1, phonenumber2, mobile_number, tollfree_number, fax, email, site_address', 'length', 'max'=>55),
 			array('created_date, modified_date,cname,ctype', 'safe'),
-                        array('Optipromo , Optinews , Envision_print ,Envision_digital,Envue_print,Envue_digital,category,cat_type_id' , 'safe'),
+                        array('Optipromo , Optinews , Envision_print ,Envision_digital,Envue_print,Envue_digital,category,cat_type_id,lang' , 'safe'),
                         array('ID_CLIENT ,sex, CodePostal, Poste1,Poste2,phonenumber3,Europe,feurope,Website2,Rep' , 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -175,6 +175,7 @@ class ClientProfiles extends CActiveRecord
                 'subscription' => Myclass::t('Abonnement'),
                 'created_date' => Myclass::t('Date de création'),
                 'modified_date' => Myclass::t('Date de changement'),
+                'lang' => 'Langue'
             );
 	}
 

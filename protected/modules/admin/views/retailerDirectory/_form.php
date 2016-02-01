@@ -356,16 +356,6 @@
                     <h3 class="box-title">Réglez l'alerte à l'employé</h3>
                 </div>
                 <?php
-                $themeUrl = $this->themeUrl;
-                $cs = Yii::app()->getClientScript();
-                $cs_pos_end = CClientScript::POS_END;
-
-                $cs->registerCssFile($themeUrl . '/css/datepicker/datepicker3.css');
-                $cs->registerScriptFile($themeUrl . '/js/datepicker/bootstrap-datepicker.js', $cs_pos_end);
-
-                $cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
-                $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
-
                 if (!$rmodel->status) {
                     $rmodel->status = 0;
                 }
@@ -473,11 +463,17 @@
                                             'header' => 'Actes',
                                             // 'class' => 'booster.widgets.TbButtonColumn',
                                             'class' => 'ButtonColumn',
-                                            'htmlOptions' => array('style' => 'text-align:center;width:10%', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                            'template' => '{update}&nbsp;&nbsp;{delete}',
+                                            'htmlOptions' => array('style' => 'text-align:center;width:15%', 'vAlign' => 'middle', 'class' => 'action_column'),
+                                            'template'   => '{download}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
                                             'evaluateID' => true,
                                             'buttons' => array
-                                                (
+                                                (                                                 
+                                                'download' => array(
+                                                    'label' => "<i class='fa fa-download'></i>",                         
+                                                    'url' => '(file_exists(YiiBase::getPathOfAlias("webroot")."/uploads/alerts_attachments/".$data->alertfile)) ? Yii::app()->createAbsoluteUrl("/uploads/alerts_attachments/".$data->alertfile) : ""',                            
+                                                    'options' => array('class' => 'newWindow','title' => "Attachment" ,"target" => "_blank"),
+                                                    'visible' => '($data->alertfile!="")'
+                                                     ), 
                                                 'delete' => array
                                                     (
                                                     'label' => 'Delete',
@@ -559,9 +555,15 @@
                                             'header' => 'Actes',
                                             'class' => 'booster.widgets.TbButtonColumn',
                                             'htmlOptions' => array('style' => 'text-align:center;width:10%', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                            'template' => '{delete}',
+                                            'template' => '{download}&nbsp;&nbsp;{delete}',
                                             'buttons' => array
                                                 (
+                                                'download' => array(
+                                                    'label' => "<i class='fa fa-download'></i>",                         
+                                                    'url' => '(file_exists(YiiBase::getPathOfAlias("webroot")."/uploads/alerts_attachments/".$data->alertfile)) ? Yii::app()->createAbsoluteUrl("/uploads/alerts_attachments/".$data->alertfile) : ""',                            
+                                                    'options' => array('class' => 'newWindow','title' => "Attachment" ,"target" => "_blank"),
+                                                    'visible' => '($data->alertfile!="")'
+                                                     ), 
                                                 'delete' => array
                                                     (
                                                     'label' => 'Delete',
@@ -640,6 +642,16 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php
+$themeUrl = $this->themeUrl;
+$cs = Yii::app()->getClientScript();
+$cs_pos_end = CClientScript::POS_END;
+
+$cs->registerCssFile($themeUrl . '/css/datepicker/datepicker3.css');
+$cs->registerScriptFile($themeUrl . '/js/datepicker/bootstrap-datepicker.js', $cs_pos_end);
+
+$cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
+$cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
+                
 $alerthistory = Yii::app()->request->getQuery('alerthistory', '0');
 $ajaxRegionUrl = Yii::app()->createUrl('/admin/retailerDirectory/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/admin/retailerDirectory/getcities');

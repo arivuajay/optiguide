@@ -12,7 +12,7 @@
     $cities = Myclass::getallcities($profile->region);
     $no_of_months = Myclass::noOfMonths();
     ?>
-    <div class="form-group"> 
+    <div class="form-group second-step-regis"> 
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <?php echo $form->labelEx($model, 'rep_username'); ?>
@@ -84,15 +84,18 @@
                 <a class="mapgenrate" href="javascript:void(0);" id="genratemap">
                     <?php echo Myclass::t('OR553', '', 'or'); ?>
                 </a>
-                <div id="display_map" style="display:none;width:auto;height:350px;"></div>                                   
+                <div id="display_map" class="map-regis" style="display:none;width:auto;height:350px;"></div>                                   
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 pull-right steps-btn-cont"> 
+            <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12"> 
+                <div class="pull-left"> 
+                    <h3><?php echo Myclass::t('OR569', '', 'or');?>:</h3> 
+                </div>
                 <?php
                 echo CHtml::tag('button', array(
                     'name' => 'btnSubmit',
                     'type' => 'submit',
-                    'class' => 'register-btn'
+                    'class' => 'register-btn pull-right'
                         ), Myclass::t('OR557', '', 'or') . ' <i class="fa fa-angle-double-right"></i>');
                 ?>
             </div>
@@ -101,6 +104,40 @@
     <?php $this->endWidget(); ?>
 </div>
 <div class="clearfix"> </div>
+    <div class="note-regis">
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">       
+            <div role="alert" class="alert alert-info subscriptionnotify">
+            <strong><?php echo Myclass::t('OR769', '', 'or');?></strong>
+            <p>1 <?php echo Myclass::t('OR755', '', 'or');?> - 19.95 CAD/<?php echo Myclass::t('OR755', '', 'or');?> </p>
+            <p>6 <?php echo Myclass::t('OR755', '', 'or');?> - 18.95 CAD/<?php echo Myclass::t('OR755', '', 'or');?> </p> 
+            <p>1 <?php echo Myclass::t('OR765', '', 'or');?>  - 17.95 CAD/<?php echo Myclass::t('OR755', '', 'or');?> </p>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">  
+            <div role="alert" class="alert alert-info subscriptionnotify">
+            <strong><?php echo Myclass::t('OR770', '', 'or');?></strong>
+            <p>1 <?php echo Myclass::t('OR755', '', 'or');?> - 17.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p>
+            <p>6 <?php echo Myclass::t('OR755', '', 'or');?> - 16.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p> 
+            <p>1 <?php echo Myclass::t('OR765', '', 'or');?>  - 15.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">   
+            <div role="alert" class="alert alert-info subscriptionnotify">
+            <strong><?php echo Myclass::t('OR771', '', 'or');?></strong>
+            <p>1 <?php echo Myclass::t('OR755', '', 'or');?> - 15.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p>
+            <p>6 <?php echo Myclass::t('OR755', '', 'or');?> - 14.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p> 
+            <p>1 <?php echo Myclass::t('OR765', '', 'or');?>  - 13.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">  
+            <div role="alert" class="alert alert-info subscriptionnotify">
+            <strong><?php echo Myclass::t('OR772', '', 'or');?></strong>
+            <p>1 <?php echo Myclass::t('OR755', '', 'or');?> - 12.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p>
+            <p>6 <?php echo Myclass::t('OR755', '', 'or');?> - 11.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p> 
+            <p>1 <?php echo Myclass::t('OR765', '', 'or');?>  - 10.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p>
+            </div>
+        </div>
+ </div>    
 
 <?php
 $ajaxRegionUrl = Yii::app()->createUrl('/optirep/repCredential/getregions');

@@ -327,5 +327,10 @@ return array(
     'OR766' => 'Inscriptions d’utilisateurs sur Opti-Guide.com',
     'OR767' => 'Nombre d’inscriptions',
     
-    'OR768' => 'Prix ​​de l\'offre , par mois'
+    'OR768' => 'Prix ​​de l\'offre , par mois',
+    'OR769' => 'Abonnement individuel',
+    'OR770' => 'De 2 à 5 profils',
+    'OR771' => 'De 6 à 10 profils',
+    'OR772' => '11 profils ou plus',
+    'OR773' => 'mois et profil'
 );

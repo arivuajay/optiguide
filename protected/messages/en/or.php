@@ -327,5 +327,10 @@ return array(
     'OR766' => 'Users subscription to Opti-Guide.com',
     'OR767' => 'Subscription counts',
     
-    'OR768' => 'Offer price , per month'
+    'OR768' => 'Offer price , per month',
+    'OR769' => 'Single account',
+    'OR770' => '2 to 5 accounts',
+    'OR771' => '6 to 10 accounts',
+    'OR772' => '11+ accounts',
+    'OR773' => 'month and profile'
 );

@@ -81,6 +81,15 @@ $themeUrl = $this->themeUrl;
                          <?php echo $form->dropDownList($model, 'sex', array("M"=>'Male','F'=>'Female'), array('class' => 'form-control')); ?> 
                     </div>
                 </div>
+                
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'lang', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->dropDownList($model, 'lang', array("FR" => 'Français', "EN" => 'Anglais'), array('class' => 'form-control')); ?>
+                        <?php echo $form->error($model, 'lang'); ?>
+                    </div>
+                </div>
+                
                 <?php if (!$model->isNewRecord) {   ?>  
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'ID_CLIENT', array('class' => 'col-sm-2 control-label')); ?>
@@ -416,11 +425,17 @@ $themeUrl = $this->themeUrl;
                                                 array(
                                                 'header' => 'Actes',
                                                 'class' => 'ButtonColumn',
-                                                'htmlOptions' => array('style' => 'text-align:center;width:10%', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                                'template' => '{update}&nbsp;&nbsp;{delete}',
+                                                'htmlOptions' => array('style' => 'text-align:center;width:30%', 'vAlign' => 'middle', 'class' => 'action_column'),
+                                                'template' => '{download}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
                                                 'evaluateID' => true,
                                                 'buttons'=>array
                                                     (
+                                                        'download' => array(
+                                                            'label' => "<i class='fa fa-download'></i>",                         
+                                                            'url' => '(file_exists(YiiBase::getPathOfAlias("webroot")."/uploads/alerts_attachments/".$data->alertfile)) ? Yii::app()->createAbsoluteUrl("/uploads/alerts_attachments/".$data->alertfile) : ""',                            
+                                                            'options' => array('class' => 'newWindow','title' => "Attachment" ,"target" => "_blank"),
+                                                            'visible' => '($data->alertfile!="")'
+                                                         ), 
                                                         'delete' => array
                                                         (
                                                             'label'=>'Delete',                                            
@@ -501,10 +516,16 @@ $themeUrl = $this->themeUrl;
                                                 array(
                                                 'header' => 'Actes',
                                                 'class' => 'booster.widgets.TbButtonColumn',
-                                                'htmlOptions' => array('style' => 'text-align:center;width:10%', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                                'template' => '{delete}',
+                                                'htmlOptions' => array('style' => 'text-align:center;width:30%', 'vAlign' => 'middle', 'class' => 'action_column'),
+                                                'template' => '{download}&nbsp;&nbsp;{delete}',
                                                 'buttons'=>array
                                                     (
+                                                        'download' => array(
+                                                            'label' => "<i class='fa fa-download'></i>",                         
+                                                            'url' => '(file_exists(YiiBase::getPathOfAlias("webroot")."/uploads/alerts_attachments/".$data->alertfile)) ? Yii::app()->createAbsoluteUrl("/uploads/alerts_attachments/".$data->alertfile) : ""',                            
+                                                            'options' => array('class' => 'newWindow','title' => "Attachment" ,"target" => "_blank"),
+                                                            'visible' => '($data->alertfile!="")'
+                                                         ), 
                                                         'delete' => array
                                                         (
                                                             'label'=>'Delete',                                            

@@ -80,7 +80,8 @@ return array(
     'defaultController' => DEFAULT_MODULE.'/default/index',
     // using Yii::app()->params['paramName']
     'params' => require(dirname(__FILE__) . '/params.php'),
-    'timeZone' => 'Asia/Calcutta',
+    //'timeZone' => 'Asia/Calcutta',
+    'timeZone' => 'America/Los_Angeles',
     'theme' => 'adminlte',
     'sourceLanguage' => '00',
     'language' => 'fr',

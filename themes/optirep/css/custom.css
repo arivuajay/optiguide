@@ -582,3 +582,23 @@ a .subscription-txt{
     font-size: 13px !important;   
      padding: 15px 7px !important;
 }
+
+.subscriptionnotify{
+    color: #1e1e1e;
+    float: left;
+    min-height: 200px;
+    width: 100%;
+}
+
+.note-regis {
+  margin-top: -57px;
+}
+
+.map-regis{
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.second-step-regis{
+    margin-bottom: -35px !important;
+}

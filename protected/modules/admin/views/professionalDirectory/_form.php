@@ -234,16 +234,6 @@
                     <h3 class="box-title">Réglez l'alerte à l'employé</h3>
                 </div>
                 <?php
-                $themeUrl = $this->themeUrl;
-                $cs = Yii::app()->getClientScript();
-                $cs_pos_end = CClientScript::POS_END;
-
-                $cs->registerCssFile($themeUrl . '/css/datepicker/datepicker3.css');
-                $cs->registerScriptFile($themeUrl . '/js/datepicker/bootstrap-datepicker.js', $cs_pos_end);
-
-                $cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
-                $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
-
                 if (!$pmodel->status) {
                     $pmodel->status = 0;
                 }
@@ -339,20 +329,7 @@
                                             'filter' => false,
                                             //call the method 'gridDataColumn' from the controller
                                             'value' => array($this, 'gridDataColumn'),
-                                        ),
-                                         array(
-                                        'header' => 'Attachment',
-                                        'class' => 'application.components.MyActionButtonColumn',
-                                        'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                        'template' => '{download}',
-                                        'buttons' => array(                           
-                                                'download' => array(
-                                                   'label' => "<i class='fa fa-download'></i>",                         
-                                                   'url' => '(file_exists(YiiBase::getPathOfAlias("webroot")."/uploads/alerts_attachments/".$data->alertfile)) ? Yii::app()->createAbsoluteUrl("/uploads/alerts_attachments/".$data->alertfile) : ""',                            
-                                                   'options' => array('class' => 'newWindow','title' => "Download file" ),
-                                                ),
-                                            ),
-                                        ),
+                                        ),                                        
                                         array('name' => 'created_date',
                                             'type' => 'raw',
                                             'value' => function($data) {
@@ -363,25 +340,31 @@
                                         array(
                                             'header' => 'Actes',
                                             'class' => 'ButtonColumn',
-                                            'htmlOptions' => array('style' => 'text-align:center;width:10%', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                            'template' => '{update}&nbsp;&nbsp;{delete}',
+                                            'htmlOptions' => array('style' => 'text-align:center;width:30%', 'vAlign' => 'middle', 'class' => 'action_column'),
+                                            'template' => '{download}&nbsp;&nbsp;{update}&nbsp;&nbsp;{delete}',
                                             'evaluateID' => true,
                                             'buttons' => array
                                                 (
-                                                'delete' => array
-                                                    (
-                                                    'label' => 'Delete',
-                                                    'url' => 'Yii::app()->createUrl("admin/professionalDirectory/deleteMessage", array("id"=>$data->message_id))',
-                                                ),
-                                                'update' => array(
-                                                    'label' => 'Update',
-                                                    'url' => '"javascript:void(0)"',
-                                                    'options' => array(
-                                                        "id" => '\'messageid_\'.$data->message_id',
-                                                        'data-target' => '#prof-message-update-modal',
-                                                        'data-toggle' => 'modal',
-                                                        'class' => 'prof_message_update_popup',
+                                                
+                                                'download' => array(
+                                                   'label' => "<i class='fa fa-download'></i>",                         
+                                                   'url' => '(file_exists(YiiBase::getPathOfAlias("webroot")."/uploads/alerts_attachments/".$data->alertfile)) ? Yii::app()->createAbsoluteUrl("/uploads/alerts_attachments/".$data->alertfile) : ""',                            
+                                                   'options' => array('class' => 'newWindow','title' => "Attachment" ,"target" => "_blank"),
+                                                   'visible' => '($data->alertfile!="")'
+                                                    ), 
+                                                'delete' => array(
+                                                        'label' => 'Delete',
+                                                        'url' => 'Yii::app()->createUrl("admin/professionalDirectory/deleteMessage", array("id"=>$data->message_id))',
                                                     ),
+                                               'update' => array(
+                                                        'label' => 'Update',
+                                                        'url' => '"javascript:void(0)"',
+                                                        'options' => array(
+                                                            "id" => '\'messageid_\'.$data->message_id',
+                                                            'data-target' => '#prof-message-update-modal',
+                                                            'data-toggle' => 'modal',
+                                                            'class' => 'prof_message_update_popup',
+                                                            ),
                                                 )
                                             ),
                                         )
@@ -438,19 +421,6 @@
                                             //call the method 'gridDataColumn' from the controller
                                             'value' => array($this, 'gridDataColumn'),
                                         ),
-                                        array(
-                                        'header' => 'Attachment',
-                                        'class' => 'application.components.MyActionButtonColumn',
-                                        'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                        'template' => '{download}',
-                                        'buttons' => array(                           
-                                                'download' => array(
-                                                   'label' => "<i class='fa fa-download'></i>",                         
-                                                   'url' => '(file_exists(YiiBase::getPathOfAlias("webroot")."/uploads/alerts_attachments/".$data->alertfile)) ? Yii::app()->createAbsoluteUrl("/uploads/alerts_attachments/".$data->alertfile) : ""',                            
-                                                   'options' => array('class' => 'newWindow','title' => "Download file" ),
-                                                ),
-                                            ),
-                                        ),
                                         array('name' => 'created_date',
                                             'type' => 'raw',
                                             'value' => function($data) {
@@ -462,14 +432,20 @@
                                             'header' => 'Actes',
                                             'class' => 'booster.widgets.TbButtonColumn',
                                             'htmlOptions' => array('style' => 'text-align:center;width:10%', 'vAlign' => 'middle', 'class' => 'action_column'),
-                                            'template' => '{delete}',
+                                            'template' => '{download}&nbsp;&nbsp;{delete}',
                                             'buttons' => array
                                                 (
-                                                'delete' => array
-                                                    (
-                                                    'label' => 'Delete',
-                                                    'url' => 'Yii::app()->createUrl("admin/professionalDirectory/deleteMessage", array("id"=>$data->message_id))',
-                                                ),
+                                                  'download' => array(
+                                                   'label' => "<i class='fa fa-download'></i>",                         
+                                                   'url' => '(file_exists(YiiBase::getPathOfAlias("webroot")."/uploads/alerts_attachments/".$data->alertfile)) ? Yii::app()->createAbsoluteUrl("/uploads/alerts_attachments/".$data->alertfile) : ""',                            
+                                                   'options' => array('class' => 'newWindow','title' => "Attachment" ,"target" => "_blank"),
+                                                   'visible' => '($data->alertfile!="")'
+                                                    ), 
+                                                    'delete' => array(
+                                                        'label' => 'Delete',
+                                                        'url' => 'Yii::app()->createUrl("admin/professionalDirectory/deleteMessage", array("id"=>$data->message_id))',
+                                                    ),
+                                                
                                             ),
                                         )
                                     );
@@ -543,6 +519,16 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <?php
+$themeUrl = $this->themeUrl;
+$cs = Yii::app()->getClientScript();
+$cs_pos_end = CClientScript::POS_END;
+
+$cs->registerCssFile($themeUrl . '/css/datepicker/datepicker3.css');
+$cs->registerScriptFile($themeUrl . '/js/datepicker/bootstrap-datepicker.js', $cs_pos_end);
+
+$cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
+$cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
+                
 $alerthistory = Yii::app()->request->getQuery('alerthistory', '0');
 $ajaxRegionUrl = Yii::app()->createUrl('/admin/professionalDirectory/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/admin/professionalDirectory/getcities');
