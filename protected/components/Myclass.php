@@ -109,12 +109,14 @@ class Myclass extends CController {
         $criteria = new CDbCriteria;
 
         $countryname = 'NOM_PAYS_' . Yii::app()->session['language'];
-
+        $val = 2;
         $criteria->order = $countryname . ' ASC';
         if (!is_null($id)) {
             $criteria->condition = 'ID_PAYS=:id  ';
             $criteria->params = array(':id' => $id);
         }
+        $criteria->condition = 'Flag_List < :val';
+        $criteria->params = array(':val' => $val);
         $country = CountryDirectory::model()->findAll($criteria);
         $val = CHtml::listData($country, 'ID_PAYS', $countryname);
         return $val;
@@ -130,7 +132,7 @@ class Myclass extends CController {
             $criteria->condition = 'ID_PAYS=:id  ';
             $criteria->params = array(':id' => $id);
         }
-        $criteria->condition = 'Flag_List != :val';
+        $criteria->condition = 'Flag_List < :val';
         $criteria->params = array(':val' => $val);
         $country = CountryDirectory::model()->findAll($criteria);
         $val = CHtml::listData($country, 'ID_PAYS', $countryname);
