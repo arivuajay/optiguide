@@ -9,9 +9,12 @@
             $end_date = date("Y-m-d", strtotime($event['DATE_AJOUT2']));
             $betweenDates = Myclass::getBetweenDates($start_date, $end_date);
             foreach ($betweenDates as $betweenDate) {
+                $caldisp = date("m/d/Y", strtotime($betweenDate));
+               
                 $events_list[] = array(
                     'Url' => Yii::app()->createAbsoluteUrl('/optiguide/calenderEvent/index', array('date' => $betweenDate)),
-                    'Date' => strtotime($betweenDate),
+                   // 'Date' => strtotime($betweenDate),
+                    'Date' => $caldisp
                 );
             }
         }
@@ -23,7 +26,8 @@
             function EventHighlight(date) {
                 var result = [true, '', null];
                 var matching = $.grep(events, function(event) {
-                    return event.Date == date.valueOf() / 1000;
+                    //return event.Date == date.valueOf() / 1000;
+                      return event.Date == $.datepicker.formatDate("mm/dd/yy", date );
                 });
 
                 if (matching.length) {
@@ -33,23 +37,13 @@
             }
 
             function EventRedirect(dateText){
-                var date,
-                selectedDate = new Date(dateText),
-                i = 0,
-                event = null;
-
-                /* Determine if the user clicked an event: */
-                while (i < events.length && !event) {
-                    date = events[i].Date;
-
-                    if (selectedDate.valueOf() / 1000 == date) {
-                        event = events[i];
-                    }
-                    i++;
-                }
-                if (event) {
-                    window.location = event.Url;
-                }
+                for (var k in events) 
+                {                    
+                 if( events[k].Date == dateText) 
+                 {   
+                   window.location = events[k].Url;
+                 }                       
+               }     
             }
 EOD;
         Yii::app()->clientScript->registerScript('_ogCalenderWidget', $js);
