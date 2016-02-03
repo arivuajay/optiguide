@@ -332,5 +332,11 @@ return array(
     'OR770' => '2 to 5 accounts',
     'OR771' => '6 to 10 accounts',
     'OR772' => '11+ accounts',
-    'OR773' => 'month and profile'
+    'OR773' => 'month and profile',
+    
+    'OR774' => 'Statistics - Professional and Retailers subscriptions in Optiguide',
+    'OR775' => 'Statistics - Based on Professional Users Types',
+    'OR776' => 'Statistics - Based on Retailer Users Types',
+    'OR777' => 'No results found.'
+    
 );

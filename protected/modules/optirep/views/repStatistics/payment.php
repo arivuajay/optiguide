@@ -20,42 +20,45 @@
             <p><?php echo Myclass::t('OR724', '', 'or') ?></p>
          </div>   
         <?php
-        if(Yii::app()->user->rep_role=="single")
-        {?>    
+        //if(Yii::app()->user->rep_role=="single")
+        //{?>    
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 stats-tips">          
 <!--        <b><?php //echo Myclass::t('OR725', '', 'or') ?></b>-->
             <ul>
-                <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR726', '', 'or') ?></li>
+                <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR774', '', 'or') ?></li>
+                <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR775', '', 'or') ?></li>
+                <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR776', '', 'or') ?></li>
             </ul>
         </div>
         <?php
-        }?>
+       // }?>
         <?php
-        if(Yii::app()->user->rep_role=="admin")
-        {?>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 stats-tips">
-<!--        <b><?php //echo Myclass::t('OR727', '', 'or') ?></b>-->
-            <ul>
-                <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR728', '', 'or') ?></li>
-                <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR729', '', 'or') ?></li>
-                <li><i class="fa fa-check-square-o"></i> <?php echo Myclass::t('OR730', '', 'or') ?></li>
-            </ul>
-        </div>
+//        if(Yii::app()->user->rep_role=="admin")
+//        {?>
+<!--        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 stats-tips">-->
+<!--        <b>//<?php //echo Myclass::t('OR727', '', 'or') ?></b>-->
+<!--            <ul>
+                <li><i class="fa fa-check-square-o"></i> //<?php //echo Myclass::t('OR728', '', 'or') ?></li>
+                <li><i class="fa fa-check-square-o"></i> //<?php //echo Myclass::t('OR729', '', 'or') ?></li>
+                <li><i class="fa fa-check-square-o"></i> //<?php //echo Myclass::t('OR730', '', 'or') ?></li>
+            </ul>-->
+<!--        </div>-->
         <?php
-        }?>
+//        }?>
     </div>            
     <div class="row"> 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <h4> <?php echo Myclass::t('OR581', '', 'or'); ?>: <?php echo Myclass::currencyFormat($stats_price); ?> </h4>
         </div> 
-        <?php
-        if (!empty($get_transactions)) {
+        <?php       
+        if (!empty($get_transactions)) {           
             $stype = CHtml::hiddenField('subscription_type', '4');
             $btntxt = Myclass::t('OR582', '', 'or');
         } else {
             $stype = CHtml::hiddenField('subscription_type', '3');
             $btntxt = Myclass::t('OR583', '', 'or');
         }
+       
         ?>
         <?php
         $form = $this->beginWidget('CActiveForm', array(
@@ -78,7 +81,7 @@
                                'value' => 'Payfee',
                                'type' => 'submit',
                                 'class' => 'register-btn'
-                                    ), '<i class="fa fa-check-circle"></i>' . Myclass::t('OR733', '', 'or'));
+                                    ), '<i class="fa fa-check-circle"></i> ' . $btntxt);
             ?>
             
         </div>

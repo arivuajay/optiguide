@@ -332,5 +332,10 @@ return array(
     'OR770' => 'De 2 à 5 profils',
     'OR771' => 'De 6 à 10 profils',
     'OR772' => '11 profils ou plus',
-    'OR773' => 'mois et profil'
+    'OR773' => 'mois et profil',
+    
+    'OR774' => 'Statistiques - abonnements professionnels et les détaillants de Optiguide',
+    'OR775' => 'Statistiques - basées sur les utilisateurs professionnels Types',
+    'OR776' => 'Statistiques - Basé sur Retailer Utilisateurs Types',
+    'OR777' => 'Aucun résultat trouvé.'
 );

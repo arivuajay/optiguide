@@ -360,11 +360,11 @@ class RepStatisticsController extends ORController {
     //Particular Rep Logged in Activities
     public function actionIndex() {
         
-        $stats_disp = Myclass::stats_display();
-        if($stats_disp==0)
+        //$stats_disp = Myclass::stats_display();
+       
+        if(Yii::app()->user->rep_role != RepCredentials::ROLE_ADMIN)
         {
-            Yii::app()->user->setFlash('info', Myclass::t('OR614', '', 'or'));
-            $this->redirect('payment');
+           throw new CHttpException(404, 'Page not found.');
         }    
         
         $response = array();
@@ -391,6 +391,13 @@ class RepStatisticsController extends ORController {
     }
 
     public function actionStatistics() {
+        
+        $stats_disp = Myclass::stats_display();
+        if($stats_disp==0)
+        {
+            Yii::app()->user->setFlash('info', Myclass::t('OR614', '', 'or'));
+            $this->redirect('payment');
+        }  
         
         $sname_qry = '';
         $scntry_qry = '';
@@ -577,12 +584,12 @@ class RepStatisticsController extends ORController {
     
     public function actionUserslogstats() {
         
-        $stats_disp = Myclass::stats_display();
-        if($stats_disp==0)
-        {
-            Yii::app()->user->setFlash('info', "Kindly do the payment to see the statistics chart!!");
-            $this->redirect('payment');
-        }   
+//        $stats_disp = Myclass::stats_display();
+//        if($stats_disp==0)
+//        {
+//            Yii::app()->user->setFlash('info', "Kindly do the payment to see the statistics chart!!");
+//            $this->redirect('payment');
+//        }   
         
         
         $repAccountsCriteria = new CDbCriteria;
@@ -621,12 +628,12 @@ class RepStatisticsController extends ORController {
     
     public function actionProfileviewstats() {
         
-        $stats_disp = Myclass::stats_display();
-        if($stats_disp==0)
-        {
-            Yii::app()->user->setFlash('info', "Kindly do the payment to see the statistics chart!!");
-            $this->redirect('payment');
-        }   
+//        $stats_disp = Myclass::stats_display();
+//        if($stats_disp==0)
+//        {
+//            Yii::app()->user->setFlash('info', "Kindly do the payment to see the statistics chart!!");
+//            $this->redirect('payment');
+//        }   
         
         $response = array();
 

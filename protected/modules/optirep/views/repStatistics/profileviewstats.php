@@ -1,6 +1,9 @@
 <div class="cate-bg user-right">
     <h2> <?php echo Myclass::t('OR585', '', 'or') ?> </h2>
     <div class="row"> 
+    <?php
+    if(!empty($response['allprofiles']))
+    {?>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php
             $this->widget('booster.widgets.TbHighCharts', array(
@@ -92,7 +95,15 @@
                     )
                 )
             ));
-            ?>
+            ?>        
         </div>
+               <?php    
+        }else{
+            ?>     
+             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+             <?php     echo Myclass::t('OR777', '', 'or');  ?>   
+             </div>
+       <?php     } 
+   ?> 
     </div>
 </div>

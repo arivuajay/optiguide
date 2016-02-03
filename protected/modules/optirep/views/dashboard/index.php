@@ -26,79 +26,46 @@ if ($topbanner != '') {
 
 <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
     <div class="cate-bg">    
-        <?php
-       
-        /** Users registered in optiguide **/
-        $months = array();
-        if (Yii::app()->session['language'] == 'FR') { 
-            for ($i = 0; $i < 6; $i++) {
-
-                $m= date("n", strtotime($i . " months ago"));
-                $mon = Myclass::getMonths_M($m);
-                $year = date("Y", strtotime($i . " months ago"));
-                $get_my= $mon.' '.$year;
-                array_push($months, $get_my);
-            }
+    <?php
+    
+    if($usrinfo->rep_role == RepCredentials::ROLE_ADMIN)
+    {
+      
+       if(!empty($response['allprofiles']))
+        {   
+            $this->widget('booster.widgets.TbHighCharts', array(
+                'options' => array(
+                    'chart' => array(
+                        'type' => 'column'
+                    ),
+                    'title' => array(
+                        'text' => 'All profile view count stats'
+                    ),
+                    'subtitle' => array(
+                        'text' => 'Last 6 days'
+                    ),
+                    'xAxis' => array(
+                        'categories' => $response['dates']
+                    ),
+                    'yAxis' => array(
+                        'title' => array(
+                            'text' => 'View counts'
+                        ),
+                        'min' => 0,
+                        'max' => 50,
+                    ),
+                    'series' => $response['allprofiles'],
+                    "credits" => array(
+                        'enabled' => false
+                    )
+                )
+            ));   
         }else{
-            for ($i = 0; $i < 6; $i++) {
-                array_push($months, date("M Y", strtotime($i . " months ago")));
-            }
-        }
-//            array_push($months, date("M Y", strtotime($i . " months ago")));
-
-        $response['months'] = array();
-        foreach ($months as $month) {
-            array_push($response["months"], $month);
-        }
-
-        $usertypes = array("Professionals", "Retailers");
-
-        foreach ($usertypes as $key => $utype) {
-            // Count  profile view counts  per month
-            $response['viewcounts'] = array();
-            $viewcounts = '';
-            foreach ($months as $month) {
-
-                $searchdate = date("Y-m", strtotime($month));
-                if ($utype == "Professionals" || $utype=="Professionnels") {
-                    $per_mount_counts = Yii::app()->db->createCommand() //this query contains all the data
-                            ->select('count(*) as pro_per_month_count,ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                            ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-                            ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' AND rs.CREATED_DATE LIKE '%$searchdate%' ")
-                            ->group('rst.ID_TYPE_SPECIALISTE')
-                            ->queryAll();
-                        
-                     foreach($per_mount_counts as $per_mount_count){
-                         $viewcount = $viewcount + $per_mount_count['pro_per_month_count'];
-                     }
-                        
-                    $viewcounts =$viewcount;
-                    $viewcount=0;
-                    $user_type=Myclass::t('OR718', '', 'or');
-                }
-
-                if ($utype == "Retailers" || $utype=="Détaillants") {
-                    $ret_mount_counts = Yii::app()->db->createCommand() // this query get the total number of items,
-                        ->select('count(*) as ret_per_month_count , NOM_TYPE_EN')
-                        ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
-                        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' AND rs.CREATED_DATE LIKE '%$searchdate%'")
-                        ->group('rst.ID_RETAILER_TYPE')
-                        ->queryAll();
-                    foreach($ret_mount_counts as $ret_mount_count){
-                         $viewcount = $viewcount + $ret_mount_count['ret_per_month_count'];
-                     }                        
-                    $viewcounts =$viewcount;
-                    $viewcount= 0;
-                    $user_type = Myclass::t('OR720', '', 'or');
-                }
-
-                array_push($response["viewcounts"], (int) $viewcounts);
-            }
-
-            $response['allprofiles'][$key]['name'] = $user_type;
-            $response['allprofiles'][$key]['data'] = $response["viewcounts"];
-        }
+            echo Myclass::t('OR777', '', 'or');
+        }    
         
+    }else if (($usrinfo->rep_role == RepCredentials::ROLE_SINGLE) && Myclass::stats_display())
+    {  
         $this->widget('booster.widgets.TbHighCharts', array(
             'options' => array(
                 'chart' => array(
@@ -141,7 +108,17 @@ if ($topbanner != '') {
         ));
         ?>
         <p class="pull-right"><?php echo CHtml::link(Myclass::t('OG215'), array('/optirep/repStatistics/statistics'),array("class"=>"more_stats")); ?> </p>
-        
+   <?php
+    }else{
+         
+        if (Yii::app()->session['language'] == 'FR') { 
+           $imgname = "paytoview-fr.jpg"; 
+        }else{
+           $imgname = "paytoview-en.jpg"; 
+        }
+         $image = CHtml::image($this->themeUrl . '/images/'.$imgname, 'satistics');
+         echo CHtml::link($image, array('/optirep/repStatistics/payment'));        
+    }?>
     </div>     
 </div>
 
