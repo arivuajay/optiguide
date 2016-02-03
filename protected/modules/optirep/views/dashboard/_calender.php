@@ -3,7 +3,8 @@
         <div class="cate-heading cate-heading3"> 
             <i class="fa fa-calendar"></i> 
             <?php
-            echo Myclass::t('OR518', '', 'or');
+            //echo Myclass::t('OR518', '', 'or');
+            echo CHtml::link(Myclass::t('OR518', '', 'or'), array('/optirep/calenderEvent'), array('class' => ''));
             echo CHtml::link(Myclass::t('OR038', '', 'or'), array('/optirep/calenderEvent'), array('class' => 'topviewall'));
             ?> 
         </div>

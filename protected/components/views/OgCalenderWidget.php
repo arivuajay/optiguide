@@ -1,5 +1,5 @@
 <div class="optinews-left" id="calendar"> 
-    <div class="optinews-left-heading"> <?php echo Myclass::t('OG017', '', 'og') ?> </div>
+    <div class="optinews-left-heading"><?php echo CHtml::link(Myclass::t('OG017', '', 'og'), array('/optiguide/calenderEvent')); ?></div>
     <div class="optinews-left-bg"> 
         <?php
         $events = CalenderEvent::model()->currentMonthYear()->findAll();

@@ -116,8 +116,8 @@ return array(
     'OR582' => 'RENEW NOW',
     'OR583' => 'PAY NOW',
     'OR584' => 'Payment details',
-    'OR585' => 'Users profiles viewed stats',
-    'OR586' => 'Users log stats',
+    'OR585' => 'Reps profile views',
+    'OR586' => 'Reps activity',
     //controllers/DefaultController
     'OR587' => 'This Username Not Exists!!!',
     'OR588' => 'New Password has been sent to your registered email. Please check your email',

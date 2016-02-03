@@ -116,8 +116,8 @@ return array(
     'OR582' => 'RENOUVELER MAINTENANT',
     'OR583' => 'PAYEZ MAINTENANT',
     'OR584' => 'Détails de paiement',
-    'OR585' => 'Profils utilisateurs consulté stats',
-    'OR586' => 'Les utilisateurs se connectent stats',
+    'OR585' => 'Nombre de profils visités par les Représentants',
+    'OR586' => 'Activité des Représentants',
     //controllers/DefaultController
     'OR587' => "Ce nom d'utilisateur ne Existe !!!",
     'OR588' => 'Nouveau mot de passe a été envoyé à votre e-mail enregistrée . Merci de consulter vos emails',
