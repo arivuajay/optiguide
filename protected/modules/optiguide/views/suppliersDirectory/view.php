@@ -23,6 +23,7 @@ if ($model['logo_expirydate'] != '') {
     $ldisp = 0;
 }
 
+
 ?>
 
 <div class="row"> 
@@ -205,13 +206,50 @@ if ($model['logo_expirydate'] != '') {
                             <div class="repbox" id="repbox">
                                 <div class="brands">   
                                     <ul>
-                                        <?php foreach ($results as $info) { ?>
+                                        <?php foreach ($results as $info) {
+                                          
+                                               $rep_profile_firstname = ""; 
+                                               if($info['rep_profile_firstname']!="")
+                                                $rep_profile_firstname =  ucfirst($info['rep_profile_firstname']);  
+                                               
+                                               $rep_profile_lastname = ""; 
+                                               if($info['rep_profile_lastname']!="")
+                                                $rep_profile_lastname =  ucfirst($info['rep_profile_lastname']); 
+                                               
+                                              ?>
                                             <li>
                                                 <?php
-                                                $dispname = $info['rep_username'].",".$info['NOM_VILLE'].",".$info['ABREVIATION_EN'].",".$info['NOM_PAYS_EN'];
+                                                $dispname = $rep_profile_firstname." ".$rep_profile_lastname.", ".$info['NOM_VILLE'].", ".$info['ABREVIATION_EN'].", ".$info['NOM_PAYS_EN'];
                                                 echo $dispname;
                                                 ?>
-                                            </li>
+                                                <?php
+                                                if($info['rep_territories']!= ""){ ?>
+                                                <br>
+                                                <b>Territories :</b> <?php echo $info['rep_territories'];?>
+                                                <?php } ?>
+                                                <?php
+                                                if($info['rep_brands']!= "")
+                                                {
+                                                    $prd_marque_ids = $info['rep_brands'];
+                                                    $marqueinfos = MarqueDirectory::model()->findAll(array('condition'=>"ID_MARQUE IN ($prd_marque_ids)",'order'=>'NOM_MARQUE ASC'));
+
+                                                    foreach ($marqueinfos as $minfo)
+                                                    {
+                                                       $mnames[] = $minfo->NOM_MARQUE;
+                                                    }  
+
+                                                    if(!empty($mnames))
+                                                    {
+                                                        $marque_names = implode(' , ',$mnames);
+                                                    }
+                                                ?>
+                                                <br>
+                                                <b>Brands :</b> <?php echo $marque_names;?>
+                                                <?php 
+                                                } ?>
+                                                <br>
+                                           <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> ' . Myclass::t('OR621', '', 'or'), array('#'), array("class" => "addfav-btn", "data-toggle" => "modal", "id"=>"msgtrigger_".$info['ID_UTILISATEUR'], "data-target" => "#sendmessage" ,"data-uid"=>$info['ID_UTILISATEUR'] , "data-nom"=> ucwords($info['NOM_UTILISATEUR']) )); ?>
+                                        </li>
                                         <?php } ?>                       
                                     </ul>               
                                     <p>&nbsp;</p>
@@ -224,27 +262,101 @@ if ($model['logo_expirydate'] != '') {
 
             </div>             
         </div>
-        <?php $pre_url=Yii::app()->request->urlReferrer; 
-            $marqueids=Yii::app()->request->getParam('marqueid');
-          if(empty($pre_url)){
-              if ($disppage == "category") {
-                  echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/optiguide/suppliersDirectory/category'), array("class" => "basic-btn"));   
-              }else if (empty($marqueids))  {
-                  echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/optiguide/suppliersDirectory'), array("class" => "basic-btn"));   
-              }else{
-                  echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/optiguide/marqueDirectory'), array("class" => "basic-btn"));   
-              }
-    ?>
-    <?php }else{?>
-        <a class='basic-btn' href="<?php echo $pre_url; ?>"><?php echo Myclass::t('OG016', '', 'og');?>  </a>
-    <?php }?>
+        <p class="backbtn">
+            <?php 
+                $pre_url=Yii::app()->request->urlReferrer; 
+                $marqueids=Yii::app()->request->getParam('marqueid');
+                    if(empty($pre_url)){
+                        if ($disppage == "category") {
+                            echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/optiguide/suppliersDirectory/category'), array("class" => "basic-btn"));   
+                        }else if (empty($marqueids))  {
+                            echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/optiguide/suppliersDirectory'), array("class" => "basic-btn"));   
+                        }else{
+                            echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/optiguide/marqueDirectory'), array("class" => "basic-btn"));   
+                        }
+              ?>
+              <?php }else{?>
+                  <a class='basic-btn' href="<?php echo $pre_url; ?>"><?php echo Myclass::t('OG016', '', 'og');?>  </a>
+              <?php }?>
+        </p>   
         <?php //echo CHtml::link(Myclass::t('OG016', '', 'og'), array('/optiguide/suppliersDirectory'), array('class' => 'basic-btn')); ?>
+    </div>
+</div>
+
+<!-- Send Message Modal Box-->
+<div class="modal fade" id="sendmessage" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><?php echo Myclass::t('OR621', '', 'or') ?></h4>
+            </div>
+            <?php
+            $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'send_message_form',
+                'htmlOptions' => array('role' => 'form'),
+                'action' => Yii::app()->createUrl('/optiguide/internalMessage/createnew'),
+            ));
+            ?>
+            <div class="modal-body model-form">
+                <div class="row"> 
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label><?php echo Myclass::t('OR643', '', 'or') ?>: </label>   
+                        <span id="repusername">&nbsp</span>                     
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label><?php echo Myclass::t('OR624', '', 'or') ?> </label>    
+                        <p>
+                        <?php echo $form->textArea($internalmodel, 'message', array('class' => 'form-field-textarea', "id" => "messageval", 'maxlength' => 1000, 'rows' => 5, 'cols' => 50)); ?> 
+                        </p>    
+                        <div style="display:none;" class="errorMessage" id="message_error">
+                            <?php echo Myclass::t('OR644', '', 'or') ?>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            <?php echo $form->hiddenField($internalmodel, 'user2', array("id" => "user2")); ?>
+            <div class="modal-footer">
+                <div class="pull-right">
+                <?php
+                echo CHtml::tag('button', array(
+                    'name' => 'SendMessage',
+                    'type' => 'submit',
+                    'class' => 'submit-btn'
+                        ), Myclass::t('OR639', '', 'or'));
+                ?>
+                </div>
+            </div>
+            <?php $this->endWidget(); ?>
+        </div>
     </div>
 </div>
 <?php
 $js = <<< EOD
 $(document).ready(function(){
-         $('.repbox').lionbars();
+        $('.repbox').lionbars();
+        
+        
+        $(".addfav-btn").click(function(){
+            $("#message_error").hide();
+        
+            var uid = $(this).data("uid");
+            var nom = $(this).data("nom");
+            $("#repusername").html(nom);
+            $("#user2").val(uid);
+        })
+        
+        $('#send_message_form').on('submit', function() {
+               
+         var msgval= $("#messageval").val();      
+         $("#message_error").hide();
+         if(msgval=='')
+         {
+              $("#message_error").show();
+              return false; 
+         }    
+    }); 
 });
 EOD;
 Yii::app()->clientScript->registerScript('_form_listrep', $js);

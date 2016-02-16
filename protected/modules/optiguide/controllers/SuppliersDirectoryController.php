@@ -141,7 +141,7 @@ class SuppliersDirectoryController extends OGController {
 
         // Get all records list  with limit
         $results = Yii::app()->db->createCommand() //this query contains all the data
-                ->select('rc.rep_credential_id , rc.rep_username, NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
+                ->select('rc.rep_credential_id , rc.rep_username, rcf.rep_profile_firstname , rcf.rep_profile_lastname , NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
                 ->from(array('rep_credentials rc', 'rep_credential_profiles rcf', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
                 ->where("rc.rep_credential_id=rcf.rep_credential_id AND rcf.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and rc.rep_status='1' and rep_role='single' " . $rep_query)
                 ->order('rc.rep_username ASC')
@@ -181,7 +181,7 @@ class SuppliersDirectoryController extends OGController {
 
             // Get all records list  with limit
             $results = Yii::app()->db->createCommand() //this query contains all the data
-                    ->select('rc.rep_credential_id , rc.rep_username, NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
+                    ->select('rc.rep_credential_id , rc.rep_username, rcf.rep_profile_firstname , rcf.rep_profile_lastname ,  NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
                     ->from(array('rep_credentials rc', 'rep_credential_profiles rcf', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
                     ->where("rc.rep_credential_id=rcf.rep_credential_id AND rcf.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and rc.rep_status='1' and rep_role='single' " . $rep_query)
                     ->order('rc.rep_username ASC')
@@ -201,7 +201,8 @@ class SuppliersDirectoryController extends OGController {
         $sectionid = Yii::app()->request->getParam('sectionid');
         $productid = Yii::app()->request->getParam('productid');
         $marqueid = Yii::app()->request->getParam('marqueid');
-
+        
+         $internalmodel = new InternalMessage;
 
         // Get the list of corresponding representatives to the supplier
         $results = array();
@@ -216,9 +217,9 @@ class SuppliersDirectoryController extends OGController {
 
             // Get all records list  with limit
             $results = Yii::app()->db->createCommand() //this query contains all the data
-                    ->select('rc.rep_credential_id , rc.rep_username, NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
-                    ->from(array('rep_credentials rc', 'rep_credential_profiles rcf', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
-                    ->where("rc.rep_credential_id=rcf.rep_credential_id AND rcf.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and rc.rep_status='1' and rep_role='single' " . $rep_query)
+                    ->select('ru.ID_UTILISATEUR,ru.NOM_UTILISATEUR, rc.rep_credential_id , rcf.rep_profile_firstname , rcf.rep_profile_lastname , rc.rep_username, rcf.rep_territories, rcf.rep_brands, NOM_VILLE ,  NOM_REGION_EN , ABREVIATION_EN ,  NOM_PAYS_EN')
+                    ->from(array('rep_credentials rc', 'rep_credential_profiles rcf', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                    ->where("rc.rep_credential_id=rcf.rep_credential_id AND rcf.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and rc.rep_status='1' and rep_role='single' and rc.rep_credential_id=ru.ID_RELATION and ru.NOM_TABLE='rep_credentials' " . $rep_query)
                     ->order('rc.rep_username ASC')
                     ->queryAll();
         }
@@ -226,9 +227,9 @@ class SuppliersDirectoryController extends OGController {
 
         //this query contains supplier informations
         $supplier_query = Yii::app()->db->createCommand()
-                ->select('f.* , af.ID_CATEGORIE , af.FICHIER , af.EXTENSION ,  TYPE_FOURNISSEUR_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                ->from(array('repertoire_fournisseurs f', 'repertoire_fournisseur_type ft', 'archive_fichier af', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp'))
-                ->where("f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.iId_fichier=af.ID_FICHIER AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and bAfficher_site=1 and ID_FOURNISSEUR=" . $id)
+                ->select('f.* ,ru.ID_UTILISATEUR, af.ID_CATEGORIE , af.FICHIER , af.EXTENSION ,  TYPE_FOURNISSEUR_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
+                ->from(array('repertoire_fournisseurs f', 'repertoire_fournisseur_type ft', 'archive_fichier af', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp' , 'repertoire_utilisateurs as ru'))
+                ->where("f.ID_FOURNISSEUR=ru.ID_RELATION and f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR AND f.iId_fichier=af.ID_FICHIER AND f.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and bAfficher_site=1 AND ru.status=1 AND ru.NOM_TABLE ='Fournisseurs' and ID_FOURNISSEUR=" . $id)
                 ->queryRow();
 
         $sectionqry = '';
@@ -270,6 +271,7 @@ class SuppliersDirectoryController extends OGController {
             'searchModel' => $searchModel,
             'supplierproducts' => $result,
             'results' => $results,
+            'internalmodel' => $internalmodel,
         ));
     }
 

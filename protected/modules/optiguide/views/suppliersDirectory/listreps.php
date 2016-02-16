@@ -29,12 +29,20 @@ $themeUrl = $this->themeUrl;
                             <?php
                             if (!empty($results)) {
                                 foreach ($results as $userinfo) {
+                                    
+                                    $rep_profile_firstname = ""; 
+                                    if($userinfo['rep_profile_firstname']!="")
+                                     $rep_profile_firstname =  ucfirst($userinfo['rep_profile_firstname']);  
+
+                                    $rep_profile_lastname = ""; 
+                                    if($userinfo['rep_profile_lastname']!="")
+                                     $rep_profile_lastname =  ucfirst($userinfo['rep_profile_lastname']); 
                                     ?>
                                     <tr>
                                         <td><input type="checkbox" name="repid[]" class="simple checkbox1" value="<?php echo $userinfo['rep_credential_id']; ?>"></td>
                                         <td>
                                             <?php
-                                            $dispname = $userinfo['rep_username'].",".$userinfo['NOM_VILLE'].",".$userinfo['ABREVIATION_EN'].",".$userinfo['NOM_PAYS_EN'];
+                                            $dispname = $rep_profile_firstname." ".$rep_profile_lastname.", ".$userinfo['NOM_VILLE'].", ".$userinfo['ABREVIATION_EN'].", ".$userinfo['NOM_PAYS_EN'];
                                             echo $dispname;
                                             //echo CHtml::link($dispname, array('/optiguide/retailerDirectory/view', 'id' => $userinfo['rep_credential_id']), array('target'=>'_blank')). " " . $userinfo['NOM_VILLE'] . "," . $userinfo['ABREVIATION_' . $this->lang] . "," . $userinfo['NOM_PAYS_' . $this->lang];
                                             ?>

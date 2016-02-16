@@ -9,8 +9,16 @@ $rdatas    = array();
 
 foreach ($results as $userinfo)
 {
+    $rep_profile_firstname = ""; 
+    if($userinfo['rep_profile_firstname']!="")
+     $rep_profile_firstname =  ucfirst($userinfo['rep_profile_firstname']);  
+
+    $rep_profile_lastname = ""; 
+    if($userinfo['rep_profile_lastname']!="")
+     $rep_profile_lastname =  ucfirst($userinfo['rep_profile_lastname']); 
+                                    
     $rid = $userinfo['rep_credential_id'];
-    $dispname = $userinfo['rep_username'].",".$userinfo['NOM_VILLE'].",".$userinfo['ABREVIATION_EN'].",".$userinfo['NOM_PAYS_EN'];
+    $dispname = $rep_profile_firstname." ".$rep_profile_lastname.", ".$userinfo['NOM_VILLE'].", ".$userinfo['ABREVIATION_EN'].", ".$userinfo['NOM_PAYS_EN'];
     $rdatas[$rid]= $dispname;  
 }
 ?>
