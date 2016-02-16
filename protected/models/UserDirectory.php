@@ -181,7 +181,8 @@ class UserDirectory extends CActiveRecord
 		$criteria->compare('ABONNE_PROMOTION',$this->ABONNE_PROMOTION);
 		$criteria->compare('ABONNE_TRANSITION',$this->ABONNE_TRANSITION);
 		$criteria->compare('IS_FIRST_LOG',$this->IS_FIRST_LOG);
-		$criteria->compare('NOM_TABLE',$this->NOM_TABLE,true);
+		//$criteria->compare('NOM_TABLE',$this->NOM_TABLE,true);
+                $criteria->compare('NOM_TABLE',"NA",true);
 		$criteria->compare('ID_RELATION',$this->ID_RELATION);
 		$criteria->compare('MUST_VALIDATE',$this->MUST_VALIDATE);
 		$criteria->compare('sGuid',$this->sGuid,true);
@@ -189,6 +190,9 @@ class UserDirectory extends CActiveRecord
 		$criteria->compare('bSubscription_envue',$this->bSubscription_envue);
 
 		return new CActiveDataProvider($this, array(
+                        'sort'=>array(
+                            'defaultOrder'=>'NOM_UTILISATEUR ASC',
+                          ),
 			'criteria'=>$criteria,
                         'pagination' => array(
                             'pageSize' => PAGE_SIZE,

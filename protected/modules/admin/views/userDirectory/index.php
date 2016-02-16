@@ -2,9 +2,9 @@
 /* @var $this UserDirectoryController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title='Utilisateurs';
+$this->title='NA Utilisateurs';
 $this->breadcrumbs=array(
-	'Utilisateurs',
+	'NA Utilisateurs',
 );
 $themeUrl = $this->themeUrl;
 $cs = Yii::app()->getClientScript();
@@ -32,16 +32,20 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
            ));
         
         $gridColumns = array(
+             array('header' => 'SN.',
+                'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
+            ),
         	//'LANGUE',
 		//'PREFIXE',
 		'NOM_UTILISATEUR',
-		'USR',             
-               array(
+		'USR',   
+                'COURRIEL',
+              /* array(
                     'name'=>'NOM_TABLE',          
                     'value' => '$data->NOM_TABLE',
                     'filter'  => CHtml::activeDropDownList($model, 'NOM_TABLE', CHtml::listData($getnoms , 'NOM_TABLE', 'NOM_TABLE'), array('class'=>'form-control','prompt'=>'All')),                    
                 ),
-		/*'PWD',
+		'PWD',
 		'COURRIEL',		
 		'ABONNE_MAILING',
 		'ABONNE_PROMOTION',
@@ -58,7 +62,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         'header' => 'Actions',
         'class' => 'booster.widgets.TbButtonColumn',
         'htmlOptions' => array('style' => 'width: 180px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-        'template' => '{update}{delete}',
+        'template' => '{update}',
         )
         );
 
@@ -68,7 +72,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         'type' => 'striped bordered datatable',
         'dataProvider' => $model->search(),
         'responsiveTable' => true,
-        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i>  Utilisateurs</h3></div><div class="panel-body">{items}{pager}</div></div>',
+        'template' => '<div class="panel panel-primary"><div class="panel-heading"><div class="pull-right">{summary}</div><h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> NA Utilisateurs</h3></div><div class="panel-body">{items}{pager}</div></div>',
         'columns' => $gridColumns
         )
         );
