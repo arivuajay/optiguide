@@ -26,7 +26,8 @@ class RetailerGroup extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('ID_GROUPE, ID_RETAILER_TYPE, NOM_GROUPE', 'required'),
+//			array('ID_GROUPE, ID_RETAILER_TYPE, NOM_GROUPE', 'required'),
+                        array('ID_RETAILER_TYPE, NOM_GROUPE', 'required'),
 			array('ID_GROUPE, ID_RETAILER_TYPE', 'numerical', 'integerOnly'=>true),
 			array('NOM_GROUPE', 'length', 'max'=>255),
 			// The following rule is used by search().
