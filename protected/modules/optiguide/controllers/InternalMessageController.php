@@ -101,27 +101,27 @@ class InternalMessageController extends OGController {
 
                 $identy_user = $rep_infos->NOM_TABLE;
 
-                if ($ret_email != '') {
+                if ($rep_email != '') {
 
-                    $this->lang = Yii::app()->session['language'];
+                    $lang = Yii::app()->session['language'];
                     /* Send notification mail to rep */
                     $mail = new Sendmail();
                     $nextstep_url = REPURL . 'optirep/internalMessage/readmessage/convid/' . $model->id1;
 
-                    if($this->lang=='EN'){
+                    if($lang=='EN'){
                         $subject = SITENAME." - ".Yii::app()->user->name." sent message for you ( ".$todaydate." )";
-                    }else if($this->lang=='FR'){
+                    }else if($lang=='FR'){
                         $subject = SITENAME . " - Vous avez un nouveau message";
                     }
                     $trans_array = array(
                         "{SITENAME}" => SITENAME,
                         "{NAME}" => $ufrm_infos->NOM_UTILISATEUR,
-                        "{RNAME}" => $ret_name,
+                        "{RNAME}" => $rep_name,
                         "{MESSAGE}" => $conv_message,
                         "{NEXTSTEPURL}" => $nextstep_url,
                     );
                     $message = $mail->getMessage('internalmessage_notify', $trans_array);
-                   // $mail->send($ret_email, $subject, $message);
+                    $mail->send($rep_email, $subject, $message);
                 }
 
                 Yii::app()->user->setFlash('success', Myclass::t("OR615", "", "or"));
@@ -170,13 +170,13 @@ class InternalMessageController extends OGController {
                 
                 if($rep_email!= '')
                 {    
-                    $this->lang = Yii::app()->session['language'];
+                    $lang = Yii::app()->session['language'];
                     /* Send notification mail to rep */
                     $mail         = new Sendmail();
                     $nextstep_url = REPURL.'optirep/internalMessage/readmessage/convid/' .$model->id1; 
-                    if($this->lang=='EN'){
+                    if($lang=='EN'){
                         $subject      = SITENAME." - ".Yii::app()->user->name." sent message for you ( ".$todaydate." )";
-                    }else if($this->lang=='FR'){
+                    }else if($lang=='FR'){
                         $subject = SITENAME . " - Vous avez un nouveau message";
                     }
                     
