@@ -44,11 +44,11 @@ class InternalMessageController extends OGController {
     public function actionCreatenew() {
 
         $model = new InternalMessage;
-
+       
         if (isset($_POST['SendMessage'])) {
 
             $model->attributes = $_POST['InternalMessage'];
-
+            
             // Genreate the conversation id
             $criteria = new CDbCriteria;
             $criteria->select = 'max(id1) AS maxColumn';
@@ -57,8 +57,10 @@ class InternalMessageController extends OGController {
             $id1 = $npm_count + 1;
 
             // Get sender detail
-            $sess_id    = Yii::app()->user->id;
+            $sess_id    = Yii::app()->user->relationid;
             $condition  = "";
+            
+            $pagename = $_POST['pagename'];
             
             if(Yii::app()->user->role == "Professionnels")
             $condition  = "status=1 AND NOM_TABLE ='Professionnels' AND ID_RELATION='$sess_id' ";
@@ -89,17 +91,15 @@ class InternalMessageController extends OGController {
                 $model->save(false);
 
                 // Get user infos
-                $ret_prof_id = $model->user2;
-                $ret_infos = UserDirectory::model()->findByPk($ret_prof_id);
-                $ret_name  = $ret_infos->NOM_UTILISATEUR;
-                $ret_email = $ret_infos->COURRIEL;
-                $todaydate = date("d-m-Y");
+                $rep_prof_id = $model->user2;
+                $rep_infos   = UserDirectory::model()->findByPk($rep_prof_id);
+                $rep_name    = $rep_infos->NOM_UTILISATEUR;
+                $rep_email   = $rep_infos->COURRIEL;
+                $todaydate   = date("d-m-Y");
 
-                $redirect_id = $ret_infos->ID_RELATION;
+                $redirect_id = $rep_infos->ID_RELATION;
 
-                $identy_user = $ret_infos->NOM_TABLE;
-
-                $directoryname = "suppliersDirectory";
+                $identy_user = $rep_infos->NOM_TABLE;
 
                 if ($ret_email != '') {
 
@@ -125,10 +125,10 @@ class InternalMessageController extends OGController {
                 }
 
                 Yii::app()->user->setFlash('success', Myclass::t("OR615", "", "or"));
-                $this->redirect(array($directoryname . '/view', 'id' => $redirect_id));
+                $this->redirect(array('suppliersDirectory/view', 'id' => $sess_id, "disppage" => $pagename));
             }else{
                 Yii::app()->user->setFlash('danger', "You are not authenticated user to send message.");
-                $this->redirect(array($directoryname . '/view', 'id' => $redirect_id));
+                $this->redirect(array('suppliersDirectory/view', 'id' => $sess_id, "disppage" => $pagename));
             }      
         }
     }

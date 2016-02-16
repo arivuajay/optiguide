@@ -59,7 +59,7 @@
             }
             
             $mailicon = '';
-            if (Yii::app()->user->role == "Professionnels" || Yii::app()->user->role == "Detaillants") 
+            if (Yii::app()->user->role == "Professionnels" || Yii::app()->user->role == "Detaillants" || Yii::app()->user->role == "Fournisseurs") 
             { 
                 $uid = Yii::app()->user->id;
                 $condition_unread = "((user1=".$uid." AND user1read='no') OR (user2=".$uid." AND user2read='no'))";
@@ -96,7 +96,7 @@
                     array('label' => Myclass::t('OGO149', '', 'og'), 'url' => array('/optiguide/professionalDirectory/listretailers'), 'active' => ($_controller == 'professionalDirectory' && $_action == "listretailers"), 'visible' => (Yii::app()->user->role == "Professionnels")),
                     //array('label' => Myclass::t('OGO160', '', 'og'), 'url' => array('/optiguide/professionalDirectory/retailersrequest'), 'active' => ($_controller == 'professionalDirectory' && $_action == "retailersrequest"), 'visible' => (Yii::app()->user->role == "Professionnels")),
                     // Internal messages
-                    array('label' => Myclass::t('OR623', '', 'or').' &nbsp'.$mailicon, 'url' => array('/optiguide/internalMessage/'), 'active' => $_controller == 'internalMessage'),   
+                    array('label' => Myclass::t('OR623', '', 'or').' &nbsp'.$mailicon, 'url' => array('/optiguide/internalMessage/'), 'active' => $_controller == 'internalMessage' , "visible" => (Yii::app()->user->role == "Professionnels" || Yii::app()->user->role == "Detaillants" || Yii::app()->user->role == "Fournisseurs") ),   
                     // For all users
                     array('label' => Myclass::t('OGO112', '', 'og'), 'url' => array('/optiguide/userDirectory/changepassword'), 'active' => ($_controller == "userDirectory" && $_action == "changepassword")),
                     array('label' => "<i class='fa fa-sign-out'></i> " . Myclass::t('OG025', '', 'og'), 'url' => array('/optiguide/default/logout')),

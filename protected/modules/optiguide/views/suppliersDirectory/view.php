@@ -247,8 +247,15 @@ if ($model['logo_expirydate'] != '') {
                                                 <b>Brands :</b> <?php echo $marque_names;?>
                                                 <?php 
                                                 } ?>
+                                            <?php
+                                            echo $sess_id    = Yii::app()->user->id;
+                                            if( isset(Yii::app()->user->role) && ( Yii::app()->user->role == "Professionnels" || Yii::app()->user->role == "Fournisseurs" || Yii::app()->user->role == "Detaillants")  )
+                                            {    
+                                            ?>    
                                                 <br>
                                            <?php echo CHtml::link('<i class="fa fa-mail-forward"></i> ' . Myclass::t('OR621', '', 'or'), array('#'), array("class" => "addfav-btn", "data-toggle" => "modal", "id"=>"msgtrigger_".$info['ID_UTILISATEUR'], "data-target" => "#sendmessage" ,"data-uid"=>$info['ID_UTILISATEUR'] , "data-nom"=> ucwords($info['NOM_UTILISATEUR']) )); ?>
+                                           <?php 
+                                            } ?>                            
                                         </li>
                                         <?php } ?>                       
                                     </ul>               
@@ -317,6 +324,7 @@ if ($model['logo_expirydate'] != '') {
                 </div>
             </div>            
             <?php echo $form->hiddenField($internalmodel, 'user2', array("id" => "user2")); ?>
+            <input type="hidden" name="pagename" value="<?php echo $disppage;?>">
             <div class="modal-footer">
                 <div class="pull-right">
                 <?php
