@@ -1090,7 +1090,9 @@ class SuppliersDirectoryController extends Controller {
      */
     public function actionDelete($id) {
         $this->loadModel($id)->delete();
-
+        
+        $user=UserDirectory::model()->find('ID_RELATION=:id_relation AND NOM_TABLE=:nom_table',array(':id_relation'=>$id,'nom_table'=>'Fournisseurs') ); 
+        $user->delete();
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax'])) {
             Yii::app()->user->setFlash('success', 'SuppliersDirectory Deleted Successfully!!!');
