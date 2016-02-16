@@ -18,6 +18,14 @@ class OgIdentity extends CUserIdentity {
     public function authenticate() {
         $user = UserDirectory::model()->find('USR = :U', array(':U' => $this->username));
         
+        if($user->NOM_TABLE=="Professionnels"){
+            $relation_table = ProfessionalDirectory::model()->findByPk($user->ID_RELATION);
+        }else if($user->NOM_TABLE=="Detaillants"){
+            $relation_table = RetailerDirectory::model()->findByPk($user->ID_RELATION);
+        }else if($user->NOM_TABLE=="Fournisseurs"){
+            $relation_table = SuppliersDirectory::model()->findByPk($user->ID_RELATION);
+        }
+        
         $user_dbpass = $user->PWD;
         // strip out all whitespace
         $user_dbpass = preg_replace('/\s*/', '', $user_dbpass);
@@ -34,7 +42,10 @@ class OgIdentity extends CUserIdentity {
             $this->errorCode = self::ERROR_USERNAME_INVALID;     // Error Code : 1
         } else if ($user_dbpass !== $user_postpass) {
             $this->errorCode = self::ERROR_PASSWORD_INVALID;   // Error Code : 1
-        } else if ($user->status == 0) {
+        } else if (empty ($relation_table)) {
+            //Add new condition to finding the status of user.
+            $this->errorCode = self::ERROR_USERNAME_INVALID;
+        }else if ($user->status == 0) {
             //Add new condition to finding the status of user.
             $this->errorCode = self::ERROR_USERNAME_NOT_ACTIVE;
         } else {
