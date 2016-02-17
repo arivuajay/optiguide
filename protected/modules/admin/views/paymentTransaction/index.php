@@ -93,20 +93,20 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         'header' => 'Actes',
         'class' => 'booster.widgets.TbButtonColumn',
         'htmlOptions' => array('style' => 'width: 100px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-        'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{cancel}&nbsp;&nbsp;{modifyfreepayment}',
+        'template' => '{update}&nbsp;&nbsp;{view}&nbsp;&nbsp;{cancel}&nbsp;&nbsp;{modifyfreepayment}',
          'buttons'=> array(  
              
                     'update'=>array(                                    
                               'visible'=>'$data->payment_status=="Pending" && AdminIdentity::checkAccess_others(NULL, NULL,NULL, "update")',
                             ), 
                     'cancel' => array(
-                       'label' => "<i class='fa fa-remove'></i>",                         
+                       'label' => "<i class='glyphicon glyphicon-remove'></i>",                         
                        'url' => 'CHtml::normalizeUrl(array("/admin/paymentTransaction/cancelpayment/id/".rawurlencode($data->id)))',                            
                        'options' => array('title' => "Cancel Payment" ),
                        'visible'=>'$data->payment_status != "Cancelled" && ($data->pay_type=="3" || $data->pay_type == 4)',
                      ),
                     'modifyfreepayment' => array(
-                       'label' => "<i class='fa fa-edit'></i>",                         
+                       'label' => "<i class='glyphicon glyphicon-edit'></i>",                         
                        'url' => 'CHtml::normalizeUrl(array("/admin/paymentTransaction/modifypayment/id/".rawurlencode($data->id)))',                            
                        'options' => array('title' => "Modify Cheque Infos" ),
                        'visible'=>'$data->pay_type=="3"',

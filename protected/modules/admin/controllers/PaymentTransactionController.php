@@ -28,7 +28,7 @@ class PaymentTransactionController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'reptransaction', 'repview', 'repUpdateStatus',"cancelpayment"),
+                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'reptransaction', 'repview', 'repUpdateStatus',"cancelpayment","modifypayment"),
                 'users' => array('@'),
                 'expression'=> 'AdminIdentity::checkAccess()',
             ),
@@ -221,6 +221,45 @@ class PaymentTransactionController extends Controller {
         
         Yii::app()->user->setFlash('success', 'Paiement annulé avec succès!!!');
         $this->redirect(array('index'));
+    }
+    
+    public function actionModifypayment($id) {
+      
+        $criteria = new CDbCriteria;  
+        $criteria->addCondition("id = ".$id);
+        $paymentdetails = PaymentTransaction::model()->find($criteria);
+        
+        if($paymentdetails->payment_type=="Cheque")
+        {  
+            $criteria2 = new CDbCriteria;  
+            $criteria2->addCondition("payment_transaction_id = ".$id);
+            $pmodel = PaymentCheques::model()->find($criteria2);
+            
+            if (isset($_POST['PaymentCheques'])) 
+            { 
+                $pmodel->attributes = $_POST['PaymentCheques'];
+                $pmodel->scenario   = 'bycheque';
+                $pmodel->logo  = 1;
+                
+                if($pmodel->validate())
+                {
+                    $pmodel->save();
+                    Yii::app()->user->setFlash('success', 'vérifier les détails mis à jour avec succès .!!!');
+                    $this->redirect(array('index'));
+                }else{
+                    echo "<pre>";
+                    print_r($pmodel->getErrors());
+                    exit;
+                }
+            }
+            
+            $this->render('modifypayment', compact('pmodel'));
+            
+        }else{
+            
+            Yii::app()->user->setFlash('danger', 'Seulement vérifier le paiement sera modifier!!!');
+            $this->redirect(array('index')); 
+        }    
     }
     
 
