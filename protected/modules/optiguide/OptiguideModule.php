@@ -43,10 +43,13 @@ class OptiguideModule extends CWebModule {
             
             $_controller = $controller->id;
             $_action     = $action->id;
-                    
+            
+            $controller_name=array("userDirectory","default","professionalDirectory","retailerDirectory");
+            $action_name=array("confirmation","logout","update","getregions","getgroups","getcities" );
+            
             if($mustvalidate==0)
             {
-                if(($_controller=="userDirectory" || $_controller=="default" || $_controller=="professionalDirectory" || $_controller=="retailerDirectory") && ( $_action=="confirmation" || $_action=="logout" || $_action=="update"))
+                if(( in_array($_controller, $controller_name) ) && ( in_array($_action, $action_name) ))
                 { 
                     
                 }else{

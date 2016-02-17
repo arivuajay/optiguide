@@ -13,7 +13,7 @@
                     <?php
                     $country = Myclass::getallcountries();
                     $regions = Myclass::getallregions($model->ID_PAYS);
-                    $cities = Myclass::getallcities($model->ID_REGION);
+                    $cities = Myclass::getallcities_other($model->ID_REGION);
 
                     $criteria = new CDbCriteria();
                     $criteria->select = 'YEAR(DATE_AJOUT1) as Year';

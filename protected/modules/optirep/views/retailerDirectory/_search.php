@@ -13,7 +13,7 @@
 
     $country = Myclass::getallcountries();
     $regions = Myclass::getallregions($searchModel->country);
-    $cities = Myclass::getallcities($searchModel->region);
+    $cities = Myclass::getallcities_other($searchModel->region);
     $categories = array("1" => Myclass::t('OG105'), "2" => Myclass::t('OG106'), "3" => Myclass::t('OG107'), "4" => Myclass::t('OG108'), "5" => Myclass::t('OG109'));
 
     if (Yii::app()->session['language'] == 'FR') {
@@ -96,7 +96,7 @@ $js = <<< EOD
         $.ajax({
             type: "POST",
             url: '{$ajaxCityUrl}',
-            data: dataString,
+            data: dataString+'&client_dis=1',
             cache: false,
             success: function(html){             
                 $("#RetailerDirectory_ID_VILLE").html(html).selectpicker('refresh');

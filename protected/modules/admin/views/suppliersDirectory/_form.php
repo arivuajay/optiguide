@@ -139,7 +139,11 @@
                                     <?php echo $form->dropDownList($model, 'ID_VILLE', $cities, array('class' => 'form-control', 'empty' => Myclass::t('APP59'))); ?>   
                                     <?php echo $form->error($model, 'ID_VILLE'); ?>
                                 </div>
-
+                                <div class="form-group" id="other_city" style="display:none;">
+                                        <?php echo $form->labelEx($model, 'autre_ville', array()); ?>
+                                        <?php echo $form->textField($model, 'autre_ville', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>   
+                                        <?php echo $form->error($model, 'autre_ville'); ?>
+                                </div>
                                 <div class="form-group">
                                     <?php echo $form->labelEx($model, 'ADRESSE', array()); ?>
                                     <?php echo $form->textField($model, 'ADRESSE', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
@@ -411,6 +415,7 @@ if (Yii::app()->user->hasState("product_ids")) {
 $ajaxproducts = Yii::app()->createUrl('/admin/suppliersDirectory/getproducts');
 
 $pay_type = isset($pmodel->pay_type) ? $pmodel->pay_type : 1;
+$ctyval = isset($model->ID_VILLE)?$model->ID_VILLE:'';
 $js = <<< EOD
     $(document).ready(function(){
    
@@ -493,6 +498,22 @@ $js = <<< EOD
 
     });  
 
+    var ctyval = "{$ctyval}";
+    if(ctyval=="-1")
+    {    
+        $("#other_city").show();
+    }     
+            
+   $("#SuppliersDirectory_ID_VILLE").change(function(){
+        var id=$(this).val();
+            
+        $("#other_city").hide();
+        if(id=="-1")
+        {    
+            $("#other_city").show();
+        }    
+    }); 
+    
 // Get the fichers list based on selected ficher category
    var vficherid = {$ficherid};
    var vcatid = {$categoryid}; 

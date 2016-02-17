@@ -155,7 +155,13 @@ $country = Myclass::getallcountries();
                             <?php echo $form->error($profile, 'ID_VILLE'); ?>
                             </div>
                         </div>
-
+                        <div class="form-group" id="other_city" style="display:none;">
+                            <?php echo $form->labelEx($profile, 'autre_ville', array('class' => 'col-sm-2 control-label')); ?>
+                            <div class="col-sm-5">                       
+                                <?php echo $form->textField($profile, 'autre_ville', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>   
+                                <?php echo $form->error($profile, 'autre_ville'); ?>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <?php echo $form->labelEx($model, 'rep_status', array('class' => 'col-sm-2 control-label')); ?>         
                             <div class="col-sm-5">
@@ -203,6 +209,7 @@ if (Yii::app()->user->hasState("product_ids")) {
 
 
 $pay_type = isset($pmodel->pay_type) ? $pmodel->pay_type : 1;
+$ctyval = isset($profile->ID_VILLE)?$profile->ID_VILLE:'';
 $js = <<< EOD
     $(document).ready(function(){
    
@@ -240,8 +247,23 @@ $js = <<< EOD
             }
          });
 
-    });  
-
+    }); 
+            
+    var ctyval = "{$ctyval}";
+    if(ctyval=="-1")
+    {    
+        $("#other_city").show();
+    }     
+            
+   $("#RepCredentialProfiles_ID_VILLE").change(function(){
+        var id=$(this).val();
+            
+        $("#other_city").hide();
+        if(id=="-1")
+        {    
+            $("#other_city").show();
+        }    
+    });
             // Check to change check payment type
     $('input[name="PaymentCheques\\[pay_type\\]"]').on('ifChecked', function(event){
      var chkval = $('input[name="PaymentCheques\\[pay_type\\]"]:checked').val();

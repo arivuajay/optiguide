@@ -12,7 +12,7 @@
     
     $country = Myclass::getallcountries();
     $regions = Myclass::getallregions($searchModel->country);
-    $cities  = Myclass::getallcities($searchModel->region);
+    $cities  = Myclass::getallcities_other($searchModel->region);
     $categories  = array("1"=>Myclass::t('OG105'),"2"=>Myclass::t('OG106'),"3"=>Myclass::t('OG107'),"4"=>Myclass::t('OG108'),"5"=>Myclass::t('OG109'));
     
     $retailertypes = CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_FR');
@@ -105,7 +105,7 @@ $js = <<< EOD
         $.ajax({
             type: "POST",
             url: '{$ajaxGroupUrl}',
-            data: dataString,
+            data: dataString+'&client_dis=1',
             cache: false,
             success: function(html){             
                 $("#RetailerDirectory_ID_GROUPE").html(html).selectpicker('refresh');

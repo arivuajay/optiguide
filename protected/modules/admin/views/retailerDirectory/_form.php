@@ -137,7 +137,13 @@
                         <?php echo $form->error($model, 'ID_VILLE'); ?>
                     </div>
                 </div>
-
+                <div class="form-group" id="other_city" style="display:none;">
+                    <?php echo $form->labelEx($model, 'autre_ville', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">                       
+                        <?php echo $form->textField($model, 'autre_ville', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>   
+                        <?php echo $form->error($model, 'autre_ville'); ?>
+                    </div>
+                </div>
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'ADRESSE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">
@@ -660,6 +666,7 @@ $ajax_getmessage = Yii::app()->createUrl('/admin/retailerDirectory/getmessage');
 
 
 $ajax_get_ret_mess_update = Yii::app()->createUrl('/admin/retailerDirectory/updateMessage');
+$ctyval = isset($model->ID_VILLE)?$model->ID_VILLE:'';
 $js = <<< EOD
     $(document).ready(function(){
     
@@ -698,7 +705,22 @@ $js = <<< EOD
          });
 
     });
+    
+   var ctyval = "{$ctyval}";
+    if(ctyval=="-1")
+    {    
+        $("#other_city").show();
+    }     
             
+   $("#RetailerDirectory_ID_VILLE").change(function(){
+        var id=$(this).val();
+            
+        $("#other_city").hide();
+        if(id=="-1")
+        {    
+            $("#other_city").show();
+        }    
+    });   
    $("#RetailerDirectory_ID_RETAILER_TYPE").change(function(){
         var id=$(this).val();
         var dataString = 'id='+ id;

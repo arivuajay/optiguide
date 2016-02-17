@@ -78,6 +78,7 @@ class Controller extends CController {
     public function actionGetCities() {
         $options = '';
         $cid = isset($_POST['id']) ? $_POST['id'] : '';
+        $client_disp = isset($_POST['client_dis']) ? $_POST['client_dis'] : '';
         $search_disp = isset($_POST['search']) ? $_POST['search'] : '';
         
         if($search_disp=="yes")
@@ -88,7 +89,12 @@ class Controller extends CController {
         }
         
         if ($cid != '') {
-            $data_cities = Myclass::getallcities($cid);
+            if($client_disp != '')
+            {   
+                $data_cities = Myclass::getallcities_other($cid);
+            }  else {
+                $data_cities = Myclass::getallcities($cid);
+            }
             foreach ($data_cities as $k => $info) {
                 $options .= "<option value='" . $k . "'>" . $info . "</option>";
             }

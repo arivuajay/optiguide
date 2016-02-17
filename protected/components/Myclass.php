@@ -172,7 +172,21 @@ class Myclass extends CController {
 
         return $regions;
     }
+    
+    public static function getallcities_other($id = null) {
+        $cities = array();
+        $criteria_reg = new CDbCriteria;
+        $criteria_reg->order = 'NOM_VILLE ASC';
+        if (!is_null($id)) {
 
+            $criteria_reg->condition = 'ID_REGION=:id';
+            $criteria_reg->params = array(':id' => $id);
+            $cities_result = CityDirectory::model()->findAll($criteria_reg);
+//            $cities1["-1"] = Myclass::t('OG173');
+            $cities = CHtml::listData($cities_result, 'ID_VILLE', 'NOM_VILLE');
+        }
+        return $cities;
+    }
     public static function getallcities($id = null) {
         $cities = array();
         $criteria_reg = new CDbCriteria;

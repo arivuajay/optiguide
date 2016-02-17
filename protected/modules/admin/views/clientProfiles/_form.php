@@ -41,7 +41,7 @@ $themeUrl = $this->themeUrl;
             
             $country = Myclass::getallcountries_client();
             $regions = Myclass::getallregions_client($model->country,2);
-            $cities = Myclass::getallcities($model->region);
+            $cities = Myclass::getallcities_other($model->region);
             ?>
             <div class="box-body">
                 <div class="form-group">
@@ -679,7 +679,7 @@ $js = <<< EOD
         $.ajax({
             type: "POST",
             url: '{$ajaxCityUrl}',
-            data: dataString,
+            data: dataString+'&client_dis=1',
             cache: false,
             success: function(html){             
                 $("#ClientProfiles_ville").html(html);

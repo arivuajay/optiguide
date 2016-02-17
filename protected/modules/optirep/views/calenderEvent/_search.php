@@ -13,7 +13,7 @@
 
     $country = Myclass::getallcountries();
     $regions = Myclass::getallregions($searchModel['ID_PAYS']);
-    $cities = Myclass::getallcities($searchModel['ID_REGION']);
+    $cities = Myclass::getallcities_other($searchModel['ID_REGION']);
     $months = Myclass::getMonths();
     $connection = Yii::app()->db;
     $year_command = $connection->createCommand('SELECT ID_EVENEMENT, YEAR(DATE_AJOUT1) AS event_year FROM calendrier_calendrier GROUP BY YEAR(`DATE_AJOUT1`)');
@@ -78,7 +78,7 @@ $js = <<< EOD
         $.ajax({
             type: "POST",
             url: '{$ajaxCityUrl}',
-            data: dataString,
+            data: dataString+'&client_dis=1',
             cache: false,
             success: function(html){             
                 $("#CalenderEvent_ID_VILLE").html(html).selectpicker('refresh');

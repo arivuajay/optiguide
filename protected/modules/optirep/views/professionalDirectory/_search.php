@@ -12,7 +12,7 @@
 
     $country = Myclass::getallcountries();
     $regions = Myclass::getallregions($searchModel->country);
-    $cities = Myclass::getallcities($searchModel->region);
+    $cities = Myclass::getallcities_other($searchModel->region);
     $professional_types = CHtml::listData(ProfessionalType::model()->findAll(), 'ID_TYPE_SPECIALISTE', 'TYPE_SPECIALISTE_' . $this->lang . '');
     ?>
 
@@ -75,7 +75,7 @@ $js = <<< EOD
         $.ajax({
             type: "POST",
             url: '{$ajaxCityUrl}',
-            data: dataString,
+            data: dataString+'&client_dis=1',
             cache: false,
             success: function(html){             
                 $("#ProfessionalDirectory_ID_VILLE").html(html).selectpicker('refresh');
