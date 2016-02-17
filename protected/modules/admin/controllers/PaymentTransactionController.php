@@ -28,7 +28,7 @@ class PaymentTransactionController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'reptransaction', 'repview', 'repUpdateStatus'),
+                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'reptransaction', 'repview', 'repUpdateStatus',"cancelpayment"),
                 'users' => array('@'),
                 'expression'=> 'AdminIdentity::checkAccess()',
             ),
@@ -188,6 +188,41 @@ class PaymentTransactionController extends Controller {
             'model' => $model,
         ));
     }
+    
+    public function actionCancelpayment($id) {
+       
+       
+        $criteria = new CDbCriteria;  
+        $criteria->addCondition("id = ".$id);
+        $paymentdetails = PaymentTransaction::model()->find($criteria);
+                
+        if($paymentdetails->NOMTABLE=="suppliers" && $paymentdetails->payment_status=="Completed" && ($paymentdetails->payment_type=="Free" || $paymentdetails->payment_type=="Cheque"))
+        {  
+            // 1 - profile only
+            // 2 - profile & logo
+            // 3 - logo only
+            $subscription_type = $paymentdetails->subscription_type;
+            
+            $paymentdetails->payment_status = "Cancelled";
+            $paymentdetails->save(false);
+            
+            $supplierid = $paymentdetails->user_id;
+            $fmodel = SuppliersDirectory::model()->findByPk($supplierid);
+            if($subscription_type==1 || $subscription_type==2)
+            {
+                $fmodel->profile_expirydate = date("Y-m-d",time());
+            } 
+            if($subscription_type==3 || $subscription_type==2)
+            {
+                $fmodel->logo_expirydate = date("Y-m-d",time());
+            }
+            $fmodel->save(false);
+        }    
+        
+        Yii::app()->user->setFlash('success', 'Paiement annulé avec succès!!!');
+        $this->redirect(array('index'));
+    }
+    
 
     /* ------------------------REP Payment Transaction Details--------------------------------------------- */
 

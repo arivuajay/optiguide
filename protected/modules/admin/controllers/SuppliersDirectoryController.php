@@ -634,6 +634,7 @@ class SuppliersDirectoryController extends Controller {
                     $profile_price = $sett_infos->profile_price;
                     $profile_logo_price = $sett_infos->profile_logo_price;
                     $logo_price = ( $profile_logo_price - $profile_price );
+                    
                 }elseif($_POST['PaymentCheques']['pay_type']=="1")
                 {
                     $paytype = "Free";  

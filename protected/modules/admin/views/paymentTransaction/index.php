@@ -63,7 +63,12 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 array('name' => 'payment_status',
                     'type' => 'raw',
                     'value' => function($data){
-                        echo ($data->payment_status == "Pending") ? '<span class="label label-warning">Pending</span>' : '<span class="label label-success">Completed</span>';
+                        if($data->payment_status == "Pending") 
+                        echo '<span class="label label-warning">Pending</span>';
+                        elseif($data->payment_status == "Completed") 
+                        echo '<span class="label label-success">Completed</span>';
+                        elseif($data->payment_status == "Cancelled") 
+                        echo '<span class="label label-warning">Cancelled</span>';
                     },
                     'filter' => false,
                     'sortable' => false
@@ -88,13 +93,26 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
         'header' => 'Actes',
         'class' => 'booster.widgets.TbButtonColumn',
         'htmlOptions' => array('style' => 'width: 100px;;text-align:center', 'vAlign' => 'middle', 'class' => 'action_column'),
-        'template' => '{view}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{update}',
-         'buttons'=> array(
+        'template' => '{view}&nbsp;&nbsp;{update}&nbsp;&nbsp;{cancel}&nbsp;&nbsp;{modifyfreepayment}',
+         'buttons'=> array(  
+             
                     'update'=>array(                                    
                               'visible'=>'$data->payment_status=="Pending" && AdminIdentity::checkAccess_others(NULL, NULL,NULL, "update")',
-                            ),                                  
+                            ), 
+                    'cancel' => array(
+                       'label' => "<i class='fa fa-remove'></i>",                         
+                       'url' => 'CHtml::normalizeUrl(array("/admin/paymentTransaction/cancelpayment/id/".rawurlencode($data->id)))',                            
+                       'options' => array('title' => "Cancel Payment" ),
+                       'visible'=>'$data->payment_status != "Cancelled" && ($data->pay_type=="3" || $data->pay_type == 4)',
                      ),
-                ),
+                    'modifyfreepayment' => array(
+                       'label' => "<i class='fa fa-edit'></i>",                         
+                       'url' => 'CHtml::normalizeUrl(array("/admin/paymentTransaction/modifypayment/id/".rawurlencode($data->id)))',                            
+                       'options' => array('title' => "Modify Cheque Infos" ),
+                       'visible'=>'$data->pay_type=="3"',
+                     ),   
+                ),                     
+            ),
         );
 
         $this->widget('booster.widgets.TbExtendedGridView', array(

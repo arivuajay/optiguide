@@ -58,7 +58,12 @@ if (isset($model->ID_FOURNISSEUR)) {
                 array('name' => 'payment_status',
                     'type' => 'raw',
                     'value' => function($data){
-                        echo ($data->payment_status == "Pending") ? '<span class="label label-warning">Pending</span>' : '<span class="label label-success">Completed</span>';
+                        if($data->payment_status == "Pending") 
+                        echo '<span class="label label-warning">Pending</span>';
+                        elseif($data->payment_status == "Completed") 
+                        echo '<span class="label label-success">Completed</span>';
+                        elseif($data->payment_status == "Cancelled") 
+                        echo '<span class="label label-warning">Cancelled</span>';
                     },
                     'filter' => false,
                 ),
