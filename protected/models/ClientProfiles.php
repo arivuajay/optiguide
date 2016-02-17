@@ -56,7 +56,7 @@ class ClientProfiles extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
                         array('site_address','url'),
-			array('client_id, name, company, job_title, member_type, category, address, local_number, country, region, ville, phonenumber1, phonenumber2, mobile_number, tollfree_number, fax, email, site_address, subscription, created_date, modified_date', 'safe', 'on'=>'search'),
+			array('client_id, name, company, ID_CLIENT,job_title, member_type, category, address, local_number, country, region, ville, phonenumber1, phonenumber2, mobile_number, tollfree_number, fax, email, site_address, subscription, created_date, modified_date,lang', 'safe', 'on'=>'search'),
                         array('local_number , phonenumber1, phonenumber2, mobile_number, tollfree_number', 'phoneNumber'),
                         array('category', 'checknotempty'),
 		);
@@ -175,7 +175,7 @@ class ClientProfiles extends CActiveRecord
                 'subscription' => Myclass::t('Abonnement'),
                 'created_date' => Myclass::t('Date de création'),
                 'modified_date' => Myclass::t('Date de changement'),
-                'lang' => 'Langue'
+                'lang' => 'Language',
             );
 	}
 
@@ -218,6 +218,7 @@ class ClientProfiles extends CActiveRecord
 		$criteria->compare('subscription',$this->subscription,true);
 		$criteria->compare('created_date',$this->created_date,true);
 		$criteria->compare('modified_date',$this->modified_date,true);
+                $criteria->compare('ID_CLIENT',$this->ID_CLIENT,true);
                 
                 $criteria->with = array('clientMessages2');
 

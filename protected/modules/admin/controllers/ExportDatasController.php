@@ -930,8 +930,12 @@ class ExportDatasController extends Controller
                 
                 $lang_en = $_POST['ExportDatas']['EN'];
                 $lang_fr = $_POST['ExportDatas']['FR'];
-                
-                $lang_str = $this->getlanguage_filter($lang_en,$lang_fr);                        
+                if($usertype=="client")
+                {
+                    $lang_str = $this->getlanguage_filter($lang_en,$lang_fr,$usertype);    
+                }  else {
+                    $lang_str = $this->getlanguage_filter($lang_en,$lang_fr);
+                }
                 
                 // Subscription filter
                 $subscription_str  = '';
@@ -1025,21 +1029,32 @@ class ExportDatasController extends Controller
             $output = $csv->toCSV();               
         }  
         
-        public function getlanguage_filter($lang_en,$lang_fr)
+        public function getlanguage_filter($lang_en,$lang_fr,$usertype=null)
         {
             $lang_str = "";
-            
-            if($lang_en=="1" && $lang_fr=="1")
-            {
-                $lang_str .= " AND ( ru.LANGUE='EN' || ru.LANGUE='FR' ) ";
-            }else if($lang_en=="1")
-            {
-                $lang_str .= " AND ru.LANGUE='EN' ";                    
-            }else if($lang_fr=="1")
-            {
-                $lang_str .= " AND ru.LANGUE='FR' ";
-            } 
-            
+            if($usertype!=''){
+                if($lang_en=="1" && $lang_fr=="1")
+                {
+                    $lang_str .= " AND ( ru.lang='EN' || ru.lang='FR' ) ";
+                }else if($lang_en=="1")
+                {
+                    $lang_str .= " AND ru.lang='EN' ";                    
+                }else if($lang_fr=="1")
+                {
+                    $lang_str .= " AND ru.lang='FR' ";
+                } 
+            }else{
+                if($lang_en=="1" && $lang_fr=="1")
+                {
+                    $lang_str .= " AND ( ru.LANGUE='EN' || ru.LANGUE='FR' ) ";
+                }else if($lang_en=="1")
+                {
+                    $lang_str .= " AND ru.LANGUE='EN' ";                    
+                }else if($lang_fr=="1")
+                {
+                    $lang_str .= " AND ru.LANGUE='FR' ";
+                }
+            }
             return $lang_str;
         }
         
@@ -1208,6 +1223,13 @@ class ExportDatasController extends Controller
                 
                 //if($model->validate()){                              
                 
+                // Language filter
+                $lang_str  = "";
+                
+                $lang_en = $_POST['ExportDatas']['EN'];
+                $lang_fr = $_POST['ExportDatas']['FR'];
+                $usertype="client";
+                $lang_str = $this->getlanguage_filter($lang_en,$lang_fr,$usertype);  
                 // Subscription filter
                 $subscription_str  = '';
                 
@@ -1251,13 +1273,13 @@ class ExportDatasController extends Controller
                 $export_type = $_POST['ExportDatas']['export_type'];
                 
                 // Get user counts           
-                $querystr   = $subscription_str.$province_str;
+                $querystr   = $lang_str.$subscription_str.$province_str;
                 $item_count = $this->countusers($querystr,'client');
                 
                 if($item_count>0)
                 {   
                    // Export data and save the files
-                    $this->exportfiles_client( $export_type , $subscription_str , $province_str,$category_type,$category);
+                    $this->exportfiles_client( $export_type , $lang_str,$subscription_str , $province_str,$category_type,$category);
                  
                     Yii::app()->user->setFlash('success', 'Datas export successfully!!!');
                     $this->redirect(array('clientIndex'));
@@ -1280,7 +1302,7 @@ class ExportDatasController extends Controller
             ));
 	}          
          
-        public function exportfiles_client( $export_type , $subscription_str , $province_str,$category_type,$category)
+        public function exportfiles_client( $export_type ,$lang_str, $subscription_str , $province_str,$category_type,$category)
         {
             Yii::import('ext.ECSVExport');
             $attach_path = Yii::getPathOfAlias('webroot').'/'.EXPORTDATAS;   
@@ -1289,7 +1311,7 @@ class ExportDatasController extends Controller
             // Single file
                 // Get all records list  with limit
                 $ret_result = Yii::app()->db->createCommand(
-                "SELECT ru.client_id AS ID,ru.ID_CLIENT ,ru.name AS Client_Name,ru.sex AS Sex,ru.company AS Company,ru.job_title AS Job_Title,
+                "SELECT ru.client_id AS ID,ru.ID_CLIENT ,ru.lang AS Language,ru.name AS Client_Name,ru.sex AS Sex,ru.company AS Company,ru.job_title AS Job_Title,
                 (CASE WHEN ru.member_type <> 'free_member' THEN 'Advertiser' ELSE 'Free member' END) AS Member_Type,
                 ct.cat_type AS Category_Type,GROUP_CONCAT(cc.cat_name SEPARATOR ', ')AS Category_Name,
                 ru.address AS Address,  ru.local_number AS Local_number,  rp.NOM_PAYS_EN AS Country,  rr.ABREVIATION_EN AS Region,  rv.NOM_VILLE AS Ville,    ru.CodePostal, ru.phonenumber1,  ru.Poste1,ru.phonenumber2, ru.Poste2, ru.phonenumber3, ru.Europe,  ru.feurope, 
@@ -1303,7 +1325,7 @@ class ExportDatasController extends Controller
                 ru.Rep,   ru.modified_date ,ru.created_date
                 FROM client_category cc,client_profiles ru  ,client_category_types ct ,repertoire_pays  rp , repertoire_region rr ,repertoire_ville rv,client_cat_mapping cm
                 WHERE cm.client_id=ru.client_id AND cm.cat_type_id=ct.cat_type_id AND cm.category=cc.category AND ru.country=rp.ID_PAYS AND ru.region=rr.ID_REGION AND ru.ville=rv.ID_VILLE                                 
-                ".$subscription_str.$province_str." GROUP BY ru.client_id");
+                ".$lang_str.$subscription_str.$province_str." GROUP BY ru.client_id");
               
                 // File name and path      
                 if($export_type==1)

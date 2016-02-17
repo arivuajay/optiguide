@@ -49,6 +49,28 @@ $cat_types = CHtml::listData(ClientCategoryTypes::model()->findAll(array("order"
                 <div class="box-body">
                     <div class="box-header">
                         <h3 class="page-header">Step 1</h3>
+                    </div>
+                    
+                    <div class="form-group">
+                        <?php echo $form->labelEx($model, 'language', array('class' => 'col-sm-2 control-label')); ?>
+                        <div class="col-sm-5">                     
+                            <div class="checkbox">
+                                <label>
+                                    <?php echo $form->checkBox($model, 'EN', array('value' => 1, 'uncheckValue' => 0)); ?>   
+                                    <?php echo $form->labelEx($model, 'EN'); ?>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <?php echo $form->checkBox($model, 'FR', array('value' => 1, 'uncheckValue' => 0)); ?>   
+                                    <?php echo $form->labelEx($model, 'FR'); ?>
+                                </label>
+                            </div>                       
+                        </div>
+                    </div>
+                    
+                    <div class="box-header">
+                        <h3 class="page-header">Step 2</h3>
                     </div>          
                     
                     <div class="form-group">
@@ -101,7 +123,7 @@ $cat_types = CHtml::listData(ClientCategoryTypes::model()->findAll(array("order"
                     </div>
                     
                     <div class="box-header">
-                        <h3 class="page-header">Step 2</h3>
+                        <h3 class="page-header">Step 3</h3>
                     </div>
 
                     <div class="form-group">
@@ -132,7 +154,7 @@ $cat_types = CHtml::listData(ClientCategoryTypes::model()->findAll(array("order"
                     </div> 
                     
                      <div class="box-header">
-                        <h3 class="page-header">Step 3</h3>
+                        <h3 class="page-header">Step 4</h3>
                     </div>
 
                     <div class="form-group">
@@ -166,7 +188,7 @@ $cat_types = CHtml::listData(ClientCategoryTypes::model()->findAll(array("order"
                     </div>-->
                     
                     <div class="box-header">
-                        <h3 class="page-header">Step 4</h3>
+                        <h3 class="page-header">Step 5</h3>
                     </div>
                     
                      <div class="form-group">
