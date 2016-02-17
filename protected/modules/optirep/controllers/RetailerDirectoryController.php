@@ -233,8 +233,6 @@ class RetailerDirectoryController extends ORController {
             $search_ret_type = isset($_GET['RetailerDirectory']['ID_RETAILER_TYPE']) ? $_GET['RetailerDirectory']['ID_RETAILER_TYPE'] : '';
             $search_group = isset($_GET['RetailerDirectory']['ID_GROUPE']) ? $_GET['RetailerDirectory']['ID_GROUPE'] : '';
 
-
-
             if ($search_name != '') {
                 $searchModel->COMPAGNIE = $search_name;
                 $sname_qry = " AND COMPAGNIE like '%$search_name%' ";
@@ -265,7 +263,7 @@ class RetailerDirectoryController extends ORController {
 
             if ($search_postal != '') {
                 $searchModel->CODE_POSTAL = $search_postal;
-                $spostal_qry = " AND rs.CODE_POSTAL = '".$search_postal."'";
+                $spostal_qry = " AND rs.CODE_POSTAL like '".$search_postal."%'";
             }
 
             if ($search_ret_type != '') {

@@ -68,7 +68,7 @@
                        if( $search_country != ''){ $scntry_qry  = " AND rp.ID_PAYS = ". $search_country;     } 
                        if( $search_region != ''){ $sregion_qry  = " AND rr.ID_REGION = ". $search_region;   } 
                        if( $search_ville != ''){ $scity_qry    = " AND rs.ID_VILLE = ". $search_ville; } 
-                       if( $search_postal != '') { $spostal_qry    = " AND CODE_POSTAL = '". $search_postal."'";}
+                       if( $search_postal != '') { $spostal_qry    = " AND CODE_POSTAL like '". $search_postal."%'";}
                     }     
                       
                         $results = Yii::app()->db->createCommand() //this query contains all the data
@@ -100,7 +100,7 @@
                         if ($search_country != '') {  $scntry_qry = " AND rp.ID_PAYS = " . $search_country; }
                         if ($search_region != '') {   $sregion_qry = " AND rr.ID_REGION = " . $search_region; }
                         if ($search_ville != '') { $scity_qry = " AND rs.ID_VILLE = " . $search_ville; }
-                        if( $search_postal != '') { $spostal_qry    = " AND rs.CODE_POSTAL = '".$search_postal."'";}
+                        if( $search_postal != '') { $spostal_qry    = " AND rs.CODE_POSTAL like '".$search_postal."%'";}
                         if ($search_type != '') { $stype_qry = " AND rs.ID_TYPE_SPECIALISTE = " . $search_type; }
                     }
             
