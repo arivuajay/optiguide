@@ -490,6 +490,12 @@
             <div class="box-footer">
                 <div class="form-group">
                     <div class="col-sm-0 col-sm-offset-2">
+                        <?php $pre_url=Yii::app()->request->urlReferrer; 
+                                if(empty($pre_url)){
+                                    echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/admin/professionalDirectory/index'), array("class" => "btn btn-warning"));   
+                                 }else{?>
+                                    <a class='btn btn-warning' href="<?php echo $pre_url; ?>"><?php echo Myclass::t('OG016', '', 'og');?>  </a>
+                                <?php }?>
                         <?php echo CHtml::submitButton($model->isNewRecord ? 'Ajouter ce professionnel' : 'Modifier ce professionnel', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','name' => $model->isNewRecord ? 'create-professional' : 'modified-professional')); ?>                       
                         <?php if (!$model->isNewRecord) {echo CHtml::submitButton('Mise à jour des alertes', array('class' => 'btn btn-success','name'=>'update-professional-alerts')); }?>
                     </div>

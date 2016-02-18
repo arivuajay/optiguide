@@ -613,6 +613,12 @@
             <div class="box-footer">
                 <div class="form-group">
                     <div class="col-sm-0 col-sm-offset-2">
+                        <?php $pre_url=Yii::app()->request->urlReferrer; 
+                                if(empty($pre_url)){
+                                    echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/admin/retailerDirectory/index'), array("class" => "btn btn-warning"));   
+                                 }else{?>
+                                    <a class='btn btn-warning' href="<?php echo $pre_url; ?>"><?php echo Myclass::t('OG016', '', 'og');?>  </a>
+                                <?php }?>
                         <?php echo CHtml::submitButton($model->isNewRecord ? 'Ajouter ce détaillant' : 'Modifier ce détaillant', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','name' => $model->isNewRecord ? 'create-retailer' : 'modified-retailer')); ?>                       
                         <?php if (!$model->isNewRecord) {echo CHtml::submitButton('Mise à jour des alertes', array('class' => 'btn btn-success','name'=>'update-alerts')); }?>
                     </div>

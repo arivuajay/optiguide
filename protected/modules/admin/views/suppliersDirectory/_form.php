@@ -363,6 +363,12 @@
                     <div class="box-footer">
                         <div class="form-group">
                             <div class="col-lg-12">
+                                <?php $pre_url=Yii::app()->request->urlReferrer; 
+                                if(empty($pre_url)){
+                                    echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/admin/suppliersDirectory/index'), array("class" => "btn btn-warning"));   
+                                 }else{?>
+                                    <a class='btn btn-warning' href="<?php echo $pre_url; ?>"><?php echo Myclass::t('OG016', '', 'og');?>  </a>
+                                <?php }?>
                                 <?php echo CHtml::submitButton($model->isNewRecord ? 'Ajouter ce fournisseur et passer à l\'étape suivante' : 'Modifier ce fournisseur', array('class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary')); ?>
                             </div>
                         </div>

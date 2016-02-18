@@ -31,7 +31,7 @@ class ProfessionalDirectory extends CActiveRecord {
     public $TYPESPECIALISTEFR;
     public $region, $pfile, $listperpage, $autre_ville,$updatestatus;
     static $NOM_TABLE = 'Professionnels';
-
+    public $keyword;
     /**
      * @return string the associated database table name
      */
@@ -59,7 +59,7 @@ class ProfessionalDirectory extends CActiveRecord {
             array('country,region,age,sex,map_lat,map_long,proof_file,listperpage,CREATED_DATE,autre_ville,updatestatus', 'safe'),
             array('COURRIEL', 'email'),
             array('SITE_WEB', 'url'),
-            array('ID_SPECIALISTE, TYPESPECIALISTEFR , ID_CLIENT, PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, ID_TYPE_SPECIALISTE, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, SITE_WEB, COURRIEL, DATE_MODIFICATION', 'safe', 'on' => 'search'),
+            array('keyword,ID_SPECIALISTE, TYPESPECIALISTEFR , ID_CLIENT, PREFIXE_FR, PREFIXE_EN, PRENOM, NOM, ID_TYPE_SPECIALISTE, TYPE_AUTRE, BUREAU, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, SITE_WEB, COURRIEL, DATE_MODIFICATION', 'safe', 'on' => 'search'),
             array('TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2', 'phoneNumber'),
             array('pfile', 'file', 'types' => 'jpg, jpeg, doc, pdf', 'allowEmpty' => true, 'safe' => false, 'on' => 'backend'),
         );
@@ -181,7 +181,10 @@ class ProfessionalDirectory extends CActiveRecord {
         $criteria->compare('SITE_WEB', $this->SITE_WEB, true);
         $criteria->compare('COURRIEL', $this->COURRIEL, true);
         $criteria->compare('DATE_MODIFICATION', $this->DATE_MODIFICATION, true);
-
+        if($this->keyword!=''){
+            $criteria->addCondition("t.PRENOM LIKE '%".$this->keyword."%' OR t.NOM LIKE '%".$this->keyword."%' OR t.ID_CLIENT LIKE '%".$this->keyword."%' OR t.COURRIEL LIKE '%".$this->keyword."%' OR t.CODE_POSTAL LIKE '%".$this->keyword."%' OR t.TELEPHONE2 LIKE '%".$this->keyword."%' OR t.TELEPHONE LIKE '%".$this->keyword."%' OR t.ADRESSE LIKE '%".$this->keyword."%' OR t.ADRESSE2 LIKE '%".$this->keyword."%' OR t.SITE_WEB LIKE '%".$this->keyword."%' OR t.BUREAU LIKE '%".$this->keyword."%'");
+        }
+        
         $criteria->with = 'professionalType';
         $criteria->order = 'professionalType.TYPE_SPECIALISTE_FR ASC, t.NOM ASC';
 

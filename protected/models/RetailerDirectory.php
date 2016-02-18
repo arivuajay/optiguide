@@ -34,7 +34,7 @@
  */
 class RetailerDirectory extends CActiveRecord {
 
-    public $country, $region, $uaccess_search, $searchcat, $Retailers1, $Retailers2, $pfile, $listperpage, $autre_ville;
+    public $country, $region, $uaccess_search, $searchcat, $Retailers1, $Retailers2, $pfile, $listperpage, $autre_ville,$keyword;
     static $NOM_TABLE = 'Detaillants';
     public $image;
 
@@ -68,7 +68,7 @@ class RetailerDirectory extends CActiveRecord {
             array('contact_person,facebooklink,twitterlink,linkedinlink,pfile,listperpage,CREATED_DATE, autre_ville', 'safe'),
             array('COURRIEL', 'email'),
             array('URL', 'url'),
-            array('uaccess_search,ID_RETAILER, ID_CLIENT, COMPAGNIE, ID_VILLE, ADRESSE, ADRESSE2, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, URL, COURRIEL, TEL_1800, DATE_MODIFICATION, ID_RETAILER_TYPE, ID_GROUPE, GROUPE, HEAD_OFFICE_NAME, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5', 'safe', 'on' => 'search'),
+            array('keyword,uaccess_search,ID_RETAILER, ID_CLIENT, COMPAGNIE, ID_VILLE, ADRESSE, ADRESSE2, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, URL, COURRIEL, TEL_1800, DATE_MODIFICATION, ID_RETAILER_TYPE, ID_GROUPE, GROUPE, HEAD_OFFICE_NAME, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5', 'safe', 'on' => 'search'),
             array('TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2,TEL_1800', 'phoneNumber'),
             array('image', 'file', 'types' => 'jpg, gif, png', 'allowEmpty' => true, 'safe' => false),
             array('pfile', 'file', 'types' => 'jpg, jpeg, doc, pdf', 'allowEmpty' => true, 'safe' => false, 'on' => 'backend'),
@@ -224,7 +224,12 @@ class RetailerDirectory extends CActiveRecord {
         $criteria->compare('CATEGORY_3', $this->CATEGORY_3);
         $criteria->compare('CATEGORY_4', $this->CATEGORY_4);
         $criteria->compare('CATEGORY_5', $this->CATEGORY_5);
-
+        
+        if($this->keyword!=''){
+            $criteria->addCondition("retailerGroup.NOM_GROUPE LIKE '%".$this->keyword."%' OR t.ID_CLIENT LIKE '%".$this->keyword."%' OR t.COURRIEL LIKE '%".$this->keyword."%' OR t.CODE_POSTAL LIKE '%".$this->keyword."%' OR t.TELEPHONE LIKE '%".$this->keyword."%' OR t.TELEPHONE2 LIKE '%".$this->keyword."%' OR t.ADRESSE LIKE '%".$this->keyword."%' OR t.ADRESSE2 LIKE '%".$this->keyword."%' OR t.URL LIKE '%".$this->keyword."%' OR t.COMPAGNIE LIKE '%".$this->keyword."%' OR t.TEL_1800 LIKE '%".$this->keyword."%' OR t.HEAD_OFFICE_NAME LIKE '%".$this->keyword."%'");
+//            $criteria->addCondition("retailerGroup.NOM_GROUPE LIKE '%".$this->keyword."%'");
+            $criteria->with = 'retailerGroup';
+        }
         //  $criteria->with = array( 'userDirectory' );
         //  $criteria->compare('userDirectory.MUST_VALIDATE',$this->uaccess_search,true);
 

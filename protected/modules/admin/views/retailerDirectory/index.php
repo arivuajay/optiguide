@@ -33,6 +33,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 </div>
 
 <div class="col-lg-12 col-md-12">&nbsp;</div>
+<?php  $this->renderPartial('_search', array('model' => $model));  ?>
 
 <div class="col-lg-12 col-md-12">
     <div class="row">

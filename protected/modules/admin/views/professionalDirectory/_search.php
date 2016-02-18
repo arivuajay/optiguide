@@ -1,120 +1,53 @@
 <?php
-/* @var $this ProfessionalDirectoryController */
-/* @var $model ProfessionalDirectory */
+/* @var $this NewsManagementController */
+/* @var $model NewsManagement */
 /* @var $form CActiveForm */
 ?>
+<div class="col-lg-12 col-md-12">
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="glyphicon glyphicon-search"></i>  Search
+                </h3>
+                <div class="clearfix"></div>
+            </div>
 
-<div class="wide form">
-
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'action'=>Yii::app()->createUrl($this->route),
-	'method'=>'get',
-)); ?>
-
-	<div class="row">
-		<?php echo $form->label($model,'ID_SPECIALISTE'); ?>
-		<?php echo $form->textField($model,'ID_SPECIALISTE',array('class'=>'form-control')); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'ID_CLIENT'); ?>
-		<?php echo $form->textField($model,'ID_CLIENT',array('class'=>'form-control','size'=>8,'maxlength'=>8)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'PREFIXE_FR'); ?>
-		<?php echo $form->textField($model,'PREFIXE_FR',array('class'=>'form-control','size'=>60,'maxlength'=>255)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'PREFIXE_EN'); ?>
-		<?php echo $form->textField($model,'PREFIXE_EN',array('class'=>'form-control','size'=>60,'maxlength'=>255)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'PRENOM'); ?>
-		<?php echo $form->textField($model,'PRENOM',array('class'=>'form-control','size'=>60,'maxlength'=>255)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'NOM'); ?>
-		<?php echo $form->textField($model,'NOM',array('class'=>'form-control','size'=>60,'maxlength'=>255)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'ID_TYPE_SPECIALISTE'); ?>
-		<?php echo $form->textField($model,'ID_TYPE_SPECIALISTE',array('class'=>'form-control')); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'TYPE_AUTRE'); ?>
-		<?php echo $form->textField($model,'TYPE_AUTRE',array('class'=>'form-control','size'=>60,'maxlength'=>255)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'BUREAU'); ?>
-		<?php echo $form->textField($model,'BUREAU',array('class'=>'form-control','size'=>60,'maxlength'=>255)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'ADRESSE'); ?>
-		<?php echo $form->textField($model,'ADRESSE',array('class'=>'form-control','size'=>60,'maxlength'=>255)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'ADRESSE2'); ?>
-		<?php echo $form->textField($model,'ADRESSE2',array('class'=>'form-control','size'=>60,'maxlength'=>255)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'ID_VILLE'); ?>
-		<?php echo $form->textField($model,'ID_VILLE',array('class'=>'form-control')); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'CODE_POSTAL'); ?>
-		<?php echo $form->textField($model,'CODE_POSTAL',array('class'=>'form-control','size'=>20,'maxlength'=>20)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'TELEPHONE'); ?>
-		<?php echo $form->textField($model,'TELEPHONE',array('class'=>'form-control','size'=>20,'maxlength'=>20)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'TELEPHONE2'); ?>
-		<?php echo $form->textField($model,'TELEPHONE2',array('class'=>'form-control','size'=>20,'maxlength'=>20)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'TELECOPIEUR'); ?>
-		<?php echo $form->textField($model,'TELECOPIEUR',array('class'=>'form-control','size'=>20,'maxlength'=>20)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'TELECOPIEUR2'); ?>
-		<?php echo $form->textField($model,'TELECOPIEUR2',array('class'=>'form-control','size'=>20,'maxlength'=>20)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'SITE_WEB'); ?>
-		<?php echo $form->textField($model,'SITE_WEB',array('class'=>'form-control','size'=>60,'maxlength'=>255)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'COURRIEL'); ?>
-		<?php echo $form->textField($model,'COURRIEL',array('class'=>'form-control','size'=>60,'maxlength'=>255)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'DATE_MODIFICATION'); ?>
-		<?php echo $form->textField($model,'DATE_MODIFICATION',array('class'=>'form-control')); ?>
-	</div>
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Search'); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- search-form -->
+            <section class="content">
+                <div class="row">
+                    <?php
+                    $form = $this->beginWidget('CActiveForm', array(
+                        'id' => 'newsmanagement-search-form',
+                        'method' => 'get',
+                        'action' => array('/admin/professionalDirectory/index/'),
+                        'htmlOptions' => array('role' => 'form')
+                    ));
+                    ?>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model, 'keyword', array('class' => ' control-label')); ?>
+                            <?php echo $form->textField($model, 'keyword', array('class' => 'form-control', 'size' => 60)); ?>                     
+                        </div>
+                    </div> 
+                    
+                    <div class="col-lg-2 col-md-2">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <?php echo CHtml::submitButton('Filtrer', array('class' => 'btn btn-primary form-control')); ?>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-lg-12 col-md-12">
+                        <p>
+                            <strong>Hint*</strong>
+                            Searching keyword results are get from the following fields
+                            (Office / Company name, Address, Postal code, Telephone, Email, Store Web site)
+                        </p>
+                    </div> 
+                    <?php $this->endWidget(); ?>
+                </div>
+            </section>
+            
+        </div>
+    </div>
+</div>
