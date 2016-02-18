@@ -235,6 +235,12 @@ class PaymentTransactionController extends Controller {
             $criteria2->addCondition("payment_transaction_id = ".$id);
             $pmodel = PaymentCheques::model()->find($criteria2);
             
+            if(empty($pmodel))
+            {
+                Yii::app()->user->setFlash('danger', 'VOIR informations ne sont pas disponibles');
+                $this->redirect(array('index'));
+            }    
+            
             if (isset($_POST['PaymentCheques'])) 
             { 
                 $pmodel->attributes = $_POST['PaymentCheques'];
@@ -247,13 +253,15 @@ class PaymentTransactionController extends Controller {
                     Yii::app()->user->setFlash('success', 'vérifier les détails mis à jour avec succès .!!!');
                     $this->redirect(array('index'));
                 }else{
-                    echo "<pre>";
-                    print_r($pmodel->getErrors());
-                    exit;
+//                    echo "<pre>";
+//                    print_r($pmodel->getErrors());
+//                    exit;
                 }
             }
             
-            $this->render('modifypayment', compact('pmodel'));
+            $this->render('modifypayment',array(
+                    'pmodel' => $pmodel,
+                ));
             
         }else{
             
