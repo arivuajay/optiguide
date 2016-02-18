@@ -45,6 +45,9 @@ class OgIdentity extends CUserIdentity {
         } else if (empty ($relation_table)) {
             //Add new condition to finding the status of user.
             $this->errorCode = self::ERROR_USERNAME_INVALID;
+        }else if ($user->NOM_TABLE == 'rep_credentials') {
+            //Add new condition to finding the status of user.
+            $this->errorCode = self::ERROR_USERNAME_NOT_ACTIVE;
         }else if ($user->status == 0) {
             //Add new condition to finding the status of user.
             $this->errorCode = self::ERROR_USERNAME_NOT_ACTIVE;

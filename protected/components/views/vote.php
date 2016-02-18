@@ -80,7 +80,7 @@
             {
             
                 $regions = Myclass::getallregions("1");
-                $cities  = Myclass::getallcities($userVote->region);
+                $cities  = Myclass::getallcities_other($userVote->region);
                 ?>
                 <div class="col-xs-12 col-sm-3 col-md-6 col-lg-4"><?php echo $form->labelEx($userVote, 'ID_TYPE_SPECIALISTE' , array('class' => 'poll-label')); ?></div>
                 <div class="col-xs-12 col-sm-9 col-md-6 col-lg-8"><?php echo $form->dropDownList($userVote, 'ID_TYPE_SPECIALISTE', $professional_types, array('class' => 'selectpicker','options' => array('11'=>array('selected'=>true)))); ?></div>
@@ -116,7 +116,7 @@ $(document).ready(function(){
         $.ajax({
             type: "POST",
             url: '{$ajaxCityUrl}',
-            data: dataString,
+            data: dataString+'&client_dis=1',
             cache: false,
             success: function(html){             
                 $("#PollVote_ID_VILLE").html(html).selectpicker('refresh');

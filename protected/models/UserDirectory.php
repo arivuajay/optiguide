@@ -90,7 +90,10 @@ class UserDirectory extends CActiveRecord
         public function findEmail($attribute, $params) 
         {
             $model = UserDirectory::model()->findByAttributes(array('COURRIEL'=> $this->email));
-            if (empty($model))
+            
+            if($model->NOM_TABLE == 'rep_credentials')
+                $this->addError($attribute, 'Invalid Email Address');         
+            if (empty($model) )
                 $this->addError($attribute, 'Invalid Email Address');
         }
         public function Checksubscriptionmail()
