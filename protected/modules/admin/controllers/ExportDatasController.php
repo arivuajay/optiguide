@@ -1061,8 +1061,14 @@ class ExportDatasController extends Controller
         public function getsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital)
         {
             $subscription_arr = array();
+            $email_query ='';
             $subscription_str = '';
-                
+            
+            if($sub_optipromo=="1" || $sub_optinews=="1" || $sub_envision_digital=="1" || $sub_envue_digital=="1")
+            {
+                $email_query = " AND ru.COURRIEL!='' ";
+            }
+            
             if($sub_optipromo=="1")
             {
                 $subscription_arr[] = " ru.ABONNE_PROMOTION=1 ";
@@ -1104,6 +1110,8 @@ class ExportDatasController extends Controller
                 {
                    $subscription_str = " AND $subscription_arr[0] ";
                 }    
+                $subscription_str.= $email_query;
+                
             }  
 
             return $subscription_str;
@@ -1357,8 +1365,13 @@ class ExportDatasController extends Controller
             
             $subscription_arr = array();
             $subscription_arr1 = array();
-            $subscription_str = '';
-                
+            $subscription_str = $email_query = '';
+            
+            if($sub_optipromo=="1" || $sub_optinews=="1" || $sub_envision_digital=="1" || $sub_envue_digital=="1")
+            {
+                $email_query = " AND ru.email!='' ";
+            }  
+            
             if($sub_optipromo=="1")
             {
                 $subscription_arr[] = " ru.Optipromo=1 ";
@@ -1417,7 +1430,8 @@ class ExportDatasController extends Controller
                 }else
                 {
                    $subscription_str = " AND $subscription_arr[0] ".$imp_substr1;
-                }    
+                }  
+                $subscription_str=$subscription_str.$email_query;
             }else{
                 $subscription_str = $imp_substr1;
             }  
