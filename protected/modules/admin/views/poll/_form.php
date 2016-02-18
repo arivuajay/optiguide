@@ -52,13 +52,13 @@
                 </div>   
             </div>
             
-             <div class="form-group">
-                <?php echo $form->labelEx($model, 'usertype', array('class' => 'col-sm-2 control-label')); ?>
+<!--             <div class="form-group">
+                <?php //echo $form->labelEx($model, 'usertype', array('class' => 'col-sm-2 control-label')); ?>
                 <div class="col-sm-5">
-                    <?php echo $form->dropDownList($model, 'usertype', array("1" => 'Professionals', "2" => 'Suppliers', "3" => 'Optical Retailers', "4" => 'Representatives' , '5' =>'others'), array('class' => 'form-control')); ?>
-                    <?php echo $form->error($model, 'usertype'); ?>
+                    <?php //echo $form->dropDownList($model, 'usertype', array("1" => 'Professionals', "2" => 'Suppliers', "3" => 'Optical Retailers', "4" => 'Representatives' , '5' =>'others'), array('class' => 'form-control')); ?>
+                    <?php //echo $form->error($model, 'usertype'); ?>
                 </div>                  
-            </div> 
+            </div> -->
             
             <div class="form-group" style="display:none;">
                 <?php echo $form->labelEx($model, 'status', array('class' => 'col-sm-2 control-label')); ?>

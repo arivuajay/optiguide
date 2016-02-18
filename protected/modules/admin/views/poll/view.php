@@ -41,34 +41,34 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
     <div class="row">
         <?php      
        
-        if($model->usertype=='1')
-        {
-            //professional
-            $ptype = array(
-                'header'  => 'Professional Type',    
-                'name'    => 'professionalType.TYPE_SPECIALISTE_FR',
-                'value'   => $data->professionalType->TYPE_SPECIALISTE_FR,                
-                );
-        }else if($model->usertype=='2')
-        {
-            //supplier
-            $ptype = array(
-                'header'  => 'Supplier Type',    
-                'name'    => 'supplierType.TYPE_FOURNISSEUR_FR',
-                'value'   => $data->supplierType->TYPE_FOURNISSEUR_FR,                
-                );
-        }else if($model->usertype=='3')
-        {
-            //retailer
-            $ptype = array(
-                'header'  => 'Retailer Type',    
-                'name'    => 'retailerType.NOM_TYPE_FR',
-                'value'   => $data->retailerType->NOM_TYPE_FR,                
-                );
-        }else
-        {
-             $ptype = array();
-        }    
+//        if($model->usertype=='1')
+//        {
+//            //professional
+//            $ptype = array(
+//                'header'  => 'Professional Type',    
+//                'name'    => 'professionalType.TYPE_SPECIALISTE_FR',
+//                'value'   => $data->professionalType->TYPE_SPECIALISTE_FR,                
+//                );
+//        }else if($model->usertype=='2')
+//        {
+//            //supplier
+//            $ptype = array(
+//                'header'  => 'Supplier Type',    
+//                'name'    => 'supplierType.TYPE_FOURNISSEUR_FR',
+//                'value'   => $data->supplierType->TYPE_FOURNISSEUR_FR,                
+//                );
+//        }else if($model->usertype=='3')
+//        {
+//            //retailer
+//            $ptype = array(
+//                'header'  => 'Retailer Type',    
+//                'name'    => 'retailerType.NOM_TYPE_FR',
+//                'value'   => $data->retailerType->NOM_TYPE_FR,                
+//                );
+//        }else
+//        {
+//             $ptype = array();
+//        }    
         
         $gridColumns = array(  
                 array('header' => 'SN.',
@@ -79,8 +79,22 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'name'    => 'pollChoice.label',
                 'value'   => $data->pollChoice->label,                
                 ),
-                $ptype
-                ,
+                //$ptype
+                array(
+                'header'  => 'Professional Type',    
+                'name'    => 'professionalType.TYPE_SPECIALISTE_FR',
+                'value'   => $data->professionalType->TYPE_SPECIALISTE_FR,                
+                ),
+                array(
+                'header'  => 'Retailer Type',    
+                'name'    => 'retailerType.NOM_TYPE_FR',
+                'value'   => $data->retailerType->NOM_TYPE_FR,                
+                ),
+                array(
+                'header'  => 'Supplier Type',    
+                'name'    => 'supplierType.TYPE_FOURNISSEUR_FR',
+                'value'   => $data->supplierType->TYPE_FOURNISSEUR_FR,                
+                ),
                 array(
                 'header'  => 'Province',    
                 'name'    => 'regionDirectory.NOM_REGION_FR',

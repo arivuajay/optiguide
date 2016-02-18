@@ -184,13 +184,15 @@ class PollController extends Controller
         
       }
       
-       $polldate = isset($_POST['Poll']['polldate'])?$_POST['Poll']['polldate']:"";
+        $polldate = isset($_POST['Poll']['polldate'])?$_POST['Poll']['polldate']:"";
         if($polldate!='')
         {    
             $model->polldate =  date("Y-m-d",strtotime($polldate));      
         }  
       
-      if ( $model->validate()) {
+        $model->usertype = 1;
+     
+        if ( $model->validate()) {
          $model->save();
         // Save any poll choices too
         foreach ($choices as $choice) {
@@ -237,7 +239,7 @@ class PollController extends Controller
         $polldate = $_POST['Poll']['polldate'];
         $model->polldate =  date("Y-m-d",strtotime($polldate));      
       }
-
+      $model->usertype = 1;
       if ($model->save()) {
         // Save any poll choices too
         foreach ($choices as $choice) {

@@ -2,17 +2,18 @@
 if (Myclass::is_home_page()) {
     
     $pdate = date("Y-m", time());
-    $usertype = Yii::app()->user->getState('role');
-    if ($usertype == "Professionnels") {
-        $utype = 1;
-    } else if ($usertype == "Fournisseurs") {
-        $utype = 2;
-    } else if ($usertype == "Detaillants") {
-        $utype = 3;
-    }else
-    {
-        $utype = 1;
-    }
+//    $usertype = Yii::app()->user->getState('role');
+//    if ($usertype == "Professionnels") {
+//        $utype = 1;
+//    } else if ($usertype == "Fournisseurs") {
+//        $utype = 2;
+//    } else if ($usertype == "Detaillants") {
+//        $utype = 3;
+//    }else
+//    {
+//        $utype = 1;
+//    }
+     $utype = 1;
     
     $criteria = new CDbCriteria;
     $criteria->condition = "polldate like '%$pdate%' and usertype=$utype";

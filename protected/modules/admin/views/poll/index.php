@@ -102,24 +102,24 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                    'name' => 'polldate',
                    'value' => 'date("F Y",strtotime($data->polldate))',               
                 ), 
-                array(                   
-                   'name' => 'usertype',
-                   'value' => function ($data) {
-                        $usertype = $data->usertype;
-                        if($usertype=="1")
-                        {
-                            $utype = "Professionnels";
-                        }else if($usertype=="2")
-                        {
-                            $utype = "Fournisseurs";
-                        }else if($usertype=="3")
-                        {
-                            $utype = "Detaillants";
-                        }         
-                        return $utype; // $data['name'] for array data, e.g. using SqlDataProvider.
-                    },
-                   'filter' => CHtml::activeDropDownList($model, 'usertype', array("1" => 'Professionals', "2" => 'Suppliers', "3" => 'Optical Retailers', "4" => 'Representatives' , '5' =>'others'), array('class' => 'form-control', 'prompt' => 'Tous')),
-                ),                
+//                array(                   
+//                   'name' => 'usertype',
+//                   'value' => function ($data) {
+//                        $usertype = $data->usertype;
+//                        if($usertype=="1")
+//                        {
+//                            $utype = "Professionnels";
+//                        }else if($usertype=="2")
+//                        {
+//                            $utype = "Fournisseurs";
+//                        }else if($usertype=="3")
+//                        {
+//                            $utype = "Detaillants";
+//                        }         
+//                        return $utype; // $data['name'] for array data, e.g. using SqlDataProvider.
+//                    },
+//                   'filter' => CHtml::activeDropDownList($model, 'usertype', array("1" => 'Professionals', "2" => 'Suppliers', "3" => 'Optical Retailers', "4" => 'Representatives' , '5' =>'others'), array('class' => 'form-control', 'prompt' => 'Tous')),
+//                ),                
                 array(
                 'header' => 'actes',
                 'class' => 'application.components.MyActionButtonColumn',
