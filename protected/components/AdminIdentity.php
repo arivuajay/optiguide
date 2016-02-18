@@ -100,18 +100,18 @@ class AdminIdentity extends CUserIdentity {
             $return = true;
         }else{
             $return = false; 
-        }  
+        } 
         
         $user   = Admin::model()->find('admin_id = :U', array(':U' => $id));
         $screen = MasterScreen::model()->find("Screen_code = :controller and action= :action", array(':controller' => $controller, ':action'=>$action));
-        
+            
         if (!empty($user) && !empty($screen)) {    
             $auth_resources = AuthResources::model()->findByAttributes(array('Master_Role_ID' => $user->role, 'Master_Module_ID' => $screen->Module_ID, 'Master_Screen_ID' => $screen->Master_Screen_ID));
         }  
        
         if (!empty($auth_resources)) {
            $insert_actions = array('create',"generate_suppliers","generate_clients","generate_retailers");
-           $update_actions = array('update','repUpdateStatus');
+           $update_actions = array('update','repUpdateStatus',"modifypayment");
            $view_actions = array('index', 'view', 'retailerIndex','supplierIndex','clientIndex','reptransaction',"statsprice","repview");
            $delete_actions = array('delete');
            $other_actions = array();
@@ -166,7 +166,7 @@ class AdminIdentity extends CUserIdentity {
             $array_exportprofessionals = array("create","delete");
             $array_exportretailers = array("generate_retailers","delete");
             $array_exportsuppliers = array("generate_suppliers","delete");
-            $array_exportclients = array("generate_clients","delete");
+            $array_exportclients = array("generate_clients","delete");            
            
             if($controller=="exportDatas" && $action=="create")
             {
@@ -186,12 +186,13 @@ class AdminIdentity extends CUserIdentity {
             } 
             
             $array_paymenttransaction = array("repUpdateStatus","repview");
+            $array_paymentupdate = array("update","modifypayment","cancelpayment");
             if($controller=="paymentTransaction")
             {
                 if(in_array($action,$array_paymenttransaction))
                 { 
                  $action = "reptransaction";
-                }else if($action == "update")
+                }else if(in_array($action,$array_paymentupdate))
                 {
                   $action = "index";  
                 }    
