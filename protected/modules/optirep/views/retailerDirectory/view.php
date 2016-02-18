@@ -99,11 +99,16 @@
                     ?></p>
             </div>
         </div> 
-
-        <?php if ($model['services_offered'] != '' || $model['description'] != '' || $model['classification'] != '' || $model['contact_person'] != '' || $model['established'] != '' || $model['no_of_employee'] != '' || $model['turnover'] != '') { ?>
+            <?php $group_name = RetailerDirectory::model()->getgroup_name($model['ID_GROUPE']); ?> 
+                        
+        <?php if ($group_name != '' || $model['services_offered'] != '' || $model['description'] != '' || $model['classification'] != '' || $model['contact_person'] != '' || $model['established'] != '' || $model['no_of_employee'] != '' || $model['turnover'] != '') { ?>
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">  
                 <div class="search-list">       
                     <h2><?php echo Myclass::t('OG072', '', 'og'); ?></h2>
+                    <?php if($group_name!=''){ ?>
+                    <p> <?php echo "<b>" . Myclass::t('OG207') . "</b> "; ?> : <?php echo $group_name; ?></p>        
+                       <?php }?>
+                    
                     <p><?php
                         $_var=$model['classification'];
                         $classification = array('Upscale'=>Myclass::t('OG224'),'Midscale'=>Myclass::t('OG225'),'DownRange'=>Myclass::t('OG226'));

@@ -108,6 +108,11 @@ class RetailerDirectory extends CActiveRecord {
         // RetailerType::model()->findAll()    ;
         return $id;
     }
+    public function getgroup_name($id){
+        
+        $group_name = RetailerGroup::model()->findByPk($id)->NOM_GROUPE;
+        return $group_name;
+    }
 
     /**
      * @return array relational rules.
