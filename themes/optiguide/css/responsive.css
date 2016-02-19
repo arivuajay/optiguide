@@ -2,6 +2,10 @@
 /* CSS Document */
 
 @media (max-width:767px) {
+.text-right{
+    float: right;
+    padding-top: 8px;
+}
 .hidden-xs {
 display:none!important
 }

@@ -1,7 +1,7 @@
 <div class="cate-bg user-right">
     <?php     
     $this->renderPartial('_search', array('searchModel' => $searchModel)); ?>
-    <span class="text-right">Total Records:<?php echo $item_count;?></span>
+    <span class="text-right"><?php echo Myclass::t('OR778', '', 'or').': '.$item_count;?></span>
     <h2> <?php echo Myclass::t('OG040', '', 'og'); ?> </h2>
     <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 pull-right"> 
         <div class="perpage pull-right"> <span><?php echo Myclass::t('OR630', '', 'or'); ?> </span>

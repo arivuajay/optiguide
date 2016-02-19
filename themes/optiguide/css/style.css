@@ -1687,3 +1687,8 @@ a:focus
     font-size:13px;
     
 }
+.text-right{
+    float: right;
+    padding-right: 15px;
+    padding-top: 8px;
+}

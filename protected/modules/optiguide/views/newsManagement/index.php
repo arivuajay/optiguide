@@ -3,6 +3,7 @@
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
         <div class="inner-container eventslist-cont"> 
+            <b class="text-right"><?php echo Myclass::t('OR778', '', 'or').': '.$item_count;?></b>
             <h2>  
                 <?php // echo CHtml::image("{$this->themeUrl}/images/title_optinews.gif", 'Opti News'); ?>
                 <?php echo Myclass::t('OG189');?>

@@ -80,6 +80,7 @@ class NewsManagementController extends OGController {
         $this->render('index', array(
             'model' => $model,
             'pages' => $pages,
+            'item_count'=>$count,
             'searchModel' => $searchModel,
         ));
     }

@@ -124,6 +124,7 @@ class CalenderEventController extends OGController {
         }
         $this->render('index', array(
             'model' => $result,
+            'item_count'=>$count,
             'pages' => $pages,
             'searchModel' => $searchModel,
         ));

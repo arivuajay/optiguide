@@ -337,6 +337,6 @@ return array(
     'OR774' => 'Statistics - Professional and Retailers subscriptions in Optiguide',
     'OR775' => 'Statistics - Based on Professional Users Types',
     'OR776' => 'Statistics - Based on Retailer Users Types',
-    'OR777' => 'No results found.'
-    
+    'OR777' => 'No results found.',
+    'OR778' => 'Total Results',
 );

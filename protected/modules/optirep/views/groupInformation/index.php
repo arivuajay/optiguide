@@ -1,6 +1,6 @@
 <div class="cate-bg user-right">
     <?php $this->renderPartial('_search', array('searchModel' => $searchModel)); ?>
-    <span class="text-right">Total Records:<?php echo $item_count;?></span>
+    <span class="text-right"><?php echo Myclass::t('OR778', '', 'or').': '.$item_count;?></span>
     <h2><?php echo Myclass::t('OG040', '', 'og'); ?></h2>
     <div class="search-list">
         <?php

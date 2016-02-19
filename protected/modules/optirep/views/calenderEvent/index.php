@@ -1,6 +1,6 @@
 <div class="cate-bg user-right">
 <?php $this->renderPartial('_search', array('searchModel' => $searchModel)); ?>
-    <span class="text-right">Total Records:<?php echo $total;?></span>
+    <span class="text-right"><?php echo Myclass::t('OR778', '', 'or').': '.$total;?> </span>
     <h2> <?php echo Myclass::t('OG017', '', 'og') ?> </h2>
     <div class="search-list calendar-list">
         <?php foreach ($model as $month_year => $events) { ?>
