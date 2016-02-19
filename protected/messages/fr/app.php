@@ -257,6 +257,7 @@ return array(
     'OG225' =>'Milieu de gamme',
     'OG226' =>'Bas de gamme',
     
-    'OG227' => 'Votre rôle est désactivé . s\'il vous plaît contacter administration'
+    'OG227' => 'Votre rôle est désactivé . s\'il vous plaît contacter administration',
+    'OG228' => "Indiquez votre groupe",
 );
 ?>

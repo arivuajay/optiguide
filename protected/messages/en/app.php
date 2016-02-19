@@ -258,6 +258,6 @@ return array(
     'OG226' => 'Entry-level',
     
     'OG227' => 'Your role is deactivated. please contact admin.',
-     
+    'OG228' => "Specify your group",
 );    
 ?>

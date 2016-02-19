@@ -34,7 +34,7 @@
  */
 class RetailerDirectory extends CActiveRecord {
 
-    public $country, $region, $uaccess_search, $searchcat, $Retailers1, $Retailers2, $pfile, $listperpage, $autre_ville,$keyword;
+    public $country, $region, $uaccess_search, $searchcat, $Retailers1, $Retailers2, $pfile, $listperpage, $autre_ville,$keyword,$autre_group;
     static $NOM_TABLE = 'Detaillants';
     public $image;
 
@@ -55,6 +55,7 @@ class RetailerDirectory extends CActiveRecord {
             array('COMPAGNIE, ID_RETAILER_TYPE, country, region, ID_VILLE,ADRESSE', 'required'),
             array('TELEPHONE,CODE_POSTAL', 'required', 'on' => 'frontend'),
             array('autre_ville', 'checkOtherCityChoosen'),
+            array('autre_group', 'checkOtherGroupChoosen'),
             array('Retailers2', 'required', 'on' => 'mapping', 'message' => Myclass::t('OGO159', '', 'og')),
             array('ID_VILLE, ID_RETAILER_TYPE, ID_GROUPE, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5,established,no_of_employee', 'numerical', 'integerOnly' => true),
             array('ID_CLIENT', 'length', 'max' => 10),
@@ -65,7 +66,7 @@ class RetailerDirectory extends CActiveRecord {
             // @todo Please remove those attributes that should not be searched.    
             array('CATEGORY_1,CATEGORY_2,CATEGORY_3,CATEGORY_4,CATEGORY_5', 'Checkatleast'),
             array('Categories,uaccess_search,searchcat,Retailers1,Retailers2,services_offered,description,classification,turnover', 'safe'),
-            array('contact_person,facebooklink,twitterlink,linkedinlink,pfile,listperpage,CREATED_DATE, autre_ville', 'safe'),
+            array('contact_person,facebooklink,twitterlink,linkedinlink,pfile,listperpage,CREATED_DATE, autre_ville,autre_group', 'safe'),
             array('COURRIEL', 'email'),
             array('URL', 'url'),
             array('keyword,uaccess_search,ID_RETAILER, ID_CLIENT, COMPAGNIE, ID_VILLE, ADRESSE, ADRESSE2, CODE_POSTAL, TELEPHONE, TELEPHONE2, TELECOPIEUR, TELECOPIEUR2, URL, COURRIEL, TEL_1800, DATE_MODIFICATION, ID_RETAILER_TYPE, ID_GROUPE, GROUPE, HEAD_OFFICE_NAME, CATEGORY_1, CATEGORY_2, CATEGORY_3, CATEGORY_4, CATEGORY_5', 'safe', 'on' => 'search'),
@@ -102,7 +103,12 @@ class RetailerDirectory extends CActiveRecord {
                 $this->addError($attributes, 'City cannot be blank.');
         }
     }
-
+    public function checkOtherGroupChoosen($attributes,$param) {
+        if ($this->ID_GROUPE == -1) {
+            if($this->autre_group == '')
+                $this->addError($attributes, 'Group cannot be blank.');
+        }
+    }
     public static function getcounts($id) {
 
         // RetailerType::model()->findAll()    ;
@@ -184,7 +190,8 @@ class RetailerDirectory extends CActiveRecord {
             'twitterlink' => 'Twitter',
             'linkedinlink' => 'LinkedIn',
             'pfile' => 'Proof File',
-            'autre_ville' => Myclass::t('OG172')
+            'autre_ville' => Myclass::t('OG172'),
+            'autre_group' => Myclass::t('OG228'),
         );
     }
 

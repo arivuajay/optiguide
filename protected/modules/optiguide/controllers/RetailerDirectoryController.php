@@ -274,7 +274,24 @@ class RetailerDirectoryController extends OGController {
                         $model->ID_VILLE = $cinfo->ID_VILLE;
                     }
                 }
-
+                
+                // save the other group informations and get Groupid
+                if ($model->ID_GROUPE == "-1") {
+                    $retailer_type_id = $model->ID_RETAILER_TYPE;
+                    $othergroup = $model->autre_group;
+                    $condition = "ID_RETAILER_TYPE='$retailer_type_id' and NOM_GROUPE='$othergroup'";
+                    $group_exist = RetailerGroup::model()->find($condition);
+                    if (!empty($group_exist)) {
+                        $model->ID_GROUPE = $group_exist->ID_GROUPE;
+                    } else {
+                        $cinfo = new RetailerGroup;
+                        $cinfo->ID_RETAILER_TYPE = $retailer_type_id;
+                        $cinfo->NOM_GROUPE = $othergroup;
+                        $cinfo->save(false);
+                        $model->ID_GROUPE = $cinfo->ID_GROUPE;
+                    }
+                }
+                
                 $address = $model->ADRESSE;
                 $country = $model->country;
                 $region = $model->region;
@@ -407,7 +424,23 @@ class RetailerDirectoryController extends OGController {
                         $model->ID_VILLE = $cinfo->ID_VILLE;
                     }
                 }
-
+                // save the other group informations and get Groupid
+                if ($model->ID_GROUPE == "-1") {
+                    $retailer_type_id = $model->ID_RETAILER_TYPE;
+                    $othergroup = $model->autre_group;
+                    $condition = "ID_RETAILER_TYPE='$retailer_type_id' and NOM_GROUPE='$othergroup'";
+                    $group_exist = RetailerGroup::model()->find($condition);
+                    if (!empty($group_exist)) {
+                        $model->ID_GROUPE = $group_exist->ID_GROUPE;
+                    } else {
+                        $cinfo = new RetailerGroup;
+                        $cinfo->ID_RETAILER_TYPE = $retailer_type_id;
+                        $cinfo->NOM_GROUPE = $othergroup;
+                        $cinfo->save(false);
+                        $model->ID_GROUPE = $cinfo->ID_GROUPE;
+                    }
+                }
+                
                 $address = $model->ADRESSE;
                 $country = $model->country;
                 $region = $model->region;
@@ -446,6 +479,7 @@ class RetailerDirectoryController extends OGController {
         $options = '';
         $cid = isset($_POST['id']) ? $_POST['id'] : '';
         $options = "<option value=''>" . Myclass::t('OG119') . "</option>";
+        $options .= "<option value='-1'>" . Myclass::t('OG173') . "</option>";
         if ($cid != '') {
             $criteria = new CDbCriteria;
             $criteria->order = 'NOM_GROUPE ASC';

@@ -25,7 +25,9 @@
             
             $groupetypes = array();
             if ($model->ID_RETAILER_TYPE) {
-                $groupetypes = CHtml::listData(RetailerGroup::model()->findAll("ID_RETAILER_TYPE=" . $model->ID_RETAILER_TYPE), 'ID_GROUPE', 'NOM_GROUPE');
+                $groupetypes1["-1"] = Myclass::t('OG173');
+                $groupetypes2 = CHtml::listData(RetailerGroup::model()->findAll("ID_RETAILER_TYPE=" . $model->ID_RETAILER_TYPE), 'ID_GROUPE', 'NOM_GROUPE');
+                $groupetypes = $groupetypes1 + $groupetypes2;
             }
 
             $country = Myclass::getallcountries();
@@ -98,7 +100,15 @@
                             <?php echo $form->error($model, 'ID_GROUPE'); ?>
                         </div>
                     </div>
-
+                    <div class="form-row1" id="other_group" style="display:none;"> 
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                            <?php echo $form->labelEx($model, 'autre_group'); ?>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> 
+                            <?php echo $form->textField($model, 'autre_group', array('class' => 'form-txtfield')); ?>      
+                            <?php echo $form->error($model, 'autre_group'); ?>
+                        </div>
+                    </div>
                     <div class="form-row1">                        
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4"> 
                             <?php echo $form->labelEx($model, 'HEAD_OFFICE_NAME'); ?>
@@ -490,7 +500,7 @@ $lat = $model->map_lat;
 $long = $model->map_long;
 
 $ctyval = isset($model->ID_VILLE) ? $model->ID_VILLE : '';
-
+$groupval = isset($model->ID_GROUPE) ? $model->ID_GROUPE : '';
 $js = <<< EOD
     $(document).ready(function(){
         
@@ -636,6 +646,22 @@ $js = <<< EOD
         if(id=="-1")
         {    
             $("#other_city").show();
+        }    
+    });
+    
+    var groupval = "{$groupval}";
+    if(groupval=="-1")
+    {    
+        $("#other_group").show();
+    }     
+            
+   $("#RetailerDirectory_ID_GROUPE").change(function(){
+        var id=$(this).val();
+            
+        $("#other_group").hide();
+        if(id=="-1")
+        {    
+            $("#other_group").show();
         }    
     });
             
