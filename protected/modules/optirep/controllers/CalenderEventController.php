@@ -115,6 +115,7 @@ class CalenderEventController extends ORController {
         $this->render('index', array(
             'model' => $result,
             'pages' => $pages,
+            'total'=>$count,
             'searchModel' => $searchModel,
         ));
     }

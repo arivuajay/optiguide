@@ -1321,3 +1321,8 @@ font-family: 'Lato', sans-serif;
 .last-pag{
     padding-bottom: 30px;
 }
+.text-right{
+    float: right;
+    padding-right: 15px;
+    padding-top: 8px;
+}

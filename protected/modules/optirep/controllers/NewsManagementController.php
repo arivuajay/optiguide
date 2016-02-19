@@ -73,6 +73,7 @@ class NewsManagementController extends ORController {
         $this->render('index', array(
             'model' => $model,
             'pages' => $pages,
+            'total'=>$count,
             'searchModel' => $searchModel,
         ));
     }

@@ -9,6 +9,7 @@
         $parampage = "category";
     }
     ?>
+    <span class="text-right">Total Records:<?php echo $item_count;?></span>
     <h2><?php echo Myclass::t('OR040', '', 'or'); ?> </h2>    
     <div class="search-list">        
         <?php
