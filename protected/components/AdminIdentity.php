@@ -225,6 +225,10 @@ class AdminIdentity extends CUserIdentity {
                 }
             }
             
+            if($controller=="archiveFichier")
+            {
+                $controller = "archiveCategory";
+            }    
             
             $screen = MasterScreen::model()->find("Screen_code = :controller", array(':controller' => $controller));
         }   

@@ -773,7 +773,9 @@ $js = <<< EOD
             data: dataString,
             cache: false,
             success: function(html){             
-                $("#ret_message_contents").html(html);               
+                $("#ret_message_contents").html(html);     
+                $('.year').datepicker({ dateFormat: 'yyyy' });
+                $('.date').datepicker({ format: 'dd-mm-yyyy', startDate: '+0d',}); 
             }
          });
     });

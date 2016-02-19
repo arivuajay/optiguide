@@ -5,6 +5,8 @@ class ClientProfilesController extends Controller {
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
+    
+    
 
     /**
      * @return array action filters
@@ -75,10 +77,19 @@ class ClientProfilesController extends Controller {
                 }
                 $model->afile->saveAs($attach_path . $filename);
             }
-            if ($model->save()) {
-                Yii::app()->user->setFlash('success', 'Alert Message Updated Successfully!!!');
-                $this->redirect(array('update', 'id' => $model->client_id));
-            }
+            
+             if ($model->date_remember != '' && $model->employee_id != '' && $model->message != '') 
+            {
+                $model->date_remember = date("Y-m-d", strtotime($_POST['ClientMessages']['date_remember']));    
+                $model->save();
+                
+                Yii::app()->user->setFlash('success', 'Alert Message Updated Successfully!!!');               
+            }else{
+                Yii::app()->user->setFlash('danger', Myclass::t("OG200"));
+            } 
+            
+            $this->redirect(array('update', 'id' => $model->client_id));
+            
         }
 
         $this->renderPartial('update_message', array('model' => $model), false, true);

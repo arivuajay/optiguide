@@ -80,10 +80,19 @@ class RetailerDirectoryController extends Controller {
                 }
                 $model->afile->saveAs($attach_path . $filename);
             }
-            if ($model->save()) {                
-                Yii::app()->user->setFlash('success', 'Alert Message Updated Successfully!!!');
-                $this->redirect(array('update', 'id' => $model->ID_RETAILER));
-            }
+            
+             if ($model->date_remember != '' && $model->employee_id != '' && $model->message != '') 
+            {
+                $model->date_remember = date("Y-m-d", strtotime($_POST['RetailerMessages']['date_remember']));    
+                $model->save();
+                
+                Yii::app()->user->setFlash('success', 'Alert Message Updated Successfully!!!');               
+            }else{
+                Yii::app()->user->setFlash('danger', Myclass::t("OG200"));
+            } 
+            
+            $this->redirect(array('update', 'id' => $model->ID_RETAILER));
+            
         }
 
         $this->renderPartial('update_message', array('model' => $model), false, true);

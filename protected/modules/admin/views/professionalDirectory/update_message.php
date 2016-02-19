@@ -16,6 +16,17 @@
                     ),
                     
                 ));
+                $model->date_remember = date("d-m-Y",  strtotime( $model->date_remember));
+                ?>
+                 <div class="form-group">
+                    <?php echo $form->labelEx($model, 'date_remember', array('class' => 'col-sm-3 control-label')); ?>
+                    <div class="col-sm-9">
+                        <?php echo $form->textField($model, 'date_remember', array('class' => 'form-control date')); ?>
+                        <?php echo $form->error($model, 'date_remember'); ?>
+                    </div>
+                </div>
+                <?php
+               $model->message = strip_tags($model->message);
                 ?>
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'message', array('class' => 'col-sm-3 control-label')); ?>
@@ -40,7 +51,3 @@
         </div><!-- /.box -->
     </div>
 </div>
-
-
-
-
