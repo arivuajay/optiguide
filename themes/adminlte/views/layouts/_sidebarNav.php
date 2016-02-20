@@ -62,7 +62,7 @@
                         array('label' => '<i class="fa fa-angle-double-right"></i> <span>Gestion des marques</span>', 'url' => array('/admin/marqueDirectory/index'), 'active' => $_controller == 'marqueDirectory' ,  'visible' => '1'),
                     ),
                 ),
-                array('label' => '<i class="fa fa-users"></i> <span>NA Utilisateurs </span>', 'url' => array('/admin/userDirectory/index'), 'active' => $_controller == 'userDirectory' ,  'visible' => '1'),
+              //  array('label' => '<i class="fa fa-users"></i> <span>NA Utilisateurs </span>', 'url' => array('/admin/userDirectory/index'), 'active' => $_controller == 'userDirectory' ,  'visible' => '1'),
 //                array('label' => '<i class="fa fa-users"></i> <span>Détaillants</span>', 'url' => array('/admin/retailerDirectory/index'), 'active' => $_controller == 'retailerdirectory' ,  'visible' => '1'),
                 array('label' => '<i class="fa fa-users"></i> <span> Détaillants</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
                     'itemOptions' => array('class' => 'treeview'),
