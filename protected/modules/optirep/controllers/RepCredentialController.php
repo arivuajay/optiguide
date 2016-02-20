@@ -25,7 +25,7 @@ class RepCredentialController extends ORController {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('changePassword', 'editProfile', 'changeStatus'),
+                'actions' => array('changePassword', 'editProfile', 'changeStatus','getbrand'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -519,6 +519,24 @@ class RepCredentialController extends ORController {
 
         $this->render('editprofile', array('model' => $model, 'profile' =>
             $profile));
+    }
+    
+    public function actionGetbrand() {
+        $marque = new MarqueDirectory;
+        $marque_name = Yii::app()->request->getParam('MARQUE');
+            $check_marque=MarqueDirectory::model()->findByAttributes(array('NOM_MARQUE' => $marque_name));
+            if(empty($check_marque) && $marque_name!=''){
+                $marque->NOM_MARQUE=$marque_name;
+                $marque->AFFICHAGE=1;
+                $marque->save(false);
+                echo $marque->ID_MARQUE;exit;
+            }else{
+//                $marque->addError('attrib', 'Error added in Controller: attrib must be true.');
+//                echo CHtml::error($marque, 'NOM_MARQUE');
+//                Yii::app()->end();
+                echo "exit";exit;
+            }
+        
     }
 
     //Change Password for Opti-Rep

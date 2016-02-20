@@ -37,7 +37,7 @@ class MarqueDirectory extends CActiveRecord
 			array('NOM_MARQUE', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-                        array('products,ID_SECTION,PROD_SERVICE','safe'),
+                        
 			array('ID_MARQUE, NOM_MARQUE, AFFICHAGE', 'safe', 'on'=>'search'),
 		);
 	}

@@ -259,5 +259,9 @@ return array(
     
     'OG227' => 'Your role is deactivated. please contact admin.',
     'OG228' => "Specify your group",
+    'OG229' => 'Enter Your Brand Name',
+    'OG230'  => 'Add',
+    'OG231'  => 'Already exist',
+    'OG232'  => 'Brand cannot be blank.',
 );    
 ?>

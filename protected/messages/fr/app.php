@@ -259,5 +259,9 @@ return array(
     
     'OG227' => 'Votre rôle est désactivé . s\'il vous plaît contacter administration',
     'OG228' => "Indiquez votre groupe",
+    'OG229' => 'Entrez votre nom de marque',
+    'OG230' => 'Ajouter',
+    'OG231'  => 'Existent déjà',
+    'OG232'  => 'Marques ne peut être vide.',
 );
 ?>

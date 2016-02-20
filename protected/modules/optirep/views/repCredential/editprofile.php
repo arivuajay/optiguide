@@ -112,7 +112,7 @@
                 </div>
             </div>
         </div>
-
+        
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subscribe-btncont"> 
             <div class="inner-container"> 
                 <div class="forms-cont">  
@@ -121,6 +121,9 @@
                             <tr class="warning no-result">
                                 <td><i class="fa fa-warning"></i> <?php echo Myclass::t('OR043', '', 'or'); ?> </td>
                             </tr>
+                            <tbody id="yes-resulet">
+                                
+                            </tbody>
                             <tbody>
                                 <?php
                                 if (!empty($all_marques)) {
@@ -148,7 +151,19 @@
                 </div>
             </div>
         </div> 
-
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="add_brand">
+            <div class="row">
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text" class="form-field" id="new_brand" placeholder="<?php echo Myclass::t('OG229');?>">
+                    <div style="" id="new_brand_error" class="errorMessage" style="display:none;"></div>
+                </div>
+                <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+                    <a href="javascript:void(0)" class="btn btn-success" id="add_brand_link">
+                        <?php echo Myclass::t('OG230');?>
+                    </a>
+                </div>
+            </div>
+        </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php
             echo CHtml::tag('button', array(
@@ -161,10 +176,15 @@
     </div>
     <?php $this->endWidget(); ?>
 </div>
-
+<style>
+    #add_brand{
+        margin-top: 20px;
+    }
+</style>
 <?php
 $ajaxRegionUrl = Yii::app()->createUrl('/optirep/repCredential/getregions');
 $ajaxCityUrl = Yii::app()->createUrl('/optirep/repCredential/getcities');
+$ajaxbrand = Yii::app()->createUrl('/optirep/repCredential/getbrand');
 
 $ajaxgetlocation = Yii::app()->createUrl('/optirep/repCredential/generatelatlong');
 $cs = Yii::app()->getClientScript();
@@ -174,10 +194,53 @@ $cs->registerScriptFile("http://maps.google.com/maps/api/js?sensor=false");
 $lat = $profile->rep_lat;
 $long = $profile->rep_long;
 
+$already=Myclass::t('OG231');
+$empty=Myclass::t('OG232');
+
 $ctyval = isset($profile->ID_VILLE) ? $profile->ID_VILLE : '';
 
 $js = <<< EOD
     $(document).ready(function(){
+        
+        var already="<?php echo ?>";
+        $("#add_brand_link").click(function(){
+            $('#new_brand_error').hide();
+            var MARQUE=$('#new_brand').val();
+            if(MARQUE!=''){
+                var dataString = 'MARQUE='+ MARQUE;
+                $.ajax({
+                    type: "POST",
+                    url: '{$ajaxbrand}',
+                    data: dataString,
+                    cache: false,
+                    success: function(reps){
+                        if(reps=='exit'){
+                            $('#new_brand_error').text('{$already}');
+                            $('#new_brand_error').show();
+                            $('.no-result').hide();
+
+                            $(".results tbody tr").each(function (e) {
+                                    $(this).attr('visible', 'true');
+                                });
+
+                            }else{
+                            $('#new_brand_error').hide();
+                            $('.no-result').hide();
+
+                            $('#new_brand').val('');
+                                $("#yes-resulet").append('<tr visible="true"><td><input type="checkbox" name="marqueid[]" class="simple checkbox1" checked="checked" value="'+reps+'">'+MARQUE+'<tr><td>');
+                                $(".results tbody tr").each(function (e) {
+                                    $(this).attr('visible', 'true');
+                                });
+                                }
+                    }
+                 });
+            }else{
+                $('#new_brand_error').text('{$empty}'); 
+                $('#new_brand_error').show();
+            }
+        });
+        
         $("#RepCredentialProfiles_country").change(function(){
             var id=$(this).val();
             var dataString = 'id='+ id;
@@ -313,10 +376,11 @@ $js = <<< EOD
             });
 
             var jobCount = $('.results tbody tr[visible="true"]').length;
-            $('.counter').text(jobCount + ' item');
+            $('.counter').text(jobCount + ' items');
                 
             if (jobCount == '0') {
                 $('.no-result').show();
+                
             }
             else {
                 $('.no-result').hide();
