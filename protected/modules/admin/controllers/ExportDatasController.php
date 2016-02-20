@@ -1249,7 +1249,7 @@ class ExportDatasController extends Controller
                 $sub_envue_digital =  $_POST['ExportDatas']['Envue_digital'];
                 $ptype=$_POST['ExportDatas']['ptype'];
                 $category=$_POST['ExportDatas']['category'];
-                $subscription_str  = $this->getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital,$ptype,$category); 
+                $subscription_str  = $this->getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital,$ptype); 
                  // Provience filter               
                 $province_str = ''; $scntry_qry=''; $sregion_qry='';
                 //$provinces    = $_POST['ExportDatas']['province'];
@@ -1269,13 +1269,14 @@ class ExportDatasController extends Controller
                     }
 
                 }
+                
+                
                 // Client category Type
                 $type_str  = '';
                 
                 $category_type = $_POST['ExportDatas']['ptype'];      
 //                $type_str      = $this->gettype_filter($category_type,"client");
-                $category = $_POST['ExportDatas']['category'];
-                
+                $categorys = $_POST['ExportDatas']['category'];
                     
                 // Export type    
                 $export_type = $_POST['ExportDatas']['export_type'];
@@ -1287,7 +1288,7 @@ class ExportDatasController extends Controller
                 if($item_count>0)
                 {   
                    // Export data and save the files
-                    $this->exportfiles_client( $export_type , $lang_str,$subscription_str , $province_str,$category_type,$category);
+                    $this->exportfiles_client( $export_type , $lang_str,$subscription_str , $province_str,$category_type,$categorys);
                  
                     Yii::app()->user->setFlash('success', 'Datas export successfully!!!');
                     $this->redirect(array('clientIndex'));
@@ -1310,57 +1311,117 @@ class ExportDatasController extends Controller
             ));
 	}          
          
-        public function exportfiles_client( $export_type ,$lang_str, $subscription_str , $province_str,$category_type,$category)
+        public function exportfiles_client( $export_type ,$lang_str, $subscription_str , $province_str,$category_type,$categorys)
         {
             Yii::import('ext.ECSVExport');
             $attach_path = Yii::getPathOfAlias('webroot').'/'.EXPORTDATAS;   
             $randstr  = Myclass::getRandomString(4);
            
+          
             // Single file
-                // Get all records list  with limit
-                $ret_result = Yii::app()->db->createCommand(
-                "SELECT ru.client_id AS ID,ru.ID_CLIENT ,ru.lang AS Language,ru.name AS Client_Name,ru.sex AS Sex,ru.company AS Company,ru.job_title AS Job_Title,
-                (CASE WHEN ru.member_type <> 'free_member' THEN 'Advertiser' ELSE 'Free member' END) AS Member_Type,
-                ct.cat_type AS Category_Type,GROUP_CONCAT(cc.cat_name SEPARATOR ', ')AS Category_Name,
-                ru.address AS Address,  ru.local_number AS Local_number,  rp.NOM_PAYS_EN AS Country,  rr.ABREVIATION_EN AS Region,  rv.NOM_VILLE AS Ville,    ru.CodePostal, ru.phonenumber1,  ru.Poste1,ru.phonenumber2, ru.Poste2, ru.phonenumber3, ru.Europe,  ru.feurope, 
-                ru.tollfree_number, ru.mobile_number,  ru.fax AS Fax,  ru.email AS Email,  ru.site_address AS Site_address, ru.Website2,
-                (CASE WHEN ru.Envision_digital <> 1 THEN 'No' ELSE 'Yes' END) AS Envision_Digital ,
-                (CASE WHEN ru.Envue_digital <> 1 THEN 'No' ELSE 'Yes' END) AS Envue_Digital ,
-                (CASE WHEN ru.Envision_print <> 1 THEN 'No' ELSE 'Yes' END) AS Envision_Print ,
-                (CASE WHEN ru.Envue_print <> 1 THEN 'No' ELSE 'Yes' END) AS Envue_Print ,                                 
-                (CASE WHEN ru.Optinews <> 1 THEN 'No' ELSE 'Yes' END) AS Opti_News ,
-                (CASE WHEN ru.Optipromo <> 1 THEN 'No' ELSE 'Yes' END) AS Opti_Promo ,
-                ru.Rep,   ru.modified_date ,ru.created_date
-                FROM client_category cc,client_profiles ru  ,client_category_types ct ,repertoire_pays  rp , repertoire_region rr ,repertoire_ville rv,client_cat_mapping cm
-                WHERE cm.client_id=ru.client_id AND cm.cat_type_id=ct.cat_type_id AND cm.category=cc.category AND ru.country=rp.ID_PAYS AND ru.region=rr.ID_REGION AND ru.ville=rv.ID_VILLE                                 
-                ".$lang_str.$subscription_str.$province_str." GROUP BY ru.client_id");
+                
+                
               
                 // File name and path      
                 if($export_type==1)
                 { 
+                    // Get all records list  with limit
+                    $ret_result = Yii::app()->db->createCommand(
+                    "SELECT ru.client_id AS ID,ru.ID_CLIENT ,ru.lang AS Language,ru.name AS Client_Name,ru.sex AS Sex,ru.company AS Company,ru.job_title AS Job_Title,
+                    (CASE WHEN ru.member_type <> 'free_member' THEN 'Advertiser' ELSE 'Free member' END) AS Member_Type,
+                    ct.cat_type AS Category_Type,GROUP_CONCAT(cc.cat_name SEPARATOR ', ')AS Category_Name,
+                    ru.address AS Address,  ru.local_number AS Local_number,  rp.NOM_PAYS_EN AS Country,  rr.ABREVIATION_EN AS Region,  rv.NOM_VILLE AS Ville,    ru.CodePostal, ru.phonenumber1,  ru.Poste1,ru.phonenumber2, ru.Poste2, ru.phonenumber3, ru.Europe,  ru.feurope, 
+                    ru.tollfree_number, ru.mobile_number,  ru.fax AS Fax,  ru.email AS Email,  ru.site_address AS Site_address, ru.Website2,
+                    (CASE WHEN ru.Envision_digital <> 1 THEN 'No' ELSE 'Yes' END) AS Envision_Digital ,
+                    (CASE WHEN ru.Envue_digital <> 1 THEN 'No' ELSE 'Yes' END) AS Envue_Digital ,
+                    (CASE WHEN ru.Envision_print <> 1 THEN 'No' ELSE 'Yes' END) AS Envision_Print ,
+                    (CASE WHEN ru.Envue_print <> 1 THEN 'No' ELSE 'Yes' END) AS Envue_Print ,                                 
+                    (CASE WHEN ru.Optinews <> 1 THEN 'No' ELSE 'Yes' END) AS Opti_News ,
+                    (CASE WHEN ru.Optipromo <> 1 THEN 'No' ELSE 'Yes' END) AS Opti_Promo ,
+                    ru.Rep,   ru.modified_date ,ru.created_date
+                    FROM client_category cc,client_profiles ru  ,client_category_types ct ,repertoire_pays  rp , repertoire_region rr ,repertoire_ville rv,client_cat_mapping cm
+                    WHERE cm.client_id=ru.client_id AND cm.cat_type_id=ct.cat_type_id AND cm.category=cc.category AND ru.country=rp.ID_PAYS AND ru.region=rr.ID_REGION AND ru.ville=rv.ID_VILLE                                 
+                    ".$lang_str.$subscription_str.$province_str." GROUP BY ru.client_id");
+                    
                     $filename = "Client_data_".date("Y_m_d",time())."_".$randstr.".csv";                
                     $outputFile_path = $attach_path.$filename;
+                    // Export as csv file
+                            $this->Exceldownload($ret_result,$outputFile_path);
+                            $model=new ExportDatas;   
+                            $model->attachment_file = $filename;
+                            $model->user_type = "Client";
+                            $model->save();
                 }else if($export_type==3)  {  
-                    if(!empty($category)){
+                    if(!empty($categorys)){
+                        foreach ($categorys as $category){
+                        // Get all records list  with limit
+                        $ret_result = Yii::app()->db->createCommand(
+                        "SELECT ru.client_id AS ID,ru.ID_CLIENT ,ru.lang AS Language,ru.name AS Client_Name,ru.sex AS Sex,ru.company AS Company,ru.job_title AS Job_Title,
+                        (CASE WHEN ru.member_type <> 'free_member' THEN 'Advertiser' ELSE 'Free member' END) AS Member_Type,
+                        ct.cat_type AS Category_Type,
+                        ru.address AS Address,  ru.local_number AS Local_number,  rp.NOM_PAYS_EN AS Country,  rr.ABREVIATION_EN AS Region,  rv.NOM_VILLE AS Ville,    ru.CodePostal, ru.phonenumber1,  ru.Poste1,ru.phonenumber2, ru.Poste2, ru.phonenumber3, ru.Europe,  ru.feurope, 
+                        ru.tollfree_number, ru.mobile_number,  ru.fax AS Fax,  ru.email AS Email,  ru.site_address AS Site_address, ru.Website2,
+                        (CASE WHEN ru.Envision_digital <> 1 THEN 'No' ELSE 'Yes' END) AS Envision_Digital ,
+                        (CASE WHEN ru.Envue_digital <> 1 THEN 'No' ELSE 'Yes' END) AS Envue_Digital ,
+                        (CASE WHEN ru.Envision_print <> 1 THEN 'No' ELSE 'Yes' END) AS Envision_Print ,
+                        (CASE WHEN ru.Envue_print <> 1 THEN 'No' ELSE 'Yes' END) AS Envue_Print ,                                 
+                        (CASE WHEN ru.Optinews <> 1 THEN 'No' ELSE 'Yes' END) AS Opti_News ,
+                        (CASE WHEN ru.Optipromo <> 1 THEN 'No' ELSE 'Yes' END) AS Opti_Promo ,
+                        ru.Rep,   ru.modified_date ,ru.created_date
+                        FROM client_category cc,client_profiles ru  ,client_category_types ct ,repertoire_pays  rp , repertoire_region rr ,repertoire_ville rv,client_cat_mapping cm
+                        WHERE cm.client_id=ru.client_id AND cm.cat_type_id=ct.cat_type_id AND cm.category=cc.category AND ru.country=rp.ID_PAYS AND ru.region=rr.ID_REGION AND ru.ville=rv.ID_VILLE                                 
+                        AND cc.category=".$category.$lang_str.$subscription_str.$province_str." GROUP BY ru.client_id");
+
                         $cattype_name = ClientCategory::model()->findByPk($category)->cat_name;
+                        $filename = "Client_data_".date("Y_m_d",time())."_".$cattype_name."_".$randstr.".csv";                
+                        $outputFile_path = $attach_path.$filename;
+                            // Export as csv file
+                            $this->Exceldownload($ret_result,$outputFile_path);
+                            $model=new ExportDatas;   
+                            $model->attachment_file = $filename;
+                            $model->user_type = "Client";
+                            $model->save();
+                        }
                     }else if(!empty($category_type)) {
+                        
+                        // Get all records list  with limit
+                        $ret_result = Yii::app()->db->createCommand(
+                        "SELECT ru.client_id AS ID,ru.ID_CLIENT ,ru.lang AS Language,ru.name AS Client_Name,ru.sex AS Sex,ru.company AS Company,ru.job_title AS Job_Title,
+                        (CASE WHEN ru.member_type <> 'free_member' THEN 'Advertiser' ELSE 'Free member' END) AS Member_Type,
+                        ct.cat_type AS Category_Type,GROUP_CONCAT(cc.cat_name SEPARATOR ', ')AS Category_Name,
+                        ru.address AS Address,  ru.local_number AS Local_number,  rp.NOM_PAYS_EN AS Country,  rr.ABREVIATION_EN AS Region,  rv.NOM_VILLE AS Ville,    ru.CodePostal, ru.phonenumber1,  ru.Poste1,ru.phonenumber2, ru.Poste2, ru.phonenumber3, ru.Europe,  ru.feurope, 
+                        ru.tollfree_number, ru.mobile_number,  ru.fax AS Fax,  ru.email AS Email,  ru.site_address AS Site_address, ru.Website2,
+                        (CASE WHEN ru.Envision_digital <> 1 THEN 'No' ELSE 'Yes' END) AS Envision_Digital ,
+                        (CASE WHEN ru.Envue_digital <> 1 THEN 'No' ELSE 'Yes' END) AS Envue_Digital ,
+                        (CASE WHEN ru.Envision_print <> 1 THEN 'No' ELSE 'Yes' END) AS Envision_Print ,
+                        (CASE WHEN ru.Envue_print <> 1 THEN 'No' ELSE 'Yes' END) AS Envue_Print ,                                 
+                        (CASE WHEN ru.Optinews <> 1 THEN 'No' ELSE 'Yes' END) AS Opti_News ,
+                        (CASE WHEN ru.Optipromo <> 1 THEN 'No' ELSE 'Yes' END) AS Opti_Promo ,
+                        ru.Rep,   ru.modified_date ,ru.created_date
+                        FROM client_category cc,client_profiles ru  ,client_category_types ct ,repertoire_pays  rp , repertoire_region rr ,repertoire_ville rv,client_cat_mapping cm
+                        WHERE cm.client_id=ru.client_id AND cm.cat_type_id=ct.cat_type_id AND cm.category=cc.category AND ru.country=rp.ID_PAYS AND ru.region=rr.ID_REGION AND ru.ville=rv.ID_VILLE                                 
+                        ".$lang_str.$subscription_str.$province_str." GROUP BY ru.client_id");
+
                         $cattype_name = ClientCategoryTypes::model()->findByPk($category_type)->cat_type;
+                        $filename = "Client_data_".date("Y_m_d",time())."_".$cattype_name."_".$randstr.".csv";                
+                        $outputFile_path = $attach_path.$filename;
+                        // Export as csv file
+                        $this->Exceldownload($ret_result,$outputFile_path);
+                        $model=new ExportDatas;   
+                        $model->attachment_file = $filename;
+                        $model->user_type = "Client";
+                        $model->save();
                     }
                 
-                    $filename = "Client_data_".date("Y_m_d",time())."_".$cattype_name."_".$randstr.".csv";                
-                    $outputFile_path = $attach_path.$filename;
+//                    $filename = "Client_data_".date("Y_m_d",time())."_".$cattype_name."_".$randstr.".csv";                
+//                    $outputFile_path = $attach_path.$filename;
                 }                    
                 
-                // Export as csv file
-                $this->Exceldownload($ret_result,$outputFile_path);
-                $model=new ExportDatas;   
-                $model->attachment_file = $filename;
-                $model->user_type = "Client";
-                $model->save();
+                
   
         } 
         
-        public function getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital,$ptype,$category)
+        public function getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital,$ptype,$category = null)
         {
             
             $subscription_arr = array();
@@ -1407,7 +1468,9 @@ class ExportDatasController extends Controller
             }
             if(!empty($category))
             {
-                $subscription_arr1[] = " AND cc.category= ".$category;
+                $all_category    = implode(",",$category);
+                $subscription_arr1[] = " AND cc.category in ($all_category)";
+//                $subscription_arr1[] = " AND cc.category= ".$category;
             }  else {
                 $subscription_arr1[] = "";
             }

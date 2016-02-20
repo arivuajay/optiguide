@@ -165,16 +165,25 @@ $cat_types = CHtml::listData(ClientCategoryTypes::model()->findAll(array("order"
                             ?> 
                         </div>
                     </div>
-                    
                     <div class="form-group">
                         <?php echo $form->labelEx($model, 'category', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">
+                            <?php
+                            $htmlOptions = array('size' => '8', 'multiple' => 'true', 'class' => 'form-control');
+                            echo $form->listBox($model, 'category', $category_names, $htmlOptions);
+                            echo $form->error($model, 'category'); 
+                            ?> 
+                        </div>  
+                    </div> 
+<!--                    <div class="form-group">
+                        <?php // echo $form->labelEx($model, 'category', array('class' => 'col-sm-2 control-label')); ?>
+                        <div class="col-sm-5">
                             <?php 
-                            echo $form->dropDownList($model, 'category', $category_names, array('class' => 'form-control','empty' => 'Choisissez une Catégorie Nom'));
-                            echo $form->error($model, 'category');
+//                            echo $form->dropDownList($model, 'category', $category_names, array('class' => 'form-control','empty' => 'Choisissez une Catégorie Nom'));
+//                            echo $form->error($model, 'category');
                             ?> 
                         </div>
-                    </div>
+                    </div>-->
 <!--                     <div class="form-group">
                         <?php //echo $form->labelEx($model, 'category', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-5">

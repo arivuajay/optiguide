@@ -260,7 +260,7 @@ class AdminIdentity extends CUserIdentity {
             }
         }
         
-        $some_actions = array("calculate_usercounts","payment",'renewpayment','get_totalamount','transaction_view', 'getproducts' ,'getgroups','getmessage','deleteMessage', 'updateMessage', 'deleteProof');
+        $some_actions = array("getcategories","calculate_usercounts","payment",'renewpayment','get_totalamount','transaction_view', 'getproducts' ,'getgroups','getmessage','deleteMessage', 'updateMessage', 'deleteProof');
         if(in_array($action , $some_actions))
         {
             $return = true;
