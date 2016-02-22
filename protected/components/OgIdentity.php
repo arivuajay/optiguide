@@ -16,51 +16,93 @@ class OgIdentity extends CUserIdentity {
      * @return boolean whether authentication succeeds.
      */
     public function authenticate() {
-        $user = UserDirectory::model()->find('USR = :U', array(':U' => $this->username));
         
-        if($user->NOM_TABLE=="Professionnels"){
-            $relation_table = ProfessionalDirectory::model()->findByPk($user->ID_RELATION);
-        }else if($user->NOM_TABLE=="Detaillants"){
-            $relation_table = RetailerDirectory::model()->findByPk($user->ID_RELATION);
-        }else if($user->NOM_TABLE=="Fournisseurs"){
-            $relation_table = SuppliersDirectory::model()->findByPk($user->ID_RELATION);
-        }
+        // Check login acess for client
+        $cuser = ClientProfiles::model()->find('ID_CLIENT = :U', array(':U' => $this->username));
         
-        $user_dbpass = $user->PWD;
-        // strip out all whitespace
-        $user_dbpass = preg_replace('/\s*/', '', $user_dbpass);
-        // convert the string to all lowercase
-        $user_dbpass = strtolower($user_dbpass);
+        if(isset($cuser))
+        {  
+            if (isset($cuser->CodePostal) && $cuser->CodePostal!="" && isset($this->password)) 
+            {        
+                $cuser_dbpass = $cuser->CodePostal;
+                $cuser_dbpass = preg_replace('/\s*/', '', $cuser_dbpass);
+                $cuser_dbpass = strtolower($cuser_dbpass);
+
+                $cuser_postpass = $this->password;
+                $cuser_postpass = preg_replace('/\s*/', '', $cuser_postpass);        
+                $cuser_postpass = strtolower($cuser_postpass);
+
+                if ($cuser_dbpass !== $cuser_postpass) {
+                    $this->errorCode = self::ERROR_PASSWORD_INVALID;   // Error Code : 1
+                }else if ($cuser->status == 0) {
+                    //Add new condition to finding the status of user.
+                    $this->errorCode = self::ERROR_USERNAME_NOT_ACTIVE;
+                } else {
+                    $this->_id = $cuser->client_id;
+                    $this->setState('name', $cuser->name);
+                    $this->setState('role', 'Client');
+                    $this->setState('userstatus', 1);                    
+                    $this->errorCode = self::ERROR_NONE; 
+                }
+
+            }else{
+               $this->errorCode = self::ERROR_PASSWORD_INVALID;   // Error Code : 1
+            }
+            
+        }  
         
-        $user_postpass = $this->password;
-        // strip out all whitespace
-        $user_postpass = preg_replace('/\s*/', '', $user_postpass);
-        // convert the string to all lowercase
-        $user_postpass = strtolower($user_postpass);
+        // Check login acess for professional / retailers / suppliers
+        if ($cuser === null) 
+        {
+            $user = UserDirectory::model()->find('USR = :U', array(':U' => $this->username));
         
-        if ($user === null) {
-            $this->errorCode = self::ERROR_USERNAME_INVALID;     // Error Code : 1
-        } else if ($user_dbpass !== $user_postpass) {
-            $this->errorCode = self::ERROR_PASSWORD_INVALID;   // Error Code : 1
-        } else if (empty ($relation_table)) {
-            //Add new condition to finding the status of user.
-            $this->errorCode = self::ERROR_USERNAME_INVALID;
-        }else if ($user->NOM_TABLE == 'rep_credentials') {
-            //Add new condition to finding the status of user.
-            $this->errorCode = self::ERROR_USERNAME_NOT_ACTIVE;
-        }else if ($user->status == 0) {
-            //Add new condition to finding the status of user.
-            $this->errorCode = self::ERROR_USERNAME_NOT_ACTIVE;
-        } else {
-            $this->_id = $user->ID_UTILISATEUR;
-            $this->setState('name', $user->NOM_UTILISATEUR);
-            $this->setState('role', $user->NOM_TABLE);
-            $this->setState('userstatus', $user->status);
-            $this->setState('relationid', $user->ID_RELATION);
-            $this->setState('encryptval', $user->sGuid);
-            $this->errorCode = self::ERROR_NONE;                    
+            if($user->NOM_TABLE=="Professionnels"){
+                $relation_table = ProfessionalDirectory::model()->findByPk($user->ID_RELATION);
+            }else if($user->NOM_TABLE=="Detaillants"){
+                $relation_table = RetailerDirectory::model()->findByPk($user->ID_RELATION);
+            }else if($user->NOM_TABLE=="Fournisseurs"){
+                $relation_table = SuppliersDirectory::model()->findByPk($user->ID_RELATION);
+            }
+
+            $user_dbpass = $user->PWD;
+            // strip out all whitespace
+            $user_dbpass = preg_replace('/\s*/', '', $user_dbpass);
+            // convert the string to all lowercase
+            $user_dbpass = strtolower($user_dbpass);
+
+            $user_postpass = $this->password;
+            // strip out all whitespace
+            $user_postpass = preg_replace('/\s*/', '', $user_postpass);
+            // convert the string to all lowercase
+            $user_postpass = strtolower($user_postpass);
+
+            if ($user === null) {
+                $this->errorCode = self::ERROR_USERNAME_INVALID;     // Error Code : 1
+            } else if ($user_dbpass !== $user_postpass) {
+                $this->errorCode = self::ERROR_PASSWORD_INVALID;   // Error Code : 1
+            } else if (empty ($relation_table)) {
+                //Add new condition to finding the status of user.
+                $this->errorCode = self::ERROR_USERNAME_INVALID;
+            }else if ($user->NOM_TABLE == 'rep_credentials') {
+                //Add new condition to finding the status of user.
+                $this->errorCode = self::ERROR_USERNAME_NOT_ACTIVE;
+            }else if ($user->status == 0) {
+                //Add new condition to finding the status of user.
+                $this->errorCode = self::ERROR_USERNAME_NOT_ACTIVE;
+            } else {
+                $this->_id = $user->ID_UTILISATEUR;
+                $this->setState('name', $user->NOM_UTILISATEUR);
+                $this->setState('role', $user->NOM_TABLE);
+                $this->setState('userstatus', $user->status);
+                $this->setState('relationid', $user->ID_RELATION);
+                $this->setState('encryptval', $user->sGuid);
+                $this->errorCode = self::ERROR_NONE; 
+            }
             
         }
+        
+        
+        
         return !$this->errorCode;
     }
 

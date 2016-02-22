@@ -56,6 +56,8 @@
                 $profileurl = '/optiguide/retailerDirectory/update';
             } else if (Yii::app()->user->role == "Fournisseurs") {
                 $profileurl = '/optiguide/suppliersDirectory/update';
+            }else if (Yii::app()->user->role == "Client") {
+                $profileurl  = '/optiguide/clientProfiles/update';
             }
             
             $mailicon = '';
@@ -83,7 +85,7 @@
                 'activateItems' => true,
                 'items' => array(
                     // For all users 
-                    array('label' => Myclass::t('OG033', '', 'og'), 'url' => array($profileurl), 'active' => (($_controller == "professionalDirectory" || $_controller == "retailerDirectory" || $_controller == "suppliersDirectory") && $_action == "update")),
+                    array('label' => Myclass::t('OG033', '', 'og'), 'url' => array($profileurl), 'active' => (($_controller == "clientProfiles" || $_controller == "professionalDirectory" || $_controller == "retailerDirectory" || $_controller == "suppliersDirectory") && $_action == "update")),
                     // For suppliers
                     array('label' => Myclass::t('OG167'), 'url' => array('/optiguide/suppliersDirectory/updateproducts'), 'active' => ($_controller == 'suppliersDirectory' && ($_action == "updateproducts" || $_action == "updatemarques")), 'visible' => (Yii::app()->user->role == "Fournisseurs")),
                     array('label' => Myclass::t('OGO189', '', 'og'), 'url' => array('/optiguide/suppliersDirectory/updatelogo'), 'active' => ($_controller == 'suppliersDirectory' && $_action == "updatelogo"), 'visible' => (Yii::app()->user->role == "Fournisseurs")),
@@ -98,7 +100,7 @@
                     // Internal messages
                     array('label' => Myclass::t('OR623', '', 'or').' &nbsp'.$mailicon, 'url' => array('/optiguide/internalMessage/'), 'active' => $_controller == 'internalMessage' , "visible" => (Yii::app()->user->role == "Professionnels" || Yii::app()->user->role == "Detaillants" || Yii::app()->user->role == "Fournisseurs") ),   
                     // For all users
-                    array('label' => Myclass::t('OGO112', '', 'og'), 'url' => array('/optiguide/userDirectory/changepassword'), 'active' => ($_controller == "userDirectory" && $_action == "changepassword")),
+                    array('label' => Myclass::t('OGO112', '', 'og'), 'url' => array('/optiguide/userDirectory/changepassword'), 'active' => ($_controller == "userDirectory" && $_action == "changepassword") , "visible" => (Yii::app()->user->role == "Professionnels" || Yii::app()->user->role == "Detaillants" || Yii::app()->user->role == "Fournisseurs")),
                     array('label' => "<i class='fa fa-sign-out'></i> " . Myclass::t('OG025', '', 'og'), 'url' => array('/optiguide/default/logout')),
                 ),
                 'htmlOptions' => array('class' => 'sidebar-menu')

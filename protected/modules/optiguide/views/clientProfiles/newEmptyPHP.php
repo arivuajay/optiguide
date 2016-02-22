@@ -1,31 +1,4 @@
-<?php
-/* @var $this ClientProfilesController */
-/* @var $model ClientProfiles */
-/* @var $form CActiveForm */
-
-$themeUrl = $this->themeUrl;
-                $cs = Yii::app()->getClientScript();
-                $cs_pos_end = CClientScript::POS_END;
-
-                $cs->registerCssFile($themeUrl . '/css/datepicker/datepicker3.css');
-                $cs->registerScriptFile($themeUrl . '/js/datepicker/bootstrap-datepicker.js', $cs_pos_end);
-                
-                $cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
-                $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
-?>
-
-<div class="row">
-    <?php 
-    $form = $this->beginWidget('CActiveForm', array(
-                'id' => 'client-profiles-form',
-                'htmlOptions' => array('role' => 'form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'), 
-                'clientOptions' => array(
-                    'validateOnSubmit' => true,
-                ),
-                'enableAjaxValidation' => true,
-            ));
-    ?>
-    <div class="col-lg-12 col-xs-12">
+<div class="col-lg-12 col-xs-12">
         <div class="box box-primary">
             <?php          
             

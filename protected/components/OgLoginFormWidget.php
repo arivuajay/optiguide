@@ -21,14 +21,17 @@ class OgLoginFormWidget extends CWidget {
 
             if ($model->validate() && $model->login()) {
                 
-                // Update the first log in db
-                $id=Yii::app()->user->id;
-                $umodel = UserDirectory::model()->findByPk($id);
-                if($umodel->IS_FIRST_LOG==0)
-                {    
-                    $umodel->IS_FIRST_LOG = 1;
-                    $umodel->save(false);
-                }    
+                if(Yii::app()->user->role!="Client")
+                {
+                    // Update the first log in db
+                    $id=Yii::app()->user->id;
+                    $umodel = UserDirectory::model()->findByPk($id);
+                    if($umodel->IS_FIRST_LOG==0)
+                    {    
+                        $umodel->IS_FIRST_LOG = 1;
+                        $umodel->save(false);
+                    }    
+                }
                  
                 $this->owner->redirect(array("/optiguide/default/index"));
             } else {

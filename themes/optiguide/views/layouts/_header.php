@@ -4,15 +4,19 @@ $popupimg = "popup_alert_EN.jpg";
 $lang = Yii::app()->session['language'];   
 if (!Yii::app()->user->isGuest) {
     
-    $popupimg = "popup_alert_".$lang.".jpg";
-    
-    $mustvalidate = UserDirectory::model()->findByPk(Yii::app()->user->id)->MUST_VALIDATE;
-    if($mustvalidate==0)
+    $popupimg  = "popup_alert_".$lang.".jpg";
+    $popupdisp = "false";
+    if(Yii::app()->user->role!="Client")
     {
-        $popupdisp = "true";
-    }else {
-        $popupdisp = "false";
-    }
+    
+        $mustvalidate = UserDirectory::model()->findByPk(Yii::app()->user->id)->MUST_VALIDATE;
+        if($mustvalidate==0)
+        {
+            $popupdisp = "true";
+        }else {
+            $popupdisp = "false";
+        }
+    }    
 
     if (Yii::app()->user->role == "Professionnels") {
         

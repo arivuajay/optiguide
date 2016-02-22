@@ -38,7 +38,7 @@ class ProfessionalDirectoryController extends OGController {
      */
     public function accessRules() {
         return array_merge(
-                parent::accessRules(), array(
+           parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
                 'actions' => array('create', 'generatelatlong'),
                 'users' => array('*'),
@@ -54,7 +54,7 @@ class ProfessionalDirectoryController extends OGController {
             array('deny', // deny all users
                 'users' => array('*'),
             ),
-                )
+           )
         );
     }
 

@@ -39,22 +39,25 @@ class OptiguideModule extends CWebModule {
         // Set condition to redirect for user confirmation
         if (!Yii::app()->user->isGuest) 
         {
-            $mustvalidate = UserDirectory::model()->findByPk(Yii::app()->user->id)->MUST_VALIDATE;
-            
-            $_controller = $controller->id;
-            $_action     = $action->id;
-            
-            $controller_name=array("userDirectory","default","professionalDirectory","retailerDirectory");
-            $action_name=array("confirmation","logout","update","getregions","getgroups","getcities" );
-            
-            if($mustvalidate==0)
-            {
-                if(( in_array($_controller, $controller_name) ) && ( in_array($_action, $action_name) ))
-                { 
-                    
-                }else{
-                    Yii::app()->request->redirect('/optiguide/userDirectory/confirmation');
-                }                        
+            if(Yii::app()->user->role!="Client")
+            { 
+                $mustvalidate = UserDirectory::model()->findByPk(Yii::app()->user->id)->MUST_VALIDATE;
+
+                $_controller = $controller->id;
+                $_action     = $action->id;
+
+                $controller_name=array("userDirectory","default","professionalDirectory","retailerDirectory");
+                $action_name=array("confirmation","logout","update","getregions","getgroups","getcities" );
+
+                if($mustvalidate==0)
+                {
+                    if(( in_array($_controller, $controller_name) ) && ( in_array($_action, $action_name) ))
+                    { 
+
+                    }else{
+                        Yii::app()->request->redirect('/optiguide/userDirectory/confirmation');
+                    }                        
+                }  
             }    
 
         }
