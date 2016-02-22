@@ -232,7 +232,7 @@ class RepCredentialController extends Controller {
                 }
                 
                 $profileattributes = $profile->attributes;
-                $model->modified_at = date("Y-m-d h:i:s",time());
+                $model->modified_at = date('Y-m-d H:i:s', time());
                 
                 $model->save(); 
                 $profile->save(); 
@@ -349,8 +349,8 @@ class RepCredentialController extends Controller {
                     $profile->attributes = $sess_attr_pro;
                  
                     $model->rep_expiry_date = $expirydate;
-                    $model->created_at = date("Y-m-d h:i:s",time());
-                    $model->modified_at = date("Y-m-d h:i:s",time());
+                    $model->created_at = date('Y-m-d H:i:s', time());
+                    $model->modified_at = date('Y-m-d H:i:s', time());
                     $model->save(); 
                     $profile->rep_credential_id = $model->rep_credential_id;
                     $profile->save(); 

@@ -163,7 +163,8 @@ class RetailerDirectoryController extends Controller {
                     }
                     $model->pfile->saveAs($proof_path . $filename);
                 }   
-                $model->CREATED_DATE = date("Y-m-d");                
+                $model->CREATED_DATE = date('Y-m-d H:i:s', time());
+                $model->DATE_MODIFICATION = date('Y-m-d H:i:s', time());
                 $model->save(false);
                // $umodel->ID_RELATION = $model->ID_RETAILER;
               //  $umodel->save(false);
@@ -271,7 +272,7 @@ class RetailerDirectoryController extends Controller {
                 
              //   $umodel->save(false);
                 if(isset($_POST['modified-retailer'])){
-                    $model->DATE_MODIFICATION=date("Y-m-d H:m:s");
+                    $model->DATE_MODIFICATION = date('Y-m-d H:i:s', time());
                     $model->save();
                     Yii::app()->user->setFlash('success', 'Détaillant correctement mis à jour!!!');
                     $this->redirect(array('update',"id"=>$id));

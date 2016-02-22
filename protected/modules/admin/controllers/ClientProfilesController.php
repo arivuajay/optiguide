@@ -142,8 +142,8 @@ class ClientProfilesController extends Controller {
             
 //            $cat_vals = implode(',',$_POST['ClientProfiles']['category']);
 //            $model->category = $cat_vals;
-            $model->created_date  = date("Y-m-d");
-            $model->modified_date = date("Y-m-d");
+            $model->created_date  = date('Y-m-d H:i:s', time());
+            $model->modified_date = date('Y-m-d H:i:s', time());
             $model->ID_CLIENT     = Myclass::getRandomNUmbers();
             
             if ($model->save()) {    
@@ -218,7 +218,8 @@ class ClientProfilesController extends Controller {
             if ($model->validate()) {
             $cat_vals = implode(',',$_POST['ClientProfiles']['category']);
             $model->category = $cat_vals;
-            $model->modified_date = date("Y-m-d");
+            $model->modified_date = date('Y-m-d H:i:s', time());
+
             if(isset($_POST['modified-profile'])){
                     $model->save(false);
                     

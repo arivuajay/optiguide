@@ -314,7 +314,8 @@ class RetailerDirectoryController extends OGController {
                     }
                     $model->image->saveAs($ret_img_path . $imgname);
                 }
-                $model->CREATED_DATE = date("Y-m-d");
+                $model->CREATED_DATE = date('Y-m-d H:i:s', time());
+                $model->DATE_MODIFICATION = date('Y-m-d H:i:s', time());
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_RETAILER;
                 $umodel->save(false);
@@ -462,7 +463,7 @@ class RetailerDirectoryController extends OGController {
                     }
                     $model->image->saveAs($ret_img_path . $imgname);
                 }
-
+                $model->DATE_MODIFICATION = date('Y-m-d H:i:s', time());
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_RETAILER;
                 $umodel->MUST_VALIDATE = 1;

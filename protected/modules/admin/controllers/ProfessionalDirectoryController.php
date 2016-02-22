@@ -92,7 +92,8 @@ class ProfessionalDirectoryController extends Controller {
                     $model->map_lat = $exp_latlong[0];
                     $model->map_long = $exp_latlong[1];
                 }
-                $model->CREATED_DATE = date("Y-m-d");
+                $model->CREATED_DATE = date('Y-m-d H:i:s', time());
+                $model->DATE_MODIFICATION = date('Y-m-d H:i:s', time());
                 // save proof file
                 if ($model->pfile) {
                     $filename = time() . '_' . $model->pfile->name;
@@ -189,7 +190,7 @@ class ProfessionalDirectoryController extends Controller {
 
                 //   $umodel->save(false);
                 if(isset($_POST['modified-professional'])){
-                    $model->DATE_MODIFICATION=date("Y-m-d H:m:s");
+                    $model->DATE_MODIFICATION = date('Y-m-d H:i:s', time());
                     $model->save(false);
                     Yii::app()->user->setFlash('success', 'professionnelle mis à jour avec succès!!!');
                     $this->redirect(array('update', "id" => $id));

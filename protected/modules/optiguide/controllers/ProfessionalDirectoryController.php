@@ -409,7 +409,8 @@ class ProfessionalDirectoryController extends OGController {
                     $model->map_long = $exp_latlong[1];
                 }
 
-                $model->CREATED_DATE = date("Y-m-d");
+                $model->CREATED_DATE = date('Y-m-d H:i:s', time());
+                $model->DATE_MODIFICATION = date('Y-m-d H:i:s', time());
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_SPECIALISTE;
                 $umodel->save(false);
@@ -523,7 +524,7 @@ class ProfessionalDirectoryController extends OGController {
                     $model->map_lat = $exp_latlong[0];
                     $model->map_long = $exp_latlong[1];
                 }
-
+                $model->DATE_MODIFICATION = date('Y-m-d H:i:s', time());
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_SPECIALISTE;
                 $umodel->MUST_VALIDATE = 1;

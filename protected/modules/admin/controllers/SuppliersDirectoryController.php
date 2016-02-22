@@ -209,7 +209,7 @@ class SuppliersDirectoryController extends Controller {
 
                 $mattributes = $model->attributes;
               //  $uattributes = $umodel->attributes;
-               
+                $model->DATE_MODIFICATION = date('Y-m-d H:i:s', time());
                 $model->save(false);  
              //   $umodel->save(false);
 
@@ -687,7 +687,8 @@ class SuppliersDirectoryController extends Controller {
                         $item_name = "Suppliers Subscription - Logo only";
                     }  
                     
-                    $model->CREATED_DATE = date("Y-m-d");
+                    $model->CREATED_DATE = date('Y-m-d H:i:s', time());
+                    $model->DATE_MODIFICATION = date('Y-m-d H:i:s', time());
                     $model->save(false);              
                  //   $umodel->attributes  = $sess_attr_u;
                  //   $umodel->ID_RELATION = $model->ID_FOURNISSEUR;

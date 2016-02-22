@@ -250,7 +250,7 @@ class ClientMessagesController extends Controller {
 
             $model->attributes = $_POST['ClientMessages'];
             $model->date_remember = date("Y-m-d", strtotime($_POST['ClientMessages']['date_remember']));
-            $model->created_date = date("Y-m-d");
+            $model->created_date = date('Y-m-d H:i:s', time());
             $model->randkey = Myclass::getGuid();
 
             if ($model->save()) {

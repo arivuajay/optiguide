@@ -989,7 +989,8 @@ class SuppliersDirectoryController extends OGController {
             if ($pdetails['subscription_type'] == 2) {
                 $model->logo_expirydate = date("Y-m-d", strtotime('+1 year'));
             }
-            $model->CREATED_DATE = date("Y-m-d");
+            $model->CREATED_DATE = date('Y-m-d H:i:s', time());
+            $model->DATE_MODIFICATION = date('Y-m-d H:i:s', time());
             $model->save(false);
 
             $umodel->attributes = $sess_attr_u;
@@ -1294,7 +1295,8 @@ class SuppliersDirectoryController extends OGController {
                                 $model->logo_expirydate = date("Y-m-d", strtotime('+1 year'));
                             }
                         }
-                        $model->CREATED_DATE = date("Y-m-d");
+                        $model->CREATED_DATE = date('Y-m-d H:i:s', time());
+                        $model->DATE_MODIFICATION = date('Y-m-d H:i:s', time());
                         $model->save(false);
 
                         $umodel->attributes = $sess_attr_u;
@@ -1538,7 +1540,7 @@ class SuppliersDirectoryController extends OGController {
                         $model->ID_VILLE = $cinfo->ID_VILLE;
                     }
                 }
-
+                $model->DATE_MODIFICATION = date('Y-m-d H:i:s', time());
                 $model->save(false);
                 $umodel->ID_RELATION = $model->ID_FOURNISSEUR;
                 $umodel->save(false);
