@@ -112,7 +112,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">   
                             <?php 
-                            $options_sections = $selected_sections;                        
+                            $options_sections = $selected_sections;  
                             $htmlOptions = array('size' => '7', 'multiple' => 'true', 'id' => 'ClientProfiles_category', 'class' => 'form-control','options'=>$options_sections);
                             echo $form->listBox($model, 'category', $category_names, $htmlOptions);
                             echo $form->error($model, 'category');
@@ -297,15 +297,11 @@
                             <?php echo $form->error($model, 'Rep'); ?>
                         </div>
                     </div>
-
-                    <div class="box-header">
-                        <h3 class="box-title">Subscription</h3>
-                    </div>
-
+                    
                     <div class="form-row1">
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                            <?php echo $form->labelEx($model, 'subscription', array('class' => 'col-sm-2 control-label')); ?>
-                        </div>
+                            <?php echo $form->labelEx($model, 'subscription'); ?>
+                        </div>                        
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">    
                               <?php echo $form->checkBox($model, 'Optipromo', array('value' => 1, 'uncheckValue' => 0)); ?>   
                                 <?php echo $form->labelEx($model, 'Optipromo'); ?>
@@ -346,13 +342,10 @@
     </div>
 </div>
 <?php
-$ajaxCatUrl = Yii::app()->createUrl('/admin/clientProfiles/getcategories');
-$ajax_getmessage  = Yii::app()->createUrl('/admin/clientProfiles/getmessage');
+$ajaxCatUrl = Yii::app()->createUrl('/optiguide/clientProfiles/getcategories');
+$ajaxRegionUrl = Yii::app()->createUrl('/optiguide/clientProfiles/getregions');
+$ajaxCityUrl = Yii::app()->createUrl('/optiguide/clientProfiles/getcities');
 
-$ajaxRegionUrl = Yii::app()->createUrl('/admin/professionalDirectory/getregions');
-$ajaxCityUrl = Yii::app()->createUrl('/admin/professionalDirectory/getcities');
-
-$ajax_get_client_mess_update = Yii::app()->createUrl('/admin/clientProfiles/updateMessage');
 $js = <<< EOD
 
    $(document).ready(function(){
@@ -371,45 +364,7 @@ $js = <<< EOD
             }
          });
     });
-            
-   $('.year').datepicker({ dateFormat: 'yyyy' });
-   $('.date').datepicker({ format: 'dd-mm-yyyy', startDate: '+0d',});   
-            
-   $('.popupmessage').live('click',function(event){
-        event.preventDefault();
-        var message_id = $(this).attr("id");      
-        var dataString = 'id='+message_id;
-            
-        $.ajax({
-            type: "POST",
-            url: '{$ajax_getmessage}',
-            data: dataString,
-            cache: false,
-            success: function(html){             
-                $("#product_contents").html(html);               
-            }
-         });
-       
-    });
-            
-     $('.client_message_update_popup').live('click',function(event){
-        event.preventDefault();
-        var client_message_id = $(this).attr("id");
-        var dataString = 'message_id='+client_message_id;
-
-        $.ajax({
-            type: "GET",
-            url: '{$ajax_get_client_mess_update}',
-            data: dataString,
-            cache: false,
-            success: function(html){             
-                $("#client_message_contents").html(html);  
-                $('.year').datepicker({ dateFormat: 'yyyy' });
-                $('.date').datepicker({ format: 'dd-mm-yyyy', startDate: '+0d',});   
-            }
-         });
-    });  
-        
+ 
     $("#ClientProfiles_country").change(function(){
         var id=$(this).val();
         var dataString = 'id='+ id;
@@ -420,7 +375,7 @@ $js = <<< EOD
             data: dataString+'&client_disp=2',
             cache: false,
             success: function(html){             
-                $("#ClientProfiles_region").html(html);
+                $("#ClientProfiles_region").html(html).selectpicker('refresh');
             }
          });
     });
@@ -435,7 +390,7 @@ $js = <<< EOD
             data: dataString+'&client_dis=1',
             cache: false,
             success: function(html){             
-                $("#ClientProfiles_ville").html(html);
+                $("#ClientProfiles_ville").html(html).selectpicker('refresh');
             }
          });
 
@@ -443,5 +398,5 @@ $js = <<< EOD
   
 });
 EOD;
-Yii::app()->clientScript->registerScript('_form_prof', $js);
+Yii::app()->clientScript->registerScript('_form_clinet', $js);
 ?>

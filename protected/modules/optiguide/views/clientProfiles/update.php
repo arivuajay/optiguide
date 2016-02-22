@@ -1,1 +1,1 @@
-<?php $this->renderPartial('_form', compact('model')); ?>
+<?php $this->renderPartial('_form', compact('selected_sections','model')); ?>

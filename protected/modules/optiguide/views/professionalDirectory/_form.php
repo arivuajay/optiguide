@@ -351,7 +351,6 @@
                 </div>
 
             </div>  
-            
             <?php $this->endWidget(); ?>
         </div>
     </div>

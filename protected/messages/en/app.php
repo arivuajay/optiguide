@@ -263,5 +263,17 @@ return array(
     'OG230'  => 'Add',
     'OG231'  => 'Already exist',
     'OG232'  => 'Brand cannot be blank.',
+    
+    'OG233' => 'Customer Name',
+    'OG234' => 'Business',
+    'OG235' => 'Function',
+    'OG236' => 'Category Type',
+    'OG237' => 'Category Name',
+    'OG238' => 'local / office number',
+    'OG239' => 'Cellular',
+    'OG240' => 'Subscription',
+    'OG241' => 'Mobile number',
+    'OG242' => 'Select a Category Name',
+    'OG243' => 'Please select category'
 );    
 ?>

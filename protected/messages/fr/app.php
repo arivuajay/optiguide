@@ -263,5 +263,16 @@ return array(
     'OG230' => 'Ajouter',
     'OG231'  => 'Existent déjà',
     'OG232'  => 'Marques ne peut être vide.',
+    
+    'OG233' => 'Client Nom',
+    'OG234' => 'Entreprise',
+    'OG235' => 'Fonction',
+    'OG236' => 'Catégorie Type',
+    'OG237' => 'Catégorie Nom',
+    'OG238' => 'Numéro de local/bureau',
+    'OG239' => 'Cellulaire',
+    'OG240' => 'Abonnement',
+    'OG241' => 'Numéro de portable',
+    'OG242' => 'Choisissez une Catégorie Nom'
 );
 ?>

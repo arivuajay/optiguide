@@ -62,7 +62,7 @@ class ClientProfilesController extends OGController {
          $filter_ajax = isset($_POST['filter_ajax']) ? $_POST['filter_ajax'] : '';
         
          if($filter_ajax=="yes")
-          $val = "<option value=''>Choisissez une Catégorie Nom</option>";
+         $val = "<option value=''>".Myclass::t('OG242')."</option>";
          
         if ($id != '') {
             $data_cats = CHtml::listData(ClientCategory::model()->findAll(array("order" => "category asc", "condition" => "cat_type_id=" . $id)), 'category', 'cat_name');           
@@ -81,8 +81,8 @@ class ClientProfilesController extends OGController {
      */
     public function actionUpdate() {
         
-        $id = Yii::app()->user->id;
-        $model = $this->loadModel($id);
+        $client_id = Yii::app()->user->id;
+        $model = $this->loadModel($client_id);
        
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);        
@@ -94,33 +94,46 @@ class ClientProfilesController extends OGController {
             {
                 $cat_vals = implode(',',$_POST['ClientProfiles']['category']);
                 $model->category = $cat_vals;
-                $model->modified_date = date("Y-m-d");
-                if(isset($_POST['modified-profile']))
+                $model->modified_date = date("Y-m-d H:i:s",time());
+                $model->save(false);
+
+                $client_id = $model->client_id;  
+                ClientCatMapping::model()->deleteAll("client_id ='" .$client_id. "'");
+
+                $catvals = $_POST['ClientProfiles']['category'];
+                foreach($catvals as $cinfo)
                 {
-                    $model->save(false);
+                    $catmap_model = new ClientCatMapping();
+                    $catmap_model->client_id   = $client_id;
+                    $catmap_model->cat_type_id = $_POST['ClientProfiles']['cat_type_id'];
+                    $catmap_model->category    =  $cinfo;
+                    $catmap_model->save();
+                }    
 
-                    $client_id = $model->client_id;  
-                    ClientCatMapping::model()->deleteAll("client_id ='" .$client_id. "'");
-
-                    $catvals = $_POST['ClientProfiles']['category'];
-                    foreach($catvals as $cinfo)
-                    {
-                        $catmap_model = new ClientCatMapping();
-                        $catmap_model->client_id   = $client_id;
-                        $catmap_model->cat_type_id = $_POST['ClientProfiles']['cat_type_id'];
-                        $catmap_model->category    =  $cinfo;
-                        $catmap_model->save();
-                    }    
-
-                    Yii::app()->user->setFlash('success', 'Profile updated successfully!!!');
-                    $this->redirect(array('update', "id" => $id));
-                }
+                Yii::app()->user->setFlash('success', Myclass::t('APP20'));
+                $this->redirect(array('update'));               
                 
             }
         }
         
+        $selected_sections = array();
+        
+        $client_catinfos = ClientCatMapping::model()->findAll("client_id=".$client_id);
+       
+        if($client_catinfos!='')
+        {               
+            foreach($client_catinfos as $catinfo)
+            {
+                $pubcatid = $catinfo->category;             
+                $selected_sections[$pubcatid]['selected'] =  'selected';     
+                $cattypeid = $catinfo->cat_type_id; 
+            }   
+            $model->cat_type_id = $cattypeid;
+        } 
+        
         $this->render('update', array(
-            'model'  => $model,           
+            'model'  => $model,  
+            'selected_sections' => $selected_sections
         ));
     }
    
@@ -143,7 +156,7 @@ class ClientProfilesController extends OGController {
      * @param ClientProfiles $model the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && ($_POST['ajax'] === 'client-profiles-form'  || $_POST['ajax'] === 'client-message-form')) {
+        if (isset($_POST['ajax']) && ($_POST['ajax'] === 'client-profiles-form')) {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
