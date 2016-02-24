@@ -186,7 +186,7 @@ class AdminIdentity extends CUserIdentity {
             } 
             
             $array_paymenttransaction = array("repUpdateStatus","repview");
-            $array_paymentupdate = array("update","modifypayment","cancelpayment");
+            $array_paymentupdate = array("update","modifypayment","cancelpayment","view");
             if($controller=="paymentTransaction")
             {
                 if(in_array($action,$array_paymenttransaction))
