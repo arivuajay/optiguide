@@ -81,7 +81,23 @@ class ProfessionalDirectoryController extends Controller {
             //        $valid = $model->validate() && $valid;
 
             if ($model->validate()) {
-
+                
+                if ($model->ID_VILLE == "-1") {
+                    $regionid = $model->region;
+                    $othercity = $model->autre_ville;
+                    $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $city_exist = CityDirectory::model()->find($condition);
+                    if (!empty($city_exist)) {
+                        $model->ID_VILLE = $city_exist->ID_VILLE;
+                    } else {
+                        $cinfo = new CityDirectory;
+                        $cinfo->ID_REGION = $regionid;
+                        $cinfo->NOM_VILLE = $othercity;
+                        $cinfo->country = $model->country;
+                        $cinfo->save(false);
+                        $model->ID_VILLE = $cinfo->ID_VILLE;
+                    }
+                }
                 $address = $model->ADRESSE;
                 $country = $model->country;
                 $region = $model->region;
@@ -165,7 +181,23 @@ class ProfessionalDirectoryController extends Controller {
             //  $valid = $model->validate() && $valid;
 
             if ($model->validate()) {
-
+                
+                if ($model->ID_VILLE == "-1") {
+                    $regionid = $model->region;
+                    $othercity = $model->autre_ville;
+                    $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $city_exist = CityDirectory::model()->find($condition);
+                    if (!empty($city_exist)) {
+                        $model->ID_VILLE = $city_exist->ID_VILLE;
+                    } else {
+                        $cinfo = new CityDirectory;
+                        $cinfo->ID_REGION = $regionid;
+                        $cinfo->NOM_VILLE = $othercity;
+                        $cinfo->country = $model->country;
+                        $cinfo->save(false);
+                        $model->ID_VILLE = $cinfo->ID_VILLE;
+                    }
+                }
                 $address = $model->ADRESSE;
                 $country = $model->country;
                 $region = $model->region;

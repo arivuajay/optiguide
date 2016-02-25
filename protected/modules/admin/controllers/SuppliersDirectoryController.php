@@ -208,6 +208,22 @@ class SuppliersDirectoryController extends Controller {
                 }   
 
                 $mattributes = $model->attributes;
+                if ($model->ID_VILLE == "-1") {
+                    $regionid = $model->region;
+                    $othercity = $model->autre_ville;
+                    $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $city_exist = CityDirectory::model()->find($condition);
+                    if (!empty($city_exist)) {
+                        $model->ID_VILLE = $city_exist->ID_VILLE;
+                    } else {
+                        $cinfo = new CityDirectory;
+                        $cinfo->ID_REGION = $regionid;
+                        $cinfo->NOM_VILLE = $othercity;
+                        $cinfo->country = $model->country;
+                        $cinfo->save(false);
+                        $model->ID_VILLE = $cinfo->ID_VILLE;
+                    }
+                }
               //  $uattributes = $umodel->attributes;
                 $model->DATE_MODIFICATION = date('Y-m-d H:i:s', time());
                 $model->save(false);  
@@ -331,7 +347,23 @@ class SuppliersDirectoryController extends Controller {
                     }
                     $model->pfile->saveAs($proof_path . $filename);
                 }   
-
+                if ($model->ID_VILLE == "-1") {
+                    $regionid = $model->region;
+                    $othercity = $model->autre_ville;
+                    $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $city_exist = CityDirectory::model()->find($condition);
+                    if (!empty($city_exist)) {
+                        $model->ID_VILLE = $city_exist->ID_VILLE;
+                    } else {
+                        $cinfo = new CityDirectory;
+                        $cinfo->ID_REGION = $regionid;
+                        $cinfo->NOM_VILLE = $othercity;
+                        $cinfo->country = $model->country;
+                        $cinfo->save(false);
+                        $model->ID_VILLE = $cinfo->ID_VILLE;
+                    }
+                }
+                
                 $mattributes = $model->attributes;
               //  $uattributes = $umodel->attributes;
 

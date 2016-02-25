@@ -12,6 +12,15 @@ if (Yii::app()->user->hasState("product_ids")) {
             $exp_str = explode(',', $mval);
         }
     }
+    $marque_ids_new = Yii::app()->user->getState("marqueid_new");
+    
+    if (!empty($marque_ids_new)) {
+        $mval_new = $marque_ids_new[$pid];
+        if ($mval_new != '' ) {
+            $exp_str_new = explode(',', $mval_new);
+        }
+    }
+    
 } else {
     $exp_str = array();  
     //$mval = 0;
@@ -65,10 +74,11 @@ $pname = "NOM_PRODUIT_".Yii::app()->session['language'];
                                     <td><input type="checkbox" name="marqueid[]" id="group1" class="simple" value="0" <?php //if ($mval == 0) { ?> checked <?php //} ?>> All brands/Toutes les marques</td>
                                 </tr>-->
                                 <?php
+                                
                                 if (!empty($get_selected_marques)) {
 
                                     foreach ($get_selected_marques as $k => $info) {
-
+                                        
                                         if (!empty($exp_str)) {
                                             if (in_array($k, $exp_str)) {
                                                 $checked = "checked";
@@ -89,6 +99,41 @@ $pname = "NOM_PRODUIT_".Yii::app()->session['language'];
                             </table>
                         </div>    
                     </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">
+                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                            <input type="text" class="form-txtfield" placeholder="Enter the new marques" id="new_brand">
+                            <div style="" id="new_brand_error" class="errorMessage" style="display:none;"></div>
+                        </div>
+                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+                            <a href="javascript:void(0)" class="btn btn-success" id="add_brand_link">
+                                Add
+                            </a>
+                        </div>
+                        <div class="box" id="box1">
+                            <table class="table table-bordered">    
+                                <?php
+                                if (!empty($get_selected_marques_new)) {
+                                    foreach ($get_selected_marques_new as $k => $info_new) {
+                                        if (!empty($exp_str_new)) {
+                                            if (in_array($k, $exp_str_new)) {
+                                                $checked = "checked";
+                                            } else {
+                                                $checked = '';
+                                            }
+                                        }
+                                        ?>
+                                        <tr>
+                                            <td><input type="checkbox" name="marqueid_new[]" class="simple checkbox1" <?php echo $checked; ?> value="<?php echo $info_new; ?>"> <?php echo $info_new; ?>
+
+                                            </td>
+                                        </tr>    
+                                        <?php
+                                    }
+                                }
+                                ?>                         
+                            </table>
+                        </div>    
+                    </div>
                     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 pull-right"> 
                         <?php echo CHtml::submitButton(Myclass::t('OGO102', '', 'og'), array('class' => 'btn btn-primary')); ?>
                     </div>   
@@ -99,9 +144,39 @@ $pname = "NOM_PRODUIT_".Yii::app()->session['language'];
     </div> 
 </div>  
 <?php
+$ids=Yii::app()->request->getParam('id');
+$ajaxbrand = Yii::app()->createUrl('/optiguide/suppliersDirectory/getbrand');
+$already=Myclass::t('OG231');
+$empty=Myclass::t('OG232');
 $js = <<< EOD
 $(document).ready(function(){
-
+        $("#add_brand_link").click(function(){
+            $('#new_brand_error').hide();
+            var MARQUE = $('#new_brand').val();
+            var pid = {$ids};
+            if(MARQUE!=''){
+                var dataString = 'MARQUE='+ MARQUE+'&pid='+pid;
+                $.ajax({
+                    type: "POST",
+                    url: '{$ajaxbrand}',
+                    data: dataString,
+                    cache: false,
+                    success: function(reps){
+                        if(reps=='exit'){
+                            $('#new_brand_error').text('{$already}');
+                            $('#new_brand_error').show();
+                        }else{
+                            $('#new_brand_error').hide();
+                            $('#new_brand').val('');
+                            location.reload();
+                        }
+                    }
+                 });
+            }else{
+                $('#new_brand_error').text('{$empty}'); 
+                $('#new_brand_error').show();
+            }
+        });
 //       var allbrand = '{$mval}';
 //        if(allbrand==0)
 //        {

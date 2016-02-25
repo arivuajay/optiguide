@@ -202,7 +202,6 @@ $ctyval = isset($profile->ID_VILLE) ? $profile->ID_VILLE : '';
 $js = <<< EOD
     $(document).ready(function(){
         
-        var already="<?php echo ?>";
         $("#add_brand_link").click(function(){
             $('#new_brand_error').hide();
             var MARQUE=$('#new_brand').val();

@@ -32,7 +32,7 @@ class SuppliersDirectoryController extends OGController {
         return array_merge(
                 parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('finaltmp','renewalmail', 'detect_supplier', 'create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify', 'renewpaypalnotify', 'delproducts'),
+                'actions' => array('finaltmp','renewalmail','getbrand', 'detect_supplier', 'create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify', 'renewpaypalnotify', 'delproducts'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -882,11 +882,14 @@ class SuppliersDirectoryController extends OGController {
                     $sess_productids = Yii::app()->user->getState("product_ids");
                     // Session marqueids 
                     $sess_marqueids = Yii::app()->user->getState("marque_ids");
+                    // New add marqueids
+                    $sess_marqueids_new = Yii::app()->user->getState("marqueid_new");
                     
                     $serial_attr_m = serialize($sess_attr_m);
                     $serial_attr_u = serialize($sess_attr_u);
                     $serial_pids = serialize($sess_productids);
                     $serial_mids = serialize($sess_marqueids);
+                    $serial_mids_new = serialize($sess_marqueids_new);
                     $pdetails = serialize($payment_details);
 
                     $stmodel = new SupplierTemp;
@@ -894,6 +897,7 @@ class SuppliersDirectoryController extends OGController {
                     $stmodel->smodel = $serial_attr_m;
                     $stmodel->product_ids = $serial_pids;
                     $stmodel->marque_ids = $serial_mids;
+                    $stmodel->marque_ids_new = $serial_mids_new;
                     $stmodel->paymentdetails = $pdetails;
                     $stmodel->invoice_number = $invoice_number;
 
@@ -946,9 +950,13 @@ class SuppliersDirectoryController extends OGController {
         Yii::app()->user->setState("scountry", null);
         // unset Session sregion  
         Yii::app()->user->setState("sregion", null);
+        // unset Session marqueids_new  
+        Yii::app()->user->setState("marqueid_new", null);
+        
+        Yii::app()->user->setState("marque_ids_new_all", null);
     }
 
-    protected function savecreditcard_response($sess_attr_m, $sess_attr_u, $sess_productids, $sess_marqueids, $pdetails, $invoice_number) 
+    protected function savecreditcard_response($sess_attr_m, $sess_attr_u, $sess_productids, $sess_marqueids, $pdetails, $invoice_number,$sess_marqueids_new) 
     {
         
         $baseurl = Yii::app()->request->getBaseUrl(true);
@@ -999,7 +1007,7 @@ class SuppliersDirectoryController extends OGController {
             $umodel->save(false);
 
             $supplierid = $model->ID_FOURNISSEUR;
-
+            
             // Save products and brands for the supplier
             if (!empty($sess_productids)) {
                 foreach ($sess_productids as $pids) {
@@ -1025,6 +1033,50 @@ class SuppliersDirectoryController extends OGController {
                             }
                         }
                     }
+                }
+            }
+            //Save products add new marque
+            if(!empty($sess_marqueids_new)){
+                foreach ($sess_productids as $pids1) {
+                    $productid1 = $pids1;
+                    if (array_key_exists($productid1, $sess_marqueids_new)) {
+                        $allmarqid1 = $sess_marqueids_new[$productid1];
+                        $exp_marid1 = explode(',', $allmarqid1);
+                        foreach ($exp_marid1 as $mid1) {
+                            $new_marquename = $mid1;
+                            
+                            $get_marques = MarqueDirectory::model()->findByAttributes(array('NOM_MARQUE' => $new_marquename));
+                            
+                            
+                            if ($get_marques->ID_MARQUE!='') {
+                                $pro_model = new ProductMarqueDirectory();
+                                $pro_model->ID_PRODUIT = $productid1;
+                                $pro_model->ID_MARQUE = $get_marques->ID_MARQUE;
+                                $pro_model->save();
+                                $pro_mar_id=$pro_model->ID_LIEN_MARQUE;
+                                $spmodel = new SupplierProducts();
+                                $spmodel->ID_FOURNISSEUR = $supplierid;
+                                $spmodel->ID_LIEN_PRODUIT_MARQUE = $pro_mar_id;
+                                $spmodel->save();  
+                            }  else {
+                                $marq = new MarqueDirectory();
+                                $marq->NOM_MARQUE = $new_marquename;
+                                $marq->AFFICHAGE = 1;
+                                $marq->save();
+                                $pro_model = new ProductMarqueDirectory();
+                                $pro_model->ID_PRODUIT = $productid1;
+                                $pro_model->ID_MARQUE = $marq->ID_MARQUE;
+                                $pro_model->save();
+                                $pro_mar_id=$pro_model->ID_LIEN_MARQUE;
+                                $spmodel = new SupplierProducts();
+                                $spmodel->ID_FOURNISSEUR = $supplierid;
+                                $spmodel->ID_LIEN_PRODUIT_MARQUE = $pro_mar_id;
+                                $spmodel->save();
+                            }
+                        }
+                        
+                    }
+                        
                 }
             }
 
@@ -1143,16 +1195,18 @@ class SuppliersDirectoryController extends OGController {
             $serial_pids   = $result->product_ids;
             $serial_mids   = $result->marque_ids;
             $pdetails      = $result->paymentdetails;
+            $serial_mids_new = $result->marque_ids_new;
             
             $sess_attr_u = unserialize($serial_attr_u);
             $sess_attr_m = unserialize($serial_attr_m);
             $sess_productids = unserialize($serial_pids);
             $sess_marqueids  = unserialize($serial_mids);
+            $sess_marqueids_new  = unserialize($serial_mids_new);
             $payment_details = unserialize($pdetails);
             
             $payment_details['PNREF'] = $response['PNREF'];
 
-            $this->savecreditcard_response($sess_attr_m, $sess_attr_u, $sess_productids, $sess_marqueids, $payment_details, $invoice_number);
+            $this->savecreditcard_response($sess_attr_m, $sess_attr_u, $sess_productids, $sess_marqueids, $payment_details, $invoice_number,$sess_marqueids_new);
             
             Yii::app()->user->setFlash('success', Myclass::t('OG044', '', 'og'));
             $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optiguide/suppliersDirectory/create'));           
@@ -1427,9 +1481,10 @@ class SuppliersDirectoryController extends OGController {
     }
 
     public function actionListmarques() {
-
+//        Yii::app()->user->setState("marque_ids_new", null);
         $pid = Yii::app()->getRequest()->getQuery('id');
         $get_selected_marques = '';
+        $get_selected_marques_new = '';
         if (is_numeric($pid) && $pid != '') {
 
             /* Get the marques of the product */
@@ -1438,24 +1493,55 @@ class SuppliersDirectoryController extends OGController {
             $criteria1->condition = 'ID_PRODUIT=:id';
             $criteria1->params = array(':id' => $pid);
             $get_selected_marques = CHtml::listData(MarqueDirectory::model()->with("productMarqueDirectory")->isActive()->findAll($criteria1), 'ID_MARQUE', 'NOM_MARQUE');
-
+            
+            $marque_ids_new = Yii::app()->user->getState("marque_ids_new_all");
+           
+            if (!empty($marque_ids_new)) {
+                $mval_new = $marque_ids_new[$pid];
+                if ($mval_new != '' ) {
+                    $marques_news = explode(',', $mval_new);
+                    foreach ($marques_news as $marques_new){
+                        $get_selected_marques_new[$marques_new]=$marques_new;
+                    }
+                }
+            }
+                    
             if (isset($_POST['yt0'])) {
                 $marque_ids = array();
 
-                if (isset($_POST['marqueid'])) {
+                if (isset($_POST['marqueid']) || isset($_POST['marqueid_new'])) {
+                    
+                    //marqueid
+                    if(isset($_POST['marqueid'])){
+                        $imp_vals = implode(',', $_POST['marqueid']);
+                        $marque_ids[$pid] = $imp_vals;
+                        $result = $marque_ids;
 
-                    $imp_vals = implode(',', $_POST['marqueid']);
-                    $marque_ids[$pid] = $imp_vals;
-                    $result = $marque_ids;
-
-                    // Check the exist session marque products and append it
-                    if (Yii::app()->user->hasState("marque_ids")) {
-                        $sess_marque_ids = Yii::app()->user->getState("marque_ids");
-                        $result = $marque_ids + $sess_marque_ids;
-                        array_unique($result);
+                        // Check the exist session marque products and append it
+                        if (Yii::app()->user->hasState("marque_ids")) {
+                            $sess_marque_ids = Yii::app()->user->getState("marque_ids");
+                           // echo "<pre>";
+                            //print_r($sess_marque_ids);                              
+                            $result = $marque_ids + $sess_marque_ids;                                 
+                            array_unique($result);
+                        }
+                        Yii::app()->user->setState("marque_ids", $result);
                     }
-                    Yii::app()->user->setState("marque_ids", $result);
-                } else {
+                    //marqueid_new
+                    if(isset($_POST['marqueid_new'])){
+                        $imp_vals = implode(',', $_POST['marqueid_new']);
+                        $marque_ids_new[$pid] = $imp_vals;
+                        $result_new = $marque_ids_new;
+                        // Check the exist session marque products and append it
+                        if (Yii::app()->user->hasState("marqueid_new")) {
+                            $sess_marque_ids_new = Yii::app()->user->getState("marqueid_new");
+                           // echo "<pre>";
+                            $result_new = $marque_ids_new + $sess_marque_ids_new;                                 
+                            array_unique($result_new);
+                        }
+                        Yii::app()->user->setState("marqueid_new", $result_new);
+                    }
+                }  else {
                     // unset product id
 //                    if (Yii::app()->user->hasState("product_ids")) {
 //                        $sess_product_ids = Yii::app()->user->getState("product_ids");
@@ -1495,9 +1581,45 @@ class SuppliersDirectoryController extends OGController {
             }
         }
 
-        $this->render('listmarques', compact('get_selected_marques'));
+        $this->render('listmarques', compact('get_selected_marques','get_selected_marques_new'));
     }
+     public function actionGetbrand() {
+        $marque_name = Yii::app()->request->getParam('MARQUE');
+        $pid = Yii::app()->request->getParam('pid');
+        
+        $criteria2 = new CDbCriteria();
+        $criteria2->condition = 'ID_PRODUIT=:id AND NOM_MARQUE=:m_name';
+        $criteria2->params = array(':id' => $pid,':m_name' => $marque_name);
+        $check_marque = MarqueDirectory::model()->with("productMarqueDirectory")->count($criteria2);
+        
 
+//                Yii::app()->user->setState("count_marque", $check_marque);
+            if($check_marque==0){
+                
+                    $marque_ids_new[$pid] = $marque_name;
+                    $result_new = $marque_ids_new;
+
+                    // Check the exist session marque products and append it
+                    if (Yii::app()->user->hasState("marque_ids_new_all")) {
+                        $sess_marque_ids_new1 = Yii::app()->user->getState("marque_ids_new_all");
+                        $marque=$sess_marque_ids_new1[$pid];
+                        if($marque!=''){
+                            $new_marque[$pid]=$marque.','.$marque_name;
+                            $new_marque=$new_marque + $sess_marque_ids_new1;
+                        }else{
+                            $new_marque=$marque_ids_new + $sess_marque_ids_new1;
+                        }
+                        $result_new = $new_marque;
+                        array_unique($result_new);
+                    }
+                    Yii::app()->user->setState("marque_ids_new_all", $result_new);
+
+                    echo "success";exit;
+            }else{
+                echo "exit";exit;
+            }
+        
+    }
     public function actionUpdate() {
 
         $relid = Yii::app()->user->relationid;
@@ -1759,6 +1881,51 @@ class SuppliersDirectoryController extends OGController {
                     }
                 }
             }
+            $sess_marqueids_new = Yii::app()->user->getState("marqueid_new");
+            
+            if(!empty($sess_marqueids_new)){
+                foreach ($sess_productids as $pids1) {
+                    $productid1 = $pids1;
+                    if (array_key_exists($productid1, $sess_marqueids_new)) {
+                        $allmarqid1 = $sess_marqueids_new[$productid1];
+                        $exp_marid1 = explode(',', $allmarqid1);
+                        foreach ($exp_marid1 as $mid1) {
+                            $new_marquename = $mid1;
+                            
+                            $get_marques = MarqueDirectory::model()->findByAttributes(array('NOM_MARQUE' => $new_marquename));
+                            
+                            
+                            if ($get_marques->ID_MARQUE!='') {
+                                $pro_model = new ProductMarqueDirectory();
+                                $pro_model->ID_PRODUIT = $productid1;
+                                $pro_model->ID_MARQUE = $get_marques->ID_MARQUE;
+                                $pro_model->save();
+                                $pro_mar_id=$pro_model->ID_LIEN_MARQUE;
+                                $spmodel = new SupplierProducts();
+                                $spmodel->ID_FOURNISSEUR = $supplierid;
+                                $spmodel->ID_LIEN_PRODUIT_MARQUE = $pro_mar_id;
+                                $spmodel->save();  
+                            }  else {
+                                $marq = new MarqueDirectory();
+                                $marq->NOM_MARQUE = $new_marquename;
+                                $marq->AFFICHAGE = 1;
+                                $marq->save();
+                                $pro_model = new ProductMarqueDirectory();
+                                $pro_model->ID_PRODUIT = $productid1;
+                                $pro_model->ID_MARQUE = $marq->ID_MARQUE;
+                                $pro_model->save();
+                                $pro_mar_id=$pro_model->ID_LIEN_MARQUE;
+                                $spmodel = new SupplierProducts();
+                                $spmodel->ID_FOURNISSEUR = $supplierid;
+                                $spmodel->ID_LIEN_PRODUIT_MARQUE = $pro_mar_id;
+                                $spmodel->save();
+                            }
+                        }
+                        
+                    }
+                        
+                }
+            }
 
             Yii::app()->user->setFlash('success', Myclass::t('OGO144', '', 'og'));
             $this->redirect(array('updatemarques'));
@@ -1828,10 +1995,19 @@ class SuppliersDirectoryController extends OGController {
                     unset($sess_marque_ids[$pid]);
                 }
             }
+            if (Yii::app()->user->hasState("marqueid_new")) {
+                // UNset marque ids for the product                   
+                $sess_marque_ids_new = Yii::app()->user->getState("marqueid_new");
+                if (array_key_exists($pid, $sess_marque_ids_new)) {
+                    // Remove from array                      
+                    unset($sess_marque_ids_new[$pid]);
+                }
+            }
             // }         
 
             Yii::app()->user->setState("product_ids", $sess_product_ids);
             Yii::app()->user->setState("marque_ids", $sess_marque_ids);
+            Yii::app()->user->setState("marqueid_new", $sess_marque_ids_new);
         }
 
         // redirect to success page    

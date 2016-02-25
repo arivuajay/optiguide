@@ -1465,6 +1465,7 @@ a:hover
 #box3 { width: 900px; margin-top: 40px; }
 #box3 p { width: 1200px; }
 
+
 #wrap > p { font-size: 10px; text-align: center; margin: 40px 0 20px 0; }
 
 .clear { clear: both; }
@@ -1691,4 +1692,15 @@ a:focus
     float: right;
     padding-right: 15px;
     padding-top: 8px;
+}
+
+.box_new {
+  background: white none repeat scroll 0 0;
+  color: #222;
+  float: left;
+  height: 200px;
+  overflow: auto;
+  padding: 0;
+  width: 100%;
+  margin: 15px 15px;
 }

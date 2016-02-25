@@ -31,10 +31,10 @@ class SupplierTemp extends CActiveRecord
 		// will receive user inputs.
 		return array(
                     array('invoice_number', 'length', 'max'=>255),
-                    array('umodel, smodel, products, paymentdetails', 'safe'),
+                    array('umodel, smodel, products, paymentdetails, marque_ids_new', 'safe'),
                     // The following rule is used by search().
                     // @todo Please remove those attributes that should not be searched.
-                    array('id, umodel, smodel, product_ids, marque_ids, paymentdetails, invoice_number, created', 'safe', 'on'=>'search'),
+                    array('id, umodel, smodel, product_ids, marque_ids, paymentdetails, invoice_number, marque_ids_new, created', 'safe', 'on'=>'search'),
 		);
 	}
 

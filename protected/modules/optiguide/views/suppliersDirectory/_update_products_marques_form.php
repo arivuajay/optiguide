@@ -7,6 +7,8 @@ $cs_pos_end = CClientScript::POS_END;
 $themeUrl = $this->themeUrl;
 $marids = Yii::app()->user->getState("marque_ids");
 $proids = Yii::app()->user->getState("product_ids");
+$marque_new_all = Yii::app()->user->getState("marque_ids_new_all");
+$marque_new = Yii::app()->user->getState("marqueid_new");
 
 $product_flag = 0;
 $brand_flag   = 0;
@@ -91,7 +93,14 @@ if($currenturl==$secondstep_url)
                                         }
                                             
                                     }
-                                    
+                                    if(isset($marque_new[$prd_id])){
+                                        if($marque_names!='')
+                                        { 
+                                            $marque_names = $marque_names.','.$marque_new[$prd_id];
+                                        }  else {
+                                            $marque_names = $marque_new[$prd_id];
+                                        }
+                                    }
                                     if($marque_names=='')
                                     {
                                         $marque_names = "<span class='errorMessage'>".Myclass::t('OG175')."</span>";

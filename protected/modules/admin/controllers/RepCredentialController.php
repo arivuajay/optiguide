@@ -138,6 +138,21 @@ class RepCredentialController extends Controller {
              
                 $repattributes = $model->attributes;
                 
+                if ($profile->ID_VILLE == "-1") {
+                    $regionid = $profile->region;
+                    $othercity = $profile->autre_ville;
+                    $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $city_exist = CityDirectory::model()->find($condition);
+                    if (!empty($city_exist)) {
+                        $profile->ID_VILLE = $city_exist->ID_VILLE;
+                    } else {
+                        $cinfo = new CityDirectory;
+                        $cinfo->ID_REGION = $regionid;
+                        $cinfo->NOM_VILLE = $othercity;
+                        $cinfo->save(false);
+                        $profile->ID_VILLE = $cinfo->ID_VILLE;
+                    }
+                }
                 $address = $profile->rep_address;
                 $country = $profile->country;
                 $region = $profile->region;
@@ -220,6 +235,22 @@ class RepCredentialController extends Controller {
 
                 $repattributes = $model->attributes;
                 
+                if ($profile->ID_VILLE == "-1") {
+                    $regionid = $profile->region;
+                    $othercity = $profile->autre_ville;
+                    $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $city_exist = CityDirectory::model()->find($condition);
+                    if (!empty($city_exist)) {
+                        $profile->ID_VILLE = $city_exist->ID_VILLE;
+                    } else {
+                        $cinfo = new CityDirectory;
+                        $cinfo->ID_REGION = $regionid;
+                        $cinfo->NOM_VILLE = $othercity;
+//                        $cinfo->country = $profile->country;
+                        $cinfo->save(false);
+                        $profile->ID_VILLE = $cinfo->ID_VILLE;
+                    }
+                }
                 $address = $profile->rep_address;
                 $country = $profile->country;
                 $region = $profile->region;
