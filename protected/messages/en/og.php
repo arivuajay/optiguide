@@ -278,5 +278,7 @@ return array(
     'OGO220' => 'Thank you for having updated your data! Now you can continue your visit to our website.',
     'OGO221' => 'Forgot Password',
     'OGO222' => 'Reset Password',
-    
+    'OGO223' => 'Add New',
+    'OGO224' => 'Brand already exist in the above list.',
+    'OGO225' => '<b>*Hint :</b> If your brand is not available in the above list means, please add your brand below.',
 );

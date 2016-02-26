@@ -275,4 +275,7 @@ return array(
     'OGO220' => 'Merci d’avoir mis à jour vos données! Vous pouvez maintenant poursuivre votre visite sur notre site.',
     'OGO221' => 'Mot de passe oublié',
     'OGO222' => 'Réinitialiser le mot de passe',
+    'OGO223' => 'Ajouter un nouveau',
+    'OGO224' => 'Marque existe déjà dans la liste ci-dessus.',
+    'OGO225' => '<b>* Astuce:</b> Si votre marque ne sont pas disponibles dans les moyens de liste ci-dessus , s\'il vous plaît ajouter votre marque ci-dessous.',
 );

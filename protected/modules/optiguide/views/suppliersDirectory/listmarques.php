@@ -20,7 +20,7 @@ if (Yii::app()->user->hasState("product_ids")) {
             $exp_str_new = explode(',', $mval_new);
         }
     }
-    
+   
 } else {
     $exp_str = array();  
     //$mval = 0;
@@ -65,7 +65,10 @@ $pname = "NOM_PRODUIT_".Yii::app()->session['language'];
             ?>
             <div class="forms-cont">  
                 <div class="forms-heading"><i class="fa fa-cubes"></i> <?php echo Myclass::t('OGO101', '', 'og'). " - " .$product_infos->$pname; ?></div>
-                <div class="row">                     
+                <div class="row"> 
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 pull-right"> 
+                        <?php echo CHtml::submitButton(Myclass::t('OGO102', '', 'og'), array('class' => 'btn btn-primary pull-right')); ?>
+                    </div> 
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">
                         <p id="error_brand" class="errorMessage"><?php echo Myclass::t('OG175');?></p> 
                         <div class="box" id="box1">
@@ -100,20 +103,23 @@ $pname = "NOM_PRODUIT_".Yii::app()->session['language'];
                         </div>    
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">
-                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
-                            <input type="text" class="form-txtfield" placeholder="Enter the new marques" id="new_brand">
-                            <div style="" id="new_brand_error" class="errorMessage" style="display:none;"></div>
+                        <p><?php echo Myclass::t('OGO225', '', 'og'); ?></p>
+                        <div class="col-xs-8 col-sm-7 col-md-9 col-lg-9">
+                                <input type="text" class="form-txtfield" placeholder="<?php echo Myclass::t('OG229'); ?>" id="new_brand">
+                                <div style="" id="new_brand_error" class="errorMessage" style="display:none;"></div>
                         </div>
-                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+                        <div class="col-xs-4 col-sm-5 col-md-3 col-lg-3">
                             <a href="javascript:void(0)" class="btn btn-success" id="add_brand_link">
-                                Add
+                                <?php echo Myclass::t('OGO223', '', 'og'); ?>
                             </a>
                         </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">
+                        
+                        <?php if (!empty($get_selected_marques_new)) { ?>
                         <div class="box" id="box1">
-                            <table class="table table-bordered">    
-                                <?php
-                                if (!empty($get_selected_marques_new)) {
-                                    foreach ($get_selected_marques_new as $k => $info_new) {
+                            <table class="table table-bordered">
+                                <?php foreach ($get_selected_marques_new as $k => $info_new) {
                                         if (!empty($exp_str_new)) {
                                             if (in_array($k, $exp_str_new)) {
                                                 $checked = "checked";
@@ -127,16 +133,13 @@ $pname = "NOM_PRODUIT_".Yii::app()->session['language'];
 
                                             </td>
                                         </tr>    
-                                        <?php
-                                    }
-                                }
-                                ?>                         
+                                        <?php } ?>
                             </table>
-                        </div>    
+                        </div>
+                        <?php } ?>                         
+                                
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 pull-right"> 
-                        <?php echo CHtml::submitButton(Myclass::t('OGO102', '', 'og'), array('class' => 'btn btn-primary')); ?>
-                    </div>   
+                      
                 </div>                
             </div>
             <?php $this->endWidget(); ?>
@@ -146,8 +149,8 @@ $pname = "NOM_PRODUIT_".Yii::app()->session['language'];
 <?php
 $ids=Yii::app()->request->getParam('id');
 $ajaxbrand = Yii::app()->createUrl('/optiguide/suppliersDirectory/getbrand');
-$already=Myclass::t('OG231');
-$empty=Myclass::t('OG232');
+$already = Myclass::t('OGO224', '', 'og');
+$empty = Myclass::t('OG232');
 $js = <<< EOD
 $(document).ready(function(){
         $("#add_brand_link").click(function(){

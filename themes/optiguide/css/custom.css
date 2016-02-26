@@ -530,3 +530,9 @@ img.breton {
     float: left;
     margin-top: 30px;
 }
+.scroll-cont{
+    margin-top: 20px !important;
+}
+.subscribe-btncont a.btn{
+    font-size: 12px;
+}

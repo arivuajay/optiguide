@@ -94,11 +94,14 @@ if($currenturl==$secondstep_url)
                                             
                                     }
                                     if(isset($marque_new[$prd_id])){
-                                        if($marque_names!='')
+                                        $new_marque = $marque_new[$prd_id];
+                                        if($marque_names !='')
                                         { 
-                                            $marque_names = $marque_names.','.$marque_new[$prd_id];
+                                            if( $new_marque != ''){
+                                                $marque_names = $marque_names.','.$new_marque;
+                                            }
                                         }  else {
-                                            $marque_names = $marque_new[$prd_id];
+                                            $marque_names = $new_marque;
                                         }
                                     }
                                     if($marque_names=='')

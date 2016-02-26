@@ -1484,7 +1484,8 @@ class SuppliersDirectoryController extends OGController {
 //        Yii::app()->user->setState("marque_ids_new", null);
         $pid = Yii::app()->getRequest()->getQuery('id');
         $get_selected_marques = '';
-        $get_selected_marques_new = '';
+        $get_selected_marques_new = $marque_ids_new1 = $marque_ids_new2 ='';
+        $result_new1 = $result_new2 = '';
         if (is_numeric($pid) && $pid != '') {
 
             /* Get the marques of the product */
@@ -1499,7 +1500,7 @@ class SuppliersDirectoryController extends OGController {
             if (!empty($marque_ids_new)) {
                 $mval_new = $marque_ids_new[$pid];
                 if ($mval_new != '' ) {
-                    $marques_news = explode(',', $mval_new);
+                    $marques_news = array_unique(explode(',', $mval_new));
                     foreach ($marques_news as $marques_new){
                         $get_selected_marques_new[$marques_new]=$marques_new;
                     }
@@ -1526,21 +1527,43 @@ class SuppliersDirectoryController extends OGController {
                             array_unique($result);
                         }
                         Yii::app()->user->setState("marque_ids", $result);
+                    }else{
+                        $marque_ids[$pid] = '';
+                        $result = $marque_ids;
+                        if (Yii::app()->user->hasState("marque_ids")) {
+                            $sess_marque_ids = Yii::app()->user->getState("marque_ids");
+                           // echo "<pre>";
+                            //print_r($sess_marque_ids);                              
+                            $result = $marque_ids + $sess_marque_ids;                                 
+                            array_unique($result);
+                        }
+                        Yii::app()->user->setState("marque_ids", $result);
                     }
                     //marqueid_new
                     if(isset($_POST['marqueid_new'])){
-                        $imp_vals = implode(',', $_POST['marqueid_new']);
-                        $marque_ids_new[$pid] = $imp_vals;
-                        $result_new = $marque_ids_new;
+                        $imp_vals = implode(',', array_unique($_POST['marqueid_new']));
+                        $marque_ids_new1[$pid] = $imp_vals;
+                        $result_new1 = $marque_ids_new1;
                         // Check the exist session marque products and append it
                         if (Yii::app()->user->hasState("marqueid_new")) {
-                            $sess_marque_ids_new = Yii::app()->user->getState("marqueid_new");
-                           // echo "<pre>";
-                            $result_new = $marque_ids_new + $sess_marque_ids_new;                                 
-                            array_unique($result_new);
+                            $sess_marque_ids_new = Yii::app()->user->getState("marqueid_new");        
+                            $result_new1 = $marque_ids_new1 + $sess_marque_ids_new; 
+                            array_unique($result_new1);
                         }
-                        Yii::app()->user->setState("marqueid_new", $result_new);
+                        Yii::app()->user->setState("marqueid_new", $result_new1);
+                    }  else {
+                        $marque_ids_new2[$pid] = '';
+                        $result_new2 = $marque_ids_new2;
+                        if (Yii::app()->user->hasState("marqueid_new")) {
+                            $sess_marque_ids_new = Yii::app()->user->getState("marqueid_new");
+                            $sess_marque_ids_new[$pid]='';
+                            $result_new2 = $sess_marque_ids_new;                                 
+                            array_unique($result_new2);
+                        }
+                        Yii::app()->user->setState("marqueid_new", $result_new2);
                     }
+                    $sess_marque_ids_new = Yii::app()->user->getState("marqueid_new");
+                    
                 }  else {
                     // unset product id
 //                    if (Yii::app()->user->hasState("product_ids")) {
