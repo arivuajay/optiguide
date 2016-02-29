@@ -613,7 +613,7 @@ class ExportDatasController extends Controller
 
                                 // File name and path                               
                                 $retailer_group_name = RetailerGroup::model()->findByPk($typeval)->NOM_GROUPE;
-                                $filename = "Retailer_data_".date("Y_m_d",time())."_".$retailer_group_name."_".$randstr.".csv";                
+                                $filename = "Retailer_data_".date("Y_m_d",time())."_".str_replace("/","_",$retailer_group_name)."_".$randstr.".csv";                
                                 $outputFile_path = $attach_path.$filename;
 
                                 // Export as csv file
