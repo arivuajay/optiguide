@@ -34,7 +34,7 @@ class CalenderEventController extends Controller
                                     'users'=>array('*'),
                             ),
                             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                                    'actions'=>array('index','view','create','update','admin','delete'),
+                                    'actions'=>array('index','view','create','update','admin','delete', 'getfichers','getficherimage'),
                                     'users'=>array('@'),
                                     'expression'=> 'AdminIdentity::checkAccess()',
                             ),

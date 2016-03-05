@@ -226,8 +226,8 @@ if($ficherid>0)
 <?php
 $ajaxRegionUrl  = Yii::app()->createUrl('/admin/calenderEvent/getregions');
 $ajaxCityUrl    = Yii::app()->createUrl('/admin/calenderEvent/getcities');
-$ajaxFicherUrl = Yii::app()->createUrl('/admin/suppliersDirectory/getfichers');
-$ajaxFetchimage = Yii::app()->createUrl('/admin/suppliersDirectory/getficherimage');
+$ajaxFicherUrl = Yii::app()->createUrl('/admin/calenderEvent/getfichers');
+$ajaxFetchimage = Yii::app()->createUrl('/admin/calenderEvent/getficherimage');
 $js = <<< EOD
 $(document).ready(function(){
         

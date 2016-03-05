@@ -102,6 +102,53 @@ class Controller extends CController {
         echo $options;
         exit;
     }
+    
+    public function actionGetfichers()
+    {
+        $options = '';
+        //fetch category id based fichers
+        $cid     = isset($_POST['id'])?$_POST['id']:'';
+        $options = "<option value=''>Aucune</option>";
+        if($cid!='')
+        {     
+            $exts = array('jpg','png','gif','jpeg');
+            $criteria = new CDbCriteria;
+            $criteria->condition = 'ID_CATEGORIE=:id and DISPONIBLE=1';
+            $criteria->params    = array(':id' => $cid); 
+            $criteria->addInCondition('EXTENSION',$exts);
+            $criteria->order = 'TITRE_FICHIER_FR';
+            $data_fichers        = CHtml::listData(ArchiveFichier::model()->findAll($criteria), 'ID_FICHIER', 'TITRE_FICHIER_FR');  
+             $options = "<option value=''>Aucune</option>";  
+            foreach($data_fichers as $k => $info)
+            {
+                $options .= "<option value='".$k."'>".$info."</option>";  
+            }    
+        }        
+        echo  $options;
+        exit;
+    }    
+    
+    public function actionGetficherimage()
+    {
+        $themeurl = $this->themeUrl;        
+        $options = '';      
+        $cid     = isset($_POST['id'])?$_POST['id']:'';
+        $fileurl = "javascript:void(0);";
+        if($cid!='')
+        { 
+           $fichres = ArchiveFichier::model()->find("ID_FICHIER=$cid"); 
+           $categoryid  = $fichres->ID_CATEGORIE;     
+           $ficherfile  = $fichres->FICHIER; 
+          // $fileurl     =  $themeurl.'/img/archivage/'.$categoryid.'/'.$ficherfile;
+           $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/".$categoryid."/".$ficherfile);   
+           if (!file_exists(YiiBase::getPathOfAlias('webroot').'/uploads/archivage/'.$categoryid.'/'.$ficherfile))
+           {
+               $fileurl = Yii::app()->createAbsoluteUrl("/uploads/archivage/noimage.png");
+           }    
+        }        
+        echo $fileurl;
+        exit;
+    }
 
     //Registration for Single/Admin - Opti Rep
     protected function processRegistration($rep_temp_random_id) {

@@ -25,13 +25,15 @@ class NewsManagementController extends Controller
 	 */
 	public function accessRules()
 	{
-		return array(
+            return array_merge(                
+               parent::accessRules(), 
+               array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array(''),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','view','create','update','admin','delete'),
+				'actions'=>array('index','view','create','update','admin','delete', 'getfichers','getficherimage'),
 				'users'=>array('@'),
                                 'expression'=> 'AdminIdentity::checkAccess()',
 			),
@@ -42,7 +44,8 @@ class NewsManagementController extends Controller
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
-		);
+		    )        
+                );
 	}
 
 	/**

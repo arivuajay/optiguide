@@ -192,8 +192,8 @@ $enddate = $model->DATE_AJOUT2;
 </div>
 
 <?php
-$ajaxFicherUrl = Yii::app()->createUrl('/admin/suppliersDirectory/getfichers');
-$ajaxFetchimage = Yii::app()->createUrl('/admin/suppliersDirectory/getficherimage');
+$ajaxFicherUrl = Yii::app()->createUrl('/admin/NewsManagement/getfichers');
+$ajaxFetchimage = Yii::app()->createUrl('/admin/NewsManagement/getficherimage');
 
 $js = <<< EOD
 $(document).ready(function(){
