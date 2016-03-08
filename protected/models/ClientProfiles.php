@@ -57,7 +57,7 @@ class ClientProfiles extends CActiveRecord
 			// @todo Please remove those attributes that should not be searched.
                         array('site_address','url'),
 			array('client_id, name, company, ID_CLIENT,job_title, member_type, category, address, local_number, country, region, ville, phonenumber1, phonenumber2, mobile_number, tollfree_number, fax, email, site_address, subscription, created_date, modified_date,lang', 'safe', 'on'=>'search'),
-                        array('local_number , phonenumber1, phonenumber2, mobile_number, tollfree_number', 'phoneNumber'),
+                        array('phonenumber1, phonenumber2, mobile_number, tollfree_number', 'phoneNumber'),
                         array('category', 'checknotempty'),
 		);
 	}

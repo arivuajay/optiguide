@@ -364,7 +364,8 @@
                         <div class="form-group">
                             <div class="col-lg-12">
                                 <?php $pre_url=Yii::app()->request->urlReferrer; 
-                                if(empty($pre_url)){
+                                      $currenturl = Yii::app()->createAbsoluteUrl(Yii::app()->request->url);
+                                if(empty($pre_url) || $pre_url == $currenturl){
                                     echo CHtml::link( Myclass::t('OG016', '', 'og'), array('/admin/suppliersDirectory/index'), array("class" => "btn btn-warning"));   
                                  }else{?>
                                     <a class='btn btn-warning' href="<?php echo $pre_url; ?>"><?php echo Myclass::t('OG016', '', 'og');?>  </a>

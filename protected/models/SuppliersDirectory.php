@@ -240,7 +240,8 @@ class SuppliersDirectory extends CActiveRecord {
         $criteria->compare('bAfficher_site', $this->bAfficher_site);
         $criteria->compare('iId_fichier', $this->iId_fichier);
         if($this->keyword!=''){
-            $criteria->addCondition("t.ID_CLIENT LIKE '%".$this->keyword."%' OR t.COURRIEL LIKE '%".$this->keyword."%' OR t.CODE_POSTAL LIKE '%".$this->keyword."%' OR t.TELEPHONE LIKE '%".$this->keyword."%' OR t.TELECOPIEUR LIKE '%".$this->keyword."%' OR t.ADRESSE LIKE '%".$this->keyword."%' OR t.ADRESSE2 LIKE '%".$this->keyword."%' OR t.SITE_WEB LIKE '%".$this->keyword."%' OR t.COMPAGNIE LIKE '%".$this->keyword."%' OR t.TEL_SANS_FRAIS LIKE '%".$this->keyword."%' OR t.TEL_SECONDAIRE LIKE '%".$this->keyword."%' OR t.SUCCURSALES LIKE '%".$this->keyword."%'");
+            $_findword = addslashes($this->keyword);
+            $criteria->addCondition("t.ID_CLIENT LIKE '%".$_findword."%' OR t.COURRIEL LIKE '%".$_findword."%' OR t.CODE_POSTAL LIKE '%".$_findword."%' OR t.TELEPHONE LIKE '%".$_findword."%' OR t.TELECOPIEUR LIKE '%".$_findword."%' OR t.ADRESSE LIKE '%".$_findword."%' OR t.ADRESSE2 LIKE '%".$_findword."%' OR t.SITE_WEB LIKE '%".$_findword."%' OR t.COMPAGNIE LIKE '%".$_findword."%' OR t.TEL_SANS_FRAIS LIKE '%".$_findword."%' OR t.TEL_SECONDAIRE LIKE '%".$_findword."%' OR t.SUCCURSALES LIKE '%".$_findword."%'");
         }
         $criteria->with = 'supplierType';
         $criteria->order = 'supplierType.TYPE_FOURNISSEUR_FR ASC, t.COMPAGNIE ASC';

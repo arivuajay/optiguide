@@ -107,8 +107,61 @@ class ArchiveCategoryController extends Controller {
      * @param integer $id the ID of the model to be deleted
      */
     public function actionDelete($id) {
+        
+        
+        $models = $this->loadModel($id)->archiveFichiers;
+        foreach ($models as $model){
+            
+            //news management
+            $news_managements = NewsManagement::model()->findAll('ID_FICHIER='.$model->ID_FICHIER);
+            if(!empty($news_managements)){
+                foreach ($news_managements as $newsm){
+                    $news = NewsManagement::model()->findByPk($newsm->ID_NOUVELLE);
+                    echo "news -".$newsm->ID_NOUVELLE;
+                    $news->ID_FICHIER = '0';
+                    $news->save(false);
+                }
+            }
+            
+            //Publicity Ads
+            $publicity_ads = PublicityAds::model()->findAll('ID_FICHIER='.$model->ID_FICHIER);
+            if(!empty($publicity_ads)){
+                foreach ($publicity_ads as $publicity_ad){
+                    $ads = PublicityAds::model()->findByPk($publicity_ad->ID_PUBLICITE);
+                    echo "publicity -".$publicity_ad->ID_PUBLICITE;
+                    $ads->ID_FICHIER = '0';
+                    $ads->save(false);
+                }
+            }
+            
+            //CalenderEvent
+            $calender_events = CalenderEvent::model()->findAll('iId_fichier='.$model->ID_FICHIER);
+            if(!empty($calender_events)){
+                foreach ($calender_events as $calender_event){
+                    $events = CalenderEvent::model()->findByPk($calender_event->ID_EVENEMENT);
+                    echo "Calender -".$calender_event->ID_EVENEMENT;
+                    $events->iId_fichier = '0';
+                    $events->save(false);
+                }
+            }
+            
+            //SuppliersDirectory
+            $suppliers = SuppliersDirectory::model()->findAll('iId_fichier='.$model->ID_FICHIER);
+            if(!empty($suppliers)){
+                foreach ($suppliers as $supplier){
+                    $supp = SuppliersDirectory::model()->findByPk($supplier->ID_FOURNISSEUR);
+                    echo "Supplier -".$supplier->ID_FOURNISSEUR;
+                    $supp->iId_fichier = '0';
+                    $supp->save(false);
+                }
+            }
+        }
+        
+        //ArchiveFichier
+        ArchiveFichier::model()->deleteAll('ID_CATEGORIE='.$id);
+        
         $this->loadModel($id)->delete();
-
+        
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax'])) {
             $msg = Myclass::t('APP33')." ".Myclass::t('APP503');

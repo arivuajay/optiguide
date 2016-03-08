@@ -238,7 +238,8 @@ class RetailerDirectory extends CActiveRecord {
         $criteria->compare('CATEGORY_5', $this->CATEGORY_5);
         
         if($this->keyword!=''){
-            $criteria->addCondition("retailerGroup.NOM_GROUPE LIKE '%".$this->keyword."%' OR t.ID_CLIENT LIKE '%".$this->keyword."%' OR t.COURRIEL LIKE '%".$this->keyword."%' OR t.CODE_POSTAL LIKE '%".$this->keyword."%' OR t.TELEPHONE LIKE '%".$this->keyword."%' OR t.TELEPHONE2 LIKE '%".$this->keyword."%' OR t.ADRESSE LIKE '%".$this->keyword."%' OR t.ADRESSE2 LIKE '%".$this->keyword."%' OR t.URL LIKE '%".$this->keyword."%' OR t.COMPAGNIE LIKE '%".$this->keyword."%' OR t.TEL_1800 LIKE '%".$this->keyword."%' OR t.HEAD_OFFICE_NAME LIKE '%".$this->keyword."%'");
+            $_findword = addslashes($this->keyword);
+            $criteria->addCondition("retailerGroup.NOM_GROUPE LIKE '%".$_findword."%' OR t.ID_CLIENT LIKE '%".$_findword."%' OR t.COURRIEL LIKE '%".$_findword."%' OR t.CODE_POSTAL LIKE '%".$_findword."%' OR t.TELEPHONE LIKE '%".$_findword."%' OR t.TELEPHONE2 LIKE '%".$_findword."%' OR t.ADRESSE LIKE '%".$_findword."%' OR t.ADRESSE2 LIKE '%".$_findword."%' OR t.URL LIKE '%".$_findword."%' OR t.COMPAGNIE LIKE '%".$_findword."%' OR t.TEL_1800 LIKE '%".$_findword."%' OR t.HEAD_OFFICE_NAME LIKE '%".$_findword."%'");
 //            $criteria->addCondition("retailerGroup.NOM_GROUPE LIKE '%".$this->keyword."%'");
             $criteria->with = 'retailerGroup';
         }

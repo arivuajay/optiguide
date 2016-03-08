@@ -182,7 +182,8 @@ class ProfessionalDirectory extends CActiveRecord {
         $criteria->compare('COURRIEL', $this->COURRIEL, true);
         $criteria->compare('DATE_MODIFICATION', $this->DATE_MODIFICATION, true);
         if($this->keyword!=''){
-            $criteria->addCondition("t.PRENOM LIKE '%".$this->keyword."%' OR t.NOM LIKE '%".$this->keyword."%' OR t.ID_CLIENT LIKE '%".$this->keyword."%' OR t.COURRIEL LIKE '%".$this->keyword."%' OR t.CODE_POSTAL LIKE '%".$this->keyword."%' OR t.TELEPHONE2 LIKE '%".$this->keyword."%' OR t.TELEPHONE LIKE '%".$this->keyword."%' OR t.ADRESSE LIKE '%".$this->keyword."%' OR t.ADRESSE2 LIKE '%".$this->keyword."%' OR t.SITE_WEB LIKE '%".$this->keyword."%' OR t.BUREAU LIKE '%".$this->keyword."%'");
+            $_findword = addslashes($this->keyword);
+            $criteria->addCondition("t.PRENOM LIKE '%".$_findword."%' OR t.NOM LIKE '%".$_findword."%' OR t.ID_CLIENT LIKE '%".$_findword."%' OR t.COURRIEL LIKE '%".$_findword."%' OR t.CODE_POSTAL LIKE '%".$_findword."%' OR t.TELEPHONE2 LIKE '%".$_findword."%' OR t.TELEPHONE LIKE '%".$_findword."%' OR t.ADRESSE LIKE '%".$_findword."%' OR t.ADRESSE2 LIKE '%".$_findword."%' OR t.SITE_WEB LIKE '%".$_findword."%' OR t.BUREAU LIKE '%".$_findword."%'");
         }
         
         $criteria->with = 'professionalType';

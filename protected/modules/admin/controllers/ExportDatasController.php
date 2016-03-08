@@ -503,7 +503,7 @@ class ExportDatasController extends Controller
             {    
                 // Get all records list  with limit
                 $ret_result = Yii::app()->db->createCommand(
-                "SELECT COMPAGNIE as Company_Name, NOM_TYPE_EN as Reatlier_Type ,rrg.NOM_GROUPE AS Regroupement , ru.COURRIEL as Email, HEAD_OFFICE_NAME as Head_office , ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
+                "SELECT COMPAGNIE as Company_Name, NOM_TYPE_EN as Reatlier_Type ,rrg.NOM_GROUPE AS Regroupement , ru.COURRIEL as Email, HEAD_OFFICE_NAME as Head_office , ADRESSE as Address , ADRESSE2 as Address2 , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
                 (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
                 (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
                 (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
@@ -599,7 +599,7 @@ class ExportDatasController extends Controller
                             {    
                                 // Get all records list  with limit
                                 $ret_result = Yii::app()->db->createCommand(
-                                     "SELECT COMPAGNIE as Company_Name, NOM_TYPE_EN as Reatlier_Type ,rrg.NOM_GROUPE AS Regroupement , ru.COURRIEL as Email, HEAD_OFFICE_NAME as Head_office , ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
+                                     "SELECT COMPAGNIE as Company_Name, NOM_TYPE_EN as Reatlier_Type ,rrg.NOM_GROUPE AS Regroupement , ru.COURRIEL as Email, HEAD_OFFICE_NAME as Head_office , ADRESSE as Address ,ADRESSE2 as Address2 , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
                                     (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
                                     (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
                                     (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
@@ -630,7 +630,7 @@ class ExportDatasController extends Controller
                          $qry_str  = $lang_str.$subscription_str.$province_str.$type_str;
                         // Get all records list  with limit
                          $ret_result = Yii::app()->db->createCommand(
-                        "SELECT COMPAGNIE as Company_Name, NOM_TYPE_EN as Reatlier_Type ,rrg.NOM_GROUPE AS Regroupement , ru.COURRIEL as Email, HEAD_OFFICE_NAME as Head_office , ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
+                        "SELECT COMPAGNIE as Company_Name, NOM_TYPE_EN as Reatlier_Type ,rrg.NOM_GROUPE AS Regroupement , ru.COURRIEL as Email, HEAD_OFFICE_NAME as Head_office , ADRESSE as Address , ADRESSE2 as Address2 , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
                         (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
                         (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
                         (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
@@ -751,7 +751,7 @@ class ExportDatasController extends Controller
             {    
                 // Get all records list  with limit
                 $prof_result = Yii::app()->db->createCommand(
-                    "SELECT NOM AS First_Name , PRENOM AS Last_Name , TYPE_SPECIALISTE_EN AS Professional_Type, ru.COURRIEL as Email, BUREAU as Bureau, ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax, USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
+                    "SELECT NOM AS First_Name , PRENOM AS Last_Name , TYPE_SPECIALISTE_EN AS Professional_Type, ru.COURRIEL as Email, BUREAU as Bureau, ADRESSE as Address , ADRESSE2 as Address2 , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax, USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
                     (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
                     (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
                     (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
@@ -794,7 +794,7 @@ class ExportDatasController extends Controller
                         {    
                             // Get all records list  with limit
                             $prof_result = Yii::app()->db->createCommand(
-                            "SELECT NOM AS First_Name , PRENOM AS Last_Name , TYPE_SPECIALISTE_EN AS Professional_Type, ru.COURRIEL as Email, BUREAU as Bureau, ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax, USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
+                            "SELECT NOM AS First_Name , PRENOM AS Last_Name , TYPE_SPECIALISTE_EN AS Professional_Type, ru.COURRIEL as Email, BUREAU as Bureau, ADRESSE as Address , ADRESSE2 as Address2 , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax, USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
                             (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
                             (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
                             (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
@@ -839,7 +839,7 @@ class ExportDatasController extends Controller
                         {    
                             // Get all records list  with limit
                             $prof_result = Yii::app()->db->createCommand(
-                               "SELECT NOM AS First_Name , PRENOM AS Last_Name , TYPE_SPECIALISTE_EN AS Professional_Type, ru.COURRIEL as Email, BUREAU as Bureau, ADRESSE as Address , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax, USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
+                               "SELECT NOM AS First_Name , PRENOM AS Last_Name , TYPE_SPECIALISTE_EN AS Professional_Type, ru.COURRIEL as Email, BUREAU as Bureau, ADRESSE as Address , ADRESSE2 as Address2 , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax, USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
                                  (CASE WHEN bSubscription_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Digital ,
                                  (CASE WHEN bSubscription_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Digital ,
                                  (CASE WHEN print_envision <> 1 THEN 'no' ELSE 'yes' END) As Envision_Print ,
