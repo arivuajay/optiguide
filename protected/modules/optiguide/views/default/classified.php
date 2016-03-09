@@ -42,7 +42,7 @@
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane  fade in active" id="classified1">
                     <?php
-                    $classfieds1 = Classifieds::model()->findAll(array('condition' => 'classified_category_id = 1 AND language = "' . strtoupper(Yii::app()->language) . '"'));
+                    $classfieds1 = Classifieds::model()->findAll(array('condition' => 'classified_category_id = 1 AND language = "' . strtoupper(Yii::app()->language) . '"','order'=>'created_at DESC'));
                     if (!empty($classfieds1)) {
                         foreach ($classfieds1 as $classfied1) {
                             ?>
@@ -66,7 +66,7 @@
                 </div>
                 <div role="tabpanel" class="tab-pane fade " id="classified2">
                     <?php
-                    $classfieds2 = Classifieds::model()->findAll(array('condition' => 'classified_category_id = 2 AND language = "' . strtoupper(Yii::app()->language) . '"'));
+                    $classfieds2 = Classifieds::model()->findAll(array('condition' => 'classified_category_id = 2 AND language = "' . strtoupper(Yii::app()->language) . '"','order'=>'created_at DESC'));
                     if (!empty($classfieds2)) {
                         foreach ($classfieds2 as $classfied2) {
                             ?>
@@ -90,7 +90,7 @@
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="classified3">
                     <?php
-                    $classfieds3 = Classifieds::model()->findAll(array('condition' => 'classified_category_id = 3 AND language = "' . strtoupper(Yii::app()->language) . '"'));
+                    $classfieds3 = Classifieds::model()->findAll(array('condition' => 'classified_category_id = 3 AND language = "' . strtoupper(Yii::app()->language) . '"','order'=>'created_at DESC'));
                     if (!empty($classfieds3)) {
                         foreach ($classfieds3 as $classfied3) {
                             ?>

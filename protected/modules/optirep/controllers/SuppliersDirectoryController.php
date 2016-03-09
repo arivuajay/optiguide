@@ -181,7 +181,8 @@ class SuppliersDirectoryController extends ORController {
 
             if ($search_name != '') {
                 $searchModel->COMPAGNIE = $search_name;
-                $sname_qry = " AND COMPAGNIE like '%$search_name%' ";
+                $_findword = addslashes($search_name);
+                $sname_qry = " AND COMPAGNIE like '%$_findword%' ";
             }
 
             if ($search_type != '') {

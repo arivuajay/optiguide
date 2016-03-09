@@ -77,14 +77,15 @@ class CalenderEventController extends ORController {
                 $criteria->addCondition('MONTH(DATE_AJOUT1) = ' . $searchModel->EVENT_MONTH);
             if ($searchModel->EVENT_YEAR)
                 $criteria->addCondition('YEAR(DATE_AJOUT1) = ' . $searchModel->EVENT_YEAR);
+            $criteria->order = 'DATE_AJOUT1 DESC';
         } elseif (isset($_REQUEST['date'])) {
             $criteria->addCondition('DATE_AJOUT1 <= "' . $_REQUEST['date'] . '" AND DATE_AJOUT2 >= "' . $_REQUEST['date'] . '"');
         } else {
             $criteria->addCondition('DATE_AJOUT1 >= "' . $current_date . '"');
+            $criteria->order = 'DATE_AJOUT1 ASC';
         }
         $criteria->addCondition('AFFICHER_SITE = 1');
-        $criteria->order = 'DATE_AJOUT1 ASC';
-
+        
         $count = CalenderEvent::model()->count($criteria);
         $pages = new CPagination($count);
 

@@ -408,11 +408,15 @@ class Myclass extends CController {
         if ($current_moduleid > 0) {
             $criteria->addCondition("adm.ID_MODULE = " . $current_moduleid);
             $criteria->addCondition("AFFICHER_ACCUEIL = 0");
+            
             // $criteria->addCondition("ZONE_AFFICHAGE = 2");
             $criteria->addCondition("PRIORITE = 0");
 
             if ($sectionid != '' && is_numeric($sectionid)) {
                 $criteria->addCondition("adc.ID_SECTION = " . $sectionid);
+                $criteria->addCondition("ACCUEIL_SECTION = 0");
+            }else{
+                $criteria->addCondition("ACCUEIL_SECTION = 1");
             }
         } else {
             $criteria->addCondition("AFFICHER_ACCUEIL = 1");

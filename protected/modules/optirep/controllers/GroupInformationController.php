@@ -74,7 +74,8 @@ class GroupInformationController extends ORController {
             $searchModel->attributes = $_GET['GroupInformation'];
             if ($_GET['GroupInformation']['NOM_GROUPE']) {
                 $search_keyword = $_GET['GroupInformation']['NOM_GROUPE'];
-                $where_conditions .= " AND rg.NOM_GROUPE like '%{$search_keyword}%'";
+                $_findword = addslashes($search_keyword);
+                $where_conditions .= " AND rg.NOM_GROUPE like '%{$_findword}%'";
             }
 
             if ($_GET['GroupInformation']['category']) {

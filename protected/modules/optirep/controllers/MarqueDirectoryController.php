@@ -156,7 +156,8 @@ class MarqueDirectoryController extends ORController {
             if( $search_name != '')
             {
                $searchModel->NOM_MARQUE =  $search_name;
-               $sname_qry  = " AND NOM_MARQUE like '%$search_name%' ";
+               $_findword = addslashes($search_name);
+               $sname_qry  = " AND NOM_MARQUE like '%$_findword%' ";
             } 
              
             if($search_section!='')

@@ -62,8 +62,8 @@
                        $search_region  = isset($_GET['RetailerDirectory']['region'])?$_GET['RetailerDirectory']['region']:'';
                        $search_ville   = isset($_GET['RetailerDirectory']['ID_VILLE'])?$_GET['RetailerDirectory']['ID_VILLE']:'';
                        $search_postal  = isset($_GET['RetailerDirectory']['CODE_POSTAL'])?$_GET['RetailerDirectory']['CODE_POSTAL']:'';
-
-                       if( $search_name != ''){ $sname_qry  = " AND rs.COMPAGNIE like '%$search_name%' ";    }  
+                       
+                       if( $search_name != ''){ $_findword1 = addslashes($search_name); $sname_qry  = " AND rs.COMPAGNIE like '%$_findword1%' "; }  
                        if( $search_cat != ''){ $scat_query = " AND CATEGORY_$search_cat ";               }
                        if( $search_country != ''){ $scntry_qry  = " AND rp.ID_PAYS = ". $search_country;     } 
                        if( $search_region != ''){ $sregion_qry  = " AND rr.ID_REGION = ". $search_region;   } 
@@ -96,7 +96,7 @@
                         $search_type    = isset($_GET['ProfessionalDirectory']['ID_TYPE_SPECIALISTE']) ? $_GET['ProfessionalDirectory']['ID_TYPE_SPECIALISTE'] : '';
                         $search_postal  = isset($_GET['ProfessionalDirectory']['CODE_POSTAL']) ? $_GET['ProfessionalDirectory']['CODE_POSTAL'] : '';
 
-                        if ($search_name != '') { $sname_qry = " AND NOM like '%$search_name%' "; }
+                        if ($search_name != '') { $_findword1 = addslashes($search_name); $sname_qry = " AND NOM like '%$_findword1%' ";}
                         if ($search_country != '') {  $scntry_qry = " AND rp.ID_PAYS = " . $search_country; }
                         if ($search_region != '') {   $sregion_qry = " AND rr.ID_REGION = " . $search_region; }
                         if ($search_ville != '') { $scity_qry = " AND rs.ID_VILLE = " . $search_ville; }

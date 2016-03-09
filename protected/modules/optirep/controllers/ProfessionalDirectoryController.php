@@ -232,7 +232,8 @@ class ProfessionalDirectoryController extends ORController {
 
             if ($search_name != '') {
                 $searchModel->NOM = $search_name;
-                $sname_qry = " AND NOM like '%$search_name%' ";
+                $_findword = addslashes($search_name);
+                $sname_qry = " AND NOM like '%$_findword%' ";
             }
 
             $searchModel->country = $search_country;
@@ -273,7 +274,7 @@ class ProfessionalDirectoryController extends ORController {
                 ->order('rst.TYPE_SPECIALISTE_' . $this->lang . ',NOM')
                 ->limit($searchModel->listperpage, $limit) // the trick is here!
                 ->queryAll();
-
+        
         // Get total counts of records    
         $item_count = Yii::app()->db->createCommand() // this query get the total number of items,
                 ->select('count(*) as count')
@@ -283,13 +284,13 @@ class ProfessionalDirectoryController extends ORController {
         // the pagination itself
         $pages = new CPagination($item_count);
         $pages->setPageSize($searchModel->listperpage);
-
+        
         $result = array();
         foreach ($prof_query as $users) {
             $proftype = $users['TYPE_SPECIALISTE_' . $this->lang . ''];
             $result[$proftype][] = $users;
         }
-
+        
         // render
         $this->render('index', array(
             'searchModel' => $searchModel,
