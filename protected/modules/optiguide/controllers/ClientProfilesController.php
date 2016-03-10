@@ -118,9 +118,9 @@ class ClientProfilesController extends OGController {
                 $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
                 
                 if($this->lang=='EN' ){
-                    $subject = SITENAME . " - Update the client profile notification - " . $model->name;
+                    $subject = SITENAME . " - Notification for update client profile - " . $model->name;
                 }elseif($this->lang=='FR'){
-                    $subject = SITENAME . " - Mettre à jour la notification de profil client";
+                    $subject = SITENAME . " - Notification pour le profil client de mise à jour";
                 }
                 $trans_array = array(
                     "{NAME}" => $model->name,

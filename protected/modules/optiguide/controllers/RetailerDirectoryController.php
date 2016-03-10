@@ -472,14 +472,14 @@ class RetailerDirectoryController extends OGController {
                 $this->lang = Yii::app()->session['language'];
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
-                $retailer_url = ADMIN_URL . 'admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
+                $retailer_url = ADMIN_URL . 'admin/retailerDirectory/update/id/' . $model->ID_RETAILER;
                 $enc_url = Myclass::refencryption($retailer_url);
                 $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
                 
                 if($this->lang=='EN' ){
-                    $subject = SITENAME . " - Update the optical retailer profile notification - " . $model->COMPAGNIE;
+                    $subject = SITENAME . " - Notification for update optical retailer profile - " . $model->COMPAGNIE;
                 }elseif($this->lang=='FR'){
-                    $subject = SITENAME . " - Mettre à jour le profil de notification détaillant optique";
+                    $subject = SITENAME . " - Notification pour la mise à jour optique profil détaillant";
                 }
                 $trans_array = array(
                     "{NAME}" => $model->COMPAGNIE,

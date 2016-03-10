@@ -1694,14 +1694,14 @@ class SuppliersDirectoryController extends OGController {
                 $this->lang = Yii::app()->session['language'];
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
-                $retailer_url = ADMIN_URL . 'admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
+                $retailer_url = ADMIN_URL . 'admin/suppliersDirectory/update/id/' . $model->ID_FOURNISSEUR;
                 $enc_url = Myclass::refencryption($retailer_url);
                 $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
                 
                 if($this->lang=='EN' ){
-                    $subject = SITENAME . " - Update the supplier profile notification - " . $model->COMPAGNIE;
+                    $subject = SITENAME . " - Notification for update supplier profile - " . $model->COMPAGNIE;
                 }elseif($this->lang=='FR'){
-                    $subject = SITENAME . " - Mettre à jour la notification de profil fournisseur";
+                    $subject = SITENAME . " - Notification pour le profil des fournisseurs de mise à jour";
                 }
                 $trans_array = array(
                     "{NAME}" => $model->COMPAGNIE,

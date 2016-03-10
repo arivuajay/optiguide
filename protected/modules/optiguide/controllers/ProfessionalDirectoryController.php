@@ -536,14 +536,14 @@ class ProfessionalDirectoryController extends OGController {
                 $this->lang = Yii::app()->session['language'];
                 
                 $mail = new Sendmail();
-                $professional_url = ADMIN_URL . 'admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
+                $professional_url = ADMIN_URL . 'admin/professionalDirectory/update/id/' . $model->ID_SPECIALISTE;
                 $enc_url = Myclass::refencryption($professional_url);
                 $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
                 
                 if($this->lang=='EN' ){
-                    $subject = SITENAME . " - Update the professional profile notification - " . $model->NOM . " " . $model->PRENOM;
+                    $subject = SITENAME . " - Notification for update professional profile - " . $model->NOM . " " . $model->PRENOM;
                 }elseif($this->lang=='FR'){
-                    $subject =  SITENAME . utf8_encode(" - Mettre à jour la notification de profil professionnel ");
+                    $subject =  SITENAME . utf8_encode(" - Notification pour la mise à jour profil professionnel ");
                 }
                 $trans_array = array(
                     "{NAME}" => $model->NOM,
