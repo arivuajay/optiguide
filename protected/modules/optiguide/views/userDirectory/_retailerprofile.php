@@ -35,7 +35,9 @@
 
                                 <tr>
                                     <td><strong>Grouping </strong></td>   
-                                    <td><?php echo RetailerGroup::model()->find("ID_GROUPE=".$pmodel->ID_GROUPE)->NOM_GROUPE;   ?></td>   
+                                    <td><?php 
+                                    if($pmodel->ID_GROUPE != ''){echo RetailerGroup::model()->find("ID_GROUPE=".$pmodel->ID_GROUPE)->NOM_GROUPE; }
+                                    else {echo '-';} ?></td>   
                                 </tr>
 
                                 <?php if ($pmodel->HEAD_OFFICE_NAME != '') {
