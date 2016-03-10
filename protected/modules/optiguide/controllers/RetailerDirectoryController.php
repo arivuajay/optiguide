@@ -468,7 +468,27 @@ class RetailerDirectoryController extends OGController {
                 $umodel->ID_RELATION = $model->ID_RETAILER;
                 $umodel->MUST_VALIDATE = 1;
                 $umodel->save(false);
-
+                
+                $this->lang = Yii::app()->session['language'];
+                /* Send mail to admin for confirmation */
+                $mail = new Sendmail();
+                $retailer_url = ADMIN_URL . 'admin/userDirectory/update/id/' . $umodel->ID_UTILISATEUR;
+                $enc_url = Myclass::refencryption($retailer_url);
+                $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
+                
+                if($this->lang=='EN' ){
+                    $subject = SITENAME . " - Update the optical retailer profile notification - " . $model->COMPAGNIE;
+                }elseif($this->lang=='FR'){
+                    $subject = SITENAME . " - Mettre à jour le profil de notification détaillant optique";
+                }
+                $trans_array = array(
+                    "{NAME}" => $model->COMPAGNIE,
+                    "{UTYPE}" => 'optical retailer',
+                    "{NEXTSTEPURL}" => $nextstep_url,
+                );
+                $message = $mail->getMessage('profile_update', $trans_array);
+                $mail->send(ADMIN_EMAIL, $subject, $message);
+                
                 Yii::app()->user->setFlash('success', Myclass::t('OG036', '', 'og'));
                 $this->redirect(array('update'));
             }

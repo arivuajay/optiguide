@@ -109,7 +109,27 @@ class ClientProfilesController extends OGController {
                     $catmap_model->category    =  $cinfo;
                     $catmap_model->save();
                 }    
-
+                
+                $this->lang = Yii::app()->session['language'];
+                /* Send mail to admin for confirmation */
+                $mail = new Sendmail();
+                $retailer_url = ADMIN_URL . 'admin/clientProfiles/update/id/' . $model->client_id;
+                $enc_url = Myclass::refencryption($retailer_url);
+                $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
+                
+                if($this->lang=='EN' ){
+                    $subject = SITENAME . " - Update the client profile notification - " . $model->name;
+                }elseif($this->lang=='FR'){
+                    $subject = SITENAME . " - Mettre à jour la notification de profil client";
+                }
+                $trans_array = array(
+                    "{NAME}" => $model->name,
+                    "{UTYPE}" => 'client',
+                    "{NEXTSTEPURL}" => $nextstep_url,
+                );
+                $message = $mail->getMessage('profile_update', $trans_array);
+                $mail->send(ADMIN_EMAIL, $subject, $message);
+                
                 Yii::app()->user->setFlash('success', Myclass::t('APP20'));
                 $this->redirect(array('update'));               
                 
