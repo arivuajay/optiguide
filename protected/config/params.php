@@ -13,6 +13,7 @@ if (in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
      $repurl     = 'http://opti-rep.com/'; 
      $guideurl   = 'http://opti-guide.com/'; 
      $adminemail = 'bretoncom2@gmail.com';
+     //info@bretoncom.com
 }
 
 // Custom Params Value
@@ -39,9 +40,7 @@ return array(
 //    'FB_SECRET_ID' => $fb_sec_id,
 //    'GOOGLE_APP_ID' => $google_app_id,
 //    'GOOGLE_SECRET_ID' => $google_sec_id,
-//    'ADMIN_EMAIL'   => 'vasanth@arkinfotec.com',
     'ADMIN_EMAIL'   => $adminemail,
-//info@bretoncom.com
     'ADMIN_URL'  => $adminurl,   
     
     //Product Settings
