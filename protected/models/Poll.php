@@ -49,12 +49,12 @@ class Poll extends CActiveRecord
   public function rules()
   {
     return array(
-      array('title,polldate,usertype', 'required'),
+      array('title,title_FR,polldate,usertype,usertype_FR', 'required'),
       array('status', 'numerical', 'integerOnly'=>true),
-      array('title', 'length', 'max'=>255),
-      array('description,labelerror,Year', 'safe'),    
+      array('title,title_FR', 'length', 'max'=>255),
+      array('description,description_FR,labelerror,Year', 'safe'),    
       array('polldate', 'checkpollexist' ) ,
-      array('title, description, status', 'safe', 'on'=>'search'),
+      array('title, description, status,title_FR,description_FR,', 'safe', 'on'=>'search'),
     );
   }  
 
@@ -139,7 +139,11 @@ class Poll extends CActiveRecord
       'description' => 'Description',
       'status' => 'Status',
       'polldate' => "Poll Date", 
-      'usertype' => 'User Type'  
+      'usertype' => 'User Type',
+      'title_FR' => 'Titre',
+      'description_FR' => 'La description',
+      
+      'usertype_FR' => 'Type d\'utilisateur',
     );
   }
 
@@ -181,6 +185,8 @@ class Poll extends CActiveRecord
     $criteria->compare('status',$this->status);
     $criteria->compare('usertype',$this->usertype,true);
     $criteria->compare('polldate',$this->polldate,true);
+    $criteria->compare('title_FR',$this->title_FR,true);
+    $criteria->compare('description_FR',$this->description_FR,true);
 
     return new CActiveDataProvider($this, array(
        'criteria'=>$criteria,

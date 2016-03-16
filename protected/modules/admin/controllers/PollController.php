@@ -176,9 +176,11 @@ class PollController extends Controller
       // Setup poll choices
       if (isset($_POST['PollChoice']))
       {
-        foreach ($_POST['PollChoice'] as $id => $choice) {
+        foreach ($_POST['PollChoice']['en'] as $id => $choice) {
           $pollChoice = new PollChoice;
+//          $pollChoice->attributes = $choice;
           $pollChoice->attributes = $choice;
+          $pollChoice->label_FR = $_POST['PollChoice']['fr'][$id]['label_FR'];
           $choices[$id] = $pollChoice;
         }
         
@@ -221,7 +223,8 @@ class PollController extends Controller
   public function actionUpdate($id)
   {
     $model = $this->loadModel($id);
-    $choices = $model->choices;
+    $choices1 = $model->choices;
+    
     $this->performAjaxValidation($model);
 
     if (isset($_POST['Poll'])) {
@@ -229,13 +232,19 @@ class PollController extends Controller
 
       // Setup poll choices
       $choices = array();
+            foreach ($choices1 as $c){
+                $ids[] = $c->id;
+            }
+          
       if (isset($_POST['PollChoice'])) {
-        foreach ($_POST['PollChoice'] as $id => $choice) {
-          $pollChoice = $this->loadChoice($model, $choice['id']);
+        foreach ($_POST['PollChoice']['en'] as $id => $choice) {
+          $pollChoice = $this->loadChoice($model, $ids[$id]);
           $pollChoice->attributes = $choice;
+          $pollChoice->label_FR = $_POST['PollChoice']['fr'][$id]['label_FR'];
           $choices[$id] = $pollChoice;
         }
-         
+        
+        
         $polldate = $_POST['Poll']['polldate'];
         $model->polldate =  date("Y-m-d",strtotime($polldate));      
       }
@@ -253,7 +262,7 @@ class PollController extends Controller
 
     $this->render('update',array(
       'model'=>$model,
-      'choices'=>$choices,
+      'choices'=>$choices1,
     ));
   }
 

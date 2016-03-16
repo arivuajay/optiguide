@@ -66,9 +66,7 @@ $pname = "NOM_PRODUIT_".Yii::app()->session['language'];
             <div class="forms-cont">  
                 <div class="forms-heading"><i class="fa fa-cubes"></i> <?php echo Myclass::t('OGO101', '', 'og'). " - " .$product_infos->$pname; ?></div>
                 <div class="row"> 
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 pull-right"> 
-                        <?php echo CHtml::submitButton(Myclass::t('OGO102', '', 'og'), array('class' => 'btn btn-primary pull-right')); ?>
-                    </div> 
+                    
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 scroll-cont brands">
                         <p id="error_brand" class="errorMessage"><?php echo Myclass::t('OG175');?></p> 
                         <div class="box" id="box1">
@@ -139,7 +137,9 @@ $pname = "NOM_PRODUIT_".Yii::app()->session['language'];
                         <?php } ?>                         
                                 
                     </div>
-                      
+                      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 pull-right scroll-cont"> 
+                        <?php echo CHtml::submitButton(Myclass::t('OGO102', '', 'og'), array('class' => 'btn btn-primary pull-right')); ?>
+                    </div> 
                 </div>                
             </div>
             <?php $this->endWidget(); ?>

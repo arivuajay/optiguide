@@ -10,6 +10,7 @@ class EPoll extends CWidget {
    */
   public $poll_id = 0;
   public $title;
+  public $title_FR;
 
   /**
    * @var integer the counter for generating implicit IDs.
@@ -50,6 +51,7 @@ class EPoll extends CWidget {
    
     if ($this->_poll) {
       $this->title = $this->_poll->title;
+      $this->title_FR = $this->_poll->title_FR;
     }
 
     parent::init();
@@ -83,30 +85,45 @@ class EPoll extends CWidget {
           Yii::app()->controller->redirect(Yii::app()->createUrl($route));
         }
       }
-
+      $lang = Yii::app()->session['language'];   
       // Force user to vote if needed
       if (Yii::app()->getModule('optiguide')->forceVote && $model->userCanVote()) {
         $view = 'vote';
 
         // Convert choices to form options list
         $choices = array();
-        foreach ($model->choices as $choice) {
-          $choices[$choice->id] = CHtml::encode($choice->label);
-        }
+        
+        if($lang=="FR")
+        {
+            foreach ($model->choices as $choice) {
+                $choices[$choice->id] = CHtml::encode($choice->label_FR);
+              }
+              $params['choices'] = $choices;
+              $params['Title']   = $this->title_FR;
+        }else{
+            foreach ($model->choices as $choice) {
+                $choices[$choice->id] = CHtml::encode($choice->label);
+            }
+            $params['choices'] = $choices;
+            $params['Title']   = $this->title;
+        } 
+//        foreach ($model->choices as $choice) {
+//          $choices[$choice->id] = CHtml::encode($choice->label);
+//        }
 
-        $params['choices'] = $choices;
-        $params['Title']   = $this->title;
+//        $params['choices'] = $choices;
+//        $params['Title']   = $this->title;
       }
       // Otherwise view the results
       else {
         $view = 'view';
         $userChoice = $this->loadChoice($userVote->choice_id);
-
+        if($lang=="FR"){ $title = $this->title_FR; }else{ $title=$this->title; }
         $params += array(
           'userVote' => $userVote,
           'userChoice' => $userChoice,
           'userCanCancel' => $model->userCanCancelVote($userVote),
-          'Title' =>   $this->title,           
+          'Title' =>   $title,           
         );
       }
       

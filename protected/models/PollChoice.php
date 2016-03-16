@@ -38,9 +38,9 @@ class PollChoice extends CActiveRecord
   public function rules()
   {
     return array(
-      array('poll_id, label', 'required'),    
+      array('poll_id, label,label_FR', 'required'),    
       array('poll_id, votes', 'length', 'max'=>11),
-      array('label', 'length', 'max'=>255),
+      array('label,label_FR', 'length', 'max'=>255),
     );
   }
 

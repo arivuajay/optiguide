@@ -36,10 +36,11 @@ class PollchoiceController extends Controller
     {
       $choice = new PollChoice;
       $choice->label = $_POST['label'];
+      $choice->label_FR = $_POST['label_FR'];
 
       $result = new stdClass();
       $result->id = $_POST['id'];
-      $result->html = $this->renderPartial('_formChoice', array( 'id' => $_POST['id'],'choice' => $choice, ), TRUE);
+      $result->html = $this->renderPartial('_formChoice', array( 'id' => $_POST['id'],'flag'=> $_POST['flag'],'choice' => $choice, ), TRUE);
 
       echo function_exists('json_encode') ? json_encode($result) : CJSON::encode($result);
 
