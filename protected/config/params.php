@@ -12,7 +12,7 @@ if (in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
      $adminurl   = 'http://webadmin.opti-guide.com/';
      $repurl     = 'http://opti-rep.com/'; 
      $guideurl   = 'http://opti-guide.com/'; 
-     $adminemail = 'info@bretoncom.com';
+     $adminemail = 'bretoncom2@gmail.com';
 }
 
 // Custom Params Value
