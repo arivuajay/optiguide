@@ -142,8 +142,6 @@ class Poll extends CActiveRecord
       'usertype' => 'User Type',
       'title_FR' => 'Titre',
       'description_FR' => 'La description',
-      
-      'usertype_FR' => 'Type d\'utilisateur',
     );
   }
 

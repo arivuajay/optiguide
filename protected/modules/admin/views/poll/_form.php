@@ -154,7 +154,7 @@
                                 $this->renderPartial('/pollchoice/_formChoice', array(
 //                                    'id' => isset($choice->id) ? $choice->id : 'new' . ++$newChoiceCount1,
                                     'id' => 'fr',
-                                    'flag' => 'new'.++$newChoiceCount,
+                                    'flag' => 'new'.++$newChoiceCount1,
                                     'choice' => $choice,
 //                                    'choice' => $choice,
                                 ));
