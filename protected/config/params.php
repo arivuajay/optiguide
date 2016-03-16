@@ -6,11 +6,13 @@ if (in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
     $adminurl   = 'http://local.optiadmin/';
     $repurl     = 'http://local.optirep/'; 
     $guideurl   = 'http://local.optiguide/'; 
+    $adminemail = 'vasanth@arkinfotec.com';
 } else {
     $mailsendby  = 'phpmail';
      $adminurl   = 'http://webadmin.opti-guide.com/';
      $repurl     = 'http://opti-rep.com/'; 
      $guideurl   = 'http://opti-guide.com/'; 
+     $adminemail = 'info@bretoncom.com';
 }
 
 // Custom Params Value
@@ -38,7 +40,7 @@ return array(
 //    'GOOGLE_APP_ID' => $google_app_id,
 //    'GOOGLE_SECRET_ID' => $google_sec_id,
 //    'ADMIN_EMAIL'   => 'vasanth@arkinfotec.com',
-    'ADMIN_EMAIL'   => 'info@bretoncom.com',
+    'ADMIN_EMAIL'   => $adminemail,
 //info@bretoncom.com
     'ADMIN_URL'  => $adminurl,   
     
