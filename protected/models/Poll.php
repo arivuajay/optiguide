@@ -49,7 +49,7 @@ class Poll extends CActiveRecord
   public function rules()
   {
     return array(
-      array('title,title_FR,polldate,usertype,usertype_FR', 'required'),
+      array('title,title_FR,polldate,usertype', 'required'),
       array('status', 'numerical', 'integerOnly'=>true),
       array('title,title_FR', 'length', 'max'=>255),
       array('description,description_FR,labelerror,Year', 'safe'),    
