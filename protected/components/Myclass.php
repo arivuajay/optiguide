@@ -423,7 +423,7 @@ class Myclass extends CController {
             // $criteria->addCondition("ZONE_AFFICHAGE = 1");
             $criteria->addCondition("PRIORITE = 0");
         }
-
+        $criteria->group = 't.ID_PUBLICITE'; 
         $criteria->order = "RAND()";
         $criteria->limit = 1;
 
@@ -449,21 +449,22 @@ class Myclass extends CController {
 
             $criteria->select = "LIEN_URL,ID_PUBLICITE,TITRE";
             $criteria->addCondition("LANGUE = '" . $lang . "'");
-            $criteria->addCondition("AFFICHER_ACCUEIL = 1");
+           // $criteria->addCondition("AFFICHER_ACCUEIL = 1");
             //  $criteria->addCondition("ZONE_AFFICHAGE = 2");
-            $criteria->addCondition("PRIORITE = 0");
-            if ($sectionid != '' && is_numeric($sectionid)) {
-                $criteria->addCondition("adc.ID_SECTION = " . $sectionid);
-            }
+          //  $criteria->addCondition("PRIORITE = 0");
+//            if ($sectionid != '' && is_numeric($sectionid)) {
+//                $criteria->addCondition("adc.ID_SECTION = " . $sectionid);
+//            }
             $criteria->addCondition("ID_POSITION = " . $positionid);
             $criteria->addCondition("DATE_DEBUT <= '" . $now . "'");
             $criteria->addCondition("DATE_FIN >= '" . $now . "'");
+            $criteria->group = 't.ID_PUBLICITE';   
             $criteria->order = "RAND()";
             $criteria->limit = 1;
 
-            if ($sectionid != '' && is_numeric($sectionid)) {
-                $with_array["AdsLInkCategory"] = array('alias' => 'adc', 'together' => true, 'select' => false);
-            }
+//            if ($sectionid != '' && is_numeric($sectionid)) {
+//                $with_array["AdsLInkCategory"] = array('alias' => 'adc', 'together' => true, 'select' => false);
+//            }
 
             $with_array["ArchiveFichier"] = array('alias' => 'af', 'together' => true, 'select' => 'af.ID_CATEGORIE,af.FICHIER');
 
@@ -478,31 +479,31 @@ class Myclass extends CController {
 
         // If no record exists for previous conditions , get any one banner default for that postions
 
-        if (empty($result)) {
-
-            // If the condition gets empty result means , get any one banner without restrictions   
-            $criteria = new CDbCriteria();
-
-            $criteria->select = "LIEN_URL,ID_PUBLICITE,TITRE";
-            $criteria->addCondition("LANGUE = '" . $lang . "'");
-            // home section
-            $criteria->addCondition("AFFICHER_ACCUEIL = 1");
-            //public
-            // $criteria->addCondition("ZONE_AFFICHAGE = 1");
-            // date between
-            $criteria->addCondition("PRIORITE = 0");
-            $criteria->addCondition("ID_POSITION = " . $positionid);
-            $criteria->addCondition("DATE_DEBUT <= '" . $now . "'");
-            $criteria->addCondition("DATE_FIN >= '" . $now . "'");
-            $criteria->order = "RAND()";
-            $criteria->limit = 1;
-
-            $with_array["ArchiveFichier"] = array('alias' => 'af', 'together' => true, 'select' => 'af.ID_CATEGORIE,af.FICHIER');
-
-            $criteria->with = $with_array;
-
-            $result = PublicityAds::model()->find($criteria);
-        }
+//        if (empty($result)) {
+//
+//            // If the condition gets empty result means , get any one banner without restrictions   
+//            $criteria = new CDbCriteria();
+//
+//            $criteria->select = "LIEN_URL,ID_PUBLICITE,TITRE";
+//            $criteria->addCondition("LANGUE = '" . $lang . "'");
+//            // home section
+//            $criteria->addCondition("AFFICHER_ACCUEIL = 1");
+//            //public
+//            // $criteria->addCondition("ZONE_AFFICHAGE = 1");
+//            // date between
+//            $criteria->addCondition("PRIORITE = 0");
+//            $criteria->addCondition("ID_POSITION = " . $positionid);
+//            $criteria->addCondition("DATE_DEBUT <= '" . $now . "'");
+//            $criteria->addCondition("DATE_FIN >= '" . $now . "'");
+//            $criteria->order = "RAND()";
+//            $criteria->limit = 1;
+//
+//            $with_array["ArchiveFichier"] = array('alias' => 'af', 'together' => true, 'select' => 'af.ID_CATEGORIE,af.FICHIER');
+//
+//            $criteria->with = $with_array;
+//
+//            $result = PublicityAds::model()->find($criteria);
+//        }
 
         return $result;
     }

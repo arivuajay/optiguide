@@ -46,7 +46,7 @@ class ClientMessagesController extends Controller {
         
         // Client profiles
         $criteria = new CDbCriteria;
-        $criteria->condition = "DATE(date_remember)='$mdate' and status=1";
+        $criteria->condition = "DATE(date_remember)='$mdate' and t.status=1";
         $criteria->with = array(
             "clientProfiles" => array(
                 'alias' => 'clientProfiles',
@@ -71,7 +71,9 @@ class ClientMessagesController extends Controller {
                 
                 $alertf_name = ($info->alertfile!='')? Yii::getPathOfAlias('webroot').'/'.ATTACH_PATH.'/'.$info->alertfile : '';
 
-                $clientdetail_url = GUIDEURL . "optiguide/default/clientprofile/id/" . $randkey;
+                $clientdetail_url = ADMIN_URL . "admin/default/clientprofile/id/" . $randkey;
+                $enc_url          = Myclass::refencryption($clientdetail_url);
+                $clientdetail_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
 
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
@@ -105,7 +107,7 @@ class ClientMessagesController extends Controller {
         
         // Professional alerts
         $pcriteria = new CDbCriteria;
-        $pcriteria->condition = "DATE(date_remember)='$mdate' and status=1";
+        $pcriteria->condition = "DATE(date_remember)='$mdate' and t.status=1";
         $pcriteria->with = array(
             "professionalDirectory" => array(
                 'alias' => 'ProfessionalDirectory',
@@ -131,7 +133,9 @@ class ClientMessagesController extends Controller {
                 
                 $alertf_name = ($info->alertfile!='')? Yii::getPathOfAlias('webroot').'/'.ATTACH_PATH.'/'.$info->alertfile : '';
                 
-                $clientdetail_url = GUIDEURL . "optiguide/default/professionalprofile/id/" . $randkey;
+                $clientdetail_url = ADMIN_URL . "admin/default/professionalprofile/id/" . $randkey;
+                $enc_url          = Myclass::refencryption($clientdetail_url);
+                $clientdetail_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
 
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();
@@ -166,7 +170,7 @@ class ClientMessagesController extends Controller {
         
         // Retailer alerts
         $rcriteria = new CDbCriteria;
-        $rcriteria->condition = "DATE(date_remember)='$mdate' and status=1";
+        $rcriteria->condition = "DATE(date_remember)='$mdate' and t.status=1";
         $rcriteria->with = array(
             "retailerDirectory" => array(
                 'alias' => 'RetailerDirectory',
@@ -192,7 +196,9 @@ class ClientMessagesController extends Controller {
                 
                 $alertf_name = ($info->alertfile!='')? Yii::getPathOfAlias('webroot').'/'.ATTACH_PATH.'/'.$info->alertfile : '';
                
-                $clientdetail_url = GUIDEURL . "optiguide/default/retailerprofile/id/" . $randkey;
+                $clientdetail_url = ADMIN_URL . "admin/default/retailerprofile/id/" . $randkey;
+                $enc_url          = Myclass::refencryption($clientdetail_url);
+                $clientdetail_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
 
                 /* Send mail to admin for confirmation */
                 $mail = new Sendmail();

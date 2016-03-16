@@ -28,7 +28,7 @@ class DefaultController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('logout', 'index', 'profile','changepassword'),
+                'actions' => array('logout', 'index', 'profile','changepassword',"clientprofile","professionalprofile","retailerprofile"),
                 'users' => array('@'),
             ),
             array('deny', // deny all users
@@ -634,6 +634,90 @@ class DefaultController extends Controller {
     public function actionScreens($path) {
         if ($path) {
             $this->render('screens', compact('path'));
+        }
+    }
+    
+     public function actionClientprofile($id) {
+
+        if ($id != '') {
+            $criteria = new CDbCriteria;
+            $criteria->condition = "randkey='" . $id . "'";
+            $criteria->with = array(
+                "clientProfiles" => array(
+                    'alias' => 'clientProfiles',
+                    'select' => 'clientProfiles.*'
+                ),
+            );
+
+            $messageinfos = ClientMessages::model()->find($criteria);
+
+            if (!empty($messageinfos)) {
+                $messageinfos->user_view_status = 1;
+                $messageinfos->status = 0;
+                $messageinfos->save(false);
+
+                $this->render('_clientprofile', compact('messageinfos'));
+            } else {
+                $this->redirect(array('index'));
+            }
+        } else {
+            $this->redirect(array('index'));
+        }
+    }
+
+    public function actionProfessionalprofile($id) {
+
+        if ($id != '') {
+            $criteria = new CDbCriteria;
+            $criteria->condition = "randkey='" . $id . "'";
+            $criteria->with = array(
+                "professionalDirectory" => array(
+                    'alias' => 'professionalDirectory',
+                    'select' => 'professionalDirectory.*'
+                ),
+            );
+
+            $messageinfos = ProfessionalMessages::model()->find($criteria);
+
+            if (!empty($messageinfos)) {
+                $messageinfos->user_view_status = 1;
+                $messageinfos->status = 0;
+                $messageinfos->save(false);
+
+                $this->render('_professionalprofile', compact('messageinfos'));
+            } else {
+                $this->redirect(array('index'));
+            }
+        } else {
+            $this->redirect(array('index'));
+        }
+    }
+
+    public function actionRetailerprofile($id) {
+
+        if ($id != '') {
+            $criteria = new CDbCriteria;
+            $criteria->condition = "randkey='" . $id . "'";
+            $criteria->with = array(
+                "retailerDirectory" => array(
+                    'alias' => 'retailerDirectory',
+                    'select' => 'retailerDirectory.*'
+                ),
+            );
+
+            $messageinfos = RetailerMessages::model()->find($criteria);
+
+            if (!empty($messageinfos)) {
+                $messageinfos->user_view_status = 1;
+                $messageinfos->status = 0;
+                $messageinfos->save(false);
+
+                $this->render('_retailerprofile', compact('messageinfos'));
+            } else {
+                $this->redirect(array('index'));
+            }
+        } else {
+            $this->redirect(array('index'));
         }
     }
 
