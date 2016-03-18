@@ -80,7 +80,7 @@ class DefaultController extends ORController {
         $coun_results->ret_users = $retailer_count;
         $coun_results->rep_users = $rep_count;
         $coun_results->save(false);       
-        mail("vasanth@arkinfotec.com","T subject","rep: $rep_count");
+        //mail("vasanth@arkinfotec.com","T subject","rep: $rep_count");
     }
 
     public function actionIndex() {
