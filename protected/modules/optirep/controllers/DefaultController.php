@@ -48,6 +48,7 @@ class DefaultController extends ORController {
     }
 
     public function actionFootercount() {
+        
         $profesional_count = Yii::app()->db->createCommand() // this query get the total number of items,
                 ->select('count(*) as count')
                 ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
@@ -78,7 +79,8 @@ class DefaultController extends ORController {
         $coun_results->supp_users = $supplier_count;
         $coun_results->ret_users = $retailer_count;
         $coun_results->rep_users = $rep_count;
-        $coun_results->save(false);
+        $coun_results->save(false);       
+        mail("vasanth@arkinfotec.com","T subject","rep: $rep_count");
     }
 
     public function actionIndex() {
