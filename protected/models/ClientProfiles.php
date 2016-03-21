@@ -225,12 +225,14 @@ class ClientProfiles extends CActiveRecord
                 
                 $criteria->with = array('clientMessages2');
 
-		return new CActiveDataProvider($this, array(
+		$hh =  new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
                         'pagination' => array(
                             'pageSize' => PAGE_SIZE,
                         )
 		));
+               
+                return $hh;
 	}
 
 	/**

@@ -339,7 +339,9 @@ class ClientProfilesController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
+      
         $model = new ClientProfiles('search');
+        
         $model->unsetAttributes();  // clear any default values
         if (isset($_GET['ClientProfiles']))
             $model->attributes = $_GET['ClientProfiles'];

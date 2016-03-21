@@ -12,6 +12,7 @@ $cs_pos_end = CClientScript::POS_END;
 
 $cs->registerScriptFile($themeUrl . '/js/datatables/jquery.dataTables.js', $cs_pos_end);
 $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $cs_pos_end);
+
 ?>
 
 <div class="col-lg-12 col-md-12">
@@ -46,7 +47,15 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'type' => 'raw',
                 'filter' => false,
                 //call the method 'gridDataColumn' from the controller
-                'value' => 'EmployeeProfiles::model()->findByPk($data->clientMessages2->employee_id)->employee_name',
+                'value' => function($data) {
+                        if(isset($data->clientMessages2->employee_id) && $data->clientMessages2->employee_id!="")
+                        {    
+                            $empname = EmployeeProfiles::model()->findByPk($data->clientMessages2->employee_id)->employee_name;
+                        }else{
+                            $empname = "";
+                        }  
+                        return  $empname;
+                   }, 
                  
             ),
               array(
