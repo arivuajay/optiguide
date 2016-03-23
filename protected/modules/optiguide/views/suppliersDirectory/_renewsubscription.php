@@ -114,19 +114,19 @@ $grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo) . $curr
                     
                     <div id="price" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="display:none;">   
                         <p> <b><?php echo Myclass::t('OG138'); ?> : </b>
-                            <span id="sprice_profile" style="display:none;"><?php echo $p_price;?></span>
-                            <span id="sprice_logo" style="display:none;"><?php echo $l_price;?></span>
-                            <span id="sprice_profile_logo" style="display:none;"><?php echo $p_l_price;?></span>
+                            <span id="sprice_profile" style="display:none;"><?php echo number_format($p_price, 2, '.', '');?></span>
+                            <span id="sprice_logo" style="display:none;"><?php echo number_format($l_price, 2, '.', '');?></span>
+                            <span id="sprice_profile_logo" style="display:none;"><?php echo number_format($p_l_price, 2, '.', '');?></span>
                         </p>               
                         <p> <b><?php echo Myclass::t('OG176'); ?> : </b>
-                            <span id="stax_profile" style="display:none;"><?php echo $taxval_profile;?></span>
-                            <span id="stax_logo" style="display:none;"><?php echo $taxval_logo;?></span>
-                            <span id="stax_profile_logo" style="display:none;"><?php echo $taxval_profile_logo;?></span>
+                            <span id="stax_profile" style="display:none;"><?php echo number_format($taxval_profile, 2, '.', '');?></span>
+                            <span id="stax_logo" style="display:none;"><?php echo number_format($taxval_logo, 2, '.', '');?></span>
+                            <span id="stax_profile_logo" style="display:none;"><?php echo number_format($taxval_profile_logo, 2, '.', '');?></span>
                         </p>
                         <p> <b><?php echo Myclass::t('OG177'); ?>: </b>
-                            <span id="stotalprice_profile" style="display:none;"><?php echo $grandtotal_profile;?></span>
-                            <span id="stotalprice_logo" style="display:none;"><?php echo $grandtotal_logo;?></span>
-                            <span id="stotalprice_profile_logo" style="display:none;"><?php echo $grandtotal_profile_logo;?></span>
+                            <span id="stotalprice_profile" style="display:none;"><?php echo number_format($grandtotal_profile, 2, '.', '');?></span>
+                            <span id="stotalprice_logo" style="display:none;"><?php echo number_format($grandtotal_logo, 2, '.', '');?></span>
+                            <span id="stotalprice_profile_logo" style="display:none;"><?php echo number_format($grandtotal_profile_logo, 2, '.', '');?></span>
                         </p>
                     </div>
                     

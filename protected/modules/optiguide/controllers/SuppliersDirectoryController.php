@@ -761,7 +761,12 @@ class SuppliersDirectoryController extends OGController {
         if (!Yii::app()->user->isGuest) {
             $this->redirect(array('index'));
         }
-
+        $flagss = Yii::app()->user->getState("uattributes");
+  
+        if(empty($flagss)){
+             $this->redirect(array('create'));
+        }
+         
         $pmodel = new SuppliersSubscription;
         $model_paypaladvance = new PaymentTransaction('paypal_advance');
 
@@ -776,7 +781,6 @@ class SuppliersDirectoryController extends OGController {
         $taxvals = Myclass::calculatetax($regionid);
         
         $tax_price = $taxvals['total_tax'];
-        
 
         if (isset($_POST['SuppliersSubscription'])) {
 
@@ -811,24 +815,26 @@ class SuppliersDirectoryController extends OGController {
                 // Price calculation
                 if ($_POST['SuppliersSubscription']['subscription_type'] == 2) {
                     // Tax calculation and grand total
+//                    $taxval_profile_logo = $profile_logo_price * ($tax_price / 100);
                     $taxval_profile_logo = $profile_logo_price * ($tax_price / 100);
                     $grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo);
 
                     $pmodel->amount = $grandtotal_profile_logo;
 
-                    $payment_details['subscription_price'] = $profile_logo_price;
-                    $payment_details['tax'] = $taxval_profile_logo;
-                    $payment_details['total_price'] = $grandtotal_profile_logo;
+                    $payment_details['subscription_price'] = number_format($profile_logo_price, 2, '.', '');
+                    $payment_details['tax'] = number_format($taxval_profile_logo, 2, '.', '');
+                    $payment_details['total_price'] = number_format($grandtotal_profile_logo, 2, '.', '');
                 } else {
                     // Tax calculation and grand total
-                    $taxval_profile = $profile_price * ($tax_price / 100);
+//                    $taxval_profile = $profile_price * ($tax_price / 100);
+                    $taxval_profile =  number_format($profile_price * ($tax_price / 100), 2, '.', '');
                     $grandtotal_profile = ( $profile_price + $taxval_profile);
 
                     $pmodel->amount = $grandtotal_profile;
 
-                    $payment_details['subscription_price'] = $profile_price;
-                    $payment_details['tax'] = $taxval_profile;
-                    $payment_details['total_price'] = $grandtotal_profile;
+                    $payment_details['subscription_price'] = number_format($profile_price, 2, '.', '');
+                    $payment_details['tax'] = number_format($taxval_profile, 2, '.', '');
+                    $payment_details['total_price'] = number_format($grandtotal_profile, 2, '.', '');
                 }
 
                 $payment_details['payment_type'] = $pmodel->payment_type;
@@ -2130,9 +2136,9 @@ class SuppliersDirectoryController extends OGController {
                     $grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo);
                     $amount = $grandtotal_profile_logo;
 
-                    $payment_details['subscription_price'] = $profile_logo_price;
-                    $payment_details['tax'] = $taxval_profile_logo;
-                    $payment_details['total_price'] = $grandtotal_profile_logo;
+                    $payment_details['subscription_price'] = number_format($profile_logo_price, 2, '.', '');
+                    $payment_details['tax'] = number_format($taxval_profile_logo, 2, '.', '');
+                    $payment_details['total_price'] = number_format($grandtotal_profile_logo, 2, '.', '');
                 } else if ($sub_types[0] == "1") {
 
                     $subscriptiontype = $sub_types[0];
@@ -2140,9 +2146,9 @@ class SuppliersDirectoryController extends OGController {
                     $grandtotal_profile = ( $profile_price + $taxval_profile);
                     $amount = $grandtotal_profile;
 
-                    $payment_details['subscription_price'] = $profile_price;
-                    $payment_details['tax'] = $taxval_profile;
-                    $payment_details['total_price'] = $grandtotal_profile;
+                    $payment_details['subscription_price'] = number_format($profile_price, 2, '.', '');
+                    $payment_details['tax'] = number_format($taxval_profile, 2, '.', '');
+                    $payment_details['total_price'] = number_format($grandtotal_profile, 2, '.', '');
                 } else if ($sub_types[0] == "3") {
 
                     $subscriptiontype = $sub_types[0];
@@ -2150,9 +2156,9 @@ class SuppliersDirectoryController extends OGController {
                     $grandtotal_logo = ( $logo_price + $taxval_logo);
                     $amount = $grandtotal_logo;
 
-                    $payment_details['subscription_price'] = $logo_price;
-                    $payment_details['tax'] = $taxval_logo;
-                    $payment_details['total_price'] = $grandtotal_logo;
+                    $payment_details['subscription_price'] = number_format($logo_price, 2, '.', '');
+                    $payment_details['tax'] = number_format($taxval_logo, 2, '.', '');
+                    $payment_details['total_price'] = number_format($grandtotal_logo, 2, '.', '');
                 }
 
                 $invoice_number = Myclass::getRandomString();

@@ -14,9 +14,10 @@ $tax_price = $tax_price;
 $user_infos = Yii::app()->user->getState("uattributes");
 $logo_name = $user_infos['USR'];
 
-$taxval_profile = $profile_price * ($tax_price / 100);
+$taxval_profile = number_format($profile_price * ($tax_price / 100), 2, '.', '');
 //$taxval_profile_logo = $profile_logo_price * ($tax_price / 100);
-$taxval_profile_logo=Myclass::numberFormat($profile_logo_price * ($tax_price / 100));
+//$taxval_profile_logo=Myclass::numberFormat($profile_logo_price * ($tax_price / 100));
+$taxval_profile_logo = number_format($profile_logo_price * ($tax_price / 100), 2, '.', '');
 
 $grandtotal_profile = ( $profile_price + $taxval_profile);
 $grandtotal_profile_logo =Myclass::numberFormat($profile_logo_price + $taxval_profile_logo);
