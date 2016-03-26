@@ -150,7 +150,7 @@ class Controller extends CController {
         exit;
     }
 
-    //Registration for Single/Admin - Opti Rep
+       //Registration for Single/Admin - Opti Rep
     protected function processRegistration($rep_temp_random_id) {
         $temp_random_id = $rep_temp_random_id;
         $result = RepTemp::model()->find("rep_temp_random_id='$temp_random_id'");
@@ -235,7 +235,8 @@ class Controller extends CController {
                     elseif ($model->rep_role == RepCredentials::ROLE_ADMIN)
                         $updateTransactionDetail->rep_admin_subscription_id = $repAdmin->rep_admin_subscription_id;
                     $updateTransactionDetail->save(false);
-
+                    
+                    $lang = isset(Yii::app()->session['language'])?Yii::app()->session['language']:"FR";
                     if ($repProfile->rep_profile_email) {
                         $mail = new Sendmail;
                         $trans_array = array(
@@ -246,9 +247,38 @@ class Controller extends CController {
                         );
 
                         $message = $mail->getMessage('rep_registration_completed_status', $trans_array);
-                        $Subject = $mail->translate('Registration Details');
-                        $mail->send($repProfile->rep_profile_email, $Subject, $message);
+//                        $Subject = $mail->translate('Registration Details');
+                        if ($lang == 'EN') {
+                            $subject = SITENAME . " - Registration Details";
+                        } elseif ($lang == 'FR') {
+                            $subject = " Détails d'inscription " . SITENAME;
+                        }
+                        $mail->send($repProfile->rep_profile_email, $subject, $message);
                     }
+                    
+
+                    //admin mail
+                    $mail = new Sendmail();
+                    $professional_url = ADMIN_URL . 'admin/repCredential/update/id/' . $model->rep_credential_id;
+                    $enc_url = Myclass::refencryption($professional_url);
+                    $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
+
+                    if ($lang == 'EN') {
+                        $subject = SITENAME . " - New Opti-rep subscription notification -".$model->rep_username;
+                    } elseif ($lang == 'FR') {
+                        $subject = SITENAME . " New Opti -rep notification d'abonnement -".$model->rep_username;
+                    }
+                    $trans_array = array(
+                        "{NAME}" => $model->rep_username,
+                        "{UTYPE}" => $model->rep_role,
+                        "{NEXTSTEPURL}" => $nextstep_url,
+                        "{SITENAME}" => OPTIREPSITENAME,
+                        "{STATUS}" => 'completed',
+                    );
+                    $message = $mail->getMessage('rep_registration_admin', $trans_array);
+                    $mail->send(ADMIN_EMAIL, $subject, $message);
+                    
+                    
                 }
                 RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
             }
@@ -311,9 +341,35 @@ class Controller extends CController {
                     );
 
                     $message = $mail->getMessage('rep_renewal_completed_status', $trans_array);
-                    $Subject = $mail->translate('Renewal Details');
-                    $mail->send($rep_email, $Subject, $message);
+                    if (Yii::app()->session['language'] == 'EN') {
+                        $subject = SITENAME . " - Renewal Details ";
+                    } elseif (Yii::app()->session['language'] == 'FR') {
+                        $subject = SITENAME . " - Détails Renouvellement ";
+                    }
+//                    $Subject = $mail->translate('Renewal Details');
+                    $mail->send($rep_email, $subject, $message);
                 }
+                
+                //admin mail
+                    $mail = new Sendmail();
+                    $professional_url = ADMIN_URL . 'admin/repCredential/update/id/' . $rep_account->rep_credential_id;
+                    $enc_url = Myclass::refencryption($professional_url);
+                    $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
+
+                    if (Yii::app()->session['language'] == 'EN') {
+                        $subject = SITENAME . " - Renewal single repaccount details -".$rep_account['rep_username'];
+                    } elseif (Yii::app()->session['language'] == 'FR') {
+                        $subject = SITENAME . " - Renouvellement détails unique de repaccount -". $rep_account['rep_username'];
+                    }
+                    $trans_array = array(
+                        "{NAME}" => $rep_account->rep_username,
+                        "{UTYPE}" => $rep_account->rep_role,
+                        "{NEXTSTEPURL}" => $nextstep_url,
+                        "{SITENAME}" => OPTIREPSITENAME,
+                        
+                    );
+                    $message = $mail->getMessage('rep_renewal_admin', $trans_array);
+                    $mail->send(ADMIN_EMAIL, $subject, $message);
             }
             RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
         }
@@ -366,9 +422,34 @@ class Controller extends CController {
                     );
 
                     $message = $mail->getMessage('rep_admin_buymoreaccounts_completed_status', $trans_array);
-                    $Subject = $mail->translate('Buy More Rep Accounts - Payment Status Completed');
-                    $mail->send($rep_email, $Subject, $message);
+                    if (Yii::app()->session['language'] == 'EN') {
+                        $subject = SITENAME . " - Buy More Rep Accounts - Payment Status Completed";
+                    } elseif (Yii::app()->session['language'] == 'FR') {
+                        $subject = SITENAME . "- Acheter des comptes Rep - Paiement Statut Terminé ";
+                    }
+//                    $Subject = $mail->translate('Buy More Rep Accounts - Payment Status Completed');
+                    $mail->send($rep_email, $subject, $message);
                 }
+                
+                $mail = new Sendmail();
+                    $professional_url = ADMIN_URL . 'admin/repCredential/update/id/' . $rep_account->rep_credential_id;
+                    $enc_url = Myclass::refencryption($professional_url);
+                    $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
+
+                    if (Yii::app()->session['language'] == 'EN') {
+                        $subject = SITENAME . " - Buy More Rep Accounts -".$rep_account['rep_username'];
+                    } elseif (Yii::app()->session['language'] == 'FR') {
+                        $subject = SITENAME . " - Acheter des comptes Rep -".$rep_account['rep_username'];
+                    }
+                    $trans_array = array(
+                        "{NAME}" => $rep_account->rep_username,
+                        "{UTYPE}" => $rep_account->rep_role,
+                        "{NEXTSTEPURL}" => $nextstep_url,
+                        "{SITENAME}" => OPTIREPSITENAME,
+                        
+                    );
+                    $message = $mail->getMessage('rep_admin_buymoreaccounts_admin', $trans_array);
+                    $mail->send(ADMIN_EMAIL, $subject, $message);
             }
             RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
         }
@@ -436,9 +517,33 @@ class Controller extends CController {
                     );
 
                     $message = $mail->getMessage('rep_admin_renewal_completed_status', $trans_array);
-                    $Subject = $mail->translate('Rep Accounts Renewal - Payment Status Completed');
-                    $mail->send($rep_admin_email, $Subject, $message);
+//                    $Subject = $mail->translate('Rep Accounts Renewal - Payment Status Completed');
+                    if (Yii::app()->session['language'] == 'EN') {
+                        $subject = SITENAME . " - Rep Accounts Renewal ";
+                    } elseif (Yii::app()->session['language'] == 'FR') {
+                        $subject = SITENAME . " Rep Accounts Renewal " ;
+                    }
+                    $mail->send($rep_admin_email, $subject, $message);
                 }
+                $mail = new Sendmail();
+                    $professional_url = ADMIN_URL . 'admin/repCredential/update/id/' . $rep_admin_account->rep_credential_id;
+                    $enc_url = Myclass::refencryption($professional_url);
+                    $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
+
+                    if (Yii::app()->session['language'] == 'EN') {
+                        $subject = SITENAME . " - Rep Accounts Renewal -".$rep_admin_account->rep_username;
+                    } elseif (Yii::app()->session['language'] == 'FR') {
+                        $subject = SITENAME . " Rep Accounts Renewal -".$rep_admin_account->rep_username ;
+                    }
+                    $trans_array = array(
+                        "{NAME}" => $rep_admin_account->rep_username,
+                        "{UTYPE}" => $rep_admin_account->rep_role,
+                        "{NEXTSTEPURL}" => $nextstep_url,
+                        "{SITENAME}" => OPTIREPSITENAME,
+                        
+                    );
+                    $message = $mail->getMessage('rep_renewal_admin', $trans_array);
+                    $mail->send(ADMIN_EMAIL, $subject, $message);
             }
             RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
         }

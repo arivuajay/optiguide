@@ -232,18 +232,20 @@ class RepCredentialController extends ORController {
     }
 
     public function actionFinal() {
-        Yii::app()->session->destroy();
+        
         if (isset($_POST['RESULT']) || isset($_GET['RESULT'])) {
             $response = array_merge($_GET, $_POST);
             $rep_temp_random_id = $response['SECURETOKENID'];
             $this->processPPAPaymentTransaction($rep_temp_random_id, $response);
             $this->processRegistration($rep_temp_random_id);
+            Yii::app()->session->destroy();
             Yii::app()->session->open();
             Yii ::app()->user->setFlash('success', Myclass::t("OR605", "", "or"));
             $url = Yii::app()->createAbsoluteUrl('/optirep');
 //            $this->redirect(array('/optirep/default/index'));
             echo '<script type="text/javascript">window.top.location.href = "' . $url . '";</script>';
         }
+        Yii::app()->session->destroy();
     }
 
     public function actionPpaProblem() {
@@ -443,6 +445,27 @@ class RepCredentialController extends ORController {
 //                    $Subject = $mail->translate('Registration - Payment Status Pending');
                     $mail->send($rep_email, $subject, $message);
                 }
+                
+                //admin mail
+                    $mail = new Sendmail();
+                    $professional_url = ADMIN_URL . 'admin/repCredential/update/id/' . $model->rep_credential_id;
+                    $enc_url = Myclass::refencryption($professional_url);
+                    $nextstep_url = ADMIN_URL . 'admin/default/login/str/' . $enc_url;
+
+                    //                    if (Yii::app()->session['language'] == 'EN') {
+                        $subject = SITENAME . " - New Opti-rep subscription notification ";
+//                    } elseif (Yii::app()->session['language'] == 'FR') {
+//                        $subject = " New Opti -rep notification d'abonnement " . SITENAME;
+//                    }
+                    $trans_array = array(
+                        "{NAME}" => $model->rep_username,
+                        "{UTYPE}" => $model->rep_role,
+                        "{NEXTSTEPURL}" => $nextstep_url,
+                        "{SITENAME}" => OPTIREPSITENAME,
+                        "{STATUS}" => 'pending',
+                    );
+                    $message = $mail->getMessage('rep_registration_admin', $trans_array);
+                    $mail->send(ADMIN_EMAIL, $subject, $message);
             }
         }
     }
