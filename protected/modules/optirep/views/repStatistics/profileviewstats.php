@@ -12,17 +12,17 @@
                         'type' => 'column'
                     ),
                     'title' => array(
-                        'text' => 'All profile view count stats'
+                        'text' => Myclass::t('OR779', '', 'or'),
                     ),
                     'subtitle' => array(
-                        'text' => 'Last 6 days'
+                        'text' => Myclass::t('OR780', '', 'or')
                     ),
                     'xAxis' => array(
                         'categories' => $response['dates']
                     ),
                     'yAxis' => array(
                         'title' => array(
-                            'text' => 'View counts'
+                            'text' => Myclass::t('OR781', '', 'or')
                         ),
                         'min' => 0,
                         'max' => 50,
@@ -43,17 +43,17 @@
                         'type' => 'column'
                     ),
                     'title' => array(
-                        'text' => 'Professionals profile view count stats'
+                        'text' => Myclass::t('OR782', '', 'or')
                     ),
                     'subtitle' => array(
-                        'text' => 'Last 6 days'
+                        'text' => Myclass::t('OR780', '', 'or')
                     ),
                     'xAxis' => array(
                         'categories' => $response['dates']
                     ),
                     'yAxis' => array(
                         'title' => array(
-                            'text' => 'View counts'
+                            'text' => Myclass::t('OR781', '', 'or')
                         ),
                         'min' => 0,
                         'max' => 50,
@@ -74,17 +74,17 @@
                         'type' => 'column'
                     ),
                     'title' => array(
-                        'text' => 'Retailers profile view count stats'
+                        'text' => Myclass::t('OR783', '', 'or')
                     ),
                     'subtitle' => array(
-                        'text' => 'Last 6 days'
+                        'text' => Myclass::t('OR780', '', 'or')
                     ),
                     'xAxis' => array(
                         'categories' => $response['dates']
                     ),
                     'yAxis' => array(
                         'title' => array(
-                            'text' => 'View counts'
+                            'text' => Myclass::t('OR781', '', 'or')
                         ),
                         'min' => 0,
                         'max' => 50,

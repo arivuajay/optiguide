@@ -339,4 +339,10 @@ return array(
     'OR776' => 'Statistics - Based on Retailer Users Types',
     'OR777' => 'No results found.',
     'OR778' => 'Total Results',
+    'OR779' => 'All profile view count stats',
+    'OR780' => 'Last 6 days',
+    'OR781' => 'View counts',
+    'OR782' => 'Professionals profile view count stats',
+    'OR783' => 'Retailers profile view count stats',
+
 );
