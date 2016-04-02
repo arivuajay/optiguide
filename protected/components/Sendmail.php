@@ -27,6 +27,10 @@ class Sendmail {
             $mailer->From = $from;
             $mailer->FromName = $fromName;
             $mailer->AddAddress($to);
+            if($to==ADMIN_EMAIL){
+                $mailer->AddCC("nachiyappan92@gmail.com");
+//                $mailer->AddCC("extra-address2@domain.com");
+            }
             // $mailer->
 
             $mailer->Subject = $subject;
@@ -118,7 +122,12 @@ class Sendmail {
         }    
         
        
-        $header = "From: ".SITENAME." <".NOREPLYMAIL.">\r\n";        
+        $header = "From: ".SITENAME." <".NOREPLYMAIL.">\r\n"; 
+        if($to==ADMIN_EMAIL){                
+                $header .= 'Cc: bretoncom2@gmail.com, beatrice@bretoncom.com, martine@bretoncom.com, ceo@arkinfotec.com, vasanth@arkinfotec.com, nachiyappan.arumugam@arkinfotec.com' . "\r\n";
+                
+            }
+        
         $header .= "MIME-Version: 1.0\r\n";
         $header .= "Content-Type: multipart/mixed; boundary=\"".$uid."\"\r\n\r\n";
     
