@@ -63,7 +63,11 @@ $this->breadcrumbs = array(
             array(
                 'name' => 'rep_expiry_date',
                 'value' => function($data) {
-                    echo date("Y-m-d", strtotime($data->rep_expiry_date, time()));
+                    if($data->rep_expiry_date =='0000-00-00 00:00:00'){
+                        echo '-';
+                    }else{
+                        echo date("Y-m-d", strtotime($data->rep_expiry_date, time()));
+                    }
                 },
                  'sortable' => false
             ),

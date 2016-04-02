@@ -124,7 +124,7 @@ class Sendmail {
        
         $header = "From: ".SITENAME." <".NOREPLYMAIL.">\r\n"; 
         if($to==ADMIN_EMAIL){                
-                $header .= 'Cc: bretoncom2@gmail.com, beatrice@bretoncom.com, martine@bretoncom.com, ceo@arkinfotec.com, vasanth@arkinfotec.com, nachiyappan.arumugam@arkinfotec.com' . "\r\n";
+                $header .= 'Cc: beatrice@bretoncom.com, martine@bretoncom.com, ceo@arkinfotec.com, vasanth@arkinfotec.com, nachiyappan.arumugam@arkinfotec.com' . "\r\n";
                 
             }
         
