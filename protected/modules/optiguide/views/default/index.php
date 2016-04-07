@@ -60,14 +60,13 @@
 <?php
 $js = <<< EOD
         
-    function explode()
-    {
-//        $('.breton-popup').hide();
-        localStorage.clear(); 
-        localStorage.setItem('popState','hide');
-    });
+    // function explode()
+   // {
+    //    localStorage.clear(); 
+    //    localStorage.setItem('popState','hide');
+    //});
         //5 min 300000
-        setTimein(explode, 300000);
+    //    setTimein(explode, 300000);
 $(document).ready(function(){
         
     if(localStorage.getItem('popState') != 'shown'){
