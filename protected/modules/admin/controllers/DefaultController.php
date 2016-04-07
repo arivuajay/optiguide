@@ -24,7 +24,7 @@ class DefaultController extends Controller {
     {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('login', 'error', 'forgotpassword', 'screens','exceldownload','extractexcelsheet','extractexcelsheet_client'),
+                'actions' => array('login', 'error', 'forgotpassword', 'screens','exceldownload','extractexcelsheet','extractexcelsheet_client','extractexcelsheet_clientid'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -36,7 +36,58 @@ class DefaultController extends Controller {
             ),
         );
     }
-    
+    public function actionExtractexcelsheet_clientid()
+    {
+        
+        
+        header('Content-type: text/html; charset=UTF-8') ;
+        $fpath = Yii::getPathOfAlias('webroot').'/uploads/import_datas/Advertisers_List.xls';
+        $from = $_REQUEST['from'];
+        $to  =  $_REQUEST['to']; 
+        
+      
+        Yii::import('ext.phpexcelreader.JPhpExcelReader');
+        $data=new JPhpExcelReader($fpath);
+        
+        $rows =  $data->rowcount(); // 2641
+        $cols =  $data->colcount(); // 48
+       
+        
+        
+        $_found = '';
+        $_not_found = '';
+        $_foundcount = '0';
+        $_not_foundcount = '0';
+        
+        for($i=2;$i<=$rows;$i++)
+        {
+            $model = ClientProfiles::model()->find('ID_CLIENT ='.$data->val($i,1).'2016');
+        
+                   if($model->member_type != ''){
+                       $_found .= $data->val($i,1).',';
+                       $_foundcount++;
+                       $model->member_type = 'advertiser';
+                       $model->save(false);  
+                   }else{
+                       $_not_found .= $data->val($i,1).',';
+                       $_not_foundcount++;
+                   }                   
+        }
+        echo 'total count-'.($rows-1);
+        echo '<br>';
+        echo 'found count-'.$_foundcount;
+        echo '<br>';
+        echo 'not found count-'.$_not_foundcount;
+        echo '<br>';
+        echo 'found id<br>';
+
+        echo $_found;
+        echo '<br>';
+        echo 'not found id';
+        echo '<br>';
+        echo $_not_found;
+        
+    }
     public function actionExtractexcelsheet_client()
     {
         
