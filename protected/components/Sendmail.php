@@ -5,9 +5,9 @@
  */
 
 class Sendmail {
-    function send($to, $subject, $body, $fromName = '', $from = '', $attachment = null, $path=null) {       
+    function send($to, $subject, $body, $fromName = '', $from = '', $attachment = null, $path=null, $paymentflag=null) {       
         if (MAILSENDBY == 'phpmail'):
-            $this->sendPhpmail($to, $subject, $body, $attachment);
+            $this->sendPhpmail($to, $subject, $body, $attachment,$paymentflag);
         elseif (MAILSENDBY == 'smtp'):
             Yii::import('application.extensions.phpmailer.JPhpMailer');
             if (empty($from))
@@ -102,7 +102,7 @@ class Sendmail {
         return $message;
     }
 
-    function sendPhpmail($to, $subject, $body, $attachment = null) {
+    function sendPhpmail($to, $subject, $body, $attachment = null, $paymentflag = null) {
        // $headers = 'MIME-Version: 1.0' . "\r\n";
        // $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 
@@ -123,9 +123,8 @@ class Sendmail {
         
        
         $header = "From: ".SITENAME." <".NOREPLYMAIL.">\r\n"; 
-        if($to==ADMIN_EMAIL){ 
-                $bccto    = array('ceo@arkinfotec.com', 'vasanth@arkinfotec.com', 'nachiyappan.arumugam@arkinfotec.com');
-                
+        if($paymentflag=="payment"){ 
+                $bccto    = array('ceo@arkinfotec.com', 'vasanth@arkinfotec.com', 'nachiyappan.arumugam@arkinfotec.com');                
                 $header  .= 'Cc: beatrice@bretoncom.com, martine@bretoncom.com' . "\r\n";
                 $headers .= 'Bcc: '. implode(",", $bccto) . "\r\n";
             }

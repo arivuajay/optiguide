@@ -465,7 +465,7 @@ class RepCredentialController extends ORController {
                         "{STATUS}" => 'pending',
                     );
                     $message = $mail->getMessage('rep_registration_admin', $trans_array);
-                    $mail->send(ADMIN_EMAIL, $subject, $message);
+                    $mail->send(ADMIN_EMAIL, $subject, $message,'','','','',"payment");
             }
         }
     }

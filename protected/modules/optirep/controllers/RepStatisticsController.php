@@ -294,7 +294,7 @@ class RepStatisticsController extends ORController {
                     "{INVOICEURL}" => $nextstep_url2
                     );
                     $message = $mail->getMessage('optirep_stats_subscription', $trans_array);
-                    $mail->send(ADMIN_EMAIL, $subject, $message);
+                    $mail->send(ADMIN_EMAIL, $subject, $message,'','','','',"payment");
 
                 }
             }
@@ -353,7 +353,7 @@ class RepStatisticsController extends ORController {
         );
         
         $message = $mail->getMessage('optirep_stats_subscription', $trans_array);
-        $mail->send(ADMIN_EMAIL, $subject, $message);
+        $mail->send(ADMIN_EMAIL, $subject, $message,'','','','',"payment");
         
     }        
 

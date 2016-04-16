@@ -276,7 +276,7 @@ class Controller extends CController {
                         "{STATUS}" => 'completed',
                     );
                     $message = $mail->getMessage('rep_registration_admin', $trans_array);
-                    $mail->send(ADMIN_EMAIL, $subject, $message);
+                    $mail->send(ADMIN_EMAIL, $subject, $message,'','','','',"payment");
                     
                     
                 }
@@ -369,7 +369,7 @@ class Controller extends CController {
                         
                     );
                     $message = $mail->getMessage('rep_renewal_admin', $trans_array);
-                    $mail->send(ADMIN_EMAIL, $subject, $message);
+                    $mail->send(ADMIN_EMAIL, $subject, $message,'','','','',"payment");
             }
             RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
         }
@@ -449,7 +449,7 @@ class Controller extends CController {
                         
                     );
                     $message = $mail->getMessage('rep_admin_buymoreaccounts_admin', $trans_array);
-                    $mail->send(ADMIN_EMAIL, $subject, $message);
+                    $mail->send(ADMIN_EMAIL, $subject, $message,'','','','',"payment");
             }
             RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
         }
@@ -543,7 +543,7 @@ class Controller extends CController {
                         
                     );
                     $message = $mail->getMessage('rep_renewal_admin', $trans_array);
-                    $mail->send(ADMIN_EMAIL, $subject, $message);
+                    $mail->send(ADMIN_EMAIL, $subject, $message,'','','','',"payment");
             }
             RepTemp::model()->deleteAll("rep_temp_random_id = '" . $temp_random_id . "'");
         }

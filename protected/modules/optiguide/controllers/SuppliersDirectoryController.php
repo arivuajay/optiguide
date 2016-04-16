@@ -1131,7 +1131,7 @@ class SuppliersDirectoryController extends OGController {
                 "{INVOICEURL}" => $nextstep_url2
             );
             $message = $mail->getMessage('supplier_registration', $trans_array);
-            $mail->send(ADMIN_EMAIL, $subject, $message);
+            $mail->send(ADMIN_EMAIL, $subject, $message,'','','','',"payment");
 
             if($this->lang=='EN' ){
                 $subject = SITENAME . " - Thanks for your subscription as a supplier and invoice details.";
@@ -1450,7 +1450,7 @@ class SuppliersDirectoryController extends OGController {
                             "{INVOICEURL}" => $nextstep_url2
                         );
                         $message = $mail->getMessage('supplier_registration', $trans_array);
-                        $mail->send(ADMIN_EMAIL, $subject, $message);
+                        $mail->send(ADMIN_EMAIL, $subject, $message,'','','','',"payment");
                         
                         
                         $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/transactions';
@@ -2335,7 +2335,7 @@ class SuppliersDirectoryController extends OGController {
                 "{INVOICEURL}" => $nextstep_url2
             );
             $message = $mail->getMessage('supplier_renew_subscription', $trans_array);
-            $mail->send(ADMIN_EMAIL, $subject, $message);
+            $mail->send(ADMIN_EMAIL, $subject, $message,'','','','',"payment");
 
             $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/transactions';            
             
@@ -2527,7 +2527,7 @@ class SuppliersDirectoryController extends OGController {
                             "{INVOICEURL}" => $nextstep_url2
                         );
                         $message = $mail->getMessage('supplier_renew_subscription', $trans_array);
-                        $mail->send(ADMIN_EMAIL, $subject, $message);
+                        $mail->send(ADMIN_EMAIL, $subject, $message,'','','','',"payment");
 
                         
                         
