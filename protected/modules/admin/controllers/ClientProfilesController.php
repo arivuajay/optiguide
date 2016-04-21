@@ -146,6 +146,24 @@ class ClientProfilesController extends Controller {
             $model->modified_date = date('Y-m-d H:i:s', time());
             $model->ID_CLIENT     = Myclass::getRandomNUmbers();
             
+            if ($model->ville == "-1") 
+            {
+                $regionid  = $model->region;
+                $othercity = $model->autre_ville;
+                $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                $city_exist = CityDirectory::model()->find($condition);
+                if (!empty($city_exist)) {
+                    $model->ville = $city_exist->ID_VILLE;
+                } else {
+                    $cinfo = new CityDirectory;
+                    $cinfo->ID_REGION = $regionid;
+                    $cinfo->NOM_VILLE = $othercity;
+                    $cinfo->country = $model->country;
+                    $cinfo->save(false);
+                    $model->ville = $cinfo->ID_VILLE;
+                }
+            }
+            
             if ($model->save()) {    
                 
                 $clientid = $model->client_id;
@@ -221,6 +239,25 @@ class ClientProfilesController extends Controller {
             $model->modified_date = date('Y-m-d H:i:s', time());
 
             if(isset($_POST['modified-profile'])){
+                
+                if ($model->ville == "-1") 
+                {
+                    $regionid   = $model->region;
+                    $othercity  = $model->autre_ville;
+                    $condition  = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $city_exist = CityDirectory::model()->find($condition);
+                    if (!empty($city_exist)) {
+                        $model->ville = $city_exist->ID_VILLE;
+                    } else {
+                        $cinfo = new CityDirectory;
+                        $cinfo->ID_REGION = $regionid;
+                        $cinfo->NOM_VILLE = $othercity;
+                        $cinfo->country = $model->country;
+                        $cinfo->save(false);
+                        $model->ville = $cinfo->ID_VILLE;
+                    }
+                }
+                
                     $model->save(false);
                     
                     $client_id = $model->client_id;  

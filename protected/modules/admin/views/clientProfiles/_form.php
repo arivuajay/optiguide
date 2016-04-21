@@ -41,7 +41,7 @@ $themeUrl = $this->themeUrl;
             
             $country = Myclass::getallcountries_client();
             $regions = Myclass::getallregions_client($model->country,2);
-            $cities = Myclass::getallcities_other($model->region);
+            $cities = Myclass::getallcities($model->region);
             ?>
             <div class="box-body">
                 <div class="form-group">
@@ -154,6 +154,14 @@ $themeUrl = $this->themeUrl;
                     <div class="col-sm-5">                       
                         <?php echo $form->dropDownList($model, 'ville', $cities, array('class' => 'form-control', 'empty' => Myclass::t('APP59'))); ?>   
                         <?php echo $form->error($model, 'ville'); ?>
+                    </div>
+                </div>
+                
+                  <div class="form-group" id="other_city" style="display:none;">
+                    <?php echo $form->labelEx($model, 'autre_ville', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">                       
+                        <?php echo $form->textField($model, 'autre_ville', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>   
+                        <?php echo $form->error($model, 'autre_ville'); ?>
                     </div>
                 </div>
                 
@@ -608,6 +616,7 @@ $ajaxRegionUrl = Yii::app()->createUrl('/admin/professionalDirectory/getregions'
 $ajaxCityUrl = Yii::app()->createUrl('/admin/professionalDirectory/getcities');
 
 $ajax_get_client_mess_update = Yii::app()->createUrl('/admin/clientProfiles/updateMessage');
+$ctyval = isset($model->ville)?$model->ville:'';
 $js = <<< EOD
 
    $(document).ready(function(){
@@ -687,14 +696,31 @@ $js = <<< EOD
         $.ajax({
             type: "POST",
             url: '{$ajaxCityUrl}',
-            data: dataString+'&client_dis=1',
+           // data: dataString+'&client_dis=1',
+            data: dataString,
             cache: false,
             success: function(html){             
                 $("#ClientProfiles_ville").html(html);
             }
          });
 
-    });         
+    }); 
+        
+    var ctyval = "{$ctyval}";
+    if(ctyval=="-1")
+    {    
+        $("#other_city").show();
+    }     
+            
+   $("#ClientProfiles_ville").change(function(){
+        var id=$(this).val();
+            
+        $("#other_city").hide();
+        if(id=="-1")
+        {    
+            $("#other_city").show();
+        }    
+    });   
   
 });
 EOD;

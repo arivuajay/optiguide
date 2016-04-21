@@ -28,7 +28,7 @@
  */
 class ClientProfiles extends CActiveRecord
 {
-        public $subscription,$cname,$ctype,$category,$cat_type_id;
+        public $subscription,$cname,$ctype,$category,$cat_type_id,$autre_ville;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -47,6 +47,7 @@ class ClientProfiles extends CActiveRecord
 		return array(
                         array('name,address,country, region, ville,CodePostal',"required"),
                         array('email',"email"),
+                        array('autre_ville', 'checkOtherCityChoosen'),
 			array('cat_type_id', 'numerical', 'integerOnly'=>true),
 			array('name, company, job_title, member_type, address, local_number', 'length', 'max'=>255),
 			array('country, region, ville, phonenumber1, phonenumber2, mobile_number, tollfree_number, fax, email, site_address', 'length', 'max'=>55),
@@ -61,6 +62,13 @@ class ClientProfiles extends CActiveRecord
                         array('category', 'checknotempty'),
 		);
 	}
+        
+        public function checkOtherCityChoosen($attributes, $params) {
+            if ($this->ville == -1) {
+                if($this->autre_ville == '')
+                    $this->addError($attributes, 'City cannot be blank.');
+            }
+        }
         
         public function checknotempty($attribute_name, $params) 
         {
@@ -179,6 +187,7 @@ class ClientProfiles extends CActiveRecord
                 'lang' => Myclass::t('OG159'),
                 'status' => Myclass::t('Statut de l\'utilisateur'),
                 'Website2' => Myclass::t('APP76')." 2",
+                 'autre_ville' => Myclass::t('OG172'),
             );
 	}
 
