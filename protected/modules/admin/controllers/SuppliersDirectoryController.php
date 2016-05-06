@@ -83,15 +83,17 @@ class SuppliersDirectoryController extends Controller {
      //   Yii::app()->user->setState("uattributes", $uattributes);
 
         // Set and intialize session from existing database records.         
-        if (Yii::app()->user->hasState("product_ids") == FALSE) 
-        {     
+//        if (Yii::app()->user->hasState("product_ids") == FALSE) 
+//        {     
             $fid = $id;
+            
             $criteria1 = new CDbCriteria();
             $criteria1->condition = 'ID_FOURNISSEUR=:id';
             $criteria1->params = array(':id' => $fid);
             $criteria1->group = 'productMarqueDirectory.ID_PRODUIT';
             $get_selected_products = CHtml::listData(SupplierProducts::model()->with("productMarqueDirectory")->findAll($criteria1), 'ID_LIEN_REPERTOIRE_PRODUIT', 'productMarqueDirectory.ID_PRODUIT');
-
+            Yii::app()->user->setState("product_ids", null); 
+            
             /* Set products in session */
             if (!empty($get_selected_products)) 
             {
@@ -100,7 +102,7 @@ class SuppliersDirectoryController extends Controller {
                 }
                 Yii::app()->user->setState("product_ids", $result);                
                 $data_products = SuppliersDirectory::getproducts($result);
-
+                
                 /* Set marques in session */
                 foreach ($result as $pid) {
                     $prodid = $pid;
@@ -126,7 +128,7 @@ class SuppliersDirectoryController extends Controller {
                     Yii::app()->user->setState("marque_ids", $marque_ids);
                 }
             }
-        }
+//        }
          
 
         if (isset($_POST['SuppliersDirectory'])) 
@@ -193,9 +195,10 @@ class SuppliersDirectoryController extends Controller {
         if(Yii::app()->user->hasState("product_ids"))
         {    
             $proids = Yii::app()->user->getState("product_ids");
+           
             $data_products = SuppliersDirectory::getproducts($proids);
         }   
-
+         
         $tab = 1;
         $this->render('update', compact('model', 'tab','data_products','pmodel'));
     }
