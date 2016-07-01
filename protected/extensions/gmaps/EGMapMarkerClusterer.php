@@ -30,6 +30,7 @@
 class EGMapMarkerClusterer extends EGMapBase 
 {
 	
+    
 	protected $options = array(
 		// The minimum number of markers to be in a cluster before the markers are hidden and a count
 		'minimumClusterSize' => null,
@@ -55,7 +56,7 @@ class EGMapMarkerClusterer extends EGMapBase
 		// url				String	Image url.
 		// backgroundPosition		String The position of the background x, y
 		// 
-		'styles' => null
+		'styles' => null,
 	);
 	/**
 	 * 
@@ -120,6 +121,7 @@ class EGMapMarkerClusterer extends EGMapBase
 			foreach($this->markers as $m)
 				$markers[] = $m->getJsName();
 		}
+                
 		$return = 'var '.$this->getJsName().'= new MarkerClusterer('.$map_js_name.','.EGMap::encode($markers).','.EGMap::encode($this->options).');';
 		
 		return  $return;
