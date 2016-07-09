@@ -86,8 +86,7 @@
                     ),
                 ));
                 ?>
-            </div>
-            <?php echo $item_count; echo '---'.$page_size;?>
+            </div>            
         </div>
     </div>
 </div>
