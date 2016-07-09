@@ -82,8 +82,143 @@
             }
             ?>
                 </div> 
-            </div>
+                <div class="user-left cate-bg">
+                    <div class="cate-heading cate-heading3"> 
+                        <i class="fa fa-calendar"></i> 
+                        <?php
+                        //echo Myclass::t('OR518', '', 'or');
+                        echo CHtml::link(Myclass::t('OR521', '', 'or'), array('/optirep/repNotes/index'), array('class' => ''));
+                        echo CHtml::link(Myclass::t('OR038', '', 'or'), array('/optirep/repNotes/index'), array('class' => 'topviewall'));
+                        ?> 
+                    </div>
+                    <div class="calc-cont"> 
+                                    <?php
+            $now = date("Y-m-d", time());
+            $cLang = strtoupper(Yii::app()->language);
 
+            $criteria = new CDbCriteria;
+            $criteria->addCondition("rep_credential_id = '" . Yii::app()->user->id . "'");
+            $criteria->addCondition("rep_credential_id = '" . Yii::app()->user->id . "'");
+            $events = RepNotes::model()->findAll($criteria);
+            
+            
+//            $events = RepNotes::model()->findAll();
+            $events_list = array();
+            foreach ($events as $event) {
+                $start_date = date("Y-m-d", strtotime($event['alert_date']));
+//                $end_date = date("Y-m-d", strtotime($event['alert_date']));
+//                $betweenDates = Myclass::getBetweenDates($start_date, $end_date);
+//                foreach ($betweenDates as $betweenDate) {
+                    $caldisp = date("m/d/Y", strtotime($start_date));
+                    $events_list[] = array(
+                        'Url' => Yii::app()->createAbsoluteUrl('/optirep/repNotes/index', array('date' => $start_date)),
+                         // 'Date' => strtotime($betweenDate),
+                        'Date' => $caldisp
+                    );
+//                }
+            }
+
+            $list = json_encode($events_list);
+
+            $js = <<< EOD
+            var events = {$list};
+                
+            function EventHighlight(date) {
+                var result = [true, '', null];
+                var matching = $.grep(events, function(event) {
+                    //return event.Date == date.valueOf() / 1000;
+                    return event.Date == $.datepicker.formatDate("mm/dd/yy", date );
+                });
+
+                if (matching.length) {
+                    result = [true, 'event', null];
+                }
+                return result;
+            }
+
+            function EventRedirect(dateText){
+                for (var k in events) 
+                {                    
+                 if( events[k].Date == dateText) 
+                 {   
+                   window.location = events[k].Url;
+                 }                       
+               }     
+            }
+EOD;
+            Yii::app()->clientScript->registerScript('_calender_rep', $js);
+            ?>
+
+            <?php
+            $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+                'name' => 'datepicker-Inline',
+                'flat' => true, //remove to hide the datepicker
+                'options' => array(
+                    'showAnim' => 'slide', //'slide','fold','slideDown','fadeIn','blind','bounce','clip','drop'
+                    'beforeShowDay' => 'js:EventHighlight',
+                    'onSelect' => 'js:EventRedirect',
+                // 'stepMonths' => 0,
+                ),
+                'htmlOptions' => array(
+                    'style' => ''
+                ),
+            ));
+            ?>
+            
+                    <?php
+                        //Upcoming events display 
+                        $now = date("Y-m-d", time());
+                        $cLang = strtoupper(Yii::app()->language);
+
+                        $criteria = new CDbCriteria;
+                        $criteria->addCondition("alert_date > '" . $now . "'");
+                        $criteria->order = 'alert_date ASC';
+                        $criteria->limit = 1;
+                        $upcoming_events = RepNotes::model()->findAll($criteria);
+                        ?>
+                        <h4 class="eventList">
+                        <?php echo Myclass::t('OR519', '', 'or'); ?>
+                        </h4>
+                        <?php
+                        if (!empty($upcoming_events)) {
+                            ?>    
+                            <ul class="eventList">
+                                <?php
+                                foreach ($upcoming_events as $einfo) {
+                                    ?>   
+                                    <li class="li-1">
+                                        <span class="date start">
+                                        <?php 
+                                        if (Yii::app()->session['language'] == 'FR') { 
+                                                    $time = strtotime($einfo->alert_date);
+                                                    $m= date("n", $time);
+                                                    $month = Myclass::getMonths_Fr($m);
+                                                    $year = date("d Y", $time);
+                                                    $res= $month.' '.$year;
+                                            }else{
+                                                    $time = strtotime($einfo->alert_date);
+                                                    $month = date("F", $time);
+                                                    $year = date("d Y", $time);
+                                                    $res= $month.' '.$year;
+                                            }
+                                            echo $res;
+                                        ?></span>
+                                        <?php $name = $einfo->utilisateur_name($einfo->ID_UTILISATEUR);  ?>
+                                        <?php echo CHtml::link($name[0]['NOM_UTILISATEUR'], array('/optirep/repNotes/index', 'date' =>$einfo->alert_date )); ?> 
+                                    </li>
+                                    <?php
+                                }
+                                ?>
+                            </ul>
+                            <?php
+                        } else {
+                            echo Myclass::t('OR520', '', 'or');
+                        }
+                        ?> 
+                    </div>
+                </div>
+            </div>
+            
             <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">  
                 <?php echo $content; ?>
             </div>

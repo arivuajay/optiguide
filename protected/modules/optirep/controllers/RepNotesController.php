@@ -132,11 +132,30 @@ class RepNotesController extends ORController {
     public function actionIndex() {
         $rep_id = Yii::app()->user->id;
         $urole = Yii::app()->user->rep_role;
-
+        $qstring = '';
+        
+         $searchModel = new RepNotes();
+        $searchModel->unsetAttributes();
+        
+        
+        
+        $searchModel->utilisateur = isset($_GET['RepNotes']['utilisateur']) ? $_GET['RepNotes']['utilisateur'] : '';
+        $searchModel->created_at = isset($_GET['RepNotes']['alert_date']) ? $_GET['RepNotes']['alert_date'] : '';
+        
+        if($_GET['RepNotes']['utilisateur'] != ''){
+            $qstring .= ' ru.NOM_UTILISATEUR like "%'.$_GET['RepNotes']['utilisateur'].'%"  AND '; 
+        }
+        if($_GET['RepNotes']['alert_date'] != '' ){
+            $qstring .= ' rn.alert_date like "%'.$_GET['RepNotes']['alert_date'].'%"  AND '; 
+        }
+        if(isset($_REQUEST['date'])){
+            $qstring .= ' rn.alert_date like "%'.$_REQUEST['date'].'%"  AND '; 
+        }
+        
         if ($urole == "single") {
-            $qstring = " ru.status=1 AND (ru.NOM_TABLE='Professionnels' OR ru.NOM_TABLE='Detaillants') ";
+            $qstring .= " ru.status=1 AND (ru.NOM_TABLE='Professionnels' OR ru.NOM_TABLE='Detaillants') ";
         } else if ($urole == "admin") {
-            $qstring = " (ru.NOM_TABLE='rep_credentials') ";
+            $qstring .= " (ru.NOM_TABLE='rep_credentials') ";
         }
 
         $mynotes = Yii::app()->db->createCommand() //this query contains all the data
@@ -158,11 +177,12 @@ class RepNotesController extends ORController {
         $pages->setPageSize(LISTPERPAGE);
 
         $this->render('index', array(
+            'searchModel' => $searchModel,
             'model' => $mynotes,
             'pages' => $pages,
         ));
     }
-
+    
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.

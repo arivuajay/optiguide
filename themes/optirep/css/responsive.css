@@ -72,7 +72,9 @@ h2.resp-accordion {
 {
 	margin:0px;
 }
-
+div#ui-datepicker-div{
+    width:72%;
+}
 
 }
 @media (min-width:768px) and (max-width:991px) {
@@ -102,7 +104,9 @@ display:none!important
 {
 	margin:0px;
 }
-
+div#ui-datepicker-div{
+    width:48%;
+}
 }
 @media (min-width:992px) and (max-width:1199px) {
 .hidden-md {
@@ -120,7 +124,9 @@ display:none!important
 .landing-left h2 {
   font-size: 27px !important;
 }
-
+div#ui-datepicker-div{
+    width:26%;
+}
 }
 @media (min-width:1200px) {
 .hidden-lg {
@@ -146,6 +152,8 @@ display:none!important
 	padding:10px 0px 10px 0px;
 	height:100px;
 }
-
+div#ui-datepicker-div{
+    width:16%;
+}
 
 }

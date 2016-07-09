@@ -10,7 +10,7 @@
  * @property string $created_at
  */
 class RepNotes extends CActiveRecord {
-
+    public $utilisateur;
     /**
      * @return string the associated database table name
      */
@@ -30,7 +30,7 @@ class RepNotes extends CActiveRecord {
             array('message, created_at, alert_date', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, rep_credential_id, message, created_at, alert_date', 'safe', 'on' => 'search'),
+            array('id, rep_credential_id, message, created_at, alert_date,utilisateur', 'safe', 'on' => 'search'),
         );
     }
 
@@ -104,5 +104,24 @@ class RepNotes extends CActiveRecord {
             )
         ));
     }
-
+    
+    public function utilisateur_name($id){
+        
+        $rep_id = Yii::app()->user->id;
+        $urole = Yii::app()->user->rep_role;
+        if ($urole == "single") {
+            $qstring .= " ru.status=1 AND (ru.NOM_TABLE='Professionnels' OR ru.NOM_TABLE='Detaillants') ";
+        } else if ($urole == "admin") {
+            $qstring .= " (ru.NOM_TABLE='rep_credentials') ";
+        }
+            $mynotes = Yii::app()->db->createCommand() //this query contains all the data
+                ->select('ru.NOM_UTILISATEUR')
+                ->from(array('rep_notes rn', 'repertoire_utilisateurs ru'))
+                ->where("rn.ID_UTILISATEUR=ru.ID_UTILISATEUR AND " . $qstring . " AND ru.ID_UTILISATEUR = '".$id."' AND  rn.rep_credential_id =" . $rep_id)
+                ->order('rn.id desc')
+                ->queryAll();
+            
+        return $mynotes;
+    }
+    
 }

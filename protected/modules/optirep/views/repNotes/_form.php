@@ -19,7 +19,22 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php echo $form->labelEx($model, 'message'); ?>
             <?php echo $form->textArea($model, 'message', array("class" => "form-field-textarea")); ?>               
-        </div>        
+        </div>   
+<!--        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <?php // echo $form->labelEx($model, 'alert_date'); ?>
+            <div class="input-group">
+                    <input type="text" id="datepicker-my" class="form-control" placeholder="Select Date" />
+                    <?php // echo $form->textField($model, 'alert_date', array('class' => 'form-control form-field1', 'placeholder' => Myclass::t('OR574', '', 'or'))); ?> 
+                    <span class="input-group-addon" id="btn" style="cursor:pointer;">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        
+                    </span>                    
+                </div>
+            <small>
+                        <b><?php // echo Myclass::t('OR569', '', 'or') ?> : </b> 
+                        <?php // echo Myclass::t('OR570', '', 'or') ?>
+                    </small>
+        </div>-->
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php echo $form->labelEx($model, 'alert_date'); ?>
             <div id="reminder_datepicker" class="input-append date">
@@ -54,9 +69,15 @@ $cs->registerScriptFile($themeUrl . '/js/bootstrap-datepicker.js', $cs_pos_end);
 
 $js = <<< EOD
 $(document).ready(function(){
-    $('#reminder_datepicker').datepicker({
-        format: 'yyyy-mm-dd',
-        startDate: '+1d'
+//        $('#btn').click(function(){
+//            $(document).ready(function(){
+//                $("#RepNotes_alert_date").datepicker({
+//        dateFormat: 'yy-mm-dd'}).focus();
+//            });
+//        });
+    $('#RepNotes_alert_date').datepicker({
+        dateFormat: 'yy-mm-dd'
+//        startDate: '+1d'
     });
 });
 EOD;

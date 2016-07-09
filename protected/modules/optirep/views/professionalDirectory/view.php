@@ -230,8 +230,8 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <label><?php echo Myclass::t('OR574', '', 'or') ?></label>
-                        <div id="reminder_datepicker" class="input-append date">
-                            <input type="text" class="form-field" name="alert_date">
+                        <div id="" class="input-append date">
+                            <input type="text" class="form-field" name="alert_date" id="reminder_datepicker">
                             <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
                             <small>
                                 <b><?php echo Myclass::t('OR569', '', 'or') ?>:</b> 
@@ -328,7 +328,7 @@ $js = <<< EOD
 $(document).ready(function(){
         
     $('#reminder_datepicker').datepicker({
-        format: 'yyyy-mm-dd',
+        dateFormat: 'yy-mm-dd',
         startDate: '+1d'
     });
             

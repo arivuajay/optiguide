@@ -1,5 +1,6 @@
 <div class="cate-bg user-right">
     <h2> <?php echo Myclass::t('OR521', '', 'or') ?> </h2>
+    <?php $this->renderPartial('_search', array('searchModel' => $searchModel)); ?>
     <div class="row"> 
         <?php if (Yii::app()->user->rep_role == "admin") { ?>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
