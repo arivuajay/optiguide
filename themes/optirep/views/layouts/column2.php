@@ -82,7 +82,7 @@
             }
             ?>
                 </div> 
-                <div class="user-left cate-bg">
+                <div class="user-left cate-bg1">
                     <div class="cate-heading cate-heading3"> 
                         <i class="fa fa-calendar"></i> 
                         <?php
@@ -176,44 +176,46 @@ EOD;
                         $criteria->limit = 1;
                         $upcoming_events = RepNotes::model()->findAll($criteria);
                         ?>
-                        <h4 class="eventList">
-                        <?php echo Myclass::t('OR519', '', 'or'); ?>
-                        </h4>
+                        <!-- Upcoming Notes -->
+                        
+<!--                    <h4 class="eventList">
+                        <?php // echo Myclass::t('OR519', '', 'or'); ?>
+                        </h4>-->
                         <?php
-                        if (!empty($upcoming_events)) {
+//                        if (!empty($upcoming_events)) {
                             ?>    
-                            <ul class="eventList">
+                            <!--<ul class="eventList">-->
                                 <?php
-                                foreach ($upcoming_events as $einfo) {
+//                                foreach ($upcoming_events as $einfo) {
                                     ?>   
-                                    <li class="li-1">
-                                        <span class="date start">
+<!--                                    <li class="li-1">
+                                        <span class="date start">-->
                                         <?php 
-                                        if (Yii::app()->session['language'] == 'FR') { 
-                                                    $time = strtotime($einfo->alert_date);
-                                                    $m= date("n", $time);
-                                                    $month = Myclass::getMonths_Fr($m);
-                                                    $year = date("d Y", $time);
-                                                    $res= $month.' '.$year;
-                                            }else{
-                                                    $time = strtotime($einfo->alert_date);
-                                                    $month = date("F", $time);
-                                                    $year = date("d Y", $time);
-                                                    $res= $month.' '.$year;
-                                            }
-                                            echo $res;
+//                                        if (Yii::app()->session['language'] == 'FR') { 
+//                                                    $time = strtotime($einfo->alert_date);
+//                                                    $m= date("n", $time);
+//                                                    $month = Myclass::getMonths_Fr($m);
+//                                                    $year = date("d Y", $time);
+//                                                    $res= $month.' '.$year;
+//                                            }else{
+//                                                    $time = strtotime($einfo->alert_date);
+//                                                    $month = date("F", $time);
+//                                                    $year = date("d Y", $time);
+//                                                    $res= $month.' '.$year;
+//                                            }
+//                                            echo $res;
                                         ?></span>
-                                        <?php $name = $einfo->utilisateur_name($einfo->ID_UTILISATEUR);  ?>
-                                        <?php echo CHtml::link($name[0]['NOM_UTILISATEUR'], array('/optirep/repNotes/index', 'date' =>$einfo->alert_date )); ?> 
-                                    </li>
+                                        <?php // $name = $einfo->utilisateur_name($einfo->ID_UTILISATEUR);  ?>
+                                        <?php // echo CHtml::link($name[0]['NOM_UTILISATEUR'], array('/optirep/repNotes/index', 'date' =>$einfo->alert_date )); ?> 
+                                    <!--</li>-->
                                     <?php
-                                }
+//                                }
                                 ?>
                             </ul>
                             <?php
-                        } else {
-                            echo Myclass::t('OR520', '', 'or');
-                        }
+//                        } else {
+//                            echo Myclass::t('OR520', '', 'or');
+//                        }
                         ?> 
                     </div>
                 </div>

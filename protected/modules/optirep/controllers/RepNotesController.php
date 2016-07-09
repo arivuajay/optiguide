@@ -134,6 +134,15 @@ class RepNotesController extends ORController {
         $urole = Yii::app()->user->rep_role;
         $qstring = '';
         
+        $page  = Yii::app()->request->getParam('page');
+        $page  = isset($page) ? $page : 1; 
+        $limit = 0;
+       
+        if($page>1){
+         $offset = $page-1;   
+         $limit  = LISTPERPAGE * $offset;
+        }  
+        
          $searchModel = new RepNotes();
         $searchModel->unsetAttributes();
         
@@ -163,6 +172,7 @@ class RepNotesController extends ORController {
                 ->from(array('rep_notes rn', 'repertoire_utilisateurs ru'))
                 ->where("rn.ID_UTILISATEUR=ru.ID_UTILISATEUR AND " . $qstring . " AND rn.rep_credential_id =" . $rep_id)
                 ->order('rn.id desc')
+                ->limit( LISTPERPAGE , $limit) // the trick is here!
                 ->queryAll();
 
 
@@ -180,6 +190,8 @@ class RepNotesController extends ORController {
             'searchModel' => $searchModel,
             'model' => $mynotes,
             'pages' => $pages,
+            'item_count'=>$item_count,
+            'page_size'=>LISTPERPAGE,
         ));
     }
     

@@ -629,3 +629,13 @@ div#ui-datepicker-div{
   background: none repeat scroll 0 0 #f0f0f0;
   margin-bottom: 0px;
 }
+
+.cate-bg1 {
+  background: none repeat scroll 0 0 #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 1px 5px 0 rgba(50, 50, 50, 0.5);
+  float: left;
+  margin: 45px 0 0;
+  padding: 15px;
+  width: 100%;
+}

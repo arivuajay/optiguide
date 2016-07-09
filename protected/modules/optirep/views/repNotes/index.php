@@ -76,14 +76,18 @@
                 $this->widget('CLinkPager', array(
                     'pages' => $pages,
                     'currentPage' => $pages->getCurrentPage(),
+                    'itemCount' => $item_count,
+                    'pageSize' => $page_size,
+                    'maxButtonCount' => 10,
                     'header' => '',
                     'selectedPageCssClass' => 'active',
                     'htmlOptions' => array(
                         'class' => 'pagination',
                     ),
-                ))
+                ));
                 ?>
             </div>
+            <?php echo $item_count; echo '---'.$page_size;?>
         </div>
     </div>
 </div>
