@@ -48,7 +48,9 @@ class UserDirectory extends CActiveRecord
                     array('LANGUE,NOM_UTILISATEUR,USR, PWD', 'required'),
                     array('COURRIEL', 'required' , 'on' => 'frontend'),
                     array('USR', 'unique', 'message'=> Myclass::t('OG178')),      
-                    array('COURRIEL', 'unique', 'message'=> Myclass::t('OG179')),     
+                   // array('COURRIEL', 'unique', 'message'=> Myclass::t('OG179')),     
+                    array('COURRIEL', 'checkEmailExist', 'on' => 'frontend'),    
+                    array('COURRIEL', 'backendEmailExist', 'on' => 'backend'),    
                     array('ABONNE_MAILING, ABONNE_PROMOTION, ABONNE_TRANSITION, IS_FIRST_LOG, ID_RELATION, MUST_VALIDATE, bSubscription_envision, bSubscription_envue', 'numerical', 'integerOnly'=>true),
                     array('PREFIXE, NOM_TABLE', 'length', 'max'=>50),
                     // array('USR', 'length', 'max'=>8),
@@ -73,6 +75,50 @@ class UserDirectory extends CActiveRecord
 //                    array('COURRIEL', 'findEmail', 'on' => 'forgot'),
             );
 	}
+        
+        public function checkEmailExist($attribute, $params)
+        {
+           
+            if($this->COURRIEL!="")
+            {    
+                if(isset(Yii::app()->user->id))
+                {    
+                    $userid = Yii::app()->user->id;
+
+                    $Criteria = new CDbCriteria();
+                    $Criteria->condition = "COURRIEL='".$this->COURRIEL."' and ID_UTILISATEUR !='$userid' and NOM_TABLE!='rep_credentials'";
+                    $existEmail = UserDirectory::model()->findAll($Criteria);
+
+                }else{
+
+                    $Criteria = new CDbCriteria();
+                    $Criteria->condition = "COURRIEL='".$this->COURRIEL."' and NOM_TABLE!='rep_credentials'";
+                    $existEmail = UserDirectory::model()->findAll($Criteria);
+                }   
+
+               if(!empty($existEmail))
+                  $this->addError($attribute,Myclass::t('OG179'));
+               else    
+                  return true;
+            }
+        }
+        
+        public function backendEmailExist($attribute, $params)
+        {
+            if($this->COURRIEL!="")
+            {  
+                $userid = $this->ID_UTILISATEUR;
+                $Criteria = new CDbCriteria();
+                $Criteria->condition = "COURRIEL='".$this->COURRIEL."' and ID_UTILISATEUR !='$userid' and NOM_TABLE!='rep_credentials'";
+                $existEmail = UserDirectory::model()->findAll($Criteria);
+                
+                if(!empty($existEmail))
+                  $this->addError($attribute,Myclass::t('OG179'));
+               else    
+                  return true;
+            }
+            
+        }
         
         //matching the old password with your existing password.
         public function findPasswords($attribute, $params)

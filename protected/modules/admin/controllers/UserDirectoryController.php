@@ -57,7 +57,7 @@ class UserDirectoryController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new UserDirectory;
+        $model = new UserDirectory('backend');
 
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
@@ -147,6 +147,7 @@ class UserDirectoryController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
+        $model->scenario = 'backend';
 
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);

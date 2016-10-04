@@ -1504,9 +1504,18 @@ class SuppliersDirectoryController extends OGController {
             
             $marque_ids_new = Yii::app()->user->getState("marque_ids_new_all");
            
-            if (!empty($marque_ids_new)) {
-                $mval_new = $marque_ids_new[$pid];
-                if ($mval_new != '' ) {
+//            if (!empty($marque_ids_new)) {
+//                $mval_new = $marque_ids_new[$pid];
+//                if ($mval_new != '' ) {
+//                    $marques_news = array_unique(explode(',', $mval_new));
+//                    foreach ($marques_news as $marques_new){
+//                        $get_selected_marques_new[$marques_new]=$marques_new;
+//                    }
+//                }
+//            }
+            
+             if (!empty($marque_ids_new)) {
+                foreach($marque_ids_new as $mval_new ) {
                     $marques_news = array_unique(explode(',', $mval_new));
                     foreach ($marques_news as $marques_new){
                         $get_selected_marques_new[$marques_new]=$marques_new;
@@ -1732,8 +1741,10 @@ class SuppliersDirectoryController extends OGController {
         $relid = Yii::app()->user->relationid;
         $model = $this->loadModel($relid);
         //Yii::app()->user->setState("product_ids", NULL);
-        // Set and intialize session from existing database records.         
+        // Set and intialize session from existing database records.   
+      
         if (Yii::app()->user->hasState("product_ids") == FALSE) {
+            
             $fid = $relid;
             $criteria1 = new CDbCriteria();
             $criteria1->condition = 'ID_FOURNISSEUR=:id';
@@ -1952,7 +1963,7 @@ class SuppliersDirectoryController extends OGController {
                                 $pro_model->save();
                                 $pro_mar_id=$pro_model->ID_LIEN_MARQUE;
                                 $spmodel = new SupplierProducts();
-                                $spmodel->ID_FOURNISSEUR = $supplierid;
+                                $spmodel->ID_FOURNISSEUR = $relid;
                                 $spmodel->ID_LIEN_PRODUIT_MARQUE = $pro_mar_id;
                                 $spmodel->save();  
                             }  else {
@@ -1966,7 +1977,7 @@ class SuppliersDirectoryController extends OGController {
                                 $pro_model->save();
                                 $pro_mar_id=$pro_model->ID_LIEN_MARQUE;
                                 $spmodel = new SupplierProducts();
-                                $spmodel->ID_FOURNISSEUR = $supplierid;
+                                $spmodel->ID_FOURNISSEUR = $relid;
                                 $spmodel->ID_LIEN_PRODUIT_MARQUE = $pro_mar_id;
                                 $spmodel->save();
                             }
@@ -1977,8 +1988,13 @@ class SuppliersDirectoryController extends OGController {
                 }
             }
 
+            Yii::app()->user->setState("product_ids",null);
+            Yii::app()->user->setState("marque_ids",null);
+            Yii::app()->user->setState("marqueid_new", null);        
+            Yii::app()->user->setState("marque_ids_new_all", null);
+            
             Yii::app()->user->setFlash('success', Myclass::t('OGO144', '', 'og'));
-            $this->redirect(array('updatemarques'));
+            $this->redirect(array('updateproducts'));
         }
 
         // Delete products from session
