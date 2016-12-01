@@ -384,7 +384,7 @@ class ProfessionalDirectoryController extends OGController {
                 if ($model->ID_VILLE == "-1") {
                     $regionid = $model->region;
                     $othercity = $model->autre_ville;
-                    $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $condition = 'ID_REGION="'.$regionid.'" and NOM_VILLE="'.$othercity.'"';
                     $city_exist = CityDirectory::model()->find($condition);
                     if (!empty($city_exist)) {
                         $model->ID_VILLE = $city_exist->ID_VILLE;
@@ -500,7 +500,7 @@ class ProfessionalDirectoryController extends OGController {
                 if ($model->ID_VILLE == "-1") {
                     $regionid = $model->region;
                     $othercity = $model->autre_ville;
-                    $condition = "ID_REGION='$regionid' and NOM_VILLE='$othercity'";
+                    $condition = 'ID_REGION="'.$regionid.'" and NOM_VILLE="'.$othercity.'"';
                     $city_exist = CityDirectory::model()->find($condition);
                     if (!empty($city_exist)) {
                         $model->ID_VILLE = $city_exist->ID_VILLE;

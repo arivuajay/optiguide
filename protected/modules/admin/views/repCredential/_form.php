@@ -192,6 +192,7 @@ $country = Myclass::getallcountries();
                     ?>
                 </div>  
             </div>
+        </div>    
     </div><!-- ./col -->
 </div>
 <?php
