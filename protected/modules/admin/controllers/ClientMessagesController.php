@@ -43,7 +43,7 @@ class ClientMessagesController extends Controller {
 
     public function actionSendReminder() {
         $mdate = date("Y-m-d", time());
-        
+
         // Client profiles
         $criteria = new CDbCriteria;
         $criteria->condition = "DATE(date_remember)='$mdate' and t.status=1";
@@ -58,7 +58,7 @@ class ClientMessagesController extends Controller {
             ),
         );
         $data_meets = ClientMessages::model()->findAll($criteria);
-
+        
         if (!empty($data_meets)) {
             foreach ($data_meets as $info) {
                 

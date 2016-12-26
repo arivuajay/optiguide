@@ -47,8 +47,8 @@ return array(
     'OR519' => 'Évènements à venir',
     'OR520' => 'Aucun événement',
     'OR521' => 'Mes notes',
-    'OR522' => 'Vous n\'avez pas encore créé de note',
-    'OR523' => '<a href=":url">Cliquez</a> à ajouter vos notes',
+    'OR522' => 'Vous n\'avez pas encore créé de note',     
+    'OR523' => '<a href=":url">Cliquez pour ajouter une note</a>',
     //views/repAccounts
     'OR524' => 'Gérer les comptes Rep',
     'OR525' => 'Nombre total de comptes',
@@ -344,4 +344,6 @@ return array(
     'OR781' => 'Voir les chiffres',
     'OR782' => 'Professionnels vue profil stats count',
     'OR783' => 'Détaillants vue profil stats count',
+    'OR784' => 'Changer de forfait',
+    'OR785' => 'Modifier votre package pour mettre à niveau votre compte pour l\'accès administrateur'
 );

@@ -60,17 +60,19 @@ EOD;
             <?php
             $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                 'name' => 'datepicker-Inline',
+                'language'=> Yii::app()->language,
                 'flat' => true, //remove to hide the datepicker
                 'options' => array(
                     'showAnim' => 'slide', //'slide','fold','slideDown','fadeIn','blind','bounce','clip','drop'
                     'beforeShowDay' => 'js:EventHighlight',
                     'onSelect' => 'js:EventRedirect',
+                    'language' => Yii::app()->language,
                 // 'stepMonths' => 0,
                 ),
                 'htmlOptions' => array(
                     'style' => ''
                 ),
-            ));
+            ));                        
             ?>
             <?php
             //Upcoming events display 

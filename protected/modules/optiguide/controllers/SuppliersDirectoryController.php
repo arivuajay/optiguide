@@ -60,7 +60,7 @@ class SuppliersDirectoryController extends OGController {
         $flag = 0;
         foreach ($ret_result as $single_record) {
             $difference = strtotime($single_record['expirydate']) - strtotime(date("Y-m-d H:m:s"));
-            $days = floor($difference / (60 * 60 * 24));
+            $days = round($difference / (60 * 60 * 24));                                       
             if ($days == 90 && $single_record['flag'] != 1) {
                 $single_record['flag'] = 1;
                 $flag = 1;
@@ -91,8 +91,8 @@ class SuppliersDirectoryController extends OGController {
                     "{RENEWALDAY}" => date("d-m-Y", strtotime($single_record['expirydate'])),
                     "{USERNAME}" => $single_record['username'],
                 );
-                $message = $mail->getMessage('renewal_mail', $trans_array);
-                $mail->send($single_record['email'], $Subject, $message);
+//                $message = $mail->getMessage('renewal_mail', $trans_array);
+//                $mail->send($single_record['email'], $Subject, $message);
             }
             $flag = 0;
         }
@@ -2299,10 +2299,11 @@ class SuppliersDirectoryController extends OGController {
 
             if ($subtype == "1" || $subtype == "2") {
                 $model->profile_expirydate = $pdetails['profile_expirydate'];
+                $model->renewal_flag = 0;
             }
             if ($subtype == "3" || $subtype == "2") {
                 $model->logo_expirydate = $pdetails['logo_expirydate'];
-            }
+            }            
             $model->save(false);
 
             // Save the payment details                                   

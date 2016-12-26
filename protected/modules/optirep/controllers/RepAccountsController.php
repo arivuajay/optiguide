@@ -20,13 +20,13 @@ class RepAccountsController extends ORController {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('paypalCancel', 'paypalReturn', 'paypalNotify', 'paypalRenewalCancel', 'paypalRenewalReturn', 'paypalRenewalNotify', 'finalRenewalRep', 'finalBuyMoreAccounts'),
+                'actions' => array('paypalCancel', 'paypalReturn', 'paypalNotify', 'paypalRenewalCancel', 'paypalRenewalReturn', 'paypalRenewalNotify', 'finalRenewalRep', 'finalBuyMoreAccounts','getPrice'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'create', 'edit', 'delete', 'buyMoreAccounts', 'buyMoreAccountsPriceList', 'renewalRepAccounts', 'subscriptions', 'transactions', 'final'),
+                'actions' => array('index', 'create', 'edit', 'delete', 'buyMoreAccounts', 'buyMoreAccountsPriceList', 'renewalRepAccounts', 'subscriptions', 'transactions', 'final', 'durationRenewal'),
                 'users' => array('@'),
-                'expression' => 'Yii::app()->user->rep_role=="admin"'
+//                'expression' => 'Yii::app()->user->rep_role=="admin"'
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions' => array(''),
@@ -39,22 +39,59 @@ class RepAccountsController extends ORController {
     }
 
     public function actionIndex() {
-        if (isset($_POST['renewalSubmit'])) {
+        if (isset($_POST['renewalSubmit'])) {            
             if (isset($_POST['rep_credentials'])) {
                 $renewal = Yii::app()->session['renewal'];
                 $renewal['rep_credential_id'] = Yii::app()->user->id;
                 $renewal['no_of_accounts_purchase'] = count($_POST['rep_credentials']);
                 $renewal['rep_credentials'] = $_POST['rep_credentials'];
-                $renewal['price_list'] = Myclass::priceCalculationWithMonths(1, $renewal['no_of_accounts_purchase'], false);
+//                $renewal['price_list'] = Myclass::priceCalculationWithMonths(1, $renewal['no_of_accounts_purchase'], false);
                 Yii::app()->session['renewal'] = $renewal;
-                $this->redirect('renewalRepAccounts');
+//                $this->redirect('renewalRepAccounts');
+                
+                $this->redirect('durationRenewal');
             } else {
                 Yii::app()->user->setFlash('danger', Myclass::t("OR589", "", "or"));
             }
         }
         $this->render('index');
     }
+    public function actionDurationRenewal(){
+        $renewal = Yii::app()->session['renewal'];
+        
+        if(empty($renewal)){
+            $this->redirect('index');
+        }
+        $model = RepCredentials;
+        $no_of_accounts_purchase = $renewal['no_of_accounts_purchase'];
+        $renewal['no_of_months'] = 1;
+        $offer_calculation = false;
+        $price_calculation = Myclass::priceCalculationWithMonths($renewal['no_of_months'], $no_of_accounts_purchase, $offer_calculation);
 
+        if(isset($_POST['btnSubmit'])){
+            $renewal['no_of_months'] = $_POST['RepCredentials'];
+            $renewal['price_list'] = Myclass::priceCalculationWithMonths($renewal['no_of_months'], $no_of_accounts_purchase, false);
+            Yii::app()->session['renewal'] = $renewal;
+                $this->redirect('renewalRepAccounts');
+        }
+        
+        $this->render('renew', array(
+            'price_calculation' => $price_calculation,
+            'no_of_accounts_purchase' => $no_of_accounts_purchase,
+            'model' => $model,
+        ));
+    }
+    public function actionGetPrice() {
+        $no_of_accounts_purchase = $_POST['accounts_purchase'];;
+        $no_of_months = $_POST['month'];
+        $offer_calculation = false;
+        $price_calculation = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchase, $offer_calculation);
+        $data['total_price'] = Myclass::currencyFormat($price_calculation['total_price']);
+        $data['tax'] = Myclass::currencyFormat($price_calculation['tax']);
+        $data['grand_total'] = Myclass::currencyFormat($price_calculation['grand_total']);
+        echo json_encode($data);
+        exit;
+    }
     public function actionCreate() {
         $current_plan = RepAdminSubscriptions::model()->getCurrentPlan();
         if (empty($current_plan)) {
@@ -247,8 +284,9 @@ class RepAccountsController extends ORController {
             $model = new RepCredentials;
             $rep_admin_old_active_accounts = $model->getRepAdminActiveAccountsCount();
             $no_of_accounts_purchase = $_POST['no_of_accounts'];
+            $no_of_month = $_POST['no_of_month'];
             $total_no_of_accounts = $rep_admin_old_active_accounts + $no_of_accounts_purchase;
-            $price_list = Myclass::repAdminBuyMoreAccountsPriceCalculation($total_no_of_accounts, $no_of_accounts_purchase);
+            $price_list = Myclass::repAdminBuyMoreAccountsPriceCalculation($total_no_of_accounts, $no_of_accounts_purchase, $no_of_month);
             $return = array();
             $return['per_account_price'] = Myclass::currencyFormat($price_list['per_account_price']);
             $return['total_price'] = Myclass::currencyFormat($price_list['total_price']);
@@ -276,16 +314,17 @@ class RepAccountsController extends ORController {
 
             $rep_admin_old_active_accounts = $model->getRepAdminActiveAccountsCount();
             $no_of_accounts_purchase = $_POST['RepCredentials']['no_of_accounts_purchase'];
-
+            
             $new_subscription = array();
             $new_subscription['rep_credential_id'] = Yii::app()->user->id;
             $new_subscription['rep_admin_old_active_accounts'] = $rep_admin_old_active_accounts;
             $new_subscription['no_of_accounts_purchase'] = $no_of_accounts_purchase;
+            $new_subscription['no_of_months'] = $model->duration;
             $new_subscription['total_no_of_accounts'] = $rep_admin_old_active_accounts + $no_of_accounts_purchase;
-            $new_subscription['price_list'] = Myclass::repAdminBuyMoreAccountsPriceCalculation($new_subscription['total_no_of_accounts'], $no_of_accounts_purchase);
-
+            $new_subscription['price_list'] = Myclass::repAdminBuyMoreAccountsPriceCalculation($new_subscription['total_no_of_accounts'], $no_of_accounts_purchase, $new_subscription['no_of_months']);
+                                                         
             $price_list = $new_subscription['price_list'];
-
+            
             if ($_POST['PaymentTransaction']['pay_type'] == 2) {
                 Yii::app()->session['buy_more_accounts'] = $new_subscription;
                 $this->redirect('/optirep/repAccounts/final');
@@ -373,7 +412,7 @@ class RepAccountsController extends ORController {
         
         $new_subscription = Yii::app()->session['buy_more_accounts'];
         $price_list = $new_subscription['price_list'];
-
+        
         $sequrity_id = Myclass::getRandomString(8);
         $paypalAdv = new PaypalAdvance;
         $request = array(
@@ -397,7 +436,7 @@ class RepAccountsController extends ORController {
         //Run request and get the response
         $response = $paypalAdv->run_payflow_call($request);
         $response['mode'] = $paypalAdv::MODE;
-
+    
         if ($response['RESULT'] != 0) {
             Yii::app()->user->setFlash('danger', Myclass::t('OR596', '', 'or'));
             $this->redirect(array('buyMoreAccounts'));
@@ -565,7 +604,7 @@ class RepAccountsController extends ORController {
             $this->redirect('index');
         }
 
-        $data = Yii::app()->session['renewal'];
+        $data = Yii::app()->session['renewal'];        
         $sequrity_id = Myclass::getRandomString(8);
         //paypal advance
         $paypalAdv = new PaypalAdvance;

@@ -20,11 +20,11 @@ class RepSingleSubscriptionsController extends ORController {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('paypalRenewalCancel', 'paypalRenewalReturn', 'paypalRenewalNotify'),
+                'actions' => array('paypalRenewalCancel', 'paypalRenewalReturn', 'paypalRenewalNotify','getPrice'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'transactions', 'renewal', 'final'),
+                'actions' => array('index', 'transactions', 'renewal', 'final', 'durationRenewal'),
                 'users' => array('@'),
                 'expression' => array('RepSingleSubscriptionsController', 'allowOnlyRepSingleWithNoParent')
             ),
@@ -58,12 +58,44 @@ class RepSingleSubscriptionsController extends ORController {
         ));
     }
 
-    public function actionRenewal() {
+    public function actionDurationRenewal() {
+        $model = RepSingleSubscriptions;
+
         $no_of_accounts_purchase = 1;
         $no_of_months = 1;
         $offer_calculation = false;
         $price_calculation = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchase, $offer_calculation);
 
+
+        $this->render('renew', array(
+            'price_calculation' => $price_calculation,
+            'model' => $model,
+//            'response' => $response
+        ));
+    }
+
+    public function actionGetPrice() {
+        $no_of_accounts_purchase = 1;
+        $no_of_months = $_POST['month'];
+        $offer_calculation = false;
+        $price_calculation = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchase, $offer_calculation);
+        $data['total_price'] = Myclass::currencyFormat($price_calculation['total_price']);
+        $data['tax'] = Myclass::currencyFormat($price_calculation['tax']);
+        $data['grand_total'] = Myclass::currencyFormat($price_calculation['grand_total']);
+        echo json_encode($data);
+        exit;
+    }
+
+    public function actionRenewal() {
+        $no_of_accounts_purchase = 1;
+        if($_POST['RepSingleSubscriptions']){
+            $no_of_months = $_POST['RepSingleSubscriptions'];
+        }else{
+            $no_of_months = 1;
+        }
+        $offer_calculation = false;
+        $price_calculation = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchase, $offer_calculation);
+        
         $model_paypal = new PaymentTransaction();
         $model_paypalAdvance = new PaymentTransaction('paypal_advance');
 
@@ -101,7 +133,7 @@ class RepSingleSubscriptionsController extends ORController {
             $data['price_list'] = $price_calculation;
             $data['rep_credential_id'] = Yii::app()->user->id;
             $data['purchase_type'] = RepSingleSubscriptions::PURCHASE_TYPE_RENEWAL;
-
+           
             $repTemp = new RepTemp;
             $repTemp->rep_temp_random_id = $sequrity_id;
             $repTemp->rep_temp_key = RepTemp::REP_SINGLE_RENEWAL_REP_ACCOUNT;
@@ -191,7 +223,8 @@ class RepSingleSubscriptionsController extends ORController {
             'price_calculation' => $price_calculation,
             'model_paypal' => $model_paypal,
             'model_paypaladvance' => $model_paypalAdvance,
-            'response' => $response
+            'response' => $response,
+            'duration' => $no_of_months
         ));
     }
 

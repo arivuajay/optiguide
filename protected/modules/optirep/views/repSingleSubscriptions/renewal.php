@@ -3,6 +3,11 @@
 
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            
+            <p>
+                <?php echo Myclass::t('OR753', '', 'or') ?> : 
+                <?php echo $duration.'  '.Myclass::t('OG022', '', 'og'); ?>
+            </p>
             <p>
                 <?php echo Myclass::t('OR576', '', 'or') ?> : 
                 <?php echo Myclass::currencyFormat($price_calculation['total_price']); ?>

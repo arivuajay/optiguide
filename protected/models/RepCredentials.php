@@ -21,6 +21,7 @@ class RepCredentials extends CActiveRecord {
 
     public $subscription_type_id, $Reps1, $Reps2;
     public $no_of_accounts_purchase = 1;
+    public $duration = 1;
     public $no_of_months;
     public $old_password;
     public $new_password;
@@ -54,7 +55,7 @@ class RepCredentials extends CActiveRecord {
             array('rep_username, rep_password', 'length', 'max' => 255),
             array('rep_role', 'length', 'max' => 6),
             array('rep_status', 'length', 'max' => 1),
-            array('subscription_type_id, no_of_accounts_purchase,Reps1,Reps2, no_of_months', 'safe'),
+            array('subscription_type_id, no_of_accounts_purchase,Reps1,Reps2, no_of_months, duration', 'safe'),
             array('old_password, new_password, confirm_password', 'required', 'on' => 'changePwd'),
             array('old_password', 'findPasswords', 'on' => 'changePwd'),
             array('confirm_password', 'compare', 'compareAttribute' => 'new_password', 'on' => 'changePwd'),

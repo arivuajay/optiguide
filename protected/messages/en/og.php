@@ -76,7 +76,7 @@ return array(
 
     'OG047' => 'Find an Optical Retailer',
     'OG048' => 'All categories',
-    'OG049' => '(enter last name only)',
+    'OG049' => 'Last name',
     'OG050' => 'Categories',
 
     'OG051' => 'Welcome to Opti-Guide.com',

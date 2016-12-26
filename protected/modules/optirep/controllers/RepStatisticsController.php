@@ -461,12 +461,12 @@ class RepStatisticsController extends ORController {
                 ->group('rst.ID_TYPE_SPECIALISTE')
                 ->queryAll();
          
-         
+        $first  = strtotime('first day this month');
         $months = array();
-        for ($i = 0; $i < 6; $i++) {
-            array_push($months, date("M Y", strtotime($i . " months ago")));
+        for ($i = 6; $i >= 1; $i--) {
+            array_push($months, date('M Y', strtotime("-$i month", $first)));
         }
-
+        $months = array_reverse($months);
         $response['months'] = array();
         foreach ($months as $month) {
             array_push($response["months"], $month);

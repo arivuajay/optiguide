@@ -292,16 +292,18 @@ class Controller extends CController {
         if (!empty($result)) {
             $renewal_details = unserialize($result['rep_temp_value']);
             $price_list = $renewal_details['price_list'];
-
+            $month = '+'.$price_list['no_of_months'].' month';
             $rep_account = RepCredentials::model()->findByPk($renewal_details['rep_credential_id']);
             if ($rep_account['rep_expiry_date'] > date("Y-m-d")) {
                 $subscription_start = $rep_account['rep_expiry_date'];
                 $time = strtotime($rep_account['rep_expiry_date']);
-                $subscription_end = date("Y-m-d", strtotime("+1 month", $time));
+//                $subscription_end = date("Y-m-d", strtotime("+1 month", $time));
+                $subscription_end = date("Y-m-d", strtotime($month, $time));
                 $rep_account->rep_expiry_date = $subscription_end;
             } else {
                 $subscription_start = date('Y-m-d');
-                $subscription_end = date('Y-m-d', strtotime('+1 month'));
+//                $subscription_end = date('Y-m-d', strtotime('+1 month'));
+                $subscription_end = date('Y-m-d', strtotime($month));
                 $rep_account->rep_expiry_date = $subscription_end;
             }
             $rep_account->save(false);
@@ -382,7 +384,8 @@ class Controller extends CController {
         if (!empty($result)) {
             $subscription_details = unserialize($result['rep_temp_value']);
             $price_list = $subscription_details['price_list'];
-
+            $rep_credential = RepCredentials::model()->findByPk($subscription_details['rep_credential_id']);
+                        
             $subscription = new RepAdminSubscriptions;
             $subscription->rep_credential_id = $subscription_details['rep_credential_id'];
             $subscription->rep_subscription_type_id = $price_list['subscription_type_id'];
@@ -399,8 +402,26 @@ class Controller extends CController {
             $subscription->rep_admin_tax = $price_list['tax'];
             $subscription->rep_admin_grand_total = $price_list['grand_total'];
             $subscription->rep_admin_subscription_start = date('Y-m-d');
-            $subscription->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
+            if($rep_credential->rep_role == 'single'){
+                $subscription->rep_admin_subscription_end = date('Y-m-d', strtotime('+' . $price_list['no_of_months'] . ' month'));
+            }else{
+                $subscription->rep_admin_subscription_end = date('Y-m-d', strtotime('+1 month'));
+            }
+            
             $subscription->save(false);
+            
+            if($rep_credential->rep_role == 'single'){
+                $rep_credential->rep_role = 'admin';
+                $rep_credential->rep_expiry_date ='0000-00-00 00:00:00';
+                $rep_credential->save();
+                Yii::app()->user->setState('rep_role', 'admin');
+                
+                //Current Plan - New Subscriber Insert
+                $repAdminSubscriber = new RepAdminSubscribers();
+                $repAdminSubscriber->rep_admin_subscription_id = $subscription->rep_admin_subscription_id;
+                $repAdminSubscriber->rep_credential_id = $rep_credential->rep_credential_id;
+                $repAdminSubscriber->save(false);
+            }
 
             //Update Payment Transaction details
             $updateTransactionDetail = PaymentTransaction::model()->find("rep_temp_id = '" . $result['rep_temp_id'] . "'");
@@ -479,15 +500,17 @@ class Controller extends CController {
             $repAdminSubscription->rep_admin_tax = $price_list['tax'];
             $repAdminSubscription->rep_admin_grand_total = $price_list['grand_total'];
             $repAdminSubscription->save(false);
-
+            
+            $month = '+'.$renewal_details['no_of_months'].' month';
             foreach ($rep_credentials as $rep_credential) {
                 $rep_account = RepCredentials::model()->findByPk($rep_credential);
                 if ($rep_account['rep_expiry_date'] > date("Y-m-d")) {
                     $time = strtotime($rep_account['rep_expiry_date']);
-                    $final = date("Y-m-d", strtotime("+1 month", $time));
+//                    $final = date("Y-m-d", strtotime("+1 month", $time));
+                    $final = date("Y-m-d", strtotime($month, $time));
                     $rep_account->rep_expiry_date = $final;
                 } else {
-                    $rep_account->rep_expiry_date = date('Y-m-d', strtotime('+1 month'));
+                    $rep_account->rep_expiry_date = date('Y-m-d', strtotime($month));
                 }
                 $rep_account->save(false);
 

@@ -2,9 +2,14 @@
     <h2> <?php echo Myclass::t('OR545', '', 'or') ?> </h2>
 
     <div class="row"> 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 viewall">
+        <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 viewall">-->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <?php
-            echo CHtml::link('<i class="fa fa-arrow-circle-right"></i> ' . Myclass::t('OR536', '', 'or'), '/optirep/repSingleSubscriptions/renewal', array('class' => 'pull-left'));
+            echo CHtml::link('<i class="fa fa-arrow-circle-right"></i> ' . Myclass::t('OR536', '', 'or'), '/optirep/repSingleSubscriptions/durationRenewal', array('class' => 'pull-left viewall-new'));
+            ?>
+            
+            <?php
+            //echo CHtml::link('<i class="fa fa-plus"></i> '. Myclass::t('OR784', '', 'or'), '/optirep/repAccounts/buyMoreAccounts', array('class' => 'pull-left btn btn-success'));
             ?>
         </div>
     </div>            

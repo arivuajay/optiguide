@@ -344,5 +344,6 @@ return array(
     'OR781' => 'View counts',
     'OR782' => 'Professionals profile view count stats',
     'OR783' => 'Retailers profile view count stats',
-
+    'OR784' => 'Change package',
+    'OR785' => 'Change Your Package to Upgrade Your Account for Admin Access',
 );

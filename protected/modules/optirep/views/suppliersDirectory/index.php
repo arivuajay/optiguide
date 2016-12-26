@@ -9,7 +9,7 @@
         $parampage = "category";
     }
     ?>
-    <span class="text-right"><?php echo Myclass::t('OR778', '', 'or').': '.$item_count;?></span>
+    <span class="text-right"><?php echo Myclass::t('OR778', '', 'or').' : '.$item_count;?></span>
     <h2><?php echo Myclass::t('OR040', '', 'or'); ?> </h2>    
     <div class="search-list">        
         <?php

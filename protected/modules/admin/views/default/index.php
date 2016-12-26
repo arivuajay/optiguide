@@ -64,9 +64,13 @@ $view = "View All <i class='fa fa-arrow-circle-right'></i>";
         <?php
         // Display register stats per month for optiguide.com
         $months = array();
-        for ($i = 0; $i < 6; $i++) {
-            array_push($months, date("M Y", strtotime($i . " months ago")));
+        $first  = strtotime('first day this month');
+
+        for ($i = 6; $i >= 1; $i--) {
+//            array_push($months, date("M Y", strtotime($i . " months ago")));
+            array_push($months, date('M Y', strtotime("-$i month", $first)));
         }
+        $months = array_reverse($months);
 
         $response['months'] = array();
         foreach ($months as $month) {
@@ -183,11 +187,13 @@ $view = "View All <i class='fa fa-arrow-circle-right'></i>";
         // Display register stats per month for optiguide.com
         $months = array();
         $response = array();
+        $first  = strtotime('first day this month');
 
-        for ($i = 0; $i < 6; $i++) {
-            array_push($months, date("M Y", strtotime($i . " months ago")));
+        for ($i = 6; $i >= 1; $i--) {
+//            array_push($months, date("M Y", strtotime($i . " months ago")));
+            array_push($months, date('M Y', strtotime("-$i month", $first)));
         }
-
+        $months = array_reverse($months);
         $response['months'] = array();
         foreach ($months as $month) {
             array_push($response["months"], $month);

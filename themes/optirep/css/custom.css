@@ -639,3 +639,15 @@ div#ui-datepicker-div{
   padding: 15px;
   width: 100%;
 }
+
+.viewall-new {
+    
+  background: none repeat scroll 0 0 #398aca;
+  border-radius: 4px;
+  color: #ffffff;
+  line-height: 25px;
+  padding: 5px;
+  text-align: center;
+  width: auto;
+  margin-right: 5px;
+}

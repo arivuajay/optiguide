@@ -21,32 +21,47 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group"> 
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                           <b> <?php echo Myclass::t('OR753', '', 'or') ?></b>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="no_of_accounts">
+                                
+                                <?php 
+                                $no_of_months = Myclass::noOfMonths();
+                                echo $form->dropDownList($model,'duration',$no_of_months, array('class' => "form-field")); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <?php $this->endWidget(); ?>
             </div>
 
 <!--            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <?php
-                $form = $this->beginWidget('CActiveForm', array(
-                    'id' => 'buy-more-accounts-form',
-                ));
+//                $form = $this->beginWidget('CActiveForm', array(
+//                    'id' => 'buy-more-accounts-form',
+//                ));
                 ?>
                 <div class="card-details-cont">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
-                        <?php echo $form->hiddenField($model_paypal, 'pay_type', array('value' => 1)); ?> 
+                        <?php //echo $form->hiddenField($model_paypal, 'pay_type', array('value' => 1)); ?> 
                         <input type="hidden" id="model_paypal_no_of_accounts_purchase" name="RepCredentials[no_of_accounts_purchase]" class="rep_cred_no_of_acc_purchase">
-                        <h4> &nbsp; <?php echo Myclass::t('OR651', '', 'or') ?> </h4> 
+                        <h4> &nbsp; <?php //echo Myclass::t('OR651', '', 'or') ?> </h4> 
                         <?php
-                        $paypal_buttton = CHtml::image($this->themeUrl . "/images/express-checkout-hero.png", "paypal", array('img-responsive'));
-                        echo CHtml::tag('button', array(
-                            'name' => 'btnSubmit',
-                            'value' => 'Payfee',
-                            'type' => 'submit',
-                            'class' => 'paypal_btn'
-                                ), $paypal_buttton);
+//                        $paypal_buttton = CHtml::image($this->themeUrl . "/images/express-checkout-hero.png", "paypal", array('img-responsive'));
+//                        echo CHtml::tag('button', array(
+//                            'name' => 'btnSubmit',
+//                            'value' => 'Payfee',
+//                            'type' => 'submit',
+//                            'class' => 'paypal_btn'
+//                                ), $paypal_buttton);
                         ?>
                     </div>
                 </div>  
-                <?php $this->endWidget(); ?>
+                <?php //$this->endWidget(); ?>
             </div>-->
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
@@ -67,6 +82,7 @@
                             echo $form->hiddenField($model_paypaladvance, 'pay_type', array('value' => 2));
                             ?>
                             <input type="hidden" id="model_paypaladvance_no_of_accounts_purchase" name="RepCredentials[no_of_accounts_purchase]" class="rep_cred_no_of_acc_purchase">
+                            <input type="hidden" id="RepCredentials_duration" name="RepCredentials[duration]" class="rep_duration">
 <!--                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <h3> <?php echo Myclass::t('OR652', '', 'or') ?> </h3>
                             </div>-->
@@ -145,7 +161,47 @@
                 </div>
             </div>
         </div>
-
+        </div>
+    <div class="clearfix"> </div>
+                 
+        <h3><?php echo Myclass::t('OR569', '', 'or');?>:</h3>
+        <?php if(Yii::app()->user->rep_role == 'single'){?>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p><?php echo Myclass::t('OR785', '', 'or');?></p>
+        </div>
+        <?php } ?>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">       
+            <div role="alert" class="alert alert-info subscriptionnotify">
+            <strong><?php echo Myclass::t('OR769', '', 'or');?></strong>
+            <p>1 <?php echo Myclass::t('OR755', '', 'or');?> - 19.95 CAD/<?php echo Myclass::t('OR755', '', 'or');?> </p>
+            <p>6 <?php echo Myclass::t('OR755', '', 'or');?> - 18.95 CAD/<?php echo Myclass::t('OR755', '', 'or');?> </p> 
+            <p>1 <?php echo Myclass::t('OR765', '', 'or');?>  - 17.95 CAD/<?php echo Myclass::t('OR755', '', 'or');?> </p>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">  
+            <div role="alert" class="alert alert-info subscriptionnotify">
+            <strong><?php echo Myclass::t('OR770', '', 'or');?></strong>
+            <p>1 <?php echo Myclass::t('OR755', '', 'or');?> - 17.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p>
+            <p>6 <?php echo Myclass::t('OR755', '', 'or');?> - 16.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p> 
+            <p>1 <?php echo Myclass::t('OR765', '', 'or');?>  - 15.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">   
+            <div role="alert" class="alert alert-info subscriptionnotify">
+            <strong><?php echo Myclass::t('OR771', '', 'or');?></strong>
+            <p>1 <?php echo Myclass::t('OR755', '', 'or');?> - 15.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p>
+            <p>6 <?php echo Myclass::t('OR755', '', 'or');?> - 14.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p> 
+            <p>1 <?php echo Myclass::t('OR765', '', 'or');?>  - 13.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">  
+            <div role="alert" class="alert alert-info subscriptionnotify">
+            <strong><?php echo Myclass::t('OR772', '', 'or');?></strong>
+            <p>1 <?php echo Myclass::t('OR755', '', 'or');?> - 12.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p>
+            <p>6 <?php echo Myclass::t('OR755', '', 'or');?> - 11.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p> 
+            <p>1 <?php echo Myclass::t('OR765', '', 'or');?>  - 10.95 CAD/<?php echo Myclass::t('OR773', '', 'or');?> </p>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -158,19 +214,28 @@ $js = <<<EOD
         $("body").on("change", "#RepCredentials_no_of_accounts_purchase", function() {
             getAccountPrice();
         });
+        $("body").on("change", "#RepCredentials_duration", function() {
+            getAccountPrice();
+        });
         
         $("body").on("click", ".input-group-btn", function() {
             getAccountPrice();
         });
         
         $('.no_of_accounts_input').bootstrapNumber();
+        
+        
     });
         
         
     function getAccountPrice() {
         var no_of_accounts = $("#RepCredentials_no_of_accounts_purchase").val();
         $('input.rep_cred_no_of_acc_purchase').val(no_of_accounts);
-        var dataString = 'no_of_accounts='+ no_of_accounts;
+        
+        var no_of_month = $('#RepCredentials_duration').val();
+        $('input.rep_duration').val(no_of_month);
+        var dataString = 'no_of_accounts='+ no_of_accounts +'&no_of_month='+ no_of_month;
+//        var dataString = 'no_of_accounts='+ no_of_accounts;
         $.ajax({
             type: "POST",
             url: '{$ajaxPriceListURL}',

@@ -72,7 +72,7 @@ return array(
     
     'OG047' => 'Trouver un détaillant',
     'OG048' => 'Toutes les catégories',
-    'OG049' => '(entrez nom de famille seulement )',
+    'OG049' => 'Nom de famille',
     'OG050' => 'Catégories',
     
     'OG051' => 'Bienvenue sur Opti-Guide.com',

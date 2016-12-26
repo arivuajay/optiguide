@@ -9,10 +9,10 @@ if (in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
     $adminemail = 'nachiyappan.arumugam@arkinfotec.com';
 } else {
     $mailsendby  = 'phpmail';
-     $adminurl   = 'http://webadmin.opti-guide.com/';
-     $repurl     = 'http://opti-rep.com/'; 
-     $guideurl   = 'http://opti-guide.com/'; 
-     $adminemail = 'bretoncom2@gmail.com';
+    $adminurl   = 'http://webadmin.opti-guide.com/';
+    $repurl     = 'http://opti-rep.com/'; 
+    $guideurl   = 'http://opti-guide.com/'; 
+    $adminemail = 'bretoncom2@gmail.com';
      //info@bretoncom.com
 }
 

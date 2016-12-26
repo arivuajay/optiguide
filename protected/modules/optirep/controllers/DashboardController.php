@@ -107,23 +107,33 @@ class DashboardController extends ORController {
            
             // FOR OPTIREP USRES ONLY
             /** Users registered in optiguide **/
+            $first  = strtotime('first day this month');
             $months = array();
+            $months_en = array();
+            
+            for ($i = 6; $i >= 1; $i--) {
+                array_push($months_en, date('M Y', strtotime("-$i month", $first)));
+            }
+            $months_en = array_reverse($months_en);
+            
             if (Yii::app()->session['language'] == 'FR') { 
-                for ($i = 0; $i < 6; $i++) {
+                for ($i = 6; $i >= 1; $i--) {
 
-                    $m      = date("n", strtotime($i . " months ago"));
+                    $m      = date("n", strtotime("-$i month", $first));
                     $mon    = Myclass::getMonths_M($m);
                     $year   = date("Y", strtotime($i . " months ago"));
                     $get_my = $mon.' '.$year;
                     array_push($months, $get_my);
                 }
+                $months = array_reverse($months);
             }else{
-                for ($i = 0; $i < 6; $i++) {
-                    array_push($months, date("M Y", strtotime($i . " months ago")));
-                }
-            }
+                $months = $months_en;
+//                for ($i = 1; $i < 6; $i++) {
+//                    array_push($months, date("M Y", strtotime($i . " months ago")));
+//                }
+            }            
     //            array_push($months, date("M Y", strtotime($i . " months ago")));
-
+       
             $response['months'] = array();
             foreach ($months as $month) {
                 array_push($response["months"], $month);
@@ -135,7 +145,7 @@ class DashboardController extends ORController {
                 // Count  profile view counts  per month
                 $response['viewcounts'] = array();
                 $viewcounts = '';
-                foreach ($months as $month) {
+                foreach ($months_en as $month) {
 
                     $searchdate = date("Y-m", strtotime($month));
                     if ($utype == "Professionals" || $utype=="Professionnels") {

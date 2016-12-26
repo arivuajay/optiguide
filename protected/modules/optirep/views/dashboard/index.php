@@ -39,17 +39,17 @@ if ($topbanner != '') {
                         'type' => 'column'
                     ),
                     'title' => array(
-                        'text' => 'All profile view count stats'
+                        'text' => Myclass::t('OR779', '', 'or'),
                     ),
                     'subtitle' => array(
-                        'text' => 'Last 6 days'
+                        'text' => Myclass::t('OR780', '', 'or')
                     ),
                     'xAxis' => array(
                         'categories' => $response['dates']
                     ),
                     'yAxis' => array(
                         'title' => array(
-                            'text' => 'View counts'
+                            'text' => Myclass::t('OR781', '', 'or')
                         ),
                         'min' => 0,
                         'max' => 50,
@@ -65,7 +65,7 @@ if ($topbanner != '') {
         }    
         
     }else if (($usrinfo->rep_role == RepCredentials::ROLE_SINGLE) && Myclass::stats_display())
-    {  
+    {          
         $this->widget('booster.widgets.TbHighCharts', array(
             'options' => array(
                 'chart' => array(

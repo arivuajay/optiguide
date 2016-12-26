@@ -898,6 +898,7 @@ class SuppliersDirectoryController extends Controller {
                         $amount = $profile_logo_price;    
                         $model->profile_expirydate = $profile_expirydate;
                         $model->logo_expirydate = $logo_expirydate;
+                        $model->renewal_flag = 0;
                         $item_name = "Suppliers Subscription - Profile & logo";
 
                     }else if($sub_type_profile==1 && $sub_type_logo==0)
@@ -905,6 +906,7 @@ class SuppliersDirectoryController extends Controller {
                         $subscriptiontype = "1";
                         $amount = $profile_price;
                         $model->profile_expirydate = $profile_expirydate;
+                        $model->renewal_flag = 0;
                         $item_name = "Suppliers Subscription - Profile only";
 
                     }else if($sub_type_profile==0 && $sub_type_logo==1)
