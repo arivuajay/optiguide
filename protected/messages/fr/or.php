@@ -321,7 +321,7 @@ return array(
     'OR760' => 'COMPTE ADMINISTRATEUR',
     'OR761' => 'ACCESSIBILITÉ',
     'OR762' => 'ABONNEMENT',
-    'OR763' => 'Voir les fonctionalités',
+    'OR763' => 'Voir les fonctionnalités',
     'OR764' => 'La combinaison Nom d’utilisateur/Mot de passe n’est pas correcte',
     'OR765' => 'an',
     'OR766' => 'Inscriptions d’utilisateurs sur Opti-Guide.com',

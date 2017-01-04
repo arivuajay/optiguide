@@ -230,7 +230,7 @@ class PaymentTransaction extends CActiveRecord {
         ));
     }
 
-     public function search_sales_rep($id) {
+    public function search_sales_rep($id) {
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
@@ -293,6 +293,42 @@ class PaymentTransaction extends CActiveRecord {
             return "Standard Paypal";
         elseif ($pay_type == 2)
             return "Advance Paypal";
+    }
+
+    public function getPaymentdesc() {
+        $singlesub_id = $this->rep_single_subscription_id;
+        $adminsub_id = $this->rep_admin_subscription_id;
+
+        $paymentdesc = $this->item_name;
+
+        if ($singlesub_id) {
+            $havetrans = RepSingleSubscriptions::model()->findByPk($singlesub_id);
+            if ($havetrans) {
+                $rep_single_no_of_months = $havetrans->rep_single_no_of_months;
+
+                if ($rep_single_no_of_months == 12)
+                    $duration = "1 Year";
+                else
+                    $duration = $rep_single_no_of_months . " Month";
+
+                $paymentdesc .= " ( Single Account , " . $duration . " )";
+            }
+        }else if ($adminsub_id) {
+            $havetrans = RepAdminSubscriptions::model()->findByPk($adminsub_id);
+            if ($havetrans) {
+                $no_of_accounts_purchased = $havetrans->no_of_accounts_purchased . " accounts";
+                $rep_admin_no_of_months = $havetrans->rep_admin_no_of_months;
+
+                if ($rep_admin_no_of_months == 12)
+                    $duration = "1 Year";
+                else
+                    $duration = $rep_admin_no_of_months . " Month";
+
+                $paymentdesc .= " ( " . $no_of_accounts_purchased . " , " . $duration . " )";
+            }
+        }
+
+        return $paymentdesc;
     }
 
 }

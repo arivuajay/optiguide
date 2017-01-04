@@ -13,7 +13,12 @@ if($model->pay_type=="1")
 { 
 // PAYPAL    
     $attrbs =    array(				
-                        'item_name',
+                        //'item_name',
+                        array(
+                            'label' => "Nom de l'abonnement",
+                            'type' => 'raw',
+                            'value' => $model->paymentdesc
+                        ),
                         'invoice_number',
                         'subscription_price',
                         'tax',
@@ -34,7 +39,12 @@ if($model->pay_type=="1")
 {
 // PAYPAL  Advance
     $attrbs =    array(				
-                        'item_name',                       		
+                        //'item_name',                       		
+                        array(
+                            'label' => "Nom de l'abonnement",
+                            'type' => 'raw',
+                            'value' => $model->paymentdesc
+                        ),
                         'invoice_number',
                         'subscription_price',
                         'tax',
