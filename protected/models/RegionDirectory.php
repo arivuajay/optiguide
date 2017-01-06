@@ -40,7 +40,7 @@ class RegionDirectory extends CActiveRecord {
             array('ABREVIATION_FR, ABREVIATION_EN', 'length', 'max' => 10),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('NOM_PAYS_FR,federal_rates,provincial_rates,taxt_type', 'safe'),
+            array('NOM_PAYS_FR', 'safe'),
             array('ID_REGION, ID_PAYS, NOM_REGION_FR, NOM_REGION_EN, ABREVIATION_FR, ABREVIATION_EN, fullname', 'safe', 'on' => 'search'),
         );
     }

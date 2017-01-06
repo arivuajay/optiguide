@@ -230,7 +230,7 @@ class PaymentTransaction extends CActiveRecord {
         ));
     }
 
-    public function search_sales_rep($id) {
+     public function search_sales_rep($id) {
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
@@ -295,7 +295,7 @@ class PaymentTransaction extends CActiveRecord {
             return "Advance Paypal";
     }
 
-    public function getPaymentdesc() {
+      public function getPaymentdesc() {
         $singlesub_id = $this->rep_single_subscription_id;
         $adminsub_id = $this->rep_admin_subscription_id;
 
