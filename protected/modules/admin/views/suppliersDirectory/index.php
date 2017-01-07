@@ -17,9 +17,9 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 <div class="col-lg-12 col-md-12">
     <div class="row">
         <?php //echo CHtml::link('<i class="fa fa-plus"></i>&nbsp;&nbsp; Ajouter un fournisseur ', array('/admin/suppliersDirectory/create'), array('class' => 'btn btn-success pull-right')); ?>
-         <?php
+        <?php
         $this->widget(
-            'application.components.MyTbButton', array(
+                'application.components.MyTbButton', array(
             'label' => 'Ajouter un fournisseur',
             'icon' => 'fa fa-plus',
             'url' => array('/admin/suppliersDirectory/create'),
@@ -33,9 +33,15 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 </div>
 
 <div class="col-lg-12 col-md-12">&nbsp;</div>
-<?php  $this->renderPartial('_search', array('model' => $model));  ?>
+<?php $this->renderPartial('_search', array('model' => $model)); ?>
 
 <div class="col-lg-12 col-md-12">
+    <p>
+        <i class='fa fa-circle text-green'></i>  Visible in the website because admin gave an access.<br>
+        <i class='fa fa-circle text-yellow'></i> Not Visible in the website because admin deactive their access.<br>
+        <i class='fa fa-circle text-purple'></i> Not Visible in the website because admin deactive their visibility.<br>
+        <i class='fa fa-circle text-red'></i>    Not Visible in the website and because deactive their visibility and access.
+    </p>
     <div class="row">
         <?php
         $gettypes = CHtml::listData(SupplierType::model()->findAll(), 'ID_TYPE_FOURNISSEUR', 'TYPE_FOURNISSEUR_FR');
@@ -44,9 +50,9 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
             array('header' => 'SN.',
                 'value' => '$this->grid->dataProvider->pagination->currentPage * $this->grid->dataProvider->pagination->pageSize + ($row+1)',
             ),
-             array(
-              'name' =>  'COMPAGNIE',
-              'sortable' => false,
+            array(
+                'name' => 'COMPAGNIE',
+                'sortable' => false,
             ),
             array(
                 'header' => 'Type de fournisseurs',
@@ -61,13 +67,33 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'type' => 'raw',
                 'sortable' => false,
                 'value' => function($data) {
-            echo ($data->bAfficher_site == 1) ? "<i class='fa fa-circle text-green'></i>" : "<i class='fa fa-circle text-red'></i>";
+                if ($data->bAfficher_site == 1 && $data->userDirectory2->status == 1){
+                    echo "<i class='fa fa-circle text-green'></i>";
+                }else if ($data->bAfficher_site == 1 && $data->userDirectory2->status == 0){
+                    echo "<i class='fa fa-circle text-yellow'></i>";
+                }else if ($data->bAfficher_site == 0 && $data->userDirectory2->status == 1){
+                    echo "<i class='fa fa-circle text-purple'></i>";
+                }else if ($data->bAfficher_site == 0 && $data->userDirectory2->status == 0){
+                    echo "<i class='fa fa-circle text-red'></i>";
+                }
         },
-                'filter' => CHtml::activeDropDownList($model, 'bAfficher_site', array("1" => "Activés", "0" => "Désactivés"), array('class' => 'form-control', 'prompt' => 'Tous')),
+                'filter' => CHtml::activeDropDownList($model, 'bAfficher_site', array("1" => "Activés", "0" => "Désactivés" , "2"=> "Désactivés (Access Deactive)"), array('class' => 'form-control', 'prompt' => 'Tous')),
             ),
-             array(
-              'name' => 'ID_CLIENT',
-              'sortable' => false,
+            array(
+                'header' => 'Profile Expiry Date',
+                'name' => 'profile_expirydate',
+                'htmlOptions' => array('style' => 'width: 180px;text-align:center', 'vAlign' => 'middle'),
+                'type' => 'raw',
+                'sortable' => false,
+                'value' => function($data) {
+            echo ($data->profile_expirydate != "0000-00-00 00:00:00") ? date("d-m-Y", strtotime($data->profile_expirydate)) : "-";
+        },
+                'filter' => CHtml::activeDropDownList($model, 'profile_expirydate_filter', array("1" => "Expired", "0" => "Non Expired"), array('class' => 'form-control', 'prompt' => 'Tous')),
+            ),
+              
+            array(
+                'name' => 'ID_CLIENT',
+                'sortable' => false,
             ),
 //            array(
 //                'header' => "Accès",

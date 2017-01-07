@@ -81,6 +81,7 @@
                         array('label' => '<i class="fa fa-angle-double-right"></i> <span>Gestion des fournisseurs</span>', 'url' => array('/admin/suppliersDirectory/index'), 'active' => $_controller == 'suppliersDirectory',  'visible' => '1'),
                         array('label' => '<i class="fa fa-angle-double-right"></i> <span>Fournisseurs Transactions De Paiement </span>', 'url' => array('/admin/paymentTransaction/index'), 'active' => ($_controller == 'paymentTransaction' && $_action=="index"),  'visible' => '1'),
                         array('label' => '<i class="fa fa-angle-double-right"></i> <span>Paramètres </span>', 'url' => array('/admin/supplierSubscriptionPrice/index'), 'active' => ($_controller == 'supplierSubscriptionPrice'&& $_action=="index"),  'visible' => '1'),
+                        array('label' => '<i class="fa fa-angle-double-right"></i> <span>Non Access Accounts </span>', 'url' => array('/admin/suppliersDirectory/nonaccessaccounts'), 'active' => ($_controller == 'suppliersDirectory'&& $_action=="nonaccessaccounts"),  'visible' => '1'),
                     ),
                 ),
                 array('label' => '<i class="fa fa-briefcase"></i> <span>Professionnels</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',

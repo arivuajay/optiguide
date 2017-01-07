@@ -28,7 +28,7 @@ class UserDirectory extends CActiveRecord
          public $new_password;
          public $repeat_password;
          public $username;
-         public $email;
+         public $email,$deleted_suppliers;
     
 	/**
 	 * @return string the associated database table name
@@ -60,7 +60,7 @@ class UserDirectory extends CActiveRecord
                     // array('USR', 'safe', 'readOnly'=>true , 'on'=>'update'),
                     array('COURRIEL','email'),
                     array('bSubscription_envision,bSubscription_envue,ABONNE_MAILING,ABONNE_PROMOTION,COURRIEL,print_envision,print_envue','Checksubscriptionmail' , 'on'=>'frontend'),        
-                    array('ID_UTILISATEUR, LANGUE, PREFIXE, NOM_UTILISATEUR, USR, PWD, COURRIEL, ABONNE_MAILING, ABONNE_PROMOTION, ABONNE_TRANSITION, IS_FIRST_LOG, NOM_TABLE, ID_RELATION, MUST_VALIDATE, sGuid, bSubscription_envision, bSubscription_envue,print_envision,print_envue', 'safe', 'on'=>'search'),
+                    array('ID_UTILISATEUR, LANGUE, PREFIXE, NOM_UTILISATEUR, USR, PWD, COURRIEL, ABONNE_MAILING, ABONNE_PROMOTION, ABONNE_TRANSITION, IS_FIRST_LOG, NOM_TABLE, ID_RELATION, MUST_VALIDATE, sGuid, bSubscription_envision, bSubscription_envue,print_envision,print_envue,deleted_suppliers', 'safe', 'on'=>'search'),
                     
                     array('status,print_envision,print_envue','safe'),
                     array('old_password, new_password, repeat_password', 'required', 'on' => 'changePwd'),

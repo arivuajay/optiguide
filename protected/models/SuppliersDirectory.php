@@ -48,6 +48,7 @@
 class SuppliersDirectory extends CActiveRecord {
 
     public $country, $region, $archivecat, $IDSECTION, $Products1, $Products2, $ID_SECTION, $PROD_SERVICE, $pfile, $autre_ville ,$keyword;
+    public $profile_expirydate_filter,$status_filter;
     static $NOM_TABLE = 'Fournisseurs';
 
     /**
@@ -95,7 +96,7 @@ class SuppliersDirectory extends CActiveRecord {
 //            array('renewal_flag', 'number'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('country,region,archivecat,IDSECTION,Products1,Products2,ID_SECTION,PROD_SERVICE,subscription_type,expirydate,pfile,proof_file,CREATED_DATE, autre_ville,renewal_flag', 'safe'),
+            array('country,region,archivecat,IDSECTION,Products1,Products2,ID_SECTION,PROD_SERVICE,subscription_type,expirydate,pfile,proof_file,CREATED_DATE, autre_ville,renewal_flag,profile_expirydate_filter,status_filter', 'safe'),
             array('keyword,ID_FOURNISSEUR, COMPAGNIE, ID_CLIENT, ID_TYPE_FOURNISSEUR, ADRESSE, ADRESSE2, ID_VILLE, CODE_POSTAL, TELEPHONE, TELECOPIEUR, TITRE_TEL_SANS_FRAIS, TITRE_TEL_SANS_FRAIS_EN, TEL_SANS_FRAIS, TITRE_TEL_SECONDAIRE, TITRE_TEL_SECONDAIRE_EN, TEL_SECONDAIRE, COURRIEL, SITE_WEB, SUCCURSALES, ETABLI_DEPUIS, NB_EMPLOYES, PERSONNEL_NOM1, PERSONNEL_TITRE1, PERSONNEL_TITRE1_EN, PERSONNEL_NOM2, PERSONNEL_TITRE2, PERSONNEL_TITRE2_EN, PERSONNEL_NOM3, PERSONNEL_TITRE3, PERSONNEL_TITRE3_EN, DATE_MODIFICATION, REGIONS_FR, REGIONS_EN, bAfficher_site, iId_fichier', 'safe', 'on' => 'search'),
             array('TELEPHONE, TELECOPIEUR, TEL_SANS_FRAIS, TEL_SECONDAIRE', 'phoneNumber'),
             array('pfile', 'file', 'types' => 'jpg, jpeg, doc, pdf', 'allowEmpty' => true, 'safe' => false, 'on' => 'backend'),
@@ -114,6 +115,7 @@ class SuppliersDirectory extends CActiveRecord {
             'archiveFichier' => array(self::BELONGS_TO, 'ArchiveFichier', 'iId_fichier'),
             'userDirectory' => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION'),
             'paymentTransaction' => array(self::HAS_MANY, 'PaymentTransaction', 'user_id'),
+            'userDirectory2' => array(self::HAS_ONE, 'UserDirectory', 'ID_RELATION'),
         );
     }
 
@@ -236,14 +238,104 @@ class SuppliersDirectory extends CActiveRecord {
         $criteria->compare('PERSONNEL_TITRE3_EN', $this->PERSONNEL_TITRE3_EN, true);
         $criteria->compare('DATE_MODIFICATION', $this->DATE_MODIFICATION, true);
         $criteria->compare('REGIONS_FR', $this->REGIONS_FR, true);
-        $criteria->compare('REGIONS_EN', $this->REGIONS_EN, true);
-        $criteria->compare('bAfficher_site', $this->bAfficher_site);
+        $criteria->compare('REGIONS_EN', $this->REGIONS_EN, true);      
         $criteria->compare('iId_fichier', $this->iId_fichier);
+        
+        if($this->profile_expirydate_filter!=''){
+            $_profile_expirydate = $this->profile_expirydate_filter;
+            $today_date = date("Y-m-d ");
+            if($_profile_expirydate==1)
+            $criteria->addCondition("(DATEDIFF(t.profile_expirydate,'$today_date') IS NULL || DATEDIFF(t.profile_expirydate,'$today_date') <= 0 ) ");
+            else
+            $criteria->addCondition("(DATEDIFF(t.profile_expirydate,'$today_date') > 0 ) ");
+        }
+        
+        if($this->bAfficher_site!=''){
+            $_status_filter = $this->bAfficher_site; 
+            if($_status_filter==1)
+            {    
+                $criteria->addCondition("userDirectory2.status = 1 and bAfficher_site = 1");            
+            }else if($_status_filter==2){
+                $criteria->addCondition("userDirectory2.status = 0 and bAfficher_site = 1"); 
+            } else {
+                $criteria->addCondition("userDirectory2.status in (1,0) and bAfficher_site=0"); 
+            }
+        }
+        
+        $criteria->addCondition("userDirectory2.NOM_TABLE ='Fournisseurs' and userDirectory2.deleted_suppliers=0");
+        
         if($this->keyword!=''){
             $_findword = addslashes($this->keyword);
             $criteria->addCondition("t.ID_CLIENT LIKE '%".$_findword."%' OR t.COURRIEL LIKE '%".$_findword."%' OR t.CODE_POSTAL LIKE '%".$_findword."%' OR t.TELEPHONE LIKE '%".$_findword."%' OR t.TELECOPIEUR LIKE '%".$_findword."%' OR t.ADRESSE LIKE '%".$_findword."%' OR t.ADRESSE2 LIKE '%".$_findword."%' OR t.SITE_WEB LIKE '%".$_findword."%' OR t.COMPAGNIE LIKE '%".$_findword."%' OR t.TEL_SANS_FRAIS LIKE '%".$_findword."%' OR t.TEL_SECONDAIRE LIKE '%".$_findword."%' OR t.SUCCURSALES LIKE '%".$_findword."%'");
         }
-        $criteria->with = 'supplierType';
+        
+        //$criteria->with = array('supplierType','userDirectory');
+         $criteria->with = array(
+            'supplierType' => array('alias'=> 'supplierType', 'together' => true, ),
+            'userDirectory2' => array('alias'=> 'userDirectory2', 'together' => true, ),            
+        );
+        $criteria->together = true;
+        $criteria->order = 'supplierType.TYPE_FOURNISSEUR_FR ASC, t.COMPAGNIE ASC';
+
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => PAGE_SIZE,
+            )
+        ));
+    }
+    
+    public function search_nonaccess() {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria = new CDbCriteria;
+
+        $criteria->compare('ID_FOURNISSEUR', $this->ID_FOURNISSEUR);
+        $criteria->compare('COMPAGNIE', $this->COMPAGNIE, true);
+        $criteria->compare('ID_CLIENT', $this->ID_CLIENT, true);
+        $criteria->compare('t.ID_TYPE_FOURNISSEUR', $this->ID_TYPE_FOURNISSEUR);
+        $criteria->compare('ADRESSE', $this->ADRESSE, true);
+        $criteria->compare('ADRESSE2', $this->ADRESSE2, true);
+        $criteria->compare('ID_VILLE', $this->ID_VILLE);
+        $criteria->compare('CODE_POSTAL', $this->CODE_POSTAL, true);
+        $criteria->compare('TELEPHONE', $this->TELEPHONE, true);
+        $criteria->compare('TELECOPIEUR', $this->TELECOPIEUR, true);
+        $criteria->compare('TITRE_TEL_SANS_FRAIS', $this->TITRE_TEL_SANS_FRAIS, true);
+        $criteria->compare('TITRE_TEL_SANS_FRAIS_EN', $this->TITRE_TEL_SANS_FRAIS_EN, true);
+        $criteria->compare('TEL_SANS_FRAIS', $this->TEL_SANS_FRAIS, true);
+        $criteria->compare('TITRE_TEL_SECONDAIRE', $this->TITRE_TEL_SECONDAIRE, true);
+        $criteria->compare('TITRE_TEL_SECONDAIRE_EN', $this->TITRE_TEL_SECONDAIRE_EN, true);
+        $criteria->compare('TEL_SECONDAIRE', $this->TEL_SECONDAIRE, true);
+        $criteria->compare('COURRIEL', $this->COURRIEL, true);
+        $criteria->compare('SITE_WEB', $this->SITE_WEB, true);
+        $criteria->compare('SUCCURSALES', $this->SUCCURSALES, true);
+        $criteria->compare('ETABLI_DEPUIS', $this->ETABLI_DEPUIS, true);
+        $criteria->compare('NB_EMPLOYES', $this->NB_EMPLOYES, true);
+        $criteria->compare('PERSONNEL_NOM1', $this->PERSONNEL_NOM1, true);
+        $criteria->compare('PERSONNEL_TITRE1', $this->PERSONNEL_TITRE1, true);
+        $criteria->compare('PERSONNEL_TITRE1_EN', $this->PERSONNEL_TITRE1_EN, true);
+        $criteria->compare('PERSONNEL_NOM2', $this->PERSONNEL_NOM2, true);
+        $criteria->compare('PERSONNEL_TITRE2', $this->PERSONNEL_TITRE2, true);
+        $criteria->compare('PERSONNEL_TITRE2_EN', $this->PERSONNEL_TITRE2_EN, true);
+        $criteria->compare('PERSONNEL_NOM3', $this->PERSONNEL_NOM3, true);
+        $criteria->compare('PERSONNEL_TITRE3', $this->PERSONNEL_TITRE3, true);
+        $criteria->compare('PERSONNEL_TITRE3_EN', $this->PERSONNEL_TITRE3_EN, true);
+        $criteria->compare('DATE_MODIFICATION', $this->DATE_MODIFICATION, true);
+        $criteria->compare('REGIONS_FR', $this->REGIONS_FR, true);
+        $criteria->compare('REGIONS_EN', $this->REGIONS_EN, true);
+        $criteria->compare('bAfficher_site', $this->bAfficher_site);
+        $criteria->compare('iId_fichier', $this->iId_fichier);
+              
+        $criteria->addCondition(new CDbExpression("NOT EXISTS (
+	SELECT ru.ID_UTILISATEUR AS UID , ru.ID_RELATION, ru.NOM_TABLE , ru.status
+	FROM repertoire_utilisateurs AS ru
+	WHERE t.ID_FOURNISSEUR = ru.ID_RELATION AND ru.NOM_TABLE='Fournisseurs'	
+        )"));
+             
+        $criteria->with = array(
+            'supplierType' => array('alias'=> 'supplierType', 'together' => true, ),           
+        );
+        $criteria->together = true;
         $criteria->order = 'supplierType.TYPE_FOURNISSEUR_FR ASC, t.COMPAGNIE ASC';
 
         return new CActiveDataProvider($this, array(

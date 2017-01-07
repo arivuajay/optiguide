@@ -32,7 +32,7 @@ class SuppliersDirectoryController extends OGController {
         return array_merge(
                 parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('finaltmp','renewalmail','getbrand', 'detect_supplier', 'create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify', 'renewpaypalnotify', 'delproducts'),
+                'actions' => array('finaltmp','renewalmail','getbrand', 'detect_supplier', 'create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify', 'renewpaypalnotify', 'delproducts','delete_supplier'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -49,6 +49,41 @@ class SuppliersDirectoryController extends OGController {
                 )
         );
     }
+    
+    public function actionDelete_supplier() {
+
+        // Get all records list  with limit
+        $supplier_query1 = Yii::app()->db->createCommand() //this query contains all the data
+                ->select('ID_FOURNISSEUR')
+                ->from(array('repertoire_fournisseurs f'))
+                ->order('ID_FOURNISSEUR ASC')
+                ->queryAll();
+
+        foreach ($supplier_query1 as $finfo1) {
+            $sup_id = $finfo1['ID_FOURNISSEUR'];
+
+            $supplier_query2 = Yii::app()->db->createCommand() //this query contains all the data
+                    ->select('ru.ID_UTILISATEUR AS UID , ru.ID_RELATION,  f.ID_FOURNISSEUR')
+                    ->from(array('repertoire_fournisseurs f', 'repertoire_utilisateurs ru'))
+                    ->where("f.ID_FOURNISSEUR = ru.ID_RELATION AND ru.NOM_TABLE='Fournisseurs' and ru.ID_RELATION=" . $sup_id)
+                    ->order('ru.ID_RELATION , UID ASC')
+                    ->queryAll();
+            $k = 0;
+            foreach ($supplier_query2 as $finfo2) {
+                if ($k == 0) {
+                    
+                }else{
+                    $uid = $finfo2['UID'];
+                    $model = UserDirectory::model()->findByPk($uid);
+                    $model->deleted_suppliers = 1;
+                    $model->save();
+                }
+                $k++;
+            }
+        }
+        exit;
+    }
+
 
     public function actionRenewalmail() {
         $baseurl = Yii::app()->request->getBaseUrl(true);
@@ -60,7 +95,7 @@ class SuppliersDirectoryController extends OGController {
         $flag = 0;
         foreach ($ret_result as $single_record) {
             $difference = strtotime($single_record['expirydate']) - strtotime(date("Y-m-d H:m:s"));
-            $days = round($difference / (60 * 60 * 24));                                       
+            $days = round($difference / (60 * 60 * 24));
             if ($days == 90 && $single_record['flag'] != 1) {
                 $single_record['flag'] = 1;
                 $flag = 1;
@@ -91,8 +126,8 @@ class SuppliersDirectoryController extends OGController {
                     "{RENEWALDAY}" => date("d-m-Y", strtotime($single_record['expirydate'])),
                     "{USERNAME}" => $single_record['username'],
                 );
-//                $message = $mail->getMessage('renewal_mail', $trans_array);
-//                $mail->send($single_record['email'], $Subject, $message);
+                $message = $mail->getMessage('renewal_mail', $trans_array);
+                $mail->send($single_record['email'], $Subject, $message);
             }
             $flag = 0;
         }
@@ -2303,7 +2338,7 @@ class SuppliersDirectoryController extends OGController {
             }
             if ($subtype == "3" || $subtype == "2") {
                 $model->logo_expirydate = $pdetails['logo_expirydate'];
-            }            
+            }
             $model->save(false);
 
             // Save the payment details                                   

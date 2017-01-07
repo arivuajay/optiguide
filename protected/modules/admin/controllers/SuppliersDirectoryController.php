@@ -30,7 +30,7 @@ class SuppliersDirectoryController extends Controller {
                         'users' => array('*'),
                     ),
                     array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                        'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getproducts', 'addproducts', 'addmarques', 'listmarques', 'payment', 'renewpayment', 'getfichers','getficherimage', 'deleteProof','generateclients'),
+                        'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'getproducts', 'addproducts', 'addmarques', 'listmarques', 'payment', 'renewpayment', 'getfichers','getficherimage', 'deleteProof','generateclients','nonaccessaccounts','sendrenewelemail'),
                         'users' => array('@'),
                         'expression'=> 'AdminIdentity::checkAccess()',
                     ),
@@ -1121,6 +1121,39 @@ class SuppliersDirectoryController extends Controller {
 
         $this->render('index', array(
             'model' => $model,
+        ));
+    }
+    
+    public function actionNonaccessaccounts(){
+        $model = new SuppliersDirectory('search_nonaccess');
+        $model->unsetAttributes();  // clear any default values
+        if (isset($_GET['SuppliersDirectory']))
+            $model->attributes = $_GET['SuppliersDirectory'];
+
+        $this->render('nonaccessaccounts', array(
+            'model' => $model,
+        ));
+    }
+    
+    public function actionSendrenewelemail(){
+      
+        $criteria = new CDbCriteria;
+        $today_date = date("Y-m-d");
+        $criteria->addCondition("(DATEDIFF(t.profile_expirydate,'$today_date') IS NULL || DATEDIFF(t.profile_expirydate,'$today_date') <= 0 ) ");
+        $criteria->addCondition("userDirectory2.NOM_TABLE ='Fournisseurs' and userDirectory2.deleted_suppliers=0 and userDirectory2.status=1 and userDirectory2.COURRIEL!=''");
+ 
+        $criteria->with = array(
+            'supplierType' => array('alias'=> 'supplierType', 'together' => true, ),
+            'userDirectory2' => array('alias'=> 'userDirectory2', 'together' => true, ),            
+        );
+        $criteria->together = true;
+        $criteria->order = 'supplierType.TYPE_FOURNISSEUR_FR ASC, t.COMPAGNIE ASC';
+        
+        $ret_result = SuppliersDirectory::model()->findAll($criteria);
+                
+        $this->render('sendrenewelemail', array(           
+            'expiry_users' => $ret_result,
+            'total_expire_users'   => count($ret_result)
         ));
     }
     
