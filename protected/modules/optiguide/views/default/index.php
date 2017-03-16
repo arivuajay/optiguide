@@ -69,10 +69,11 @@ $js = <<< EOD
     //    setTimein(explode, 300000);
 $(document).ready(function(){
         
-    if(localStorage.getItem('popState') != 'shown'){
-        $('.breton-popup').show();
-        localStorage.setItem('popState','shown')
-    }
+    //if(localStorage.getItem('popState') != 'shown'){
+    //    $('.breton-popup').show();
+    //    localStorage.setItem('popState','shown')
+   // }
+         $('.breton-popup').show();
     
     
     $('.breton-popup-close').click(function(){
