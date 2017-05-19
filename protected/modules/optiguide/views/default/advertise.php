@@ -9,7 +9,7 @@
                     Toll Free : 1 888 462-2112<br>
                     Fax : 450 629-6044<br>
                     Email Martine: <a href="mailto:martine@bretoncom.com">martine@bretoncom.com</a><br>
-                    Email Aurélie: <a href="mailto:aurelie@bretoncom.com">aurelie@bretoncom.com</a>
+                    Email Vanessa: <a href="mailto:vanessa@bretoncom.com">vanessa@bretoncom.com</a>
                 </p>
             <?php } else {
                 ?>
@@ -19,7 +19,7 @@
                     Sans frais : 1 888 462-2112<br>
                     Téléc : 450 629-6044<br>
                     Contactez Martine: <a href="mailto:martine@bretoncom.com">martine@bretoncom.com</a><br>
-                    Contactez Aurélie: <a href="mailto:aurelie@bretoncom.com">aurelie@bretoncom.com</a>
+                    Contactez Vanessa: <a href="mailto:vanessa@bretoncom.com">vanessa@bretoncom.com</a>
                 </p>                        
             <?php }
             ?>
