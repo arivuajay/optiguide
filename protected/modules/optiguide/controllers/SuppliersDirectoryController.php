@@ -88,12 +88,14 @@ class SuppliersDirectoryController extends OGController {
     public function actionRenewalmail() {
         $baseurl = Yii::app()->request->getBaseUrl(true);
         $ret_result = Yii::app()->db->createCommand(
-                        "SELECT f.profile_expirydate AS expirydate , ru.COURRIEL AS email ,ru.NOM_UTILISATEUR AS username,f.renewal_flag AS flag, f.ID_FOURNISSEUR AS s_id, ru.ID_UTILISATEUR AS u_id, f.COMPAGNIE AS COMPAGNIE
+                        "SELECT f.profile_expirydate AS expirydate , ru.COURRIEL AS email ,ru.LANGUE as ulang ,ru.NOM_UTILISATEUR AS username ,ru.USR AS uname,ru.PWD AS upwd ,f.renewal_flag AS flag, f.ID_FOURNISSEUR AS s_id, ru.ID_UTILISATEUR AS u_id, f.COMPAGNIE AS COMPAGNIE
                 FROM repertoire_fournisseurs f, repertoire_utilisateurs as ru
-                WHERE f.ID_FOURNISSEUR = ru.ID_RELATION AND ru.status = 1 AND ru.NOM_TABLE = 'Fournisseurs' AND f.profile_expirydate != '0000-00-00 00:00:00' AND ru.COURRIEL != '' 
+                WHERE f.ID_FOURNISSEUR = ru.ID_RELATION AND ru.status = 1 AND ru.NOM_TABLE = 'Fournisseurs' AND f.profile_expirydate != '0000-00-00 00:00:00' AND ru.COURRIEL != ''
                 ")->queryAll();
+        
         $flag = 0;
         foreach ($ret_result as $single_record) {
+            
             $difference = strtotime($single_record['expirydate']) - strtotime(date("Y-m-d H:m:s"));
             $days = round($difference / (60 * 60 * 24));
             if ($days == 90 && $single_record['flag'] != 1) {
@@ -106,13 +108,16 @@ class SuppliersDirectoryController extends OGController {
                 $single_record['flag'] = 3;
                 $flag = 1;
             }
-            if ($flag != 0) {
+            
+            if ($flag != 0) {          
                 $sql = "UPDATE repertoire_fournisseurs SET renewal_flag=:flag WHERE ID_FOURNISSEUR=:supplier_id";
                 $command = Yii::app()->db->createCommand($sql);
                 $command->bindParam(":supplier_id", $single_record['s_id']);
                 $command->bindParam(":flag", $single_record['flag']);
                 $command->execute();
 
+                Yii::app()->session['language'] = ($single_record['ulang']!="")?$single_record['ulang']:"EN";
+                
                 $this->lang = Yii::app()->session['language'];
                 $mail = new Sendmail;
                 $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/renewsubscription';
@@ -125,8 +130,11 @@ class SuppliersDirectoryController extends OGController {
                     "{NEXTSTEPURL}" => $nextstep_url,
                     "{RENEWALDAY}" => date("d-m-Y", strtotime($single_record['expirydate'])),
                     "{USERNAME}" => $single_record['username'],
+                    "{UNAME}" => $single_record['uname'],
+                    "{UPWD}" => $single_record['upwd'],
                 );
                 $message = $mail->getMessage('renewal_mail', $trans_array);
+           
                 $mail->send($single_record['email'], $Subject, $message);
             }
             $flag = 0;
