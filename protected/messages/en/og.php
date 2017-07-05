@@ -174,8 +174,8 @@ return array(
     'OGO126' => 'President and Publisher',
     'OGO127' => 'Assistant Publisher and Marketing Manager',
     'OGO128' => 'Advertising Sales',
-    'OGO129' => 'Media and Web Production Coordinator',
-    'OGO130' => 'Circulation Assistant',
+    'OGO129' => 'Media and Web Coordinator',
+    'OGO130' => 'Circulation',
     'OGO131' => 'Please feel free to contact us should you need additional information or simply to give us your feedback.',
     
     'OGO132' => "Your subscription payment status is pending.Please contact admin for further details.",

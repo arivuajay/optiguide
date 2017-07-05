@@ -171,8 +171,8 @@ return array(
     'OGO126' => 'Présidente et éditrice',
     'OGO127' => 'Éditrice adjointe et directrice de marketing',
     'OGO128' => 'Ventes publicitaires',
-    'OGO129' => 'Coordonatrice Production Médias et Web',
-    'OGO130' => 'Assistante au tirage',
+    'OGO129' => 'Coordonnateur des médias et du Web',
+    'OGO130' => 'Circulation',
     'OGO131' => 'Nous vous invitons à prendre contact avec nous pour de plus amples renseignements ou pour nous faire part de vos commentaires :',
     
     'OGO132' => "Votre statut de paiement de l'abonnement est pending.Please Contact admin pour plus de détails.",

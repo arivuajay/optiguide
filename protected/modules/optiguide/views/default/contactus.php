@@ -24,14 +24,6 @@
                     </div>
                 </div>
 
-<!--                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="contact-cont">
-                        <p><strong><?php //echo Myclass::t('OGO127', '', 'og'); ?></strong><br>
-                            Nicky Fambios<br>
-                            <a href="mailto:nicky@bretoncom.com">nicky@bretoncom.com</a></p>
-                    </div>
-                </div>-->
-
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                     <div class="contact-cont">
                         <p><strong><?php echo Myclass::t('OGO128', '', 'og'); ?></strong><br>
@@ -39,14 +31,6 @@
                             <a href="mailto:martine@bretoncom.com">martine@bretoncom.com</a></p>
                     </div>
                 </div>
-
-<!--                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="contact-cont">
-                        <p><strong>Opti-News</strong><br>
-                            Isabelle Groulx<br>
-                            <a href="mailto:isabelle@bretoncom.com">isabelle@bretoncom.com</a></p>
-                    </div>
-                </div>-->
                 
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                     <div class="contact-cont">
@@ -55,30 +39,15 @@
                             <a href="mailto:gabrielle@bretoncom.com">gabrielle@bretoncom.com</a></p>
                     </div>
                 </div>
-
-<!--                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="contact-cont">
-                        <p><strong><?php //echo Myclass::t('OGO129', '', 'og'); ?></strong><br>
-                            Aurélie Vasseur<br>
-                            <a href="mailto:aurelie@bretoncom.com">aurelie@bretoncom.com</a></p>
-                    </div>
-                </div>-->
                 
                  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                     <div class="contact-cont">
-                        <p><strong><?php echo Myclass::t('OGO129', '', 'og'); ?></strong><br>
+                        <p><strong><?php echo Myclass::t('OGO129', '', 'og'); ?> / <?php echo Myclass::t('OGO130', '', 'og'); ?></strong><br>
                             Vanessa Pelletier<br>
                             <a href="mailto:vanessa@bretoncom.com">vanessa@bretoncom.com</a></p>
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="contact-cont">
-                        <p><strong><?php echo Myclass::t('OGO130', '', 'og'); ?></strong><br>
-                            Louise Chalifoux<br>
-                            <a href="mailto:louise@bretoncom.com">louise@bretoncom.com</a></p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
