@@ -173,6 +173,43 @@ $retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3)
                             ?> 
                         </div>  
                     </div>
+
+                    <div class="form-group">
+                        <?php echo $form->labelEx($model, 'Categories', array('class' => 'col-sm-2 control-label')); ?>
+                        <div class="col-sm-5">
+                            <div class="checkbox">
+                                <label>
+                                    <?php echo $form->checkBox($model, 'CATEGORY_1', array('value' => 1, 'uncheckValue' => 0)); ?>
+                                    <?php echo $form->labelEx($model, 'CATEGORY_1'); ?>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <?php echo $form->checkBox($model, 'CATEGORY_2', array('value' => 1, 'uncheckValue' => 0)); ?>
+                                    <?php echo $form->labelEx($model, 'CATEGORY_2'); ?>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <?php echo $form->checkBox($model, 'CATEGORY_3', array('value' => 1, 'uncheckValue' => 0)); ?>
+                                    <?php echo $form->labelEx($model, 'CATEGORY_3'); ?>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <?php echo $form->checkBox($model, 'CATEGORY_4', array('value' => 1, 'uncheckValue' => 0)); ?>
+                                    <?php echo $form->labelEx($model, 'CATEGORY_4'); ?>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <?php echo $form->checkBox($model, 'CATEGORY_5', array('value' => 1, 'uncheckValue' => 0)); ?>
+                                    <?php echo $form->labelEx($model, 'CATEGORY_5'); ?>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
                     
                     <div class="box-header">
                         <h3 class="page-header">Step 4</h3>

@@ -21,6 +21,7 @@ class OGController extends Controller {
             $app->language = $_POST['_lang'];
             $app->session['_lang'] = $app->language;
             Yii::app()->session['language'] = strtoupper($app->language);
+            Yii::app()->controller->refresh();
         } else if (isset($app->session['_lang'])) {
             $app->language = $app->session['_lang'];
             Yii::app()->session['language'] = strtoupper($app->language);
@@ -37,6 +38,8 @@ class OGController extends Controller {
         if (empty(Yii::app()->session['language'])) {
             Yii::app()->language = 'en';
             Yii::app()->session['language'] = strtoupper(Yii::app()->language);
+        }else {
+            $this->lang = Yii::app()->session['language'];
         }
         parent::__construct($id, $module);
     }

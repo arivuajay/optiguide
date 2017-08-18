@@ -14,6 +14,7 @@ class ExportDatas extends CActiveRecord
         
         public $P_type,$R_type,$S_type,$language,$EN,$FR,$subscriptions,$Optipromo,$Optinews,$Envision_print,$Envision_digital,$Envue_print,$Envue_digital,$province,$ptype,$export_type;
         public $country,$region,$cat_type_id,$category,$ID_GROUPE,$psection,$S_section,$Etype;
+        public $CATEGORY_1,$CATEGORY_2,$CATEGORY_3,$CATEGORY_4,$CATEGORY_5;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -100,7 +101,13 @@ class ExportDatas extends CActiveRecord
                     'region' => "Province",
                     'ID_GROUPE' => 'Regroupement',
                     'S_section' => 'Fournisseur Section',
-                    'Etype' => "Exportype"
+                    'Etype' => "Exportype",
+                    'CATEGORY_1' => Myclass::t('OG105'),
+                    'CATEGORY_2' => Myclass::t('OG106'),
+                    'CATEGORY_3' => Myclass::t('OG107'),
+                    'CATEGORY_4' => Myclass::t('OG108'),
+                    'CATEGORY_5' => Myclass::t('OG109'),
+                    'Categories' => Myclass::t('Catégories'),
 		);
 	}
 

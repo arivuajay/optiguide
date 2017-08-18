@@ -4,7 +4,7 @@
             <?php if (Yii::app()->language == "en") {
                 ?>   
                 <h2>Advertise with us </h2>
-                <p>Please contact Martine Breton or Aurélie Vasseur at the following :</p>           
+                <p>Please contact Martine Breton or Vanessa Pelletier at the following :</p>           
                 <p>Tel. : 450 629-6005<br>
                     Toll Free : 1 888 462-2112<br>
                     Fax : 450 629-6044<br>
@@ -14,7 +14,7 @@
             <?php } else {
                 ?>
                 <h2>Annoncer avec nous </h2>
-                <p>Nous vous invitons à contacter Martine Breton ou Aurélie Vasseur :</p>           
+                <p>Nous vous invitons à contacter Martine Breton ou Vanessa Pelletier :</p>           
                 <p>Tél. : 450 629-6005<br>
                     Sans frais : 1 888 462-2112<br>
                     Téléc : 450 629-6044<br>

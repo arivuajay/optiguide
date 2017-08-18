@@ -455,21 +455,34 @@ class ExportDatasController extends Controller
                 $type_str  = '';
                 $retailer_type   = $_POST['ExportDatas']['ptype'];         
                 $retailer_GROUPE =  $_POST['ExportDatas']['ID_GROUPE'];
-                
+
                 $type_str    = $this->gettype_filter($retailer_type,"retailer",$retailer_GROUPE);
-     
+
                 // Export type    
                 $export_type = $_POST['ExportDatas']['export_type'];
-                
+
+                // Retailer category type
+                $selected_cats = array();
+                $cats_str = "";
+                for($i=1;$i<=5;$i++) {
+                    if($_POST['ExportDatas']['CATEGORY_'.$i]){
+                        $selected_cats[] = "CATEGORY_$i = 1";
+                    }
+                }
+
+                if(!empty($selected_cats)){
+                    $cats_str = " AND ( ". implode(" || ",$selected_cats). " )";
+                }
                 
                 // Get user counts           
-                $querystr   = $lang_str.$subscription_str.$province_str.$type_str;
+                $querystr   = $lang_str.$subscription_str.$province_str.$type_str.$cats_str;
+
                 $item_count = $this->countusers($querystr,"retailer");
                 
                 if($item_count>0)
                 {   
                    // Export data and save the files
-                    $this->exportfiles_retailer( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $retailer_type , $provinces,$retailer_GROUPE);
+                    $this->exportfiles_retailer( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $retailer_type , $retailer_GROUPE , $cats_str,$selected_cats);
                  
                     Yii::app()->user->setFlash('success', 'Datas export successfully!!!');
                     $this->redirect(array('retailerIndex'));
@@ -492,11 +505,30 @@ class ExportDatasController extends Controller
             ));
 	}
         
-        public function exportfiles_retailer( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $retailer_type , $provinces,$retailer_GROUPE)
+        public function exportfiles_retailer( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $retailer_type , $retailer_GROUPE, $cats_str, $selected_cats)
         {
             Yii::import('ext.ECSVExport');
             $attach_path = Yii::getPathOfAlias('webroot').'/'.EXPORTDATAS;   
             $randstr  = Myclass::getRandomString(4);
+
+            if($cats_str==""){
+              $categories_select = ",CONCAT_WS( ',',
+                       IF(CATEGORY_1=1,' Opticiens',NULL),
+                       IF(CATEGORY_2=1,' Optométristes',NULL),
+                       IF(CATEGORY_3=1,' Ophtalmologistes',NULL),
+                       IF(CATEGORY_4=1,' Lunettes solaires seulement',NULL),
+                       IF(CATEGORY_5=1,' Boutique',NULL)
+                ) AS Categories";
+            }else{
+               if(!empty($selected_cats)) {
+                   $categories_select = ",CONCAT_WS( ',',";
+                   foreach($selected_cats as $catinfo) {
+                       $cat_select[] = " IF($catinfo,' Opticiens',NULL) ";
+                   }
+                   $categories_select .= implode(",",$cat_select);
+                   $categories_select .= " ) AS Categories";
+               }
+            }
            
             // Single file
             if($export_type==1)
@@ -510,11 +542,11 @@ class ExportDatasController extends Controller
                 (CASE WHEN print_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
                 (CASE WHEN ABONNE_MAILING <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
                 (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
-                rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date
+                rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date".$categories_select."
                 FROM repertoire_retailer as rs , repertoire_retailer_type as rst , repertoire_retailer_groupe AS rrg , repertoire_ville as rv, repertoire_region as rr, repertoire_pays as rp, repertoire_utilisateurs as ru
                  WHERE rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_GROUPE=rrg.ID_GROUPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.NOM_TABLE ='Detaillants' 
-                ".$lang_str.$subscription_str.$province_str.$type_str." ORDER BY Company_Name");  
-                
+                ".$lang_str.$subscription_str.$province_str.$type_str.$cats_str." ORDER BY Company_Name");
+
                 // File name and path                
                 $filename = "Retailer_data_".date("Y_m_d",time())."_".$randstr.".csv";                
                 $outputFile_path = $attach_path.$filename;
@@ -591,7 +623,7 @@ class ExportDatasController extends Controller
                         {
                             $grp_str = " AND rs.ID_GROUPE = $typeval "; 
 
-                            $qry_str  = $lang_str.$subscription_str.$province_str.$type_str.$grp_str;
+                            $qry_str  = $lang_str.$subscription_str.$province_str.$type_str.$grp_str.$cats_str;
 
                             $records_exist = $this->countusers($qry_str,"retailer");
 
@@ -606,7 +638,7 @@ class ExportDatasController extends Controller
                                     (CASE WHEN print_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
                                     (CASE WHEN ABONNE_MAILING <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
                                     (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
-                                    rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date
+                                    rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date".$categories_select."
                                     FROM repertoire_retailer as rs , repertoire_retailer_type as rst , repertoire_retailer_groupe AS rrg , repertoire_ville as rv, repertoire_region as rr, repertoire_pays as rp, repertoire_utilisateurs as ru
                                     WHERE rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_GROUPE=rrg.ID_GROUPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.NOM_TABLE ='Detaillants' 
                                      ".$qry_str." ORDER BY Company_Name");  
@@ -627,7 +659,7 @@ class ExportDatasController extends Controller
                         }
                     }else
                     {
-                         $qry_str  = $lang_str.$subscription_str.$province_str.$type_str;
+                         $qry_str  = $lang_str.$subscription_str.$province_str.$type_str.$cats_str;
                         // Get all records list  with limit
                          $ret_result = Yii::app()->db->createCommand(
                         "SELECT COMPAGNIE as Company_Name, NOM_TYPE_EN as Reatlier_Type ,rrg.NOM_GROUPE AS Regroupement , ru.COURRIEL as Email, HEAD_OFFICE_NAME as Head_office , ADRESSE as Address , ADRESSE2 as Address2 , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
@@ -637,7 +669,7 @@ class ExportDatasController extends Controller
                         (CASE WHEN print_envue <> 1 THEN 'no' ELSE 'yes' END) As Envue_Print ,
                         (CASE WHEN ABONNE_MAILING <> 1 THEN 'no' ELSE 'yes' END) As Opti_News ,
                         (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
-                        rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date
+                        rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date".$categories_select."
                         FROM repertoire_retailer as rs , repertoire_retailer_type as rst , repertoire_retailer_groupe AS rrg , repertoire_ville as rv, repertoire_region as rr, repertoire_pays as rp, repertoire_utilisateurs as ru
                         WHERE rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_GROUPE=rrg.ID_GROUPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.NOM_TABLE ='Detaillants' 
                         ".$qry_str." ORDER BY Company_Name");  
