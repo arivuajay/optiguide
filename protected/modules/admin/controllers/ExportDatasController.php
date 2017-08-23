@@ -471,7 +471,7 @@ class ExportDatasController extends Controller
                 }
 
                 if(!empty($selected_cats)){
-                    $cats_str = " AND ( ". implode(" || ",$selected_cats). " )";
+                    $cats_str = " AND ( ". implode(" AND ",$selected_cats). " )";
                 }
                 
                 // Get user counts           
@@ -513,11 +513,11 @@ class ExportDatasController extends Controller
 
             if($cats_str==""){
               $categories_select = ",CONCAT_WS( ',',
-                       IF(CATEGORY_1=1,' Opticiens',NULL),
-                       IF(CATEGORY_2=1,' Optométristes',NULL),
-                       IF(CATEGORY_3=1,' Ophtalmologistes',NULL),
-                       IF(CATEGORY_4=1,' Lunettes solaires seulement',NULL),
-                       IF(CATEGORY_5=1,' Boutique',NULL)
+                       IF(CATEGORY_1=1,'Opticiens',NULL),
+                       IF(CATEGORY_2=1,'Optométristes',NULL),
+                       IF(CATEGORY_3=1,'Ophthalmologistes',NULL),
+                       IF(CATEGORY_4=1,'Lunettes solaires seulement',NULL),
+                       IF(CATEGORY_5=1,'Boutique',NULL)
                 ) AS Categories";
             }else{
                if(!empty($selected_cats)) {
@@ -544,7 +544,7 @@ class ExportDatasController extends Controller
                 (CASE WHEN ABONNE_PROMOTION <> 1 THEN 'no' ELSE 'yes' END) As Opti_Promo ,                     
                 rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date".$categories_select."
                 FROM repertoire_retailer as rs , repertoire_retailer_type as rst , repertoire_retailer_groupe AS rrg , repertoire_ville as rv, repertoire_region as rr, repertoire_pays as rp, repertoire_utilisateurs as ru
-                 WHERE rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_GROUPE=rrg.ID_GROUPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.NOM_TABLE ='Detaillants' 
+                WHERE rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_GROUPE=rrg.ID_GROUPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.NOM_TABLE ='Detaillants' 
                 ".$lang_str.$subscription_str.$province_str.$type_str.$cats_str." ORDER BY Company_Name");
 
                 // File name and path                
@@ -1039,9 +1039,26 @@ class ExportDatasController extends Controller
                     
                 // Export type    
                 $export_type = $_POST['ExportDatas']['export_type'];
+
+                // Retailer category type
+                $cats_str = "";
+                if($usertype=="retailer")
+                {
+                    $selected_cats = array();
+                    for($i=1;$i<=5;$i++) {
+                        if($_POST['ExportDatas']['CATEGORY_'.$i]){
+                            $selected_cats[] = "CATEGORY_$i = 1";
+                        }
+                    }
+
+                    if(!empty($selected_cats)){
+                        $cats_str = " AND ( ". implode(" AND ",$selected_cats). " )";
+                    }
+
+                }
                 
                 // Get user counts           
-                $querystr   = $lang_str.$subscription_str.$province_str.$type_str.$section_str;
+                $querystr   = $lang_str.$subscription_str.$province_str.$type_str.$section_str.$cats_str;
                 
 
                 $item_count = $this->countusers($querystr,$usertype);
