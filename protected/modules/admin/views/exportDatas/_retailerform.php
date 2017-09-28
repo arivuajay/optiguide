@@ -208,7 +208,13 @@ $retailertype_datas = CHtml::listData(RetailerType::model()->findAll($criteria3)
                                 </label>
                             </div>
                         </div>
+                    </div>
 
+                    <div class="form-group">
+                        <?php echo $form->labelEx($model, 'status', array('class' => 'col-sm-2 control-label')); ?>
+                        <div class="col-sm-5">
+                            <?php echo $form->dropDownList($model, 'status', ['0' => 'Deactive', '1' => 'Active'], array('class' => 'form-control', 'empty' => "All")); ?>
+                        </div>
                     </div>
                     
                     <div class="box-header">

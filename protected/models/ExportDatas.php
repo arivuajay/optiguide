@@ -14,7 +14,7 @@ class ExportDatas extends CActiveRecord
         
         public $P_type,$R_type,$S_type,$language,$EN,$FR,$subscriptions,$Optipromo,$Optinews,$Envision_print,$Envision_digital,$Envue_print,$Envue_digital,$province,$ptype,$export_type;
         public $country,$region,$cat_type_id,$category,$ID_GROUPE,$psection,$S_section,$Etype;
-        public $CATEGORY_1,$CATEGORY_2,$CATEGORY_3,$CATEGORY_4,$CATEGORY_5;
+        public $CATEGORY_1,$CATEGORY_2,$CATEGORY_3,$CATEGORY_4,$CATEGORY_5,$status;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -108,6 +108,7 @@ class ExportDatas extends CActiveRecord
                     'CATEGORY_4' => Myclass::t('OG108'),
                     'CATEGORY_5' => Myclass::t('OG109'),
                     'Categories' => Myclass::t('Catégories'),
+                    'status' => "Status",
 		);
 	}
 

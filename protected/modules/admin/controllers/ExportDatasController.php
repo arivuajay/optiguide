@@ -473,16 +473,22 @@ class ExportDatasController extends Controller
                 if(!empty($selected_cats)){
                     $cats_str = " AND ( ". implode(" AND ",$selected_cats). " )";
                 }
-                
+
+                // User status
+                $retailer_status = $_POST['ExportDatas']['status'];
+                if($retailer_status!=""){
+                    $status_str = " AND ( ru.status= ".$retailer_status." )";
+                }
+
                 // Get user counts           
-                $querystr   = $lang_str.$subscription_str.$province_str.$type_str.$cats_str;
+                $querystr   = $lang_str.$subscription_str.$province_str.$type_str.$cats_str.$status_str;
 
                 $item_count = $this->countusers($querystr,"retailer");
                 
                 if($item_count>0)
                 {   
                    // Export data and save the files
-                    $this->exportfiles_retailer( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $retailer_type , $retailer_GROUPE , $cats_str,$selected_cats);
+                    $this->exportfiles_retailer( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $retailer_type , $retailer_GROUPE , $cats_str,$selected_cats,$status_str);
                  
                     Yii::app()->user->setFlash('success', 'Datas export successfully!!!');
                     $this->redirect(array('retailerIndex'));
@@ -505,7 +511,7 @@ class ExportDatasController extends Controller
             ));
 	}
         
-        public function exportfiles_retailer( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $retailer_type , $retailer_GROUPE, $cats_str, $selected_cats)
+        public function exportfiles_retailer( $export_type , $lang_str , $subscription_str , $province_str , $type_str , $retailer_type , $retailer_GROUPE, $cats_str, $selected_cats, $status_str)
         {
             Yii::import('ext.ECSVExport');
             $attach_path = Yii::getPathOfAlias('webroot').'/'.EXPORTDATAS;   
@@ -515,7 +521,7 @@ class ExportDatasController extends Controller
               $categories_select = ",CONCAT_WS( ',',
                        IF(CATEGORY_1=1,'Opticiens',NULL),
                        IF(CATEGORY_2=1,'Optométristes',NULL),
-                       IF(CATEGORY_3=1,'Ophthalmologistes',NULL),
+                       IF(CATEGORY_3=1,'Ophtalmologistes',NULL),
                        IF(CATEGORY_4=1,'Lunettes solaires seulement',NULL),
                        IF(CATEGORY_5=1,'Boutique',NULL)
                 ) AS Categories";
@@ -545,7 +551,7 @@ class ExportDatasController extends Controller
                 rs.CREATED_DATE as Created_Date , rs.DATE_MODIFICATION as Modified_Date".$categories_select."
                 FROM repertoire_retailer as rs , repertoire_retailer_type as rst , repertoire_retailer_groupe AS rrg , repertoire_ville as rv, repertoire_region as rr, repertoire_pays as rp, repertoire_utilisateurs as ru
                 WHERE rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_GROUPE=rrg.ID_GROUPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS AND ru.NOM_TABLE ='Detaillants' 
-                ".$lang_str.$subscription_str.$province_str.$type_str.$cats_str." ORDER BY Company_Name");
+                ".$lang_str.$subscription_str.$province_str.$type_str.$cats_str.$status_str." ORDER BY Company_Name");
 
                 // File name and path                
                 $filename = "Retailer_data_".date("Y_m_d",time())."_".$randstr.".csv";                
@@ -623,7 +629,7 @@ class ExportDatasController extends Controller
                         {
                             $grp_str = " AND rs.ID_GROUPE = $typeval "; 
 
-                            $qry_str  = $lang_str.$subscription_str.$province_str.$type_str.$grp_str.$cats_str;
+                            $qry_str  = $lang_str.$subscription_str.$province_str.$type_str.$grp_str.$cats_str.$status_str;
 
                             $records_exist = $this->countusers($qry_str,"retailer");
 
@@ -659,7 +665,7 @@ class ExportDatasController extends Controller
                         }
                     }else
                     {
-                         $qry_str  = $lang_str.$subscription_str.$province_str.$type_str.$cats_str;
+                         $qry_str  = $lang_str.$subscription_str.$province_str.$type_str.$cats_str.$status_str;
                         // Get all records list  with limit
                          $ret_result = Yii::app()->db->createCommand(
                         "SELECT COMPAGNIE as Company_Name, NOM_TYPE_EN as Reatlier_Type ,rrg.NOM_GROUPE AS Regroupement , ru.COURRIEL as Email, HEAD_OFFICE_NAME as Head_office , ADRESSE as Address , ADRESSE2 as Address2 , CODE_POSTAL as Postal_code, TELEPHONE as Telephone, TELECOPIEUR as Fax,  USR AS User_name , PWD AS Password , LANGUE AS Language , NOM_VILLE AS Ville , NOM_REGION_EN AS Region , ABREVIATION_EN AS Abreviation , NOM_PAYS_EN AS Country,
@@ -917,7 +923,7 @@ class ExportDatasController extends Controller
             }
 
             if($type=="retailer")
-            { 
+            {
                 // Get all records list  with limit
                 $item_count = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('count(*) as count')
@@ -1056,10 +1062,15 @@ class ExportDatasController extends Controller
                     }
 
                 }
+
+                // User status
+                $user_status = $_POST['ExportDatas']['status'];
+                if($user_status!=""){
+                    $status_str = " AND  ru.status= ".$user_status." ";
+                }
                 
                 // Get user counts           
-                $querystr   = $lang_str.$subscription_str.$province_str.$type_str.$section_str.$cats_str;
-                
+                $querystr   = $lang_str.$subscription_str.$province_str.$type_str.$section_str.$cats_str.$status_str;
 
                 $item_count = $this->countusers($querystr,$usertype);
             }      
