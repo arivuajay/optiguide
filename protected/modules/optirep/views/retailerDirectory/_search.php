@@ -21,10 +21,14 @@
     }  else {
         $retailertypes = CHtml::listData(RetailerType::model()->findAll(), 'ID_RETAILER_TYPE', 'NOM_TYPE_EN');
     }
-    
-    $groupetypes = array();
+
+    $retailergroups = array();
     if ($searchModel->ID_RETAILER_TYPE) {
-        $groupetypes = CHtml::listData(RetailerGroup::model()->findAll("ID_RETAILER_TYPE=" . $searchModel->ID_RETAILER_TYPE), 'ID_GROUPE', 'NOM_GROUPE');
+    $criteria = new CDbCriteria;
+    $criteria->order = 'NOM_GROUPE ASC';
+        $criteria->condition = 'ID_RETAILER_TYPE=:id';
+        $criteria->params = array(':id' =>  $searchModel->ID_RETAILER_TYPE);
+        $retailergroups = CHtml::listData(RetailerGroup::model()->findAll($criteria), 'ID_GROUPE', 'NOM_GROUPE');
     }
     ?>
 
@@ -37,7 +41,7 @@
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 ">                      
-        <?php echo $form->dropDownList($searchModel, 'ID_GROUPE', $groupetypes, array('class' => 'selectpicker', 'empty' => Myclass::t('OG207'))); ?>                          
+        <?php echo $form->dropDownList($searchModel, 'ID_GROUPE', $retailergroups, array('class' => 'selectpicker', 'empty' => Myclass::t('OG207'))); ?>
     </div>
 
 
