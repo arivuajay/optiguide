@@ -55,14 +55,15 @@ $country = Myclass::getallcountries();
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active"><a id="a_tab_1" href="#tab_1" data-toggle="tab">Renseignements généraux</a></li>
+                 <?php if($model->rep_role != 'admin'){ ?>
                 <li><a id="a_tab_2" href="#tab_2" <?php
                     if (Yii::app()->user->hasState("secondtab")) {
                         echo 'data-toggle="tab"';
                     } elseif ($model->rep_credential_id) {
                         echo 'data-toggle="tab"';
                     }
-                    ?>>Subscription Payment</a></li>
-                    <?php if ($paymentcounts > 0) { ?>
+                    ?>>Subscription Payment</a></li><?php } ?>
+                    <?php if ($paymentcounts > 0) { ?> 
                     <li><a id="a_tab_3" href="#tab_3" data-toggle="tab">Payment Transactions</a></li>
                 <?php } ?>
             </ul>
@@ -182,6 +183,7 @@ $country = Myclass::getallcountries();
             </div>
                 <div class="tab-pane" id="tab_2">
                     <?php
+                   
                     $this->renderPartial('_payment_form', array('model' => $model, 'form' => $form,  'pmodel' => $pmodel,'profile'=>$profile));
                     ?>
                 </div>  

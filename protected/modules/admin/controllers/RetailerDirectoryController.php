@@ -111,6 +111,7 @@ class RetailerDirectoryController extends Controller {
 
         if (isset($_POST['RetailerDirectory'])) {
             $model->attributes = $_POST['RetailerDirectory'];
+            print_r($_POST['RetailerDirectory']);exit;
             $model->image=CUploadedFile::getInstance($model,'image');
             $model->pfile = CUploadedFile::getInstance($model,'pfile');
            // $umodel->attributes = $_POST['UserDirectory'];

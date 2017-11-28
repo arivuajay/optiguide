@@ -19,7 +19,6 @@ class Myclass extends CController {
         $taxvals['provincialrates'] = $provincial_rates;
         $taxvals['federalrates'] = $federal_rates;
         $taxvals['total_tax'] = $total_tax;
-
         return $taxvals;
     }
 
@@ -33,7 +32,7 @@ class Myclass extends CController {
 
     public static function t($str = '', $params = array(), $dic = 'app') {
         return Yii::t($dic, $str, $params);
-    }
+}
 
     public static function getRandomString($length = 9) {
         $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"; //length:36
@@ -721,6 +720,38 @@ class Myclass extends CController {
         );
 
         return $no_of_months;
+    }
+     public static function noOfAcc_limit($no_of_accounts_purchase) {
+         if($no_of_accounts_purchase==1){
+              $no_of_acc_limit = array(
+            1 => '1 ',
+                  );
+         }elseif($no_of_accounts_purchase>=2 && $no_of_accounts_purchase<=5 ){
+        $no_of_acc_limit = array(
+            2 => '2 ',
+            3 => '3 ',
+            4 => '4 ',
+            5 => '5 ',
+        );
+         }elseif($no_of_accounts_purchase>=6 && $no_of_accounts_purchase<=10){
+        $no_of_acc_limit = array(
+            6 => '6 ',
+            7 => '7 ',
+            8 => '8 ',
+            9 => '9 ',
+            10 => '10',
+        );
+         }elseif($no_of_accounts_purchase>=11 && $no_of_accounts_purchase<=15){
+        $no_of_acc_limit = array(
+            11 => '11 ',
+            12=> '12',
+            13=> '13 ',
+            14 => '14',
+            15 => '15',
+        );
+         }
+
+        return $no_of_acc_limit;
     }
     public static function noOfMonths_sales_rep() {
         $no_of_months = array(

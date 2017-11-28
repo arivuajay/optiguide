@@ -2,6 +2,7 @@
 $this->title = Myclass::t('APP27');
 $this->breadcrumbs[] = $this->title;
 ?>
+<a href="../../../../messages/en/app.php"></a>
 <div class="form-box" id="login-box">
     <div class="header"><?php echo CHtml::encode($this->title) ?></div>
     <?php $form = $this->beginWidget('CActiveForm', array('id' => 'login-form')); ?>

@@ -634,7 +634,7 @@ class DefaultController extends Controller {
                 $model->admin_password = Myclass::encrypt($_POST['Admin']['current_password']);
                 $model->org_password   = $_POST['Admin']['current_password'];
               if($model->save(false))
-              {                  
+              {  
                 Yii::app()->user->setFlash('success', Myclass::t('APP18'));
                 $this->redirect(array('/admin/default/changepassword'));    
               }else

@@ -6,7 +6,7 @@
 
 class Sendmail {
     function send($to, $subject, $body, $fromName = '', $from = '', $attachment = null, $path=null, $paymentflag=null) {       
-        if (MAILSENDBY == 'phpmail'):
+             if (MAILSENDBY == 'phpmail'):
             $this->sendPhpmail($to, $subject, $body, $attachment,$paymentflag);
         elseif (MAILSENDBY == 'smtp'):
             Yii::import('application.extensions.phpmailer.JPhpMailer');
@@ -51,7 +51,6 @@ class Sendmail {
     }
 
     public function getMessage($body, &$translate) {
-       
         $lang = isset(Yii::app()->session['language'])?Yii::app()->session['language']:"FR";
        
         if (EMAILLAYOUT == 'file'):
