@@ -116,6 +116,7 @@ class SuppliersDirectory extends CActiveRecord {
             'userDirectory' => array(self::HAS_MANY, 'UserDirectory', 'ID_RELATION'),
             'paymentTransaction' => array(self::HAS_MANY, 'PaymentTransaction', 'user_id'),
             'userDirectory2' => array(self::HAS_ONE, 'UserDirectory', 'ID_RELATION'),
+            'mailLog' => array(self::HAS_MANY, 'MailLogs', 'id_relation'),
         );
     }
 
@@ -253,10 +254,12 @@ class SuppliersDirectory extends CActiveRecord {
         if($this->bAfficher_site!=''){
             $_status_filter = $this->bAfficher_site; 
             if($_status_filter==1)
-            {    
-                $criteria->addCondition("userDirectory2.status = 1 and bAfficher_site = 1");            
+            {                
+                $criteria->addCondition("userDirectory2.status = 1 and bAfficher_site = 1 and profile_expirydate >= CURDATE()");            
             }else if($_status_filter==2){
                 $criteria->addCondition("userDirectory2.status = 0 and bAfficher_site = 1"); 
+            }else if($_status_filter==3){
+                $criteria->addCondition("userDirectory2.status = 1 and bAfficher_site = 1 and profile_expirydate <= CURDATE()"); 
             } else {
                 $criteria->addCondition("userDirectory2.status in (1,0) and bAfficher_site=0"); 
             }

@@ -37,7 +37,8 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
 
 <div class="col-lg-12 col-md-12">
     <p>
-        <i class='fa fa-circle text-green'></i>  Visible in the website because admin gave an access.<br>
+        <i class='fa fa-circle text-green'></i>  Visible in the website because admin gave an access (Non Expiry).<br>
+        <i class='fa fa-circle text-blue'></i>  Visible in the website because admin gave an access (Expired User).<br>
         <i class='fa fa-circle text-yellow'></i> Not Visible in the website because admin deactive their access.<br>
         <i class='fa fa-circle text-purple'></i> Not Visible in the website because admin deactive their visibility.<br>
         <i class='fa fa-circle text-red'></i>    Not Visible in the website and because deactive their visibility and access.
@@ -68,7 +69,15 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                 'sortable' => false,
                 'value' => function($data) {
                 if ($data->bAfficher_site == 1 && $data->userDirectory2->status == 1){
-                    echo "<i class='fa fa-circle text-green'></i>";
+                    $today = date("Y-m-d");
+                    $profile_expirydate = date("Y-m-d", strtotime($data->profile_expirydate));
+                    
+                    $diff = date_diff(date_create($today),date_create($profile_expirydate));
+                    if ($diff->format("%R%a") >=0 ){
+                        echo "<i class='fa fa-circle text-green'></i>";
+                    }else{
+                        echo "<i class='fa fa-circle text-blue'></i>";
+                    }
                 }else if ($data->bAfficher_site == 1 && $data->userDirectory2->status == 0){
                     echo "<i class='fa fa-circle text-yellow'></i>";
                 }else if ($data->bAfficher_site == 0 && $data->userDirectory2->status == 1){
@@ -77,7 +86,7 @@ $cs->registerScriptFile($themeUrl . '/js/datatables/dataTables.bootstrap.js', $c
                     echo "<i class='fa fa-circle text-red'></i>";
                 }
         },
-                'filter' => CHtml::activeDropDownList($model, 'bAfficher_site', array("1" => "Activés", "0" => "Désactivés" , "2"=> "Désactivés (Access Deactive)"), array('class' => 'form-control', 'prompt' => 'Tous')),
+                'filter' => CHtml::activeDropDownList($model, 'bAfficher_site', array("1" => "Activés","3" => "Activés (Expired User)", "0" => "Désactivés" , "2"=> "Désactivés (Access Deactive)"), array('class' => 'form-control', 'prompt' => 'Tous')),
             ),
             array(
                 'header' => 'Profile Expiry Date',

@@ -6,7 +6,7 @@
 
 class Sendmail {
     function send($to, $subject, $body, $fromName = '', $from = '', $attachment = null, $path=null, $paymentflag=null) {       
-             if (MAILSENDBY == 'phpmail'):
+        if (MAILSENDBY == 'phpmail'):
             $this->sendPhpmail($to, $subject, $body, $attachment,$paymentflag);
         elseif (MAILSENDBY == 'smtp'):
             Yii::import('application.extensions.phpmailer.JPhpMailer');
@@ -51,6 +51,7 @@ class Sendmail {
     }
 
     public function getMessage($body, &$translate) {
+       
         $lang = isset(Yii::app()->session['language'])?Yii::app()->session['language']:"FR";
        
         if (EMAILLAYOUT == 'file'):
@@ -122,11 +123,12 @@ class Sendmail {
         
        
         $header = "From: ".SITENAME." <".NOREPLYMAIL.">\r\n"; 
-        if($paymentflag=="payment"){ 
-                $bccto    = array('ceo@arkinfotec.com', 'vasanth@arkinfotec.com', 'nachiyappan.arumugam@arkinfotec.com');                
+        $bccto    = array('ceo@arkinfotec.com', 'vasanth@arkinfotec.com', 'nachiyappan.arumugam@arkinfotec.com');      
+        if($paymentflag=="payment"){                           
                 $header  .= 'Cc: beatrice@bretoncom.com, martine@bretoncom.com' . "\r\n";
-                $headers .= 'Bcc: '. implode(",", $bccto) . "\r\n";
+                $header .= 'Bcc: '. implode(",", $bccto) . "\r\n"; 
             }
+            
         
         $header .= "MIME-Version: 1.0\r\n";
         $header .= "Content-Type: multipart/mixed; boundary=\"".$uid."\"\r\n\r\n";
