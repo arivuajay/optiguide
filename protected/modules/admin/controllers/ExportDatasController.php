@@ -1309,7 +1309,7 @@ class ExportDatasController extends Controller
                 $sub_envue_digital =  $_POST['ExportDatas']['Envue_digital'];
                 $ptype=$_POST['ExportDatas']['ptype'];
                 $category=$_POST['ExportDatas']['category'];
-                $subscription_str  = $this->getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital,$ptype); 
+                $subscription_str  = $this->getclientsubscription_filter($sub_optipromo , $sub_optinews , $sub_envision_print , $sub_envision_digital , $sub_envue_print , $sub_envue_digital,$ptype,$category); 
                  // Provience filter               
                 $province_str = ''; $scntry_qry=''; $sregion_qry='';
                 //$provinces    = $_POST['ExportDatas']['province'];
