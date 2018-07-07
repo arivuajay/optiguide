@@ -32,7 +32,7 @@ class SuppliersDirectoryController extends OGController {
         return array_merge(
                 parent::accessRules(), array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('updatestatus', 'maillog', 'finaltmp', 'renewalmail', 'getbrand', 'detect_supplier', 'create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify', 'renewpaypalnotify', 'delproducts', 'delete_supplier'),
+                'actions' => array('updateexpirydate', 'maillog', 'finaltmp', 'renewalmail', 'getbrand', 'detect_supplier', 'create', 'index', 'view', 'category', 'addproducts', 'addmarques', 'getproducts', 'listmarques', 'payment', 'paypaltest', 'paypalreturn', 'paypalcancel', 'paypalnotify', 'renewpaypalnotify', 'delproducts', 'delete_supplier'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -83,7 +83,62 @@ class SuppliersDirectoryController extends OGController {
         }
         exit;
     }
-
+    public function actionSampleMail(){   
+        $mail_id = 'nachiyappan92@gmail.com';
+        $date = date('Y-m-d h:i:s', strtotime("+31 days"));
+        $mail = new Sendmail;
+                $nextstep_url = $baseurl . '/optiguide/suppliersDirectory/renewsubscription';
+                if ($this->lang == 'EN') {
+                    $Subject = SITENAME . " - Account expiry reminder";
+                } elseif ($this->lang == 'FR') {
+                    $Subject = SITENAME . " - Votre abonnement tire à sa fin";
+                }
+                $trans_array = array(
+                    "{NEXTSTEPURL}" => $nextstep_url,
+                    "{RENEWALDAY}" => date("d-m-Y", strtotime($date)),
+                    "{USERNAME}" => 'Nachi321',
+                    "{UNAME}" => 'admin',
+                    "{UPWD}" => '{password321}',
+                );
+                $message = $mail->getMessage('renewal_mail', $trans_array);             
+            $mail->send($mail_id, $Subject, $message);
+    }
+    public function actionUpdateexpirydate() {
+        
+        $ret_result = Yii::app()->db->createCommand(
+        " SELECT
+                f.*,
+                  DATEDIFF(profile_expirydate,CURDATE()) AS expiredays,
+                  (CASE WHEN (DATEDIFF(profile_expirydate,CURDATE()) IS NULL || DATEDIFF(profile_expirydate,CURDATE()) <= 0 ) THEN '2' ELSE '1' END) AS expiry_status
+                FROM repertoire_fournisseurs f,
+                  repertoire_fournisseur_type ft,
+                  repertoire_ville AS rv,
+                  repertoire_region AS rr,
+                  repertoire_pays AS rp,
+                  repertoire_utilisateurs AS ru
+                WHERE f.ID_FOURNISSEUR = ru.ID_RELATION
+                    AND f.ID_TYPE_FOURNISSEUR = ft.ID_TYPE_FOURNISSEUR
+                    AND f.ID_VILLE = rv.ID_VILLE
+                    AND rv.ID_REGION = rr.ID_REGION
+                    AND rr.ID_PAYS = rp.ID_PAYS
+                    AND bAfficher_site = 1
+                    AND ru.NOM_TABLE = 'Fournisseurs'    AND f.profile_expirydate <= CURDATE()
+                    AND ru.status = 1 ORDER BY expiry_status ASC,COMPAGNIE ASC 
+         ")->queryAll();
+        $i = 1;
+       
+        
+        foreach ($ret_result as $key => $single_record) {
+            
+            $sql = "UPDATE repertoire_fournisseurs SET renewal_flag = 0, profile_expirydate='2018-09-13 00:00:00' WHERE ID_FOURNISSEUR=:supplier_id";
+            $command = Yii::app()->db->createCommand($sql);
+            $command->bindParam(":supplier_id", $single_record['ID_FOURNISSEUR']);
+            $command->execute();
+            
+            echo $i++ . "--" . $single_record['ID_UTILISATEUR'] . "--" . $single_record['ID_FOURNISSEUR'] . "<br>";
+        }
+    }
+    
     public function actionUpdatestatus() {
         //            bAfficher_site -- status
         // Yellow(24)  - 1                 0
