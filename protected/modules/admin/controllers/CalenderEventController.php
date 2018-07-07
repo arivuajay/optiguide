@@ -74,16 +74,61 @@ class CalenderEventController extends Controller
 		if(isset($_POST['CalenderEvent']))
 		{
 			$model->attributes=$_POST['CalenderEvent'];
-			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'Événement créé avec succès!!!');
-                                $this->redirect(array('index'));
-                        }
+            if ($model->validate()) {
+                $this->_createnewlocation($model);
+                if ($model->save()) {
+                    Yii::app()->user->setFlash('success', 'Événement créé avec succès!!!');
+                    $this->redirect(array('index'));
+                }
+            }
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
 		));
 	}
+
+    public function _createnewlocation(&$model)
+    {
+        $postregion = $model->ID_REGION;
+        if ($model->ID_REGION == "-1") {
+            $paysid = $model->ID_PAYS;
+            $otherregion = $model->autre_region;
+            $otherregion_abr = $model->autre_region_abr;
+            $condition = 'ID_PAYS="' . $paysid . '" and ( NOM_REGION_EN="' . $otherregion . '" || NOM_REGION_FR="' . $otherregion . '" )';
+            $region_exist = RegionDirectory::model()->find($condition);
+            if (!empty($region_exist)) {
+                $model->ID_REGION = $region_exist->ID_REGION;
+            } else {
+                $rinfo = new RegionDirectory;
+                $rinfo->ID_PAYS = $paysid;
+                $rinfo->NOM_REGION_EN = $otherregion;
+                $rinfo->NOM_REGION_FR = $otherregion;
+                $rinfo->ABREVIATION_EN = $otherregion_abr;
+                $rinfo->ABREVIATION_FR = $otherregion_abr;
+                $rinfo->federal_rates = 0;
+                $rinfo->save(false);
+                $model->ID_REGION = $rinfo->ID_REGION;
+            }
+        }
+
+        if ($model->ID_VILLE == "-1" || $postregion == "-1") {
+            $regionid = $model->ID_REGION;
+            $othercity = $model->autre_ville;
+            $condition = 'ID_REGION="' . $regionid . '" and NOM_VILLE="' . $othercity . '"';
+            $city_exist = CityDirectory::model()->find($condition);
+            if (!empty($city_exist)) {
+                $model->ID_VILLE = $city_exist->ID_VILLE;
+            } else {
+                $cinfo = new CityDirectory;
+                $cinfo->ID_REGION = $regionid;
+                $cinfo->NOM_VILLE = $othercity;
+                $cinfo->country = $model->ID_PAYS;
+                $cinfo->save(false);
+                $model->ID_VILLE = $cinfo->ID_VILLE;
+            }
+        }
+    }
 
 	/**
 	 * Updates a particular model.
@@ -99,11 +144,17 @@ class CalenderEventController extends Controller
 
 		if(isset($_POST['CalenderEvent']))
 		{
-			$model->attributes=$_POST['CalenderEvent'];
-			if($model->save()){
-                                Yii::app()->user->setFlash('success', 'Événement correctement mis à jour!!!');
-                                $this->redirect(array('index'));
-                        }
+            $model->attributes = $_POST['CalenderEvent'];
+            if ($model->validate()) {
+                $this->_createnewlocation($model);
+                if ($model->save()) {
+                    Yii::app()->user->setFlash('success', 'Événement correctement mis à jour!!!');
+                    $this->redirect(array('index'));
+                }
+            }else{
+                print_r($model->getErrors());
+                exit;
+            }
 		}
 
 		$this->render('update',array(

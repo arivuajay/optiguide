@@ -138,18 +138,23 @@ class Myclass extends CController {
         return $val;
     }
     
-    public static function getallregions_client($id = null,$client_disp = null) {
+    public static function getallregions_client($id = null,$client_disp = null, $other=null) {
         $regions = array();
         $criteria_reg = new CDbCriteria;
         $val = $client_disp;
         $regionname = 'NOM_REGION_' . Yii::app()->session['language'];
-
         $criteria_reg->order = $regionname . ' ASC';
         if (!is_null($id)) {
             $criteria_reg->condition = 'ID_PAYS=:id AND flag < :val';
             $criteria_reg->params = array(':id' => $id ,':val' => $val);
-            $regions = RegionDirectory::model()->findAll($criteria_reg);
-            $regions = CHtml::listData($regions, 'ID_REGION', $regionname);
+            $regions_result = RegionDirectory::model()->findAll($criteria_reg);
+            if($other) {
+                $regions1["-1"] = Myclass::t('OG244');
+                $regions2 = CHtml::listData($regions_result, 'ID_REGION', $regionname);
+                $regions = $regions1 + $regions2;
+            }else{
+                $regions = CHtml::listData($regions_result, 'ID_REGION', $regionname);
+            }
         }
 
         return $regions;

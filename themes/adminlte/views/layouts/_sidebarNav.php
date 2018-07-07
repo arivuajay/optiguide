@@ -28,6 +28,7 @@
                     'items' => array(                      
                         array('label' => '<i class="fa fa-music"></i> <span>Roles</span>', 'url' => array('/admin/masterrole/index') , 'visible' => '1'),
                         array('label' => '<i class="fa fa-user"></i> <span>Users</span>', 'url' => array('/admin/admin/index') , 'visible' => '1' ),
+                        array('label' => '<i class="fa fa-dollar"></i> <span>Payment Settings</span>', 'url' => array('/admin/settings/index') , 'visible' => '1' ),
                     ),
                 ),
                 array('label' => '<i class="fa fa-bell"></i> <span> Client Profiles</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
@@ -95,17 +96,18 @@
                     ),
                 ),
                 array('label' => '<i class="fa fa-group"></i> <span>Associations</span>', 'url' => array('/admin/categoryInformation/index'), 'active' => $_controller == 'categoryInformation' ,  'visible' => '1'),
-
-//                array('label' => '<i class="fa fa-globe"></i> <span> Régions</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
-//                    'itemOptions' => array('class' => 'treeview'),
-//                    'submenuOptions' => array('class' => 'treeview-menu'),
-//                    'items' => array(
-//                        array('label' => '<i class="fa fa-globe"></i> <span>Pays</span>', 'url' => array('/admin/countryDirectory/index'), 'active' => $_controller == 'countryDirectory'),
-//                        array('label' => '<i class="fa fa-building-o"></i> <span>Régions</span>', 'url' => array('/admin/regionDirectory/index'), 'active' => $_controller == 'regionDirectory'),
-//                        array('label' => '<i class="fa fa-building"></i> <span>Villes</span>', 'url' => array('/admin/cityDirectory/index'), 'active' => $_controller == 'cityDirectory'),
-//                    ),
-//                ),
-
+               /*
+                array('label' => '<i class="fa fa-globe"></i> <span> Régions</span><i class="fa pull-right fa-angle-left"></i>', 'url' => '#',
+                    'itemOptions' => array('class' => 'treeview'),
+                    'submenuOptions' => array('class' => 'treeview-menu'),
+                    'items' => array(
+                        array('label' => '<i class="fa fa-globe"></i> <span>Pays</span>', 'url' => array('/admin/countryDirectory/index'), 'active' => $_controller == 'countryDirectory'),
+                        array('label' => '<i class="fa fa-building-o"></i> <span>Régions</span>', 'url' => array('/admin/regionDirectory/index'), 'active' => $_controller == 'regionDirectory'),
+                        array('label' => '<i class="fa fa-building"></i> <span>Villes</span>', 'url' => array('/admin/cityDirectory/index'), 'active' => $_controller == 'cityDirectory'),
+                    ),
+                ),
+                * 
+                */
                 array('label' => '<i class="fa fa-gear"></i> <span>Archivage</span>', 'url' => array('/admin/archiveCategory/index'),  'visible' => '1'),
                 // array('label' => '<i class="fa fa-dashboard"></i> <span>Utilisateurs</span>', 'url' => array('/admin/userdirectory/index'), 'active' => $_controller == 'userdirectory'),
                 array('label' => '<i class="fa fa-line-chart"></i> <span>Sondages</span>', 'url' => array('/admin/poll/index'), 'active' => $_controller == 'poll',  'visible' => '1'),

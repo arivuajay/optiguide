@@ -7,11 +7,13 @@
  */
 class PaypalAdvance extends CComponent {
 
-    const PARTNER = 'PayPal';
-    const VENDOR = 'stanleyr15';
-    const USER = 'stanleyr15';
-    const PWD = 'stanley123';
-    const MODE = 'TEST';
+//    const PARTNER = 'PayPal';
+//    const VENDOR = 'stanleyr15';
+//    const USER = 'stanleyr15';
+//    const PWD = 'stanley123';
+//    const MODE = 'TEST';
+
+    public static $PARTNER, $VENDOR, $USER, $PWD, $MODE;
     
 //    const PARTNER = "PayPalCA";
 //    const VENDOR = "Marjeantine495";
@@ -25,7 +27,23 @@ class PaypalAdvance extends CComponent {
 
     public function __construct() {
         global $environment;
-        $this->environment = 'pilot'; //live
+
+        $paypal_option = ['payment_mode','payment_partner', 'payment_vendor_id', 'payment_vendor_user', 'payment_vendor_pass'];
+        $result = array();
+        foreach ($paypal_option as $avalue) {
+            $optionval_obj = Settings::model()->find("option_type='" . $avalue . "'");
+            if (isset($optionval_obj) && !empty($optionval_obj)) {
+                $optionval = $optionval_obj->option_value;
+                $result[$avalue] = $optionval;
+            }
+        }
+        $this->environment = ($result['payment_mode'] == '1')? 'pilot' : 'live'; //live
+
+        self::$PARTNER = $result['payment_partner'];
+        self::$VENDOR = $result['payment_vendor_id'];
+        self::$USER = $result['payment_vendor_user'];
+        self::$PWD = $result['payment_vendor_pass'];
+        self::$MODE = ($result['payment_mode'] == '1')? 'TEST' : 'LIVE' ;
     }
 
 //// Helper functions

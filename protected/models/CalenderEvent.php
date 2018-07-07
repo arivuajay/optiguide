@@ -23,7 +23,7 @@ class CalenderEvent extends CActiveRecord {
     
     public $EVENT_MONTH,$archivecat;
     public $EVENT_YEAR;
-    public $Year,$Emplacement,$keyword,$region,$country,$city;
+    public $Year,$Emplacement,$keyword,$region,$country,$city, $autre_ville, $autre_region, $autre_region_abr;
 
     /**
      * @return string the associated database table name
@@ -49,7 +49,10 @@ class CalenderEvent extends CActiveRecord {
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('Year,Emplacement,keyword', 'safe'),
-            array('ID_EVENEMENT, LANGUE, DATE_AJOUT1, DATE_AJOUT2, TITRE, TEXTE, LIEN_URL, LIEN_TITRE, AFFICHER_SITE, AFFICHER_ACCUEIL, AFFICHER_ARCHIVE, ID_PAYS, ID_REGION, ID_VILLE, EVENT_MONTH, EVENT_YEAR', 'safe', 'on' => 'search'),
+            array('ID_EVENEMENT, LANGUE, DATE_AJOUT1, DATE_AJOUT2, TITRE, TEXTE, LIEN_URL, LIEN_TITRE, AFFICHER_SITE, AFFICHER_ACCUEIL, AFFICHER_ARCHIVE, ID_PAYS, ID_REGION, ID_VILLE, EVENT_MONTH, EVENT_YEAR, autre_ville, autre_region, autre_region_abr', 'safe', 'on' => 'search'),
+            array('autre_ville', 'checkOtherCityChoosen'),
+            array('autre_region', 'checkOtherRegionChoosen'),
+            array('autre_region_abr', 'checkOtherRegionAbrChoosen'),
         );
     }
 
@@ -62,6 +65,27 @@ class CalenderEvent extends CActiveRecord {
         return array(
             
         );
+    }
+
+    public function checkOtherCityChoosen($attributes, $params) {
+        if ($this->ID_VILLE == -1 || $this->ID_REGION == -1) {
+            if($this->autre_ville == '')
+                $this->addError($attributes, 'City cannot be blank.');
+        }
+    }
+
+    public function checkOtherRegionChoosen($attributes, $params) {
+        if ($this->ID_REGION == -1) {
+            if($this->autre_region == '')
+                $this->addError($attributes, 'Region cannot be blank.');
+        }
+    }
+
+    public function checkOtherRegionAbrChoosen($attributes, $params) {
+        if ($this->ID_REGION == -1) {
+            if($this->autre_region_abr == '')
+                $this->addError($attributes, 'Region Abreviation cannot be blank.');
+        }
     }
 
     /**
@@ -87,6 +111,9 @@ class CalenderEvent extends CActiveRecord {
             'Keyword'   =>  Myclass::t('Mot clé'),
             'iId_fichier' => Myclass::t('Fichier'),
             'archivecat'  => Myclass::t('Archive category'),
+            'autre_ville' => Myclass::t('OG172'),
+            'autre_region' => Myclass::t('OG244'),
+            'autre_region_abr' => Myclass::t('OG245'),
         );
     }
 

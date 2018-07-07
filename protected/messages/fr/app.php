@@ -273,6 +273,10 @@ return array(
     'OG239' => 'Cellulaire',
     'OG240' => 'Abonnement',
     'OG241' => 'Numéro de portable',
-    'OG242' => 'Choisissez une Catégorie Nom'
+    'OG242' => 'Choisissez une Catégorie Nom',
+    'OG243' => 'Veuillez choisir une catégorie',
+
+    'OG244' => "Précisez votre région",
+    'OG245' => "Précisez l'abréviation de votre région"
 );
 ?>

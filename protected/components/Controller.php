@@ -49,6 +49,7 @@ class Controller extends CController {
         $options = '';
         $cid = isset($_POST['id']) ? $_POST['id'] : '';
         $client_disp = isset($_POST['client_disp']) ? $_POST['client_disp'] : '';
+        $other_disp = isset($_POST['other_disp']) ? $_POST['other_disp'] : '';
         
         $search_disp = isset($_POST['search']) ? $_POST['search'] : '';
         if($search_disp=="yes")
@@ -59,11 +60,11 @@ class Controller extends CController {
         }
         
         if ($cid != '') {
-            
+
             if(!empty($client_disp))
-            {   
-                $data_regions = Myclass::getallregions_client($cid,$client_disp);
-            }  else {
+            {
+                $data_regions = Myclass::getallregions_client($cid,$client_disp,$other_disp);
+            }else {
                 $data_regions = Myclass::getallregions($cid);
             }
             

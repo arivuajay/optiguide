@@ -165,10 +165,10 @@ class RepCredentialController extends ORController {
         //paypal advance
         $paypalAdv = new PaypalAdvance;
         $request = array(
-            "PARTNER" => $paypalAdv::PARTNER,
-            "VENDOR" => $paypalAdv::VENDOR,
-            "USER" => $paypalAdv::USER,
-            "PWD" => $paypalAdv::PWD,
+            "PARTNER" => $paypalAdv::$PARTNER,
+            "VENDOR" => $paypalAdv::$VENDOR,
+            "USER" => $paypalAdv::$USER,
+            "PWD" => $paypalAdv::$PWD,
             "TENDER" => "C",
             "TRXTYPE" => "S",
             "CURRENCY" => "CAD",
@@ -184,7 +184,7 @@ class RepCredentialController extends ORController {
 
         //Run request and get the response
         $response = $paypalAdv->run_payflow_call($request);
-        $response['mode'] = $paypalAdv::MODE;
+        $response['mode'] = $paypalAdv::$MODE;
 
         if ($response['RESULT'] != 0) {
             Yii::app()->user->setFlash('danger', "There is some problem in your payment. Please try again.");
@@ -299,10 +299,10 @@ class RepCredentialController extends ORController {
 //                //paypal advance
 //                $paypalAdv = new PaypalAdvance;
 //                $request = array(
-//                    "PARTNER" => $paypalAdv::PARTNER,
-//                    "VENDOR" => $paypalAdv::VENDOR,
-//                    "USER" => $paypalAdv::USER,
-//                    "PWD" => $paypalAdv::PWD,
+//                    "PARTNER" => $paypalAdv::$PARTNER,
+//                    "VENDOR" => $paypalAdv::$VENDOR,
+//                    "USER" => $paypalAdv::$USER,
+//                    "PWD" => $paypalAdv::$PWD,
 //                    "TENDER" => "C",
 //                    "TRXTYPE" => "S",
 //                    "CURRENCY" => "CAD",

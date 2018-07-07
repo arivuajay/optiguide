@@ -274,6 +274,9 @@ return array(
     'OG240' => 'Subscription',
     'OG241' => 'Mobile number',
     'OG242' => 'Select a Category Name',
-    'OG243' => 'Please select category'
-);    
+    'OG243' => 'Please select category',
+
+    'OG244' => "Specify your region",
+    'OG245' => "Specify your region abrevation"
+);
 ?>

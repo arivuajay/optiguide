@@ -35,8 +35,8 @@ $startdate = $model->DATE_AJOUT1;
 $enddate = $model->DATE_AJOUT2;
 
 $country = Myclass::getallcountries();
-$regions = Myclass::getallregions_client($model->ID_PAYS,2);
-$cities  = Myclass::getallcities_other($model->ID_REGION);
+$regions = Myclass::getallregions_client($model->ID_PAYS,2, 'other');
+$cities  = Myclass::getallcities($model->ID_REGION);
 $archivecats = CHtml::listData(ArchiveCategory::model()->findAll(array("order"=>'NOM_CATEGORIE_FR')), 'ID_CATEGORIE', 'NOM_CATEGORIE_FR');
 
 $ficherid    = $model->iId_fichier;
@@ -172,12 +172,35 @@ if($ficherid>0)
                         <?php echo $form->error($model, 'ID_REGION'); ?>
                     </div>
                 </div>
+                <div id="other_region" style="display:none;">
+                    <div class="form-group">
+                        <?php echo $form->labelEx($model, 'autre_region', array('class' => 'col-sm-2 control-label')); ?>
+                        <div class="col-sm-5">
+                            <?php echo $form->textField($model, 'autre_region', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
+                            <?php echo $form->error($model, 'autre_region'); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <?php echo $form->labelEx($model, 'autre_region_abr', array('class' => 'col-sm-2 control-label')); ?>
+                        <div class="col-sm-5">
+                            <?php echo $form->textField($model, 'autre_region_abr', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
+                            <?php echo $form->error($model, 'autre_region_abr'); ?>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="form-group">
+                <div class="form-group" id="select_city">
                     <?php echo $form->labelEx($model, 'ID_VILLE', array('class' => 'col-sm-2 control-label')); ?>
                     <div class="col-sm-5">                       
                         <?php echo $form->dropDownList($model, 'ID_VILLE', $cities, array('class' => 'form-control', 'empty' => Myclass::t('APP59'))); ?>   
                         <?php echo $form->error($model, 'ID_VILLE'); ?>
+                    </div>
+                </div>
+                <div class="form-group" id="other_city" style="display:none;">
+                    <?php echo $form->labelEx($model, 'autre_ville', array('class' => 'col-sm-2 control-label')); ?>
+                    <div class="col-sm-5">
+                        <?php echo $form->textField($model, 'autre_ville', array('class' => 'form-control', 'size' => 60, 'maxlength' => 255)); ?>
+                        <?php echo $form->error($model, 'autre_ville'); ?>
                     </div>
                 </div>
                 <div class="box-header">
@@ -228,8 +251,51 @@ $ajaxRegionUrl  = Yii::app()->createUrl('/admin/calenderEvent/getregions');
 $ajaxCityUrl    = Yii::app()->createUrl('/admin/calenderEvent/getcities');
 $ajaxFicherUrl = Yii::app()->createUrl('/admin/calenderEvent/getfichers');
 $ajaxFetchimage = Yii::app()->createUrl('/admin/calenderEvent/getficherimage');
+
+$ctyval = isset($model->ID_VILLE)?$model->ID_VILLE:'';
+$regval = isset($model->ID_REGION)?$model->ID_REGION:'';
 $js = <<< EOD
 $(document).ready(function(){
+
+var regval = "{$regval}";
+if(regval=="-1")
+{    
+    otherregions();
+}     
+        
+$("#CalenderEvent_ID_REGION").change(function(){
+    var id=$(this).val();
+        
+    $("#other_region").hide();
+    $("#select_city").show();
+    $("#other_city").hide();
+    if(id=="-1")
+    {    
+        otherregions();      
+    }    
+}); 
+
+function otherregions(){
+    $("#other_region").show();
+    $("#select_city").hide();
+    $("#other_city").show();
+}
+
+var ctyval = "{$ctyval}";
+if(ctyval=="-1")
+{    
+    $("#other_city").show();
+}     
+        
+$("#CalenderEvent_ID_VILLE").change(function(){
+    var id=$(this).val();
+        
+    $("#other_city").hide();
+    if(id=="-1")
+    {    
+        $("#other_city").show();
+    }    
+});  
         
 $('.year').datepicker({ dateFormat: 'yyyy' });
 $('.date').datepicker({ format: 'yyyy-mm-dd' });     
@@ -281,7 +347,7 @@ if(startdate=='' || enddate=='')
         $.ajax({
             type: "POST",
             url: '{$ajaxRegionUrl}',
-            data: dataString+'&client_disp=2',
+            data: dataString+'&client_disp=2&other_disp=1',
             cache: false,
             success: function(html){             
                 $("#CalenderEvent_ID_REGION").html(html);
@@ -296,7 +362,7 @@ if(startdate=='' || enddate=='')
         $.ajax({
             type: "POST",
             url: '{$ajaxCityUrl}',
-            data: dataString+'&client_dis=1',
+            data: dataString,
             cache: false,
             success: function(html){             
                 $("#CalenderEvent_ID_VILLE").html(html);

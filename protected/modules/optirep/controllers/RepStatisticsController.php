@@ -102,10 +102,10 @@ class RepStatisticsController extends ORController {
                 $model_paypalAdvance->attributes = $_POST['PaymentTransaction'];                
                 $paypalAdv = new PaypalAdvance;
                 $request   = array(
-                    "PARTNER" => $paypalAdv::PARTNER,
-                    "VENDOR" => $paypalAdv::VENDOR,
-                    "USER" => $paypalAdv::USER,
-                    "PWD" => $paypalAdv::PWD,
+                    "PARTNER" => $paypalAdv::$PARTNER,
+                    "VENDOR" => $paypalAdv::$VENDOR,
+                    "USER" => $paypalAdv::$USER,
+                    "PWD" => $paypalAdv::$PWD,
                     "TENDER" => "C",
                     "TRXTYPE" => "S",
                     "CURRENCY" => "CAD",
