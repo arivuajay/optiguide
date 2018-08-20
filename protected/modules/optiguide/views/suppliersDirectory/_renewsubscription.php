@@ -32,6 +32,13 @@ $taxval_profile_logo = $profile_logo_price * ($tax_price / 100) . $currency;
 $grandtotal_profile = ( $profile_price + $taxval_profile) . $currency;
 $grandtotal_logo    = ( $logo_price + $taxval_logo) . $currency;
 $grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo) . $currency;
+
+$payment_type = Myclass::enablePaymentGateway();
+if(isset($payment_type[1])){
+    $pmodel->payment_type = 1;
+}else if(isset($payment_type[2])){
+    $pmodel->payment_type = 2;
+}
 ?>
 <div class="row"> 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subscribe-btncont"> 
@@ -82,10 +89,10 @@ $grandtotal_profile_logo = ( $profile_logo_price + $taxval_profile_logo) . $curr
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">                                                                                     
                             <?php 
-                            if(!isset($pmodel->payment_type)){$pmodel->payment_type="2";}
-                            //echo $form->dropDownList($pmodel, 'payment_type', array('1' => 'Paypal', '2' => 'Pay with credit card'), array('class' => 'selectpicker'));                           
-                              echo $form->hiddenField($pmodel, 'payment_type',array('value'=>'2'));?>   
-                            <?php //echo $form->error($pmodel, 'payment_type'); ?>
+//                            if(!isset($pmodel->payment_type)){$pmodel->payment_type="2";}
+                            echo $form->dropDownList($pmodel, 'payment_type', $payment_type, array('class' => 'selectpicker', "empty" => Myclass::t('OG182')));                             
+//                              echo $form->hiddenField($pmodel, 'payment_type',array('value'=>'2'));?>   
+                            <?php echo $form->error($pmodel, 'payment_type'); ?>
                             
                             <?php echo $form->hiddenField($pmodel, 'subscription_type'); ?>
                         </div>

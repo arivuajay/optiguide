@@ -58,6 +58,7 @@ class PaymentTransaction extends CActiveRecord {
         return array(
             array('user_id,total_price,tax,subscription_price,payment_status,payer_email,verify_sign', 'safe'),
             array('txn_type,item_name,ipn_track_id,created_at,updated_at, credit_card, exp_date, cvv2', 'safe'),
+            array('pay_type', 'required'),
             array('txn_id,payment_type,receiver_email,NOMTABLE,expirydate,invoice_number,total,pay_type,subscription_type, rep_temp_id', 'safe'),
             array('credit_card, exp_month, exp_year, cvv2', 'required', 'on' => 'paypal_advance'),
             array('credit_card', 'ext.validators.ECCValidator'),

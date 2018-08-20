@@ -6,7 +6,11 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <?php $form=$this->beginWidget('CActiveForm', array(
                         'id'=>'renew-form',
-                        'enableAjaxValidation'=>false,
+//                        'enableAjaxValidation'=>false,
+                        'clientOptions' => array(
+                            'validateOnSubmit' => true,
+                        ),
+                        'enableAjaxValidation' => true,
                 )); ?>
                 <div class="form-group"> 
                     <div class="row">
@@ -17,9 +21,21 @@
                             <div class="no_of_accounts">
                                 <?php
                                 $no_of_months = Myclass::noOfMonths();
-                                echo CHtml::dropDownList($model,'duration', $no_of_months, array('class' => "form-field"));
-//                                echo CHtml::dropDownList('duration','month_id',array('1'=>'1 Month','6' => '6 months', '12' => '1 year'), array('class' => "form-field"));
-                                echo CHtml::hiddenField('no_of_accounts_purchase',$no_of_accounts_purchase);
+                                $payment_type = Myclass::enablePaymentGateway();
+                                if(isset($payment_type[1])){
+                                    $model->payment_type = 1;
+                                }else if(isset($payment_type[2])){
+                                    $model->payment_type = 2;
+                                }
+//                                echo CHtml::dropDownList($model,'duration', $no_of_months, array('class' => "form-field"));
+                                echo $form->dropDownList($model, 'duration', $no_of_months, array('class' => 'form-field'));
+                                echo $form->hiddenField($model, 'no_of_accounts_purchase', array('value' => $no_of_accounts_purchase));
+                                echo $form->labelEx($model, 'payment_type');
+                                echo $form->dropDownList($model, 'payment_type', $payment_type, array('class' => 'form-field', "prompt" => Myclass::t('OG182')));
+                                echo $form->error($model, 'payment_type');
+                                echo "<br>";
+////                                echo CHtml::dropDownList('duration','month_id',array('1'=>'1 Month','6' => '6 months', '12' => '1 year'), array('class' => "form-field"));
+//                                echo CHtml::hiddenField('no_of_accounts_purchase',$no_of_accounts_purchase);
                                 ?>
                                 
                                 <?php

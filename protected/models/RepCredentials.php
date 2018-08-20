@@ -26,6 +26,7 @@ class RepCredentials extends CActiveRecord {
     public $old_password;
     public $new_password;
     public $confirm_password;
+    public $payment_type;
 
     const ROLE_SINGLE = 'single';
     const ROLE_ADMIN = 'admin';
@@ -55,7 +56,9 @@ class RepCredentials extends CActiveRecord {
             array('rep_username, rep_password', 'length', 'max' => 255),
             array('rep_role', 'length', 'max' => 6),
             array('rep_status', 'length', 'max' => 1),
-            array('subscription_type_id, no_of_accounts_purchase,Reps1,Reps2, no_of_months, duration', 'safe'),
+//            array('payment_type', 'required'),  
+            array('payment_type', 'required', 'on'=>'payment'),       
+            array('subscription_type_id,  no_of_accounts_purchase,Reps1,Reps2, no_of_months, duration', 'safe'),
             array('old_password, new_password, confirm_password', 'required', 'on' => 'changePwd'),
             array('old_password', 'findPasswords', 'on' => 'changePwd'),
             array('confirm_password', 'compare', 'compareAttribute' => 'new_password', 'on' => 'changePwd'),
@@ -72,7 +75,7 @@ class RepCredentials extends CActiveRecord {
         if ($user->rep_password != $this->old_password)
             $this->addError($attribute, Myclass::t('OR689', '', 'or'));
     }
-
+   
     /**
      * @return array relational rules.
      */
@@ -107,6 +110,7 @@ class RepCredentials extends CActiveRecord {
             'confirm_password' => Myclass::t('OR713', '', 'or'),
             'no_of_accounts_purchase' => Myclass::t('OR752', '', 'or'),
             'no_of_months' => Myclass::t('OR753', '', 'or'),
+            'payment_type' => Myclass::t('OGO105','','og'),
         );
     }
 

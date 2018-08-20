@@ -17,8 +17,8 @@ class PaypalAdvance extends CComponent {
     
 //    const PARTNER = "PayPalCA";
 //    const VENDOR = "Marjeantine495";
-//    const USER = "AureVass495";
-//    const PWD = "AureVass2015%88";
+//    const USER = "Breton495";
+//    const PWD = "MiroAidem495#";
 //    const MODE = 'LIVE';    
 
     // Set this to "live" for the live server, "pilot" for the test server, or "sandbox"

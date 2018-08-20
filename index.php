@@ -13,9 +13,9 @@ defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL', 3);
 
 require_once($yii);
 
-$optiguide_array = array('local.optiguide', 'optiguide.arkinfotec.in');
-$optirep_array = array('local.optirep', 'optirep.arkinfotec.in');
-$optiadmin_array = array('local.optiadmin','optiadmin.opti-guide.info');
+$optiguide_array = array('local.optiguide', 'optiguide.arkinfotec.in' , 'optiguide.opti-guide.info','opti-guide.com','www.opti-guide.com');
+$optirep_array   = array('local.optirep', 'optirep.arkinfotec.in' , 'optirep.opti-guide.info' , 'opti-rep.com' , 'www.opti-rep.com');
+$optiadmin_array = array('local.optiadmin', 'optiadmin.arkinfotec.in','optiadmin.opti-guide.info','webadmin.opti-guide.com','webadmin.opti-guide.com');
 
 if (in_array($_SERVER['HTTP_HOST'], $optiadmin_array)) {
 

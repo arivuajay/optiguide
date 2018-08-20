@@ -21,6 +21,7 @@ $this->breadcrumbs = array(
         ?>
     </div>
 </div>
+<div class="col-lg-12 col-md-12">&nbsp;</div>
 <div class="col-lg-12 col-md-12">
     <div class="row">
         <?php

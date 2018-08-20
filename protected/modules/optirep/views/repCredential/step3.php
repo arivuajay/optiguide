@@ -1,34 +1,46 @@
-<?php $this->renderPartial('_register_steps', array('step' => $step)); ?>
+<?php 
+$payment_type = Myclass::enablePaymentGateway();
+if(isset($payment_type[1])){
+    $model->payment_type = 1;
+}else if(isset($payment_type[2])){
+    $model->payment_type = 2;
+}
+$this->renderPartial('_register_steps', array('step' => $step)); ?>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 landing-left">  
     <div class="form-group"> 
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
                 <h2><i class="fa fa-credit-card"></i> <?php echo Myclass::t('OR550', '', 'or'); ?></h2>
 
-                <!--                <div class="register card-details-cont">
+                                <div class="register card-details-cont">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
                 <?php
-                //$form = $this->beginWidget('CActiveForm', array(
-                //     'htmlOptions' => array('role' => 'form'),
-                // ));
-                // echo $form->hiddenField($model_paypal, 'pay_type', array('value' => 1));
+                $form = $this->beginWidget('CActiveForm', array(
+                    'id' => 'rep-credential-form',
+                    'htmlOptions' => array('role' => 'form'),
+                    'clientOptions' => array(
+                        'validateOnSubmit' => true,
+                    ),
+                    'enableAjaxValidation' => true,
+                ));
+                
                 ?> 
-                                        <h4> &nbsp; <?php //echo Myclass::t('OR651', '', 'or')     ?> </h4> 
+                                        <h4> &nbsp; <?php echo Myclass::t('OR651', '', 'or')     ?> </h4> 
                 <?php
-//                        $paypal_buttton = CHtml::image($this->themeUrl . "/images/express-checkout-hero.png", "paypal", array('img-responsive'));
-//                        echo CHtml::tag('button', array(
-//                            'name' => 'btnSubmit',
-//                            'value' => 'Payfee',
-//                            'type' => 'submit',
-//                            'class' => 'paypal_btn'
-//                                ), $paypal_buttton);
+                echo $form->dropDownList($model, 'payment_type', $payment_type, array('class' => 'form-control', "prompt" => Myclass::t('OG182')));                             
+                echo $form->error($model, 'payment_type');
+                echo CHtml::tag('button', array(
+                                        'name' => 'btnSubmit',
+                                       'type' => 'submit',
+                                       'class' => 'register-btn pull-right'
+                                          ), '<i class="fa fa-arrow-circle-right"></i> ' . Myclass::t('OGO103', '', 'og'));
                 ?>
-                <?php // $this->endWidget(); ?>
+                <?php $this->endWidget(); ?>
                                     </div>
-                                </div> -->
+                                </div> 
 
-                <div class="register card-details-cont">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+<!--                <div class="register card-details-cont">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">-->
                         <!--                        <?php
 //                        $form = $this->beginWidget('CActiveForm', array(
 //                            'htmlOptions' => array(
@@ -88,13 +100,13 @@
                                                 </div>
                         <?php //$this->endWidget(); ?> -->
                         <?php
-                        $securetoken = $response['SECURETOKEN'];
-                        $securetokenid = $response['SECURETOKENID'];
-                        $mode = $response['mode'];
+//                        $securetoken = $response['SECURETOKEN'];
+//                        $securetokenid = $response['SECURETOKENID'];
+//                        $mode = $response['mode'];
                         ?>
-                            <iframe src='https://payflowlink.paypal.com?SECURETOKEN=<?php echo $securetoken; ?>&SECURETOKENID=<?php echo $securetokenid; ?>&MODE=<?php echo $mode ?>' width='490' height='350' border='0' frameborder='0' scrolling='no' allowtransparency='true'>\n</iframe>
-                    </div>
-                </div>
+                            <!--<iframe src='https://payflowlink.paypal.com?SECURETOKEN=<?php // echo $securetoken; ?>&SECURETOKENID=<?php // echo $securetokenid; ?>&MODE=<?php // echo $mode ?>' width='490' height='350' border='0' frameborder='0' scrolling='no' allowtransparency='true'>\n</iframe>-->
+<!--                    </div>
+                </div>-->
             </div>
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 price-details">

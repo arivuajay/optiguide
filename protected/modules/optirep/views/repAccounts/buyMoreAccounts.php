@@ -1,13 +1,23 @@
 <div class="cate-bg user-right">
     <h2> <?php echo Myclass::t('OR528', '', 'or'); ?> </h2>
     <div class="row"> 
-
+        <?php
+            $form = $this->beginWidget('CActiveForm', array(                    
+                    'htmlOptions' => array('role' => 'form'),
+                    'id' => 'buy-more-accounts-form',
+                    'clientOptions' => array(
+                        'validateOnSubmit' => true,
+                    ),
+                    'enableAjaxValidation' => true,
+                    
+                ));
+        ?>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <?php
-                $form = $this->beginWidget('CActiveForm', array(
-                    'id' => 'buy-more-accounts-form',
-                ));
+//                $form = $this->beginWidget('CActiveForm', array(
+//                    'id' => 'buy-more-accounts-form',
+//                ));
                 ?>
                 <div class="form-group"> 
                     <div class="row">
@@ -36,7 +46,7 @@
                         </div>
                     </div>
                 </div>
-                <?php $this->endWidget(); ?>
+                <?php // $this->endWidget(); ?>
             </div>
 
 <!--            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -66,21 +76,38 @@
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
                 <?php
-                $form = $this->beginWidget('CActiveForm', array(
-                    'htmlOptions' => array(
-                        'role' => 'form',
-                        "autocomplete" => "off"
-                    ),
-                    'id' => 'buy-more-accounts-form',
-                ));
+                $payment_type = Myclass::enablePaymentGateway();
+                if(isset($payment_type[1])){
+                    $model->payment_type = 1;
+                }else if(isset($payment_type[2])){
+                    $model->payment_type = 2;
+                }
+//                $form = $this->beginWidget('CActiveForm', array(
+//                    'htmlOptions' => array(
+//                        'role' => 'form',
+//                        "autocomplete" => "off"
+//                    ),
+//                    'id' => 'buy-more-accounts-form',
+//                    'clientOptions' => array(
+//                        'validateOnSubmit' => true,
+//                    ),
+//                    'enableAjaxValidation' => true,
+//                    
+//                ));
                 ?>
-                <div class="card-details-cont">
+                <div class="card-details-cont1">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="row">
+                            
+                            <div class="no_of_accounts">
                             <?php
                             echo $form->errorSummary(array($model_paypaladvance));
-                            echo $form->hiddenField($model_paypaladvance, 'pay_type', array('value' => 2));
+                            echo $form->labelEx($model, 'payment_type');
+                            echo $form->dropDownList($model, 'payment_type', $payment_type, array('class' => 'form-field', "prompt" => Myclass::t('OG182')));
+                            echo $form->error($model, 'payment_type');
+//                            echo $form->hiddenField($model_paypaladvance, 'pay_type', array('value' => 2));
                             ?>
+                            </div>                                
                             <input type="hidden" id="model_paypaladvance_no_of_accounts_purchase" name="RepCredentials[no_of_accounts_purchase]" class="rep_cred_no_of_acc_purchase">
                             <input type="hidden" id="RepCredentials_duration" name="RepCredentials[duration]" class="rep_duration">
 <!--                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -129,10 +156,10 @@
                         </div>
                     </div>
                 </div>
-                <?php $this->endWidget(); ?>
+                <?php // $this->endWidget(); ?>
             </div>
         </div>
-
+        <?php $this->endWidget(); ?>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
                 <div class="form-group"> 

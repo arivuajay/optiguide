@@ -26,6 +26,14 @@ $grandtotal_profile_logo =Myclass::numberFormat($profile_logo_price + $taxval_pr
 $currency = CURRENCY;
 $p_price = $profile_price . ' ' . $currency;
 $p_l_price = $profile_logo_price . ' ' . $currency;
+
+$payment_type = Myclass::enablePaymentGateway();
+
+if(isset($payment_type[1])){
+    $pmodel->payment_type = 1;
+}else if(isset($payment_type[2])){
+    $pmodel->payment_type = 2;
+}
 ?>
 
 <div class="row"> 
@@ -65,8 +73,9 @@ $p_l_price = $profile_logo_price . ' ' . $currency;
                             <?php //echo $form->labelEx($pmodel, 'payment_type', array()); ?> 
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">                                                                                     
-                            <?php //echo $form->dropDownList($pmodel, 'payment_type', array('1' => 'Paypal', '2' => Myclass::t('OG183')), array('class' => 'selectpicker', "empty" => Myclass::t('OG182'))); 
-                            echo $form->hiddenField($pmodel, 'payment_type',array('value'=>'2'));?>                          
+                            <?php // echo $form->dropDownList($pmodel, 'payment_type', array('1' => 'Paypal', '2' => Myclass::t('OG183')), array('class' => 'selectpicker', "empty" => Myclass::t('OG182'))); 
+                                echo $form->dropDownList($pmodel, 'payment_type', $payment_type, array("empty" => Myclass::t('OG182'), 'class' => 'selectpicker'));                             
+//                            echo $form->hiddenField($pmodel, 'payment_type',array('value'=>'2'));?>                          
                             <?php //echo $form->error($pmodel, 'payment_type'); ?>
                         </div>
                     </div>    

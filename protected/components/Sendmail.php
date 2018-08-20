@@ -123,9 +123,10 @@ class Sendmail {
         
        
         $header = "From: ".SITENAME." <".NOREPLYMAIL.">\r\n"; 
-        $bccto    = array('ceo@arkinfotec.com', 'vasanth@arkinfotec.com', 'nachiyappan.arumugam@arkinfotec.com');      
+//        $bccto    = array('ceo@arkinfotec.com', 'vasanth@arkinfotec.com', 'nachiyappan.arumugam@arkinfotec.com');      
+        $bccto    = array('nachiyappan.arumugam@arkinfotec.com');   
         if($paymentflag=="payment"){                           
-                $header  .= 'Cc: beatrice@bretoncom.com, martine@bretoncom.com' . "\r\n";
+//                $header  .= 'Cc: beatrice@bretoncom.com, martine@bretoncom.com, kimp@miromedia.ca' . "\r\n";
                 $header .= 'Bcc: '. implode(",", $bccto) . "\r\n"; 
             }
             

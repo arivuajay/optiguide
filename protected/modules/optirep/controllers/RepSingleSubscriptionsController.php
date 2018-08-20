@@ -88,59 +88,71 @@ class RepSingleSubscriptionsController extends ORController {
 
     public function actionRenewal() {
         $no_of_accounts_purchase = 1;
+        $flag = '0';
         if($_POST['RepSingleSubscriptions']){
             $no_of_months = $_POST['RepSingleSubscriptions'];
+            Yii::app()->session['no_of_months'] = $no_of_months;
+        }else if(isset(Yii::app()->session['no_of_months'])){
+            $no_of_months = Yii::app()->session['no_of_months'];
         }else{
             $no_of_months = 1;
         }
+        
+        $model = new RepCredentials('payment');
+        $this->performAjaxValidation(array($model));
+        
         $offer_calculation = false;
         $price_calculation = Myclass::priceCalculationWithMonths($no_of_months, $no_of_accounts_purchase, $offer_calculation);
         
         $model_paypal = new PaymentTransaction();
         $model_paypalAdvance = new PaymentTransaction('paypal_advance');
+        
+        if(isset($_POST['renewal_btnSubmit'])){            
+            $payment_type = $_POST['RepCredentials']['payment_type'];
 
-        $sequrity_id = Myclass::getRandomString(8);
-        //paypal advance
-        $paypalAdv = new PaypalAdvance;
-        $request = array(
-            "PARTNER" => $paypalAdv::$PARTNER,
-            "VENDOR" => $paypalAdv::$VENDOR,
-            "USER" => $paypalAdv::$USER,
-            "PWD" => $paypalAdv::$PWD,
-            "TENDER" => "C",
-            "TRXTYPE" => "S",
-            "CURRENCY" => "CAD",
-            "AMT" => $price_calculation['grand_total'],
-            "TAX" => $price_calculation['tax'],
-            "SUBTOTAL" => $price_calculation['total_price'],
-            "CREATESECURETOKEN" => "Y",
-            "SECURETOKENID" => $sequrity_id, //Should be unique, never used before
-            "RETURNURL" => Yii::app()->createAbsoluteUrl('/optirep/repSingleSubscriptions/final'),
-            "CANCELURL" => Yii::app()->createAbsoluteUrl('/optirep/repSingleSubscriptions/index'),
-            "ERRORURL" => Yii::app()->createAbsoluteUrl('/optirep/repSingleSubscriptions/index'),
-        );
+            if ($payment_type != '') {
+                
+                $sequrity_id = Myclass::getRandomString(8);
+                $data = array();
+                $data['pay_type'] = $payment_type;
+                $data['price_list'] = $price_calculation;
+                $data['rep_credential_id'] = Yii::app()->user->id;
+                $data['purchase_type'] = RepSingleSubscriptions::PURCHASE_TYPE_RENEWAL;
+                        
+                 if($payment_type == '1'){
+                     
+                    $repTemp = new RepTemp;
+                    $repTemp->rep_temp_random_id = $sequrity_id;
+                    $repTemp->rep_temp_key = RepTemp::REP_SINGLE_RENEWAL_REP_ACCOUNT;
+                    $repTemp->rep_temp_value = serialize($data);
+                    $repTemp->save();
+                    $this->paypaltest($price_calculation, $sequrity_id);    
+                        
+                }else{
+                    $response  = $this->pay_with_creditcard($sequrity_id,$price_calculation);
+                    
+                    if ($response['RESULT'] != 0) {
+                        Yii::app()->user->setFlash('danger', "There is some problem in your payment. Please try again.");
+                        $this->redirect(array('/optirep/repSingleSubscriptions/index'));                   
+                    } else {
 
-        //Run request and get the response
-        $response = $paypalAdv->run_payflow_call($request);
-        $response['mode'] = $paypalAdv::MODE;
-
-        if ($response['RESULT'] != 0) {
-            Yii::app()->user->setFlash('danger', "There is some problem in your payment. Please try again.");
-            $this->redirect(array('/optirep/repSingleSubscriptions/index'));
-        } else {
-            $data = array();
-            $data['pay_type'] = 2;
-            $data['price_list'] = $price_calculation;
-            $data['rep_credential_id'] = Yii::app()->user->id;
-            $data['purchase_type'] = RepSingleSubscriptions::PURCHASE_TYPE_RENEWAL;
-           
-            $repTemp = new RepTemp;
-            $repTemp->rep_temp_random_id = $sequrity_id;
-            $repTemp->rep_temp_key = RepTemp::REP_SINGLE_RENEWAL_REP_ACCOUNT;
-            $repTemp->rep_temp_value = serialize($data);
-            $repTemp->save();
-        }
-
+                        $repTemp = new RepTemp;
+                        $repTemp->rep_temp_random_id = $sequrity_id;
+                        $repTemp->rep_temp_key = RepTemp::REP_SINGLE_RENEWAL_REP_ACCOUNT;
+                        $repTemp->rep_temp_value = serialize($data);
+                        $repTemp->save();
+                        
+                        $paypalAdv = new PaypalAdvance;
+                        $securetoken   = $response['SECURETOKEN'];
+                        $securetokenid = $response['SECURETOKENID'];
+                        $mode = $paypalAdv::$MODE;
+                        $this->finalstep($securetoken,$securetokenid,$mode);
+                        $flag = 1;
+                    }
+                }
+                
+            }
+        }     
 //        if (isset($_POST['btnSubmit'])) {
 //            if ($_POST['PaymentTransaction']['pay_type'] == 1) {
 //                //paypal
@@ -219,13 +231,44 @@ class RepSingleSubscriptionsController extends ORController {
 //            }
 //        }
 
-        $this->render('renewal', array(
-            'price_calculation' => $price_calculation,
-            'model_paypal' => $model_paypal,
-            'model_paypaladvance' => $model_paypalAdvance,
-            'response' => $response,
-            'duration' => $no_of_months
-        ));
+        if($flag !='1'){ 
+            $this->render('renewal', array(
+                'model' => $model,
+                'price_calculation' => $price_calculation,
+                'model_paypal' => $model_paypal,
+                'model_paypaladvance' => $model_paypalAdvance,
+                'response' => $response,
+                'duration' => $no_of_months,
+            ));
+        }
+    }
+     public function finalstep($securetoken,$securetokenid,$mode,$step='step3')
+    {
+        $viewpage = '_paymentfinal_form';
+        $this->render($viewpage, compact('securetoken', 'securetokenid','mode','step'));
+    }
+    protected function pay_with_creditcard($sequrity_id, $price_calculation) {
+        $paypalAdv = new PaypalAdvance;
+        $request = array(
+            "PARTNER" => $paypalAdv::$PARTNER,
+            "VENDOR" => $paypalAdv::$VENDOR,
+            "USER" => $paypalAdv::$USER,
+            "PWD" => $paypalAdv::$PWD,
+            "TENDER" => "C",
+            "TRXTYPE" => "S",
+            "CURRENCY" => "CAD",
+            "AMT" => $price_calculation['grand_total'],
+            "TAX" => $price_calculation['tax'],
+            "SUBTOTAL" => $price_calculation['total_price'],
+            "CREATESECURETOKEN" => "Y",
+            "SECURETOKENID" => $sequrity_id, //Should be unique, never used before
+            "RETURNURL" => Yii::app()->createAbsoluteUrl('/optirep/repSingleSubscriptions/final'),
+            "CANCELURL" => Yii::app()->createAbsoluteUrl('/optirep/repSingleSubscriptions/index'),
+            "ERRORURL" => Yii::app()->createAbsoluteUrl('/optirep/repSingleSubscriptions/index'),
+        );
+        //Run request and get the response
+        $response = $paypalAdv->run_payflow_call($request);
+        return $response;
     }
 
     public function actionFinal() {
@@ -276,15 +319,41 @@ class RepSingleSubscriptionsController extends ORController {
     /* --------- PAYPAL ADVANCE END-------------------------------- */
 
     /* --------- PAYPAL START-------------------------------- */
+    
+    public function paypaltest($price_calculation, $sequrity_id) {
+        $paypalManager = new Paypal;
+        
+        $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repSingleSubscriptions/paypalRenewalReturn'));
+        $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repSingleSubscriptions/paypalRenewalCancel'));
+        $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repSingleSubscriptions/paypalRenewalNotify'));
 
+        $paypalManager->addField('item_name', RepTemp::REP_SINGLE_RENEWAL_REP_ACCOUNT);
+        $paypalManager->addField('amount', $price_calculation['grand_total']);
+        $paypalManager->addField('custom', $sequrity_id);
+        $paypalManager->addField('return', $returnUrl);
+        $paypalManager->addField('cancel_return', $cancelUrl);
+        $paypalManager->addField('notify_url', $notifyUrl);
+        $paypalManager->addField('no_shipping', 1);
+        
+
+        //$paypalManager->dumpFields();   // for printing paypal form fields
+        $paypalManager->submitPaypalPost();
+    }
     public function actionPaypalRenewalCancel() {
         Yii::app()->user->setFlash('danger', Myclass::t("OR613", "", "or"));
         $this->redirect(array('index'));
     }
 
     public function actionPaypalRenewalReturn() {
-        $pstatus = $_POST["payment_status"];
-        if (isset($_POST["txn_id"]) && isset($_POST["payment_status"])) {
+        
+        if(isset($_GET)){
+            $pstatus = $_GET["st"];
+            $txn_id = $_GET["tx"];
+        } else if(isset ($_POST)) {
+            $pstatus = $_POST["payment_status"];
+            $txn_id = $_POST["txn_id"];
+        }  
+        if (isset($txn_id) && isset($pstatus)) {
             if ($pstatus == "Pending") {
                 Yii::app()->user->setFlash('info', Myclass::t("OR597", "", "or"));
             } else {
@@ -303,6 +372,20 @@ class RepSingleSubscriptionsController extends ORController {
             if ($_POST['payment_status'] == "Completed") {
                 $this->processRenewalSingleRepAccount($_POST['custom']);
             }
+//            $message .= "Invoice Number: ".$_POST['custom'];
+//            $message .= "\nName : ".$_POST['first_name'].$_POST['last_name'];
+//            $message .= "\nPayer Status: ".$_POST['payer_status'];
+//            $message .= "\nPayment Status: ".$_POST['payment_status'];
+//
+//
+//            $to = "nachiyappan.arumugam@arkinfotec.com";
+//            $subject = 'The subject';
+//
+//            $headers = 'From: webmaster@example.com' . "\r\n" .
+//                'Reply-To: webmaster@example.com' . "\r\n" .
+//                'X-Mailer: PHP/' . phpversion();
+//
+//            mail($to, $subject, $message, $headers);
         }
     }
 
@@ -380,5 +463,15 @@ class RepSingleSubscriptionsController extends ORController {
             'model' => $model
         ));
     }
-
+    
+    /**
+     * Performs the AJAX validation.
+     * @param SuppliersDirectory $model the model to be validated
+     */
+    protected function performAjaxValidation($model) {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'rep-singlesubscriptions-form') {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+    }
 }

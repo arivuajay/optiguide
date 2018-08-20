@@ -112,17 +112,17 @@ class PaymentTransactionController extends Controller {
                     ->where("ID_RELATION='$suppid' AND NOM_TABLE='Fournisseurs'")
                     ->order('ID_UTILISATEUR')
                     ->limit(1)
-                    ->queryAll();      
+                    ->queryAll();                       
                     if(!empty($userslist_query))
                     {       
                         foreach($userslist_query as $info)
                         {
                           $uid =  $info['ID_UTILISATEUR'];
                         } 
-                        
-                        //$userinfos = 
+                           
+                        $userinfos = UserDirectory::model()->find("NOM_TABLE='Fournisseurs' AND ID_UTILISATEUR = " . $uid);
                         $userinfos->status = 1;
-                        $userinfos->save(false);
+                        $userinfos->save(false);                        
                     }
                 }
 
@@ -291,8 +291,8 @@ class PaymentTransactionController extends Controller {
     }
 
     public function actionRepUpdateStatus($id) {
-        $model = $this->loadModel($id);
-        if (isset($_POST['PaymentTransaction'])) {
+        $model = $this->loadModel($id);        
+        if (isset($_POST['PaymentTransaction'])) {            
             if ($_POST['PaymentTransaction']['payment_status'] == 'Completed') {
 
                 // For statistics new/renew
@@ -315,7 +315,7 @@ class PaymentTransactionController extends Controller {
                     $model->payment_status = "Completed";
                     $model->save(false);
 
-                    SupplierTemp::model()->deleteAll("invoice_number = '" . $invoice_number . "'");
+                    RepTemp::model()->deleteAll("invoice_number = '" . $invoice_number . "'");
                 }
 
                 // For rep/admin registration and renew

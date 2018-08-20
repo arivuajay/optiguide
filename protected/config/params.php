@@ -65,15 +65,14 @@ return array(
     'RETAILERSLISTPERPAGE' => 27,
     
     //Paypal values
-//    'SANDBOXVALUE'  => TRUE,
-//    'CURRENCY'      => 'CAD',
-//    'BUSINESSEMAIL' => 'vasanth@arkinfotec.com', 
+    'SANDBOXVALUE'  => TRUE,
+    'CURRENCY'      => 'CAD',
+    'BUSINESSEMAIL' => 'prakash.paramanandam@arkinfotec.com', 
     
     //Paypal values
-    'SANDBOXVALUE'  => FALSE,
-    'CURRENCY'      => 'CAD',
-//    'BUSINESSEMAIL' => 'vasanth@arkinfotec.com', 
-    'BUSINESSEMAIL' => 'martine@bretoncom.com', 
+//    'SANDBOXVALUE'  => FALSE,
+//    'CURRENCY'      => 'CAD',
+//    'BUSINESSEMAIL' => 'martine@bretoncom.com', 
     
     // retailer logo path
     'RET_IMG_PATH' => 'uploads/retailer_logos/',

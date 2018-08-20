@@ -32,8 +32,8 @@ class Paypal extends CComponent {
     /**
       # Default currency to use;
      */
-    public $currency = CURRENCY;
-
+//    public $currency = CURRENCY;
+    
     /**
       # Endpoint: this is the server URL which you have to connect for submitting your API request.
      */
@@ -53,8 +53,9 @@ class Paypal extends CComponent {
     /**
      * @var string paypal business/merchant email
      */
-    public $businessEmail = BUSINESSEMAIL;
-    public $paypalSandbox = SANDBOXVALUE;
+//    public $businessEmail = BUSINESSEMAIL;
+//    public $paypalSandbox = SANDBOXVALUE;
+    public static $currency, $businessEmail, $paypalSandbox;
     public $lastError;                 // holds the last error encountered
     public $ipnResponse;               // holds the IPN response from paypal   
     public $ipnData = array();         // array contains the POST values for IPN
@@ -65,8 +66,24 @@ class Paypal extends CComponent {
     
      public function __construct() {
          
-        if ((bool) $this->paypalSandbox === false)
-        {
+        $paypal_option = ['st_payment_mode','business_email', 'currency'];
+        $result = array();
+        foreach ($paypal_option as $avalue) {
+            $optionval_obj = Settings::model()->find("option_type='" . $avalue . "'");
+            if (isset($optionval_obj) && !empty($optionval_obj)) {
+                $optionval = $optionval_obj->option_value;
+                $result[$avalue] = $optionval;
+            }
+        }
+        
+        self::$currency = $result['currency'];
+        self::$businessEmail = $result['business_email'];
+        self::$paypalSandbox = ($result['st_payment_mode'] == '1')? 'TRUE' : 'FALSE' ;
+        
+        
+//        if ((bool) self::$paypalSandbox === false)
+        if (self::$paypalSandbox == 'FALSE')
+        {            
           $this->paypalUrl = self::PAYPAL_PRODUCTION;
           $this->endPoint  = self::ENDPOINT_PRODUCTION;
         } else {
@@ -90,8 +107,8 @@ class Paypal extends CComponent {
    
         $this->addField('rm', '2');           // Return method = POST
         $this->addField('cmd', '_xclick');
-        $this->addField('business', $this->businessEmail);
-        $this->addField('currency_code', $this->currency);
+        $this->addField('business', self::$businessEmail);
+        $this->addField('currency_code', self::$currency);
        
 
         // this function actually generates an entire HTML page consisting of
@@ -125,7 +142,7 @@ class Paypal extends CComponent {
         
         $listener = new IpnListener();
         $listener->use_curl = false;
-        $listener->use_sandbox = $this->paypalSandbox;
+        $listener->use_sandbox = self::$paypalSandbox;
 
         return $listener->processIpn();
     }

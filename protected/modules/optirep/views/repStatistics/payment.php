@@ -61,21 +61,37 @@
        
         ?>
         <?php
+        $payment_type = Myclass::enablePaymentGateway();
+        if(isset($payment_type[1])){
+            $model_paypal->pay_type = 1;
+        }else if(isset($payment_type[2])){
+            $model_paypal->pay_type = 2;
+        }
         $form = $this->beginWidget('CActiveForm', array(
+            'id' => 'rep-statistics-form',
             'htmlOptions' => array(
                 'role' => 'form',
                 "autocomplete" => "off"
             ),
+//            'clientOptions' => array(
+//                'validateOnSubmit' => true,
+//                'hideErrorMessage' => true,
+//            ),
             'clientOptions' => array(
-                'validateOnSubmit' => true,
-                'hideErrorMessage' => true,
+                    'validateOnSubmit' => true,
             ),
+            'enableAjaxValidation' => true,
+            
         ));
         echo $stype;
-        echo $form->hiddenField($model_paypal, 'pay_type', array('value' => 2));
+//        echo $form->hiddenField($model_paypal, 'pay_type', array('value' => 2));       
                     ?>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
             <?php
+             echo $form->labelEx($model_paypal, 'pay_type');
+            echo $form->dropDownList($model_paypal, 'pay_type', $payment_type, array('class' => 'form-field', "prompt" => Myclass::t('OG182')));
+            echo $form->error($model_paypal, 'pay_type');
+            echo "<br>";
              echo CHtml::tag('button', array(
                                 'name' => 'btnSubmit',
                                'value' => 'Payfee',

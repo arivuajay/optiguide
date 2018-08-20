@@ -3,10 +3,10 @@
 
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            
+
             <p>
                 <?php echo Myclass::t('OR753', '', 'or') ?> : 
-                <?php echo $duration.'  '.Myclass::t('OG022', '', 'og'); ?>
+                <?php echo $duration . '  ' . Myclass::t('OG022', '', 'og'); ?>
             </p>
             <p>
                 <?php echo Myclass::t('OR576', '', 'or') ?> : 
@@ -115,18 +115,51 @@
                     </div>
                 </div>-->
 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8"> 
+        <?php // if ($flag == '1') { ?>
+<!--        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8"> 
             <div class="card-details-cont">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <?php
-                    $securetoken = $response['SECURETOKEN'];
-                    $securetokenid = $response['SECURETOKENID'];
-                    $mode = $response['mode'];
-                    ?>
-                    <iframe src='https://payflowlink.paypal.com?SECURETOKEN=<?php echo $securetoken; ?>&SECURETOKENID=<?php echo $securetokenid; ?>&MODE=<?php echo $mode ?>' width='490' height='350' border='0' frameborder='0' scrolling='no' allowtransparency='true'>\n</iframe>
+                    
+                        <?php
+//                        $securetoken = $response['SECURETOKEN'];
+//                        $securetokenid = $response['SECURETOKENID'];
+//                        $mode = $response['mode'];
+                        ?>
+                        <iframe src='https://payflowlink.paypal.com?SECURETOKEN=<?php echo $securetoken; ?>&SECURETOKENID=<?php echo $securetokenid; ?>&MODE=<?php echo $mode ?>' width='490' height='350' border='0' frameborder='0' scrolling='no' allowtransparency='true'>\n</iframe>
+                    
                 </div>
             </div>
-        </div>
+        </div>-->
+        <?php // } else { ?>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8"> 
+            <?php
+            $payment_type = Myclass::enablePaymentGateway();
+            if(isset($payment_type[1])){
+                $model->payment_type = 1;
+            }else if(isset($payment_type[2])){
+                $model->payment_type = 2;
+            }
+            $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'rep-singlesubscriptions-form',
+                'htmlOptions' => array('role' => 'form'),
+                'clientOptions' => array(
+                    'validateOnSubmit' => true,
+                ),
+                'enableAjaxValidation' => true,
+            ));
+            echo $form->labelEx($model, 'payment_type');
+            echo $form->dropDownList($model, 'payment_type', $payment_type, array('class' => 'form-control', "prompt" => Myclass::t('OG182')));
+            echo $form->error($model, 'payment_type');
+            echo $form->hiddenField($model, 'duration', array('value' => $duration));
 
+            echo CHtml::tag('button', array(
+                'name' => 'renewal_btnSubmit',
+                'type' => 'submit',
+                'class' => 'register-btn pull-right'
+                    ), '<i class="fa fa-arrow-circle-right"></i> ' . Myclass::t('OGO103', '', 'og'));
+            $this->endWidget();
+            ?>
+        </div>
+        <?php // } ?>
     </div>
 </div>     

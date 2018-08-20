@@ -45,33 +45,38 @@ class SettingsController extends Controller {
         $dashboard_boxes = ['Payments' => "Payments"];
         $model = new Settings();
         $setting_attr = $model->attributeLabels();
-
-        if (isset($_POST['Settings'])) {
+                
+        if (isset($_POST['Settings'])) {            
             $model->attributes = $_POST['Settings'];
-            foreach ($setting_attr as $akey => $avalue) {
-                $smodel = Settings::model()->find("option_type='" . $akey . "'");
-                if (isset($smodel) && !empty($smodel)) {
-                    //$optionval = json_encode($model->dashboard);
-                    $optionval = $model->$akey;
-                    $smodel->option_value = $optionval;
-                    $smodel->save();
-                }
-            }
-            Yii::app()->user->setFlash('success', 'Settings Updated Successfully!!!');
-            $this->redirect(array('index'));
-        }
 
+            if($_POST['Settings']['paypal_advanced_status'] == '1' && $_POST['Settings']['paypal_standard_status'] == '1'){
+                $model->addError('option_value','Please choose any one');
+            } else {                
+                foreach ($setting_attr as $akey => $avalue) {
+                    $smodel = Settings::model()->find("option_type='" . $akey . "'");
+                    if (isset($smodel) && !empty($smodel)) {
+                        //$optionval = json_encode($model->dashboard);
+                        $optionval = $model->$akey;
+                        $smodel->option_value = $optionval;
+                        $smodel->save();
+                    }
+                }
+                Yii::app()->user->setFlash('success', 'Settings Updated Successfully!!!');
+                $this->redirect(array('index'));
+            }
+            
+        }        
         if (isset($setting_attr) && !empty($setting_attr)) {
-            foreach ($setting_attr as $akey => $avalue) {
+            foreach ($setting_attr as $akey => $avalue) {                                
                 $optionval_obj = Settings::model()->find("option_type='" . $akey . "'");
                 if (isset($optionval_obj) && !empty($optionval_obj)) {
-                    //$optionval = json_decode($optionval_obj->option_value, true);
+                    //$optionval = json_decode($optionval_obj->option_value, true);                    
                     $optionval = $optionval_obj->option_value;
                     $model->$akey = $optionval;
                 }
             }
         }
-
+        
         $this->render('index', array(
             'model' => $model,
             'dashboard_boxes' => $dashboard_boxes,

@@ -20,18 +20,18 @@ class RepStatisticsController extends ORController {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('finalstat','paypalreturn' , 'paypalcancel' , 'paypalnotify'),
+                'actions' => array('finalstat', 'paypalreturn', 'paypalcancel', 'paypalnotify'),
                 'users' => array('*'),
-            ), 
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('index', 'payment','statistics'),
-                'users' => array('@'),               
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array( 'userslogstats', 'profileviewstats'),      
+                'actions' => array('index', 'payment', 'statistics'),
+                'users' => array('@'),
+            ),
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions' => array('userslogstats', 'profileviewstats'),
                 'users' => array('@'),
                 'expression' => 'Yii::app()->user->rep_role=="admin"'
-            ),           
+            ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions' => array(''),
                 'users' => array('admin'),
@@ -45,105 +45,81 @@ class RepStatisticsController extends ORController {
     public function actionPayment() {
         $paypalManager = new Paypal;
         $payment_details = array();
-        
+
         $model_paypal = new PaymentTransaction();
+        $this->performAjaxValidation(array($model_paypal));
         $model_paypalAdvance = new PaymentTransaction('paypal_advance');
 
-        if (isset($_POST['btnSubmit'])) {            
-            
+        if (isset($_POST['btnSubmit'])) {
+
             $pay_type = $_POST['PaymentTransaction']['pay_type'];
 
-            $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repStatistics/paypalreturn'));
-            $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repStatistics/paypalcancel'));
-            $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repStatistics/paypalnotify'));
-            
-            $subprices  = SupplierSubscriptionPrice::model()->findByPk(1);
-            $price      = $subprices->rep_statistics_price;
-    
-            $invoice = Myclass::getRandomString();
-            $subscription_type = $_POST['subscription_type'];
+            if ($pay_type != "") {
+                $subprices = SupplierSubscriptionPrice::model()->findByPk(1);
+                $price = $subprices->rep_statistics_price;
 
-            if ($subscription_type == 3) {
-                $itemname = 'Statistics Subscription';
-                $payment_details['expirydate'] = date("Y-m-d", strtotime('+1 month'));
-            } else if ($subscription_type == 4)
-            {
-                $itemname = 'Renew Statistics Subscription';
-               
-                $repid =  Yii::app()->user->id;
-                $get_repinfos = RepCredentials::model()->findByPk($repid);
-                if(!empty($get_repinfos))
-                {    
-                    $exprydate  = date("Y-m-d",strtotime($get_repinfos['stat_expiry_date']));
-                    if ($exprydate > date("Y-m-d")) 
-                    {
-                        $time = strtotime($exprydate);
-                        $payment_details['expirydate'] = date("Y-m-d", strtotime("+1 month", $time));                        
+                $invoice = Myclass::getRandomString();
+                $subscription_type = $_POST['subscription_type'];
+
+                if ($subscription_type == 3) {
+                    $itemname = 'Statistics Subscription';
+                    $payment_details['expirydate'] = date("Y-m-d", strtotime('+1 month'));
+                } else if ($subscription_type == 4) {
+                    $itemname = 'Renew Statistics Subscription';
+
+                    $repid = Yii::app()->user->id;
+                    $get_repinfos = RepCredentials::model()->findByPk($repid);
+                    if (!empty($get_repinfos)) {
+                        $exprydate = date("Y-m-d", strtotime($get_repinfos['stat_expiry_date']));
+                        if ($exprydate > date("Y-m-d")) {
+                            $time = strtotime($exprydate);
+                            $payment_details['expirydate'] = date("Y-m-d", strtotime("+1 month", $time));
+                        } else {
+                            $payment_details['expirydate'] = date('Y-m-d', strtotime('+1 month'));
+                        }
                     } else {
-                        $payment_details['expirydate'] = date('Y-m-d', strtotime('+1 month'));
+                        $payment_details['expirydate'] = date("Y-m-d", strtotime('+1 month'));
                     }
-                }else
-                {
-                  $payment_details['expirydate'] = date("Y-m-d", strtotime('+1 month'));   
-                }    
-            }
-           
-            $payment_details['rep_credential_id'] = Yii::app()->user->id;
-            $payment_details['rep_user_name']     = Yii::app()->user->rep_username;
-            $payment_details['pay_type'] = $pay_type;
-            $payment_details['subscription_type'] = $_POST['subscription_type'];
-            $payment_details['subscriptionprice'] = $price;
-            $payment_details['itemname'] =  $itemname;
-            $pdetails = serialize($payment_details);
+                }
 
-            $returnurl = Yii::app()->createAbsoluteUrl('/optirep/repStatistics/finalstat');
-            $cancelurl = Yii::app()->createAbsoluteUrl('/optirep/repStatistics/paypalcancel');
-            //Pay by credit card    
-                $model_paypalAdvance->attributes = $_POST['PaymentTransaction'];                
-                $paypalAdv = new PaypalAdvance;
-                $request   = array(
-                    "PARTNER" => $paypalAdv::$PARTNER,
-                    "VENDOR" => $paypalAdv::$VENDOR,
-                    "USER" => $paypalAdv::$USER,
-                    "PWD" => $paypalAdv::$PWD,
-                    "TENDER" => "C",
-                    "TRXTYPE" => "S",
-                    "CURRENCY" => "CAD",
-                    "AMT" => $price,
-                    "CREATESECURETOKEN" => "Y",            
-                    "SECURETOKENID" => $invoice, //Should be unique, never used before
-                    "RETURNURL" => $returnurl,
-                    "CANCELURL" => $cancelurl,
-                );
+                $payment_details['rep_credential_id'] = Yii::app()->user->id;
+                $payment_details['rep_user_name'] = Yii::app()->user->rep_username;
+                $payment_details['pay_type'] = $pay_type;
+                $payment_details['subscription_type'] = $_POST['subscription_type'];
+                $payment_details['subscriptionprice'] = $price;
+                $payment_details['itemname'] = $itemname;
+                $pdetails = serialize($payment_details);
 
-                
 
-                //Run request and get the response
-                $response = $paypalAdv->run_payflow_call($request);
-                if ($response['RESULT'] != 0) {
-                    
-                    Yii::app()->user->setFlash('danger', 'Please contact admin!!! Have a problem in payment processing.');
-                    $this->redirect(array('payment'));
-                    
-                } else {
-                    
-                   // $this->creditcardnotify($invoice, $response,$payment_details);
-                    
+                if ($pay_type == '1') {
                     $stmodel = new SupplierTemp;
                     $stmodel->paymentdetails = $pdetails;
                     $stmodel->invoice_number = $invoice;
                     $stmodel->save(false);
-                    
-                    $securetoken   = $response['SECURETOKEN'];                    
-                    $securetokenid = $response['SECURETOKENID'];  
-                    $paypalAdv     = new PaypalAdvance;
-                    $mode          = $paypalAdv::MODE; 
-                                        
-                    $this->final_statistics($securetoken,$securetokenid,$mode);
+                    $this->paypaltest($price, $invoice, $itemname);
+                } else {
+                    $response = $this->pay_with_creditcard($invoice, $price);
 
-                    //Yii::app()->user->setFlash('success', Myclass::t('OR648', '', 'or'));
-                    //$this->redirect(array('payment'));
+                    if ($response['RESULT'] != 0) {
+                        Yii::app()->user->setFlash('danger', 'Please contact admin!!! Have a problem in payment processing.');
+                        $this->redirect(array('payment'));
+                    } else {
+
+                        $stmodel = new SupplierTemp;
+                        $stmodel->paymentdetails = $pdetails;
+                        $stmodel->invoice_number = $invoice;
+                        $stmodel->save(false);
+
+                        $securetoken = $response['SECURETOKEN'];
+                        $securetokenid = $response['SECURETOKENID'];
+                        $paypalAdv = new PaypalAdvance;
+                        $mode = $paypalAdv::$MODE;
+
+                        $this->final_statistics($securetoken, $securetokenid, $mode);
+                    }
                 }
+
+            }
         }
 
         $this->render('payment', array(
@@ -151,40 +127,88 @@ class RepStatisticsController extends ORController {
             'model_paypaladvance' => $model_paypalAdvance,
         ));
     }
-
-    public function final_statistics($securetoken,$securetokenid,$mode)
-    {         
-        $viewpage = '_statistics_final';        
-        $this->render($viewpage, compact('securetoken', 'securetokenid','mode'));        
-    }  
     
-    public function actionFinalstat()
-    { 
-        if (isset($_POST['RESULT']) || isset($_GET['RESULT'])) 
-        { 
-            $_SESSION['payflowresponse'] = array_merge($_GET, $_POST); 
-            
-            $invoice_number = $_SESSION['payflowresponse']['SECURETOKENID'];
-            $response = $_SESSION['payflowresponse'];
-            
-            $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");                    
-            $pdetails      = $result->paymentdetails;
-            $payment_details = unserialize($pdetails);
+    public function paypaltest($price_calculation, $sequrity_id, $itemname) {
+        $paypalManager = new Paypal;
+        
+        $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repStatistics/paypalreturn'));
+        $cancelUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repStatistics/paypalcancel'));
+        $notifyUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repStatistics/paypalnotify'));
 
-            $this->creditcardnotify($invoice_number,$response,$payment_details);
-            
-            Yii::app()->user->setFlash('success', Myclass::t('OGO185', '', 'og'));
-            $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repStatistics/payment'));           
-            echo '<script type="text/javascript">window.top.location.href = "' . $returnUrl .  '";</script>';
-            exit(0);          
-        }
+        $paypalManager->addField('item_name', $itemname);
+        $paypalManager->addField('amount', $price_calculation);
+        $paypalManager->addField('custom', $sequrity_id);
+        $paypalManager->addField('return', $returnUrl);
+        $paypalManager->addField('cancel_return', $cancelUrl);
+        $paypalManager->addField('notify_url', $notifyUrl);
+        $paypalManager->addField('no_shipping', 1);
+        
+
+        //$paypalManager->dumpFields();   // for printing paypal form fields
+        $paypalManager->submitPaypalPost();
     }
     
+    protected function pay_with_creditcard($sequrity_id, $price) {
+
+        //Pay by credit card    
+        $model_paypalAdvance->attributes = $_POST['PaymentTransaction'];
+        $paypalAdv = new PaypalAdvance;
+        $request = array(
+            "PARTNER" => $paypalAdv::$PARTNER,
+            "VENDOR" => $paypalAdv::$VENDOR,
+            "USER" => $paypalAdv::$USER,
+            "PWD" => $paypalAdv::$PWD,
+            "TENDER" => "C",
+            "TRXTYPE" => "S",
+            "CURRENCY" => "CAD",
+            "AMT" => $price,
+            "CREATESECURETOKEN" => "Y",
+            "SECURETOKENID" => $sequrity_id, //Should be unique, never used before
+            "RETURNURL" => Yii::app()->createAbsoluteUrl('/optirep/repStatistics/finalstat'),
+            "CANCELURL" => Yii::app()->createAbsoluteUrl('/optirep/repStatistics/paypalcancel'),
+        );
+
+        //Run request and get the response
+        $response = $paypalAdv->run_payflow_call($request);
+        return $response;
+    }
+
+    public function final_statistics($securetoken, $securetokenid, $mode) {
+        $viewpage = '_statistics_final';
+        $this->render($viewpage, compact('securetoken', 'securetokenid', 'mode'));
+    }
+
+    public function actionFinalstat() {
+        if (isset($_POST['RESULT']) || isset($_GET['RESULT'])) {
+            $_SESSION['payflowresponse'] = array_merge($_GET, $_POST);
+
+            $invoice_number = $_SESSION['payflowresponse']['SECURETOKENID'];
+            $response = $_SESSION['payflowresponse'];
+
+            $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");
+            $pdetails = $result->paymentdetails;
+            $payment_details = unserialize($pdetails);
+
+            $this->creditcardnotify($invoice_number, $response, $payment_details);
+
+            Yii::app()->user->setFlash('success', Myclass::t('OGO185', '', 'og'));
+            $returnUrl = Yii::app()->createAbsoluteUrl(Yii::app()->createUrl('/optirep/repStatistics/payment'));
+            echo '<script type="text/javascript">window.top.location.href = "' . $returnUrl . '";</script>';
+            exit(0);
+        }
+    }
+
     public function actionPaypalreturn() {
 
-        $pstatus = $_POST["payment_status"];
+        if(isset($_GET)){
+            $pstatus = $_GET["st"];
+            $txn_id = $_GET["tx"];
+        } else if(isset ($_POST)) {
+            $pstatus = $_POST["payment_status"];
+            $txn_id = $_POST["txn_id"];
+        } 
 
-        if (isset($_POST["txn_id"]) && isset($_POST["payment_status"])) {
+        if (isset($txn_id) && isset($pstatus)) {
             if ($pstatus == "Pending") {
                 Yii::app()->user->setFlash('info', Myclass::t('OGO182', '', 'og'));
             } else {
@@ -204,46 +228,43 @@ class RepStatisticsController extends ORController {
 
     public function actionPaypalnotify() {
         $paypalManager = new Paypal;
-        
+
         if ($paypalManager->notify() && ( $_POST['payment_status'] == "Completed" || $_POST['payment_status'] == "Pending")) {
-            
+
             $invoice_number = $_POST['custom'];
 
-            $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");   
-            
+            $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");
+
             $paymentinfos = PaymentTransaction::model()->find("invoice_number ='" . $invoice_number . "'");
             $result = SupplierTemp::model()->find("invoice_number='$invoice_number'");
-            
+
             if (!empty($paymentinfos)) {
-                
-                if (!empty($result)) {                    
-                
-                    $pdetails = $result->paymentdetails;
-                    $pdetails = unserialize($pdetails);
-                
-                    if($_POST['payment_status'] == "Completed")
-                    {
-                       $repid = $pdetails['rep_credential_id'];
-                       $get_repinfos = RepCredentials::model()->findByPk($repid);
-                       $get_repinfos->stat_expiry_date = $pdetails['expirydate'];
-                       $get_repinfos->save(false);
-                    } 
-                 }
-                 
-            }else {    
-           
+
                 if (!empty($result)) {
 
                     $pdetails = $result->paymentdetails;
                     $pdetails = unserialize($pdetails);
 
-                    if($_POST['payment_status'] == "Completed")
-                    {
-                       $repid = $pdetails['rep_credential_id'];
-                       $get_repinfos = RepCredentials::model()->findByPk($repid);
-                       $get_repinfos->stat_expiry_date = $pdetails['expirydate'];
-                       $get_repinfos->save(false);
-                    }   
+                    if ($_POST['payment_status'] == "Completed") {
+                        $repid = $pdetails['rep_credential_id'];
+                        $get_repinfos = RepCredentials::model()->findByPk($repid);
+                        $get_repinfos->stat_expiry_date = $pdetails['expirydate'];
+                        $get_repinfos->save(false);
+                    }
+                }
+            } else {
+
+                if (!empty($result)) {
+
+                    $pdetails = $result->paymentdetails;
+                    $pdetails = unserialize($pdetails);
+
+                    if ($_POST['payment_status'] == "Completed") {
+                        $repid = $pdetails['rep_credential_id'];
+                        $get_repinfos = RepCredentials::model()->findByPk($repid);
+                        $get_repinfos->stat_expiry_date = $pdetails['expirydate'];
+                        $get_repinfos->save(false);
+                    }
 
                     // Save the payment details                                   
                     $ptmodel = new PaymentTransaction;
@@ -263,54 +284,51 @@ class RepStatisticsController extends ORController {
                     $ptmodel->invoice_number = $_POST['custom'];
                     $ptmodel->pay_type = $pdetails['pay_type'];
                     $ptmodel->subscription_type = $pdetails['subscription_type'];
-                    $ptmodel->save(false);                
+                    $ptmodel->save(false);
 
                     $repname = $pdetails['rep_user_name'];
 
-                    if($_POST['payment_status'] == "Completed")
-                    {
+                    if ($_POST['payment_status'] == "Completed") {
                         SupplierTemp::model()->deleteAll("invoice_number = '" . $_POST['custom'] . "'");
-                    }    
+                    }
 
                     /* Send mail to admin for confirmation */
                     $mail = new Sendmail();
                     $this->lang = Yii::app()->session['language'];
                     $invoice_url = ADMIN_URL . 'admin/paymentTransaction/repview/id/' . $ptmodel->id;
-                    $enc_url2    = Myclass::refencryption($invoice_url);
+                    $enc_url2 = Myclass::refencryption($invoice_url);
                     $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
-                    
-                    if($this->lang=='EN' ){
+
+                    if ($this->lang == 'EN') {
                         $subject = SITENAME . "- Statistics subscription notification with invoice details - " . $repname;
-                    }elseif($this->lang=='FR'){
-                        $subject =  "Inscription à ".SITENAME;
+                    } elseif ($this->lang == 'FR') {
+                        $subject = "Inscription à " . SITENAME;
                     }
                     $trans_array = array(
-                    "{NAME}" => $repname,
-                    "{UTYPE}" => 'Opti-Rep',               
-                    "{item_name}" => $_POST['item_name'],
-                    "{total_price}" => $_POST['mc_gross'],
-                    "{payment_status}" => $_POST['payment_status'],
-                    "{txn_id}" => $_POST['txn_id'],
-                    "{INVOICEURL}" => $nextstep_url2
+                        "{NAME}" => $repname,
+                        "{UTYPE}" => 'Opti-Rep',
+                        "{item_name}" => $_POST['item_name'],
+                        "{total_price}" => $_POST['mc_gross'],
+                        "{payment_status}" => $_POST['payment_status'],
+                        "{txn_id}" => $_POST['txn_id'],
+                        "{INVOICEURL}" => $nextstep_url2
                     );
                     $message = $mail->getMessage('optirep_stats_subscription', $trans_array);
-                    $mail->send(ADMIN_EMAIL, $subject, $message,'','','','',"payment");
-
+                    $mail->send(ADMIN_EMAIL, $subject, $message, '', '', '', '', "payment");
                 }
             }
         }
     }
-    
-    protected  function creditcardnotify($invoice,$response,$pdetails)
-    {
-        
+
+    protected function creditcardnotify($invoice, $response, $pdetails) {
+
         // Set the expiry date
         $repid = $pdetails['rep_credential_id'];
         $get_repinfos = RepCredentials::model()->findByPk($repid);
         $get_repinfos->stat_expiry_date = $pdetails['expirydate'];
         $get_repinfos->save(false);
 
-         $ptmodel = new PaymentTransaction;
+        $ptmodel = new PaymentTransaction;
         $ptmodel->user_id = $repid;
         $ptmodel->total_price = $pdetails['subscriptionprice'];
         $ptmodel->subscription_price = $pdetails['subscriptionprice'];
@@ -323,50 +341,48 @@ class RepStatisticsController extends ORController {
         $ptmodel->pay_type = '2';
         $ptmodel->subscription_type = $pdetails['subscription_type'];
         $ptmodel->save(false);
-                
-        $repname = $pdetails['rep_user_name'];  
+
+        $repname = $pdetails['rep_user_name'];
 
         /* Send mail to admin for confirmation */
         $mail = new Sendmail();
-        
+
         $this->lang = Yii::app()->session['language'];
 
-        if($this->lang=='EN' ){
+        if ($this->lang == 'EN') {
             $subject = SITENAME . "- Statistics subscription notification with invoice details - " . $repname;
-        }elseif($this->lang=='FR'){
-            $subject =  "Inscription à ".SITENAME;
+        } elseif ($this->lang == 'FR') {
+            $subject = "Inscription à " . SITENAME;
         }
-        
-        
-        $invoice_url   = ADMIN_URL . '/admin/paymentTransaction/repview/id/' . $ptmodel->id;
-        $enc_url2      = Myclass::refencryption($invoice_url);
+
+
+        $invoice_url = ADMIN_URL . '/admin/paymentTransaction/repview/id/' . $ptmodel->id;
+        $enc_url2 = Myclass::refencryption($invoice_url);
         $nextstep_url2 = ADMIN_URL . 'admin/default/login/str/' . $enc_url2;
 
         $trans_array = array(
-        "{NAME}" => $repname,
-        "{UTYPE}" => 'Opti-Rep',               
-        "{item_name}" => $pdetails['itemname'],
-        "{total_price}" => $pdetails['subscriptionprice'],
-        "{payment_status}" => 'Completed',
-        "{txn_id}" => $pdetails['PNREF'],
-        "{INVOICEURL}" => $nextstep_url2
+            "{NAME}" => $repname,
+            "{UTYPE}" => 'Opti-Rep',
+            "{item_name}" => $pdetails['itemname'],
+            "{total_price}" => $pdetails['subscriptionprice'],
+            "{payment_status}" => 'Completed',
+            "{txn_id}" => $pdetails['PNREF'],
+            "{INVOICEURL}" => $nextstep_url2
         );
-        
+
         $message = $mail->getMessage('optirep_stats_subscription', $trans_array);
-        $mail->send(ADMIN_EMAIL, $subject, $message,'','','','',"payment");
-        
-    }        
+        $mail->send(ADMIN_EMAIL, $subject, $message, '', '', '', '', "payment");
+    }
 
     //Particular Rep Logged in Activities
     public function actionIndex() {
-        
+
         //$stats_disp = Myclass::stats_display();
-       
-        if(Yii::app()->user->rep_role != RepCredentials::ROLE_ADMIN)
-        {
-           throw new CHttpException(404, 'Page not found.');
-        }    
-        
+
+        if (Yii::app()->user->rep_role != RepCredentials::ROLE_ADMIN) {
+            throw new CHttpException(404, 'Page not found.');
+        }
+
         $response = array();
 
         $dates = array();
@@ -391,14 +407,13 @@ class RepStatisticsController extends ORController {
     }
 
     public function actionStatistics() {
-        
+
         $stats_disp = Myclass::stats_display();
-        if($stats_disp==0)
-        {
+        if ($stats_disp == 0) {
             Yii::app()->user->setFlash('info', Myclass::t('OR614', '', 'or'));
             $this->redirect('payment');
-        }  
-        
+        }
+
         $sname_qry = '';
         $scntry_qry = '';
         $sregion_qry = '';
@@ -408,10 +423,10 @@ class RepStatisticsController extends ORController {
         $searchModel->unsetAttributes();
 
         $searchModel->country = isset($searchModel->country) ? $searchModel->country : DEFAULTPAYS;
-        $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country; 
-         
-        $searchModel->listperpage = (isset($_GET['listperpage']))?$_GET['listperpage']:LISTPERPAGE;
-               
+        $scntry_qry = " AND rp.ID_PAYS = " . $searchModel->country;
+
+        $searchModel->listperpage = (isset($_GET['listperpage'])) ? $_GET['listperpage'] : LISTPERPAGE;
+
         //$page = (isset($_GET['page']) ? $_GET['page'] : 1);  // define the variable to “LIMIT” the query        
         $page = Yii::app()->request->getParam('page');
         $page = isset($page) ? $page : 1;
@@ -426,16 +441,16 @@ class RepStatisticsController extends ORController {
         if (isset($_GET['ProfessionalDirectory'])) {
 
             $searchModel->attributes = $_REQUEST['ProfessionalDirectory'];
-            
-            
+
+
             $search_country = isset($_GET['ProfessionalDirectory']['country']) ? $_GET['ProfessionalDirectory']['country'] : '';
             $search_region = isset($_GET['ProfessionalDirectory']['region']) ? $_GET['ProfessionalDirectory']['region'] : '';
             $search_ville = isset($_GET['ProfessionalDirectory']['ID_VILLE']) ? $_GET['ProfessionalDirectory']['ID_VILLE'] : '';
-            
+
             if ($search_country != '') {
                 $searchModel->country = $search_country;
                 $scntry_qry = " AND rp.ID_PAYS = " . $search_country;
-            }else{
+            } else {
                 $scntry_qry = " ";
             }
 
@@ -450,18 +465,18 @@ class RepStatisticsController extends ORController {
             }
         }
 
-        
-        $SPECIALISTE="TYPE_SPECIALISTE_".$this->lang;
-        $RETAILER_TYPE="NOM_TYPE_".$this->lang;
 
-         $pro_types = Yii::app()->db->createCommand() //this query contains all the data
+        $SPECIALISTE = "TYPE_SPECIALISTE_" . $this->lang;
+        $RETAILER_TYPE = "NOM_TYPE_" . $this->lang;
+
+        $pro_types = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('count(*) as pro_count,ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
+                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $spostal_qry . $stype_qry)
                 ->group('rst.ID_TYPE_SPECIALISTE')
                 ->queryAll();
-         
-        $first  = strtotime('first day this month');
+
+        $first = strtotime('first day this month');
         $months = array();
         for ($i = 6; $i >= 1; $i--) {
             array_push($months, date('M Y', strtotime("-$i month", $first)));
@@ -484,31 +499,31 @@ class RepStatisticsController extends ORController {
                 if ($utype == "Professionals") {
                     $per_mount_counts = Yii::app()->db->createCommand() //this query contains all the data
                             ->select('count(*) as pro_per_month_count,ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                            ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-                            ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' AND rs.CREATED_DATE LIKE '%$searchdate%' ". $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
+                            ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                            ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' AND rs.CREATED_DATE LIKE '%$searchdate%' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $spostal_qry . $stype_qry)
                             ->group('rs.ID_TYPE_SPECIALISTE')
                             ->queryAll();
-                        
-                     foreach($per_mount_counts as $per_mount_count){
-                         $viewcount = $viewcount + $per_mount_count['pro_per_month_count'];
-                     }
-                     
-                    $viewcounts =$viewcount;
-                    $viewcount='';
+
+                    foreach ($per_mount_counts as $per_mount_count) {
+                        $viewcount = $viewcount + $per_mount_count['pro_per_month_count'];
+                    }
+
+                    $viewcounts = $viewcount;
+                    $viewcount = '';
                 }
 
                 if ($utype == "Retailers") {
                     $ret_mount_counts = Yii::app()->db->createCommand() // this query get the total number of items,
-                        ->select('count(*) as ret_per_month_count , NOM_TYPE_EN')
-                        ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
-                        ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' AND rs.CREATED_DATE LIKE '%$searchdate%'". $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
-                        ->group('rs.ID_RETAILER_TYPE')
-                        ->queryAll();
-                    foreach($ret_mount_counts as $ret_mount_count){
-                         $viewcount = $viewcount + $ret_mount_count['ret_per_month_count'];
-                     }
-                    $viewcounts =$viewcount;
-                    $viewcount='';
+                            ->select('count(*) as ret_per_month_count , NOM_TYPE_EN')
+                            ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                            ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' AND rs.CREATED_DATE LIKE '%$searchdate%'" . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $spostal_qry . $stype_qry)
+                            ->group('rs.ID_RETAILER_TYPE')
+                            ->queryAll();
+                    foreach ($ret_mount_counts as $ret_mount_count) {
+                        $viewcount = $viewcount + $ret_mount_count['ret_per_month_count'];
+                    }
+                    $viewcounts = $viewcount;
+                    $viewcount = '';
                 }
 
 //                if ($utype == "Suppliers") {
@@ -523,75 +538,73 @@ class RepStatisticsController extends ORController {
         }
         $pro_types = Yii::app()->db->createCommand() //this query contains all the data
                 ->select('count(*) as pro_count,ID_SPECIALISTE , NOM , PRENOM , TYPE_SPECIALISTE_' . $this->lang . ' ,  NOM_VILLE ,  NOM_REGION_' . $this->lang . ' , ABREVIATION_' . $this->lang . ' ,  NOM_PAYS_' . $this->lang . '')
-                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp','repertoire_utilisateurs as ru'))
-                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry.$spostal_qry.$stype_qry)
+                ->from(array('repertoire_specialiste rs', 'repertoire_specialiste_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
+                ->where("rs.ID_SPECIALISTE=ru.ID_RELATION AND rs.ID_TYPE_SPECIALISTE = rst.ID_TYPE_SPECIALISTE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Professionnels' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $spostal_qry . $stype_qry)
                 ->group('rst.ID_TYPE_SPECIALISTE')
                 ->queryAll();
-        
+
 //            $professional = new CDbCriteria;
 //            $pro_types = ProfessionalType::model()->findall($professional);
-            $dispvals=array();
+        $dispvals = array();
 
-            foreach($pro_types as $pro_type){
-                $p_type = $pro_type[$SPECIALISTE];
-                $p_count = $pro_type['pro_count'];               
-                $dispvals[]=array($p_type,(int)$p_count);
-                $professionals_total=$professionals_total + $p_count;
-            }
-            
-            
-            $response['allprofessionals'][0]['name'] = 'Professional';
-            $response['allprofessionals'][0]['data'] = $dispvals;
-            $response['allprofessionals'][0]['dataLabels'] = array(
-                        'enabled' => false,
-                        'rotation' => -90,
-                        'color' => '#FFFFFF',
-                        'align' => 'right',
-                        'format' => '{point.y}',
-                        'y' => '10',
-                        'style' =>array(
-                            'fontSize' => '13px',
-                            'fontFamily' => 'Verdana, sans-serif',
-                        ),
-                    );
-            $response['total']['professionals'] = $professionals_total;
-            
-             $item_counts= Yii::app()->db->createCommand() // this query get the total number of items,
+        foreach ($pro_types as $pro_type) {
+            $p_type = $pro_type[$SPECIALISTE];
+            $p_count = $pro_type['pro_count'];
+            $dispvals[] = array($p_type, (int) $p_count);
+            $professionals_total = $professionals_total + $p_count;
+        }
+
+
+        $response['allprofessionals'][0]['name'] = 'Professional';
+        $response['allprofessionals'][0]['data'] = $dispvals;
+        $response['allprofessionals'][0]['dataLabels'] = array(
+            'enabled' => false,
+            'rotation' => -90,
+            'color' => '#FFFFFF',
+            'align' => 'right',
+            'format' => '{point.y}',
+            'y' => '10',
+            'style' => array(
+                'fontSize' => '13px',
+                'fontFamily' => 'Verdana, sans-serif',
+            ),
+        );
+        $response['total']['professionals'] = $professionals_total;
+
+        $item_counts = Yii::app()->db->createCommand() // this query get the total number of items,
                 ->select('count(*) as count , NOM_TYPE_EN')
                 ->from(array('repertoire_retailer rs', 'repertoire_retailer_type rst', 'repertoire_ville AS rv', 'repertoire_region AS rr', 'repertoire_pays AS rp', 'repertoire_utilisateurs as ru'))
                 ->where("rs.ID_RETAILER=ru.ID_RELATION AND rs.ID_RETAILER_TYPE = rst.ID_RETAILER_TYPE AND rs.ID_VILLE = rv.ID_VILLE AND rv.ID_REGION = rr.ID_REGION AND  rr.ID_PAYS = rp.ID_PAYS and ru.status=1 AND ru.NOM_TABLE ='Detaillants' " . $sname_qry . $scntry_qry . $sregion_qry . $scity_qry . $scat_query . $spostal_qry . $srettype_qry . $sgroup_qry)
                 ->group('rs.ID_RETAILER_TYPE')
                 ->queryAll();
-             
-            foreach($item_counts as $item_count){
-                $total = $total + $item_count['count'];
-            }
 
-            foreach($item_counts as $key =>$item_count){
-                $retailvals[$key]['name'] = $item_count['NOM_TYPE_EN'];
-                $retailvals[$key]['y'] = (float)number_format(($item_count['count']/$total)*100, 2);
-            }
-            $response['allretailer'][0]['name'] = 'Retailer';
-            $response['allretailer'][0]['colorByPoint'] = true;
-            $response['allretailer'][0]['data'] = $retailvals;
-            $response['total']['retailers']=$total;
-        $this->render('statistics', array('response' => $response,'searchModel' => $searchModel));
+        foreach ($item_counts as $item_count) {
+            $total = $total + $item_count['count'];
+        }
+
+        foreach ($item_counts as $key => $item_count) {
+            $retailvals[$key]['name'] = $item_count['NOM_TYPE_EN'];
+            $retailvals[$key]['y'] = (float) number_format(($item_count['count'] / $total) * 100, 2);
+        }
+        $response['allretailer'][0]['name'] = 'Retailer';
+        $response['allretailer'][0]['colorByPoint'] = true;
+        $response['allretailer'][0]['data'] = $retailvals;
+        $response['total']['retailers'] = $total;
+        $this->render('statistics', array('response' => $response, 'searchModel' => $searchModel));
     }
-    
-    
+
     //Rep Admin - Accounts Logged in Activites
-    /** Userslogstats **/
-    
+    /** Userslogstats * */
     public function actionUserslogstats() {
-        
+
 //        $stats_disp = Myclass::stats_display();
 //        if($stats_disp==0)
 //        {
 //            Yii::app()->user->setFlash('info', "Kindly do the payment to see the statistics chart!!");
 //            $this->redirect('payment');
 //        }   
-        
-        
+
+
         $repAccountsCriteria = new CDbCriteria;
         $repAccountsCriteria->select = 't.rep_credential_id, t.rep_username'; // select fields which you want in output
         $repAccountsCriteria->condition = 't.rep_parent_id = ' . Yii::app()->user->id;
@@ -624,17 +637,16 @@ class RepStatisticsController extends ORController {
         $this->render('userslogstats', array('response' => $response));
     }
 
-    /** Profileviewstats **/
-    
+    /** Profileviewstats * */
     public function actionProfileviewstats() {
-        
+
 //        $stats_disp = Myclass::stats_display();
 //        if($stats_disp==0)
 //        {
 //            Yii::app()->user->setFlash('info', "Kindly do the payment to see the statistics chart!!");
 //            $this->redirect('payment');
 //        }   
-        
+
         $response = array();
 
         $adminid = Yii::app()->user->id;
@@ -691,6 +703,17 @@ class RepStatisticsController extends ORController {
         }
 
         $this->render('profileviewstats', array('response' => $response));
+    }
+
+    /**
+     * Performs the AJAX validation.
+     * @param SuppliersDirectory $model the model to be validated
+     */
+    protected function performAjaxValidation($model) {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'rep-statistics-form') {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
     }
 
 }

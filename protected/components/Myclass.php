@@ -801,4 +801,17 @@ class Myclass extends CController {
             return $modules[$key];
         return $modules;
     }     
+    
+    public static function enablePaymentGateway(){
+        $smodel = Settings::model()->findALL("option_type IN('paypal_advanced_status', 'paypal_standard_status') ");
+        $result = array();
+        foreach ($smodel as $sm){
+            if($sm->option_type == 'paypal_standard_status' && $sm->option_value == '2' ){
+                $result[1] = 'Paypal';   
+            }else if($sm->option_type == 'paypal_advanced_status' && $sm->option_value == '2' ){
+                $result[2] = Myclass::t('OG183');
+            }            
+        }
+        return $result;
+    }
 }
