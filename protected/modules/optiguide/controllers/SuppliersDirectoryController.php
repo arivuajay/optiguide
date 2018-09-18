@@ -2262,7 +2262,7 @@ class SuppliersDirectoryController extends OGController {
 
         $relid = Yii::app()->user->relationid;
         $pmodel = $this->loadModel($relid);
-
+                       
         // Check expiry date and redirect to renew page for expired logos
         $logo_expirydate = $pmodel->logo_expirydate;
         $l_expdate = date("Y-m-d", strtotime($logo_expirydate));
@@ -2273,7 +2273,11 @@ class SuppliersDirectoryController extends OGController {
 
 
         if ($pmodel->iId_fichier == 0) {
+            $umodel = UserDirectory::model()->findByAttributes(array('ID_RELATION' => $relid, 'NOM_TABLE' => 'Fournisseurs'));           
             $fmodel = new ArchiveFichier('create');
+            $fmodel->TITRE_FICHIER_FR = $umodel->USR;
+            $fmodel->TITRE_FICHIER_EN = $umodel->USR;
+            $fmodel->ID_CATEGORIE = '300';
         } else {
             $fichid = $pmodel->iId_fichier;
             $fmodel = ArchiveFichier::model()->findByPk($fichid);

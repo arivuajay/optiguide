@@ -46,7 +46,7 @@ class SettingsController extends Controller {
         $model = new Settings();
         $setting_attr = $model->attributeLabels();
                 
-        if (isset($_POST['Settings'])) {            
+        if (isset($_POST['Settings'])) {    
             $model->attributes = $_POST['Settings'];
 
             if($_POST['Settings']['paypal_advanced_status'] == '1' && $_POST['Settings']['paypal_standard_status'] == '1'){
@@ -82,7 +82,7 @@ class SettingsController extends Controller {
             'dashboard_boxes' => $dashboard_boxes,
         ));
     }
-
+        
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
